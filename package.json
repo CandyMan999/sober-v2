@@ -1,0 +1,33 @@
+{
+  "name": "sober-motivation-v2",
+  "version": "1.0.0",
+  "main": "index.js",
+  "private": true,
+  "scripts": {
+    "start": "yarn dev",
+    "dev": "concurrently \"yarn start:client\" \"yarn dev:server\"",
+    "start:client": "cd client && npx expo start",
+    "dev:server": "NODE_ENV=development nodemon --exec babel-node server.js",
+    "android": "cd client && npx expo start --android",
+    "ios": "cd client && npx expo start --ios",
+    "web": "cd client && npx expo start --web"
+  },
+  "dependencies": {
+    "apollo-server": "^3.13.0",
+    "apollo-server-express": "^3.13.0",
+    "axios": "^1.13.2",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "expo": "~54.0.24",
+    "expo-status-bar": "~3.0.8",
+    "express": "^5.1.0",
+    "graphql": "^16.12.0",
+    "mongoose": "^8.20.0",
+    "react": "19.1.0",
+    "react-native": "0.81.5"
+  },
+  "devDependencies": {
+    "concurrently": "^9.0.0",
+    "nodemon": "^3.1.0"
+  }
+}
