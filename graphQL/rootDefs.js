@@ -8,6 +8,7 @@ const rootDefs = gql`
     profilePic: Picture
     profilePicUrl: String
     sobrietyStartAt: String
+    social: Social
     relapses: [Relapse!]
     milestonesNotified: [Int!]
     milestoneNotificationsEnabled: Boolean
@@ -19,6 +20,12 @@ const rootDefs = gql`
   type Relapse {
     at: String!
     note: String
+  }
+
+  type Social {
+    instagram: String
+    tiktok: String
+    x: String
   }
 
   type Picture {

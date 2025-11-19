@@ -27,6 +27,8 @@
     "react-native": "0.81.5"
   },
   "devDependencies": {
+    "@babel/core": "^7.28.5",
+    "@babel/node": "^7.28.0",
     "concurrently": "^9.0.0",
     "nodemon": "^3.1.0"
   }
