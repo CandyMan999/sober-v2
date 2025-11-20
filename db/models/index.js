@@ -6,5 +6,5 @@ module.exports = {
   User: require("./User"),
   Video: require("./Video"),
   Comment: require("./Comment"),
-  City: require("./city"),
+  City: require("./City"),
 };
