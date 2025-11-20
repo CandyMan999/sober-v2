@@ -1,7 +1,12 @@
 // tabs/tabNavigator.js
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import { AddUserNameScreen, AddPhotoScreen, HomeScreen } from "../pages";
+import {
+  AddUserNameScreen,
+  AddPhotoScreen,
+  AddSobrietyDateScreen,
+  HomeScreen,
+} from "../pages";
 
 const Stack = createStackNavigator();
 
@@ -21,6 +26,11 @@ function TabNavigator() {
         name="AddPhoto"
         component={AddPhotoScreen}
         options={{ title: "Add Profile Photo" }}
+      />
+      <Stack.Screen
+        name="AddSobrietyDate"
+        component={AddSobrietyDateScreen}
+        options={{ title: "Set Sobriety Date" }}
       />
       {/* 👇 NEW: Home route the app can navigate to */}
       <Stack.Screen

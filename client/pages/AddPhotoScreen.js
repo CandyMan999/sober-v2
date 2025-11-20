@@ -157,18 +157,19 @@ const AddPhotoScreen = ({ navigation, route }) => {
 
   const handleContinue = () => {
     if (uploading) return;
-    // You can enforce "photo required" by guarding on !photoUri
-    navigation.reset({
-      index: 0,
-      routes: [{ name: "Home" }],
+    // Navigate to sobriety date screen
+    navigation.navigate("AddSobrietyDate", {
+      username,
+      profilePicUrl: photoUri,
     });
   };
 
   const handleSkip = () => {
     if (uploading) return;
-    navigation.reset({
-      index: 0,
-      routes: [{ name: "Home" }],
+    // Skip photo but still go to sobriety date screen
+    navigation.navigate("AddSobrietyDate", {
+      username,
+      profilePicUrl: null,
     });
   };
 
@@ -179,20 +180,21 @@ const AddPhotoScreen = ({ navigation, route }) => {
       colors={["#020617", "#020617", "#111827"]}
       style={styles.root}
     >
-      <View style={{ ...styles.flex, marginBottom: "10%" }}>
+      <View style={styles.flex}>
         {/* Header */}
         <View style={styles.header}>
           <Text style={styles.appName}>
             sober <Text style={styles.appAccent}>motivation</Text>
           </Text>
           <Text style={styles.tagline}>
-            Faces make the journey feel real. Share yours if you’re ready.
+            Faces make the journey feel real. Share yours if you're ready.
           </Text>
         </View>
 
-        {/* Card */}
-        <View style={styles.card}>
-          <Text style={styles.sectionLabel}>Step 2 of 2</Text>
+        {/* Card Container - centers the card */}
+        <View style={styles.cardContainer}>
+          <View style={styles.card}>
+          <Text style={styles.sectionLabel}>Step 2 of 3</Text>
 
           <Text style={styles.title}>
             Add a <Text style={styles.titleAccent}>profile photo</Text>
@@ -278,6 +280,7 @@ const AddPhotoScreen = ({ navigation, route }) => {
             <Text style={styles.skipText}>Skip for now</Text>
           </TouchableOpacity>
         </View>
+        </View>
       </View>
     </LinearGradient>
   );
@@ -293,10 +296,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     paddingTop: 48,
     paddingBottom: 32,
-    justifyContent: "space-between",
   },
   header: {
     marginBottom: 24,
+  },
+  cardContainer: {
+    flex: 1,
+    justifyContent: "center",
   },
   appName: {
     fontSize: 20,

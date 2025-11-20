@@ -82,7 +82,7 @@ const UsernameScreen = ({ navigation }) => {
               placeholderTextColor="#6B7280"
               autoCapitalize="none"
               autoCorrect={false}
-              maxLength={32}
+              maxLength={13}
             />
             <Text
               style={[
