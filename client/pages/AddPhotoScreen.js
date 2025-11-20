@@ -16,7 +16,8 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { useClient } from "../client";
 import {
   DIRECT_UPLOAD_MUTATION,
-  UPDATE_USER_PROFILE_MUTATION,
+  ADD_PICTURE_MUTATION,
+  DELETE_PHOTO_MUTATION,
 } from "../GraphQL/mutations";
 import { EXPO_CF_ACCOUNT_HASH, EXPO_CF_VARIANT } from "@env";
 
@@ -30,7 +31,9 @@ const AddPhotoScreen = ({ navigation, route }) => {
   const username = route?.params?.username || "you";
 
   const [photoUri, setPhotoUri] = useState(null); // remote/local preview
+  const [photoId, setPhotoId] = useState(null); // picture ID for deletion
   const [uploading, setUploading] = useState(false);
+  const [deleting, setDeleting] = useState(false);
 
   console.log("HASH:", EXPO_CF_ACCOUNT_HASH);
   console.log("VARIANT:", EXPO_CF_VARIANT);
@@ -133,16 +136,18 @@ const AddPhotoScreen = ({ navigation, route }) => {
 
       console.log("Final delivery URL:", deliveryUrl);
 
-      // ---- STEP 4: SAVE ON USER PROFILE ----
-      console.log("➡️ Calling UPSERT_USER_PROFILE_MUTATION...");
-      const { updateUserProfile } = await client.request(
-        UPDATE_USER_PROFILE_MUTATION,
-        { username, token: DEV_TOKEN, profilePicUrl: deliveryUrl }
-      );
-      console.log("✅ User profile updated with photo: ", updateUserProfile);
+      // ---- STEP 4: SAVE PICTURE TO DATABASE ----
+      console.log("➡️ Calling ADD_PICTURE_MUTATION...");
+      const { addPicture } = await client.request(ADD_PICTURE_MUTATION, {
+        token: DEV_TOKEN,
+        url: deliveryUrl,
+        publicId: id,
+      });
+      console.log("✅ Picture added: ", addPicture);
 
-      // Use remote URL for preview now
+      // Use remote URL for preview and store picture ID
       setPhotoUri(deliveryUrl);
+      setPhotoId(addPicture.id);
       setUploading(false);
     } catch (err) {
       console.log("Photo upload error (outer catch):", err?.name, err?.message);
@@ -155,12 +160,33 @@ const AddPhotoScreen = ({ navigation, route }) => {
     }
   };
 
+  const handleDeletePhoto = async () => {
+    if (!photoId || deleting || uploading) return;
+
+    try {
+      setDeleting(true);
+      console.log("➡️ Calling DELETE_PHOTO_MUTATION...", photoId);
+      const { deletePhoto } = await client.request(DELETE_PHOTO_MUTATION, {
+        token: DEV_TOKEN,
+        photoId: photoId,
+      });
+      console.log("✅ Photo deleted: ", deletePhoto);
+
+      // Clear local state
+      setPhotoUri(null);
+      setPhotoId(null);
+    } catch (err) {
+      console.log("Error deleting photo:", err);
+    } finally {
+      setDeleting(false);
+    }
+  };
+
   const handleContinue = () => {
     if (uploading) return;
-    // Navigate to sobriety date screen
+    // Navigate to sobriety date screen (no need to pass photo URL)
     navigation.navigate("AddSobrietyDate", {
       username,
-      profilePicUrl: photoUri,
     });
   };
 
@@ -169,7 +195,6 @@ const AddPhotoScreen = ({ navigation, route }) => {
     // Skip photo but still go to sobriety date screen
     navigation.navigate("AddSobrietyDate", {
       username,
-      profilePicUrl: null,
     });
   };
 
@@ -201,44 +226,64 @@ const AddPhotoScreen = ({ navigation, route }) => {
           </Text>
 
           <Text style={styles.helper}>
-            A clear photo helps the community recognize you and cheer for{" "}
+            A clear photo helps the community recognize and cheer for you{" "}
             {username}.
           </Text>
 
           {/* Avatar preview (now tappable area) */}
-          <TouchableOpacity
-            style={styles.avatarWrapper}
-            activeOpacity={0.85}
-            onPress={handlePickImage}
-            disabled={uploading}
-          >
-            <LinearGradient
-              colors={["#F97316", "#FACC15"]}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 1 }}
-              style={styles.avatarRing}
-            >
-              <View style={styles.avatarInner}>
-                {uploading ? (
-                  <ActivityIndicator size="large" color="#FACC15" />
-                ) : photoUri ? (
-                  <Image
-                    source={{ uri: photoUri }}
-                    style={styles.avatarImage}
-                  />
-                ) : (
-                  <View style={styles.avatarEmptyContent}>
-                    <MaterialIcons
-                      name="photo-camera"
-                      size={32}
-                      color="#9CA3AF"
-                    />
-                    <Text style={styles.avatarTapText}>Tap to add photo</Text>
+          <View style={styles.avatarWrapper}>
+            <View style={styles.avatarContainer}>
+              <TouchableOpacity
+                activeOpacity={0.85}
+                onPress={handlePickImage}
+                disabled={uploading || deleting}
+              >
+                <LinearGradient
+                  colors={["#F97316", "#FACC15"]}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 1 }}
+                  style={styles.avatarRing}
+                >
+                  <View style={styles.avatarInner}>
+                    {uploading ? (
+                      <ActivityIndicator size="large" color="#FACC15" />
+                    ) : photoUri ? (
+                      <Image
+                        source={{ uri: photoUri }}
+                        style={styles.avatarImage}
+                      />
+                    ) : (
+                      <View style={styles.avatarEmptyContent}>
+                        <MaterialIcons
+                          name="photo-camera"
+                          size={32}
+                          color="#9CA3AF"
+                        />
+                        <Text style={styles.avatarTapText}>
+                          Tap to add photo
+                        </Text>
+                      </View>
+                    )}
                   </View>
-                )}
-              </View>
-            </LinearGradient>
-          </TouchableOpacity>
+                </LinearGradient>
+              </TouchableOpacity>
+              {/* Delete button - only show when photo exists */}
+              {photoUri && !uploading && (
+                <TouchableOpacity
+                  style={styles.deleteButton}
+                  onPress={handleDeletePhoto}
+                  disabled={deleting}
+                  activeOpacity={0.7}
+                >
+                  {deleting ? (
+                    <ActivityIndicator size="small" color="#F97373" />
+                  ) : (
+                    <MaterialIcons name="delete" size={24} color="#F97373" />
+                  )}
+                </TouchableOpacity>
+              )}
+            </View>
+          </View>
 
           {/* Primary CTA */}
           <TouchableOpacity
@@ -264,7 +309,7 @@ const AddPhotoScreen = ({ navigation, route }) => {
                 <ActivityIndicator color="#111827" />
               ) : (
                 <Text style={styles.primaryText}>
-                  Save & enter the community
+                  Next
                 </Text>
               )}
             </LinearGradient>
@@ -355,6 +400,30 @@ const styles = StyleSheet.create({
   avatarWrapper: {
     alignItems: "center",
     marginBottom: 16,
+  },
+  avatarContainer: {
+    width: 140,
+    height: 140,
+    position: "relative",
+  },
+  deleteButton: {
+    position: "absolute",
+    top: -8,
+    right: -8,
+    backgroundColor: "#111827",
+    borderRadius: 20,
+    width: 36,
+    height: 36,
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 2,
+    borderColor: "#F97373",
+    zIndex: 10,
+    shadowColor: "#000",
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    shadowOffset: { width: 0, height: 2 },
+    elevation: 5,
   },
   avatarRing: {
     width: 140,

@@ -5,6 +5,7 @@ import {
   AddUserNameScreen,
   AddPhotoScreen,
   AddSobrietyDateScreen,
+  LocationPermissionScreen,
   HomeScreen,
 } from "../pages";
 
@@ -31,6 +32,11 @@ function TabNavigator() {
         name="AddSobrietyDate"
         component={AddSobrietyDateScreen}
         options={{ title: "Set Sobriety Date" }}
+      />
+      <Stack.Screen
+        name="LocationPermission"
+        component={LocationPermissionScreen}
+        options={{ title: "Location Permission" }}
       />
       {/* 👇 NEW: Home route the app can navigate to */}
       <Stack.Screen

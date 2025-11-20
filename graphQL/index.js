@@ -3,6 +3,7 @@ const rootDefs = require("./rootDefs.js");
 const {
   addPictureResolver,
   directUploadResolver,
+  deletePhotoResolver,
   updateUserProfileResolver,
 } = require("./mutations");
 
@@ -13,6 +14,7 @@ const resolvers = {
   Mutation: {
     directUpload: directUploadResolver,
     addPicture: addPictureResolver,
+    deletePhoto: deletePhotoResolver,
     updateUserProfile: updateUserProfileResolver,
   },
 };

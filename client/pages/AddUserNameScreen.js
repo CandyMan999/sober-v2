@@ -10,7 +10,8 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-
+import { useClient } from "../client";
+import { UPDATE_USER_PROFILE_MUTATION } from "../GraphQL/mutations";
 const PRIMARY_BG = "#050816";
 const CARD_BG = "rgba(15,23,42,0.96)";
 const ACCENT = "#F59E0B"; // golden orange
@@ -18,7 +19,10 @@ const ACCENT_SOFT = "#FBBF24";
 
 const MIN_LEN = 3;
 
+const DEV_TOKEN = "dev-token-placeholder";
+
 const UsernameScreen = ({ navigation }) => {
+  const client = useClient();
   const [username, setUsername] = useState("");
   const [saving, setSaving] = useState(false);
   const isValid = username.trim().length >= MIN_LEN;
@@ -29,15 +33,28 @@ const UsernameScreen = ({ navigation }) => {
     try {
       setSaving(true);
 
-      // TODO: call mutation to upsert username here
-      // await upsertUserProfile({ variables: { token, username: username.trim() } });
+      const variables = {
+        token: DEV_TOKEN,
+        username,
+      };
+      console.log("✅ Username updated: ", variables);
+      const { updateUserProfile } = await client.request(
+        UPDATE_USER_PROFILE_MUTATION,
+        {
+          token: DEV_TOKEN,
+          username,
+        }
+      );
 
-      navigation.navigate("AddPhoto", { username: username.trim() });
+      if (!updateUserProfile.username) {
+        Alert.alert("Error", "Failed to save username. Please try again.");
+        return;
+      } else {
+        setSaving(false);
+        navigation.navigate("AddPhoto");
+      }
     } catch (err) {
       console.log("Error saving username:", err);
-      // you could add a toast / inline error here later
-    } finally {
-      setSaving(false);
     }
   };
 

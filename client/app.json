@@ -13,14 +13,25 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSLocationUsageDescription": "Sober Motivation uses your location to send you gentle reminders when you're near a bar or liquor store, helping you make mindful choices in real-time.",
+        "NSLocationWhenInUseUsageDescription": "Sober Motivation uses your location to send you gentle reminders when you're near a bar or liquor store, helping you make mindful choices in real-time.",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "Sober Motivation needs access to your location even when the app is closed to provide important notifications and support. This helps us send you alerts when you're near a bar or liquor store, encouraging you to make mindful choices.",
+        "NSLocationAlwaysUsageDescription": "Sober Motivation needs access to your location in the background to provide important notifications and support. This helps us send you alerts when you're near a bar or liquor store, encouraging you to make mindful choices."
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "permissions": [
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_BACKGROUND_LOCATION"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"

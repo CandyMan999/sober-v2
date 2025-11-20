@@ -126,6 +126,7 @@ const rootDefs = gql`
       replyTo: ID
     ): Comment!
     addPicture(token: String!, url: String!, publicId: String): Picture!
+    deletePhoto(token: String!, photoId: ID!): User!
   }
 `;
 

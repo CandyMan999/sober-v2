@@ -22,7 +22,6 @@ const ACCENT_SOFT = "#FBBF24";
 const AddSobrietyDateScreen = ({ navigation, route }) => {
   const client = useClient();
   const username = route?.params?.username || "you";
-  const profilePicUrl = route?.params?.profilePicUrl;
 
   // Default to today's date, but user will pick their sobriety start date
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -86,28 +85,18 @@ const AddSobrietyDateScreen = ({ navigation, route }) => {
       const sobrietyStartAtISO = selectedDate.toISOString();
 
       console.log("➡️ Calling UPDATE_USER_PROFILE_MUTATION with sobrietyStartAt...");
-      const mutationVars = {
-        token: DEV_TOKEN,
-        username,
-        sobrietyStartAt: sobrietyStartAtISO,
-      };
-      
-      // Only include profilePicUrl if it was provided (user didn't skip photo)
-      if (profilePicUrl) {
-        mutationVars.profilePicUrl = profilePicUrl;
-      }
-
       const { updateUserProfile } = await client.request(
         UPDATE_USER_PROFILE_MUTATION,
-        mutationVars
+        {
+          token: DEV_TOKEN,
+          username,
+          sobrietyStartAt: sobrietyStartAtISO,
+        }
       );
       console.log("✅ User profile updated with sobriety date: ", updateUserProfile);
 
-      // Navigate to Home
-      navigation.reset({
-        index: 0,
-        routes: [{ name: "Home" }],
-      });
+      // Navigate to Location Permission screen
+      navigation.navigate("LocationPermission");
     } catch (err) {
       console.log("Error saving sobriety date:", err);
       Alert.alert(
@@ -124,28 +113,20 @@ const AddSobrietyDateScreen = ({ navigation, route }) => {
     
     try {
       setSaving(true);
-      // Save username and profilePicUrl even if skipping sobriety date
-      const mutationVars = {
+      // Save username even if skipping sobriety date
+      await client.request(UPDATE_USER_PROFILE_MUTATION, {
         token: DEV_TOKEN,
         username,
-      };
-      
-      if (profilePicUrl) {
-        mutationVars.profilePicUrl = profilePicUrl;
-      }
-
-      await client.request(UPDATE_USER_PROFILE_MUTATION, mutationVars);
-      
-      navigation.reset({
-        index: 0,
-        routes: [{ name: "Home" }],
       });
+      
+      // Navigate to Location Permission screen
+      navigation.navigate("LocationPermission");
     } catch (err) {
       console.log("Error saving profile:", err);
       // Still navigate even if save fails
       navigation.reset({
         index: 0,
-        routes: [{ name: "Home" }],
+        routes: [{ name: "LocationPermission" }],
       });
     } finally {
       setSaving(false);

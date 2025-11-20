@@ -74,4 +74,69 @@ module.exports = {
       throw new AuthenticationError(err.message);
     }
   },
+
+  deletePhotoResolver: async (_, { token, photoId }) => {
+    try {
+      const user = await User.findOne({ token });
+      if (!user) {
+        throw new AuthenticationError("User not found");
+      }
+
+      // Get full picture doc to check publicId
+      const pic = await Picture.findById(photoId);
+      if (!pic) {
+        throw new Error("Picture not found");
+      }
+
+      // Verify the picture belongs to this user
+      if (pic.user.toString() !== user._id.toString()) {
+        throw new AuthenticationError("Not authorized to delete this picture");
+      }
+
+      const publicId = pic.publicId;
+
+      // Best-effort remote delete from Cloudflare (don't block DB cleanup if this fails)
+      if (publicId) {
+        try {
+          if (!CF_ACCOUNT_ID || !CF_API_TOKEN) {
+            console.warn("Missing Cloudflare credentials, skipping remote delete");
+          } else {
+            await axios.delete(
+              `https://api.cloudflare.com/client/v4/accounts/${CF_ACCOUNT_ID}/images/v1/${publicId}`,
+              { headers: { Authorization: `Bearer ${CF_API_TOKEN}` } }
+            );
+            console.log("Successfully deleted image from Cloudflare:", publicId);
+          }
+        } catch (extErr) {
+          // Log and continue; we still remove the DB reference
+          console.warn(
+            "Remote delete failed:",
+            extErr.response?.data || extErr.message
+          );
+        }
+      }
+
+      // Remove picture from DB
+      await Picture.deleteOne({ _id: photoId });
+
+       // Pull reference from user and return updated user (same as before)
+   
+
+      // Pull reference from user and return updated user
+      const updatedUser = await User.findByIdAndUpdate(
+        { _id: user._id },
+        {profilePicUrl: null},
+        { $pull: { profilePic: photoId } },
+        { new: true }
+      )
+        .populate("profilePic")
+      
+
+      return updatedUser;
+    } catch (err) {
+
+      throw new AuthenticationError(err.message);
+    }
+  },
 };
+

@@ -1,11 +1,9 @@
 // client.js
 import { GraphQLClient } from "graphql-request";
+import { GRAPHQL_URI } from "./config/endpoint"; // <-- import from App.js
 
-const URI =
-  process.env.NODE_ENV === "production"
-    ? "https://sober-motivation.herokuapp.com/graphql"
-    : "http://localhost:4000/graphql";
+console.log("📡 GraphQLClient URI:", GRAPHQL_URI);
 
-const graphQLClient = new GraphQLClient(URI, {});
+const graphQLClient = new GraphQLClient(GRAPHQL_URI);
 
 export const useClient = () => graphQLClient;
