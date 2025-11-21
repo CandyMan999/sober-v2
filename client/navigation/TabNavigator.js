@@ -1,6 +1,7 @@
 import React from "react";
 import { Text } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createStackNavigator } from "@react-navigation/stack";
 
 import HomeTabs from "./HomeTabs";
 import ChatTabs from "./ChatTabs";
@@ -9,6 +10,20 @@ import PostCaptureScreen from "../screens/Post/PostCaptureScreen";
 import ProfileScreen from "../screens/Profile/ProfileScreen";
 
 const Tab = createBottomTabNavigator();
+const HomeStack = createStackNavigator();
+const ChatStack = createStackNavigator();
+
+const HomeStackScreen = () => (
+  <HomeStack.Navigator screenOptions={{ headerShown: false }}>
+    <HomeStack.Screen name="Home" component={HomeTabs} />
+  </HomeStack.Navigator>
+);
+
+const ChatStackScreen = () => (
+  <ChatStack.Navigator screenOptions={{ headerShown: false }}>
+    <ChatStack.Screen name="ChatRooms" component={ChatTabs} />
+  </ChatStack.Navigator>
+);
 
 const TabNavigator = () => {
   return (
@@ -25,8 +40,8 @@ const TabNavigator = () => {
       }}
     >
       <Tab.Screen
-        name="HomeTabs"
-        component={HomeTabs}
+        name="HomeTabRoot"
+        component={HomeStackScreen}
         options={{
           tabBarLabel: "Home",
           tabBarIcon: () => <Text style={{ fontSize: 18 }}>🏠</Text>,
@@ -51,7 +66,7 @@ const TabNavigator = () => {
       />
       <Tab.Screen
         name="Chat"
-        component={ChatTabs}
+        component={ChatStackScreen}
         options={{
           tabBarLabel: "Chat",
           tabBarIcon: () => <Text style={{ fontSize: 18 }}>💬</Text>,
