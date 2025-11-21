@@ -29,17 +29,16 @@ const ACCENT_SOFT = "#FBBF24";
 const AddPhotoScreen = ({ navigation, route }) => {
   const client = useClient();
   const username = route?.params?.username || "you";
-
-  const [photoUri, setPhotoUri] = useState(null); // remote/local preview
+  const token = route?.params?.pushToken || null;
+  const [photoUri, setPhotoUri] = useState(
+    route?.params?.photoURI ? route.params.photoURI : null
+  ); // remote/local preview
   const [photoId, setPhotoId] = useState(null); // picture ID for deletion
   const [uploading, setUploading] = useState(false);
   const [deleting, setDeleting] = useState(false);
 
   console.log("HASH:", EXPO_CF_ACCOUNT_HASH);
   console.log("VARIANT:", EXPO_CF_VARIANT);
-
-  // TEMP: same dev token as username screen
-  const DEV_TOKEN = "dev-token-placeholder";
 
   const requestMediaPermission = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -139,7 +138,7 @@ const AddPhotoScreen = ({ navigation, route }) => {
       // ---- STEP 4: SAVE PICTURE TO DATABASE ----
       console.log("➡️ Calling ADD_PICTURE_MUTATION...");
       const { addPicture } = await client.request(ADD_PICTURE_MUTATION, {
-        token: DEV_TOKEN,
+        token,
         url: deliveryUrl,
         publicId: id,
       });
@@ -167,7 +166,7 @@ const AddPhotoScreen = ({ navigation, route }) => {
       setDeleting(true);
       console.log("➡️ Calling DELETE_PHOTO_MUTATION...", photoId);
       const { deletePhoto } = await client.request(DELETE_PHOTO_MUTATION, {
-        token: DEV_TOKEN,
+        token,
         photoId: photoId,
       });
       console.log("✅ Photo deleted: ", deletePhoto);
@@ -184,17 +183,16 @@ const AddPhotoScreen = ({ navigation, route }) => {
 
   const handleContinue = () => {
     if (uploading) return;
-    // Navigate to sobriety date screen (no need to pass photo URL)
+
     navigation.navigate("AddSobrietyDate", {
-      username,
+      pushToken: token,
     });
   };
 
   const handleSkip = () => {
     if (uploading) return;
-    // Skip photo but still go to sobriety date screen
     navigation.navigate("AddSobrietyDate", {
-      username,
+      pushToken: token,
     });
   };
 

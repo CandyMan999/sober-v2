@@ -22,16 +22,13 @@ const ACCENT_SOFT = "#FBBF24";
 const AddSobrietyDateScreen = ({ navigation, route }) => {
   const client = useClient();
   const username = route?.params?.username || "you";
-
+  const token = route?.params?.pushToken || null;
   // Default to today's date, but user will pick their sobriety start date
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [showPicker, setShowPicker] = useState(false);
   const [useToday, setUseToday] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState(null);
-
-  // TEMP: same dev token as other screens
-  const DEV_TOKEN = "dev-token-placeholder";
 
   const validateDate = (date) => {
     const today = new Date();
@@ -92,8 +89,7 @@ const AddSobrietyDateScreen = ({ navigation, route }) => {
       const { updateUserProfile } = await client.request(
         UPDATE_USER_PROFILE_MUTATION,
         {
-          token: DEV_TOKEN,
-          username,
+          token,
           sobrietyStartAt: sobrietyStartAtISO,
         }
       );
@@ -119,18 +115,10 @@ const AddSobrietyDateScreen = ({ navigation, route }) => {
     if (saving) return;
 
     try {
-      setSaving(true);
-      // Save username even if skipping sobriety date
-      await client.request(UPDATE_USER_PROFILE_MUTATION, {
-        token: DEV_TOKEN,
-        username,
-      });
-
-      // Navigate to Location Permission screen
       navigation.navigate("LocationPermission");
     } catch (err) {
       console.log("Error saving profile:", err);
-      // Still navigate even if save fails
+
       navigation.reset({
         index: 0,
         routes: [{ name: "LocationPermission" }],
