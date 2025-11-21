@@ -1,6 +1,6 @@
 import React from "react";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { View } from "react-native";
 
 import ChatRoomScreen from "../screens/Chat/ChatRoomScreen";
 
@@ -8,7 +8,7 @@ const TopTab = createMaterialTopTabNavigator();
 
 const ChatTabs = () => {
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#050816" }} edges={["top"]}>
+    <View style={{ flex: 1, backgroundColor: "#050816" }}>
       <TopTab.Navigator
         sceneContainerStyle={{ backgroundColor: "#0b1220" }}
         screenOptions={{
@@ -37,7 +37,7 @@ const ChatTabs = () => {
           initialParams={{ roomName: "Relapse Support" }}
         />
       </TopTab.Navigator>
-    </SafeAreaView>
+    </View>
   );
 };
 

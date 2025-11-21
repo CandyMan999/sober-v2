@@ -54,9 +54,9 @@ export default function App() {
               component={LocationPermissionScreen}
               options={{ title: "Location Permission" }}
             />
-            {/* 👇 NEW: Home route the app can navigate to */}
+            {/* 👇 NEW: Main app shell route the app can navigate to */}
             <Stack.Screen
-              name="Home"
+              name="MainTabs"
               component={TabNavigator}
               options={{ headerShown: false }}
             />

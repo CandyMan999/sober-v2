@@ -1,6 +1,6 @@
 import React from "react";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { View } from "react-native";
 
 import CommunityScreen from "../screens/Home/CommunityScreen";
 import QuotesScreen from "../screens/Home/QuotesScreen";
@@ -9,7 +9,7 @@ const TopTab = createMaterialTopTabNavigator();
 
 const HomeTabs = () => {
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#050816" }} edges={["top"]}>
+    <View style={{ flex: 1, backgroundColor: "#050816" }}>
       <TopTab.Navigator
         sceneContainerStyle={{ backgroundColor: "#0b1220" }}
         screenOptions={{
@@ -23,7 +23,7 @@ const HomeTabs = () => {
         <TopTab.Screen name="Community" component={CommunityScreen} />
         <TopTab.Screen name="Quotes" component={QuotesScreen} />
       </TopTab.Navigator>
-    </SafeAreaView>
+    </View>
   );
 };
 

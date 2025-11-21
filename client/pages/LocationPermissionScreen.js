@@ -35,10 +35,10 @@ const LocationPermissionScreen = ({ navigation }) => {
         foregroundStatus.status === "granted" &&
         backgroundStatus.status === "granted"
       ) {
-        // Permissions already granted, navigate to home
+        // Permissions already granted, navigate to main tabs
         navigation.reset({
           index: 0,
-          routes: [{ name: "Home" }],
+          routes: [{ name: "MainTabs" }],
         });
       } else {
         setChecking(false);
@@ -70,10 +70,10 @@ const LocationPermissionScreen = ({ navigation }) => {
         foregroundStatus.status === "granted" &&
         backgroundStatus.status === "granted"
       ) {
-        // Permissions granted, navigate to home
+        // Permissions granted, navigate to main tabs
         navigation.reset({
           index: 0,
-          routes: [{ name: "Home" }],
+          routes: [{ name: "MainTabs" }],
         });
       } else {
         Alert.alert(
@@ -87,7 +87,7 @@ const LocationPermissionScreen = ({ navigation }) => {
                 // Still allow them to continue without location
                 navigation.reset({
                   index: 0,
-                  routes: [{ name: "Home" }],
+                  routes: [{ name: "MainTabs" }],
                 });
               },
             },
@@ -113,7 +113,7 @@ const LocationPermissionScreen = ({ navigation }) => {
   const handleSkip = () => {
     navigation.reset({
       index: 0,
-      routes: [{ name: "Home" }],
+      routes: [{ name: "MainTabs" }],
     });
   };
 
