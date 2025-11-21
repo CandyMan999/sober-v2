@@ -40,7 +40,9 @@ const AddSobrietyDateScreen = ({ navigation, route }) => {
     selected.setHours(0, 0, 0, 0);
 
     if (selected > today) {
-      setError("You cannot select a future date. Please choose today or a past date.");
+      setError(
+        "You cannot select a future date. Please choose today or a past date."
+      );
       return false;
     }
     setError(null);
@@ -84,7 +86,9 @@ const AddSobrietyDateScreen = ({ navigation, route }) => {
       // Format date as ISO string
       const sobrietyStartAtISO = selectedDate.toISOString();
 
-      console.log("➡️ Calling UPDATE_USER_PROFILE_MUTATION with sobrietyStartAt...");
+      console.log(
+        "➡️ Calling UPDATE_USER_PROFILE_MUTATION with sobrietyStartAt..."
+      );
       const { updateUserProfile } = await client.request(
         UPDATE_USER_PROFILE_MUTATION,
         {
@@ -93,7 +97,10 @@ const AddSobrietyDateScreen = ({ navigation, route }) => {
           sobrietyStartAt: sobrietyStartAtISO,
         }
       );
-      console.log("✅ User profile updated with sobriety date: ", updateUserProfile);
+      console.log(
+        "✅ User profile updated with sobriety date: ",
+        updateUserProfile
+      );
 
       // Navigate to Location Permission screen
       navigation.navigate("LocationPermission");
@@ -110,7 +117,7 @@ const AddSobrietyDateScreen = ({ navigation, route }) => {
 
   const handleSkip = async () => {
     if (saving) return;
-    
+
     try {
       setSaving(true);
       // Save username even if skipping sobriety date
@@ -118,7 +125,7 @@ const AddSobrietyDateScreen = ({ navigation, route }) => {
         token: DEV_TOKEN,
         username,
       });
-      
+
       // Navigate to Location Permission screen
       navigation.navigate("LocationPermission");
     } catch (err) {
@@ -194,139 +201,137 @@ const AddSobrietyDateScreen = ({ navigation, route }) => {
         {/* Card Container - centers the card */}
         <View style={styles.cardContainer}>
           <View style={styles.card}>
-          <Text style={styles.sectionLabel}>Step 3 of 3</Text>
+            <Text style={styles.sectionLabel}>Step 3 of 4</Text>
 
-          <Text style={styles.title}>
-            When did you <Text style={styles.titleAccent}>start</Text>?
-          </Text>
+            <Text style={styles.title}>
+              When did you <Text style={styles.titleAccent}>start</Text>?
+            </Text>
 
-          <Text style={styles.helper}>
-            This helps us celebrate your milestones and track your progress.
-          </Text>
+            <Text style={styles.helper}>
+              This helps us celebrate your milestones and track your progress.
+            </Text>
 
-          {/* Option Buttons */}
-          <View style={styles.optionsContainer}>
-            <TouchableOpacity
-              style={[
-                styles.optionButton,
-                useToday && styles.optionButtonActive,
-              ]}
-              onPress={handleSetToday}
-              disabled={saving}
-              activeOpacity={0.8}
-            >
-              <Text
+            {/* Option Buttons */}
+            <View style={styles.optionsContainer}>
+              <TouchableOpacity
                 style={[
-                  styles.optionButtonText,
-                  useToday && styles.optionButtonTextActive,
+                  styles.optionButton,
+                  useToday && styles.optionButtonActive,
                 ]}
+                onPress={handleSetToday}
+                disabled={saving}
+                activeOpacity={0.8}
               >
-                Starts today
-              </Text>
-            </TouchableOpacity>
+                <Text
+                  style={[
+                    styles.optionButtonText,
+                    useToday && styles.optionButtonTextActive,
+                  ]}
+                >
+                  Starts today
+                </Text>
+              </TouchableOpacity>
 
-            <TouchableOpacity
-              style={[
-                styles.optionButton,
-                !useToday && styles.optionButtonActive,
-              ]}
-              onPress={handlePickDate}
-              disabled={saving}
-              activeOpacity={0.8}
-            >
-              <Text
+              <TouchableOpacity
                 style={[
-                  styles.optionButtonText,
-                  !useToday && styles.optionButtonTextActive,
+                  styles.optionButton,
+                  !useToday && styles.optionButtonActive,
                 ]}
+                onPress={handlePickDate}
+                disabled={saving}
+                activeOpacity={0.8}
               >
-                Pick a date
-              </Text>
-            </TouchableOpacity>
-          </View>
-
-          {/* Days Counter - always show */}
-          {daysSober() >= 0 && (
-            <View style={styles.daysCounterWrapper}>
-              <Text style={styles.daysCounter}>
-                {daysSober()} {daysSober() === 1 ? "day" : "days"} sober
-              </Text>
+                <Text
+                  style={[
+                    styles.optionButtonText,
+                    !useToday && styles.optionButtonTextActive,
+                  ]}
+                >
+                  Pick a date
+                </Text>
+              </TouchableOpacity>
             </View>
-          )}
 
-          {/* Error message */}
-          {error && (
-            <View style={styles.errorWrapper}>
-              <Text style={styles.errorText}>{error}</Text>
-            </View>
-          )}
+            {/* Days Counter - always show */}
+            {daysSober() >= 0 && (
+              <View style={styles.daysCounterWrapper}>
+                <Text style={styles.daysCounter}>
+                  {daysSober()} {daysSober() === 1 ? "day" : "days"} sober
+                </Text>
+              </View>
+            )}
 
-          {/* Date Picker - only show when "Pick a date" is selected */}
-          {showPicker && !useToday && Platform.OS === "ios" && (
-            <View style={styles.pickerContainer}>
+            {/* Error message */}
+            {error && (
+              <View style={styles.errorWrapper}>
+                <Text style={styles.errorText}>{error}</Text>
+              </View>
+            )}
+
+            {/* Date Picker - only show when "Pick a date" is selected */}
+            {showPicker && !useToday && Platform.OS === "ios" && (
+              <View style={styles.pickerContainer}>
+                <DateTimePicker
+                  value={selectedDate}
+                  mode="date"
+                  display="spinner"
+                  onChange={handleDateChange}
+                  maximumDate={new Date()}
+                  textColor="white"
+                  style={styles.picker}
+                />
+              </View>
+            )}
+
+            {/* Android picker shows as modal, handled in handleDateChange */}
+            {Platform.OS === "android" && showPicker && !useToday && (
               <DateTimePicker
                 value={selectedDate}
                 mode="date"
-                display="spinner"
+                display="default"
                 onChange={handleDateChange}
                 maximumDate={new Date()}
-                textColor="white"
-                style={styles.picker}
               />
-            </View>
-          )}
+            )}
 
-          {/* Android picker shows as modal, handled in handleDateChange */}
-          {Platform.OS === "android" && showPicker && !useToday && (
-            <DateTimePicker
-              value={selectedDate}
-              mode="date"
-              display="default"
-              onChange={handleDateChange}
-              maximumDate={new Date()}
-            />
-          )}
-
-          {/* Primary CTA */}
-          <TouchableOpacity
-            style={[
-              styles.primaryButton,
-              (!!error || saving) && { opacity: 0.6 },
-            ]}
-            activeOpacity={0.9}
-            onPress={handleContinue}
-            disabled={!!error || saving}
-          >
-            <LinearGradient
-              colors={
-                !error && !saving
-                  ? [ACCENT, ACCENT_SOFT]
-                  : ["#4B5563", "#4B5563"]
-              }
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 1 }}
-              style={styles.primaryGradient}
+            {/* Primary CTA */}
+            <TouchableOpacity
+              style={[
+                styles.primaryButton,
+                (!!error || saving) && { opacity: 0.6 },
+              ]}
+              activeOpacity={0.9}
+              onPress={handleContinue}
+              disabled={!!error || saving}
             >
-              {saving ? (
-                <ActivityIndicator color="#111827" />
-              ) : (
-                <Text style={styles.primaryText}>
-                  Save & enter the community
-                </Text>
-              )}
-            </LinearGradient>
-          </TouchableOpacity>
+              <LinearGradient
+                colors={
+                  !error && !saving
+                    ? [ACCENT, ACCENT_SOFT]
+                    : ["#4B5563", "#4B5563"]
+                }
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+                style={styles.primaryGradient}
+              >
+                {saving ? (
+                  <ActivityIndicator color="#111827" />
+                ) : (
+                  <Text style={styles.primaryText}>Continue</Text>
+                )}
+              </LinearGradient>
+            </TouchableOpacity>
 
-          {/* Skip link */}
-          <TouchableOpacity
-            onPress={handleSkip}
-            style={styles.skipWrapper}
-            activeOpacity={saving ? 1 : 0.7}
-            disabled={saving}
-          >
-            <Text style={styles.skipText}>Skip for now</Text>
-          </TouchableOpacity>
-        </View>
+            {/* Skip link */}
+            <TouchableOpacity
+              onPress={handleSkip}
+              style={styles.skipWrapper}
+              activeOpacity={saving ? 1 : 0.7}
+              disabled={saving}
+            >
+              <Text style={styles.skipText}>Skip for now</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     </LinearGradient>
@@ -489,4 +494,3 @@ const styles = StyleSheet.create({
 });
 
 export default AddSobrietyDateScreen;
-

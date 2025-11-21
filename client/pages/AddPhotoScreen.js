@@ -219,112 +219,110 @@ const AddPhotoScreen = ({ navigation, route }) => {
         {/* Card Container - centers the card */}
         <View style={styles.cardContainer}>
           <View style={styles.card}>
-          <Text style={styles.sectionLabel}>Step 2 of 3</Text>
+            <Text style={styles.sectionLabel}>Step 3 of 4</Text>
 
-          <Text style={styles.title}>
-            Add a <Text style={styles.titleAccent}>profile photo</Text>
-          </Text>
+            <Text style={styles.title}>
+              Add a <Text style={styles.titleAccent}>profile photo</Text>
+            </Text>
 
-          <Text style={styles.helper}>
-            A clear photo helps the community recognize and cheer for you{" "}
-            {username}.
-          </Text>
+            <Text style={styles.helper}>
+              A clear photo helps the community recognize and cheer for you{" "}
+              {username}.
+            </Text>
 
-          {/* Avatar preview (now tappable area) */}
-          <View style={styles.avatarWrapper}>
-            <View style={styles.avatarContainer}>
-              <TouchableOpacity
-                activeOpacity={0.85}
-                onPress={handlePickImage}
-                disabled={uploading || deleting}
-              >
-                <LinearGradient
-                  colors={["#F97316", "#FACC15"]}
-                  start={{ x: 0, y: 0 }}
-                  end={{ x: 1, y: 1 }}
-                  style={styles.avatarRing}
-                >
-                  <View style={styles.avatarInner}>
-                    {uploading ? (
-                      <ActivityIndicator size="large" color="#FACC15" />
-                    ) : photoUri ? (
-                      <Image
-                        source={{ uri: photoUri }}
-                        style={styles.avatarImage}
-                      />
-                    ) : (
-                      <View style={styles.avatarEmptyContent}>
-                        <MaterialIcons
-                          name="photo-camera"
-                          size={32}
-                          color="#9CA3AF"
-                        />
-                        <Text style={styles.avatarTapText}>
-                          Tap to add photo
-                        </Text>
-                      </View>
-                    )}
-                  </View>
-                </LinearGradient>
-              </TouchableOpacity>
-              {/* Delete button - only show when photo exists */}
-              {photoUri && !uploading && (
+            {/* Avatar preview (now tappable area) */}
+            <View style={styles.avatarWrapper}>
+              <View style={styles.avatarContainer}>
                 <TouchableOpacity
-                  style={styles.deleteButton}
-                  onPress={handleDeletePhoto}
-                  disabled={deleting}
-                  activeOpacity={0.7}
+                  activeOpacity={0.85}
+                  onPress={handlePickImage}
+                  disabled={uploading || deleting}
                 >
-                  {deleting ? (
-                    <ActivityIndicator size="small" color="#F97373" />
-                  ) : (
-                    <MaterialIcons name="delete" size={24} color="#F97373" />
-                  )}
+                  <LinearGradient
+                    colors={["#F97316", "#FACC15"]}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 1 }}
+                    style={styles.avatarRing}
+                  >
+                    <View style={styles.avatarInner}>
+                      {uploading ? (
+                        <ActivityIndicator size="large" color="#FACC15" />
+                      ) : photoUri ? (
+                        <Image
+                          source={{ uri: photoUri }}
+                          style={styles.avatarImage}
+                        />
+                      ) : (
+                        <View style={styles.avatarEmptyContent}>
+                          <MaterialIcons
+                            name="photo-camera"
+                            size={32}
+                            color="#9CA3AF"
+                          />
+                          <Text style={styles.avatarTapText}>
+                            Tap to add photo
+                          </Text>
+                        </View>
+                      )}
+                    </View>
+                  </LinearGradient>
                 </TouchableOpacity>
-              )}
+                {/* Delete button - only show when photo exists */}
+                {photoUri && !uploading && (
+                  <TouchableOpacity
+                    style={styles.deleteButton}
+                    onPress={handleDeletePhoto}
+                    disabled={deleting}
+                    activeOpacity={0.7}
+                  >
+                    {deleting ? (
+                      <ActivityIndicator size="small" color="#F97373" />
+                    ) : (
+                      <MaterialIcons name="delete" size={24} color="#F97373" />
+                    )}
+                  </TouchableOpacity>
+                )}
+              </View>
             </View>
-          </View>
 
-          {/* Primary CTA */}
-          <TouchableOpacity
-            style={[
-              styles.primaryButton,
-              (!canContinue || uploading) && { opacity: 0.6 },
-            ]}
-            activeOpacity={0.9}
-            onPress={handleContinue}
-            disabled={!canContinue || uploading}
-          >
-            <LinearGradient
-              colors={
-                canContinue && !uploading
-                  ? [ACCENT, ACCENT_SOFT]
-                  : ["#4B5563", "#4B5563"]
-              }
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 1 }}
-              style={styles.primaryGradient}
+            {/* Primary CTA */}
+            <TouchableOpacity
+              style={[
+                styles.primaryButton,
+                (!canContinue || uploading) && { opacity: 0.6 },
+              ]}
+              activeOpacity={0.9}
+              onPress={handleContinue}
+              disabled={!canContinue || uploading}
             >
-              {uploading ? (
-                <ActivityIndicator color="#111827" />
-              ) : (
-                <Text style={styles.primaryText}>
-                  Next
-                </Text>
-              )}
-            </LinearGradient>
-          </TouchableOpacity>
+              <LinearGradient
+                colors={
+                  canContinue && !uploading
+                    ? [ACCENT, ACCENT_SOFT]
+                    : ["#4B5563", "#4B5563"]
+                }
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+                style={styles.primaryGradient}
+              >
+                {uploading ? (
+                  <ActivityIndicator color="#111827" />
+                ) : (
+                  <Text style={styles.primaryText}>Next</Text>
+                )}
+              </LinearGradient>
+            </TouchableOpacity>
 
-          {/* Skip link */}
-          <TouchableOpacity
-            onPress={handleSkip}
-            style={styles.skipWrapper}
-            activeOpacity={uploading ? 1 : 0.7}
-            disabled={uploading}
-          >
-            <Text style={styles.skipText}>Skip for now</Text>
-          </TouchableOpacity>
-        </View>
+            {/* Skip link */}
+            <TouchableOpacity
+              onPress={handleSkip}
+              style={styles.skipWrapper}
+              activeOpacity={uploading ? 1 : 0.7}
+              disabled={uploading}
+            >
+              <Text style={styles.skipText}>Skip for now</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     </LinearGradient>

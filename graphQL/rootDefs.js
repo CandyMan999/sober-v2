@@ -128,6 +128,10 @@ const rootDefs = gql`
     addPicture(token: String!, url: String!, publicId: String): Picture!
     deletePhoto(token: String!, photoId: ID!): User!
   }
+
+  type Query {
+    fetchMe(token: String!): User!
+  }
 `;
 
 module.exports = rootDefs;

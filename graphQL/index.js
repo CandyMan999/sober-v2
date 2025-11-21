@@ -6,11 +6,12 @@ const {
   deletePhotoResolver,
   updateUserProfileResolver,
 } = require("./mutations");
+const { fetchMeResolver } = require("./queries");
 
 const typeDefs = [rootDefs];
 
 const resolvers = {
-  Query: {},
+  Query: { fetchMe: fetchMeResolver },
   Mutation: {
     directUpload: directUploadResolver,
     addPicture: addPictureResolver,

@@ -4,6 +4,8 @@
     "slug": "sober-motivation-v2",
     "version": "1.0.0",
     "orientation": "portrait",
+    "owner": "jalewis1221",
+    "scheme": "sobermotivation",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
