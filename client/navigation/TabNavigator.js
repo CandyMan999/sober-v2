@@ -15,7 +15,7 @@ const ChatStack = createStackNavigator();
 
 const HomeStackScreen = () => (
   <HomeStack.Navigator screenOptions={{ headerShown: false }}>
-    <HomeStack.Screen name="Home" component={HomeTabs} />
+    <HomeStack.Screen name="HomeTabs" component={HomeTabs} />
   </HomeStack.Navigator>
 );
 

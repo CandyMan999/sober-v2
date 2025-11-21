@@ -6,7 +6,7 @@ const PostCaptureScreen = ({ navigation }) => {
     <View style={styles.container}>
       <TouchableOpacity
         style={styles.closeButton}
-        onPress={() => navigation.navigate("Home")}
+        onPress={() => navigation.navigate("HomeTabRoot")}
       >
         <Text style={styles.closeText}>✕</Text>
       </TouchableOpacity>
