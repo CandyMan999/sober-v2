@@ -1,19 +1,14 @@
 import React from "react";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
-import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 import ChatRoomScreen from "../screens/Chat/ChatRoomScreen";
 
 const TopTab = createMaterialTopTabNavigator();
 
 const ChatTabs = () => {
-  const insets = useSafeAreaInsets();
-
   return (
-    <SafeAreaView
-      style={{ flex: 1, paddingTop: insets.top, backgroundColor: "#050816" }}
-      edges={["top"]}
-    >
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#050816" }} edges={["top"]}>
       <TopTab.Navigator
         sceneContainerStyle={{ backgroundColor: "#0b1220" }}
         screenOptions={{

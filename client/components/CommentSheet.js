@@ -23,16 +23,16 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
     padding: 16,
-    backgroundColor: "rgba(0, 0, 0, 0.85)",
+    backgroundColor: "#ffffff",
   },
   title: {
-    color: "#fff",
+    color: "#111827",
     fontWeight: "bold",
     fontSize: 16,
     marginBottom: 8,
   },
   comment: {
-    color: "#e5e7eb",
+    color: "#1f2937",
     fontSize: 14,
     marginBottom: 4,
   },
@@ -40,11 +40,11 @@ const styles = StyleSheet.create({
     marginTop: 12,
     padding: 12,
     borderWidth: 1,
-    borderColor: "#374151",
+    borderColor: "#e5e7eb",
     borderRadius: 8,
   },
   inputPlaceholder: {
-    color: "#9ca3af",
+    color: "#6b7280",
   },
 });
 

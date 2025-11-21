@@ -3,6 +3,7 @@ import React from "react";
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { ApolloClient, InMemoryCache, HttpLink } from "@apollo/client";
 import { ApolloProvider } from "@apollo/client/react";
 import { GRAPHQL_URI } from "./config/endpoint";
@@ -26,40 +27,42 @@ const client = new ApolloClient({
 export default function App() {
   return (
     <ApolloProvider client={client}>
-      <NavigationContainer>
-        <Stack.Navigator
-          screenOptions={{
-            headerShown: true,
-          }}
-        >
-          <Stack.Screen
-            name="AddUserName"
-            component={AddUserNameScreen}
-            options={{ title: "Choose a Username" }}
-          />
-          <Stack.Screen
-            name="AddPhoto"
-            component={AddPhotoScreen}
-            options={{ title: "Add Profile Photo" }}
-          />
-          <Stack.Screen
-            name="AddSobrietyDate"
-            component={AddSobrietyDateScreen}
-            options={{ title: "Set Sobriety Date" }}
-          />
-          <Stack.Screen
-            name="LocationPermission"
-            component={LocationPermissionScreen}
-            options={{ title: "Location Permission" }}
-          />
-          {/* 👇 NEW: Home route the app can navigate to */}
-          <Stack.Screen
-            name="Home"
-            component={TabNavigator}
-            options={{ headerShown: false }}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <NavigationContainer>
+          <Stack.Navigator
+            screenOptions={{
+              headerShown: true,
+            }}
+          >
+            <Stack.Screen
+              name="AddUserName"
+              component={AddUserNameScreen}
+              options={{ title: "Choose a Username" }}
+            />
+            <Stack.Screen
+              name="AddPhoto"
+              component={AddPhotoScreen}
+              options={{ title: "Add Profile Photo" }}
+            />
+            <Stack.Screen
+              name="AddSobrietyDate"
+              component={AddSobrietyDateScreen}
+              options={{ title: "Set Sobriety Date" }}
+            />
+            <Stack.Screen
+              name="LocationPermission"
+              component={LocationPermissionScreen}
+              options={{ title: "Location Permission" }}
+            />
+            {/* 👇 NEW: Home route the app can navigate to */}
+            <Stack.Screen
+              name="Home"
+              component={TabNavigator}
+              options={{ headerShown: false }}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </GestureHandlerRootView>
     </ApolloProvider>
   );
 }

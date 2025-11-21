@@ -1,34 +1,11 @@
 import React from "react";
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-
-const rooms = ["General", "Early Days", "Relapse Support"];
+import { View, Text, StyleSheet, ScrollView } from "react-native";
 
 const ChatRoomScreen = ({ route }) => {
-  const navigation = useNavigation();
   const roomName = route?.params?.roomName || "Room";
 
   return (
     <View style={styles.container}>
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.roomCarousel}
-      >
-        {rooms.map((room) => (
-          <TouchableOpacity
-            key={room}
-            style={[styles.roomButton, room === roomName && styles.roomButtonActive]}
-            onPress={() => navigation.navigate(room, { roomName: room })}
-          >
-            <Text
-              style={[styles.roomButtonText, room === roomName && styles.roomButtonTextActive]}
-            >
-              {room}
-            </Text>
-          </TouchableOpacity>
-        ))}
-      </ScrollView>
       <Text style={styles.header}>Room: {roomName}</Text>
       <ScrollView style={styles.messages} contentContainerStyle={styles.messagesContent}>
         <Text style={styles.message}>User1: Message placeholder</Text>
@@ -47,31 +24,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#0b1220",
-  },
-  roomCarousel: {
-    paddingHorizontal: 12,
-    paddingTop: 12,
-    paddingBottom: 4,
-    gap: 8,
-  },
-  roomButton: {
-    paddingVertical: 8,
-    paddingHorizontal: 14,
-    borderRadius: 20,
-    backgroundColor: "#111827",
-    borderWidth: 1,
-    borderColor: "#1f2937",
-  },
-  roomButtonActive: {
-    backgroundColor: "#f59e0b33",
-    borderColor: "#f59e0b",
-  },
-  roomButtonText: {
-    color: "#e5e7eb",
-    fontWeight: "600",
-  },
-  roomButtonTextActive: {
-    color: "#f59e0b",
   },
   header: {
     padding: 16,
