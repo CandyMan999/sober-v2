@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
 import {
   View,
   Text,
@@ -12,8 +12,10 @@ import {
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import * as Notifications from "expo-notifications";
+import * as Location from "expo-location";
 import * as Device from "expo-device";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import Context from "../context";
 
 import { useClient } from "../client";
 import { UPDATE_USER_PROFILE_MUTATION } from "../GraphQL/mutations";
@@ -28,12 +30,13 @@ const PUSH_TOKEN_KEY = "expoPushToken";
 
 const UsernameScreen = ({ navigation }) => {
   const client = useClient();
+  const { dispatch } = useContext(Context);
 
   // 1 = notifications, 2 = username
   const [step, setStep] = useState(1);
 
   const [notifLoading, setNotifLoading] = useState(false);
-  const [notifStatus, setNotifStatus] = useState(null); // "granted" | "denied" | null
+  const [notifStatus, setNotifStatus] = useState(null);
   const [pushToken, setPushToken] = useState(null);
 
   const [username, setUsername] = useState("");
@@ -42,31 +45,50 @@ const UsernameScreen = ({ navigation }) => {
 
   const [initializing, setInitializing] = useState(true);
 
+  // 🚦 guard so we only navigate once
+  const hasRoutedRef = useRef(false);
+
+  const safeNavigateReset = (config) => {
+    if (hasRoutedRef.current) return;
+    hasRoutedRef.current = true;
+    navigation.reset(config);
+  };
+
   // ------- helper: fetch "me" with a known token -------
   const fetchMeWithToken = async (token) => {
     if (!token) return;
 
     try {
       const data = await client.request(FETCH_ME_QUERY, { token });
-
-      // depending on your schema this might be `me` or `fetchMe`
       const me = data?.fetchMe;
 
+      // if we have a full user with username already
       if (me?.username && me.username.trim().length >= MIN_LEN) {
-        console.log(
-          "🙌 User already has username, skipping UsernameScreen:",
-          me
-        );
+        dispatch({ type: "SET_USER", payload: me });
 
-        navigation.reset({
+        const backgroundStatus = await Location.getBackgroundPermissionsAsync();
+
+        // ✅ ALL GOOD → straight to main tabs
+        if (backgroundStatus.status === "granted") {
+          safeNavigateReset({
+            index: 0,
+            routes: [{ name: "MainTabs" }],
+          });
+          return; // ⬅ important
+        }
+
+        // Background not granted → send them to the right “next” step
+        const nextRouteName = me.sobrietyStartAt
+          ? "LocationPermission"
+          : me.profilePic
+          ? "AddSobrietyDate"
+          : "AddPhoto";
+
+        safeNavigateReset({
           index: 0,
           routes: [
             {
-              name: me.sobrietyStartAt
-                ? "LocationPermission"
-                : me.profilePic
-                ? "AddSobrietyDate"
-                : "AddPhoto",
+              name: nextRouteName,
               params: {
                 username: me.username || username,
                 photoURI: me.profilePicUrl || null,
@@ -75,22 +97,19 @@ const UsernameScreen = ({ navigation }) => {
             },
           ],
         });
-        return;
+        return; // ⬅ important
       }
 
+      // User exists but no username finalized yet → stay on this screen, step 2
       if (me?.username) {
         setUsername(me.username);
       }
-
-      // if we got here, user still needs to pick/confirm username
       setStep(2);
     } catch (err) {
       console.log("Error fetching me with token:", err);
-      // if something goes wrong, just start at step 1 (notifications)
 
+      // On error just decide step based on notification permission
       let { status } = await Notifications.getPermissionsAsync();
-      console.log("Notifications status:", status);
-
       if (status === "granted") {
         setStep(2);
       } else {
@@ -101,13 +120,16 @@ const UsernameScreen = ({ navigation }) => {
 
   // ------- init flow: restore token or get it, THEN fetch me -------
   useEffect(() => {
+    let cancelled = false;
+
     const init = async () => {
       try {
         // 1) Try to restore token from storage
         const storedToken = await AsyncStorage.getItem(PUSH_TOKEN_KEY);
 
+        if (cancelled) return;
+
         if (storedToken) {
-          console.log("🔁 Restored push token from storage:", storedToken);
           setPushToken(storedToken);
           await fetchMeWithToken(storedToken);
           return;
@@ -121,6 +143,8 @@ const UsernameScreen = ({ navigation }) => {
             const tokenResult = await Notifications.getExpoPushTokenAsync();
             const token = tokenResult.data;
             console.log("📲 Got push token on init:", token);
+
+            if (cancelled) return;
 
             setPushToken(token);
             await AsyncStorage.setItem(PUSH_TOKEN_KEY, token);
@@ -138,11 +162,15 @@ const UsernameScreen = ({ navigation }) => {
         console.log("Error initializing UsernameScreen:", err);
         setStep(1);
       } finally {
-        setInitializing(false);
+        if (!cancelled) setInitializing(false);
       }
     };
 
     init();
+
+    return () => {
+      cancelled = true;
+    };
   }, [client, navigation]);
 
   // ------- notifications step: user taps "Enable" -------
@@ -188,7 +216,6 @@ const UsernameScreen = ({ navigation }) => {
       await AsyncStorage.setItem(PUSH_TOKEN_KEY, token);
 
       setNotifStatus("granted");
-      // Now that we *have* a token, we can see if user already exists / has username
       await fetchMeWithToken(token);
     } catch (error) {
       console.log("Error enabling notifications:", error);
@@ -204,8 +231,6 @@ const UsernameScreen = ({ navigation }) => {
 
   const handleSkipNotifications = () => {
     setNotifStatus("denied");
-    // NOTE: without a token, backend identity gets tricky.
-    // For now we still move to username step, but pushToken will be null.
     setStep(2);
   };
 
@@ -213,7 +238,6 @@ const UsernameScreen = ({ navigation }) => {
     if (!isValid || saving) return;
 
     if (!pushToken) {
-      // You can decide how strict to be here
       Alert.alert(
         "Missing device ID",
         "We couldn't get your device token yet. Please enable notifications or restart the app."
@@ -371,8 +395,8 @@ const UsernameScreen = ({ navigation }) => {
     </View>
   );
 
-  // While fetching me + checking notifications, show a loading state
-  if (initializing) {
+  // 🔄 While initializing / routing, don't flash steps UI
+  if (initializing || hasRoutedRef.current) {
     return (
       <LinearGradient
         colors={["#020617", "#020617", "#111827"]}

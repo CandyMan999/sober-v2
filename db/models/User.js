@@ -43,11 +43,18 @@ const UserSchema = new mongoose.Schema(
       x: { type: String, trim: true }, // twitter/“X”
     },
 
-    // Optional relapse history – so you can show "previous streaks" later.
-    relapses: [
+    //  relapse history – so you can show "previous streaks"
+    streaks: [
       {
-        at: { type: Date, required: true },
-        note: { type: String, trim: true },
+        startAt: {
+          type: Date,
+          required: true,
+        },
+        // When this streak ended (relapse/reset)
+        endAt: {
+          type: Date,
+          required: true,
+        },
       },
     ],
 
@@ -59,7 +66,7 @@ const UserSchema = new mongoose.Schema(
     ],
 
     // Can user receive milestone notifications?
-    milestoneNotificationsEnabled: {
+    notificationsEnabled: {
       type: Boolean,
       default: true,
     },

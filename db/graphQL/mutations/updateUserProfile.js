@@ -1,6 +1,6 @@
 const { AuthenticationError } = require("apollo-server-express");
 
-const { User } = require("../../db/models");
+const { User } = require("../../models");
 
 module.exports = {
   updateUserProfileResolver: async (

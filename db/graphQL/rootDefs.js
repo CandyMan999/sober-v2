@@ -1,6 +1,9 @@
 const { gql } = require("apollo-server-express");
 
-const rootDefs = gql`
+const typeDefs = gql`
+  """
+  User account and sobriety tracking
+  """
   type User {
     id: ID!
     token: String!
@@ -8,18 +11,17 @@ const rootDefs = gql`
     profilePic: Picture
     profilePicUrl: String
     sobrietyStartAt: String
-    social: Social
-    relapses: [Relapse!]
+    streaks: [SobrietyStreak!]
     milestonesNotified: [Int!]
-    milestoneNotificationsEnabled: Boolean
+    notificationsEnabled: Boolean
     timezone: String
     createdAt: String
     updatedAt: String
   }
 
-  type Relapse {
-    at: String!
-    note: String
+  type SobrietyStreak {
+    startAt: String!
+    endAt: String!
   }
 
   type Social {
@@ -39,6 +41,18 @@ const rootDefs = gql`
     updatedAt: String
   }
 
+  type Video {
+    id: ID!
+    url: String!
+    sender: User
+    receiver: User
+    flagged: Boolean
+    viewed: Boolean
+    comment: Comment
+    publicId: String
+    createdAt: String
+  }
+
   type Room {
     id: ID!
     name: String
@@ -56,6 +70,11 @@ const rootDefs = gql`
     replyTo: Comment
   }
 
+  enum Place {
+    Bar
+    Liquor
+  }
+
   type Venue {
     id: ID!
     type: String!
@@ -70,6 +89,13 @@ const rootDefs = gql`
     lat: Float
     long: Float
   }
+
+  type Bar {
+    name: String
+    lat: Float
+    long: Float
+  }
+
   type City {
     name: String
     bar: [Venue]
@@ -78,34 +104,30 @@ const rootDefs = gql`
     long: Float
   }
 
-  type Bar {
-    name: String
-    lat: Float
-    long: Float
-  }
-
-  type Video {
-    id: ID!
-    url: String!
-    sender: User
-    receiver: User
-    flagged: Boolean
-    viewed: Boolean
-    comment: Comment
-    publicId: String
-    createdAt: String
-  }
-
-  type Query {
-    me(token: String!): User
-    rooms: [Room!]
-    room(id: ID!): Room
-    users: [User!]
+  type Token {
+    token: String
   }
 
   type DirectUploadImage {
     uploadURL: String!
     id: String!
+  }
+
+  type Query {
+    me(token: String!): User
+    fetchMe(token: String!): User!
+    users: [User!]
+    rooms: [Room!]
+    room(id: ID!): Room
+    runPush(token: String!): Token
+    getLiquorLocation(
+      lat: Float!
+      long: Float!
+      token: String
+      store: String
+    ): [Liquor]
+    getBarLocation(lat: Float!, long: Float!, token: String, bar: String): [Bar]
+    getVenues: [Venue]
   }
 
   type Mutation {
@@ -116,8 +138,10 @@ const rootDefs = gql`
       sobrietyStartAt: String
       timezone: String
     ): User!
+    resetSobrietyDate(token: String!, newStartAt: String!): User!
     directUpload: DirectUploadImage!
-    addRelapse(token: String!, note: String): User!
+    addPicture(token: String!, url: String!, publicId: String): Picture!
+    deletePhoto(token: String!, photoId: ID!): User!
     createRoom(name: String!): Room!
     sendComment(
       roomId: ID!
@@ -125,13 +149,8 @@ const rootDefs = gql`
       token: String!
       replyTo: ID
     ): Comment!
-    addPicture(token: String!, url: String!, publicId: String): Picture!
-    deletePhoto(token: String!, photoId: ID!): User!
-  }
-
-  type Query {
-    fetchMe(token: String!): User!
+    addVenue(name: String!, type: Place!, lat: Float!, long: Float!): Venue
   }
 `;
 
-module.exports = rootDefs;
+module.exports = typeDefs;

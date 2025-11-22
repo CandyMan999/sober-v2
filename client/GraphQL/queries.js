@@ -8,15 +8,10 @@ export const FETCH_ME_QUERY = `
       sobrietyStartAt
       timezone
       milestonesNotified
-      milestoneNotificationsEnabled
-      social {
-        instagram
-        tiktok
-        x
-      }
-      relapses {
-        at
-        note
+      notificationsEnabled
+      streaks{
+       startAt
+        endAt
       }
       profilePic {
         id

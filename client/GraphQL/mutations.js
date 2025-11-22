@@ -1,5 +1,7 @@
 // GraphQL/mutations.js
-export const UPDATE_USER_PROFILE_MUTATION = `
+import { gql } from "graphql-request";
+
+export const UPDATE_USER_PROFILE_MUTATION = gql`
   mutation UpdateUserProfile(
     $token: String!
     $username: String
@@ -19,11 +21,31 @@ export const UPDATE_USER_PROFILE_MUTATION = `
       username
       profilePicUrl
       sobrietyStartAt
+      timezone
     }
   }
 `;
 
-export const DIRECT_UPLOAD_MUTATION = `
+export const RESET_SOBRIETY_MUTATION = gql`
+  mutation ResetSobrietyDate($token: String!, $newStartAt: String!) {
+    resetSobrietyDate(token: $token, newStartAt: $newStartAt) {
+      id
+      sobrietyStartAt
+      streaks {
+        startAt
+        endAt
+      }
+      token
+      username
+      profilePicUrl
+      sobrietyStartAt
+      timezone
+      milestonesNotified
+    }
+  }
+`;
+
+export const DIRECT_UPLOAD_MUTATION = gql`
   mutation DirectUpload {
     directUpload {
       uploadURL
@@ -32,7 +54,7 @@ export const DIRECT_UPLOAD_MUTATION = `
   }
 `;
 
-export const ADD_PICTURE_MUTATION = `
+export const ADD_PICTURE_MUTATION = gql`
   mutation AddPicture($token: String!, $url: String!, $publicId: String) {
     addPicture(token: $token, url: $url, publicId: $publicId) {
       id
@@ -46,7 +68,7 @@ export const ADD_PICTURE_MUTATION = `
   }
 `;
 
-export const DELETE_PHOTO_MUTATION = `
+export const DELETE_PHOTO_MUTATION = gql`
   mutation DeletePhoto($token: String!, $photoId: ID!) {
     deletePhoto(token: $token, photoId: $photoId) {
       id

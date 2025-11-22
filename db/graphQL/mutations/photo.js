@@ -1,6 +1,6 @@
 const { AuthenticationError } = require("apollo-server-express");
 
-const { User, Room, Comment, Picture, City } = require("../../db/models");
+const { User, Room, Comment, Picture, City } = require("../../models");
 const axios = require("axios");
 require("dotenv").config();
 
@@ -99,13 +99,18 @@ module.exports = {
       if (publicId) {
         try {
           if (!CF_ACCOUNT_ID || !CF_API_TOKEN) {
-            console.warn("Missing Cloudflare credentials, skipping remote delete");
+            console.warn(
+              "Missing Cloudflare credentials, skipping remote delete"
+            );
           } else {
             await axios.delete(
               `https://api.cloudflare.com/client/v4/accounts/${CF_ACCOUNT_ID}/images/v1/${publicId}`,
               { headers: { Authorization: `Bearer ${CF_API_TOKEN}` } }
             );
-            console.log("Successfully deleted image from Cloudflare:", publicId);
+            console.log(
+              "Successfully deleted image from Cloudflare:",
+              publicId
+            );
           }
         } catch (extErr) {
           // Log and continue; we still remove the DB reference
@@ -119,24 +124,19 @@ module.exports = {
       // Remove picture from DB
       await Picture.deleteOne({ _id: photoId });
 
-       // Pull reference from user and return updated user (same as before)
-   
+      // Pull reference from user and return updated user (same as before)
 
       // Pull reference from user and return updated user
       const updatedUser = await User.findByIdAndUpdate(
         { _id: user._id },
-        {profilePicUrl: null},
+        { profilePicUrl: null },
         { $pull: { profilePic: photoId } },
         { new: true }
-      )
-        .populate("profilePic")
-      
+      ).populate("profilePic");
 
       return updatedUser;
     } catch (err) {
-
       throw new AuthenticationError(err.message);
     }
   },
 };
-

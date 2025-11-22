@@ -1,7 +1,15 @@
 import React from "react";
-import { Text } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
+import {
+  Feather,
+  AntDesign,
+  MaterialCommunityIcons,
+  FontAwesome5,
+} from "@expo/vector-icons";
+import { LinearGradient } from "expo-linear-gradient";
+import { useNavigationState } from "@react-navigation/native";
 
 import HomeTabs from "./HomeTabs";
 import ChatTabs from "./ChatTabs";
@@ -12,6 +20,9 @@ import ProfileScreen from "../screens/Profile/ProfileScreen";
 const Tab = createBottomTabNavigator();
 const HomeStack = createStackNavigator();
 const ChatStack = createStackNavigator();
+
+const ACTIVE_COLOR = "#F59E0B";
+const INACTIVE_COLOR = "#6b7280";
 
 const HomeStackScreen = () => (
   <HomeStack.Navigator screenOptions={{ headerShown: false }}>
@@ -25,17 +36,50 @@ const ChatStackScreen = () => (
   </ChatStack.Navigator>
 );
 
+// Custom circular post button that flattens when Chat is active
+const CustomPostButton = ({ focused }) => {
+  const tabState = useNavigationState((state) => state);
+  const activeRouteName = tabState?.routes?.[tabState.index]?.name;
+  const chatActive = activeRouteName === "Chat";
+
+  const wrapperStyle = [
+    styles.postWrapper,
+    chatActive && styles.postWrapperFlat,
+  ];
+  const haloStyle = [styles.postHalo, chatActive && styles.postHaloFlat];
+  const centerStyle = [styles.postCenter, chatActive && styles.postCenterSmall];
+
+  return (
+    <View style={wrapperStyle}>
+      {!chatActive && <View style={haloStyle} />}
+      <LinearGradient
+        colors={focused ? ["#FBBF24", "#F59E0B"] : ["#F59E0B", "#FBBF24"]}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        style={centerStyle}
+      >
+        <AntDesign
+          name="plus"
+          size={chatActive ? 22 : focused ? 30 : 26}
+          color="#111827"
+        />
+      </LinearGradient>
+    </View>
+  );
+};
+
 const TabNavigator = () => {
   return (
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
         tabBarShowLabel: true,
-        tabBarActiveTintColor: "#ffffff",
-        tabBarInactiveTintColor: "#9ca3af",
+        tabBarActiveTintColor: ACTIVE_COLOR,
+        tabBarInactiveTintColor: INACTIVE_COLOR,
         tabBarStyle: {
           backgroundColor: "#050816",
           borderTopColor: "#1f2937",
+          height: 68,
         },
       }}
     >
@@ -44,44 +88,121 @@ const TabNavigator = () => {
         component={HomeStackScreen}
         options={{
           tabBarLabel: "Home",
-          tabBarIcon: () => <Text style={{ fontSize: 18 }}>🏠</Text>,
+          tabBarIcon: ({ focused, color }) => (
+            <Feather
+              name="home"
+              size={focused ? 30 : 24}
+              color={focused ? ACTIVE_COLOR : color}
+            />
+          ),
         }}
       />
+
       <Tab.Screen
-        name="Sober"
+        name="SoberTime"
         component={SoberTimeScreen}
         options={{
           tabBarLabel: "Sober",
-          tabBarIcon: () => <Text style={{ fontSize: 18 }}>🔥</Text>,
+          tabBarIcon: ({ focused, color }) => (
+            <MaterialCommunityIcons
+              name="progress-clock"
+              size={focused ? 30 : 24}
+              color={focused ? ACTIVE_COLOR : color}
+            />
+          ),
         }}
       />
+
       <Tab.Screen
         name="Post"
         component={PostCaptureScreen}
         options={{
-          tabBarLabel: "Post",
-          tabBarIcon: () => <Text style={{ fontSize: 18 }}>➕</Text>,
+          tabBarLabel: "",
+          tabBarIcon: ({ focused }) => <CustomPostButton focused={focused} />,
           tabBarStyle: { display: "none" },
         }}
       />
+
       <Tab.Screen
         name="Chat"
         component={ChatStackScreen}
         options={{
           tabBarLabel: "Chat",
-          tabBarIcon: () => <Text style={{ fontSize: 18 }}>💬</Text>,
+          tabBarIcon: ({ focused, color }) => (
+            <View style={{ width: 40, alignItems: "center" }}>
+              <FontAwesome5
+                name="comments"
+                size={focused ? 30 : 24}
+                color={focused ? ACTIVE_COLOR : color}
+              />
+            </View>
+          ),
         }}
       />
+
       <Tab.Screen
         name="Profile"
         component={ProfileScreen}
         options={{
           tabBarLabel: "Profile",
-          tabBarIcon: () => <Text style={{ fontSize: 18 }}>👤</Text>,
+          tabBarIcon: ({ focused, color }) => (
+            <Feather
+              name="user"
+              size={focused ? 30 : 24}
+              color={focused ? ACTIVE_COLOR : color}
+            />
+          ),
         }}
       />
     </Tab.Navigator>
   );
 };
+
+const styles = StyleSheet.create({
+  // default: big, lifted post button
+  postWrapper: {
+    width: 58,
+    height: 58,
+    justifyContent: "center",
+    alignItems: "center",
+    top: -15,
+  },
+  postHalo: {
+    position: "absolute",
+    width: 66,
+    height: 66,
+    borderRadius: 33,
+    borderWidth: 1,
+    borderColor: "rgba(245,158,11,0.5)",
+    shadowColor: "#F59E0B",
+    shadowOpacity: 0.7,
+    shadowRadius: 14,
+    shadowOffset: { width: 0, height: 5 },
+  },
+  postCenter: {
+    width: 58,
+    height: 58,
+    borderRadius: 29,
+    backgroundColor: "#fff",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  // when Chat is active: shrink + flatten
+  postWrapperFlat: {
+    top: 0,
+    width: 40,
+    height: 40,
+    marginTop: 18,
+  },
+  postHaloFlat: {
+    opacity: 0,
+  },
+  postCenterSmall: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+  },
+});
 
 export default TabNavigator;

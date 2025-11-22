@@ -1,11 +1,12 @@
 const { AuthenticationError } = require("apollo-server-express");
 
-const { User, Picture } = require("../../db/models");
+const { User, Picture } = require("../../models");
 
 require("dotenv").config();
 
 module.exports = {
   fetchMeResolver: async (root, args, ctx) => {
+    console.log("context: ", ctx);
     const { token } = args;
 
     try {

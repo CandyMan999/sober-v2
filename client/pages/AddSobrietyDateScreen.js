@@ -1,5 +1,5 @@
 // pages/AddSobrietyDateScreen.js
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   View,
   Text,
@@ -12,7 +12,8 @@ import {
 import { LinearGradient } from "expo-linear-gradient";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { useClient } from "../client";
-import { UPDATE_USER_PROFILE_MUTATION } from "../GraphQL/mutations";
+import { RESET_SOBRIETY_MUTATION } from "../GraphQL/mutations";
+import Context from "../context";
 
 const PRIMARY_BG = "#050816";
 const CARD_BG = "rgba(15,23,42,0.96)";
@@ -21,6 +22,7 @@ const ACCENT_SOFT = "#FBBF24";
 
 const AddSobrietyDateScreen = ({ navigation, route }) => {
   const client = useClient();
+  const { dispatch } = useContext(Context);
   const username = route?.params?.username || "you";
   const token = route?.params?.pushToken || null;
   // Default to today's date, but user will pick their sobriety start date
@@ -86,17 +88,19 @@ const AddSobrietyDateScreen = ({ navigation, route }) => {
       console.log(
         "➡️ Calling UPDATE_USER_PROFILE_MUTATION with sobrietyStartAt..."
       );
-      const { updateUserProfile } = await client.request(
-        UPDATE_USER_PROFILE_MUTATION,
+      const { resetSobrietyDate } = await client.request(
+        RESET_SOBRIETY_MUTATION,
         {
           token,
-          sobrietyStartAt: sobrietyStartAtISO,
+          newStartAt: sobrietyStartAtISO,
         }
       );
       console.log(
         "✅ User profile updated with sobriety date: ",
-        updateUserProfile
+        resetSobrietyDate
       );
+
+      await dispatch({ type: "SET_USER", payload: resetSobrietyDate });
 
       // Navigate to Location Permission screen
       navigation.navigate("LocationPermission");
