@@ -1,3 +1,4 @@
+// schema/typeDefs.js
 const { gql } = require("apollo-server-express");
 
 const typeDefs = gql`
@@ -17,6 +18,51 @@ const typeDefs = gql`
     timezone: String
     createdAt: String
     updatedAt: String
+  }
+
+  type Quote {
+    id: ID!
+    text: String!
+    isApproved: Boolean
+    user: User
+    isUsed: Boolean
+    likesCount: Int!
+    commentsCount: Int!
+    likes: [Like!]!
+    comments: [Comment!]!
+  }
+
+  enum CommentTarget {
+    ROOM
+    QUOTE
+    POST
+  }
+
+  enum LikeTarget {
+    QUOTE
+    POST
+  }
+
+  type Post {
+    id: ID!
+    author: User!
+    text: String
+    video: Video
+    flagged: Boolean!
+    likesCount: Int!
+    commentsCount: Int!
+    likes: [Like!]!
+    comments: [Comment!]!
+    createdAt: String
+    updatedAt: String
+  }
+
+  type Like {
+    id: ID!
+    user: User!
+    targetType: LikeTarget!
+    targetId: ID!
+    createdAt: String
   }
 
   type SobrietyStreak {
@@ -48,7 +94,6 @@ const typeDefs = gql`
     receiver: User
     flagged: Boolean
     viewed: Boolean
-    comment: Comment
     publicId: String
     createdAt: String
   }
@@ -65,9 +110,14 @@ const typeDefs = gql`
     id: ID!
     text: String!
     createdAt: String
-    author: User
-    room: Room
+    author: User!
     replyTo: Comment
+    replies: [Comment!]
+    targetType: CommentTarget!
+    targetId: ID!
+    room: Room
+    quote: Quote
+    post: Post
   }
 
   enum Place {
@@ -128,6 +178,7 @@ const typeDefs = gql`
     ): [Liquor]
     getBarLocation(lat: Float!, long: Float!, token: String, bar: String): [Bar]
     getVenues: [Venue]
+    getQuotes: [Quote!]!
   }
 
   type Mutation {
@@ -150,6 +201,7 @@ const typeDefs = gql`
       replyTo: ID
     ): Comment!
     addVenue(name: String!, type: Place!, lat: Float!, long: Float!): Venue
+    addQuote(text: String!): Quote
   }
 `;
 

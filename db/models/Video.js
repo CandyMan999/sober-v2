@@ -1,17 +1,15 @@
+// models/Video.js
 const mongoose = require("mongoose");
 
 const VideoSchema = new mongoose.Schema({
   url: { type: String },
-  sender: { type: mongoose.Schema.ObjectId, ref: "User" },
+  sender: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   flagged: { type: Boolean, default: false },
   viewed: { type: Boolean, default: false },
-  receiver: { type: mongoose.Schema.ObjectId, ref: "User" },
-  comment: { type: mongoose.Schema.ObjectId, ref: "Comment" },
+  receiver: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   publicId: { type: String },
   createdAt: {
     type: Date,
-
-    // expires: 14800,
     default: Date.now,
   },
 });

@@ -1,4 +1,4 @@
-const { fetchMeResolver } = require("./fetch");
+const { fetchMeResolver, getQuotesResolver } = require("./fetch");
 const {
   getBarLocationResolver,
   getLiquorLocationResolver,
@@ -14,4 +14,5 @@ module.exports = {
   getVenuesResolver,
   addVenueResolver,
   runPushResolver,
+  getQuotesResolver,
 };

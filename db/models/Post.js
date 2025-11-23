@@ -1,27 +1,29 @@
-// models/Quote.js
+// models/Post.js
 const mongoose = require("mongoose");
 
-const QuoteSchema = new mongoose.Schema(
+const PostSchema = new mongoose.Schema(
   {
-    text: {
-      type: String,
+    author: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
       required: true,
     },
 
-    isApproved: {
-      type: Boolean,
-      default: false,
+    text: {
+      type: String,
+      default: "",
     },
 
-    isUsed: {
-      type: Boolean,
-      default: false,
-    },
-
-    // Who posted it (optional — system quotes won't have a user)
-    user: {
+    // Reference to existing Video model
+    video: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      ref: "Video",
+      default: null,
+    },
+
+    flagged: {
+      type: Boolean,
+      default: false,
     },
 
     // Comments (referenced)
@@ -36,7 +38,7 @@ const QuoteSchema = new mongoose.Schema(
       default: 0,
     },
 
-    // Like count only – real likes live in Like collection
+    // Like count only – actual Like docs live in Like collection
     likesCount: {
       type: Number,
       default: 0,
@@ -47,4 +49,4 @@ const QuoteSchema = new mongoose.Schema(
   }
 );
 
-module.exports = mongoose.model("Quote", QuoteSchema);
+module.exports = mongoose.model("Post", PostSchema);

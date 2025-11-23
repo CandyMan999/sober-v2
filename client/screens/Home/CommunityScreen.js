@@ -1,14 +1,14 @@
 import React from "react";
 import { Text } from "react-native";
-import FeedPlaceholder from "../../components/FeedPlaceholder";
+import { FeedLayout } from "../../components";
 
 const CommunityScreen = () => {
   return (
-    <FeedPlaceholder caption="Caption placeholder...">
+    <FeedLayout caption="Caption placeholder...">
       <Text style={{ color: "#fff", fontSize: 18 }}>
         Community Feed Placeholder
       </Text>
-    </FeedPlaceholder>
+    </FeedLayout>
   );
 };
 

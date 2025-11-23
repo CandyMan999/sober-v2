@@ -1,3 +1,4 @@
+// models/Comment.js
 const mongoose = require("mongoose");
 
 const CommentSchema = new mongoose.Schema(
@@ -8,22 +9,39 @@ const CommentSchema = new mongoose.Schema(
       trim: true,
     },
 
+    // Who wrote the comment
     author: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
+      required: true,
     },
 
-    room: {
+    // What content this comment belongs to
+    targetType: {
+      type: String,
+      enum: ["ROOM", "POST", "QUOTE"],
+      required: true,
+    },
+
+    targetId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Room",
+      required: true,
     },
 
-    // If this is a reply, points to another Comment
+    // Threading: if this is a reply, points to another Comment
     replyTo: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Comment",
       default: null,
     },
+
+    // Optional: store children comment ids for fast population
+    replies: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Comment",
+      },
+    ],
   },
   {
     timestamps: true, // createdAt + updatedAt
