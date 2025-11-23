@@ -82,3 +82,23 @@ export const DELETE_PHOTO_MUTATION = gql`
     }
   }
 `;
+
+export const ADD_QUOTE_MUTATION = gql`
+  mutation AddQuote($text: String!) {
+    addQuote(text: $text) {
+      id
+      text
+      isApproved
+      isUsed
+      likesCount
+      commentsCount
+      user {
+        id
+        username
+        profilePicUrl
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;

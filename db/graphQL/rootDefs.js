@@ -30,6 +30,8 @@ const typeDefs = gql`
     commentsCount: Int!
     likes: [Like!]!
     comments: [Comment!]!
+    createdAt: String
+    updatedAt: String
   }
 
   enum CommentTarget {

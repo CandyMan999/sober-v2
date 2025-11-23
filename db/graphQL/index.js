@@ -6,6 +6,7 @@ const {
   deletePhotoResolver,
   updateUserProfileResolver,
   resetSobrietyDateResolver,
+  addQuoteResolver,
 } = require("./mutations/index.js");
 
 const {
@@ -57,6 +58,7 @@ const resolvers = {
     updateUserProfile: updateUserProfileResolver,
     addVenue: addVenueResolver,
     resetSobrietyDate: resetSobrietyDateResolver,
+    addQuote: addQuoteResolver,
   },
 
   // ---- Type-level resolvers ----

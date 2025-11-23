@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
+import { TouchableOpacity, View, StyleSheet } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
 import {
@@ -9,13 +9,14 @@ import {
   FontAwesome5,
 } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
-import { useNavigationState } from "@react-navigation/native";
+import { useNavigation, useNavigationState } from "@react-navigation/native";
 
 import HomeTabs from "./HomeTabs";
 import ChatTabs from "./ChatTabs";
 import SoberTimeScreen from "../screens/Sober/SoberTimeScreen";
 import PostCaptureScreen from "../screens/Post/PostCaptureScreen";
 import ProfileScreen from "../screens/Profile/ProfileScreen";
+import AddQuoteScreen from "../screens/Home/AddQuoteScreen";
 
 const Tab = createBottomTabNavigator();
 const HomeStack = createStackNavigator();
@@ -35,6 +36,13 @@ const ChatStackScreen = () => (
     <ChatStack.Screen name="ChatRooms" component={ChatTabs} />
   </ChatStack.Navigator>
 );
+
+const getDeepActiveRoute = (state) => {
+  if (!state || !state.routes || state.index == null) return null;
+
+  const route = state.routes[state.index];
+  return route.state ? getDeepActiveRoute(route.state) : route;
+};
 
 // Custom circular post button that flattens when Chat is active
 const CustomPostButton = ({ focused }) => {
@@ -65,6 +73,32 @@ const CustomPostButton = ({ focused }) => {
         />
       </LinearGradient>
     </View>
+  );
+};
+
+const PlusTabButton = (props) => {
+  const navigation = useNavigation();
+  const tabState = useNavigationState((state) => state);
+  const activeLeafRoute = getDeepActiveRoute(tabState);
+  const isQuotesActive = activeLeafRoute?.name === "Quotes";
+
+  const handlePress = () => {
+    if (isQuotesActive) {
+      navigation.navigate("AddQuote");
+    } else {
+      navigation.navigate("Post");
+    }
+  };
+
+  return (
+    <TouchableOpacity
+      {...props}
+      activeOpacity={0.85}
+      onPress={handlePress}
+      style={{ top: -10 }}
+    >
+      <CustomPostButton focused={props?.accessibilityState?.selected} />
+    </TouchableOpacity>
   );
 };
 
@@ -118,7 +152,17 @@ const TabNavigator = () => {
         component={PostCaptureScreen}
         options={{
           tabBarLabel: "",
-          tabBarIcon: ({ focused }) => <CustomPostButton focused={focused} />,
+          tabBarButton: (props) => <PlusTabButton {...props} />,
+          tabBarStyle: { display: "none" },
+        }}
+      />
+
+      <Tab.Screen
+        name="AddQuote"
+        component={AddQuoteScreen}
+        options={{
+          tabBarItemStyle: { display: "none" },
+          tabBarButton: () => null,
           tabBarStyle: { display: "none" },
         }}
       />

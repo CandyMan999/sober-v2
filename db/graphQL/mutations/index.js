@@ -5,6 +5,7 @@ const {
 } = require("./photo");
 const { updateUserProfileResolver } = require("./updateUserProfile");
 const { resetSobrietyDateResolver } = require("./resetSobrietyDate");
+const { addQuoteResolver } = require("./quote");
 
 module.exports = {
   directUploadResolver,
@@ -12,4 +13,5 @@ module.exports = {
   deletePhotoResolver,
   updateUserProfileResolver,
   resetSobrietyDateResolver,
+  addQuoteResolver,
 };
