@@ -1,26 +1,37 @@
-import React, { useMemo, useState } from "react";
+// screens/Sober/AddQuoteScreen.js
+import React, { useMemo, useState, useContext } from "react";
 import {
   ActivityIndicator,
+  Alert,
   KeyboardAvoidingView,
   Platform,
-  ScrollView,
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   View,
+  ToastAndroid,
+  Image,
+  ScrollView,
+  Keyboard,
 } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
-import { Feather, MaterialCommunityIcons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { Feather, MaterialCommunityIcons } from "@expo/vector-icons";
 
 import { useClient } from "../../client";
 import { ADD_QUOTE_MUTATION } from "../../GraphQL/mutations";
+import Context from "../../context";
+
+const ACCENT = "#F59E0B";
 
 const AddQuoteScreen = ({ navigation }) => {
   const client = useClient();
+  const { state } = useContext(Context);
+  const user = state?.user;
+
+  console.log("user: ", user);
+
   const [text, setText] = useState("");
-  const [status, setStatus] = useState(null);
   const [submitting, setSubmitting] = useState(false);
 
   const trimmed = text.trim();
@@ -31,294 +42,383 @@ const AddQuoteScreen = ({ navigation }) => {
     if (trimmed.length > 80) return "Powerful. You're in storyteller mode.";
     if (trimmed.length > 30) return "Love this energy — keep flowing.";
     if (trimmed.length > 0) return "Short and sweet. Add a little more magic.";
-    return "Drop a line that would stop someone mid-scroll.";
+    return "Write something future-you would have needed to hear.";
   }, [trimmed]);
+
+  const previewText =
+    trimmed || "“The comeback is always louder than the setback.”";
+
+  const handleToast = (msg) => {
+    if (Platform.OS === "android") {
+      ToastAndroid.show(msg, ToastAndroid.SHORT);
+    } else {
+      Alert.alert("Quote submitted", msg);
+    }
+  };
 
   const handleSubmit = async () => {
     if (!ready || submitting) return;
     try {
       setSubmitting(true);
-      setStatus(null);
+      Keyboard.dismiss(); // close keyboard on send
       await client.request(ADD_QUOTE_MUTATION, { text: trimmed });
-      setStatus("success");
+
+      handleToast(
+        "Sent for review. If approved, it can be pushed out to everyone."
+      );
       setText("");
+      navigation.goBack();
     } catch (err) {
       console.error("Error adding quote", err);
-      setStatus("error");
+      Alert.alert(
+        "Couldn’t send your quote",
+        "Please check your connection and try again."
+      );
     } finally {
       setSubmitting(false);
     }
   };
 
+  const avatarUrl = user?.profilePicUrl || null;
+  const username =
+    user?.username && user.username.trim().length > 0
+      ? `@${user.username}`
+      : "@you";
+
+  const firstInitial = user?.username?.[0]?.toUpperCase() || "U";
+
   return (
-    <LinearGradient colors={["#060914", "#0b1220", "#050816"]} style={styles.bg}>
-      <SafeAreaView style={{ flex: 1 }}>
-        <KeyboardAvoidingView
-          style={{ flex: 1 }}
-          behavior={Platform.OS === "ios" ? "padding" : undefined}
+    <SafeAreaView style={styles.safe}>
+      <KeyboardAvoidingView
+        style={styles.safe}
+        behavior={Platform.OS === "ios" ? "padding" : undefined}
+      >
+        <ScrollView
+          style={styles.container}
+          contentContainerStyle={styles.scrollContent}
+          keyboardShouldPersistTaps="handled"
+          keyboardDismissMode={
+            Platform.OS === "ios" ? "interactive" : "on-drag"
+          }
         >
-          <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
-            <View style={styles.header}>
-              <TouchableOpacity
-                style={styles.iconButton}
-                onPress={() => navigation.goBack()}
-              >
-                <Feather name="x" size={22} color="#e5e7eb" />
-              </TouchableOpacity>
-              <View style={{ flex: 1, alignItems: "center" }}>
-                <Text style={styles.title}>Share a spark</Text>
-                <Text style={styles.subtitle}>Write the quote that you wish existed.</Text>
+          {/* Header */}
+          <View style={styles.header}>
+            <View style={styles.headerLeft}>
+              <MaterialCommunityIcons
+                name="format-quote-close"
+                size={20}
+                color="#4b5563"
+              />
+              <Text style={styles.headerTitle}>New quote</Text>
+            </View>
+
+            <TouchableOpacity
+              style={styles.closeButton}
+              onPress={() => navigation.goBack()}
+              activeOpacity={0.8}
+            >
+              <Feather name="x" size={20} color="#4b5563" />
+            </TouchableOpacity>
+          </View>
+
+          {/* Subheading */}
+          <Text style={styles.subheading}>
+            Your words might hit someone right when they need it most.
+          </Text>
+
+          {/* Preview card */}
+          <View style={styles.previewCard}>
+            <View style={styles.previewTopRow}>
+              <View style={styles.previewAvatarRow}>
+                <View style={styles.previewAvatarHalo}>
+                  <View style={styles.previewAvatarOuter}>
+                    {avatarUrl ? (
+                      <Image
+                        source={{ uri: avatarUrl }}
+                        style={styles.previewAvatarImage}
+                      />
+                    ) : (
+                      <Text style={styles.previewAvatarInitial}>
+                        {firstInitial}
+                      </Text>
+                    )}
+                  </View>
+                </View>
+
+                <View>
+                  <Text style={styles.previewHandle}>{username}</Text>
+                  <Text style={styles.previewMeta}>Sober Motivation</Text>
+                </View>
               </View>
-              <View style={{ width: 44 }} />
             </View>
 
-            <View style={styles.cardShadow}>
-              <LinearGradient
-                colors={["#0f172a", "#111827", "#0b1220"]}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 1 }}
-                style={styles.previewCard}
-              >
-                <View style={styles.cardHeader}>
-                  <View style={styles.pill}>
-                    <MaterialCommunityIcons name="lightning-bolt" size={16} color="#f59e0b" />
-                    <Text style={styles.pillText}>Quote Preview</Text>
-                  </View>
-                  <Text style={styles.handle}>@You</Text>
-                </View>
-                <Text style={styles.previewText} numberOfLines={5}>
-                  {trimmed || "“The comeback is always louder than the setback.”"}
-                </Text>
-                <View style={styles.metaRow}>
-                  <View style={styles.metaChip}>
-                    <Feather name="activity" size={14} color="#fbbf24" />
-                    <Text style={styles.metaText}>{vibeLine}</Text>
-                  </View>
-                </View>
-              </LinearGradient>
+            <Text style={styles.previewQuote}>{previewText}</Text>
+
+            <Text style={styles.previewHelper}>{vibeLine}</Text>
+          </View>
+
+          {/* Bottom composer (TikTok-style) */}
+          <View style={styles.composerContainer}>
+            {/* Avatar */}
+            <View style={styles.avatarHalo}>
+              <View style={styles.avatarCircle}>
+                {avatarUrl ? (
+                  <Image
+                    source={{ uri: avatarUrl }}
+                    style={styles.avatarImage}
+                  />
+                ) : (
+                  <Text style={styles.avatarInitial}>{firstInitial}</Text>
+                )}
+              </View>
             </View>
 
-            <View style={styles.inputShell}>
-              <Text style={styles.label}>Your quote</Text>
-              <View style={styles.inputWrapper}>
-                <TextInput
-                  value={text}
-                  onChangeText={setText}
-                  placeholder="Type something unforgettable..."
-                  placeholderTextColor="#6b7280"
-                  multiline
-                  textAlignVertical="top"
-                  style={styles.input}
-                  maxLength={240}
-                />
+            {/* Input bubble */}
+            <View style={styles.inputBubble}>
+              <TextInput
+                value={text}
+                onChangeText={setText}
+                placeholder="Write a quote that could stop someone mid-scroll..."
+                placeholderTextColor="#9ca3af"
+                multiline
+                maxLength={240}
+                style={styles.input}
+                textAlignVertical="top"
+                blurOnSubmit={true}
+                returnKeyType="done"
+                onSubmitEditing={Keyboard.dismiss}
+              />
+              <View style={styles.bubbleFooter}>
                 <Text style={styles.counter}>{`${trimmed.length}/240`}</Text>
               </View>
-              <Text style={styles.helper}>{vibeLine}</Text>
             </View>
 
-            <View style={styles.actions}>
-              <TouchableOpacity
-                style={[styles.cta, !ready && styles.ctaDisabled]}
-                activeOpacity={ready ? 0.9 : 1}
-                onPress={handleSubmit}
-                disabled={!ready || submitting}
-              >
-                <LinearGradient
-                  colors={ready ? ["#f59e0b", "#fbbf24"] : ["#1f2937", "#111827"]}
-                  start={{ x: 0, y: 0 }}
-                  end={{ x: 1, y: 1 }}
-                  style={styles.ctaInner}
-                >
-                  {submitting ? (
-                    <ActivityIndicator color="#0b1220" />
-                  ) : (
-                    <Text style={styles.ctaText}>Submit for review</Text>
-                  )}
-                </LinearGradient>
-              </TouchableOpacity>
-              {status === "success" && (
-                <Text style={styles.statusSuccess}>
-                  Sent for approval. We'll notify you when it's live.
-                </Text>
-              )}
-              {status === "error" && (
-                <Text style={styles.statusError}>
-                  Couldn't send your quote. Please try again.
-                </Text>
-              )}
-            </View>
-          </ScrollView>
-        </KeyboardAvoidingView>
-      </SafeAreaView>
-    </LinearGradient>
+            {/* Send button */}
+            <TouchableOpacity
+              style={[
+                styles.sendButtonWrapper,
+                (!ready || submitting) && styles.sendButtonDisabled,
+              ]}
+              activeOpacity={ready && !submitting ? 0.9 : 1}
+              onPress={handleSubmit}
+              disabled={!ready || submitting}
+            >
+              <View style={styles.sendButton}>
+                {submitting ? (
+                  <ActivityIndicator color="#111827" size="small" />
+                ) : (
+                  <Feather name="send" size={18} color="#111827" />
+                )}
+              </View>
+            </TouchableOpacity>
+          </View>
+
+          <Text style={styles.footerHint}>
+            Approved quotes may be featured in push notifications for the entire
+            community.
+          </Text>
+        </ScrollView>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  bg: {
+  safe: {
     flex: 1,
+    backgroundColor: "#f9fafb",
   },
-  scroll: {
-    padding: 20,
+  container: {
+    flex: 1,
+    backgroundColor: "#ffffff",
+  },
+  scrollContent: {
+    paddingHorizontal: 18,
+    paddingTop: 8,
+    flexGrow: 1,
   },
   header: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 18,
+    marginBottom: 6,
   },
-  iconButton: {
-    width: 44,
-    height: 44,
-    borderRadius: 14,
-    backgroundColor: "rgba(255,255,255,0.06)",
+  headerLeft: {
+    flexDirection: "row",
+    alignItems: "center",
+    flex: 1,
+  },
+  headerTitle: {
+    marginLeft: 8,
+    fontSize: 18,
+    fontWeight: "800",
+    color: "#111827",
+  },
+  closeButton: {
+    width: 34,
+    height: 34,
+    borderRadius: 999,
     alignItems: "center",
     justifyContent: "center",
-    borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.08)",
+    backgroundColor: "#e5e7eb",
   },
-  title: {
-    fontSize: 20,
-    color: "#f9fafb",
-    fontWeight: "800",
-    letterSpacing: 0.3,
-  },
-  subtitle: {
-    color: "#9ca3af",
-    marginTop: 4,
+  subheading: {
     fontSize: 13,
-  },
-  cardShadow: {
-    shadowColor: "#000",
-    shadowOpacity: 0.35,
-    shadowRadius: 16,
-    shadowOffset: { width: 0, height: 12 },
-    elevation: 10,
-    borderRadius: 18,
+    color: "#6b7280",
+    marginBottom: 14,
   },
   previewCard: {
-    padding: 18,
     borderRadius: 18,
+    backgroundColor: "#f3f4f6",
+    padding: 16,
+    marginBottom: 16,
     borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.08)",
-    backgroundColor: "rgba(255,255,255,0.04)",
+    borderColor: "#e5e7eb",
   },
-  cardHeader: {
+  previewTopRow: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: 12,
+    marginBottom: 10,
   },
-  pill: {
+  previewAvatarRow: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "rgba(245,158,11,0.12)",
-    paddingHorizontal: 10,
-    paddingVertical: 6,
+  },
+  previewAvatarHalo: {
+    width: 50,
+    height: 50,
     borderRadius: 999,
-    gap: 8,
-  },
-  pillText: {
-    color: "#fbbf24",
-    fontWeight: "700",
-    fontSize: 12,
-  },
-  handle: {
-    color: "#e5e7eb",
-    fontWeight: "700",
-  },
-  previewText: {
-    color: "#f9fafb",
-    fontSize: 22,
-    lineHeight: 30,
-    marginBottom: 16,
-    fontWeight: "700",
-  },
-  metaRow: {
-    flexDirection: "row",
-    gap: 10,
-  },
-  metaChip: {
-    flexDirection: "row",
+    backgroundColor: "rgba(245,158,11,0.18)",
     alignItems: "center",
-    gap: 8,
-    paddingHorizontal: 12,
-    paddingVertical: 10,
-    borderRadius: 14,
-    backgroundColor: "rgba(255,255,255,0.05)",
-    borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.06)",
+    justifyContent: "center",
+    marginRight: 10,
   },
-  metaText: {
-    color: "#d1d5db",
-    fontSize: 12,
-    flexShrink: 1,
-  },
-  inputShell: {
-    marginTop: 22,
-    gap: 8,
-  },
-  label: {
-    color: "#e5e7eb",
-    fontSize: 14,
-    fontWeight: "700",
-  },
-  inputWrapper: {
-    backgroundColor: "rgba(255,255,255,0.05)",
-    borderRadius: 16,
-    borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.08)",
-    padding: 14,
-    minHeight: 140,
-  },
-  input: {
-    color: "#f9fafb",
-    fontSize: 16,
-    lineHeight: 24,
-  },
-  counter: {
-    color: "#9ca3af",
-    textAlign: "right",
-    marginTop: 8,
-    fontSize: 12,
-  },
-  helper: {
-    color: "#a5b4fc",
-    fontSize: 12,
-    marginTop: 4,
-  },
-  actions: {
-    marginTop: 26,
-    gap: 10,
-  },
-  cta: {
-    borderRadius: 16,
+  previewAvatarOuter: {
+    width: 40,
+    height: 40,
+    borderRadius: 999,
+    backgroundColor: "#111827",
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 2,
+    borderColor: ACCENT,
     overflow: "hidden",
   },
-  ctaInner: {
-    paddingVertical: 16,
+  previewAvatarImage: {
+    width: "100%",
+    height: "100%",
+    resizeMode: "cover",
+  },
+  previewAvatarInitial: {
+    color: "#fbbf24",
+    fontSize: 18,
+    fontWeight: "800",
+  },
+  previewHandle: {
+    fontSize: 14,
+    fontWeight: "700",
+    color: "#111827",
+  },
+  previewMeta: {
+    fontSize: 12,
+    color: "#6b7280",
+  },
+  previewQuote: {
+    marginTop: 8,
+    fontSize: 20,
+    lineHeight: 28,
+    fontWeight: "700",
+    color: "#111827",
+  },
+  previewHelper: {
+    marginTop: 8,
+    fontSize: 12,
+    color: "#6b7280",
+  },
+  composerContainer: {
+    flexDirection: "row",
+    alignItems: "flex-end",
+    marginTop: "auto", // 👈 pins composer to bottom visually
+    paddingBottom: 12,
+  },
+  avatarHalo: {
+    width: 54,
+    height: 54,
+    borderRadius: 999,
+    backgroundColor: "rgba(245,158,11,0.16)",
+    alignItems: "center",
+    justifyContent: "center",
+    marginRight: 8,
+  },
+  avatarCircle: {
+    width: 44,
+    height: 44,
+    borderRadius: 999,
+    backgroundColor: "#111827",
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 2,
+    borderColor: ACCENT,
+    overflow: "hidden",
+  },
+  avatarImage: {
+    width: "100%",
+    height: "100%",
+    resizeMode: "cover",
+  },
+  avatarInitial: {
+    color: "#fbbf24",
+    fontSize: 20,
+    fontWeight: "800",
+  },
+  inputBubble: {
+    flex: 1,
+    borderRadius: 18,
+    borderWidth: 1,
+    borderColor: "#d1d5db",
+    backgroundColor: "#f9fafb",
+    paddingHorizontal: 10,
+    paddingTop: 6,
+    paddingBottom: 4,
+    marginRight: 8,
+  },
+  input: {
+    fontSize: 15,
+    color: "#111827",
+    maxHeight: 120,
+  },
+  bubbleFooter: {
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    marginTop: 2,
+  },
+  counter: {
+    fontSize: 11,
+    color: "#9ca3af",
+  },
+  sendButtonWrapper: {
+    width: 46,
+    height: 46,
+    borderRadius: 999,
+    backgroundColor: ACCENT,
     alignItems: "center",
     justifyContent: "center",
   },
-  ctaText: {
-    color: "#0b1220",
-    fontSize: 16,
-    fontWeight: "800",
-    letterSpacing: 0.3,
+  sendButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 999,
+    backgroundColor: "#facc15",
+    alignItems: "center",
+    justifyContent: "center",
   },
-  ctaDisabled: {
-    opacity: 0.6,
+  sendButtonDisabled: {
+    opacity: 0.5,
   },
-  statusSuccess: {
-    color: "#34d399",
-    fontWeight: "700",
-    textAlign: "center",
-    marginTop: 4,
-  },
-  statusError: {
-    color: "#f87171",
-    fontWeight: "700",
-    textAlign: "center",
-    marginTop: 4,
+  footerHint: {
+    fontSize: 11,
+    color: "#9ca3af",
+    marginTop: 8,
   },
 });
 
