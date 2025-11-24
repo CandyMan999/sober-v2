@@ -1,23 +1,32 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import {
+  Animated,
   ActivityIndicator,
+  Dimensions,
   FlatList,
+  Modal,
+  Pressable,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from "react-native";
+import { useIsFocused } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import { BlurView } from "expo-blur";
 import { ResizeMode, Video } from "expo-av";
 import { FeedLayout } from "../../components";
 import { GET_ALL_POSTS } from "../../GraphQL/queries";
 import { useClient } from "../../client";
+import { SET_POST_REVIEW_MUTATION } from "../../GraphQL/mutations";
 
+const { height: WINDOW_HEIGHT } = Dimensions.get("window");
 const PAGE_SIZE = 5;
+const SHEET_HEIGHT = Math.round(WINDOW_HEIGHT * 0.33);
 
 const CommunityScreen = () => {
   const client = useClient();
+  const isFocused = useIsFocused();
   const [posts, setPosts] = useState([]);
   const [cursor, setCursor] = useState(null);
   const [hasMore, setHasMore] = useState(true);
@@ -27,6 +36,10 @@ const CommunityScreen = () => {
   const [containerHeight, setContainerHeight] = useState(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const [finishedMap, setFinishedMap] = useState({});
+  const [isMuted, setIsMuted] = useState(false);
+  const [reviewingPostId, setReviewingPostId] = useState(null);
+  const [selectedPost, setSelectedPost] = useState(null);
+  const sheetAnim = useRef(new Animated.Value(0)).current;
 
   const cursorRef = useRef(null);
   const videoRefs = useRef({});
@@ -102,13 +115,29 @@ const CommunityScreen = () => {
 
       if (!ref) return;
 
-      if (numericIdx === activeIndex && !finishedMap[numericIdx]) {
+      if (
+        numericIdx === activeIndex &&
+        !finishedMap[numericIdx] &&
+        isFocused
+      ) {
         ref.playAsync && ref.playAsync();
       } else {
         ref.pauseAsync && ref.pauseAsync();
       }
     });
-  }, [activeIndex, finishedMap]);
+  }, [activeIndex, finishedMap, isFocused]);
+
+  useEffect(() => {
+    if (isFocused) return;
+
+    // Pause all videos and mute audio when leaving the screen
+    Object.values(videoRefs.current).forEach((ref) => {
+      if (ref?.pauseAsync) {
+        ref.pauseAsync();
+      }
+    });
+    setIsMuted(true);
+  }, [isFocused]);
 
   const onViewableItemsChanged = useRef(({ viewableItems }) => {
     if (!viewableItems?.length) return;
@@ -143,7 +172,7 @@ const CommunityScreen = () => {
   );
 
   const renderVideo = (item, index) => (
-    <View style={styles.videoWrapper}>
+    <Pressable style={styles.videoWrapper} onPress={() => setIsMuted(true)}>
       <Video
         ref={(ref) => {
           if (ref) {
@@ -153,13 +182,79 @@ const CommunityScreen = () => {
         source={{ uri: item.video?.url }}
         style={styles.video}
         resizeMode={ResizeMode.COVER}
-        shouldPlay={activeIndex === index && !finishedMap[index]}
+        shouldPlay={
+          isFocused && activeIndex === index && !finishedMap[index]
+        }
         isLooping={false}
+        isMuted={isMuted}
         onPlaybackStatusUpdate={(status) => handlePlaybackStatus(index, status)}
       />
       {finishedMap[index] ? renderOverlay(index) : null}
-    </View>
+    </Pressable>
   );
+
+  const handleReviewPress = async (postId, currentReviewState) => {
+    if (reviewingPostId) return;
+
+    setReviewingPostId(postId);
+    try {
+      const data = await client.request(SET_POST_REVIEW_MUTATION, {
+        postId,
+        review: !currentReviewState,
+      });
+
+      const updatedReview = data?.setPostReview?.review ?? !currentReviewState;
+
+      setPosts((prev) =>
+        prev.map((post) =>
+          post.id === postId ? { ...post, review: updatedReview } : post
+        )
+      );
+      setSelectedPost((prev) =>
+        prev && prev.id === postId ? { ...prev, review: updatedReview } : prev
+      );
+    } catch (err) {
+      console.error("Error updating review status", err);
+    } finally {
+      setReviewingPostId(null);
+      closeMoreSheet();
+    }
+  };
+
+  const handleMorePress = (post) => {
+    setSelectedPost(post);
+  };
+
+  const closeMoreSheet = () => {
+    Animated.spring(sheetAnim, {
+      toValue: 0,
+      useNativeDriver: true,
+      damping: 16,
+      stiffness: 180,
+      mass: 0.9,
+    }).start(() => setSelectedPost(null));
+  };
+
+  const handleToggleSound = () => {
+    setIsMuted((prev) => !prev);
+  };
+
+  useEffect(() => {
+    if (!selectedPost) return;
+
+    Animated.spring(sheetAnim, {
+      toValue: 1,
+      useNativeDriver: true,
+      damping: 16,
+      stiffness: 180,
+      mass: 0.9,
+    }).start();
+  }, [selectedPost, sheetAnim]);
+
+  const translateY = sheetAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: [SHEET_HEIGHT + 60, 0],
+  });
 
   const formatDate = (dateString) => {
     if (!dateString) return "";
@@ -204,6 +299,10 @@ const CommunityScreen = () => {
           comments={item.comments}
           avatarUrl={avatarUrl}
           contentStyle={styles.feedContent}
+          showSoundToggle
+          isMuted={isMuted}
+          onToggleSound={handleToggleSound}
+          onMorePress={() => handleMorePress(item)}
         >
           {renderVideo(item, index)}
         </FeedLayout>
@@ -257,6 +356,10 @@ const CommunityScreen = () => {
           comments={posts[0].comments}
           avatarUrl={posts[0].author?.profilePicUrl || null}
           contentStyle={styles.feedContent}
+          showSoundToggle
+          isMuted={isMuted}
+          onToggleSound={handleToggleSound}
+          onMorePress={() => handleMorePress(posts[0])}
         >
           {renderVideo(posts[0], 0)}
         </FeedLayout>
@@ -294,6 +397,59 @@ const CommunityScreen = () => {
           ) : null
         }
       />
+
+      {selectedPost ? (
+        <Modal
+          animationType="none"
+          transparent
+          visible
+          onRequestClose={closeMoreSheet}
+        >
+          <View style={styles.modalContainer}>
+            <Pressable style={styles.sheetBackdrop} onPress={closeMoreSheet} />
+            <Animated.View
+              style={[styles.bottomSheet, { transform: [{ translateY }] }]}
+            >
+              <Text style={styles.sheetTitle}>Post options</Text>
+              <TouchableOpacity style={styles.sheetAction} onPress={() => {}}>
+                <View style={styles.sheetActionLeft}>
+                  <Ionicons name="bookmark-outline" size={20} color="#fef3c7" />
+                  <Text style={styles.sheetActionText}>Save</Text>
+                </View>
+                <Ionicons name="chevron-forward" size={18} color="#9ca3af" />
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.sheetAction}
+                onPress={() =>
+                  handleReviewPress(selectedPost.id, selectedPost.review)
+                }
+                disabled={reviewingPostId === selectedPost.id}
+              >
+                <View style={styles.sheetActionLeft}>
+                  <Ionicons
+                    name={selectedPost.review ? "flag" : "flag-outline"}
+                    size={20}
+                    color="#fef3c7"
+                  />
+                  <Text style={styles.sheetActionText}>
+                    {selectedPost.review
+                      ? "Unmark for review"
+                      : "Flag for review"}
+                  </Text>
+                </View>
+                {reviewingPostId === selectedPost.id ? (
+                  <ActivityIndicator color="#f59e0b" style={styles.sheetSpinner} />
+                ) : (
+                  <Ionicons name="chevron-forward" size={18} color="#9ca3af" />
+                )}
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.sheetCancel} onPress={closeMoreSheet}>
+                <Text style={styles.sheetCancelText}>Close</Text>
+              </TouchableOpacity>
+            </Animated.View>
+          </View>
+        </Modal>
+      ) : null}
     </View>
   );
 };
@@ -368,6 +524,75 @@ const styles = StyleSheet.create({
   },
   footer: {
     paddingVertical: 20,
+  },
+  modalContainer: {
+    flex: 1,
+    ...StyleSheet.absoluteFillObject,
+    justifyContent: "flex-end",
+  },
+  sheetBackdrop: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "rgba(0,0,0,0.45)",
+  },
+  bottomSheet: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    bottom: 0,
+    height: SHEET_HEIGHT,
+    paddingHorizontal: 20,
+    paddingTop: 20,
+    paddingBottom: 28,
+    backgroundColor: "#0f172a",
+    borderTopLeftRadius: 16,
+    borderTopRightRadius: 16,
+    borderWidth: 1,
+    borderColor: "rgba(245,158,11,0.3)",
+  },
+  sheetTitle: {
+    color: "#e5e7eb",
+    fontSize: 16,
+    fontWeight: "700",
+    marginBottom: 16,
+  },
+  sheetAction: {
+    paddingVertical: 14,
+    paddingHorizontal: 12,
+    marginBottom: 10,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    backgroundColor: "rgba(30,41,59,0.85)",
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: "rgba(148,163,184,0.35)",
+    shadowColor: "#0ea5e9",
+    shadowOpacity: 0.25,
+    shadowRadius: 10,
+    shadowOffset: { width: 0, height: 6 },
+    elevation: 3,
+  },
+  sheetActionLeft: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  sheetActionText: {
+    color: "#fef3c7",
+    fontSize: 16,
+    fontWeight: "700",
+    marginLeft: 12,
+  },
+  sheetSpinner: {
+    marginLeft: 8,
+  },
+  sheetCancel: {
+    marginTop: 4,
+    paddingVertical: 12,
+  },
+  sheetCancelText: {
+    color: "#93c5fd",
+    textAlign: "center",
+    fontWeight: "600",
   },
 });
 

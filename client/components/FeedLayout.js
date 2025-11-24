@@ -19,6 +19,9 @@ const FeedLayout = ({
   onLikePress,
   onMorePress,
   contentStyle,
+  showSoundToggle = false,
+  isMuted = false,
+  onToggleSound,
 }) => {
   const [showComments, setShowComments] = useState(false);
 
@@ -60,6 +63,9 @@ const FeedLayout = ({
         onLikePress={onLikePress || (() => {})}
         onCommentPress={handleCommentPress}
         onMorePress={onMorePress || (() => {})}
+        showSoundToggle={showSoundToggle}
+        isMuted={isMuted}
+        onToggleSound={onToggleSound}
       />
 
       {/* Comment sheet (wire to actual comments later) */}

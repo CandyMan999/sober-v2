@@ -26,6 +26,11 @@ const PostSchema = new mongoose.Schema(
       default: false,
     },
 
+    review: {
+      type: Boolean,
+      default: false,
+    },
+
     // Comments (referenced)
     comments: [
       {

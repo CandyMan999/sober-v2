@@ -7,6 +7,9 @@ const FloatingActionIcons = ({
   onLikePress,
   onCommentPress,
   onMorePress,
+  onToggleSound,
+  isMuted = false,
+  showSoundToggle = false,
   likesCount = 0,
   commentsCount = 0,
 }) => {
@@ -33,6 +36,15 @@ const FloatingActionIcons = ({
       <TouchableOpacity style={styles.pill} onPress={onMorePress}>
         <Text style={styles.icon}>⋯</Text>
       </TouchableOpacity>
+      {showSoundToggle ? (
+        <TouchableOpacity
+          onPress={onToggleSound}
+          accessibilityRole="button"
+          accessibilityLabel={isMuted ? "Unmute video" : "Mute video"}
+        >
+          <Text style={styles.soundIcon}>{isMuted ? "🔇" : "🔊"}</Text>
+        </TouchableOpacity>
+      ) : null}
     </View>
   );
 };
@@ -41,8 +53,12 @@ const styles = StyleSheet.create({
   container: {
     position: "absolute",
     right: 18,
-    bottom: 90,
+    bottom: 20,
     alignItems: "center",
+  },
+  soundIcon: {
+    fontSize: 20,
+    color: "#fff",
   },
   pill: {
     flexDirection: "row",
