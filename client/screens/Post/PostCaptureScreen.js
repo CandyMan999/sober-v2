@@ -21,6 +21,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useFocusEffect, useIsFocused } from "@react-navigation/native";
 import { CameraView, Camera } from "expo-camera";
 import { useVideoPlayer, VideoView } from "expo-video";
+import * as ImagePicker from "expo-image-picker";
 import { MaterialIcons, Feather } from "@expo/vector-icons";
 import { ReactNativeFile } from "extract-files";
 import Toast from "react-native-toast-message";
@@ -224,6 +225,57 @@ const PostCaptureScreen = ({ navigation }) => {
     setVideoUri(null);
     setCaption("");
     navigation.navigate("HomeTabRoot");
+  };
+
+  const handlePickVideo = async () => {
+    try {
+      if (uploading || isRecording) return;
+
+      const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+      if (permission.status !== "granted") {
+        return Alert.alert(
+          "Access needed",
+          "Please enable photo library access so you can pick a video.",
+          [
+            {
+              text: "OK",
+            },
+          ]
+        );
+      }
+
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Videos,
+        allowsEditing: true,
+        videoMaxDuration: MAX_DURATION_SECONDS,
+        quality: 1,
+      });
+
+      if (result.canceled) return;
+
+      const asset = result.assets?.[0];
+      const pickedUri = asset?.uri;
+      const pickedDuration = Math.round(asset?.duration ?? 0);
+
+      if (!pickedUri) {
+        return handleError("Couldn't read that video. Please try another one.");
+      }
+
+      if (pickedDuration && pickedDuration > MAX_DURATION_SECONDS) {
+        return Alert.alert(
+          "Trim required",
+          "Videos must be 2 minutes or shorter. Trim the video and try again.",
+          [{ text: "OK" }]
+        );
+      }
+
+      setVideoUri(pickedUri);
+      setCaption("");
+    } catch (e) {
+      console.log("Error picking video:", e);
+      handleError("Error selecting a video from your library.");
+    }
   };
 
   const handleSend = async () => {
@@ -446,11 +498,33 @@ const PostCaptureScreen = ({ navigation }) => {
         {/* Bottom center: RecordButton */}
         <View style={styles.bottomControls}>
           {isCameraReady && isFocused && (
-            <RecordButton
-              isRecording={isRecording}
-              startRecording={startRecording}
-              stopRecording={stopRecording}
-            />
+            <>
+              <TouchableOpacity
+                style={styles.libraryButton}
+                onPress={handlePickVideo}
+                disabled={uploading || isRecording}
+              >
+                <Feather
+                  name="folder"
+                  size={22}
+                  color={uploading || isRecording ? "#9ca3af" : "#f9fafb"}
+                />
+                <Text
+                  style={[
+                    styles.libraryText,
+                    uploading || isRecording ? styles.libraryTextDisabled : null,
+                  ]}
+                >
+                  Upload
+                </Text>
+              </TouchableOpacity>
+
+              <RecordButton
+                isRecording={isRecording}
+                startRecording={startRecording}
+                stopRecording={stopRecording}
+              />
+            </>
           )}
         </View>
 
@@ -557,6 +631,24 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     zIndex: 10,
+  },
+  libraryButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "rgba(0,0,0,0.55)",
+    paddingHorizontal: 14,
+    paddingVertical: 10,
+    borderRadius: 999,
+    marginBottom: 12,
+  },
+  libraryText: {
+    color: "#f9fafb",
+    fontWeight: "700",
+    marginLeft: 8,
+    fontSize: 14,
+  },
+  libraryTextDisabled: {
+    color: "#9ca3af",
   },
 
   // Preview mode
