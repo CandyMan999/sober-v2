@@ -17,6 +17,7 @@ const FeedLayout = ({
   children,
   onLikePress,
   onMorePress,
+  contentStyle,
 }) => {
   const [showComments, setShowComments] = useState(false);
 
@@ -27,7 +28,7 @@ const FeedLayout = ({
   return (
     <View style={styles.container}>
       {/* Main content (quote/post/video/etc.) */}
-      <View style={styles.contentArea}>
+      <View style={[styles.contentArea, contentStyle]}>
         {children ? (
           children
         ) : (

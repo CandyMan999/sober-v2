@@ -17,7 +17,12 @@ const HomeTabs = () => {
         sceneContainerStyle={{ backgroundColor: "#0b1220" }}
         screenOptions={{
           tabBarIndicatorStyle: { backgroundColor: "#f59e0b" },
-          tabBarStyle: { backgroundColor: "#050816" },
+          tabBarStyle: {
+            backgroundColor: "rgba(5,8,22,0.4)",
+            borderBottomWidth: 0,
+            shadowOpacity: 0,
+            elevation: 0,
+          },
           tabBarActiveTintColor: "#fff",
           tabBarInactiveTintColor: "#9ca3af",
           tabBarLabelStyle: { fontWeight: "700" },
