@@ -63,7 +63,7 @@ const resolvers = {
     sendPost: sendPostResolver,
   },
 
-  Upload: require("graphql-upload").GraphQLUpload,
+  Upload: require("graphql-upload-minimal").GraphQLUpload,
 
   // ---- Type-level resolvers ----
   Quote: {
