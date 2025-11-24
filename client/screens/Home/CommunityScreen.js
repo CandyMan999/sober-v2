@@ -14,13 +14,11 @@ import { ResizeMode, Video } from "expo-av";
 import { FeedLayout } from "../../components";
 import { GET_ALL_POSTS } from "../../GraphQL/queries";
 import { useClient } from "../../client";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const PAGE_SIZE = 5;
 
 const CommunityScreen = () => {
   const client = useClient();
-  const insets = useSafeAreaInsets();
   const windowHeight = Dimensions.get("window").height;
   const [posts, setPosts] = useState([]);
   const [cursor, setCursor] = useState(null);
@@ -84,9 +82,9 @@ const CommunityScreen = () => {
 
   const handleLayout = (e) => {
     const { height } = e.nativeEvent.layout;
-    // use the larger of measured height and window height so video snaps fill the screen
-    // while still allowing content to extend behind the status bar for a true edge-to-edge look
-    const targetHeight = Math.max(height + (insets?.top || 0), windowHeight);
+    // Keep snaps aligned to the visible viewport so overlays (icons/captions) sit
+    // in the same relative position as Quotes while still filling the screen.
+    const targetHeight = Math.max(height, windowHeight);
     setContainerHeight(targetHeight);
   };
 
