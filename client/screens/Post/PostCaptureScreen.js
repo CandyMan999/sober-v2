@@ -256,13 +256,20 @@ const PostCaptureScreen = ({ navigation }) => {
 
       const asset = result.assets?.[0];
       const pickedUri = asset?.uri;
-      const pickedDuration = Math.round(asset?.duration ?? 0);
+      const pickedDurationMs = asset?.duration ?? 0; // Expo returns ms
+      const pickedDurationSeconds =
+        pickedDurationMs && pickedDurationMs > 0
+          ? Math.ceil(pickedDurationMs / 1000)
+          : null;
 
       if (!pickedUri) {
         return handleError("Couldn't read that video. Please try another one.");
       }
 
-      if (pickedDuration && pickedDuration > MAX_DURATION_SECONDS) {
+      if (
+        pickedDurationSeconds &&
+        pickedDurationSeconds > MAX_DURATION_SECONDS
+      ) {
         return Alert.alert(
           "Trim required",
           "Videos must be 2 minutes or shorter. Trim the video and try again.",
