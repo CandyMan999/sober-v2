@@ -51,6 +51,7 @@ const typeDefs = gql`
     text: String
     video: Video
     flagged: Boolean!
+    review: Boolean!
     likesCount: Int!
     commentsCount: Int!
     likes: [Like!]!
@@ -217,6 +218,7 @@ const typeDefs = gql`
     addVenue(name: String!, type: Place!, lat: Float!, long: Float!): Venue
     addQuote(text: String!): Quote
     sendPost(file: Upload!, senderID: ID!, text: String): Post
+    setPostReview(postId: ID!, review: Boolean!): Post!
   }
 `;
 

@@ -136,10 +136,11 @@ export const SEND_POST_MUTATION = gql`
   }
 `;
 
-export const FLAG_POST_MUTATION = gql`
-  mutation FlagPost($postId: ID!, $flagged: Boolean!) {
-    flagPost(postId: $postId, flagged: $flagged) {
+export const SET_POST_REVIEW_MUTATION = gql`
+  mutation SetPostReview($postId: ID!, $review: Boolean!) {
+    setPostReview(postId: $postId, review: $review) {
       id
+      review
       flagged
     }
   }

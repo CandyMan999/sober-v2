@@ -8,6 +8,7 @@ const {
   resetSobrietyDateResolver,
   addQuoteResolver,
   sendPostResolver,
+  setPostReviewResolver,
 } = require("./mutations/index.js");
 
 const {
@@ -63,6 +64,7 @@ const resolvers = {
     resetSobrietyDate: resetSobrietyDateResolver,
     addQuote: addQuoteResolver,
     sendPost: sendPostResolver,
+    setPostReview: setPostReviewResolver,
   },
 
   Upload: require("graphql-upload-minimal").GraphQLUpload,

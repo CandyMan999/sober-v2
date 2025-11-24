@@ -86,6 +86,7 @@ export const GET_ALL_POSTS = `
         id
         text
         flagged
+        review
         likesCount
         commentsCount
         createdAt

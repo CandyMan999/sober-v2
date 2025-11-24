@@ -15,7 +15,7 @@ import { ResizeMode, Video } from "expo-av";
 import { FeedLayout } from "../../components";
 import { GET_ALL_POSTS } from "../../GraphQL/queries";
 import { useClient } from "../../client";
-import { FLAG_POST_MUTATION } from "../../GraphQL/mutations";
+import { SET_POST_REVIEW_MUTATION } from "../../GraphQL/mutations";
 
 const PAGE_SIZE = 5;
 
@@ -32,7 +32,8 @@ const CommunityScreen = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [finishedMap, setFinishedMap] = useState({});
   const [isMuted, setIsMuted] = useState(false);
-  const [flaggingPostId, setFlaggingPostId] = useState(null);
+  const [reviewingPostId, setReviewingPostId] = useState(null);
+  const [selectedPost, setSelectedPost] = useState(null);
 
   const cursorRef = useRef(null);
   const videoRefs = useRef({});
@@ -186,28 +187,40 @@ const CommunityScreen = () => {
     </Pressable>
   );
 
-  const handleFlagPress = async (postId, currentFlagged) => {
-    if (flaggingPostId) return;
+  const handleReviewPress = async (postId, currentReviewState) => {
+    if (reviewingPostId) return;
 
-    setFlaggingPostId(postId);
+    setReviewingPostId(postId);
     try {
-      const data = await client.request(FLAG_POST_MUTATION, {
+      const data = await client.request(SET_POST_REVIEW_MUTATION, {
         postId,
-        flagged: !currentFlagged,
+        review: !currentReviewState,
       });
 
-      const updatedFlagged = data?.flagPost?.flagged ?? !currentFlagged;
+      const updatedReview = data?.setPostReview?.review ?? !currentReviewState;
 
       setPosts((prev) =>
         prev.map((post) =>
-          post.id === postId ? { ...post, flagged: updatedFlagged } : post
+          post.id === postId ? { ...post, review: updatedReview } : post
         )
       );
+      setSelectedPost((prev) =>
+        prev && prev.id === postId ? { ...prev, review: updatedReview } : prev
+      );
     } catch (err) {
-      console.error("Error flagging post", err);
+      console.error("Error updating review status", err);
     } finally {
-      setFlaggingPostId(null);
+      setReviewingPostId(null);
+      setSelectedPost(null);
     }
+  };
+
+  const handleMorePress = (post) => {
+    setSelectedPost(post);
+  };
+
+  const closeMoreSheet = () => {
+    setSelectedPost(null);
   };
 
   const handleToggleSound = () => {
@@ -260,9 +273,7 @@ const CommunityScreen = () => {
           showSoundToggle
           isMuted={isMuted}
           onToggleSound={handleToggleSound}
-          showFlag
-          flagged={item.flagged}
-          onFlagPress={() => handleFlagPress(item.id, item.flagged)}
+          onMorePress={() => handleMorePress(item)}
         >
           {renderVideo(item, index)}
         </FeedLayout>
@@ -319,9 +330,7 @@ const CommunityScreen = () => {
           showSoundToggle
           isMuted={isMuted}
           onToggleSound={handleToggleSound}
-          showFlag
-          flagged={posts[0].flagged}
-          onFlagPress={() => handleFlagPress(posts[0].id, posts[0].flagged)}
+          onMorePress={() => handleMorePress(posts[0])}
         >
           {renderVideo(posts[0], 0)}
         </FeedLayout>
@@ -359,6 +368,30 @@ const CommunityScreen = () => {
           ) : null
         }
       />
+
+      {selectedPost ? (
+        <>
+          <Pressable style={styles.sheetBackdrop} onPress={closeMoreSheet} />
+          <View style={styles.bottomSheet}>
+            <Text style={styles.sheetTitle}>Post options</Text>
+            <TouchableOpacity
+              style={styles.sheetAction}
+              onPress={() => handleReviewPress(selectedPost.id, selectedPost.review)}
+              disabled={reviewingPostId === selectedPost.id}
+            >
+              <Text style={styles.sheetActionText}>
+                {selectedPost.review ? "Unmark for review" : "Flag for review"}
+              </Text>
+              {reviewingPostId === selectedPost.id ? (
+                <ActivityIndicator color="#f59e0b" style={styles.sheetSpinner} />
+              ) : null}
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.sheetCancel} onPress={closeMoreSheet}>
+              <Text style={styles.sheetCancelText}>Close</Text>
+            </TouchableOpacity>
+          </View>
+        </>
+      ) : null}
     </View>
   );
 };
@@ -433,6 +466,54 @@ const styles = StyleSheet.create({
   },
   footer: {
     paddingVertical: 20,
+  },
+  sheetBackdrop: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "rgba(0,0,0,0.45)",
+  },
+  bottomSheet: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    bottom: 0,
+    paddingHorizontal: 20,
+    paddingTop: 16,
+    paddingBottom: 32,
+    backgroundColor: "#0f172a",
+    borderTopLeftRadius: 16,
+    borderTopRightRadius: 16,
+    borderWidth: 1,
+    borderColor: "rgba(245,158,11,0.3)",
+  },
+  sheetTitle: {
+    color: "#e5e7eb",
+    fontSize: 16,
+    fontWeight: "700",
+    marginBottom: 12,
+  },
+  sheetAction: {
+    paddingVertical: 12,
+    paddingHorizontal: 4,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  sheetActionText: {
+    color: "#fef3c7",
+    fontSize: 15,
+    fontWeight: "600",
+  },
+  sheetSpinner: {
+    marginLeft: 8,
+  },
+  sheetCancel: {
+    marginTop: 6,
+    paddingVertical: 12,
+  },
+  sheetCancelText: {
+    color: "#93c5fd",
+    textAlign: "center",
+    fontWeight: "600",
   },
 });
 
