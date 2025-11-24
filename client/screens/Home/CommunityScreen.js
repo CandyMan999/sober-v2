@@ -6,7 +6,6 @@ import {
   Text,
   TouchableOpacity,
   View,
-  Dimensions,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { BlurView } from "expo-blur";
@@ -19,7 +18,6 @@ const PAGE_SIZE = 5;
 
 const CommunityScreen = () => {
   const client = useClient();
-  const windowHeight = Dimensions.get("window").height;
   const [posts, setPosts] = useState([]);
   const [cursor, setCursor] = useState(null);
   const [hasMore, setHasMore] = useState(true);
@@ -82,10 +80,8 @@ const CommunityScreen = () => {
 
   const handleLayout = (e) => {
     const { height } = e.nativeEvent.layout;
-    // Keep snaps aligned to the visible viewport so overlays (icons/captions) sit
-    // in the same relative position as Quotes while still filling the screen.
-    const targetHeight = Math.max(height, windowHeight);
-    setContainerHeight(targetHeight);
+    // Align snap height to the visible viewport so overlays mirror Quotes.
+    setContainerHeight(height);
   };
 
   const handleLoadMore = () => {
