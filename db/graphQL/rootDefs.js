@@ -45,6 +45,11 @@ const typeDefs = gql`
     POST
   }
 
+  type DirectVideoUpload {
+    uploadURL: String!
+    uid: String!
+  }
+
   type Post {
     id: ID!
     author: User!
@@ -95,9 +100,12 @@ const typeDefs = gql`
     sender: User
     receiver: User
     flagged: Boolean
-    viewed: Boolean
+    viewers: [User!]
+    post: Post!
+    viewsCount: Int!
     publicId: String
     createdAt: String
+    updatedAt: String
   }
 
   type Room {
@@ -193,6 +201,7 @@ const typeDefs = gql`
     ): User!
     resetSobrietyDate(token: String!, newStartAt: String!): User!
     directUpload: DirectUploadImage!
+    directVideoUpload: DirectVideoUpload!
     addPicture(token: String!, url: String!, publicId: String): Picture!
     deletePhoto(token: String!, photoId: ID!): User!
     createRoom(name: String!): Room!
@@ -204,6 +213,7 @@ const typeDefs = gql`
     ): Comment!
     addVenue(name: String!, type: Place!, lat: Float!, long: Float!): Venue
     addQuote(text: String!): Quote
+    sendPost(url: String!, publicId: String!, senderID: ID!, text: String): Post
   }
 `;
 

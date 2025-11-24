@@ -1,13 +1,15 @@
+// cron/notificationCron.js
 const cron = require("node-cron");
 const { Expo } = require("expo-server-sdk");
-const { User } = require("../models");
+const { User, Quote } = require("../models");
+const { DateTime } = require("luxon");
 
 require("dotenv").config();
 
 let expo = new Expo();
 
 // Mirror your client-side milestones
-const MILESTONES = [1, 3, 5, 7, 10, 14, 30, 60, 90, 180, 365];
+const MILESTONES = [1, 2, 3, 5, 7, 10, 14, 30, 60, 90, 180, 365];
 
 // --- Helpers ---
 
@@ -57,6 +59,7 @@ const buildMilestoneMessage = (user, milestoneDays) => {
     case 7:
       body = `${name}, one full week sober.💪 Seven days of not giving in. That’s a real streak. Celebrate it in a sober way tonight and get ready to build week two.`;
       break;
+
     case 30:
       body = `One Month. Fuck yeah ${name}!😱 Don't forget the pain. I want you to think of the worst hangover you have ever had in your life for a minute`;
       break;
@@ -114,11 +117,11 @@ const sendPushNotifications = async (notifications) => {
   }
 };
 
-// --- MAIN CRON JOB ---
+// --- MAIN CRON JOB SETUP ---
 
-const cronJob = async () => {
+const cronJob = () => {
   try {
-    // Milestone job
+    // ----- 1) Milestones job (still every 15 min; uses sobrietyStartAt) -----
     cron.schedule(
       "0 */15 * * * *", // every 15 minutes (for testing)
       async () => {
@@ -161,7 +164,6 @@ const cronJob = async () => {
           // highest milestone reached but not notified yet
           const milestone = Math.max(...dueMilestones);
 
-          // 🔴 FIX: pass the whole user object, not user.username
           const { title, body } = buildMilestoneMessage(user, milestone);
 
           notifications.push({
@@ -191,6 +193,91 @@ const cronJob = async () => {
       {
         scheduled: true,
         timezone: "America/Chicago",
+      }
+    );
+
+    // ----- 2) Quotes job (every 2 hours, per-user time-window 8am–10pm) -----
+    cron.schedule(
+      "0 0 */2 * * *", // every 2 hours at minute 0, second 0
+      async () => {
+        console.log("💬 Quote cron tick at", new Date().toISOString());
+
+        const users = await User.find({
+          notificationsEnabled: true,
+          token: { $ne: null },
+        });
+
+        if (!users.length) {
+          console.log("No users with push tokens.");
+          return;
+        }
+
+        // fetch unused approved quotes
+        let quotes = await Quote.find({ isApproved: true, isUsed: false });
+
+        if (!quotes.length) {
+          console.log("No unused quotes — resetting used flags.");
+          await Quote.updateMany(
+            { isApproved: true },
+            { $set: { isUsed: false } }
+          );
+          quotes = await Quote.find({ isApproved: true, isUsed: false });
+        }
+
+        if (!quotes.length) {
+          console.log("Still no quotes available. Skipping.");
+          return;
+        }
+
+        // pick a random quote
+        const quote = quotes[Math.floor(Math.random() * quotes.length)];
+        quote.isUsed = true;
+        await quote.save();
+
+        const notifications = [];
+
+        for (const user of users) {
+          const tz = user.timezone || "UTC";
+          const userTime = DateTime.now().setZone(tz);
+          const hour = userTime.hour;
+
+          // only send if between 08:00 and 22:00 local time
+          if (hour >= 8 && hour <= 22) {
+            notifications.push({
+              pushToken: user.token,
+              title: "Sober Motivation",
+              body: quote.text,
+              data: { type: "quote", quoteId: String(quote._id) },
+            });
+
+            console.log(
+              `Queued quote for ${
+                user.username
+              } (${tz}) — local time: ${userTime.toFormat("h:mm a")}`
+            );
+          } else {
+            console.log(
+              `⏸ Skipped ${
+                user.username
+              } (${tz}) — current: ${userTime.toFormat("h:mm a")}`
+            );
+          }
+        }
+
+        if (!notifications.length) {
+          console.log("No eligible users this interval.");
+          return;
+        }
+
+        await sendPushNotifications(notifications);
+
+        console.log(
+          `📨 Sent quote "${quote.text}" to ${notifications.length} user(s).`
+        );
+      },
+      {
+        scheduled: true,
+        timezone: "UTC", // cron runs on server time; we adjust per user
       }
     );
 

@@ -17,6 +17,7 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Feather, MaterialCommunityIcons } from "@expo/vector-icons";
+import Toast from "react-native-toast-message";
 
 import { useClient } from "../../client";
 import { ADD_QUOTE_MUTATION } from "../../GraphQL/mutations";
@@ -48,14 +49,6 @@ const AddQuoteScreen = ({ navigation }) => {
   const previewText =
     trimmed || "“The comeback is always louder than the setback.”";
 
-  const handleToast = (msg) => {
-    if (Platform.OS === "android") {
-      ToastAndroid.show(msg, ToastAndroid.SHORT);
-    } else {
-      Alert.alert("Quote submitted", msg);
-    }
-  };
-
   const handleSubmit = async () => {
     if (!ready || submitting) return;
     try {
@@ -63,17 +56,28 @@ const AddQuoteScreen = ({ navigation }) => {
       Keyboard.dismiss(); // close keyboard on send
       await client.request(ADD_QUOTE_MUTATION, { text: trimmed });
 
-      handleToast(
-        "Sent for review. If approved, it can be pushed out to everyone."
-      );
+      Toast.show({
+        type: "success",
+        text1: "Quote submitted 🎉",
+        text2: "We'll notify you if it's approved.",
+        position: "top",
+        autoHide: true,
+        visibilityTime: 6000,
+        topOffset: 80,
+      });
       setText("");
       navigation.goBack();
     } catch (err) {
       console.error("Error adding quote", err);
-      Alert.alert(
-        "Couldn’t send your quote",
-        "Please check your connection and try again."
-      );
+      Toast.show({
+        type: "error",
+        text1: "Submission failed",
+        text2: "Check your connection and try again.",
+        position: "top",
+        autoHide: true,
+        visibilityTime: 6000,
+        topOffset: 80,
+      });
     } finally {
       setSubmitting(false);
     }

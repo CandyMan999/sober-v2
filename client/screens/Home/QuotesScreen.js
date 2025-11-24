@@ -76,7 +76,6 @@ const QuotesScreen = () => {
   if (loading) {
     return (
       <View style={styles.root} onLayout={handleLayout}>
-        {renderAlert()}
         <FeedLayout caption="Loading quotes...">
           <View style={styles.center}>
             <ActivityIndicator size="large" color="#f59e0b" />
@@ -89,7 +88,6 @@ const QuotesScreen = () => {
   if (error) {
     return (
       <View style={styles.root} onLayout={handleLayout}>
-        {renderAlert()}
         <FeedLayout caption="Quotes">
           <View style={styles.center}>
             <Text style={styles.errorText}>{error}</Text>
@@ -102,7 +100,6 @@ const QuotesScreen = () => {
   if (!quotes.length) {
     return (
       <View style={styles.root} onLayout={handleLayout}>
-        {renderAlert()}
         <FeedLayout caption="Quotes">
           <View style={styles.center}>
             <Text style={styles.quoteText}>
@@ -125,7 +122,6 @@ const QuotesScreen = () => {
 
     return (
       <View style={styles.root} onLayout={handleLayout}>
-        {renderAlert()}
         <FeedLayout
           caption={handle}
           likesCount={item.likesCount}

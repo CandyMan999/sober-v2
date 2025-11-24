@@ -44,33 +44,34 @@ const getDeepActiveRoute = (state) => {
   return route.state ? getDeepActiveRoute(route.state) : route;
 };
 
-// Custom circular post button that flattens when Chat is active
+// Custom circular post button
+// 👉 Big + lifted when Home tab is selected
+// 👉 Small + flat for all other tabs
 const CustomPostButton = ({ focused }) => {
   const tabState = useNavigationState((state) => state);
   const activeRouteName = tabState?.routes?.[tabState.index]?.name;
-  const chatActive = activeRouteName === "Chat";
+  const homeActive = activeRouteName === "HomeTabRoot";
 
   const wrapperStyle = [
     styles.postWrapper,
-    chatActive && styles.postWrapperFlat,
+    !homeActive && styles.postWrapperFlat,
   ];
-  const haloStyle = [styles.postHalo, chatActive && styles.postHaloFlat];
-  const centerStyle = [styles.postCenter, chatActive && styles.postCenterSmall];
+  const haloStyle = [styles.postHalo, !homeActive && styles.postHaloFlat];
+  const centerStyle = [
+    styles.postCenter,
+    !homeActive && styles.postCenterSmall,
+  ];
 
   return (
     <View style={wrapperStyle}>
-      {!chatActive && <View style={haloStyle} />}
+      {homeActive && <View style={haloStyle} />}
       <LinearGradient
         colors={focused ? ["#FBBF24", "#F59E0B"] : ["#F59E0B", "#FBBF24"]}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
         style={centerStyle}
       >
-        <AntDesign
-          name="plus"
-          size={chatActive ? 22 : focused ? 30 : 26}
-          color="#111827"
-        />
+        <AntDesign name="plus" size={homeActive ? 30 : 22} color="#111827" />
       </LinearGradient>
     </View>
   );
@@ -91,12 +92,7 @@ const PlusTabButton = (props) => {
   };
 
   return (
-    <TouchableOpacity
-      {...props}
-      activeOpacity={0.85}
-      onPress={handlePress}
-      style={{ top: -10 }}
-    >
+    <TouchableOpacity {...props} activeOpacity={0.85} onPress={handlePress}>
       <CustomPostButton focused={props?.accessibilityState?.selected} />
     </TouchableOpacity>
   );
@@ -203,13 +199,13 @@ const TabNavigator = () => {
 };
 
 const styles = StyleSheet.create({
-  // default: big, lifted post button
+  // default: big, lifted post button (used when Home is active)
   postWrapper: {
     width: 58,
     height: 58,
     justifyContent: "center",
     alignItems: "center",
-    top: -15,
+    top: -20, // float above tab bar
   },
   postHalo: {
     position: "absolute",
@@ -232,12 +228,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
 
-  // when Chat is active: shrink + flatten
+  // compact version for non-Home tabs
   postWrapperFlat: {
     top: 0,
     width: 40,
     height: 40,
-    marginTop: 18,
   },
   postHaloFlat: {
     opacity: 0,

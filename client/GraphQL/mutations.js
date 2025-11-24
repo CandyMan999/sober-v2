@@ -102,3 +102,50 @@ export const ADD_QUOTE_MUTATION = gql`
     }
   }
 `;
+
+export const DIRECT_VIDEO_UPLOAD_MUTATION = gql`
+  mutation {
+    directVideoUpload {
+      uploadURL
+      uid
+    }
+  }
+`;
+
+export const SEND_POST_MUTATION = gql`
+  mutation SendPost(
+    $url: String!
+    $publicId: String!
+    $senderID: ID!
+    $text: String
+  ) {
+    sendPost(url: $url, publicId: $publicId, senderID: $senderID, text: $text) {
+      id
+      text
+      flagged
+      createdAt
+      updatedAt
+
+      author {
+        id
+        username
+        profilePicUrl
+      }
+
+      video {
+        id
+        url
+        publicId
+        flagged
+        viewsCount
+        viewers {
+          id
+          username
+        }
+      }
+
+      likesCount
+      commentsCount
+    }
+  }
+`;

@@ -18,7 +18,7 @@ import { RESET_SOBRIETY_MUTATION } from "../../GraphQL/mutations";
 import Context from "../../context";
 import { useClient } from "../../client";
 
-const MILESTONES = [1, 3, 5, 7, 10, 14, 30, 60, 90, 180, 365];
+const MILESTONES = [1, 2, 3, 5, 7, 10, 14, 30, 60, 90, 180, 365];
 
 const parseStartDate = (raw) => {
   if (!raw) return null;
@@ -351,7 +351,7 @@ const SoberTimeScreen = () => {
   }
 
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <View style={styles.safeArea}>
       <ScrollView
         style={styles.container}
         contentContainerStyle={styles.content}
@@ -622,7 +622,7 @@ const SoberTimeScreen = () => {
         currentStartDate={effectiveStartDate}
         now={now}
       />
-    </SafeAreaView>
+    </View>
   );
 };
 
@@ -630,6 +630,7 @@ const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
     backgroundColor: "#020617",
+    paddingTop: 40,
   },
   container: {
     flex: 1,

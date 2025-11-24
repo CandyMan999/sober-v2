@@ -5,6 +5,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import Toast from "react-native-toast-message";
 
 import { ApolloClient, InMemoryCache, HttpLink } from "@apollo/client";
 import { ApolloProvider } from "@apollo/client/react";
@@ -125,6 +126,7 @@ export default function App() {
                 />
               </Stack.Navigator>
             </NavigationContainer>
+            <Toast />
           </Context.Provider>
         </SafeAreaProvider>
       </GestureHandlerRootView>
