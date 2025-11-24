@@ -10,22 +10,37 @@ const TopTab = createMaterialTopTabNavigator();
 const HomeTabs = () => {
   return (
     <SafeAreaView
-      style={{ flex: 1, backgroundColor: "#050816" }}
-      edges={["top", "left", "right"]}
+      style={{ flex: 1, backgroundColor: "transparent" }}
+      edges={["left", "right"]}
     >
       <TopTab.Navigator
-        sceneContainerStyle={{ backgroundColor: "#0b1220" }}
+        sceneContainerStyle={{ backgroundColor: "#000" }}
         screenOptions={{
-          tabBarIndicatorStyle: { backgroundColor: "#f59e0b" },
+          tabBarIndicatorStyle: {
+            backgroundColor: "#fff",
+            height: 3,
+            borderRadius: 999,
+            opacity: 0.9,
+          },
           tabBarStyle: {
-            backgroundColor: "rgba(5,8,22,0.4)",
+            backgroundColor: "rgba(0,0,0,0.1)",
             borderBottomWidth: 0,
             shadowOpacity: 0,
             elevation: 0,
+            position: "absolute",
+            left: 0,
+            right: 0,
+            top: 0,
           },
           tabBarActiveTintColor: "#fff",
-          tabBarInactiveTintColor: "#9ca3af",
-          tabBarLabelStyle: { fontWeight: "700" },
+          tabBarInactiveTintColor: "rgba(255,255,255,0.7)",
+          tabBarLabelStyle: {
+            fontWeight: "700",
+            fontSize: 16,
+            letterSpacing: 0.5,
+            textTransform: "none",
+          },
+          tabBarPressColor: "transparent",
         }}
       >
         <TopTab.Screen name="Community" component={CommunityScreen} />

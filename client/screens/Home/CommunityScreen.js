@@ -26,11 +26,12 @@ const CommunityScreen = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [finishedMap, setFinishedMap] = useState({});
 
+  const cursorRef = useRef(null);
   const videoRefs = useRef({});
 
   const fetchPosts = useCallback(
     async (append = false) => {
-      const nextCursor = append ? cursor : null;
+      const nextCursor = append ? cursorRef.current : null;
 
       try {
         if (!append) {
@@ -54,7 +55,9 @@ const CommunityScreen = () => {
         setPosts((prev) =>
           append ? [...prev, ...(payload.posts || [])] : payload.posts || []
         );
-        setCursor(payload.cursor || null);
+        const nextCursorValue = payload.cursor || null;
+        setCursor(nextCursorValue);
+        cursorRef.current = nextCursorValue;
         setHasMore(Boolean(payload.hasMore));
       } catch (err) {
         console.error("Error fetching posts", err);
@@ -64,12 +67,14 @@ const CommunityScreen = () => {
         setLoadingMore(false);
       }
     },
-    [client, cursor]
+    [client]
   );
 
   useEffect(() => {
     fetchPosts(false);
-  }, [fetchPosts]);
+    // Intentionally run once on mount to avoid re-fetch loops
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleLayout = (e) => {
     const { height } = e.nativeEvent.layout;
@@ -149,14 +154,26 @@ const CommunityScreen = () => {
     </View>
   );
 
+  const formatDate = (dateString) => {
+    if (!dateString) return "";
+    const formatted = new Date(dateString).toLocaleDateString(undefined, {
+      month: "long",
+      day: "numeric",
+    });
+
+    return formatted;
+  };
+
   const renderItem = ({ item, index }) => {
     const captionText = item.text || "";
     const avatarUrl = item.author?.profilePicUrl || null;
+    const postDate = formatDate(item.createdAt);
 
     return (
       <View style={{ height: containerHeight || 0 }}>
         <FeedLayout
           caption={captionText}
+          meta={postDate}
           likesCount={item.likesCount}
           commentsCount={item.commentsCount}
           comments={item.comments}
@@ -277,13 +294,14 @@ const styles = StyleSheet.create({
   },
   feedContent: {
     paddingHorizontal: 0,
+    alignItems: "stretch",
+    justifyContent: "flex-start",
   },
   videoWrapper: {
     flex: 1,
     width: "100%",
     backgroundColor: "#000",
     overflow: "hidden",
-    borderRadius: 12,
   },
   video: {
     width: "100%",
