@@ -13,7 +13,7 @@ const HomeTabs = () => {
   return (
     <SafeAreaView
       style={{ flex: 1, backgroundColor: "transparent" }}
-      edges={["top", "left", "right"]}
+      edges={["left", "right"]}
     >
       <TopTab.Navigator
         sceneContainerStyle={{ backgroundColor: "#000" }}

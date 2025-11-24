@@ -6,6 +6,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Dimensions,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { BlurView } from "expo-blur";
@@ -13,11 +14,14 @@ import { ResizeMode, Video } from "expo-av";
 import { FeedLayout } from "../../components";
 import { GET_ALL_POSTS } from "../../GraphQL/queries";
 import { useClient } from "../../client";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const PAGE_SIZE = 5;
 
 const CommunityScreen = () => {
   const client = useClient();
+  const insets = useSafeAreaInsets();
+  const windowHeight = Dimensions.get("window").height;
   const [posts, setPosts] = useState([]);
   const [cursor, setCursor] = useState(null);
   const [hasMore, setHasMore] = useState(true);
@@ -80,7 +84,10 @@ const CommunityScreen = () => {
 
   const handleLayout = (e) => {
     const { height } = e.nativeEvent.layout;
-    setContainerHeight(height);
+    // use the larger of measured height and window height so video snaps fill the screen
+    // while still allowing content to extend behind the status bar for a true edge-to-edge look
+    const targetHeight = Math.max(height + (insets?.top || 0), windowHeight);
+    setContainerHeight(targetHeight);
   };
 
   const handleLoadMore = () => {
@@ -162,16 +169,30 @@ const CommunityScreen = () => {
 
   const formatDate = (dateString) => {
     if (!dateString) return "";
-    const sanitized = String(dateString).trim().replace(/\.+$/, "");
-    const parsed = new Date(sanitized);
 
-    if (Number.isNaN(parsed.getTime())) return "";
+    const parsed = new Date(String(dateString).trim());
+    const now = Date.now();
+    const diffMs = now - parsed.getTime();
 
-    return parsed.toLocaleDateString(undefined, {
-      month: "short",
-      day: "numeric",
-      year: "numeric",
-    });
+    if (Number.isNaN(parsed.getTime()) || diffMs < 0) return "";
+
+    const diffSeconds = Math.floor(diffMs / 1000);
+    const diffMinutes = Math.floor(diffSeconds / 60);
+    const diffHours = Math.floor(diffMinutes / 60);
+    const diffDays = Math.floor(diffHours / 24);
+    const diffMonths = Math.floor(diffDays / 30);
+    const diffYears = Math.floor(diffDays / 365);
+
+    if (diffSeconds < 60) return "Just now";
+    if (diffMinutes < 60)
+      return `about ${diffMinutes} min${diffMinutes === 1 ? "" : "s"} ago`;
+    if (diffHours < 24)
+      return `about ${diffHours} hour${diffHours === 1 ? "" : "s"} ago`;
+    if (diffDays < 30) return `about ${diffDays} day${diffDays === 1 ? "" : "s"} ago`;
+    if (diffMonths < 12)
+      return `about ${diffMonths} month${diffMonths === 1 ? "" : "s"} ago`;
+
+    return `about ${diffYears} year${diffYears === 1 ? "" : "s"} ago`;
   };
 
   const renderItem = ({ item, index }) => {
@@ -256,6 +277,7 @@ const CommunityScreen = () => {
         keyExtractor={(item) => item.id}
         renderItem={renderItem}
         pagingEnabled
+        contentInsetAdjustmentBehavior="never"
         showsVerticalScrollIndicator={false}
         snapToAlignment="start"
         decelerationRate="fast"
