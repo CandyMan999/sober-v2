@@ -8,7 +8,6 @@ const {
   resetSobrietyDateResolver,
   addQuoteResolver,
   sendPostResolver,
-  directVideoUploadResolver,
 } = require("./mutations/index.js");
 
 const {
@@ -62,8 +61,9 @@ const resolvers = {
     resetSobrietyDate: resetSobrietyDateResolver,
     addQuote: addQuoteResolver,
     sendPost: sendPostResolver,
-    directVideoUpload: directVideoUploadResolver,
   },
+
+  Upload: require("graphql-upload").GraphQLUpload,
 
   // ---- Type-level resolvers ----
   Quote: {

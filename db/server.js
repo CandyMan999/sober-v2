@@ -21,6 +21,7 @@ async function start() {
       resolvers,
       introspection: true,
       playground: true,
+      uploads: true,
 
       // 👇 attach logged-in user via Expo token
       context: async ({ req }) => {

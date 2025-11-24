@@ -6,7 +6,7 @@ const {
 const { updateUserProfileResolver } = require("./updateUserProfile");
 const { resetSobrietyDateResolver } = require("./resetSobrietyDate");
 const { addQuoteResolver } = require("./quote");
-const { sendPostResolver, directVideoUploadResolver } = require("./sendPost");
+const { sendPostResolver } = require("./sendPost");
 
 module.exports = {
   directUploadResolver,
@@ -16,5 +16,4 @@ module.exports = {
   resetSobrietyDateResolver,
   addQuoteResolver,
   sendPostResolver,
-  directVideoUploadResolver,
 };
