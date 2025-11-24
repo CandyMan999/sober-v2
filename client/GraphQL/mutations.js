@@ -135,3 +135,12 @@ export const SEND_POST_MUTATION = gql`
     }
   }
 `;
+
+export const FLAG_POST_MUTATION = gql`
+  mutation FlagPost($postId: ID!, $flagged: Boolean!) {
+    flagPost(postId: $postId, flagged: $flagged) {
+      id
+      flagged
+    }
+  }
+`;
