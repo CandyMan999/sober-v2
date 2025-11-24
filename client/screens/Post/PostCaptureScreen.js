@@ -23,6 +23,7 @@ import { CameraView, Camera } from "expo-camera";
 import { useVideoPlayer, VideoView } from "expo-video";
 import { MaterialIcons, Feather } from "@expo/vector-icons";
 import { ReactNativeFile } from "extract-files";
+import Toast from "react-native-toast-message";
 
 import { useClient } from "../../client";
 import { SEND_POST_MUTATION } from "../../GraphQL/mutations";
@@ -34,6 +35,7 @@ const RECORDING_QUALITY = "720p"; // slightly lower to help with upload reliabil
 
 const PostCaptureScreen = ({ navigation }) => {
   const cameraRef = useRef(null);
+  const recordingStartRef = useRef(null); // 🔹 track start time
   const client = useClient();
   const { state, dispatch } = useContext(Context);
   const isFocused = useIsFocused(); // know when this screen is actually visible
@@ -106,29 +108,40 @@ const PostCaptureScreen = ({ navigation }) => {
       setTimer(MAX_DURATION_SECONDS);
       setIsTimerRunning(false);
       setCaption("");
+      recordingStartRef.current = null;
 
       return () => {
         // On blur: just reset flags (camera + player are handled by isFocused)
         setIsRecording(false);
         setIsTimerRunning(false);
+        recordingStartRef.current = null;
       };
     }, [])
   );
 
-  // ----- Countdown timer -----
+  // ----- Countdown timer (wall-clock based) -----
   useEffect(() => {
     let interval = null;
-    if (isTimerRunning && timer > 0) {
+
+    if (isTimerRunning && recordingStartRef.current) {
       interval = setInterval(() => {
-        setTimer((prev) => prev - 1);
-      }, 1000);
-    } else if (timer === 0 && isRecording) {
-      stopRecording(); // auto stop at 0
+        const elapsedMs = Date.now() - recordingStartRef.current;
+        const elapsedSec = Math.floor(elapsedMs / 1000);
+        const remaining = Math.max(MAX_DURATION_SECONDS - elapsedSec, 0);
+
+        setTimer(remaining);
+
+        // If we've hit zero, make sure recording stops
+        if (remaining === 0 && isRecording) {
+          stopRecording();
+        }
+      }, 500); // update twice per second for better sync
     }
+
     return () => {
       if (interval) clearInterval(interval);
     };
-  }, [isTimerRunning, timer, isRecording]);
+  }, [isTimerRunning, isRecording]);
 
   const handleCameraReady = () => {
     setIsCameraReady(true);
@@ -144,6 +157,7 @@ const PostCaptureScreen = ({ navigation }) => {
     setUploading(false);
     setIsRecording(false);
     setIsTimerRunning(false);
+    recordingStartRef.current = null;
   };
 
   const closeErrorModal = () => {
@@ -165,6 +179,7 @@ const PostCaptureScreen = ({ navigation }) => {
       };
 
       const startTime = Date.now();
+      recordingStartRef.current = startTime; // 🔹 mark the real start time
 
       const data = await cameraRef.current.recordAsync(options);
       const endTime = Date.now();
@@ -175,6 +190,7 @@ const PostCaptureScreen = ({ navigation }) => {
 
       setIsRecording(false);
       setIsTimerRunning(false);
+      recordingStartRef.current = null;
     } catch (e) {
       console.log("recordAsync error:", e);
       handleError("Error recording video");
@@ -186,6 +202,7 @@ const PostCaptureScreen = ({ navigation }) => {
       cameraRef.current.stopRecording();
       setIsRecording(false);
       setIsTimerRunning(false);
+      recordingStartRef.current = null;
     }
   };
 
@@ -197,6 +214,7 @@ const PostCaptureScreen = ({ navigation }) => {
     setUploading(false);
     setTimer(MAX_DURATION_SECONDS);
     setIsTimerRunning(false);
+    recordingStartRef.current = null;
   };
 
   const handleClose = () => {
@@ -214,7 +232,7 @@ const PostCaptureScreen = ({ navigation }) => {
 
     if (!videoUri || uploading) return;
 
-    const senderID = state?.user?.id || state?.me?.id || state?.me?._id || null;
+    const senderID = state?.user?.id || null;
 
     if (!senderID) {
       return handleError("Missing user id for this post.");
@@ -229,16 +247,24 @@ const PostCaptureScreen = ({ navigation }) => {
         name: "post-video.mp4",
       });
 
-      const result = await client.request(SEND_POST_MUTATION, {
+      const { sendPost } = await client.request(SEND_POST_MUTATION, {
         file: fileForUpload,
         senderID,
         text: caption?.trim?.() || null,
       });
 
-      const sendPost = result?.sendPost;
-
       if (!sendPost) {
         throw new Error("We couldn't save your post. Please try again.");
+      } else {
+        Toast.show({
+          type: "success",
+          text1: "Post Sent",
+          text2: "This post will soon be in the community.",
+          position: "top",
+          autoHide: true,
+          visibilityTime: 6000,
+          topOffset: 80,
+        });
       }
 
       // Clear state and navigate away
@@ -246,9 +272,6 @@ const PostCaptureScreen = ({ navigation }) => {
       setCaption("");
 
       navigation.navigate("HomeTabRoot");
-      if (dispatch) {
-        dispatch({ type: "VIDEO_MESSAGE_TOAST", payload: true });
-      }
     } catch (err) {
       console.log("Error in handleSend:", err);
       const message =
