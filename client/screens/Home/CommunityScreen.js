@@ -4,6 +4,7 @@ import {
   ActivityIndicator,
   Dimensions,
   FlatList,
+  Modal,
   Pressable,
   StyleSheet,
   Text,
@@ -398,45 +399,56 @@ const CommunityScreen = () => {
       />
 
       {selectedPost ? (
-        <>
-          <Pressable style={styles.sheetBackdrop} onPress={closeMoreSheet} />
-          <Animated.View
-            style={[styles.bottomSheet, { transform: [{ translateY }] }]}
-          >
-            <Text style={styles.sheetTitle}>Post options</Text>
-            <TouchableOpacity style={styles.sheetAction} onPress={() => {}}>
-              <View style={styles.sheetActionLeft}>
-                <Ionicons name="bookmark-outline" size={20} color="#fef3c7" />
-                <Text style={styles.sheetActionText}>Save</Text>
-              </View>
-              <Ionicons name="chevron-forward" size={18} color="#9ca3af" />
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.sheetAction}
-              onPress={() => handleReviewPress(selectedPost.id, selectedPost.review)}
-              disabled={reviewingPostId === selectedPost.id}
+        <Modal
+          animationType="none"
+          transparent
+          visible
+          onRequestClose={closeMoreSheet}
+        >
+          <View style={styles.modalContainer}>
+            <Pressable style={styles.sheetBackdrop} onPress={closeMoreSheet} />
+            <Animated.View
+              style={[styles.bottomSheet, { transform: [{ translateY }] }]}
             >
-              <View style={styles.sheetActionLeft}>
-                <Ionicons
-                  name={selectedPost.review ? "flag" : "flag-outline"}
-                  size={20}
-                  color="#fef3c7"
-                />
-                <Text style={styles.sheetActionText}>
-                  {selectedPost.review ? "Unmark for review" : "Flag for review"}
-                </Text>
-              </View>
-              {reviewingPostId === selectedPost.id ? (
-                <ActivityIndicator color="#f59e0b" style={styles.sheetSpinner} />
-              ) : (
+              <Text style={styles.sheetTitle}>Post options</Text>
+              <TouchableOpacity style={styles.sheetAction} onPress={() => {}}>
+                <View style={styles.sheetActionLeft}>
+                  <Ionicons name="bookmark-outline" size={20} color="#fef3c7" />
+                  <Text style={styles.sheetActionText}>Save</Text>
+                </View>
                 <Ionicons name="chevron-forward" size={18} color="#9ca3af" />
-              )}
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.sheetCancel} onPress={closeMoreSheet}>
-              <Text style={styles.sheetCancelText}>Close</Text>
-            </TouchableOpacity>
-          </Animated.View>
-        </>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.sheetAction}
+                onPress={() =>
+                  handleReviewPress(selectedPost.id, selectedPost.review)
+                }
+                disabled={reviewingPostId === selectedPost.id}
+              >
+                <View style={styles.sheetActionLeft}>
+                  <Ionicons
+                    name={selectedPost.review ? "flag" : "flag-outline"}
+                    size={20}
+                    color="#fef3c7"
+                  />
+                  <Text style={styles.sheetActionText}>
+                    {selectedPost.review
+                      ? "Unmark for review"
+                      : "Flag for review"}
+                  </Text>
+                </View>
+                {reviewingPostId === selectedPost.id ? (
+                  <ActivityIndicator color="#f59e0b" style={styles.sheetSpinner} />
+                ) : (
+                  <Ionicons name="chevron-forward" size={18} color="#9ca3af" />
+                )}
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.sheetCancel} onPress={closeMoreSheet}>
+                <Text style={styles.sheetCancelText}>Close</Text>
+              </TouchableOpacity>
+            </Animated.View>
+          </View>
+        </Modal>
       ) : null}
     </View>
   );
@@ -512,6 +524,11 @@ const styles = StyleSheet.create({
   },
   footer: {
     paddingVertical: 20,
+  },
+  modalContainer: {
+    flex: 1,
+    ...StyleSheet.absoluteFillObject,
+    justifyContent: "flex-end",
   },
   sheetBackdrop: {
     ...StyleSheet.absoluteFillObject,
