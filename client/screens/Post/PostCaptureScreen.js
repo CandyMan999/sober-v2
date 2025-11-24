@@ -22,21 +22,15 @@ import { useFocusEffect, useIsFocused } from "@react-navigation/native";
 import { CameraView, Camera } from "expo-camera";
 import { useVideoPlayer, VideoView } from "expo-video";
 import { MaterialIcons, Feather } from "@expo/vector-icons";
-import axios from "axios";
+import { ReactNativeFile } from "extract-files";
 
 import { useClient } from "../../client";
-import {
-  DIRECT_VIDEO_UPLOAD_MUTATION,
-  SEND_POST_MUTATION,
-} from "../../GraphQL/mutations";
+import { SEND_POST_MUTATION } from "../../GraphQL/mutations";
 import { RecordButton, AlertModal, LogoLoader } from "../../components";
 import Context from "../../context";
 
 const MAX_DURATION_SECONDS = 120; // target 2 min
 const RECORDING_QUALITY = "720p"; // slightly lower to help with upload reliability
-
-// Simple delay helper for retry backoff
-const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 const PostCaptureScreen = ({ navigation }) => {
   const cameraRef = useRef(null);
@@ -214,71 +208,6 @@ const PostCaptureScreen = ({ navigation }) => {
     navigation.navigate("HomeTabRoot");
   };
 
-  // Helper: upload to Cloudflare with a built-in retry (2 total attempts)
-  const uploadToCloudflareWithRetry = async (uploadURL, fileUri) => {
-    const maxAttempts = 2;
-    let lastError = null;
-
-    for (let attempt = 1; attempt <= maxAttempts; attempt++) {
-      console.log(`⬆️ CF upload attempt ${attempt}/${maxAttempts}`);
-
-      try {
-        const fd = new FormData();
-        fd.append("file", {
-          uri: fileUri,
-          type: "video/mp4",
-          name: "post-video.mp4",
-        });
-
-        const res = await axios.post(uploadURL, fd, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-          timeout: 120000, // 120s timeout – tweak as needed
-          maxContentLength: Infinity,
-          maxBodyLength: Infinity,
-          validateStatus: () => true, // we'll handle status manually
-        });
-
-        const status = res?.status ?? 0;
-        const data = res?.data;
-
-        if (status >= 200 && status < 300) {
-          console.log("✅ CF upload success via Axios (attempt", attempt, ")");
-          return; // success
-        }
-
-        // Build a useful error message for non-2xx
-        let msg = `Video upload failed (status ${status}). Please try again or record a shorter clip.`;
-        if (data?.errors) {
-          msg =
-            "Video upload failed: " +
-            (Array.isArray(data.errors)
-              ? data.errors.map((e) => e.message || e).join(", ")
-              : JSON.stringify(data.errors));
-        }
-
-        lastError = new Error(msg);
-        console.log("CF upload error (axios):", msg);
-      } catch (networkErr) {
-        const msg =
-          networkErr?.message ||
-          "Network error while uploading video to Cloudflare.";
-        lastError = new Error(msg);
-        console.log("CF upload network error (axios):", msg);
-      }
-
-      // If we got here, this attempt failed
-      if (attempt < maxAttempts) {
-        // short backoff before retrying
-        await delay(1500);
-      }
-    }
-
-    // After all attempts failed, throw the last error so handleSend can show modal
-    throw lastError || new Error("Video upload failed. Please try again.");
-  };
-
   const handleSend = async () => {
     // Close keyboard if it's open
     Keyboard.dismiss();
@@ -294,42 +223,25 @@ const PostCaptureScreen = ({ navigation }) => {
     try {
       setUploading(true);
 
-      // 1) Get direct upload URL + uid from backend
-      const { directVideoUpload } = await client.request(
-        DIRECT_VIDEO_UPLOAD_MUTATION
-      );
+      const fileForUpload = new ReactNativeFile({
+        uri: videoUri,
+        type: "video/mp4",
+        name: "post-video.mp4",
+      });
 
-      console.log("🔗 directVideoUpload:", directVideoUpload);
+      const result = await client.request(SEND_POST_MUTATION, {
+        file: fileForUpload,
+        senderID,
+        text: caption?.trim?.() || null,
+      });
 
-      const { uploadURL, uid } = directVideoUpload || {};
-      if (!uploadURL || !uid) {
-        throw new Error("Missing uploadURL or uid from directVideoUpload");
+      const sendPost = result?.sendPost;
+
+      if (!sendPost) {
+        throw new Error("We couldn't save your post. Please try again.");
       }
 
-      // 2) Upload video to Cloudflare with retry
-      await uploadToCloudflareWithRetry(uploadURL, videoUri);
-
-      // 3) Only AFTER successful upload: create Post + Video row in backend
-      let sendPost;
-      try {
-        const result = await client.request(SEND_POST_MUTATION, {
-          url: "", // backend builds HLS URL from publicId
-          publicId: uid,
-          senderID,
-          text: caption.trim() || null,
-        });
-        sendPost = result?.sendPost;
-      } catch (e) {
-        console.log("Error creating post after upload:", e);
-        handleError(
-          "Upload finished, but we couldn't save your post. Please try again."
-        );
-        return;
-      }
-
-      console.log("post was sent: ", sendPost);
-
-      // 4) Now that everything succeeded: clear state and navigate away
+      // Clear state and navigate away
       setVideoUri(null);
       setCaption("");
 
@@ -339,10 +251,11 @@ const PostCaptureScreen = ({ navigation }) => {
       }
     } catch (err) {
       console.log("Error in handleSend:", err);
-      handleError(
+      const message =
+        err?.response?.errors?.[0]?.message ||
         err?.message ||
-          "Error preparing your post. Please try again in a moment."
-      );
+        "Error sending your post. Please try again in a moment.";
+      handleError(message);
     } finally {
       setUploading(false);
     }

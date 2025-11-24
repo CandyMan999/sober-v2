@@ -45,11 +45,6 @@ const typeDefs = gql`
     POST
   }
 
-  type DirectVideoUpload {
-    uploadURL: String!
-    uid: String!
-  }
-
   type Post {
     id: ID!
     author: User!
@@ -173,6 +168,8 @@ const typeDefs = gql`
     id: String!
   }
 
+  scalar Upload
+
   type Query {
     me(token: String!): User
     fetchMe(token: String!): User!
@@ -201,7 +198,6 @@ const typeDefs = gql`
     ): User!
     resetSobrietyDate(token: String!, newStartAt: String!): User!
     directUpload: DirectUploadImage!
-    directVideoUpload: DirectVideoUpload!
     addPicture(token: String!, url: String!, publicId: String): Picture!
     deletePhoto(token: String!, photoId: ID!): User!
     createRoom(name: String!): Room!
@@ -213,7 +209,7 @@ const typeDefs = gql`
     ): Comment!
     addVenue(name: String!, type: Place!, lat: Float!, long: Float!): Venue
     addQuote(text: String!): Quote
-    sendPost(url: String!, publicId: String!, senderID: ID!, text: String): Post
+    sendPost(file: Upload!, senderID: ID!, text: String): Post
   }
 `;
 

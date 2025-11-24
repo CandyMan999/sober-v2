@@ -1,6 +1,11 @@
 // graphQL/mutations/sendPost.js
 const { AuthenticationError } = require("apollo-server");
 const axios = require("axios");
+const fs = require("fs");
+const os = require("os");
+const path = require("path");
+const { pipeline } = require("stream/promises");
+const FormData = require("form-data");
 const { User, Video, Post } = require("../../models");
 // const {
 //   sendPushNotification,
@@ -24,6 +29,104 @@ const CF_STREAM_CUSTOMER_DOMAIN =
 // Your nudity detector
 const NUDE_DETECTOR_URL =
   "https://auto-detect-1fcde9e6d000.herokuapp.com/nudity/detect";
+
+const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+// -----------------------------
+// Upload helpers (server → Cloudflare)
+// -----------------------------
+const uploadStreamToTempFile = async (uploadPromise) => {
+  const { createReadStream, filename, mimetype } = await uploadPromise;
+  const stream = createReadStream();
+
+  if (!stream) {
+    throw new Error("Invalid upload stream received");
+  }
+
+  const tempPath = path.join(
+    os.tmpdir(),
+    `${Date.now()}-${filename || "video-upload"}`
+  );
+
+  await pipeline(stream, fs.createWriteStream(tempPath));
+
+  return {
+    tempPath,
+    filename: filename || "video-upload",
+    mimetype: mimetype || "application/octet-stream",
+  };
+};
+
+const uploadVideoToCloudflare = async ({ tempPath, filename, mimetype }) => {
+  if (!CF_ACCOUNT_ID || !CF_API_TOKEN) {
+    throw new Error(
+      "Missing Cloudflare credentials (CF_ACCOUNT_ID / CF_STREAM_TOKEN or CF_API_TOKEN)"
+    );
+  }
+
+  const form = new FormData();
+  form.append("file", fs.createReadStream(tempPath), {
+    filename,
+    contentType: mimetype,
+  });
+  form.append("maxDurationSeconds", 121);
+
+  const response = await axios.post(
+    `https://api.cloudflare.com/client/v4/accounts/${CF_ACCOUNT_ID}/stream`,
+    form,
+    {
+      headers: {
+        Authorization: `Bearer ${CF_API_TOKEN}`,
+        ...form.getHeaders(),
+      },
+      maxContentLength: Infinity,
+      maxBodyLength: Infinity,
+      timeout: 120000,
+      validateStatus: () => true,
+    }
+  );
+
+  const data = response?.data;
+
+  if (!data?.success || !data?.result?.uid) {
+    const cfErrors =
+      data?.errors && Array.isArray(data.errors)
+        ? data.errors.map((e) => e?.message || JSON.stringify(e)).join("; ")
+        : null;
+    const status = response?.status || "unknown";
+
+    throw new Error(
+      cfErrors ||
+        `Cloudflare Stream upload failed (status ${status}). Please try again.`
+    );
+  }
+
+  return data.result;
+};
+
+const uploadVideoWithRetry = async (fileInfo) => {
+  const maxAttempts = 3;
+  let lastError = null;
+
+  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+    try {
+      console.log(`[cf] upload attempt ${attempt}/${maxAttempts}`);
+      return await uploadVideoToCloudflare(fileInfo);
+    } catch (err) {
+      lastError = err;
+      console.error(
+        `[cf] upload attempt ${attempt} failed:`,
+        err?.message || err
+      );
+
+      if (attempt < maxAttempts) {
+        await delay(1500 * attempt);
+      }
+    }
+  }
+
+  throw lastError || new Error("Upload failed after retries");
+};
 
 // -----------------------------
 // Cloudflare helpers
@@ -276,88 +379,47 @@ const customNudityAPI = async (videoId, uid) => {
 // Resolvers
 // -----------------------------
 module.exports = {
-  // 1) Create a CF Stream direct upload URL
-  directVideoUploadResolver: async () => {
-    try {
-      if (!CF_ACCOUNT_ID || !CF_API_TOKEN) {
-        throw new Error(
-          "Missing Cloudflare credentials (CF_ACCOUNT_ID / CF_STREAM_TOKEN or CF_API_TOKEN)"
-        );
-      }
-
-      const body = {
-        maxDurationSeconds: 121,
-        // DO NOT include protocol in allowedOrigins:
-        allowedOrigins: ["gonechatting.com", "localhost:3000"],
-      };
-
-      const resp = await axios.post(
-        `https://api.cloudflare.com/client/v4/accounts/${CF_ACCOUNT_ID}/stream/direct_upload`,
-        body,
-        {
-          headers: {
-            Authorization: `Bearer ${CF_API_TOKEN}`,
-            "Content-Type": "application/json",
-          },
-          timeout: 30000,
-        }
-      );
-
-      const data = resp && resp.data ? resp.data : null;
-      const ok = data && data.success === true;
-      const result = ok && data.result ? data.result : null;
-      const uploadURL = result && result.uploadURL ? result.uploadURL : null;
-      const uid = result && result.uid ? result.uid : null;
-
-      if (!ok || !uploadURL || !uid) {
-        throw new Error(
-          `Cloudflare Stream direct upload failed: ${JSON.stringify(data)}`
-        );
-      }
-
-      // Do NOT kickoff downloads here; we’ll do it when nudity job runs.
-      return { uploadURL, uid, id: uid };
-    } catch (err) {
-      const payload =
-        err && err.response && err.response.data
-          ? JSON.stringify(err.response.data)
-          : err && err.message
-          ? err.message
-          : String(err);
-      throw new AuthenticationError(payload);
-    }
-  },
-
-  // 2) Store a sent video; queue the CF UID for post-processing
   sendPostResolver: async (root, args) => {
-    const { url, publicId, senderID, text } = args;
+    const { file, senderID, text } = args;
+
     try {
-      if (!publicId) {
-        throw new Error("publicId is required");
+      if (!file) {
+        throw new Error("Video file is required");
       }
       if (!senderID) {
         throw new Error("senderID is required");
       }
 
-      // Make sure sender exists (basic sanity check)
       const sender = await User.findById(senderID);
       if (!sender) {
         throw new Error("Sender not found");
       }
 
-      console.log("sendPostResolver → publicId:", publicId);
+      const uploadInfo = await uploadStreamToTempFile(file);
+      let publicId = null;
+      let hlsUrl = null;
 
-      // Build HLS URL that we store first
-      const hslUrlToStore = toCfHls(publicId);
+      try {
+        const cfResult = await uploadVideoWithRetry(uploadInfo);
+        publicId = cfResult?.uid || cfResult?.id;
 
-      // 1) Create the Video row
+        if (!publicId) {
+          throw new Error("Cloudflare upload did not return a uid");
+        }
+
+        hlsUrl = cfResult?.playback?.hls || toCfHls(publicId);
+      } finally {
+        if (uploadInfo?.tempPath) {
+          fs.promises.unlink(uploadInfo.tempPath).catch(() => {});
+        }
+      }
+
       const video = await Video.create({
-        url: hslUrlToStore, // store HLS first; later swapped to MP4 by nudity job
-        publicId, // CF Stream UID
+        url: hlsUrl,
+        publicId,
         sender: senderID,
       });
 
-      // 2) Create the Post row (linked to this video)
       const newPost = await Post.create({
         author: senderID,
         text: text || null,
@@ -367,14 +429,11 @@ module.exports = {
         commentsCount: 0,
       });
 
-      // 3) Back-link video → post (so nudity job can flag the post)
       video.post = newPost._id;
       await video.save();
 
-      // 4) Queue the UID for nudity checking
       addToQueue(video._id, publicId);
 
-      // 5) Return a populated Post (author + video)
       const populatedPost = await Post.findById(newPost._id)
         .populate("author")
         .populate("video")

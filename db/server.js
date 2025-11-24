@@ -1,5 +1,7 @@
 // server.js
-const { ApolloServer } = require("apollo-server");
+const express = require("express");
+const { ApolloServer } = require("apollo-server-express");
+const { graphqlUploadExpress } = require("graphql-upload-minimal");
 const mongoose = require("mongoose");
 const { typeDefs, resolvers } = require("./graphQL");
 const { User } = require("./models");
@@ -15,6 +17,8 @@ async function start() {
       useUnifiedTopology: true,
     });
     console.log("✅ MongoDB connected");
+
+    const app = express();
 
     const server = new ApolloServer({
       typeDefs,
@@ -42,9 +46,21 @@ async function start() {
       },
     });
 
-    const { url } = await server.listen(PORT);
+    await server.start();
+
+    app.use(
+      graphqlUploadExpress({
+        maxFileSize: 200 * 1024 * 1024, // 200MB
+        maxFiles: 1,
+      })
+    );
+
+    server.applyMiddleware({ app, path: "/graphql" });
+
+    await new Promise((resolve) => app.listen({ port: PORT }, resolve));
+
     cronJob();
-    console.log(`🚀 Server ready at ${url}`);
+    console.log(`🚀 Server ready at http://localhost:${PORT}${server.graphqlPath}`);
   } catch (err) {
     console.error("❌ Error starting server:", err);
   }

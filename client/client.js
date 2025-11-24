@@ -1,5 +1,6 @@
 // client.js
 import { GraphQLClient } from "graphql-request";
+import { extractFiles } from "extract-files";
 import { getToken } from "./utils/helpers";
 import { GRAPHQL_URI } from "./config/endpoint";
 
@@ -15,10 +16,50 @@ export const useClient = () => {
       try {
         const token = await getToken(); // <- async storage read
 
-        // attach token to headers for this request
-        graphQLClient.setHeader("x-push-token", token || "");
+        const headers = {
+          "x-push-token": token || "",
+        };
 
-        // forward to real graphql-request client
+        // Detect extractable files (ReactNativeFile, Blob, etc.) so we can
+        // switch to the multipart GraphQL upload spec when needed.
+        const operation = { query, variables };
+        const { clone, files } = extractFiles(operation);
+
+        if (files.size > 0) {
+          const form = new FormData();
+          form.append("operations", JSON.stringify(clone));
+
+          const map = {};
+          let fileIndex = 0;
+          files.forEach((paths) => {
+            map[++fileIndex] = paths;
+          });
+          form.append("map", JSON.stringify(map));
+
+          fileIndex = 0;
+          files.forEach((_, file) => {
+            form.append(`${++fileIndex}`, file);
+          });
+
+          const response = await fetch(GRAPHQL_URI, {
+            method: "POST",
+            headers,
+            body: form,
+          });
+
+          const json = await response.json();
+
+          if (json.errors && json.errors.length > 0) {
+            const error = new Error(json.errors[0].message);
+            error.response = json;
+            throw error;
+          }
+
+          return json.data;
+        }
+
+        // No files? fall back to JSON POST via graphql-request
+        graphQLClient.setHeaders(headers);
         return graphQLClient.request(query, variables);
       } catch (err) {
         console.log("GraphQL request error:", err);
