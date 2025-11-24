@@ -7,6 +7,8 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import { BlurView } from "expo-blur";
 import { ResizeMode, Video } from "expo-av";
 import { FeedLayout } from "../../components";
 import { GET_ALL_POSTS } from "../../GraphQL/queries";
@@ -128,9 +130,13 @@ const CommunityScreen = () => {
       <TouchableOpacity
         style={styles.replayButton}
         onPress={() => replayVideo(index)}
-        activeOpacity={0.85}
+        activeOpacity={0.9}
       >
-        <Text style={styles.replayText}>Watch again</Text>
+        <BlurView intensity={70} tint="dark" style={styles.replayGlass} />
+        <View style={styles.replayContent}>
+          <Ionicons name="refresh" size={20} color="#fef3c7" />
+          <Text style={styles.replayText}>Watch Again</Text>
+        </View>
       </TouchableOpacity>
     </View>
   );
@@ -156,12 +162,16 @@ const CommunityScreen = () => {
 
   const formatDate = (dateString) => {
     if (!dateString) return "";
-    const formatted = new Date(dateString).toLocaleDateString(undefined, {
-      month: "long",
-      day: "numeric",
-    });
+    const sanitized = String(dateString).trim().replace(/\.+$/, "");
+    const parsed = new Date(sanitized);
 
-    return formatted;
+    if (Number.isNaN(parsed.getTime())) return "";
+
+    return parsed.toLocaleDateString(undefined, {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    });
   };
 
   const renderItem = ({ item, index }) => {
@@ -294,6 +304,7 @@ const styles = StyleSheet.create({
   },
   feedContent: {
     paddingHorizontal: 0,
+    paddingTop: 0,
     alignItems: "stretch",
     justifyContent: "flex-start",
   },
@@ -314,15 +325,30 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   replayButton: {
-    paddingHorizontal: 20,
+    overflow: "hidden",
+    borderRadius: 999,
+    minWidth: 170,
     paddingVertical: 12,
-    backgroundColor: "rgba(245,158,11,0.9)",
+    paddingHorizontal: 16,
+    backgroundColor: "rgba(255,255,255,0.08)",
+    borderWidth: 1,
+    borderColor: "rgba(245,158,11,0.5)",
+  },
+  replayGlass: {
+    ...StyleSheet.absoluteFillObject,
     borderRadius: 999,
   },
+  replayContent: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    columnGap: 10,
+  },
   replayText: {
-    color: "#0b1220",
-    fontWeight: "700",
-    fontSize: 16,
+    color: "#fef3c7",
+    fontWeight: "800",
+    fontSize: 15,
+    letterSpacing: 0.4,
   },
   footer: {
     paddingVertical: 20,

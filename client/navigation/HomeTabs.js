@@ -1,6 +1,6 @@
 import React from "react";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 
 import CommunityScreen from "../screens/Home/CommunityScreen";
 import QuotesScreen from "../screens/Home/QuotesScreen";
@@ -8,36 +8,38 @@ import QuotesScreen from "../screens/Home/QuotesScreen";
 const TopTab = createMaterialTopTabNavigator();
 
 const HomeTabs = () => {
+  const insets = useSafeAreaInsets();
+
   return (
     <SafeAreaView
       style={{ flex: 1, backgroundColor: "transparent" }}
-      edges={["left", "right"]}
+      edges={["top", "left", "right"]}
     >
       <TopTab.Navigator
         sceneContainerStyle={{ backgroundColor: "#000" }}
         screenOptions={{
           tabBarIndicatorStyle: {
-            backgroundColor: "#fff",
+            backgroundColor: "#f59e0b",
             height: 3,
             borderRadius: 999,
-            opacity: 0.9,
+            opacity: 1,
           },
           tabBarStyle: {
-            backgroundColor: "rgba(0,0,0,0.1)",
+            backgroundColor: "transparent",
             borderBottomWidth: 0,
             shadowOpacity: 0,
             elevation: 0,
             position: "absolute",
             left: 0,
             right: 0,
-            top: 0,
+            top: insets.top,
           },
           tabBarActiveTintColor: "#fff",
           tabBarInactiveTintColor: "rgba(255,255,255,0.7)",
           tabBarLabelStyle: {
-            fontWeight: "700",
+            fontWeight: "800",
             fontSize: 16,
-            letterSpacing: 0.5,
+            letterSpacing: 1,
             textTransform: "none",
           },
           tabBarPressColor: "transparent",
