@@ -76,3 +76,40 @@ export const GET_QUOTES_QUERY = `
     }
   }
 `;
+
+export const GET_ALL_POSTS = `
+  query GetAllPosts($limit: Int, $cursor: String) {
+    getAllPosts(limit: $limit, cursor: $cursor) {
+      hasMore
+      cursor
+      posts {
+        id
+        text
+        flagged
+        likesCount
+        commentsCount
+        createdAt
+        author {
+          id
+          username
+          profilePicUrl
+        }
+        video {
+          id
+          url
+          flagged
+        }
+        comments {
+          id
+          text
+          author {
+            id
+            username
+            profilePicUrl
+          }
+          createdAt
+        }
+      }
+    }
+  }
+`;

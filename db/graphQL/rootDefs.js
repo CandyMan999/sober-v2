@@ -103,6 +103,12 @@ const typeDefs = gql`
     updatedAt: String
   }
 
+  type PostConnection {
+    posts: [Post!]!
+    hasMore: Boolean!
+    cursor: String
+  }
+
   type Room {
     id: ID!
     name: String
@@ -186,6 +192,7 @@ const typeDefs = gql`
     getBarLocation(lat: Float!, long: Float!, token: String, bar: String): [Bar]
     getVenues: [Venue]
     getQuotes: [Quote!]!
+    getAllPosts(limit: Int, cursor: String): PostConnection!
   }
 
   type Mutation {

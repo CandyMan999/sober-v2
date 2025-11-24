@@ -10,6 +10,7 @@ const FeedLayout = ({
   title,
   subtitle,
   caption,
+  meta,
   likesCount = 0,
   commentsCount = 0,
   comments = [],
@@ -17,6 +18,7 @@ const FeedLayout = ({
   children,
   onLikePress,
   onMorePress,
+  contentStyle,
 }) => {
   const [showComments, setShowComments] = useState(false);
 
@@ -27,7 +29,7 @@ const FeedLayout = ({
   return (
     <View style={styles.container}>
       {/* Main content (quote/post/video/etc.) */}
-      <View style={styles.contentArea}>
+      <View style={[styles.contentArea, contentStyle]}>
         {children ? (
           children
         ) : (
@@ -48,6 +50,7 @@ const FeedLayout = ({
           ) : null}
           {caption ? <Text style={styles.caption}>{caption}</Text> : null}
         </View>
+        {meta ? <Text style={styles.meta}>{meta}</Text> : null}
       </View>
 
       {/* Right-side floating icons with counts */}
@@ -129,6 +132,11 @@ const styles = StyleSheet.create({
     color: "#e5e7eb",
     fontSize: 14,
     flexShrink: 1,
+  },
+  meta: {
+    color: "#9ca3af",
+    fontSize: 13,
+    marginTop: 4,
   },
 });
 
