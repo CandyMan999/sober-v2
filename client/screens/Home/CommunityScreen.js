@@ -217,7 +217,7 @@ const CommunityScreen = () => {
       console.error("Error updating review status", err);
     } finally {
       setReviewingPostId(null);
-      setSelectedPost(null);
+      closeMoreSheet();
     }
   };
 
