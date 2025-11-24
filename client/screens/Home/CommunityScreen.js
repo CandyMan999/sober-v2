@@ -1,6 +1,8 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import {
+  Animated,
   ActivityIndicator,
+  Dimensions,
   FlatList,
   Pressable,
   StyleSheet,
@@ -17,7 +19,9 @@ import { GET_ALL_POSTS } from "../../GraphQL/queries";
 import { useClient } from "../../client";
 import { SET_POST_REVIEW_MUTATION } from "../../GraphQL/mutations";
 
+const { height: WINDOW_HEIGHT } = Dimensions.get("window");
 const PAGE_SIZE = 5;
+const SHEET_HEIGHT = Math.round(WINDOW_HEIGHT * 0.33);
 
 const CommunityScreen = () => {
   const client = useClient();
@@ -34,6 +38,7 @@ const CommunityScreen = () => {
   const [isMuted, setIsMuted] = useState(false);
   const [reviewingPostId, setReviewingPostId] = useState(null);
   const [selectedPost, setSelectedPost] = useState(null);
+  const sheetAnim = useRef(new Animated.Value(0)).current;
 
   const cursorRef = useRef(null);
   const videoRefs = useRef({});
@@ -220,12 +225,35 @@ const CommunityScreen = () => {
   };
 
   const closeMoreSheet = () => {
-    setSelectedPost(null);
+    Animated.spring(sheetAnim, {
+      toValue: 0,
+      useNativeDriver: true,
+      damping: 16,
+      stiffness: 180,
+      mass: 0.9,
+    }).start(() => setSelectedPost(null));
   };
 
   const handleToggleSound = () => {
     setIsMuted((prev) => !prev);
   };
+
+  useEffect(() => {
+    if (!selectedPost) return;
+
+    Animated.spring(sheetAnim, {
+      toValue: 1,
+      useNativeDriver: true,
+      damping: 16,
+      stiffness: 180,
+      mass: 0.9,
+    }).start();
+  }, [selectedPost, sheetAnim]);
+
+  const translateY = sheetAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: [SHEET_HEIGHT + 60, 0],
+  });
 
   const formatDate = (dateString) => {
     if (!dateString) return "";
@@ -372,24 +400,42 @@ const CommunityScreen = () => {
       {selectedPost ? (
         <>
           <Pressable style={styles.sheetBackdrop} onPress={closeMoreSheet} />
-          <View style={styles.bottomSheet}>
+          <Animated.View
+            style={[styles.bottomSheet, { transform: [{ translateY }] }]}
+          >
             <Text style={styles.sheetTitle}>Post options</Text>
+            <TouchableOpacity style={styles.sheetAction} onPress={() => {}}>
+              <View style={styles.sheetActionLeft}>
+                <Ionicons name="bookmark-outline" size={20} color="#fef3c7" />
+                <Text style={styles.sheetActionText}>Save</Text>
+              </View>
+              <Ionicons name="chevron-forward" size={18} color="#9ca3af" />
+            </TouchableOpacity>
             <TouchableOpacity
               style={styles.sheetAction}
               onPress={() => handleReviewPress(selectedPost.id, selectedPost.review)}
               disabled={reviewingPostId === selectedPost.id}
             >
-              <Text style={styles.sheetActionText}>
-                {selectedPost.review ? "Unmark for review" : "Flag for review"}
-              </Text>
+              <View style={styles.sheetActionLeft}>
+                <Ionicons
+                  name={selectedPost.review ? "flag" : "flag-outline"}
+                  size={20}
+                  color="#fef3c7"
+                />
+                <Text style={styles.sheetActionText}>
+                  {selectedPost.review ? "Unmark for review" : "Flag for review"}
+                </Text>
+              </View>
               {reviewingPostId === selectedPost.id ? (
                 <ActivityIndicator color="#f59e0b" style={styles.sheetSpinner} />
-              ) : null}
+              ) : (
+                <Ionicons name="chevron-forward" size={18} color="#9ca3af" />
+              )}
             </TouchableOpacity>
             <TouchableOpacity style={styles.sheetCancel} onPress={closeMoreSheet}>
               <Text style={styles.sheetCancelText}>Close</Text>
             </TouchableOpacity>
-          </View>
+          </Animated.View>
         </>
       ) : null}
     </View>
@@ -476,9 +522,10 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
+    height: SHEET_HEIGHT,
     paddingHorizontal: 20,
-    paddingTop: 16,
-    paddingBottom: 32,
+    paddingTop: 20,
+    paddingBottom: 28,
     backgroundColor: "#0f172a",
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
@@ -489,25 +536,40 @@ const styles = StyleSheet.create({
     color: "#e5e7eb",
     fontSize: 16,
     fontWeight: "700",
-    marginBottom: 12,
+    marginBottom: 16,
   },
   sheetAction: {
-    paddingVertical: 12,
-    paddingHorizontal: 4,
+    paddingVertical: 14,
+    paddingHorizontal: 12,
+    marginBottom: 10,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
+    backgroundColor: "rgba(30,41,59,0.85)",
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: "rgba(148,163,184,0.35)",
+    shadowColor: "#0ea5e9",
+    shadowOpacity: 0.25,
+    shadowRadius: 10,
+    shadowOffset: { width: 0, height: 6 },
+    elevation: 3,
+  },
+  sheetActionLeft: {
+    flexDirection: "row",
+    alignItems: "center",
   },
   sheetActionText: {
     color: "#fef3c7",
-    fontSize: 15,
-    fontWeight: "600",
+    fontSize: 16,
+    fontWeight: "700",
+    marginLeft: 12,
   },
   sheetSpinner: {
     marginLeft: 8,
   },
   sheetCancel: {
-    marginTop: 6,
+    marginTop: 4,
     paddingVertical: 12,
   },
   sheetCancelText: {
