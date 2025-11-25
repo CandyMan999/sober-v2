@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   Animated,
   ActivityIndicator,
@@ -21,6 +22,9 @@ import { GET_ALL_POSTS } from "../../GraphQL/queries";
 import { useClient } from "../../client";
 import { SET_POST_REVIEW_MUTATION } from "../../GraphQL/mutations";
 
+const TUTORIAL_SEEN_KEY = "community_tutorial_seen";
+const tutorialImage = require("../../assets/swipe.PNG");
+
 const { height: WINDOW_HEIGHT } = Dimensions.get("window");
 const PAGE_SIZE = 5;
 const SHEET_HEIGHT = Math.round(WINDOW_HEIGHT * 0.33);
@@ -40,6 +44,7 @@ const CommunityScreen = () => {
   const [isMuted, setIsMuted] = useState(false);
   const [reviewingPostId, setReviewingPostId] = useState(null);
   const [selectedPost, setSelectedPost] = useState(null);
+  const [showTutorial, setShowTutorial] = useState(false);
   const sheetAnim = useRef(new Animated.Value(0)).current;
 
   const cursorRef = useRef(null);
@@ -90,6 +95,23 @@ const CommunityScreen = () => {
     fetchPosts(false);
     // Intentionally run once on mount to avoid re-fetch loops
     // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    const maybeShowTutorial = async () => {
+      try {
+        const hasSeen = await AsyncStorage.getItem(TUTORIAL_SEEN_KEY);
+
+        if (!hasSeen) {
+          setShowTutorial(true);
+          await AsyncStorage.setItem(TUTORIAL_SEEN_KEY, "true");
+        }
+      } catch (err) {
+        console.error("Failed to read tutorial flag", err);
+      }
+    };
+
+    maybeShowTutorial();
   }, []);
 
   const handleLayout = (e) => {
@@ -482,6 +504,21 @@ const CommunityScreen = () => {
           </View>
         </Modal>
       ) : null}
+
+      <Modal transparent visible={showTutorial} animationType="fade">
+        <Pressable
+          style={styles.tutorialOverlay}
+          onPress={() => setShowTutorial(false)}
+        >
+          <Image source={tutorialImage} style={styles.tutorialImage} />
+          <TouchableOpacity
+            style={styles.tutorialClose}
+            onPress={() => setShowTutorial(false)}
+          >
+            <Ionicons name="close" size={24} color="#fff" />
+          </TouchableOpacity>
+        </Pressable>
+      </Modal>
     </View>
   );
 };
@@ -647,6 +684,25 @@ const styles = StyleSheet.create({
     color: "#93c5fd",
     textAlign: "center",
     fontWeight: "600",
+  },
+  tutorialOverlay: {
+    flex: 1,
+    backgroundColor: "rgba(0,0,0,0.65)",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  tutorialImage: {
+    width: "90%",
+    height: "90%",
+    resizeMode: "contain",
+  },
+  tutorialClose: {
+    position: "absolute",
+    top: 40,
+    right: 24,
+    padding: 8,
+    backgroundColor: "rgba(0,0,0,0.4)",
+    borderRadius: 999,
   },
 });
 
