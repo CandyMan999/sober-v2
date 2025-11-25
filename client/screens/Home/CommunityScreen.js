@@ -9,6 +9,7 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
+  Image,
   View,
 } from "react-native";
 import { useIsFocused } from "@react-navigation/native";
@@ -193,6 +194,31 @@ const CommunityScreen = () => {
     </Pressable>
   );
 
+  const renderImage = (item) => (
+    <View style={styles.imageWrapper}>
+      {item.imageUrl ? (
+        <Image
+          source={{ uri: item.imageUrl }}
+          style={styles.image}
+          resizeMode="cover"
+        />
+      ) : (
+        <View style={styles.imageFallback}>
+          <Text style={styles.imageFallbackText}>Image unavailable</Text>
+        </View>
+      )}
+    </View>
+  );
+
+  const renderMedia = (item, index) => {
+    const type = item.mediaType || "VIDEO";
+    if (type === "IMAGE") {
+      return renderImage(item);
+    }
+
+    return renderVideo(item, index);
+  };
+
   const handleReviewPress = async (postId, currentReviewState) => {
     if (reviewingPostId) return;
 
@@ -288,6 +314,8 @@ const CommunityScreen = () => {
     const captionText = item.text || "";
     const avatarUrl = item.author?.profilePicUrl || null;
     const postDate = formatDate(item.createdAt);
+    const type = item.mediaType || "VIDEO";
+    const isVideoPost = type === "VIDEO";
 
     return (
       <View style={{ height: containerHeight || 0 }}>
@@ -299,12 +327,12 @@ const CommunityScreen = () => {
           comments={item.comments}
           avatarUrl={avatarUrl}
           contentStyle={styles.feedContent}
-          showSoundToggle
-          isMuted={isMuted}
-          onToggleSound={handleToggleSound}
+          showSoundToggle={isVideoPost}
+          isMuted={isVideoPost ? isMuted : true}
+          onToggleSound={isVideoPost ? handleToggleSound : undefined}
           onMorePress={() => handleMorePress(item)}
         >
-          {renderVideo(item, index)}
+          {renderMedia(item, index)}
         </FeedLayout>
       </View>
     );
@@ -313,7 +341,7 @@ const CommunityScreen = () => {
   if (loading) {
     return (
       <View style={styles.root} onLayout={handleLayout}>
-        <FeedLayout caption="Loading videos...">
+        <FeedLayout caption="Loading posts...">
           <View style={styles.center}>
             <ActivityIndicator size="large" color="#f59e0b" />
           </View>
@@ -347,21 +375,25 @@ const CommunityScreen = () => {
   }
 
   if (!containerHeight) {
+    const firstPost = posts[0];
+    const firstType = firstPost.mediaType || "VIDEO";
+    const firstIsVideo = firstType === "VIDEO";
+
     return (
       <View style={styles.root} onLayout={handleLayout}>
         <FeedLayout
-          caption={posts[0].text || ""}
-          likesCount={posts[0].likesCount}
-          commentsCount={posts[0].commentsCount}
-          comments={posts[0].comments}
-          avatarUrl={posts[0].author?.profilePicUrl || null}
+          caption={firstPost.text || ""}
+          likesCount={firstPost.likesCount}
+          commentsCount={firstPost.commentsCount}
+          comments={firstPost.comments}
+          avatarUrl={firstPost.author?.profilePicUrl || null}
           contentStyle={styles.feedContent}
-          showSoundToggle
-          isMuted={isMuted}
-          onToggleSound={handleToggleSound}
-          onMorePress={() => handleMorePress(posts[0])}
+          showSoundToggle={firstIsVideo}
+          isMuted={firstIsVideo ? isMuted : true}
+          onToggleSound={firstIsVideo ? handleToggleSound : undefined}
+          onMorePress={() => handleMorePress(firstPost)}
         >
-          {renderVideo(posts[0], 0)}
+          {renderMedia(firstPost, 0)}
         </FeedLayout>
       </View>
     );
@@ -489,6 +521,28 @@ const styles = StyleSheet.create({
   video: {
     width: "100%",
     height: "100%",
+  },
+  imageWrapper: {
+    flex: 1,
+    width: "100%",
+    backgroundColor: "#000",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  image: {
+    width: "100%",
+    height: "100%",
+  },
+  imageFallback: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    paddingHorizontal: 24,
+  },
+  imageFallbackText: {
+    color: "#9ca3af",
+    fontSize: 14,
+    textAlign: "center",
   },
   overlay: {
     ...StyleSheet.absoluteFillObject,

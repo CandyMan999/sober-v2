@@ -16,6 +16,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   Keyboard,
+  Image,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useFocusEffect, useIsFocused } from "@react-navigation/native";
@@ -28,7 +29,10 @@ import { ReactNativeFile } from "extract-files";
 import Toast from "react-native-toast-message";
 
 import { useClient } from "../../client";
-import { SEND_POST_MUTATION } from "../../GraphQL/mutations";
+import {
+  SEND_IMAGE_POST_MUTATION,
+  SEND_POST_MUTATION,
+} from "../../GraphQL/mutations";
 import { RecordButton, AlertModal, LogoLoader } from "../../components";
 import Context from "../../context";
 
@@ -50,7 +54,9 @@ const PostCaptureScreen = ({ navigation }) => {
   const [timer, setTimer] = useState(MAX_DURATION_SECONDS);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
 
-  const [videoUri, setVideoUri] = useState(null);
+  const [mediaUri, setMediaUri] = useState(null);
+  const [mediaType, setMediaType] = useState(null); // "VIDEO" | "IMAGE"
+  const [mediaMimeType, setMediaMimeType] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [caption, setCaption] = useState("");
 
@@ -61,7 +67,7 @@ const PostCaptureScreen = ({ navigation }) => {
 
   // ----- expo-video player for preview -----
   const player = useVideoPlayer(
-    videoUri ? { uri: videoUri } : null,
+    mediaType === "VIDEO" && mediaUri ? { uri: mediaUri } : null,
     (playerInstance) => {
       playerInstance.loop = true;
     }
@@ -69,7 +75,7 @@ const PostCaptureScreen = ({ navigation }) => {
 
   // Play when focused + we have a video; pause when blurred
   useEffect(() => {
-    if (!videoUri) return;
+    if (!mediaUri || mediaType !== "VIDEO") return;
 
     if (isFocused) {
       try {
@@ -84,7 +90,7 @@ const PostCaptureScreen = ({ navigation }) => {
         console.log("Error pausing preview on blur:", e);
       }
     }
-  }, [videoUri, isFocused, player]);
+  }, [mediaUri, mediaType, isFocused, player]);
 
   // ----- Permissions -----
   useEffect(() => {
@@ -106,7 +112,9 @@ const PostCaptureScreen = ({ navigation }) => {
   useFocusEffect(
     useCallback(() => {
       // On focus: start fresh capture state
-      setVideoUri(null);
+      setMediaUri(null);
+      setMediaType(null);
+      setMediaMimeType(null);
       setIsRecording(false);
       setUploading(false);
       setTimer(MAX_DURATION_SECONDS);
@@ -121,6 +129,8 @@ const PostCaptureScreen = ({ navigation }) => {
         setIsTimerRunning(false);
         recordingStartRef.current = null;
         setShowGalleryPicker(true);
+        setMediaType(null);
+        setMediaMimeType(null);
       };
     }, [])
   );
@@ -165,6 +175,9 @@ const PostCaptureScreen = ({ navigation }) => {
     setIsTimerRunning(false);
     recordingStartRef.current = null;
     setShowGalleryPicker(true);
+    setMediaUri(null);
+    setMediaType(null);
+    setMediaMimeType(null);
   };
 
   const closeErrorModal = () => {
@@ -194,7 +207,9 @@ const PostCaptureScreen = ({ navigation }) => {
       const durationSec = Math.round((endTime - startTime) / 1000);
       console.log("🎥 Recorded clip duration (approx):", durationSec, "s");
 
-      setVideoUri(data?.uri || null);
+      setMediaUri(data?.uri || null);
+      setMediaType("VIDEO");
+      setMediaMimeType("video/mp4");
 
       setIsRecording(false);
       setIsTimerRunning(false);
@@ -217,8 +232,10 @@ const PostCaptureScreen = ({ navigation }) => {
   };
 
   const handleRedo = () => {
-    // Clearing videoUri unmounts VideoView -> preview stops
-    setVideoUri(null);
+    // Clearing mediaUri unmounts previews
+    setMediaUri(null);
+    setMediaType(null);
+    setMediaMimeType(null);
     setCaption("");
     setIsRecording(false);
     setUploading(false);
@@ -232,7 +249,9 @@ const PostCaptureScreen = ({ navigation }) => {
     if (isRecording) {
       stopRecording();
     }
-    setVideoUri(null);
+    setMediaUri(null);
+    setMediaType(null);
+    setMediaMimeType(null);
     setCaption("");
     navigation.navigate("HomeTabRoot");
   };
@@ -280,7 +299,9 @@ const PostCaptureScreen = ({ navigation }) => {
         return handleError("Couldn't read that video. Please try another one.");
       }
 
-      setVideoUri(pickedUri);
+      setMediaUri(pickedUri);
+      setMediaType("VIDEO");
+      setMediaMimeType(asset?.mimeType || "video/mp4");
       setCaption("");
     } catch (e) {
       console.log("Error picking video:", e);
@@ -288,11 +309,51 @@ const PostCaptureScreen = ({ navigation }) => {
     }
   };
 
+  const handlePickImage = async () => {
+    try {
+      if (uploading || isRecording) return;
+
+      const permission =
+        await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+      if (permission.status !== "granted") {
+        return Alert.alert(
+          "Access needed",
+          "Please enable photo library access so you can pick a picture.",
+          [{ text: "OK" }]
+        );
+      }
+
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        quality: 1,
+      });
+
+      if (result.canceled) return;
+
+      const asset = result.assets?.[0];
+      const pickedUri = asset?.uri;
+
+      if (!pickedUri) {
+        return handleError("Couldn't read that image. Please try another one.");
+      }
+
+      setMediaUri(pickedUri);
+      setMediaType("IMAGE");
+      setMediaMimeType(asset?.mimeType || "image/jpeg");
+      setCaption("");
+    } catch (e) {
+      console.log("Error picking image:", e);
+      handleError("Error selecting a picture from your library.");
+    }
+  };
+
   const handleSend = async () => {
     // Close keyboard if it's open
     Keyboard.dismiss();
 
-    if (!videoUri || uploading) return;
+    if (!mediaUri || uploading) return;
 
     const senderID = state?.user?.id || null;
 
@@ -300,22 +361,29 @@ const PostCaptureScreen = ({ navigation }) => {
       return handleError("Missing user id for this post.");
     }
 
+    const isImage = mediaType === "IMAGE";
+
     try {
       setUploading(true);
 
       const fileForUpload = new ReactNativeFile({
-        uri: videoUri,
-        type: "video/mp4",
-        name: "post-video.mp4",
+        uri: mediaUri,
+        type: mediaMimeType || (isImage ? "image/jpeg" : "video/mp4"),
+        name: isImage ? "post-image.jpg" : "post-video.mp4",
       });
 
-      const { sendPost } = await client.request(SEND_POST_MUTATION, {
-        file: fileForUpload,
-        senderID,
-        text: caption?.trim?.() || null,
-      });
+      const response = await client.request(
+        isImage ? SEND_IMAGE_POST_MUTATION : SEND_POST_MUTATION,
+        {
+          file: fileForUpload,
+          senderID,
+          text: caption?.trim?.() || null,
+        }
+      );
 
-      if (!sendPost) {
+      const savedPost = isImage ? response?.sendImagePost : response?.sendPost;
+
+      if (!savedPost) {
         throw new Error("We couldn't save your post. Please try again.");
       } else {
         Toast.show({
@@ -330,7 +398,9 @@ const PostCaptureScreen = ({ navigation }) => {
       }
 
       // Clear state and navigate away
-      setVideoUri(null);
+      setMediaUri(null);
+      setMediaType(null);
+      setMediaMimeType(null);
       setCaption("");
 
       navigation.navigate("HomeTabRoot");
@@ -385,8 +455,8 @@ const PostCaptureScreen = ({ navigation }) => {
     );
   }
 
-  // ----- Preview mode (video captured or picked) -----
-  if (videoUri) {
+  // ----- Preview mode (video or image captured/picked) -----
+  if (mediaUri) {
     return (
       <SafeAreaView style={styles.safeArea}>
         <View style={styles.previewContainer}>
@@ -400,15 +470,25 @@ const PostCaptureScreen = ({ navigation }) => {
             </TouchableOpacity>
           </View>
 
-          {/* Video preview - only render when focused so it can't keep playing in background */}
-          {isFocused && (
+          {/* Media preview */}
+          {mediaType === "VIDEO" && isFocused ? (
             <VideoView
               style={styles.fullScreenVideo}
               player={player}
               contentFit="contain"
               nativeControls
             />
-          )}
+          ) : null}
+
+          {mediaType === "IMAGE" ? (
+            <View style={styles.fullScreenImageWrapper}>
+              <Image
+                source={{ uri: mediaUri }}
+                style={styles.fullScreenImage}
+                resizeMode="contain"
+              />
+            </View>
+          ) : null}
 
           {/* Bottom section moves a bit with keyboard */}
           <KeyboardAvoidingView
@@ -510,18 +590,33 @@ const PostCaptureScreen = ({ navigation }) => {
           {isCameraReady && isFocused && (
             <>
               {showGalleryPicker && (
-                <TouchableOpacity
-                  style={styles.galleryButton}
-                  onPress={handlePickVideo}
-                  disabled={uploading || isRecording}
-                  activeOpacity={0.9}
-                >
-                  <Feather
-                    name="image"
-                    size={20}
-                    color={uploading || isRecording ? "#9ca3af" : "#f9fafb"}
-                  />
-                </TouchableOpacity>
+                <>
+                  <TouchableOpacity
+                    style={styles.galleryButton}
+                    onPress={handlePickImage}
+                    disabled={uploading || isRecording}
+                    activeOpacity={0.9}
+                  >
+                    <Feather
+                      name="image"
+                      size={20}
+                      color={uploading || isRecording ? "#9ca3af" : "#f9fafb"}
+                    />
+                  </TouchableOpacity>
+
+                  <TouchableOpacity
+                    style={styles.videoGalleryButton}
+                    onPress={handlePickVideo}
+                    disabled={uploading || isRecording}
+                    activeOpacity={0.9}
+                  >
+                    <Feather
+                      name="video"
+                      size={20}
+                      color={uploading || isRecording ? "#9ca3af" : "#f9fafb"}
+                    />
+                  </TouchableOpacity>
+                </>
               )}
 
               <RecordButton
@@ -652,6 +747,19 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  videoGalleryButton: {
+    position: "absolute",
+    right: 24,
+    bottom: 4,
+    width: 44,
+    height: 44,
+    borderRadius: 999,
+    backgroundColor: "rgba(15,23,42,0.95)",
+    borderWidth: 1,
+    borderColor: "rgba(148,163,184,0.85)",
+    alignItems: "center",
+    justifyContent: "center",
+  },
 
   // Preview mode
   previewContainer: {
@@ -669,6 +777,18 @@ const styles = StyleSheet.create({
   },
   fullScreenVideo: {
     flex: 1,
+    width: "100%",
+    height: "100%",
+  },
+  fullScreenImageWrapper: {
+    flex: 1,
+    width: "100%",
+    height: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#000",
+  },
+  fullScreenImage: {
     width: "100%",
     height: "100%",
   },

@@ -8,6 +8,7 @@ const {
   resetSobrietyDateResolver,
   addQuoteResolver,
   sendPostResolver,
+  sendImagePostResolver,
   setPostReviewResolver,
 } = require("./mutations/index.js");
 
@@ -64,6 +65,7 @@ const resolvers = {
     resetSobrietyDate: resetSobrietyDateResolver,
     addQuote: addQuoteResolver,
     sendPost: sendPostResolver,
+    sendImagePost: sendImagePostResolver,
     setPostReview: setPostReviewResolver,
   },
 

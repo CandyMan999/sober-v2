@@ -85,6 +85,9 @@ export const GET_ALL_POSTS = `
       posts {
         id
         text
+        mediaType
+        imageUrl
+        imagePublicId
         flagged
         review
         likesCount

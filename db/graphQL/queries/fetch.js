@@ -61,7 +61,20 @@ module.exports = {
           populate: { path: "author" },
         });
 
-      const sanitized = posts.filter((post) => !!post.video);
+      const sanitized = posts
+        .map((post) => {
+          if (!post.mediaType) {
+            post.mediaType = "VIDEO";
+          }
+          return post;
+        })
+        .filter((post) => {
+          if (post.mediaType === "IMAGE") {
+            return !!post.imageUrl;
+          }
+
+          return !!post.video;
+        });
       const hasMore = sanitized.length > limit;
       const trimmed = hasMore ? sanitized.slice(0, limit) : sanitized;
 
