@@ -11,6 +11,8 @@ const typeDefs = gql`
     username: String
     profilePic: Picture
     profilePicUrl: String
+    drunkPic: Picture
+    drunkPicUrl: String
     sobrietyStartAt: String
     streaks: [SobrietyStreak!]
     milestonesNotified: [Int!]
@@ -43,6 +45,11 @@ const typeDefs = gql`
   enum LikeTarget {
     QUOTE
     POST
+  }
+
+  enum PictureSlot {
+    PROFILE
+    DRUNK
   }
 
   enum PostMediaType {
@@ -214,8 +221,13 @@ const typeDefs = gql`
     ): User!
     resetSobrietyDate(token: String!, newStartAt: String!): User!
     directUpload: DirectUploadImage!
-    addPicture(token: String!, url: String!, publicId: String): Picture!
-    deletePhoto(token: String!, photoId: ID!): User!
+    addPicture(
+      token: String!
+      url: String!
+      publicId: String
+      slot: PictureSlot = PROFILE
+    ): Picture!
+    deletePhoto(token: String!, photoId: ID!, slot: PictureSlot = PROFILE): User!
     createRoom(name: String!): Room!
     sendComment(
       roomId: ID!

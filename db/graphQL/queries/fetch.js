@@ -9,7 +9,7 @@ module.exports = {
     const { token } = args;
 
     try {
-      const user = await User.findOne({ token }).populate("profilePic");
+      const user = await User.findOne({ token }).populate(["profilePic", "drunkPic"]);
       if (!user) {
         throw new AuthenticationError("User not found");
       }

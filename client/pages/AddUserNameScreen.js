@@ -80,7 +80,7 @@ const UsernameScreen = ({ navigation }) => {
         // Background not granted → send them to the right “next” step
         const nextRouteName = me.sobrietyStartAt
           ? "LocationPermission"
-          : me.profilePic
+          : me.profilePic || me.drunkPic
           ? "AddSobrietyDate"
           : "AddPhoto";
 

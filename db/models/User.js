@@ -28,6 +28,16 @@ const UserSchema = new mongoose.Schema(
       type: String,
     },
 
+    // Optional: "day one" / drinking days photo for before/after comparisons
+    drunkPic: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Picture",
+    },
+
+    drunkPicUrl: {
+      type: String,
+    },
+
     // ========= SOBRIETY TRACKING =========
 
     // When the CURRENT sobriety streak started.
