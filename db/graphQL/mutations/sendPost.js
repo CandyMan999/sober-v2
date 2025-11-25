@@ -423,6 +423,7 @@ module.exports = {
       const newPost = await Post.create({
         author: senderID,
         text: text || null,
+        mediaType: "VIDEO",
         video: video._id,
         flagged: false,
         likesCount: 0,

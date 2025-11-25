@@ -45,11 +45,19 @@ const typeDefs = gql`
     POST
   }
 
+  enum PostMediaType {
+    VIDEO
+    IMAGE
+  }
+
   type Post {
     id: ID!
     author: User!
     text: String
+    mediaType: PostMediaType!
     video: Video
+    imageUrl: String
+    imagePublicId: String
     flagged: Boolean!
     review: Boolean!
     likesCount: Int!
@@ -218,6 +226,7 @@ const typeDefs = gql`
     addVenue(name: String!, type: Place!, lat: Float!, long: Float!): Venue
     addQuote(text: String!): Quote
     sendPost(file: Upload!, senderID: ID!, text: String): Post
+    sendImagePost(file: Upload!, senderID: ID!, text: String): Post
     setPostReview(postId: ID!, review: Boolean!): Post!
   }
 `;

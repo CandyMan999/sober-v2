@@ -14,10 +14,26 @@ const PostSchema = new mongoose.Schema(
       default: "",
     },
 
+    mediaType: {
+      type: String,
+      enum: ["VIDEO", "IMAGE"],
+      default: "VIDEO",
+    },
+
     // Reference to existing Video model
     video: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Video",
+      default: null,
+    },
+
+    imageUrl: {
+      type: String,
+      default: null,
+    },
+
+    imagePublicId: {
+      type: String,
       default: null,
     },
 

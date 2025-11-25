@@ -108,6 +108,7 @@ export const SEND_POST_MUTATION = gql`
     sendPost(file: $file, senderID: $senderID, text: $text) {
       id
       text
+      mediaType
       flagged
       createdAt
       updatedAt
@@ -128,6 +129,30 @@ export const SEND_POST_MUTATION = gql`
           id
           username
         }
+      }
+
+      likesCount
+      commentsCount
+    }
+  }
+`;
+
+export const SEND_IMAGE_POST_MUTATION = gql`
+  mutation SendImagePost($file: Upload!, $senderID: ID!, $text: String) {
+    sendImagePost(file: $file, senderID: $senderID, text: $text) {
+      id
+      text
+      mediaType
+      imageUrl
+      imagePublicId
+      flagged
+      createdAt
+      updatedAt
+
+      author {
+        id
+        username
+        profilePicUrl
       }
 
       likesCount

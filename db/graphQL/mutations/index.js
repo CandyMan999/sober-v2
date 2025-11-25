@@ -7,6 +7,7 @@ const { updateUserProfileResolver } = require("./updateUserProfile");
 const { resetSobrietyDateResolver } = require("./resetSobrietyDate");
 const { addQuoteResolver } = require("./quote");
 const { sendPostResolver } = require("./sendPost");
+const { sendImagePostResolver } = require("./sendImagePost");
 const { setPostReviewResolver } = require("./review");
 
 module.exports = {
@@ -17,5 +18,6 @@ module.exports = {
   resetSobrietyDateResolver,
   addQuoteResolver,
   sendPostResolver,
+  sendImagePostResolver,
   setPostReviewResolver,
 };

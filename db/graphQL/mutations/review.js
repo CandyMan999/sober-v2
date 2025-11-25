@@ -13,6 +13,10 @@ const setPostReviewResolver = async (root, args) => {
     throw new Error("Post not found");
   }
 
+  if (!post.mediaType) {
+    post.mediaType = "VIDEO";
+  }
+
   post.review = !!review;
   const saved = await post.save();
 

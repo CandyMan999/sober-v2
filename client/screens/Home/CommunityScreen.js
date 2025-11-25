@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   Animated,
   ActivityIndicator,
@@ -9,6 +10,7 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
+  Image,
   View,
 } from "react-native";
 import { useIsFocused } from "@react-navigation/native";
@@ -19,6 +21,9 @@ import { FeedLayout } from "../../components";
 import { GET_ALL_POSTS } from "../../GraphQL/queries";
 import { useClient } from "../../client";
 import { SET_POST_REVIEW_MUTATION } from "../../GraphQL/mutations";
+
+const TUTORIAL_SEEN_KEY = "community_tutorial_seen";
+const tutorialImage = require("../../assets/swipe1.png");
 
 const { height: WINDOW_HEIGHT } = Dimensions.get("window");
 const PAGE_SIZE = 5;
@@ -39,6 +44,7 @@ const CommunityScreen = () => {
   const [isMuted, setIsMuted] = useState(false);
   const [reviewingPostId, setReviewingPostId] = useState(null);
   const [selectedPost, setSelectedPost] = useState(null);
+  const [showTutorial, setShowTutorial] = useState(false);
   const sheetAnim = useRef(new Animated.Value(0)).current;
 
   const cursorRef = useRef(null);
@@ -91,6 +97,23 @@ const CommunityScreen = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    const maybeShowTutorial = async () => {
+      try {
+        const hasSeen = await AsyncStorage.getItem(TUTORIAL_SEEN_KEY);
+
+        if (!hasSeen) {
+          setShowTutorial(true);
+          await AsyncStorage.setItem(TUTORIAL_SEEN_KEY, "true");
+        }
+      } catch (err) {
+        console.error("Failed to read tutorial flag", err);
+      }
+    };
+
+    maybeShowTutorial();
+  }, []);
+
   const handleLayout = (e) => {
     const { height } = e.nativeEvent.layout;
     // Align snap height to the visible viewport so overlays mirror Quotes.
@@ -115,11 +138,7 @@ const CommunityScreen = () => {
 
       if (!ref) return;
 
-      if (
-        numericIdx === activeIndex &&
-        !finishedMap[numericIdx] &&
-        isFocused
-      ) {
+      if (numericIdx === activeIndex && !finishedMap[numericIdx] && isFocused) {
         ref.playAsync && ref.playAsync();
       } else {
         ref.pauseAsync && ref.pauseAsync();
@@ -182,9 +201,7 @@ const CommunityScreen = () => {
         source={{ uri: item.video?.url }}
         style={styles.video}
         resizeMode={ResizeMode.COVER}
-        shouldPlay={
-          isFocused && activeIndex === index && !finishedMap[index]
-        }
+        shouldPlay={isFocused && activeIndex === index && !finishedMap[index]}
         isLooping={false}
         isMuted={isMuted}
         onPlaybackStatusUpdate={(status) => handlePlaybackStatus(index, status)}
@@ -192,6 +209,31 @@ const CommunityScreen = () => {
       {finishedMap[index] ? renderOverlay(index) : null}
     </Pressable>
   );
+
+  const renderImage = (item) => (
+    <View style={styles.imageWrapper}>
+      {item.imageUrl ? (
+        <Image
+          source={{ uri: item.imageUrl }}
+          style={styles.image}
+          resizeMode="cover"
+        />
+      ) : (
+        <View style={styles.imageFallback}>
+          <Text style={styles.imageFallbackText}>Image unavailable</Text>
+        </View>
+      )}
+    </View>
+  );
+
+  const renderMedia = (item, index) => {
+    const type = item.mediaType || "VIDEO";
+    if (type === "IMAGE") {
+      return renderImage(item);
+    }
+
+    return renderVideo(item, index);
+  };
 
   const handleReviewPress = async (postId, currentReviewState) => {
     if (reviewingPostId) return;
@@ -277,7 +319,8 @@ const CommunityScreen = () => {
       return `about ${diffMinutes} min${diffMinutes === 1 ? "" : "s"} ago`;
     if (diffHours < 24)
       return `about ${diffHours} hour${diffHours === 1 ? "" : "s"} ago`;
-    if (diffDays < 30) return `about ${diffDays} day${diffDays === 1 ? "" : "s"} ago`;
+    if (diffDays < 30)
+      return `about ${diffDays} day${diffDays === 1 ? "" : "s"} ago`;
     if (diffMonths < 12)
       return `about ${diffMonths} month${diffMonths === 1 ? "" : "s"} ago`;
 
@@ -288,6 +331,8 @@ const CommunityScreen = () => {
     const captionText = item.text || "";
     const avatarUrl = item.author?.profilePicUrl || null;
     const postDate = formatDate(item.createdAt);
+    const type = item.mediaType || "VIDEO";
+    const isVideoPost = type === "VIDEO";
 
     return (
       <View style={{ height: containerHeight || 0 }}>
@@ -299,12 +344,12 @@ const CommunityScreen = () => {
           comments={item.comments}
           avatarUrl={avatarUrl}
           contentStyle={styles.feedContent}
-          showSoundToggle
-          isMuted={isMuted}
-          onToggleSound={handleToggleSound}
+          showSoundToggle={isVideoPost}
+          isMuted={isVideoPost ? isMuted : true}
+          onToggleSound={isVideoPost ? handleToggleSound : undefined}
           onMorePress={() => handleMorePress(item)}
         >
-          {renderVideo(item, index)}
+          {renderMedia(item, index)}
         </FeedLayout>
       </View>
     );
@@ -313,7 +358,7 @@ const CommunityScreen = () => {
   if (loading) {
     return (
       <View style={styles.root} onLayout={handleLayout}>
-        <FeedLayout caption="Loading videos...">
+        <FeedLayout caption="Loading posts...">
           <View style={styles.center}>
             <ActivityIndicator size="large" color="#f59e0b" />
           </View>
@@ -347,21 +392,25 @@ const CommunityScreen = () => {
   }
 
   if (!containerHeight) {
+    const firstPost = posts[0];
+    const firstType = firstPost.mediaType || "VIDEO";
+    const firstIsVideo = firstType === "VIDEO";
+
     return (
       <View style={styles.root} onLayout={handleLayout}>
         <FeedLayout
-          caption={posts[0].text || ""}
-          likesCount={posts[0].likesCount}
-          commentsCount={posts[0].commentsCount}
-          comments={posts[0].comments}
-          avatarUrl={posts[0].author?.profilePicUrl || null}
+          caption={firstPost.text || ""}
+          likesCount={firstPost.likesCount}
+          commentsCount={firstPost.commentsCount}
+          comments={firstPost.comments}
+          avatarUrl={firstPost.author?.profilePicUrl || null}
           contentStyle={styles.feedContent}
-          showSoundToggle
-          isMuted={isMuted}
-          onToggleSound={handleToggleSound}
-          onMorePress={() => handleMorePress(posts[0])}
+          showSoundToggle={firstIsVideo}
+          isMuted={firstIsVideo ? isMuted : true}
+          onToggleSound={firstIsVideo ? handleToggleSound : undefined}
+          onMorePress={() => handleMorePress(firstPost)}
         >
-          {renderVideo(posts[0], 0)}
+          {renderMedia(firstPost, 0)}
         </FeedLayout>
       </View>
     );
@@ -438,18 +487,39 @@ const CommunityScreen = () => {
                   </Text>
                 </View>
                 {reviewingPostId === selectedPost.id ? (
-                  <ActivityIndicator color="#f59e0b" style={styles.sheetSpinner} />
+                  <ActivityIndicator
+                    color="#f59e0b"
+                    style={styles.sheetSpinner}
+                  />
                 ) : (
                   <Ionicons name="chevron-forward" size={18} color="#9ca3af" />
                 )}
               </TouchableOpacity>
-              <TouchableOpacity style={styles.sheetCancel} onPress={closeMoreSheet}>
+              <TouchableOpacity
+                style={styles.sheetCancel}
+                onPress={closeMoreSheet}
+              >
                 <Text style={styles.sheetCancelText}>Close</Text>
               </TouchableOpacity>
             </Animated.View>
           </View>
         </Modal>
       ) : null}
+
+      <Modal transparent visible={showTutorial} animationType="fade">
+        <Pressable
+          style={styles.tutorialOverlay}
+          onPress={() => setShowTutorial(false)}
+        >
+          <Image source={tutorialImage} style={styles.tutorialImage} />
+          <TouchableOpacity
+            style={styles.tutorialClose}
+            onPress={() => setShowTutorial(false)}
+          >
+            <Ionicons name="close" size={24} color="#fff" />
+          </TouchableOpacity>
+        </Pressable>
+      </Modal>
     </View>
   );
 };
@@ -489,6 +559,28 @@ const styles = StyleSheet.create({
   video: {
     width: "100%",
     height: "100%",
+  },
+  imageWrapper: {
+    flex: 1,
+    width: "100%",
+    backgroundColor: "#000",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  image: {
+    width: "100%",
+    height: "100%",
+  },
+  imageFallback: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    paddingHorizontal: 24,
+  },
+  imageFallbackText: {
+    color: "#9ca3af",
+    fontSize: 14,
+    textAlign: "center",
   },
   overlay: {
     ...StyleSheet.absoluteFillObject,
@@ -593,6 +685,25 @@ const styles = StyleSheet.create({
     color: "#93c5fd",
     textAlign: "center",
     fontWeight: "600",
+  },
+  tutorialOverlay: {
+    flex: 1,
+    backgroundColor: "rgba(0,0,0,0.65)",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  tutorialImage: {
+    width: "90%",
+    height: "90%",
+    resizeMode: "contain",
+  },
+  tutorialClose: {
+    position: "absolute",
+    top: 40,
+    right: 24,
+    padding: 8,
+    backgroundColor: "rgba(0,0,0,0.4)",
+    borderRadius: 999,
   },
 });
 
