@@ -55,8 +55,13 @@ export const DIRECT_UPLOAD_MUTATION = gql`
 `;
 
 export const ADD_PICTURE_MUTATION = gql`
-  mutation AddPicture($token: String!, $url: String!, $publicId: String) {
-    addPicture(token: $token, url: $url, publicId: $publicId) {
+  mutation AddPicture(
+    $token: String!
+    $url: String!
+    $publicId: String
+    $slot: PictureSlot
+  ) {
+    addPicture(token: $token, url: $url, publicId: $publicId, slot: $slot) {
       id
       url
       publicId
@@ -69,13 +74,18 @@ export const ADD_PICTURE_MUTATION = gql`
 `;
 
 export const DELETE_PHOTO_MUTATION = gql`
-  mutation DeletePhoto($token: String!, $photoId: ID!) {
-    deletePhoto(token: $token, photoId: $photoId) {
+  mutation DeletePhoto($token: String!, $photoId: ID!, $slot: PictureSlot) {
+    deletePhoto(token: $token, photoId: $photoId, slot: $slot) {
       id
       token
       username
       profilePicUrl
+      drunkPicUrl
       profilePic {
+        id
+        url
+      }
+      drunkPic {
         id
         url
       }

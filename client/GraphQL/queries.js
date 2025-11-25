@@ -5,6 +5,7 @@ export const FETCH_ME_QUERY = `
       token
       username
       profilePicUrl
+      drunkPicUrl
       sobrietyStartAt
       timezone
       milestonesNotified
@@ -14,6 +15,12 @@ export const FETCH_ME_QUERY = `
         endAt
       }
       profilePic {
+        id
+        url
+        publicId
+        provider
+      }
+      drunkPic {
         id
         url
         publicId

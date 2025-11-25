@@ -46,7 +46,7 @@ module.exports = {
     }
   },
 
-  addPictureResolver: async (_, { token, url, publicId }) => {
+  addPictureResolver: async (_, { token, url, publicId, slot = "PROFILE" }) => {
     try {
       const user = await User.findOne({ token });
       if (!user) {
@@ -60,9 +60,14 @@ module.exports = {
         provider: "Cloudflare",
       });
 
-      // Attach as profilePic
-      user.profilePic = picture._id;
-      user.profilePicUrl = url;
+      // Attach to the requested slot (profile or drunk/day-one)
+      if (slot === "DRUNK") {
+        user.drunkPic = picture._id;
+        user.drunkPicUrl = url;
+      } else {
+        user.profilePic = picture._id;
+        user.profilePicUrl = url;
+      }
       await user.save();
 
       const populatedPicture = await Picture.findById(picture._id).populate(
@@ -75,7 +80,7 @@ module.exports = {
     }
   },
 
-  deletePhotoResolver: async (_, { token, photoId }) => {
+  deletePhotoResolver: async (_, { token, photoId, slot = "PROFILE" }) => {
     try {
       const user = await User.findOne({ token });
       if (!user) {
@@ -124,15 +129,18 @@ module.exports = {
       // Remove picture from DB
       await Picture.deleteOne({ _id: photoId });
 
-      // Pull reference from user and return updated user (same as before)
+      // Clear references on the user for the chosen slot
+      if (slot === "DRUNK") {
+        user.drunkPic = null;
+        user.drunkPicUrl = null;
+      } else {
+        user.profilePic = null;
+        user.profilePicUrl = null;
+      }
 
-      // Pull reference from user and return updated user
-      const updatedUser = await User.findByIdAndUpdate(
-        { _id: user._id },
-        { profilePicUrl: null },
-        { $pull: { profilePic: photoId } },
-        { new: true }
-      ).populate("profilePic");
+      const updatedUser = await user.save();
+
+      await updatedUser.populate(["profilePic", "drunkPic"]);
 
       return updatedUser;
     } catch (err) {
