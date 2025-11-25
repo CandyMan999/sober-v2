@@ -60,6 +60,9 @@ const typeDefs = gql`
     imagePublicId: String
     flagged: Boolean!
     review: Boolean!
+    isMilestone: Boolean
+    milestoneDays: Int
+    milestoneTag: String
     likesCount: Int!
     commentsCount: Int!
     likes: [Like!]!

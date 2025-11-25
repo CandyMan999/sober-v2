@@ -15,6 +15,7 @@ const FeedLayout = ({
   commentsCount = 0,
   comments = [],
   avatarUrl,
+  captionStyle,
   children,
   onLikePress,
   onMorePress,
@@ -51,7 +52,9 @@ const FeedLayout = ({
               <Image source={{ uri: avatarUrl }} style={styles.avatar} />
             </View>
           ) : null}
-          {caption ? <Text style={styles.caption}>{caption}</Text> : null}
+          {caption ? (
+            <Text style={[styles.caption, captionStyle]}>{caption}</Text>
+          ) : null}
         </View>
         {meta ? <Text style={styles.meta}>{meta}</Text> : null}
       </View>

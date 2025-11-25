@@ -1,7 +1,7 @@
 // cron/notificationCron.js
 const cron = require("node-cron");
 const { Expo } = require("expo-server-sdk");
-const { User, Quote } = require("../models");
+const { User, Quote, Post } = require("../models");
 const { DateTime } = require("luxon");
 
 require("dotenv").config();
@@ -10,6 +10,16 @@ let expo = new Expo();
 
 // Mirror your client-side milestones
 const MILESTONES = [1, 2, 3, 5, 7, 10, 14, 30, 60, 90, 180, 365];
+
+const isWithinUserDaytime = (user) => {
+  const tz = user?.timezone || "UTC";
+  const userTime = DateTime.now().setZone(tz);
+  const hour = userTime.isValid
+    ? userTime.hour
+    : DateTime.now().setZone("UTC").hour;
+
+  return hour >= 8 && hour <= 22;
+};
 
 // --- Helpers ---
 
@@ -77,6 +87,56 @@ const buildMilestoneMessage = (user, milestoneDays) => {
   };
 };
 
+const buildMilestoneCaptionText = (user, milestoneDays) => {
+  const name = user?.username || "A member";
+  const label = `Day ${milestoneDays}`;
+
+  return `${name} just crossed ${label} sober. Drop a few words to keep their streak strong.`;
+};
+
+const ensureMilestonePost = async (user, milestoneDays) => {
+  if (milestoneDays < 7) {
+    return null; // only create posts for milestones day 7+
+  }
+
+  if (!user?.profilePicUrl) {
+    console.log(
+      `⚠️  Skipping milestone post for ${user?.username || user?._id} — no profilePicUrl`
+    );
+    return null;
+  }
+
+  const existing = await Post.findOne({
+    author: user._id,
+    isMilestone: true,
+    milestoneDays,
+  });
+
+  if (existing) return existing;
+
+  const milestoneTag = `[${milestoneDays}]`;
+
+  const created = await Post.create({
+    author: user._id,
+    text: buildMilestoneCaptionText(user, milestoneDays),
+    mediaType: "IMAGE",
+    imageUrl: user.profilePicUrl,
+    flagged: false,
+    likesCount: 0,
+    commentsCount: 0,
+    isMilestone: true,
+    milestoneDays,
+    milestoneTag,
+  });
+
+  return Post.findById(created._id)
+    .populate("author")
+    .populate({
+      path: "comments",
+      populate: { path: "author" },
+    });
+};
+
 const buildTestMessage = () => ({
   title: "Sober Motivation (Test)",
   body: "This is a test notification from the cron job ✅",
@@ -138,7 +198,12 @@ const cronJob = () => {
         }
 
         const now = new Date();
-        const notifications = [];
+        const personalNotifications = [];
+        const celebrationNotifications = [];
+        const notifiableUsers = await User.find({
+          notificationsEnabled: true,
+          token: { $ne: null },
+        });
 
         for (const user of users) {
           const daysSober = getDaysBetween(user.sobrietyStartAt, now);
@@ -166,7 +231,7 @@ const cronJob = () => {
 
           const { title, body } = buildMilestoneMessage(user, milestone);
 
-          notifications.push({
+          personalNotifications.push({
             pushToken: user.token,
             title,
             body,
@@ -176,15 +241,50 @@ const cronJob = () => {
             },
           });
 
+          const milestonePost = await ensureMilestonePost(user, milestone);
+          const milestoneTag = `[${milestone}]`;
+
+          if (milestonePost) {
+            const celebrationTitle = `${
+              user.username || "A member"
+            } hit day ${milestone}!`;
+            const celebrationBody =
+              "Tap to congratulate them and keep their streak going.";
+
+            for (const recipient of notifiableUsers) {
+              if (!recipient.token) continue;
+              if (String(recipient._id) === String(user._id)) continue;
+              if (!isWithinUserDaytime(recipient)) continue;
+
+              celebrationNotifications.push({
+                pushToken: recipient.token,
+                title: celebrationTitle,
+                body: celebrationBody,
+                data: {
+                  type: "milestone_celebration",
+                  milestoneDays: milestone,
+                  milestoneTag,
+                  postId: String(milestonePost._id),
+                  userId: String(user._id),
+                },
+              });
+            }
+          }
+
           // mark this milestone as notified and save
           user.milestonesNotified = [...already, milestone];
           await user.save();
         }
 
-        if (notifications.length) {
-          await sendPushNotifications(notifications);
+        const combinedNotifications = [
+          ...personalNotifications,
+          ...celebrationNotifications,
+        ];
+
+        if (combinedNotifications.length) {
+          await sendPushNotifications(combinedNotifications);
           console.log(
-            `Sent ${notifications.length} milestone notification(s).`
+            `Sent ${combinedNotifications.length} milestone notification(s) (${personalNotifications.length} personal, ${celebrationNotifications.length} celebration).`
           );
         } else {
           console.log("No milestone notifications due this tick.");

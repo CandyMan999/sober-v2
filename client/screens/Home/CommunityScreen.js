@@ -333,12 +333,23 @@ const CommunityScreen = () => {
     const postDate = formatDate(item.createdAt);
     const type = item.mediaType || "VIDEO";
     const isVideoPost = type === "VIDEO";
+    const isMilestonePost = item.isMilestone || Boolean(item.milestoneTag);
+    const milestoneLabel =
+      item.milestoneDays !== null && item.milestoneDays !== undefined
+        ? `Day ${item.milestoneDays} milestone`
+        : item.milestoneTag || null;
+    const metaText =
+      isMilestonePost && milestoneLabel
+        ? `${milestoneLabel} • ${postDate}`
+        : postDate;
+    const captionStyle = isMilestonePost ? styles.milestoneCaption : undefined;
 
     return (
       <View style={{ height: containerHeight || 0 }}>
         <FeedLayout
           caption={captionText}
-          meta={postDate}
+          captionStyle={captionStyle}
+          meta={metaText}
           likesCount={item.likesCount}
           commentsCount={item.commentsCount}
           comments={item.comments}
@@ -395,15 +406,28 @@ const CommunityScreen = () => {
     const firstPost = posts[0];
     const firstType = firstPost.mediaType || "VIDEO";
     const firstIsVideo = firstType === "VIDEO";
+    const firstPostDate = formatDate(firstPost.createdAt);
+    const firstIsMilestone =
+      firstPost.isMilestone || Boolean(firstPost.milestoneTag);
+    const firstMilestoneLabel =
+      firstPost.milestoneDays !== null && firstPost.milestoneDays !== undefined
+        ? `Day ${firstPost.milestoneDays} milestone`
+        : firstPost.milestoneTag || null;
+    const firstMetaText =
+      firstIsMilestone && firstMilestoneLabel
+        ? `${firstMilestoneLabel} • ${firstPostDate}`
+        : firstPostDate;
 
     return (
       <View style={styles.root} onLayout={handleLayout}>
         <FeedLayout
           caption={firstPost.text || ""}
+          captionStyle={firstIsMilestone ? styles.milestoneCaption : undefined}
           likesCount={firstPost.likesCount}
           commentsCount={firstPost.commentsCount}
           comments={firstPost.comments}
           avatarUrl={firstPost.author?.profilePicUrl || null}
+          meta={firstMetaText}
           contentStyle={styles.feedContent}
           showSoundToggle={firstIsVideo}
           isMuted={firstIsVideo ? isMuted : true}
@@ -549,6 +573,14 @@ const styles = StyleSheet.create({
     paddingTop: 0,
     alignItems: "stretch",
     justifyContent: "flex-start",
+  },
+  milestoneCaption: {
+    color: "#fff",
+    fontSize: 20,
+    fontWeight: "800",
+    textShadowColor: "rgba(0,0,0,0.35)",
+    textShadowOffset: { width: 0, height: 2 },
+    textShadowRadius: 6,
   },
   videoWrapper: {
     flex: 1,

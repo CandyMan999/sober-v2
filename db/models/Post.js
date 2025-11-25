@@ -47,6 +47,22 @@ const PostSchema = new mongoose.Schema(
       default: false,
     },
 
+    // Milestone-specific metadata
+    isMilestone: {
+      type: Boolean,
+      default: false,
+    },
+
+    milestoneDays: {
+      type: Number,
+      default: null,
+    },
+
+    milestoneTag: {
+      type: String,
+      default: null,
+    },
+
     // Comments (referenced)
     comments: [
       {

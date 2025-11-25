@@ -90,6 +90,9 @@ export const GET_ALL_POSTS = `
         imagePublicId
         flagged
         review
+        isMilestone
+        milestoneDays
+        milestoneTag
         likesCount
         commentsCount
         createdAt
