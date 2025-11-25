@@ -23,7 +23,7 @@ import { useClient } from "../../client";
 import { SET_POST_REVIEW_MUTATION } from "../../GraphQL/mutations";
 
 const TUTORIAL_SEEN_KEY = "community_tutorial_seen";
-const tutorialImage = require("../../assets/swipe.PNG");
+const tutorialImage = require("../../assets/swipe1.png");
 
 const { height: WINDOW_HEIGHT } = Dimensions.get("window");
 const PAGE_SIZE = 5;
@@ -138,11 +138,7 @@ const CommunityScreen = () => {
 
       if (!ref) return;
 
-      if (
-        numericIdx === activeIndex &&
-        !finishedMap[numericIdx] &&
-        isFocused
-      ) {
+      if (numericIdx === activeIndex && !finishedMap[numericIdx] && isFocused) {
         ref.playAsync && ref.playAsync();
       } else {
         ref.pauseAsync && ref.pauseAsync();
@@ -205,9 +201,7 @@ const CommunityScreen = () => {
         source={{ uri: item.video?.url }}
         style={styles.video}
         resizeMode={ResizeMode.COVER}
-        shouldPlay={
-          isFocused && activeIndex === index && !finishedMap[index]
-        }
+        shouldPlay={isFocused && activeIndex === index && !finishedMap[index]}
         isLooping={false}
         isMuted={isMuted}
         onPlaybackStatusUpdate={(status) => handlePlaybackStatus(index, status)}
@@ -325,7 +319,8 @@ const CommunityScreen = () => {
       return `about ${diffMinutes} min${diffMinutes === 1 ? "" : "s"} ago`;
     if (diffHours < 24)
       return `about ${diffHours} hour${diffHours === 1 ? "" : "s"} ago`;
-    if (diffDays < 30) return `about ${diffDays} day${diffDays === 1 ? "" : "s"} ago`;
+    if (diffDays < 30)
+      return `about ${diffDays} day${diffDays === 1 ? "" : "s"} ago`;
     if (diffMonths < 12)
       return `about ${diffMonths} month${diffMonths === 1 ? "" : "s"} ago`;
 
@@ -492,12 +487,18 @@ const CommunityScreen = () => {
                   </Text>
                 </View>
                 {reviewingPostId === selectedPost.id ? (
-                  <ActivityIndicator color="#f59e0b" style={styles.sheetSpinner} />
+                  <ActivityIndicator
+                    color="#f59e0b"
+                    style={styles.sheetSpinner}
+                  />
                 ) : (
                   <Ionicons name="chevron-forward" size={18} color="#9ca3af" />
                 )}
               </TouchableOpacity>
-              <TouchableOpacity style={styles.sheetCancel} onPress={closeMoreSheet}>
+              <TouchableOpacity
+                style={styles.sheetCancel}
+                onPress={closeMoreSheet}
+              >
                 <Text style={styles.sheetCancelText}>Close</Text>
               </TouchableOpacity>
             </Animated.View>
