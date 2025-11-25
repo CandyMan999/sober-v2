@@ -1,5 +1,4 @@
-// pages/AddPhotoScreen.js
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -8,6 +7,7 @@ import {
   Image,
   ActivityIndicator,
   Alert,
+  Animated,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import * as ImagePicker from "expo-image-picker";
@@ -21,283 +21,187 @@ import {
 } from "../GraphQL/mutations";
 import { EXPO_CF_ACCOUNT_HASH, EXPO_CF_VARIANT } from "@env";
 
+import LogoIcon from "../assets/icon.png";
+
 const PRIMARY_BG = "#050816";
 const CARD_BG = "rgba(15,23,42,0.96)";
 const ACCENT = "#F59E0B";
 const ACCENT_SOFT = "#FBBF24";
-const SLOT = {
-  PROFILE: "PROFILE",
-  DRUNK: "DRUNK",
-};
 
 const AddPhotoScreen = ({ navigation, route }) => {
   const client = useClient();
   const username = route?.params?.username || "you";
   const token = route?.params?.pushToken || null;
-  const [profilePhotoUri, setProfilePhotoUri] = useState(
-    route?.params?.photoURI ? route.params.photoURI : null
-  ); // remote/local preview
-  const [profilePhotoId, setProfilePhotoId] = useState(null); // picture ID for deletion
+
+  // flow state
+  const [step, setStep] = useState(1);
+
+  // animation for step content
+  const [contentAnim] = useState(new Animated.Value(0));
+
+  useEffect(() => {
+    contentAnim.setValue(0);
+    Animated.timing(contentAnim, {
+      toValue: 1,
+      duration: 300,
+      useNativeDriver: true,
+    }).start();
+  }, [step, contentAnim]);
+
+  // profile photo state
+  const [profileUri, setProfileUri] = useState(route?.params?.photoURI || null);
+  const [profileId, setProfileId] = useState(null);
   const [profileUploading, setProfileUploading] = useState(false);
   const [profileDeleting, setProfileDeleting] = useState(false);
 
-  const [drunkPhotoUri, setDrunkPhotoUri] = useState(null);
-  const [drunkPhotoId, setDrunkPhotoId] = useState(null);
+  // drunk photo state
+  const [drunkUri, setDrunkUri] = useState(null);
+  const [drunkId, setDrunkId] = useState(null);
   const [drunkUploading, setDrunkUploading] = useState(false);
   const [drunkDeleting, setDrunkDeleting] = useState(false);
-
-  console.log("HASH:", EXPO_CF_ACCOUNT_HASH);
-  console.log("VARIANT:", EXPO_CF_VARIANT);
 
   const requestMediaPermission = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (status !== "granted") {
-      Alert.alert(
-        "Permission needed",
-        "We need access to your photos to upload a profile picture."
-      );
+      Alert.alert("Permission needed", "We need access to your photos.");
       return false;
     }
     return true;
   };
 
-  const getSlotState = (slot) => {
-    const isDrunk = slot === SLOT.DRUNK;
-
-    return {
-      uri: isDrunk ? drunkPhotoUri : profilePhotoUri,
-      setUri: isDrunk ? setDrunkPhotoUri : setProfilePhotoUri,
-      photoId: isDrunk ? drunkPhotoId : profilePhotoId,
-      setPhotoId: isDrunk ? setDrunkPhotoId : setProfilePhotoId,
-      uploading: isDrunk ? drunkUploading : profileUploading,
-      setUploading: isDrunk ? setDrunkUploading : setProfileUploading,
-      deleting: isDrunk ? drunkDeleting : profileDeleting,
-      setDeleting: isDrunk ? setDrunkDeleting : setProfileDeleting,
-    };
-  };
-
-  const handlePickImage = async (slot) => {
-    const { setUri, setPhotoId, uploading, setUploading } = getSlotState(slot);
-
+  const uploadToCloudflare = async (localUri, slot) => {
     try {
-      if (uploading) return;
+      const { directUpload } = await client.request(DIRECT_UPLOAD_MUTATION);
 
-      if (!(await requestMediaPermission())) return;
+      if (!directUpload?.uploadURL) throw new Error("Missing upload URL");
 
-      setUploading(true);
-
-      const result = await ImagePicker.launchImageLibraryAsync({
-        allowsEditing: true,
-        aspect: [3, 4],
-        quality: 1,
-      });
-
-      if (result.canceled) {
-        setUploading(false);
-        return;
-      }
-
-      const originalUri = result.assets[0].uri;
-
-      // Resize/compress
-      const resized = await ImageManipulator.manipulateAsync(
-        originalUri,
-        [{ resize: { width: 800 } }],
-        { compress: 0.7, format: ImageManipulator.SaveFormat.JPEG }
-      );
-
-      // Optimistic local preview
-      setUri(resized.uri);
-
-      // ---- STEP 1: GET DIRECT UPLOAD TICKET FROM BACKEND ----
-      let directUpload;
-      try {
-        console.log("➡️ Requesting DIRECT_UPLOAD_MUTATION...");
-        const data = await client.request(DIRECT_UPLOAD_MUTATION);
-        directUpload = data?.directUpload;
-        console.log("✅ directUpload response:", directUpload);
-      } catch (err) {
-        console.log("❌ Error calling DIRECT_UPLOAD_MUTATION:", err);
-        throw new Error("Failed to contact API for direct upload URL");
-      }
-
-      const { uploadURL, id } = directUpload || {};
-      console.log("uploadURL:", uploadURL, "id:", id);
-
-      if (!uploadURL) {
-        throw new Error("No uploadURL returned from directUpload");
-      }
-
-      // ---- STEP 2: UPLOAD TO CLOUDFLARE ----
       const fd = new FormData();
       fd.append("file", {
-        uri: resized.uri,
+        uri: localUri,
         type: "image/jpeg",
-        name: "profile.jpg",
+        name: "upload.jpg",
       });
 
-      console.log("➡️ Uploading to Cloudflare:", uploadURL);
-
-      const res = await fetch(uploadURL, {
+      const uploadRes = await fetch(directUpload.uploadURL, {
         method: "POST",
         body: fd,
-        // DO NOT manually set Content-Type
       });
 
-      if (!res.ok) {
-        const text = await res.text().catch(() => "");
-        console.log("❌ Cloudflare upload failed:", res.status, text);
-        throw new Error(`Cloudflare upload failed: ${res.status} ${text}`);
-      }
+      if (!uploadRes.ok) throw new Error("Cloudflare upload failed");
 
-      console.log("✅ Cloudflare upload success");
+      const deliveryUrl = `https://imagedelivery.net/${EXPO_CF_ACCOUNT_HASH}/${directUpload.id}/${EXPO_CF_VARIANT}`;
 
-      // ---- STEP 3: BUILD DELIVERY URL ----
-      const hash = EXPO_CF_ACCOUNT_HASH;
-      const variant = EXPO_CF_VARIANT || "public";
-
-      if (!hash) {
-        console.warn(
-          "EXPO_CF_ACCOUNT_HASH is not set – using local resized URI as fallback"
-        );
-      }
-
-      const deliveryUrl = hash
-        ? `https://imagedelivery.net/${hash}/${id}/${variant}`
-        : resized.uri;
-
-      console.log("Final delivery URL:", deliveryUrl);
-
-      // ---- STEP 4: SAVE PICTURE TO DATABASE ----
-      console.log("➡️ Calling ADD_PICTURE_MUTATION...");
       const { addPicture } = await client.request(ADD_PICTURE_MUTATION, {
         token,
         url: deliveryUrl,
-        publicId: id,
+        publicId: directUpload.id,
         slot,
       });
-      console.log("✅ Picture added: ", addPicture);
 
-      // Use remote URL for preview and store picture ID
-      setUri(deliveryUrl);
-      setPhotoId(addPicture.id);
-      setUploading(false);
+      return { url: deliveryUrl, id: addPicture.id };
     } catch (err) {
-      console.log("Photo upload error (outer catch):", err?.name, err?.message);
-      console.log("Full error object:", err);
-      setUploading(false);
-      Alert.alert(
-        "Upload failed",
-        "We couldn’t upload your photo right now. Please try again."
-      );
+      console.log("Upload error:", err);
+      Alert.alert("Upload failed", "Please try again.");
+      return null;
     }
   };
 
-  const handleDeletePhoto = async (slot) => {
-    const { photoId, deleting, uploading, setUri, setPhotoId, setDeleting } =
-      getSlotState(slot);
+  const pickImage = async (slot) => {
+    const uploading = slot === "PROFILE" ? profileUploading : drunkUploading;
+    if (!(await requestMediaPermission()) || uploading) return;
 
-    if (!photoId || deleting || uploading) return;
+    if (slot === "PROFILE") setProfileUploading(true);
+    else setDrunkUploading(true);
+
+    const result = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: slot === "PROFILE" ? true : false,
+      aspect: slot === "PROFILE" ? [1, 1] : [3, 4],
+      quality: 1,
+    });
+
+    if (result.canceled) {
+      if (slot === "PROFILE") setProfileUploading(false);
+      else setDrunkUploading(false);
+      return;
+    }
+
+    const resized = await ImageManipulator.manipulateAsync(
+      result.assets[0].uri,
+      [{ resize: { width: 900 } }],
+      { compress: 0.7, format: ImageManipulator.SaveFormat.JPEG }
+    );
+
+    // optimistic preview
+    if (slot === "PROFILE") setProfileUri(resized.uri);
+    else setDrunkUri(resized.uri);
+
+    const uploaded = await uploadToCloudflare(resized.uri, slot);
+
+    if (uploaded) {
+      if (slot === "PROFILE") {
+        setProfileUri(uploaded.url);
+        setProfileId(uploaded.id);
+      } else {
+        setDrunkUri(uploaded.url);
+        setDrunkId(uploaded.id);
+      }
+    }
+
+    if (slot === "PROFILE") setProfileUploading(false);
+    else setDrunkUploading(false);
+  };
+
+  const deletePhoto = async (slot) => {
+    const photoId = slot === "PROFILE" ? profileId : drunkId;
+    const deleting = slot === "PROFILE" ? profileDeleting : drunkDeleting;
+
+    if (!photoId || deleting) return;
+
+    if (slot === "PROFILE") setProfileDeleting(true);
+    else setDrunkDeleting(true);
 
     try {
-      setDeleting(true);
-      console.log("➡️ Calling DELETE_PHOTO_MUTATION...", photoId);
-      const { deletePhoto } = await client.request(DELETE_PHOTO_MUTATION, {
-        token,
-        photoId: photoId,
-        slot,
-      });
-      console.log("✅ Photo deleted: ", deletePhoto);
+      await client.request(DELETE_PHOTO_MUTATION, { token, photoId, slot });
 
-      // Clear local state
-      setUri(null);
-      setPhotoId(null);
+      if (slot === "PROFILE") {
+        setProfileUri(null);
+        setProfileId(null);
+      } else {
+        setDrunkUri(null);
+        setDrunkId(null);
+      }
     } catch (err) {
-      console.log("Error deleting photo:", err);
-    } finally {
-      setDeleting(false);
+      console.log("Delete error:", err);
+    }
+
+    if (slot === "PROFILE") setProfileDeleting(false);
+    else setDrunkDeleting(false);
+  };
+
+  const goNext = () => {
+    if (step === 1) {
+      if (!profileUri) return;
+      setStep(2);
+    } else {
+      navigation.navigate("AddSobrietyDate", { pushToken: token });
     }
   };
 
-  const handleContinue = () => {
-    const isBusy = profileUploading || drunkUploading;
-    if (isBusy) return;
+  // Disable button on BOTH steps until that step's image exists
+  const isPrimaryDisabled =
+    (step === 1 && !profileUri) || (step === 2 && !drunkUri);
 
-    navigation.navigate("AddSobrietyDate", {
-      pushToken: token,
-    });
+  const animatedContentStyle = {
+    opacity: contentAnim,
+    transform: [
+      {
+        translateY: contentAnim.interpolate({
+          inputRange: [0, 1],
+          outputRange: [12, 0],
+        }),
+      },
+    ],
   };
-
-  const handleSkip = () => {
-    const isBusy = profileUploading || drunkUploading;
-    if (isBusy) return;
-    navigation.navigate("AddSobrietyDate", {
-      pushToken: token,
-    });
-  };
-
-  const hasAnyPhoto = !!profilePhotoUri || !!drunkPhotoUri;
-  const PhotoSlot = ({ slot, title, helper, accentColors }) => {
-    const { uri, uploading, deleting } = getSlotState(slot);
-
-    return (
-      <View style={styles.slotSection}>
-        <Text style={styles.slotTitle}>{title}</Text>
-        {helper ? <Text style={styles.slotHelper}>{helper}</Text> : null}
-
-        <View style={styles.avatarWrapper}>
-          <View style={styles.avatarContainer}>
-            <TouchableOpacity
-              activeOpacity={0.85}
-              onPress={() => handlePickImage(slot)}
-              disabled={uploading || deleting}
-            >
-              <LinearGradient
-                colors={accentColors}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 1 }}
-                style={styles.avatarRing}
-              >
-                <View style={styles.avatarInner}>
-                  {uploading ? (
-                    <ActivityIndicator size="large" color={accentColors[1]} />
-                  ) : uri ? (
-                    <Image source={{ uri }} style={styles.avatarImage} />
-                  ) : (
-                    <View style={styles.avatarEmptyContent}>
-                      <MaterialIcons
-                        name="photo-camera"
-                        size={32}
-                        color="#9CA3AF"
-                      />
-                      <Text style={styles.avatarTapText}>Tap to add photo</Text>
-                    </View>
-                  )}
-                </View>
-              </LinearGradient>
-            </TouchableOpacity>
-            {/* Delete button - only show when photo exists */}
-            {uri && !uploading && (
-              <TouchableOpacity
-                style={styles.deleteButton}
-                onPress={() => handleDeletePhoto(slot)}
-                disabled={deleting}
-                activeOpacity={0.7}
-              >
-                {deleting ? (
-                  <ActivityIndicator size="small" color="#F97373" />
-                ) : (
-                  <MaterialIcons name="delete" size={24} color="#F97373" />
-                )}
-              </TouchableOpacity>
-            )}
-          </View>
-        </View>
-      </View>
-    );
-  };
-
-  const canContinue = hasAnyPhoto && !(profileUploading || drunkUploading);
 
   return (
     <LinearGradient
@@ -307,90 +211,200 @@ const AddPhotoScreen = ({ navigation, route }) => {
       <View style={styles.flex}>
         {/* Header */}
         <View style={styles.header}>
-          <Text style={styles.appName}>
-            sober <Text style={styles.appAccent}>motivation</Text>
-          </Text>
-          <Text style={styles.tagline}>
-            Faces make the journey feel real. Add your photo and, if you want,
-            the "before" shot too.
-          </Text>
+          <View style={styles.headerRow}>
+            <Image source={LogoIcon} style={styles.logo} resizeMode="contain" />
+            <View>
+              <Text style={styles.appName}>
+                sober <Text style={styles.appAccent}>motivation</Text>
+              </Text>
+              <Text style={styles.tagline}>Your story deserves a face</Text>
+            </View>
+          </View>
         </View>
 
-        {/* Card Container - centers the card */}
+        {/* Card */}
         <View style={styles.cardContainer}>
           <View style={styles.card}>
-            <Text style={styles.sectionLabel}>Step 3 of 4</Text>
+            <Text style={styles.sectionLabel}>STEP 3 OF 4</Text>
 
-            <Text style={styles.title}>
-              Add a <Text style={styles.titleAccent}>profile photo</Text>
-            </Text>
+            <Animated.View style={animatedContentStyle}>
+              {step === 1 ? (
+                <>
+                  <Text style={styles.title}>
+                    Add a <Text style={styles.titleAccent}>profile photo</Text>
+                  </Text>
+                  <Text style={styles.helper}>
+                    A clear photo helps the community recognize and cheer for
+                    you {username}.
+                  </Text>
 
-            <Text style={styles.helper}>
-              A clear photo helps the community recognize and cheer for you{" "}
-              {username}.
-            </Text>
+                  {/* Circle upload */}
+                  <View style={styles.avatarWrapper}>
+                    <TouchableOpacity
+                      activeOpacity={0.85}
+                      onPress={() => pickImage("PROFILE")}
+                      disabled={profileUploading || profileDeleting}
+                    >
+                      <LinearGradient
+                        colors={["#F97316", "#FACC15"]}
+                        style={styles.avatarRing}
+                      >
+                        <View style={styles.avatarInner}>
+                          {profileUploading ? (
+                            <ActivityIndicator size="large" color="#FACC15" />
+                          ) : profileUri ? (
+                            <Image
+                              source={{ uri: profileUri }}
+                              style={styles.avatarImage}
+                            />
+                          ) : (
+                            <View style={styles.avatarEmptyContent}>
+                              <MaterialIcons
+                                name="photo-camera"
+                                size={32}
+                                color="#9CA3AF"
+                              />
+                              <Text style={styles.avatarTapText}>
+                                Tap to add photo
+                              </Text>
+                            </View>
+                          )}
+                        </View>
+                      </LinearGradient>
+                    </TouchableOpacity>
 
-            <PhotoSlot
-              slot={SLOT.PROFILE}
-              title="Your profile photo"
-              helper="This is what people will see on your posts and comments."
-              accentColors={["#F97316", "#FACC15"]}
-            />
+                    {profileUri && !profileUploading && (
+                      <TouchableOpacity
+                        style={styles.deleteButton}
+                        onPress={() => deletePhoto("PROFILE")}
+                        disabled={profileDeleting}
+                      >
+                        {profileDeleting ? (
+                          <ActivityIndicator size="small" color="#F97373" />
+                        ) : (
+                          <MaterialIcons
+                            name="delete"
+                            size={20}
+                            color="#F97373"
+                          />
+                        )}
+                      </TouchableOpacity>
+                    )}
+                  </View>
+                </>
+              ) : (
+                <>
+                  <Text style={styles.title}>
+                    Add a <Text style={styles.titleAccent}>drunk photo</Text>
+                  </Text>
+                  <Text style={styles.helper}>
+                    For the before and after glow-up.
+                  </Text>
 
-            <View style={styles.divider} />
+                  {/* Portrait upload */}
+                  <View style={styles.drunkWrapper}>
+                    <TouchableOpacity
+                      activeOpacity={0.85}
+                      onPress={() => pickImage("DRUNK")}
+                      disabled={drunkUploading || drunkDeleting}
+                    >
+                      <LinearGradient
+                        colors={["#6366F1", "#22D3EE"]}
+                        style={styles.drunkFrame}
+                      >
+                        <View style={styles.drunkInner}>
+                          {drunkUploading ? (
+                            <ActivityIndicator size="large" color="#22D3EE" />
+                          ) : drunkUri ? (
+                            <Image
+                              source={{ uri: drunkUri }}
+                              style={styles.drunkImage}
+                            />
+                          ) : (
+                            <View style={styles.drunkEmpty}>
+                              <MaterialIcons
+                                name="photo-camera"
+                                size={32}
+                                color="#9CA3AF"
+                              />
+                              <Text style={styles.drunkTapText}>
+                                Tap to add
+                              </Text>
+                            </View>
+                          )}
+                        </View>
+                      </LinearGradient>
+                    </TouchableOpacity>
 
-            <Text style={styles.subtitle}>Add a "day one" photo (optional)</Text>
-            <Text style={styles.helper}>
-              Hey, want to save a photo from your drinking days? We'll keep it
-              as a before/after reminder alongside your progress.
-            </Text>
+                    {drunkUri && !drunkUploading && (
+                      <TouchableOpacity
+                        style={styles.deleteButton}
+                        onPress={() => deletePhoto("DRUNK")}
+                        disabled={drunkDeleting}
+                      >
+                        {drunkDeleting ? (
+                          <ActivityIndicator size="small" color="#F97373" />
+                        ) : (
+                          <MaterialIcons
+                            name="delete"
+                            size={20}
+                            color="#F97373"
+                          />
+                        )}
+                      </TouchableOpacity>
+                    )}
+                  </View>
+                </>
+              )}
+            </Animated.View>
 
-            <PhotoSlot
-              slot={SLOT.DRUNK}
-              title="Day one / drinking days"
-              helper="Upload a pic from back then so you can compare it to how you're doing now."
-              accentColors={["#6366F1", "#22D3EE"]}
-            />
-
-            {/* Primary CTA */}
+            {/* Next / Continue button */}
             <TouchableOpacity
               style={[
                 styles.primaryButton,
-                (!canContinue || profileUploading || drunkUploading) && {
-                  opacity: 0.6,
-                },
+                isPrimaryDisabled && styles.primaryButtonDisabled,
               ]}
-              activeOpacity={0.9}
-              onPress={handleContinue}
-              disabled={!canContinue || profileUploading || drunkUploading}
+              disabled={isPrimaryDisabled}
+              onPress={goNext}
+              activeOpacity={isPrimaryDisabled ? 1 : 0.85}
             >
               <LinearGradient
                 colors={
-                  canContinue && !(profileUploading || drunkUploading)
-                    ? [ACCENT, ACCENT_SOFT]
-                    : ["#4B5563", "#4B5563"]
+                  isPrimaryDisabled
+                    ? ["#4B5563", "#6B7280"]
+                    : [ACCENT, ACCENT_SOFT]
                 }
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 1 }}
                 style={styles.primaryGradient}
               >
-                {profileUploading || drunkUploading ? (
-                  <ActivityIndicator color="#111827" />
-                ) : (
-                  <Text style={styles.primaryText}>Next</Text>
-                )}
+                <Text style={styles.primaryText}>
+                  {step === 1 ? "Next" : "Continue"}
+                </Text>
               </LinearGradient>
             </TouchableOpacity>
 
-            {/* Skip link */}
-            <TouchableOpacity
-              onPress={handleSkip}
-              style={styles.skipWrapper}
-              activeOpacity={profileUploading || drunkUploading ? 1 : 0.7}
-              disabled={profileUploading || drunkUploading}
-            >
-              <Text style={styles.skipText}>Skip for now</Text>
-            </TouchableOpacity>
+            {/* Skip for now on profile step -> go straight to AddSobrietyDate */}
+            {step === 1 && (
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate("AddSobrietyDate", { pushToken: token })
+                }
+                style={styles.skipWrapper}
+              >
+                <Text style={styles.skipText}>Skip for now</Text>
+              </TouchableOpacity>
+            )}
+
+            {/* Skip on drunk step -> also go to AddSobrietyDate */}
+            {step === 2 && (
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate("AddSobrietyDate", { pushToken: token })
+                }
+                style={styles.skipWrapper}
+              >
+                <Text style={styles.skipText}>Skip</Text>
+              </TouchableOpacity>
+            )}
           </View>
         </View>
       </View>
@@ -399,115 +413,94 @@ const AddPhotoScreen = ({ navigation, route }) => {
 };
 
 const styles = StyleSheet.create({
-  root: {
-    flex: 1,
-    backgroundColor: PRIMARY_BG,
-  },
-  flex: {
-    flex: 1,
-    paddingHorizontal: 24,
-    paddingTop: 48,
-    paddingBottom: 32,
-  },
-  header: {
-    marginBottom: 24,
-  },
-  cardContainer: {
-    flex: 1,
-    justifyContent: "center",
-  },
+  root: { flex: 1, backgroundColor: PRIMARY_BG },
+  flex: { flex: 1, paddingHorizontal: 24, paddingTop: 48, paddingBottom: 32 },
+  header: { marginBottom: 24 },
+  headerRow: { flexDirection: "row", alignItems: "center" },
+  logo: { width: 44, height: 44, borderRadius: 10, marginRight: 12 },
   appName: {
     fontSize: 20,
     fontWeight: "700",
-    letterSpacing: 1.2,
     textTransform: "uppercase",
     color: "#E5E7EB",
   },
-  appAccent: {
-    color: ACCENT,
-  },
-  tagline: {
-    marginTop: 6,
-    fontSize: 14,
-    color: "#9CA3AF",
-  },
+  appAccent: { color: ACCENT },
+  tagline: { marginTop: 4, color: "#9CA3AF", fontSize: 14 },
+  cardContainer: { flex: 1, justifyContent: "center" },
   card: {
     borderRadius: 24,
     padding: 24,
     backgroundColor: CARD_BG,
     borderWidth: 1,
     borderColor: "rgba(148,163,184,0.35)",
-    shadowColor: "#000",
-    shadowOpacity: 0.45,
-    shadowRadius: 20,
-    shadowOffset: { width: 0, height: 12 },
-    elevation: 12,
   },
+
   sectionLabel: {
     fontSize: 12,
-    color: "#6B7280",
     textTransform: "uppercase",
     letterSpacing: 1.4,
+    color: "#6B7280",
     marginBottom: 12,
   },
-  title: {
-    fontSize: 24,
-    fontWeight: "700",
-    color: "#F9FAFB",
-    marginBottom: 8,
-  },
-  titleAccent: {
-    color: ACCENT,
-  },
-  helper: {
-    fontSize: 14,
-    color: "#9CA3AF",
-    marginBottom: 20,
-  },
-  subtitle: {
-    fontSize: 18,
-    fontWeight: "700",
-    color: "#F9FAFB",
-    marginBottom: 8,
-    marginTop: 4,
-  },
-  slotSection: {
-    marginBottom: 12,
-  },
-  slotTitle: {
-    fontSize: 16,
-    fontWeight: "700",
-    color: "#F9FAFB",
-    marginBottom: 6,
-  },
-  slotHelper: {
-    fontSize: 13,
-    color: "#94A3B8",
-    marginBottom: 10,
-    lineHeight: 18,
-  },
-  divider: {
-    height: 1,
-    backgroundColor: "rgba(148,163,184,0.25)",
-    marginVertical: 18,
-  },
+  title: { fontSize: 24, fontWeight: "700", color: "#FFF", marginBottom: 8 },
+  titleAccent: { color: ACCENT },
+  helper: { color: "#9CA3AF", fontSize: 14, marginBottom: 20 },
+
+  // profile UI
   avatarWrapper: {
     alignItems: "center",
     marginBottom: 16,
-  },
-  avatarContainer: {
-    width: 140,
-    height: 140,
     position: "relative",
   },
+  avatarRing: { width: 150, height: 150, padding: 4, borderRadius: 999 },
+  avatarInner: {
+    width: "100%",
+    height: "100%",
+    borderRadius: 999,
+    backgroundColor: "#020617",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  avatarImage: { width: "100%", height: "100%", borderRadius: 999 },
+  avatarEmptyContent: { alignItems: "center", justifyContent: "center" },
+  avatarTapText: { marginTop: 8, color: "#9CA3AF", fontSize: 13 },
+
+  // drunk UI
+  drunkWrapper: {
+    alignItems: "center",
+    marginBottom: 16,
+    position: "relative",
+  },
+  drunkFrame: {
+    width: 160,
+    height: 220,
+    padding: 4,
+    borderRadius: 16,
+  },
+  drunkInner: {
+    width: "100%",
+    height: "100%",
+    borderRadius: 14,
+    backgroundColor: "#020617",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  drunkImage: {
+    width: "100%",
+    height: "100%",
+    borderRadius: 14,
+  },
+  drunkEmpty: { alignItems: "center", justifyContent: "center" },
+  drunkTapText: { marginTop: 6, color: "#9CA3AF", fontSize: 13 },
+
   deleteButton: {
     position: "absolute",
-    top: -8,
-    right: -8,
+    top: 6,
+    right: 6,
     backgroundColor: "#111827",
     borderRadius: 20,
-    width: 36,
-    height: 36,
+    width: 32,
+    height: 32,
     alignItems: "center",
     justifyContent: "center",
     borderWidth: 2,
@@ -519,41 +512,14 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     elevation: 5,
   },
-  avatarRing: {
-    width: 140,
-    height: 140,
-    borderRadius: 999,
-    padding: 4,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  avatarInner: {
-    width: "100%",
-    height: "100%",
-    borderRadius: 999,
-    backgroundColor: "#020617",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  avatarImage: {
-    width: "100%",
-    height: "100%",
-    borderRadius: 999,
-  },
-  avatarEmptyContent: {
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  avatarTapText: {
-    marginTop: 8,
-    fontSize: 13,
-    color: "#9CA3AF",
-    fontWeight: "500",
-  },
+
   primaryButton: {
+    marginTop: 12,
     borderRadius: 999,
     overflow: "hidden",
-    marginTop: 12,
+  },
+  primaryButtonDisabled: {
+    opacity: 0.9,
   },
   primaryGradient: {
     paddingVertical: 14,
@@ -561,20 +527,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     borderRadius: 999,
   },
-  primaryText: {
-    color: "#111827",
-    fontSize: 16,
-    fontWeight: "700",
-  },
-  skipWrapper: {
-    marginTop: 10,
-    alignItems: "center",
-  },
-  skipText: {
-    fontSize: 13,
-    color: "#9CA3AF",
-    textDecorationLine: "underline",
-  },
+  primaryText: { color: "#111", fontSize: 16, fontWeight: "700" },
+  skipWrapper: { marginTop: 12, alignItems: "center" },
+  skipText: { color: "#9CA3AF", textDecorationLine: "underline" },
 });
 
 export default AddPhotoScreen;

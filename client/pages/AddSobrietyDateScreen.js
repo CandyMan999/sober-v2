@@ -8,12 +8,15 @@ import {
   ActivityIndicator,
   Alert,
   Platform,
+  Image,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { useClient } from "../client";
 import { RESET_SOBRIETY_MUTATION } from "../GraphQL/mutations";
 import Context from "../context";
+
+import LogoIcon from "../assets/icon.png";
 
 const PRIMARY_BG = "#050816";
 const CARD_BG = "rgba(15,23,42,0.96)";
@@ -182,12 +185,17 @@ const AddSobrietyDateScreen = ({ navigation, route }) => {
       <View style={styles.flex}>
         {/* Header */}
         <View style={styles.header}>
-          <Text style={styles.appName}>
-            sober <Text style={styles.appAccent}>motivation</Text>
-          </Text>
-          <Text style={styles.tagline}>
-            Every day counts. When did your journey begin?
-          </Text>
+          <View style={styles.headerRow}>
+            <Image source={LogoIcon} style={styles.logo} resizeMode="contain" />
+            <View>
+              <Text style={styles.appName}>
+                sober <Text style={styles.appAccent}>motivation</Text>
+              </Text>
+              <Text style={styles.tagline}>
+                Every day counts. When did your journey begin?
+              </Text>
+            </View>
+          </View>
         </View>
 
         {/* Card Container - centers the card */}
@@ -343,6 +351,16 @@ const styles = StyleSheet.create({
   },
   header: {
     marginBottom: 24,
+  },
+  headerRow: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  logo: {
+    width: 44,
+    height: 44,
+    borderRadius: 10,
+    marginRight: 12,
   },
   cardContainer: {
     flex: 1,

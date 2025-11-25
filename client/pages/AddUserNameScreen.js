@@ -9,6 +9,7 @@ import {
   Platform,
   ActivityIndicator,
   Alert,
+  Image,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import * as Notifications from "expo-notifications";
@@ -16,6 +17,7 @@ import * as Location from "expo-location";
 import * as Device from "expo-device";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Context from "../context";
+import LogoIcon from "../assets/icon.png";
 
 import { useClient } from "../client";
 import { UPDATE_USER_PROFILE_MUTATION } from "../GraphQL/mutations";
@@ -66,23 +68,25 @@ const UsernameScreen = ({ navigation }) => {
       if (me?.username && me.username.trim().length >= MIN_LEN) {
         dispatch({ type: "SET_USER", payload: me });
 
-        const backgroundStatus = await Location.getBackgroundPermissionsAsync();
+        const { status, scope } =
+          await Location.getForegroundPermissionsAsync();
 
-        // ✅ ALL GOOD → straight to main tabs
-        if (backgroundStatus.status === "granted") {
+        const hasAlwaysPermission = status === "granted" && scope === "always";
+
+        if (hasAlwaysPermission && me.sobrietyStartAt && me.profilePic) {
           safeNavigateReset({
             index: 0,
             routes: [{ name: "MainTabs" }],
           });
-          return; // ⬅ important
+          return;
         }
 
-        // Background not granted → send them to the right “next” step
-        const nextRouteName = me.sobrietyStartAt
-          ? "LocationPermission"
-          : me.profilePic || me.drunkPic
+        // Otherwise route user to the correct next step
+        const nextRouteName = !me.profilePic
+          ? "AddPhoto"
+          : !me.sobrietyStartAt
           ? "AddSobrietyDate"
-          : "AddPhoto";
+          : "LocationPermission"; // ← this is now enforced
 
         safeNavigateReset({
           index: 0,
@@ -420,12 +424,18 @@ const UsernameScreen = ({ navigation }) => {
       >
         {/* Header */}
         <View style={styles.header}>
-          <Text style={styles.appName}>
-            sober <Text style={styles.appAccent}>motivation</Text>
-          </Text>
-          <Text style={styles.tagline}>
-            Build a life you don’t want to numb.
-          </Text>
+          <View style={styles.headerRow}>
+            <Image source={LogoIcon} style={styles.logo} resizeMode="contain" />
+
+            <View style={styles.headerTextBlock}>
+              <Text style={styles.appName}>
+                sober <Text style={styles.appAccent}>motivation</Text>
+              </Text>
+              <Text style={styles.tagline}>
+                Build a life you don’t want to numb.
+              </Text>
+            </View>
+          </View>
         </View>
 
         {/* Card content */}
@@ -456,22 +466,46 @@ const styles = StyleSheet.create({
   },
   header: {
     marginBottom: 24,
+    alignItems: "flex-start", // ⬅ left-align the whole header block
   },
+
+  headerRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "flex-start",
+  },
+
+  logo: {
+    width: 44,
+    height: 44,
+    borderRadius: 10,
+    marginRight: 12,
+  },
+
+  headerTextBlock: {
+    flexShrink: 1,
+  },
+
   appName: {
     fontSize: 20,
     fontWeight: "700",
     letterSpacing: 1.2,
     textTransform: "uppercase",
     color: "#E5E7EB",
+    textAlign: "left",
   },
+
+  tagline: {
+    marginTop: 4,
+    fontSize: 14,
+    color: "#9CA3AF",
+    textAlign: "left",
+  },
+
   appAccent: {
     color: ACCENT,
   },
-  tagline: {
-    marginTop: 6,
-    fontSize: 14,
-    color: "#9CA3AF",
-  },
+
   card: {
     borderRadius: 24,
     padding: 24,
@@ -523,6 +557,7 @@ const styles = StyleSheet.create({
     color: "#F9FAFB",
     fontSize: 15,
   },
+
   validationText: {
     marginTop: 6,
     fontSize: 12,
