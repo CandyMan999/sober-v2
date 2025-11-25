@@ -725,9 +725,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   tutorialImage: {
-    width: "90%",
-    height: "90%",
-    resizeMode: "contain",
+    width: "80%",
+    height: "80%",
+    // resizeMode: "contain",
+    position: "absolute",
+    bottom: 0,
   },
   tutorialClose: {
     position: "absolute",

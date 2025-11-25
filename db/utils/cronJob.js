@@ -101,7 +101,9 @@ const ensureMilestonePost = async (user, milestoneDays) => {
 
   if (!user?.profilePicUrl) {
     console.log(
-      `⚠️  Skipping milestone post for ${user?.username || user?._id} — no profilePicUrl`
+      `⚠️  Skipping milestone post for ${
+        user?.username || user?._id
+      } — no profilePicUrl`
     );
     return null;
   }
@@ -128,6 +130,8 @@ const ensureMilestonePost = async (user, milestoneDays) => {
     milestoneDays,
     milestoneTag,
   });
+
+  console.log("!!!!!!!!!!! POST CREATED: ", created);
 
   return Post.findById(created._id)
     .populate("author")
