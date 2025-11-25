@@ -87,6 +87,19 @@ const buildMilestoneMessage = (user, milestoneDays) => {
   };
 };
 
+const getMilestoneImageUrlForUser = (user) => {
+  if (!user) return null;
+
+  // 1) Prefer drunk pic
+  if (user.drunkPicUrl) return user.drunkPicUrl;
+
+  // 2) Fallback to profile pic
+  if (user.profilePicUrl) return user.profilePicUrl;
+
+  // 3) No image → no post
+  return null;
+};
+
 const buildMilestoneCaptionText = (user, milestoneDays) => {
   const name = user?.username || "A member";
   const label = `Day ${milestoneDays}`;
@@ -99,11 +112,13 @@ const ensureMilestonePost = async (user, milestoneDays) => {
     return null; // only create posts for milestones day 7+
   }
 
-  if (!user?.profilePicUrl) {
+  const imageUrl = getMilestoneImageUrlForUser(user);
+
+  if (!imageUrl) {
     console.log(
       `⚠️  Skipping milestone post for ${
         user?.username || user?._id
-      } — no profilePicUrl`
+      } — no drunkPic or profilePic`
     );
     return null;
   }
@@ -122,7 +137,7 @@ const ensureMilestonePost = async (user, milestoneDays) => {
     author: user._id,
     text: buildMilestoneCaptionText(user, milestoneDays),
     mediaType: "IMAGE",
-    imageUrl: user.profilePicUrl,
+    imageUrl, // <-- now uses drunkPic first, then profilePic
     flagged: false,
     likesCount: 0,
     commentsCount: 0,

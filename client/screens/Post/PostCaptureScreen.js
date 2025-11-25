@@ -326,7 +326,7 @@ const PostCaptureScreen = ({ navigation }) => {
 
       const result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        allowsEditing: true,
+        allowsEditing: false,
         aspect: [3, 4],
         quality: 1,
       });
