@@ -7,21 +7,28 @@ import {
   ActivityIndicator,
   FlatList,
 } from "react-native";
+import { useIsFocused } from "@react-navigation/native";
 import { GET_QUOTES_QUERY } from "../../GraphQL/queries";
 import FeedLayout from "../../components/FeedLayout";
 import { useClient } from "../../client";
-import AlertModal from "../../components/AlertModal"; // 👈 import this
+import AlertModal from "../../components/AlertModal";
+
+// 👇 module-level flag: survives navigation, resets when app reloads
+let hasShownQuotesAlertThisSession = false;
 
 const QuotesScreen = () => {
   const client = useClient();
+  const isFocused = useIsFocused();
+
   const [quotes, setQuotes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [containerHeight, setContainerHeight] = useState(null);
 
-  // Show the “add your own quote” hint
-  const [showAlert, setShowAlert] = useState(true);
+  // “Add your own quote” hint
+  const [showAlert, setShowAlert] = useState(false);
 
+  // Fetch quotes once on mount
   useEffect(() => {
     let isMounted = true;
 
@@ -52,7 +59,26 @@ const QuotesScreen = () => {
     return () => {
       isMounted = false;
     };
-  }, []);
+  }, []); // run only once
+
+  // Delay the alert until the screen is fully focused, and only once per session
+  useEffect(() => {
+    let timeoutId;
+
+    if (isFocused && !hasShownQuotesAlertThisSession) {
+      timeoutId = setTimeout(() => {
+        setShowAlert(true);
+        hasShownQuotesAlertThisSession = true; // 👈 don't show again this session
+      }, 800);
+    } else if (!isFocused) {
+      // hide alert if we leave the screen
+      setShowAlert(false);
+    }
+
+    return () => {
+      if (timeoutId) clearTimeout(timeoutId);
+    };
+  }, [isFocused]);
 
   const handleLayout = (e) => {
     const { height } = e.nativeEvent.layout;
@@ -100,6 +126,7 @@ const QuotesScreen = () => {
   if (!quotes.length) {
     return (
       <View style={styles.root} onLayout={handleLayout}>
+        {renderAlert()}
         <FeedLayout caption="Quotes">
           <View style={styles.center}>
             <Text style={styles.quoteText}>
@@ -122,6 +149,7 @@ const QuotesScreen = () => {
 
     return (
       <View style={styles.root} onLayout={handleLayout}>
+        {renderAlert()}
         <FeedLayout
           caption={handle}
           likesCount={item.likesCount}
