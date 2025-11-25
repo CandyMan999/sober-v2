@@ -1,5 +1,5 @@
 // screens/Sober/QuotesScreen.js
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import {
   View,
   Text,
@@ -23,43 +23,60 @@ const QuotesScreen = () => {
   const [quotes, setQuotes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [refreshing, setRefreshing] = useState(false);
   const [containerHeight, setContainerHeight] = useState(null);
 
   // “Add your own quote” hint
   const [showAlert, setShowAlert] = useState(false);
 
-  // Fetch quotes once on mount
-  useEffect(() => {
-    let isMounted = true;
+  const isMountedRef = useRef(true);
 
-    const fetchQuotes = async () => {
+  const fetchQuotes = useCallback(
+    async ({ isRefresh = false } = {}) => {
       try {
-        setLoading(true);
+        if (isRefresh) {
+          setRefreshing(true);
+        } else {
+          setLoading(true);
+        }
         setError("");
 
         const data = await client.request(GET_QUOTES_QUERY);
 
-        if (!isMounted) return;
+        if (!isMountedRef.current) return;
 
         setQuotes(data?.getQuotes || []);
       } catch (err) {
         console.error("Error fetching quotes:", err);
-        if (isMounted) {
+        if (isMountedRef.current) {
           setError("There was a problem loading quotes.");
         }
       } finally {
-        if (isMounted) {
+        if (!isMountedRef.current) return;
+
+        if (isRefresh) {
+          setRefreshing(false);
+        } else {
           setLoading(false);
         }
       }
-    };
+    },
+    [client]
+  );
 
+  // Fetch quotes once on mount
+  useEffect(() => {
     fetchQuotes();
 
     return () => {
-      isMounted = false;
+      isMountedRef.current = false;
     };
-  }, []); // run only once
+  }, [fetchQuotes]);
+
+  const handleRefresh = () => {
+    if (loading || refreshing) return;
+    fetchQuotes({ isRefresh: true });
+  };
 
   // Delay the alert until the screen is fully focused, and only once per session
   useEffect(() => {
@@ -201,7 +218,10 @@ const QuotesScreen = () => {
         showsVerticalScrollIndicator={false}
         snapToAlignment="start"
         decelerationRate="fast"
-        bounces={false}
+        bounces
+        alwaysBounceVertical
+        onRefresh={handleRefresh}
+        refreshing={refreshing}
         snapToInterval={containerHeight}
         getItemLayout={(_, index) => ({
           length: containerHeight,
