@@ -25,17 +25,26 @@ const PRIMARY_BG = "#050816";
 const CARD_BG = "rgba(15,23,42,0.96)";
 const ACCENT = "#F59E0B";
 const ACCENT_SOFT = "#FBBF24";
+const SLOT = {
+  PROFILE: "PROFILE",
+  DRUNK: "DRUNK",
+};
 
 const AddPhotoScreen = ({ navigation, route }) => {
   const client = useClient();
   const username = route?.params?.username || "you";
   const token = route?.params?.pushToken || null;
-  const [photoUri, setPhotoUri] = useState(
+  const [profilePhotoUri, setProfilePhotoUri] = useState(
     route?.params?.photoURI ? route.params.photoURI : null
   ); // remote/local preview
-  const [photoId, setPhotoId] = useState(null); // picture ID for deletion
-  const [uploading, setUploading] = useState(false);
-  const [deleting, setDeleting] = useState(false);
+  const [profilePhotoId, setProfilePhotoId] = useState(null); // picture ID for deletion
+  const [profileUploading, setProfileUploading] = useState(false);
+  const [profileDeleting, setProfileDeleting] = useState(false);
+
+  const [drunkPhotoUri, setDrunkPhotoUri] = useState(null);
+  const [drunkPhotoId, setDrunkPhotoId] = useState(null);
+  const [drunkUploading, setDrunkUploading] = useState(false);
+  const [drunkDeleting, setDrunkDeleting] = useState(false);
 
   console.log("HASH:", EXPO_CF_ACCOUNT_HASH);
   console.log("VARIANT:", EXPO_CF_VARIANT);
@@ -52,16 +61,41 @@ const AddPhotoScreen = ({ navigation, route }) => {
     return true;
   };
 
-  const handlePickImage = async () => {
+  const getSlotState = (slot) => {
+    const isDrunk = slot === SLOT.DRUNK;
+
+    return {
+      uri: isDrunk ? drunkPhotoUri : profilePhotoUri,
+      setUri: isDrunk ? setDrunkPhotoUri : setProfilePhotoUri,
+      photoId: isDrunk ? drunkPhotoId : profilePhotoId,
+      setPhotoId: isDrunk ? setDrunkPhotoId : setProfilePhotoId,
+      uploading: isDrunk ? drunkUploading : profileUploading,
+      setUploading: isDrunk ? setDrunkUploading : setProfileUploading,
+      deleting: isDrunk ? drunkDeleting : profileDeleting,
+      setDeleting: isDrunk ? setDrunkDeleting : setProfileDeleting,
+    };
+  };
+
+  const handlePickImage = async (slot) => {
+    const { setUri, setPhotoId, uploading, setUploading } = getSlotState(slot);
+
     try {
+      if (uploading) return;
+
       if (!(await requestMediaPermission())) return;
+
+      setUploading(true);
 
       const result = await ImagePicker.launchImageLibraryAsync({
         allowsEditing: true,
+        aspect: [3, 4],
         quality: 1,
       });
 
-      if (result.canceled) return;
+      if (result.canceled) {
+        setUploading(false);
+        return;
+      }
 
       const originalUri = result.assets[0].uri;
 
@@ -73,8 +107,7 @@ const AddPhotoScreen = ({ navigation, route }) => {
       );
 
       // Optimistic local preview
-      setPhotoUri(resized.uri);
-      setUploading(true);
+      setUri(resized.uri);
 
       // ---- STEP 1: GET DIRECT UPLOAD TICKET FROM BACKEND ----
       let directUpload;
@@ -141,11 +174,12 @@ const AddPhotoScreen = ({ navigation, route }) => {
         token,
         url: deliveryUrl,
         publicId: id,
+        slot,
       });
       console.log("✅ Picture added: ", addPicture);
 
       // Use remote URL for preview and store picture ID
-      setPhotoUri(deliveryUrl);
+      setUri(deliveryUrl);
       setPhotoId(addPicture.id);
       setUploading(false);
     } catch (err) {
@@ -159,7 +193,10 @@ const AddPhotoScreen = ({ navigation, route }) => {
     }
   };
 
-  const handleDeletePhoto = async () => {
+  const handleDeletePhoto = async (slot) => {
+    const { photoId, deleting, uploading, setUri, setPhotoId, setDeleting } =
+      getSlotState(slot);
+
     if (!photoId || deleting || uploading) return;
 
     try {
@@ -168,11 +205,12 @@ const AddPhotoScreen = ({ navigation, route }) => {
       const { deletePhoto } = await client.request(DELETE_PHOTO_MUTATION, {
         token,
         photoId: photoId,
+        slot,
       });
       console.log("✅ Photo deleted: ", deletePhoto);
 
       // Clear local state
-      setPhotoUri(null);
+      setUri(null);
       setPhotoId(null);
     } catch (err) {
       console.log("Error deleting photo:", err);
@@ -182,7 +220,8 @@ const AddPhotoScreen = ({ navigation, route }) => {
   };
 
   const handleContinue = () => {
-    if (uploading) return;
+    const isBusy = profileUploading || drunkUploading;
+    if (isBusy) return;
 
     navigation.navigate("AddSobrietyDate", {
       pushToken: token,
@@ -190,13 +229,75 @@ const AddPhotoScreen = ({ navigation, route }) => {
   };
 
   const handleSkip = () => {
-    if (uploading) return;
+    const isBusy = profileUploading || drunkUploading;
+    if (isBusy) return;
     navigation.navigate("AddSobrietyDate", {
       pushToken: token,
     });
   };
 
-  const canContinue = !!photoUri && !uploading;
+  const hasAnyPhoto = !!profilePhotoUri || !!drunkPhotoUri;
+  const PhotoSlot = ({ slot, title, helper, accentColors }) => {
+    const { uri, uploading, deleting } = getSlotState(slot);
+
+    return (
+      <View style={styles.slotSection}>
+        <Text style={styles.slotTitle}>{title}</Text>
+        {helper ? <Text style={styles.slotHelper}>{helper}</Text> : null}
+
+        <View style={styles.avatarWrapper}>
+          <View style={styles.avatarContainer}>
+            <TouchableOpacity
+              activeOpacity={0.85}
+              onPress={() => handlePickImage(slot)}
+              disabled={uploading || deleting}
+            >
+              <LinearGradient
+                colors={accentColors}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+                style={styles.avatarRing}
+              >
+                <View style={styles.avatarInner}>
+                  {uploading ? (
+                    <ActivityIndicator size="large" color={accentColors[1]} />
+                  ) : uri ? (
+                    <Image source={{ uri }} style={styles.avatarImage} />
+                  ) : (
+                    <View style={styles.avatarEmptyContent}>
+                      <MaterialIcons
+                        name="photo-camera"
+                        size={32}
+                        color="#9CA3AF"
+                      />
+                      <Text style={styles.avatarTapText}>Tap to add photo</Text>
+                    </View>
+                  )}
+                </View>
+              </LinearGradient>
+            </TouchableOpacity>
+            {/* Delete button - only show when photo exists */}
+            {uri && !uploading && (
+              <TouchableOpacity
+                style={styles.deleteButton}
+                onPress={() => handleDeletePhoto(slot)}
+                disabled={deleting}
+                activeOpacity={0.7}
+              >
+                {deleting ? (
+                  <ActivityIndicator size="small" color="#F97373" />
+                ) : (
+                  <MaterialIcons name="delete" size={24} color="#F97373" />
+                )}
+              </TouchableOpacity>
+            )}
+          </View>
+        </View>
+      </View>
+    );
+  };
+
+  const canContinue = hasAnyPhoto && !(profileUploading || drunkUploading);
 
   return (
     <LinearGradient
@@ -210,7 +311,8 @@ const AddPhotoScreen = ({ navigation, route }) => {
             sober <Text style={styles.appAccent}>motivation</Text>
           </Text>
           <Text style={styles.tagline}>
-            Faces make the journey feel real. Share yours if you're ready.
+            Faces make the journey feel real. Add your photo and, if you want,
+            the "before" shot too.
           </Text>
         </View>
 
@@ -228,74 +330,43 @@ const AddPhotoScreen = ({ navigation, route }) => {
               {username}.
             </Text>
 
-            {/* Avatar preview (now tappable area) */}
-            <View style={styles.avatarWrapper}>
-              <View style={styles.avatarContainer}>
-                <TouchableOpacity
-                  activeOpacity={0.85}
-                  onPress={handlePickImage}
-                  disabled={uploading || deleting}
-                >
-                  <LinearGradient
-                    colors={["#F97316", "#FACC15"]}
-                    start={{ x: 0, y: 0 }}
-                    end={{ x: 1, y: 1 }}
-                    style={styles.avatarRing}
-                  >
-                    <View style={styles.avatarInner}>
-                      {uploading ? (
-                        <ActivityIndicator size="large" color="#FACC15" />
-                      ) : photoUri ? (
-                        <Image
-                          source={{ uri: photoUri }}
-                          style={styles.avatarImage}
-                        />
-                      ) : (
-                        <View style={styles.avatarEmptyContent}>
-                          <MaterialIcons
-                            name="photo-camera"
-                            size={32}
-                            color="#9CA3AF"
-                          />
-                          <Text style={styles.avatarTapText}>
-                            Tap to add photo
-                          </Text>
-                        </View>
-                      )}
-                    </View>
-                  </LinearGradient>
-                </TouchableOpacity>
-                {/* Delete button - only show when photo exists */}
-                {photoUri && !uploading && (
-                  <TouchableOpacity
-                    style={styles.deleteButton}
-                    onPress={handleDeletePhoto}
-                    disabled={deleting}
-                    activeOpacity={0.7}
-                  >
-                    {deleting ? (
-                      <ActivityIndicator size="small" color="#F97373" />
-                    ) : (
-                      <MaterialIcons name="delete" size={24} color="#F97373" />
-                    )}
-                  </TouchableOpacity>
-                )}
-              </View>
-            </View>
+            <PhotoSlot
+              slot={SLOT.PROFILE}
+              title="Your profile photo"
+              helper="This is what people will see on your posts and comments."
+              accentColors={["#F97316", "#FACC15"]}
+            />
+
+            <View style={styles.divider} />
+
+            <Text style={styles.subtitle}>Add a "day one" photo (optional)</Text>
+            <Text style={styles.helper}>
+              Hey, want to save a photo from your drinking days? We'll keep it
+              as a before/after reminder alongside your progress.
+            </Text>
+
+            <PhotoSlot
+              slot={SLOT.DRUNK}
+              title="Day one / drinking days"
+              helper="Upload a pic from back then so you can compare it to how you're doing now."
+              accentColors={["#6366F1", "#22D3EE"]}
+            />
 
             {/* Primary CTA */}
             <TouchableOpacity
               style={[
                 styles.primaryButton,
-                (!canContinue || uploading) && { opacity: 0.6 },
+                (!canContinue || profileUploading || drunkUploading) && {
+                  opacity: 0.6,
+                },
               ]}
               activeOpacity={0.9}
               onPress={handleContinue}
-              disabled={!canContinue || uploading}
+              disabled={!canContinue || profileUploading || drunkUploading}
             >
               <LinearGradient
                 colors={
-                  canContinue && !uploading
+                  canContinue && !(profileUploading || drunkUploading)
                     ? [ACCENT, ACCENT_SOFT]
                     : ["#4B5563", "#4B5563"]
                 }
@@ -303,7 +374,7 @@ const AddPhotoScreen = ({ navigation, route }) => {
                 end={{ x: 1, y: 1 }}
                 style={styles.primaryGradient}
               >
-                {uploading ? (
+                {profileUploading || drunkUploading ? (
                   <ActivityIndicator color="#111827" />
                 ) : (
                   <Text style={styles.primaryText}>Next</Text>
@@ -315,8 +386,8 @@ const AddPhotoScreen = ({ navigation, route }) => {
             <TouchableOpacity
               onPress={handleSkip}
               style={styles.skipWrapper}
-              activeOpacity={uploading ? 1 : 0.7}
-              disabled={uploading}
+              activeOpacity={profileUploading || drunkUploading ? 1 : 0.7}
+              disabled={profileUploading || drunkUploading}
             >
               <Text style={styles.skipText}>Skip for now</Text>
             </TouchableOpacity>
@@ -392,6 +463,33 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "#9CA3AF",
     marginBottom: 20,
+  },
+  subtitle: {
+    fontSize: 18,
+    fontWeight: "700",
+    color: "#F9FAFB",
+    marginBottom: 8,
+    marginTop: 4,
+  },
+  slotSection: {
+    marginBottom: 12,
+  },
+  slotTitle: {
+    fontSize: 16,
+    fontWeight: "700",
+    color: "#F9FAFB",
+    marginBottom: 6,
+  },
+  slotHelper: {
+    fontSize: 13,
+    color: "#94A3B8",
+    marginBottom: 10,
+    lineHeight: 18,
+  },
+  divider: {
+    height: 1,
+    backgroundColor: "rgba(148,163,184,0.25)",
+    marginVertical: 18,
   },
   avatarWrapper: {
     alignItems: "center",
