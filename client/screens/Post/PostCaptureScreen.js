@@ -22,6 +22,7 @@ import { useFocusEffect, useIsFocused } from "@react-navigation/native";
 import { CameraView, Camera } from "expo-camera";
 import { useVideoPlayer, VideoView } from "expo-video";
 import * as ImagePicker from "expo-image-picker";
+
 import { MaterialIcons, Feather } from "@expo/vector-icons";
 import { ReactNativeFile } from "extract-files";
 import Toast from "react-native-toast-message";
@@ -36,9 +37,9 @@ const RECORDING_QUALITY = "720p"; // slightly lower to help with upload reliabil
 
 const PostCaptureScreen = ({ navigation }) => {
   const cameraRef = useRef(null);
-  const recordingStartRef = useRef(null); // 🔹 track start time
+  const recordingStartRef = useRef(null); // track start time
   const client = useClient();
-  const { state, dispatch } = useContext(Context);
+  const { state } = useContext(Context);
   const isFocused = useIsFocused(); // know when this screen is actually visible
 
   const [hasPermission, setHasPermission] = useState(null);
@@ -55,6 +56,8 @@ const PostCaptureScreen = ({ navigation }) => {
 
   const [error, setError] = useState("");
   const [showErrorModal, setShowErrorModal] = useState(false);
+
+  const [showGalleryPicker, setShowGalleryPicker] = useState(true); // gallery button visibility
 
   // ----- expo-video player for preview -----
   const player = useVideoPlayer(
@@ -110,12 +113,14 @@ const PostCaptureScreen = ({ navigation }) => {
       setIsTimerRunning(false);
       setCaption("");
       recordingStartRef.current = null;
+      setShowGalleryPicker(true);
 
       return () => {
         // On blur: just reset flags (camera + player are handled by isFocused)
         setIsRecording(false);
         setIsTimerRunning(false);
         recordingStartRef.current = null;
+        setShowGalleryPicker(true);
       };
     }, [])
   );
@@ -159,6 +164,7 @@ const PostCaptureScreen = ({ navigation }) => {
     setIsRecording(false);
     setIsTimerRunning(false);
     recordingStartRef.current = null;
+    setShowGalleryPicker(true);
   };
 
   const closeErrorModal = () => {
@@ -173,6 +179,7 @@ const PostCaptureScreen = ({ navigation }) => {
       setIsRecording(true);
       setIsTimerRunning(true);
       setTimer(MAX_DURATION_SECONDS);
+      setShowGalleryPicker(false); // hide gallery while recording
 
       const options = {
         quality: RECORDING_QUALITY,
@@ -180,7 +187,7 @@ const PostCaptureScreen = ({ navigation }) => {
       };
 
       const startTime = Date.now();
-      recordingStartRef.current = startTime; // 🔹 mark the real start time
+      recordingStartRef.current = startTime; // mark the real start time
 
       const data = await cameraRef.current.recordAsync(options);
       const endTime = Date.now();
@@ -192,6 +199,7 @@ const PostCaptureScreen = ({ navigation }) => {
       setIsRecording(false);
       setIsTimerRunning(false);
       recordingStartRef.current = null;
+      setShowGalleryPicker(true); // back to idle state after capture
     } catch (e) {
       console.log("recordAsync error:", e);
       handleError("Error recording video");
@@ -204,6 +212,7 @@ const PostCaptureScreen = ({ navigation }) => {
       setIsRecording(false);
       setIsTimerRunning(false);
       recordingStartRef.current = null;
+      setShowGalleryPicker(true);
     }
   };
 
@@ -216,6 +225,7 @@ const PostCaptureScreen = ({ navigation }) => {
     setTimer(MAX_DURATION_SECONDS);
     setIsTimerRunning(false);
     recordingStartRef.current = null;
+    setShowGalleryPicker(true);
   };
 
   const handleClose = () => {
@@ -231,17 +241,14 @@ const PostCaptureScreen = ({ navigation }) => {
     try {
       if (uploading || isRecording) return;
 
-      const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
+      const permission =
+        await ImagePicker.requestMediaLibraryPermissionsAsync();
 
       if (permission.status !== "granted") {
         return Alert.alert(
           "Access needed",
           "Please enable photo library access so you can pick a video.",
-          [
-            {
-              text: "OK",
-            },
-          ]
+          [{ text: "OK" }]
         );
       }
 
@@ -262,19 +269,15 @@ const PostCaptureScreen = ({ navigation }) => {
           ? Math.ceil(pickedDurationMs / 1000)
           : null;
 
-      if (!pickedUri) {
-        return handleError("Couldn't read that video. Please try another one.");
-      }
-
       if (
         pickedDurationSeconds &&
-        pickedDurationSeconds > MAX_DURATION_SECONDS
+        pickedDurationSeconds > MAX_DURATION_SECONDS + 1
       ) {
-        return Alert.alert(
-          "Trim required",
-          "Videos must be 2 minutes or shorter. Trim the video and try again.",
-          [{ text: "OK" }]
-        );
+        return handleError("Please choose a video that is 2 minutes or less.");
+      }
+
+      if (!pickedUri) {
+        return handleError("Couldn't read that video. Please try another one.");
       }
 
       setVideoUri(pickedUri);
@@ -382,7 +385,7 @@ const PostCaptureScreen = ({ navigation }) => {
     );
   }
 
-  // ----- Preview mode (video captured) -----
+  // ----- Preview mode (video captured or picked) -----
   if (videoUri) {
     return (
       <SafeAreaView style={styles.safeArea}>
@@ -489,7 +492,7 @@ const PostCaptureScreen = ({ navigation }) => {
 
           {isRecording && (
             <View style={styles.timerPill}>
-              <View style={styles.dot} />
+              <View className="dot" style={styles.dot} />
               <Text style={styles.timerText}>{formatTimer(timer)}</Text>
             </View>
           )}
@@ -502,29 +505,24 @@ const PostCaptureScreen = ({ navigation }) => {
           </TouchableOpacity>
         </View>
 
-        {/* Bottom center: RecordButton */}
+        {/* Bottom center: Record button (original position) + gallery bottom-left */}
         <View style={styles.bottomControls}>
           {isCameraReady && isFocused && (
             <>
-              <TouchableOpacity
-                style={styles.libraryButton}
-                onPress={handlePickVideo}
-                disabled={uploading || isRecording}
-              >
-                <Feather
-                  name="folder"
-                  size={22}
-                  color={uploading || isRecording ? "#9ca3af" : "#f9fafb"}
-                />
-                <Text
-                  style={[
-                    styles.libraryText,
-                    uploading || isRecording ? styles.libraryTextDisabled : null,
-                  ]}
+              {showGalleryPicker && (
+                <TouchableOpacity
+                  style={styles.galleryButton}
+                  onPress={handlePickVideo}
+                  disabled={uploading || isRecording}
+                  activeOpacity={0.9}
                 >
-                  Upload
-                </Text>
-              </TouchableOpacity>
+                  <Feather
+                    name="image"
+                    size={20}
+                    color={uploading || isRecording ? "#9ca3af" : "#f9fafb"}
+                  />
+                </TouchableOpacity>
+              )}
 
               <RecordButton
                 isRecording={isRecording}
@@ -639,23 +637,20 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     zIndex: 10,
   },
-  libraryButton: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "rgba(0,0,0,0.55)",
-    paddingHorizontal: 14,
-    paddingVertical: 10,
+
+  // Bottom-left gallery icon
+  galleryButton: {
+    position: "absolute",
+    left: 24,
+    bottom: 4,
+    width: 44,
+    height: 44,
     borderRadius: 999,
-    marginBottom: 12,
-  },
-  libraryText: {
-    color: "#f9fafb",
-    fontWeight: "700",
-    marginLeft: 8,
-    fontSize: 14,
-  },
-  libraryTextDisabled: {
-    color: "#9ca3af",
+    backgroundColor: "rgba(15,23,42,0.95)",
+    borderWidth: 1,
+    borderColor: "rgba(148,163,184,0.85)",
+    alignItems: "center",
+    justifyContent: "center",
   },
 
   // Preview mode
