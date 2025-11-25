@@ -266,17 +266,6 @@ const PostCaptureScreen = ({ navigation }) => {
         return handleError("Couldn't read that video. Please try another one.");
       }
 
-      if (
-        pickedDurationSeconds &&
-        pickedDurationSeconds > MAX_DURATION_SECONDS
-      ) {
-        return Alert.alert(
-          "Trim required",
-          "Videos must be 2 minutes or shorter. Trim the video and try again.",
-          [{ text: "OK" }]
-        );
-      }
-
       setVideoUri(pickedUri);
       setCaption("");
     } catch (e) {
