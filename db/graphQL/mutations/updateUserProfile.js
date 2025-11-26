@@ -5,7 +5,7 @@ const { User } = require("../../models");
 module.exports = {
   updateUserProfileResolver: async (
     _,
-    { token, username, profilePicUrl, sobrietyStartAt, timezone }
+    { token, username, profilePicUrl, sobrietyStartAt, timezone, lat, long }
   ) => {
     try {
       let user = await User.findOne({ token });
@@ -29,6 +29,14 @@ module.exports = {
 
       if (typeof timezone === "string") {
         user.timezone = timezone;
+      }
+
+      if (typeof lat === "number") {
+        user.lat = lat;
+      }
+
+      if (typeof long === "number") {
+        user.long = long;
       }
 
       await user.save();

@@ -50,6 +50,34 @@ const UsernameScreen = ({ navigation }) => {
   // 🚦 guard so we only navigate once
   const hasRoutedRef = useRef(false);
 
+  const updateLocationIfGranted = async (token) => {
+    try {
+      const { status } = await Location.getForegroundPermissionsAsync();
+
+      if (status !== "granted") {
+        return;
+      }
+
+      const position = await Location.getCurrentPositionAsync({
+        accuracy: Location.Accuracy.Lowest,
+      });
+
+      const coords = position?.coords;
+
+      if (!coords?.latitude || !coords?.longitude) {
+        return;
+      }
+
+      await client.request(UPDATE_USER_PROFILE_MUTATION, {
+        token,
+        lat: coords.latitude,
+        long: coords.longitude,
+      });
+    } catch (err) {
+      console.log("Unable to refresh location:", err);
+    }
+  };
+
   const safeNavigateReset = (config) => {
     if (hasRoutedRef.current) return;
     hasRoutedRef.current = true;
@@ -74,12 +102,16 @@ const UsernameScreen = ({ navigation }) => {
         const hasAlwaysPermission = status === "granted" && scope === "always";
 
         if (hasAlwaysPermission && me.sobrietyStartAt && me.profilePic) {
+          await updateLocationIfGranted(token);
+
           safeNavigateReset({
             index: 0,
             routes: [{ name: "MainTabs" }],
           });
           return;
         }
+
+        await updateLocationIfGranted(token);
 
         // Otherwise route user to the correct next step
         const nextRouteName = !me.profilePic
@@ -108,6 +140,7 @@ const UsernameScreen = ({ navigation }) => {
       if (me?.username) {
         setUsername(me.username);
       }
+      await updateLocationIfGranted(token);
       setStep(2);
     } catch (err) {
       console.log("Error fetching me with token:", err);

@@ -8,6 +8,8 @@ export const FETCH_ME_QUERY = `
       drunkPicUrl
       sobrietyStartAt
       timezone
+      lat
+      long
       milestonesNotified
       notificationsEnabled
       streaks{

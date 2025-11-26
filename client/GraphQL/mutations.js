@@ -8,6 +8,8 @@ export const UPDATE_USER_PROFILE_MUTATION = gql`
     $profilePicUrl: String
     $sobrietyStartAt: String
     $timezone: String
+    $lat: Float
+    $long: Float
   ) {
     updateUserProfile(
       token: $token
@@ -15,6 +17,8 @@ export const UPDATE_USER_PROFILE_MUTATION = gql`
       profilePicUrl: $profilePicUrl
       sobrietyStartAt: $sobrietyStartAt
       timezone: $timezone
+      lat: $lat
+      long: $long
     ) {
       id
       token
@@ -22,6 +26,8 @@ export const UPDATE_USER_PROFILE_MUTATION = gql`
       profilePicUrl
       sobrietyStartAt
       timezone
+      lat
+      long
     }
   }
 `;

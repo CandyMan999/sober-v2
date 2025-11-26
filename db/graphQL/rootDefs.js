@@ -14,6 +14,8 @@ const typeDefs = gql`
     drunkPic: Picture
     drunkPicUrl: String
     sobrietyStartAt: String
+    lat: Float
+    long: Float
     streaks: [SobrietyStreak!]
     milestonesNotified: [Int!]
     notificationsEnabled: Boolean
@@ -225,6 +227,8 @@ const typeDefs = gql`
       profilePicUrl: String
       sobrietyStartAt: String
       timezone: String
+      lat: Float
+      long: Float
     ): User!
     resetSobrietyDate(token: String!, newStartAt: String!): User!
     directUpload: DirectUploadImage!
