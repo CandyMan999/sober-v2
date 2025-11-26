@@ -23,7 +23,7 @@ import { useIsFocused } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import { BlurView } from "expo-blur";
 import { ResizeMode, Video } from "expo-av";
-import { FeedLayout } from "../../components";
+import { FeedLayout, FilterSheet } from "../../components";
 import { GET_ALL_POSTS } from "../../GraphQL/queries";
 import { useClient } from "../../client";
 import {
@@ -62,6 +62,7 @@ const CommunityScreen = () => {
   const [selectedPost, setSelectedPost] = useState(null);
   const [showTutorial, setShowTutorial] = useState(false);
   const [reviewBypass, setReviewBypass] = useState({});
+  const [showFilterSheet, setShowFilterSheet] = useState(false);
   const sheetAnim = useRef(new Animated.Value(0)).current;
 
   const isPostLiked = useCallback(
@@ -190,9 +191,18 @@ const CommunityScreen = () => {
           setLoadingMore(true);
         }
 
+        const token = await getToken();
+        const viewerLat = state?.user?.lat ?? null;
+        const viewerLong = state?.user?.long ?? null;
+
         const data = await client.request(GET_ALL_POSTS, {
           limit: PAGE_SIZE,
           cursor: nextCursor,
+          token: token || null,
+          lat: viewerLat,
+          long: viewerLong,
+          excludeViewed: true,
+          sortByClosest: true,
         });
 
         const payload = data?.getAllPosts;
@@ -217,7 +227,7 @@ const CommunityScreen = () => {
         setRefreshing(false);
       }
     },
-    [client]
+    [client, state?.user?.lat, state?.user?.long]
   );
 
   useEffect(() => {
@@ -476,6 +486,9 @@ const CommunityScreen = () => {
     }).start(() => setSelectedPost(null));
   };
 
+  const openFilterSheet = useCallback(() => setShowFilterSheet(true), []);
+  const closeFilterSheet = useCallback(() => setShowFilterSheet(false), []);
+
   const handleToggleSound = () => {
     setIsMuted((prev) => !prev);
   };
@@ -590,6 +603,7 @@ const CommunityScreen = () => {
     const postDate = formatDate(item.createdAt);
     const type = item.mediaType || "VIDEO";
     const isVideoPost = type === "VIDEO";
+    const cityName = item.closestCity?.name || null;
     const isMilestonePost = item.isMilestone || Boolean(item.milestoneTag);
     const milestoneLabel =
       item.milestoneDays !== null && item.milestoneDays !== undefined
@@ -615,6 +629,7 @@ const CommunityScreen = () => {
           postCreatedAt={item.createdAt}
           postAuthor={item.author}
           avatarUrl={avatarUrl}
+          cityName={cityName}
           onCommentAdded={(newComment) =>
             handleCommentAdded(item.id, newComment)
           }
@@ -625,6 +640,7 @@ const CommunityScreen = () => {
           isLiked={isPostLiked(item)}
           onLikePress={() => handleToggleLike(item.id)}
           onMorePress={() => handleMorePress(item)}
+          onFilterPress={openFilterSheet}
         >
           {renderMedia(item, index)}
         </FeedLayout>
@@ -673,6 +689,7 @@ const CommunityScreen = () => {
     const firstType = firstPost.mediaType || "VIDEO";
     const firstIsVideo = firstType === "VIDEO";
     const firstPostDate = formatDate(firstPost.createdAt);
+    const firstCityName = firstPost.closestCity?.name || null;
     const firstIsMilestone =
       firstPost.isMilestone || Boolean(firstPost.milestoneTag);
     const firstMilestoneLabel =
@@ -697,6 +714,7 @@ const CommunityScreen = () => {
           postCreatedAt={firstPost.createdAt}
           postAuthor={firstPost.author}
           avatarUrl={firstPost.author?.profilePicUrl || null}
+          cityName={firstCityName}
           meta={firstMetaText}
           onCommentAdded={(newComment) =>
             handleCommentAdded(firstPost.id, newComment)
@@ -708,6 +726,7 @@ const CommunityScreen = () => {
           isLiked={isPostLiked(firstPost)}
           onLikePress={() => handleToggleLike(firstPost.id)}
           onMorePress={() => handleMorePress(firstPost)}
+          onFilterPress={openFilterSheet}
         >
           {renderMedia(firstPost, 0)}
         </FeedLayout>
@@ -819,6 +838,8 @@ const CommunityScreen = () => {
           </View>
         </Modal>
       ) : null}
+
+      <FilterSheet visible={showFilterSheet} onClose={closeFilterSheet} />
 
       <Modal transparent visible={showTutorial} animationType="fade">
         <Pressable

@@ -128,6 +128,12 @@ export const SEND_POST_MUTATION = gql`
       flagged
       createdAt
       updatedAt
+      lat
+      long
+      closestCity {
+        id
+        name
+      }
 
       author {
         id
@@ -164,6 +170,12 @@ export const SEND_IMAGE_POST_MUTATION = gql`
       flagged
       createdAt
       updatedAt
+      lat
+      long
+      closestCity {
+        id
+        name
+      }
 
       author {
         id

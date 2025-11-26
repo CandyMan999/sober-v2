@@ -83,6 +83,7 @@ const CommentSheet = ({
   onCommentAdded,
   targetType = "POST",
   targetId,
+  postCityName,
 }) => {
   const client = useClient();
   const [mounted, setMounted] = useState(visible);
@@ -636,8 +637,29 @@ const CommentSheet = ({
                 <Text style={styles.postCaption}>{postCaption}</Text>
               ) : null}
 
-              {formattedPostDate ? (
-                <Text style={styles.posterDate}>{formattedPostDate}</Text>
+              {formattedPostDate || postCityName ? (
+                <View style={styles.posterMetaRow}>
+                  {formattedPostDate ? (
+                    <Text style={styles.posterDate}>{formattedPostDate}</Text>
+                  ) : null}
+
+                  {postCityName ? (
+                    <>
+                      {formattedPostDate ? (
+                        <Text style={styles.posterMetaDivider}>, </Text>
+                      ) : null}
+                      <View style={styles.posterLocationRow}>
+                        <Ionicons
+                          name="location-outline"
+                          size={14}
+                          color="#38bdf8"
+                          style={styles.posterLocationIcon}
+                        />
+                        <Text style={styles.posterLocationText}>{postCityName}</Text>
+                      </View>
+                    </>
+                  ) : null}
+                </View>
               ) : null}
             </View>
 
@@ -836,6 +858,29 @@ const styles = StyleSheet.create({
   posterMeta: {
     flex: 1,
     marginHorizontal: 8,
+  },
+  posterMetaRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    flexWrap: "wrap",
+    marginTop: 6,
+  },
+  posterMetaDivider: {
+    color: "#38bdf8",
+    fontWeight: "700",
+  },
+  posterLocationRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: 2,
+  },
+  posterLocationIcon: {
+    marginRight: 4,
+  },
+  posterLocationText: {
+    color: "#38bdf8",
+    fontWeight: "700",
+    letterSpacing: 0.2,
   },
   posterName: {
     color: "#fef3c7",
