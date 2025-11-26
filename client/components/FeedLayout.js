@@ -10,6 +10,7 @@ const FeedLayout = ({
   title,
   subtitle,
   caption,
+  commentSheetCaption,
   meta,
   likesCount = 0,
   commentsCount = 0,
@@ -17,6 +18,8 @@ const FeedLayout = ({
   postId,
   postCreatedAt,
   postAuthor,
+  commentTargetType = "POST",
+  commentTargetId,
   avatarUrl,
   onCommentAdded,
   captionStyle,
@@ -83,7 +86,9 @@ const FeedLayout = ({
         onClose={handleCommentPress}
         comments={comments}
         postId={postId}
-        postCaption={caption}
+        targetId={commentTargetId || postId}
+        targetType={commentTargetType}
+        postCaption={commentSheetCaption ?? caption}
         postAuthor={postAuthor}
         postCreatedAt={postCreatedAt}
         totalComments={commentsCount}

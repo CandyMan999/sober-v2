@@ -127,6 +127,20 @@ const QuotesScreen = () => {
     [applyLikePayload, client, currentUser, currentUserId, isQuoteLiked, quotes]
   );
 
+  const handleCommentAdded = useCallback((quoteId, newComment) => {
+    setQuotes((prev) =>
+      prev.map((quote) =>
+        quote.id === quoteId
+          ? {
+              ...quote,
+              commentsCount: (quote.commentsCount || 0) + 1,
+              comments: [newComment, ...(quote.comments || [])],
+            }
+          : quote
+      )
+    );
+  }, []);
+
   // Fetch quotes once on mount
   useEffect(() => {
     let isMounted = true;
@@ -251,12 +265,18 @@ const QuotesScreen = () => {
         {renderAlert()}
         <FeedLayout
           caption={handle}
+          commentSheetCaption={`“${item.text}”`}
           likesCount={item.likesCount}
           commentsCount={item.commentsCount}
           comments={item.comments}
+          commentTargetType="QUOTE"
+          commentTargetId={item.id}
+          postAuthor={item.user}
+          postCreatedAt={item.createdAt}
           avatarUrl={avatarUrl}
           isLiked={isQuoteLiked(item)}
           onLikePress={() => handleToggleLike(item.id)}
+          onCommentAdded={(newComment) => handleCommentAdded(item.id, newComment)}
         >
           <View style={styles.quoteContainer}>
             <Text style={styles.quoteText}>“{item.text}”</Text>
@@ -278,12 +298,18 @@ const QuotesScreen = () => {
       <View style={{ height: containerHeight }}>
         <FeedLayout
           caption={handle}
+          commentSheetCaption={`“${item.text}”`}
           likesCount={item.likesCount}
           commentsCount={item.commentsCount}
           comments={item.comments}
+          commentTargetType="QUOTE"
+          commentTargetId={item.id}
+          postAuthor={item.user}
+          postCreatedAt={item.createdAt}
           avatarUrl={avatarUrl}
           isLiked={isQuoteLiked(item)}
           onLikePress={() => handleToggleLike(item.id)}
+          onCommentAdded={(newComment) => handleCommentAdded(item.id, newComment)}
         >
           <View style={styles.quoteContainer}>
             <Text style={styles.quoteText}>“{item.text}”</Text>

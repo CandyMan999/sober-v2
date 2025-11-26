@@ -40,6 +40,7 @@ module.exports = {
   getQuotesResolver: async (root, args, ctx) => {
     try {
       const quotes = await Quote.find({ isApproved: true })
+        .sort({ createdAt: -1 })
         .populate("user")
         .populate({
           path: "comments",

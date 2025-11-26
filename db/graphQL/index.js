@@ -11,6 +11,7 @@ const {
   sendImagePostResolver,
   setPostReviewResolver,
   creatingPostCommentResolver,
+  createQuoteCommentResolver,
   toggleLikeResolver,
 } = require("./mutations/index.js");
 
@@ -70,6 +71,7 @@ const resolvers = {
     sendImagePost: sendImagePostResolver,
     setPostReview: setPostReviewResolver,
     createPostComment: creatingPostCommentResolver,
+    createQuoteComment: createQuoteCommentResolver,
     toggleLike: toggleLikeResolver,
   },
 

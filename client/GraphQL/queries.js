@@ -41,6 +41,7 @@ export const GET_QUOTES_QUERY = `
       isUsed
       likesCount
       commentsCount
+      createdAt
       
       user {
         id

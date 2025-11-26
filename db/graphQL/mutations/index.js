@@ -9,7 +9,10 @@ const { addQuoteResolver } = require("./quote");
 const { sendPostResolver } = require("./sendPost");
 const { sendImagePostResolver } = require("./sendImagePost");
 const { setPostReviewResolver } = require("./review");
-const { creatingPostCommentResolver } = require("./comments");
+const {
+  creatingPostCommentResolver,
+  createQuoteCommentResolver,
+} = require("./comments");
 const { toggleLikeResolver } = require("./likes");
 
 module.exports = {
@@ -23,5 +26,6 @@ module.exports = {
   sendImagePostResolver,
   setPostReviewResolver,
   creatingPostCommentResolver,
+  createQuoteCommentResolver,
   toggleLikeResolver,
 };
