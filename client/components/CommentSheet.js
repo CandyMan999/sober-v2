@@ -16,6 +16,7 @@ import {
   View,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { formatDistanceToNow } from "date-fns";
 import { useClient } from "../client";
 import { CREATE_POST_COMMENT } from "../GraphQL/mutations/comments";
 import { getToken } from "../utils/helpers";
@@ -24,26 +25,22 @@ const { height: WINDOW_HEIGHT } = Dimensions.get("window");
 const SHEET_HEIGHT = Math.round(WINDOW_HEIGHT * 0.8);
 const EMOJI_ROW = ["❤️", "😍", "🔥", "👏", "😮", "🙏", "👍", "😢", "😂", "🎉"];
 
-const formatPostDate = (value) => {
-  if (!value) return "";
-  const date = new Date(value);
-  if (Number.isNaN(date.getTime())) return "";
-  return date.toLocaleDateString("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-  });
+const parseDateValue = (value) => {
+  if (!value) return null;
+  const numeric = Number(value);
+  if (!Number.isNaN(numeric)) {
+    const fromNum = new Date(numeric);
+    if (!Number.isNaN(fromNum.getTime())) return fromNum;
+  }
+
+  const fromString = new Date(value);
+  return Number.isNaN(fromString.getTime()) ? null : fromString;
 };
 
-const formatCommentDate = (value) => {
-  if (!value) return "";
-  const date = new Date(value);
-  if (Number.isNaN(date.getTime())) return "";
-  return date.toLocaleDateString("en-CA", {
-    year: "numeric",
-    month: "numeric",
-    day: "numeric",
-  });
+const formatRelativeDate = (value) => {
+  const parsed = parseDateValue(value);
+  if (!parsed) return "";
+  return `${formatDistanceToNow(parsed)} ago`;
 };
 
 const CommentSheet = ({
@@ -67,6 +64,7 @@ const CommentSheet = ({
   const [replyTarget, setReplyTarget] = useState(null);
   const [expandedThreads, setExpandedThreads] = useState(new Set());
   const [submitting, setSubmitting] = useState(false);
+  const [keyboardHeight, setKeyboardHeight] = useState(0);
   const sheetAnim = useRef(new Animated.Value(0)).current;
   const inputRef = useRef(null);
 
@@ -105,13 +103,31 @@ const CommentSheet = ({
     setCommentCount(totalComments || comments?.length || 0);
   }, [comments?.length, totalComments]);
 
+  useEffect(() => {
+    const handleKeyboardShow = (event) => {
+      setKeyboardHeight(event.endCoordinates?.height || 0);
+    };
+    const handleKeyboardHide = () => setKeyboardHeight(0);
+
+    const showEvent = Platform.OS === "ios" ? "keyboardWillShow" : "keyboardDidShow";
+    const hideEvent = Platform.OS === "ios" ? "keyboardWillHide" : "keyboardDidHide";
+
+    const showSub = Keyboard.addListener(showEvent, handleKeyboardShow);
+    const hideSub = Keyboard.addListener(hideEvent, handleKeyboardHide);
+
+    return () => {
+      showSub.remove();
+      hideSub.remove();
+    };
+  }, []);
+
   const translateY = sheetAnim.interpolate({
     inputRange: [0, 1],
     outputRange: [SHEET_HEIGHT + 60, 0],
   });
 
   const formattedPostDate = useMemo(
-    () => formatPostDate(postCreatedAt),
+    () => formatRelativeDate(postCreatedAt),
     [postCreatedAt]
   );
 
@@ -193,7 +209,7 @@ const CommentSheet = ({
 
   const renderCommentItem = (comment, level = 0) => {
     const name = comment?.author?.username || comment?.author?.name || "User";
-    const dateText = formatCommentDate(comment?.createdAt);
+    const dateText = formatRelativeDate(comment?.createdAt);
     const replyCount = Array.isArray(comment?.replies)
       ? comment.replies.length
       : 0;
@@ -246,13 +262,15 @@ const CommentSheet = ({
                   </Text>
                 </TouchableOpacity>
               ) : null}
+            </View>
+          </View>
 
-              <View style={styles.likePill}>
-                <Ionicons name="heart-outline" size={14} color="#fef3c7" />
-                <Text style={styles.likeCountText}>
-                  {comment?.likesCount || 0}
-                </Text>
-              </View>
+          <View style={styles.likeColumn}>
+            <View style={styles.likePill}>
+              <Ionicons name="heart-outline" size={16} color="#fef3c7" />
+              <Text style={styles.likeCountText}>
+                {comment?.likesCount || 0}
+              </Text>
             </View>
           </View>
         </View>
@@ -280,35 +298,39 @@ const CommentSheet = ({
       <View style={styles.modalContainer}>
         <Pressable style={styles.backdrop} onPress={onClose} />
         <KeyboardAvoidingView
-          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          behavior={"padding"}
           style={styles.avoider}
-          keyboardVerticalOffset={Platform.OS === "ios" ? 32 : 0}
+          keyboardVerticalOffset={Platform.OS === "ios" ? 36 : 12}
         >
-          <Animated.View style={[styles.sheet, { transform: [{ translateY }] }]}>
+          <Animated.View
+            style={[
+              styles.sheet,
+              { transform: [{ translateY }], paddingBottom: 12 + keyboardHeight },
+            ]}
+          >
             <View style={styles.dragHandle} />
 
-            <View style={styles.postHeaderCard}>
+            <View style={styles.postHeader}>
               <View style={styles.posterRow}>
-                <View style={styles.avatarLargeWrapper}>
+                <View style={styles.avatarSmallWrapper}>
                   {postAuthor?.profilePicUrl ? (
                     <Image
                       source={{ uri: postAuthor.profilePicUrl }}
-                      style={styles.avatarLarge}
+                      style={styles.avatarSmall}
                     />
                   ) : (
-                    <View style={[styles.avatarLarge, styles.avatarFallback]}>
-                      <Ionicons name="person" size={20} color="#111827" />
+                    <View style={[styles.avatarSmall, styles.avatarFallback]}>
+                      <Ionicons name="person" size={16} color="#111827" />
                     </View>
                   )}
                 </View>
+
                 <View style={styles.posterMeta}>
                   <Text style={styles.posterName} numberOfLines={1}>
                     {postAuthor?.username || postAuthor?.name || "Unknown"}
                   </Text>
-                  {formattedPostDate ? (
-                    <Text style={styles.posterDate}>{formattedPostDate}</Text>
-                  ) : null}
                 </View>
+
                 <TouchableOpacity
                   onPress={onClose}
                   accessibilityRole="button"
@@ -317,14 +339,21 @@ const CommentSheet = ({
                   <Ionicons name="close" size={22} color="#cbd5e1" />
                 </TouchableOpacity>
               </View>
+
               {postCaption ? (
                 <Text style={styles.postCaption}>{postCaption}</Text>
               ) : null}
+
+              {formattedPostDate ? (
+                <Text style={styles.posterDate}>{formattedPostDate}</Text>
+              ) : null}
             </View>
+
+            <View style={styles.headerDivider} />
 
             <ScrollView
               style={styles.commentsList}
-              contentContainerStyle={{ paddingBottom: 24 }}
+              contentContainerStyle={{ paddingBottom: 24 + keyboardHeight }}
               showsVerticalScrollIndicator={false}
               keyboardShouldPersistTaps="handled"
             >
@@ -391,7 +420,7 @@ const CommentSheet = ({
                 {submitting ? (
                   <Ionicons name="time-outline" size={18} color="#0b1224" />
                 ) : (
-                  <Text style={styles.sendText}>Post</Text>
+                  <Ionicons name="send" size={18} color="#0b1224" />
                 )}
               </TouchableOpacity>
             </View>
@@ -423,7 +452,6 @@ const styles = StyleSheet.create({
     height: SHEET_HEIGHT,
     paddingHorizontal: 20,
     paddingTop: 10,
-    paddingBottom: 12,
     backgroundColor: "#0b1224",
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
@@ -443,35 +471,32 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(148,163,184,0.5)",
     marginBottom: 12,
   },
-  postHeaderCard: {
-    backgroundColor: "rgba(255,255,255,0.04)",
-    borderRadius: 14,
-    padding: 12,
-    borderWidth: 1,
-    borderColor: "rgba(148,163,184,0.25)",
-    marginBottom: 12,
+  postHeader: {
+    paddingHorizontal: 2,
+    paddingBottom: 10,
   },
   posterRow: {
     flexDirection: "row",
     alignItems: "center",
-    columnGap: 12,
+    justifyContent: "space-between",
     marginBottom: 8,
   },
-  avatarLargeWrapper: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    backgroundColor: "rgba(255,255,255,0.06)",
+  avatarSmallWrapper: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: "rgba(255,255,255,0.04)",
     alignItems: "center",
     justifyContent: "center",
     overflow: "hidden",
     borderWidth: 1,
-    borderColor: "rgba(148,163,184,0.35)",
+    borderColor: "rgba(148,163,184,0.3)",
   },
-  avatarLarge: {
+  avatarSmall: {
     width: "100%",
     height: "100%",
-    borderRadius: 24,
+    borderRadius: 16,
+    resizeMode: "cover",
   },
   avatarFallback: {
     backgroundColor: "#facc15",
@@ -489,12 +514,18 @@ const styles = StyleSheet.create({
   posterDate: {
     color: "#cbd5e1",
     fontSize: 13,
-    marginTop: 2,
+    marginTop: 4,
   },
   postCaption: {
     color: "#e2e8f0",
     fontSize: 15,
     lineHeight: 20,
+  },
+  headerDivider: {
+    height: 1,
+    backgroundColor: "rgba(148,163,184,0.5)",
+    marginHorizontal: -20,
+    marginBottom: 12,
   },
   commentsList: {
     flex: 1,
@@ -535,9 +566,11 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     borderRadius: 18,
+    resizeMode: "cover",
   },
   commentBody: {
     flex: 1,
+    paddingRight: 12,
   },
   commentHeaderRow: {
     flexDirection: "row",
@@ -588,13 +621,19 @@ const styles = StyleSheet.create({
     color: "#cbd5e1",
     fontSize: 12,
   },
-  likePill: {
-    flexDirection: "row",
+  likeColumn: {
+    justifyContent: "center",
     alignItems: "center",
-    columnGap: 6,
-    paddingHorizontal: 10,
-    paddingVertical: 6,
-    backgroundColor: "rgba(148,163,184,0.25)",
+    marginLeft: 4,
+    alignSelf: "center",
+  },
+  likePill: {
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingHorizontal: 8,
+    paddingVertical: 8,
+    backgroundColor: "rgba(148,163,184,0.18)",
     borderRadius: 999,
   },
   likeCountText: {
@@ -667,10 +706,6 @@ const styles = StyleSheet.create({
   },
   sendButtonDisabled: {
     backgroundColor: "rgba(148,163,184,0.5)",
-  },
-  sendText: {
-    color: "#0b1224",
-    fontWeight: "800",
   },
 });
 

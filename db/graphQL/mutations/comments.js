@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const { AuthenticationError, UserInputError } = require("apollo-server-express");
 const { Comment, Post, User } = require("../../models");
 
@@ -18,16 +19,18 @@ const creatingPostCommentResolver = async (_, args) => {
     throw new UserInputError("Post not found");
   }
 
+  const replyToId = replyTo ? new mongoose.Types.ObjectId(replyTo) : null;
+
   const newComment = await Comment.create({
     text: text.trim(),
     author: user._id,
     targetType: "POST",
     targetId: post._id,
-    replyTo: replyTo || null,
+    replyTo: replyToId,
   });
 
-  if (replyTo) {
-    const parent = await Comment.findById(replyTo);
+  if (replyToId) {
+    const parent = await Comment.findById(replyToId);
     if (parent) {
       parent.replies.push(newComment._id);
       await parent.save();
@@ -38,7 +41,7 @@ const creatingPostCommentResolver = async (_, args) => {
   post.commentsCount = (post.commentsCount || 0) + 1;
   await post.save();
 
-  await newComment.populate("author");
+  await newComment.populate(["author", "replyTo"]);
   return newComment;
 };
 
