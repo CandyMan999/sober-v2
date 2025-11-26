@@ -246,6 +246,12 @@ const CommentSheet = ({
     const textValue = comment?.text || comment?.body || "";
     const cleanedText = sanitizeCommentText(textValue);
     const isTopLevel = level === 0;
+    const replyTargetName =
+      level > 0 && comment?.replyTo?.author
+        ? comment.replyTo.author.username ||
+          comment.replyTo.author.name ||
+          "User"
+        : null;
 
     return (
       <View
@@ -269,6 +275,12 @@ const CommentSheet = ({
           <View style={styles.commentBody}>
             <View style={styles.commentHeaderRow}>
               <Text style={styles.commentAuthor}>{name}</Text>
+              {replyTargetName ? (
+                <View style={styles.replyTargetRow}>
+                  <Text style={styles.replyArrow}>›</Text>
+                  <Text style={styles.replyTargetName}>{replyTargetName}</Text>
+                </View>
+              ) : null}
               {dateText ? (
                 <Text style={styles.commentDate}>{dateText}</Text>
               ) : null}
@@ -690,6 +702,22 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     marginBottom: 2,
+  },
+  replyTargetRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginRight: "auto",
+    columnGap: 4,
+  },
+  replyArrow: {
+    color: "#94a3b8",
+    fontSize: 12,
+    marginLeft: 2,
+  },
+  replyTargetName: {
+    color: "#e2e8f0",
+    fontWeight: "700",
+    fontSize: 13,
   },
   commentAuthor: {
     color: "#fef3c7",
