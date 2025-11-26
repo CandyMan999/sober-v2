@@ -83,6 +83,7 @@ const CommentSheet = ({
   onCommentAdded,
   targetType = "POST",
   targetId,
+  postCityName,
 }) => {
   const client = useClient();
   const [mounted, setMounted] = useState(visible);
@@ -632,6 +633,18 @@ const CommentSheet = ({
                 </TouchableOpacity>
               </View>
 
+              {postCityName ? (
+                <View style={styles.locationPill}>
+                  <Ionicons
+                    name="location-outline"
+                    size={14}
+                    color="#f8fafc"
+                    style={styles.locationIcon}
+                  />
+                  <Text style={styles.locationText}>{postCityName}</Text>
+                </View>
+              ) : null}
+
               {postCaption ? (
                 <Text style={styles.postCaption}>{postCaption}</Text>
               ) : null}
@@ -836,6 +849,26 @@ const styles = StyleSheet.create({
   posterMeta: {
     flex: 1,
     marginHorizontal: 8,
+  },
+  locationPill: {
+    alignSelf: "flex-start",
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "rgba(15,23,42,0.85)",
+    borderRadius: 999,
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderWidth: 1,
+    borderColor: "rgba(236,72,153,0.5)",
+    marginTop: 10,
+  },
+  locationIcon: {
+    marginRight: 6,
+  },
+  locationText: {
+    color: "#f8fafc",
+    fontWeight: "700",
+    letterSpacing: 0.2,
   },
   posterName: {
     color: "#fef3c7",

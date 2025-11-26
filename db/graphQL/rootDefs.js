@@ -220,7 +220,15 @@ const typeDefs = gql`
     getBarLocation(lat: Float!, long: Float!, token: String, bar: String): [Bar]
     getVenues: [Venue]
     getQuotes: [Quote!]!
-    getAllPosts(limit: Int, cursor: String): PostConnection!
+    getAllPosts(
+      limit: Int
+      cursor: String
+      lat: Float
+      long: Float
+      token: String
+      excludeViewed: Boolean
+      sortByClosest: Boolean
+    ): PostConnection!
   }
 
   type Mutation {

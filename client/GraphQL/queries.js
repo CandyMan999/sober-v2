@@ -153,8 +153,24 @@ export const GET_QUOTES_QUERY = `
 `;
 
 export const GET_ALL_POSTS = `
-  query GetAllPosts($limit: Int, $cursor: String) {
-    getAllPosts(limit: $limit, cursor: $cursor) {
+  query GetAllPosts(
+    $limit: Int
+    $cursor: String
+    $lat: Float
+    $long: Float
+    $token: String
+    $excludeViewed: Boolean
+    $sortByClosest: Boolean
+  ) {
+    getAllPosts(
+      limit: $limit
+      cursor: $cursor
+      lat: $lat
+      long: $long
+      token: $token
+      excludeViewed: $excludeViewed
+      sortByClosest: $sortByClosest
+    ) {
       hasMore
       cursor
       posts {
@@ -171,6 +187,12 @@ export const GET_ALL_POSTS = `
         likesCount
         commentsCount
         viewsCount
+        lat
+        long
+        closestCity {
+          id
+          name
+        }
         createdAt
         author {
           id

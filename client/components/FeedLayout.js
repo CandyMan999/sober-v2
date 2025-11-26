@@ -1,6 +1,7 @@
 // components/FeedLayout.js
 import React, { useState } from "react";
-import { View, Text, StyleSheet, Image } from "react-native";
+import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 import FloatingActionIcons from "./FloatingActionIcons";
 import CommentSheet from "./CommentSheet";
 
@@ -22,6 +23,7 @@ const FeedLayout = ({
   commentTargetType = "POST",
   commentTargetId,
   avatarUrl,
+  cityName,
   onCommentAdded,
   captionStyle,
   children,
@@ -32,8 +34,30 @@ const FeedLayout = ({
   showSoundToggle = false,
   isMuted = false,
   onToggleSound,
+  onFilterPress,
 }) => {
   const [showComments, setShowComments] = useState(false);
+  const [isCaptionExpanded, setIsCaptionExpanded] = useState(false);
+  const [isCaptionTruncated, setIsCaptionTruncated] = useState(false);
+
+  const formatCount = (n) => {
+    if (typeof n !== "number") return "0";
+    if (n >= 1000) return `${(n / 1000).toFixed(1)}k`;
+    return String(n);
+  };
+
+  const handleCaptionLayout = (event) => {
+    if (isCaptionTruncated) return;
+    const { lines } = event.nativeEvent;
+    if (lines?.length > 3) {
+      setIsCaptionTruncated(true);
+    }
+  };
+
+  const toggleCaption = () => {
+    if (!isCaptionTruncated) return;
+    setIsCaptionExpanded((prev) => !prev);
+  };
 
   const handleCommentPress = () => {
     setShowComments((prev) => !prev);
@@ -62,17 +86,57 @@ const FeedLayout = ({
             </View>
           ) : null}
           {caption ? (
-            <Text style={[styles.caption, captionStyle]}>{caption}</Text>
+            <View style={styles.captionWrapper}>
+              <Text
+                style={[styles.caption, captionStyle]}
+                numberOfLines={isCaptionExpanded ? undefined : 3}
+                onTextLayout={handleCaptionLayout}
+              >
+                {caption}
+              </Text>
+              {isCaptionTruncated ? (
+                <TouchableOpacity onPress={toggleCaption}>
+                  <Text style={styles.captionToggle}>
+                    {isCaptionExpanded ? "Show less" : "Show more"}
+                  </Text>
+                </TouchableOpacity>
+              ) : null}
+            </View>
           ) : null}
         </View>
-        {meta ? <Text style={styles.meta}>{meta}</Text> : null}
+        <View style={styles.metaRow}>
+          {meta ? <Text style={styles.meta}>{meta}</Text> : null}
+          <View style={styles.metaChips}>
+            {cityName ? (
+              <View style={styles.metaChip}>
+                <Ionicons
+                  name="location-outline"
+                  size={14}
+                  color="#f8fafc"
+                  style={styles.metaIcon}
+                />
+                <Text style={styles.metaChipText}>{cityName}</Text>
+              </View>
+            ) : null}
+            {typeof viewsCount === "number" ? (
+              <View style={styles.metaChip}>
+                <Ionicons
+                  name="play-circle"
+                  size={14}
+                  color="#f8fafc"
+                  style={styles.metaIcon}
+                />
+                <Text style={styles.metaChipText}>{formatCount(viewsCount)}</Text>
+              </View>
+            ) : null}
+          </View>
+        </View>
       </View>
 
       {/* Right-side floating icons with counts */}
       <FloatingActionIcons
         likesCount={likesCount}
         commentsCount={commentsCount}
-        viewsCount={viewsCount}
         onLikePress={onLikePress || (() => {})}
         onCommentPress={handleCommentPress}
         onMorePress={onMorePress || (() => {})}
@@ -80,6 +144,7 @@ const FeedLayout = ({
         isMuted={isMuted}
         onToggleSound={onToggleSound}
         isLiked={isLiked}
+        onFilterPress={onFilterPress}
       />
 
       {/* Comment sheet (wire to actual comments later) */}
@@ -93,6 +158,7 @@ const FeedLayout = ({
         postCaption={commentSheetCaption ?? caption}
         postAuthor={postAuthor}
         postCreatedAt={postCreatedAt}
+        postCityName={cityName}
         totalComments={commentsCount}
         onCommentAdded={onCommentAdded}
       />
@@ -134,6 +200,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
   },
+  captionWrapper: {
+    flexShrink: 1,
+  },
   avatarHalo: {
     width: 48,
     height: 48,
@@ -161,10 +230,47 @@ const styles = StyleSheet.create({
     fontSize: 14,
     flexShrink: 1,
   },
+  captionToggle: {
+    color: "#fbbf24",
+    fontSize: 13,
+    marginTop: 4,
+    fontWeight: "700",
+  },
+  metaRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    columnGap: 8,
+    marginTop: 6,
+  },
   meta: {
     color: "#9ca3af",
     fontSize: 13,
     marginTop: 4,
+    flex: 1,
+  },
+  metaChips: {
+    flexDirection: "row",
+    alignItems: "center",
+    columnGap: 8,
+    flexShrink: 0,
+  },
+  metaChip: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "rgba(15,23,42,0.7)",
+    borderRadius: 999,
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderWidth: 1,
+    borderColor: "rgba(248,180,0,0.5)",
+  },
+  metaChipText: {
+    color: "#f8fafc",
+    fontSize: 12,
+    fontWeight: "700",
+  },
+  metaIcon: {
+    marginRight: 6,
   },
 });
 

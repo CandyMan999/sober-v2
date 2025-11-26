@@ -6,6 +6,7 @@ const path = require("path");
 const { pipeline } = require("stream/promises");
 const FormData = require("form-data");
 const { User, Post } = require("../../models");
+const { findClosestCity } = require("../../utils/location");
 
 require("dotenv").config();
 
@@ -118,6 +119,19 @@ module.exports = {
         throw new Error("Cloudflare did not return an image URL");
       }
 
+      const postLocation = {
+        lat: sender.lat ?? null,
+        long: sender.long ?? null,
+        closestCity: null,
+      };
+
+      if (postLocation.lat !== null && postLocation.long !== null) {
+        const nearestCity = await findClosestCity(postLocation.lat, postLocation.long);
+        if (nearestCity?._id) {
+          postLocation.closestCity = nearestCity._id;
+        }
+      }
+
       const newPost = await Post.create({
         author: senderID,
         text: text || null,
@@ -127,10 +141,12 @@ module.exports = {
         flagged: false,
         likesCount: 0,
         commentsCount: 0,
+        ...postLocation,
       });
 
       const populatedPost = await Post.findById(newPost._id)
         .populate("author")
+        .populate("closestCity")
         .populate({
           path: "comments",
           populate: { path: "author" },

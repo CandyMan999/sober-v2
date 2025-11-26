@@ -1,5 +1,6 @@
 import React, { useRef } from "react";
 import { View, TouchableOpacity, Text, StyleSheet, Animated, Easing } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 
 const ACCENT = "#F59E0B";
 
@@ -12,8 +13,8 @@ const FloatingActionIcons = ({
   showSoundToggle = false,
   likesCount = 0,
   commentsCount = 0,
-  viewsCount = null,
   isLiked = false,
+  onFilterPress,
 }) => {
   const heartScale = useRef(new Animated.Value(1)).current;
   const burstScale = useRef(new Animated.Value(0)).current;
@@ -75,12 +76,10 @@ const FloatingActionIcons = ({
 
   return (
     <View style={styles.container}>
-      {viewsCount !== null && viewsCount !== undefined ? (
-        <View style={styles.pill}>
-          <Text style={styles.icon}>▶️</Text>
-          <Text style={styles.countText}>{formatCount(viewsCount)}</Text>
-        </View>
-      ) : null}
+      <TouchableOpacity style={styles.pill} onPress={onFilterPress || (() => {})}>
+        <Ionicons name="filter" size={18} color="#fff" />
+        <Text style={styles.countText}>Filter</Text>
+      </TouchableOpacity>
 
       {/* ❤️ Like */}
       <TouchableOpacity style={styles.pill} onPress={handleLikePress}>

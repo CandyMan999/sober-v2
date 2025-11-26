@@ -7,6 +7,7 @@ const path = require("path");
 const { pipeline } = require("stream/promises");
 const FormData = require("form-data");
 const { User, Video, Post } = require("../../models");
+const { findClosestCity } = require("../../utils/location");
 // const {
 //   sendPushNotification,
 //   pushNotificationUserFlagged,
@@ -420,6 +421,19 @@ module.exports = {
         sender: senderID,
       });
 
+      const postLocation = {
+        lat: sender.lat ?? null,
+        long: sender.long ?? null,
+        closestCity: null,
+      };
+
+      if (postLocation.lat !== null && postLocation.long !== null) {
+        const nearestCity = await findClosestCity(postLocation.lat, postLocation.long);
+        if (nearestCity?._id) {
+          postLocation.closestCity = nearestCity._id;
+        }
+      }
+
       const newPost = await Post.create({
         author: senderID,
         text: text || null,
@@ -428,6 +442,7 @@ module.exports = {
         flagged: false,
         likesCount: 0,
         commentsCount: 0,
+        ...postLocation,
       });
 
       video.post = newPost._id;
@@ -438,6 +453,7 @@ module.exports = {
       const populatedPost = await Post.findById(newPost._id)
         .populate("author")
         .populate("video")
+        .populate("closestCity")
         .exec();
 
       return populatedPost;
