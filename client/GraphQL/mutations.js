@@ -203,4 +203,4 @@ export const TOGGLE_LIKE_MUTATION = gql`
   }
 `;
 
-export { CREATE_POST_COMMENT } from "./mutations/comments";
+export { CREATE_POST_COMMENT, CREATE_QUOTE_COMMENT } from "./mutations/comments";

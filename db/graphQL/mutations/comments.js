@@ -22,9 +22,13 @@ const buildRepliesPopulate = (depth = 1) => {
   return populate;
 };
 
-const creatingPostCommentResolver = async (_, args) => {
-  const { token, postId, text, replyTo = null } = args;
-
+const createCommentForTarget = async ({
+  token,
+  targetId,
+  targetType,
+  text,
+  replyTo = null,
+}) => {
   if (!text || !text.trim()) {
     throw new UserInputError("Comment text is required");
   }
@@ -34,17 +38,25 @@ const creatingPostCommentResolver = async (_, args) => {
     throw new AuthenticationError("Invalid token");
   }
 
-  let targetType = "POST";
-  let target = await Post.findById(postId).populate("author");
+  const models = {
+    POST: { Model: Post, ownerPath: "author" },
+    QUOTE: { Model: Quote, ownerPath: "user" },
+  };
 
-  // Allow quotes to use the same mutation while we add a dedicated one later
-  if (!target) {
-    target = await Quote.findById(postId).populate("user");
-    targetType = target ? "QUOTE" : targetType;
+  const targetConfig = models[targetType];
+
+  if (!targetConfig) {
+    throw new UserInputError("Invalid target type for comment");
   }
 
+  const target = await targetConfig.Model.findById(targetId).populate(
+    targetConfig.ownerPath
+  );
+
   if (!target) {
-    throw new UserInputError("Post or quote not found");
+    throw new UserInputError(
+      targetType === "POST" ? "Post not found" : "Quote not found"
+    );
   }
 
   const replyToId = replyTo ? new mongoose.Types.ObjectId(replyTo) : null;
@@ -65,31 +77,22 @@ const creatingPostCommentResolver = async (_, args) => {
     }
   }
 
-  if (targetType === "POST") {
-    target.comments.push(newComment._id);
-    target.commentsCount = (target.commentsCount || 0) + 1;
-    await target.save();
-  } else if (targetType === "QUOTE") {
-    target.comments.push(newComment._id);
-    target.commentsCount = (target.commentsCount || 0) + 1;
-    await target.save();
-  }
+  target.comments.push(newComment._id);
+  target.commentsCount = (target.commentsCount || 0) + 1;
+  await target.save();
 
   await newComment.populate(buildRepliesPopulate(0));
 
   const notifications = [];
   const actorName = user.username || "Someone";
   const trimmedBody = text.trim();
-
-  const targetOwner =
-    targetType === "POST" ? target.author : target?.user ?? null;
-
-  console.log("target Owner: ", targetOwner);
+  const targetOwner = target[targetConfig.ownerPath] || null;
 
   if (
     targetOwner &&
     targetOwner.token &&
-    targetOwner.notificationsEnabled !== false
+    targetOwner.notificationsEnabled !== false &&
+    String(targetOwner._id) !== String(user._id)
   ) {
     const title = `${targetType === "QUOTE" ? "Quote" : "Post"} Comment`;
 
@@ -100,10 +103,12 @@ const creatingPostCommentResolver = async (_, args) => {
       commentId: String(newComment._id),
     };
 
-    if (targetType === "POST")
+    if (targetType === "POST") {
       ownerNotificationData.postId = String(target._id);
-    if (targetType === "QUOTE")
+    }
+    if (targetType === "QUOTE") {
       ownerNotificationData.quoteId = String(target._id);
+    }
 
     notifications.push({
       pushToken: targetOwner.token,
@@ -125,17 +130,19 @@ const creatingPostCommentResolver = async (_, args) => {
       const title = `${actorName} replied to your comment`;
 
       const replyNotificationData = {
-        type: "comment_reply",
+        type: targetType === "QUOTE" ? "quote_comment_reply" : "post_comment_reply",
         targetType,
         targetId: String(target._id),
         commentId: String(newComment._id),
         parentCommentId: String(parent._id),
       };
 
-      if (targetType === "POST")
+      if (targetType === "POST") {
         replyNotificationData.postId = String(target._id);
-      if (targetType === "QUOTE")
+      }
+      if (targetType === "QUOTE") {
         replyNotificationData.quoteId = String(target._id);
+      }
 
       notifications.push({
         pushToken: parent.author.token,
@@ -162,6 +169,25 @@ const creatingPostCommentResolver = async (_, args) => {
   return newComment;
 };
 
+const creatingPostCommentResolver = async (_, args) =>
+  createCommentForTarget({
+    token: args.token,
+    targetId: args.postId,
+    targetType: "POST",
+    text: args.text,
+    replyTo: args.replyTo,
+  });
+
+const createQuoteCommentResolver = async (_, args) =>
+  createCommentForTarget({
+    token: args.token,
+    targetId: args.quoteId,
+    targetType: "QUOTE",
+    text: args.text,
+    replyTo: args.replyTo,
+  });
+
 module.exports = {
   creatingPostCommentResolver,
+  createQuoteCommentResolver,
 };

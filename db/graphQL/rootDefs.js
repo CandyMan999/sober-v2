@@ -252,6 +252,12 @@ const typeDefs = gql`
       text: String!
       replyTo: ID
     ): Comment!
+    createQuoteComment(
+      token: String!
+      quoteId: ID!
+      text: String!
+      replyTo: ID
+    ): Comment!
     toggleLike(
       token: String!
       targetType: LikeTarget!

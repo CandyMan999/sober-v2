@@ -28,7 +28,10 @@ import { LinearGradient } from "expo-linear-gradient";
 import { formatDistanceToNow } from "date-fns";
 import { useClient } from "../client";
 import { TOGGLE_LIKE_MUTATION } from "../GraphQL/mutations";
-import { CREATE_POST_COMMENT } from "../GraphQL/mutations/comments";
+import {
+  CREATE_POST_COMMENT,
+  CREATE_QUOTE_COMMENT,
+} from "../GraphQL/mutations/comments";
 import { getToken } from "../utils/helpers";
 import Context from "../context";
 
@@ -78,6 +81,8 @@ const CommentSheet = ({
   postId,
   totalComments = 0,
   onCommentAdded,
+  targetType = "POST",
+  targetId,
 }) => {
   const client = useClient();
   const [mounted, setMounted] = useState(visible);
@@ -265,6 +270,9 @@ const CommentSheet = ({
     [postCreatedAt]
   );
 
+  const commentTargetId = targetId || postId;
+  const isQuoteTarget = targetType === "QUOTE";
+
   const toggleReplies = (commentId) => {
     setExpandedThreads((prev) => {
       const next = new Set(prev);
@@ -346,20 +354,32 @@ const CommentSheet = ({
   };
 
   const handleSend = async () => {
-    if (!draftComment.trim() || submitting || !postId) return;
+    if (!draftComment.trim() || submitting || !commentTargetId) return;
 
     try {
       setSubmitting(true);
       const token = await getToken();
       const variables = {
         token,
-        postId,
         text: draftComment.trim(),
         replyTo: replyTarget?.id || null,
       };
 
-      const data = await client.request(CREATE_POST_COMMENT, variables);
-      const newComment = data?.createPostComment;
+      if (isQuoteTarget) {
+        variables.quoteId = commentTargetId;
+      } else {
+        variables.postId = commentTargetId;
+      }
+
+      const mutation = isQuoteTarget
+        ? CREATE_QUOTE_COMMENT
+        : CREATE_POST_COMMENT;
+
+      const data = await client.request(mutation, variables);
+
+      const newComment = isQuoteTarget
+        ? data?.createQuoteComment
+        : data?.createPostComment;
 
       if (newComment) {
         const hydratedNewComment =
