@@ -4,6 +4,22 @@ const { User, Quote, Post } = require("../../models");
 
 require("dotenv").config();
 
+const buildRepliesPopulate = (depth = 1) => {
+  const basePopulate = [
+    { path: "author" },
+    { path: "replyTo", populate: { path: "author" } },
+  ];
+
+  if (depth > 0) {
+    basePopulate.push({
+      path: "replies",
+      populate: buildRepliesPopulate(depth - 1),
+    });
+  }
+
+  return basePopulate;
+};
+
 module.exports = {
   fetchMeResolver: async (root, args, ctx) => {
     const { token } = args;
@@ -24,13 +40,7 @@ module.exports = {
         .populate("user")
         .populate({
           path: "comments",
-          populate: [
-            { path: "author" }, // comment.author -> User
-            {
-              path: "replies", // comment.replies -> [Comment]
-              populate: { path: "author" }, // each reply.author -> User
-            },
-          ],
+          populate: buildRepliesPopulate(2),
         });
       // Don't throw if none; just return empty array
       return quotes;
@@ -58,13 +68,7 @@ module.exports = {
         })
         .populate({
           path: "comments",
-          populate: [
-            { path: "author" },
-            {
-              path: "replies",
-              populate: { path: "author" },
-            },
-          ],
+          populate: buildRepliesPopulate(2),
         });
 
       const sanitized = posts

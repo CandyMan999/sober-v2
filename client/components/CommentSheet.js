@@ -162,8 +162,9 @@ const CommentSheet = ({
     });
   };
 
+  // 🔧 FIX: emoji tap injects into input + focuses it
   const handleEmojiPress = (emoji) => {
-    setDraftComment((prev) => `${prev}${emoji}`);
+    setDraftComment((prev) => (prev ? `${prev}${emoji}` : emoji));
     inputRef.current?.focus();
   };
 
@@ -246,6 +247,12 @@ const CommentSheet = ({
     const textValue = comment?.text || comment?.body || "";
     const cleanedText = sanitizeCommentText(textValue);
     const isTopLevel = level === 0;
+    const replyTargetName =
+      level > 0 && comment?.replyTo?.author
+        ? comment.replyTo.author.username ||
+          comment.replyTo.author.name ||
+          "User"
+        : null;
 
     return (
       <View
@@ -268,8 +275,18 @@ const CommentSheet = ({
 
           <View style={styles.commentBody}>
             <View style={styles.commentHeaderRow}>
-              <Text style={styles.commentAuthor}>{name}</Text>
-              {dateText ? (
+              <View style={styles.commentHeaderMain}>
+                <Text style={styles.commentAuthor}>{name}</Text>
+                {replyTargetName ? (
+                  <View style={styles.replyTargetRow}>
+                    <Text style={styles.replyArrow}>›</Text>
+                    <Text style={styles.replyTargetName}>
+                      {replyTargetName}
+                    </Text>
+                  </View>
+                ) : null}
+              </View>
+              {dateText && isTopLevel ? (
                 <Text style={styles.commentDate}>{dateText}</Text>
               ) : null}
             </View>
@@ -285,7 +302,9 @@ const CommentSheet = ({
               >
                 <Text style={styles.replyText}>Reply</Text>
               </TouchableOpacity>
-
+              {!isTopLevel && dateText ? (
+                <Text style={styles.commentReplyDate}>{dateText}</Text>
+              ) : null}
               {replyCount > 0 ? (
                 <TouchableOpacity
                   style={styles.replyToggle}
@@ -691,6 +710,27 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     marginBottom: 2,
   },
+  commentHeaderMain: {
+    flexDirection: "row",
+    alignItems: "center",
+    flexShrink: 1,
+  },
+  replyTargetRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginRight: "auto",
+    columnGap: 4,
+  },
+  replyArrow: {
+    color: "#94a3b8",
+    fontSize: 12,
+    marginLeft: 2,
+  },
+  replyTargetName: {
+    color: "#e2e8f0",
+    fontWeight: "700",
+    fontSize: 13,
+  },
   commentAuthor: {
     color: "#fef3c7",
     fontWeight: "700",
@@ -700,6 +740,11 @@ const styles = StyleSheet.create({
   commentDate: {
     color: "#94a3b8",
     fontSize: 11,
+  },
+  commentReplyDate: {
+    color: "#94a3b8",
+    fontSize: 11,
+    marginRight: 6,
   },
   commentText: {
     color: "#e5e7eb",

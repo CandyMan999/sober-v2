@@ -24,6 +24,30 @@ export const CREATE_POST_COMMENT = gql`
       }
       replyTo {
         id
+        author {
+          id
+          username
+          profilePicUrl
+        }
+      }
+      replies {
+        id
+        text
+        createdAt
+        likesCount
+        author {
+          id
+          username
+          profilePicUrl
+        }
+        replyTo {
+          id
+          author {
+            id
+            username
+            profilePicUrl
+          }
+        }
       }
     }
   }

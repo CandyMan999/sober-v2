@@ -69,14 +69,50 @@ export const GET_QUOTES_QUERY = `
           profilePicUrl
         }
 
-        replies {
+        replyTo {
           id
-          text
-          createdAt
           author {
             id
             username
             profilePicUrl
+          }
+        }
+
+        replies {
+          id
+          text
+          createdAt
+          replyTo {
+            id
+            author {
+              id
+              username
+              profilePicUrl
+            }
+          }
+          author {
+            id
+            username
+            profilePicUrl
+          }
+
+          replies {
+            id
+            text
+            createdAt
+            author {
+              id
+              username
+              profilePicUrl
+            }
+            replyTo {
+              id
+              author {
+                id
+                username
+                profilePicUrl
+              }
+            }
           }
         }
       }
@@ -123,15 +159,51 @@ export const GET_ALL_POSTS = `
           }
           createdAt
           likesCount
+          replyTo {
+            id
+            author {
+              id
+              username
+              profilePicUrl
+            }
+          }
           replies {
             id
             text
             createdAt
             likesCount
+            replyTo {
+              id
+              author {
+                id
+                username
+                profilePicUrl
+              }
+            }
             author {
               id
               username
               profilePicUrl
+            }
+
+            replies {
+              id
+              text
+              createdAt
+              likesCount
+              author {
+                id
+                username
+                profilePicUrl
+              }
+              replyTo {
+                id
+                author {
+                  id
+                  username
+                  profilePicUrl
+                }
+              }
             }
           }
         }
