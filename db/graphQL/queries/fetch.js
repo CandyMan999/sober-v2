@@ -25,7 +25,10 @@ module.exports = {
     const { token } = args;
 
     try {
-      const user = await User.findOne({ token }).populate(["profilePic", "drunkPic"]);
+      const user = await User.findOne({ token }).populate([
+        "profilePic",
+        "drunkPic",
+      ]);
       if (!user) {
         throw new AuthenticationError("User not found");
       }
@@ -37,9 +40,11 @@ module.exports = {
   getQuotesResolver: async (root, args, ctx) => {
     try {
       const quotes = await Quote.find({ isApproved: true })
+        .sort({ createdAt: -1 })
         .populate("user")
         .populate({
           path: "comments",
+          match: { $or: [{ replyTo: null }, { replyTo: { $exists: false } }] },
           populate: buildRepliesPopulate(2),
         });
       // Don't throw if none; just return empty array
@@ -68,6 +73,7 @@ module.exports = {
         })
         .populate({
           path: "comments",
+          match: { $or: [{ replyTo: null }, { replyTo: { $exists: false } }] },
           populate: buildRepliesPopulate(2),
         });
 
