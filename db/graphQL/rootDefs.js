@@ -73,6 +73,7 @@ const typeDefs = gql`
     milestoneTag: String
     likesCount: Int!
     commentsCount: Int!
+    viewsCount: Int!
     likes: [Like!]!
     comments: [Comment!]!
     createdAt: String
@@ -246,6 +247,7 @@ const typeDefs = gql`
     sendPost(file: Upload!, senderID: ID!, text: String): Post
     sendImagePost(file: Upload!, senderID: ID!, text: String): Post
     setPostReview(postId: ID!, review: Boolean!): Post!
+    recordPostView(postId: ID!, token: String!): Post!
     createPostComment(
       token: String!
       postId: ID!

@@ -12,6 +12,7 @@ const FloatingActionIcons = ({
   showSoundToggle = false,
   likesCount = 0,
   commentsCount = 0,
+  viewsCount = null,
   isLiked = false,
 }) => {
   const heartScale = useRef(new Animated.Value(1)).current;
@@ -74,6 +75,13 @@ const FloatingActionIcons = ({
 
   return (
     <View style={styles.container}>
+      {viewsCount !== null && viewsCount !== undefined ? (
+        <View style={styles.pill}>
+          <Text style={styles.icon}>▶️</Text>
+          <Text style={styles.countText}>{formatCount(viewsCount)}</Text>
+        </View>
+      ) : null}
+
       {/* ❤️ Like */}
       <TouchableOpacity style={styles.pill} onPress={handleLikePress}>
         <View style={styles.heartWrapper}>

@@ -168,6 +168,7 @@ export const GET_ALL_POSTS = `
         milestoneTag
         likesCount
         commentsCount
+        viewsCount
         createdAt
         author {
           id
@@ -178,6 +179,7 @@ export const GET_ALL_POSTS = `
           id
           url
           flagged
+          viewsCount
         }
         likes {
           id

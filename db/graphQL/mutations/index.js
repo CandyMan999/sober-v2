@@ -14,6 +14,7 @@ const {
   createQuoteCommentResolver,
 } = require("./comments");
 const { toggleLikeResolver } = require("./likes");
+const { recordPostViewResolver } = require("./views");
 
 module.exports = {
   directUploadResolver,
@@ -28,4 +29,5 @@ module.exports = {
   creatingPostCommentResolver,
   createQuoteCommentResolver,
   toggleLikeResolver,
+  recordPostViewResolver,
 };
