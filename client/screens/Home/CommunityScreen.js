@@ -38,6 +38,7 @@ const CommunityScreen = () => {
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
   const [error, setError] = useState("");
+  const [refreshing, setRefreshing] = useState(false);
   const [containerHeight, setContainerHeight] = useState(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const [finishedMap, setFinishedMap] = useState({});
@@ -51,13 +52,17 @@ const CommunityScreen = () => {
   const videoRefs = useRef({});
 
   const fetchPosts = useCallback(
-    async (append = false) => {
+    async (append = false, { isRefresh = false } = {}) => {
       const nextCursor = append ? cursorRef.current : null;
 
       try {
         if (!append) {
-          setLoading(true);
           setError("");
+          if (isRefresh) {
+            setRefreshing(true);
+          } else {
+            setLoading(true);
+          }
         } else {
           setLoadingMore(true);
         }
@@ -86,6 +91,7 @@ const CommunityScreen = () => {
       } finally {
         setLoading(false);
         setLoadingMore(false);
+        setRefreshing(false);
       }
     },
     [client]
@@ -123,6 +129,14 @@ const CommunityScreen = () => {
   const handleLoadMore = () => {
     if (!hasMore || loadingMore) return;
     fetchPosts(true);
+  };
+
+  const handleRefresh = () => {
+    if (loading || refreshing) return;
+    setHasMore(true);
+    setCursor(null);
+    cursorRef.current = null;
+    fetchPosts(false, { isRefresh: true });
   };
 
   const handlePlaybackStatus = useCallback((index, status) => {
@@ -451,7 +465,10 @@ const CommunityScreen = () => {
         showsVerticalScrollIndicator={false}
         snapToAlignment="start"
         decelerationRate="fast"
-        bounces={false}
+        bounces
+        alwaysBounceVertical
+        onRefresh={handleRefresh}
+        refreshing={refreshing}
         snapToInterval={containerHeight}
         getItemLayout={(_, index) => ({
           length: containerHeight,
@@ -470,6 +487,16 @@ const CommunityScreen = () => {
           ) : null
         }
       />
+
+      {/* Pull-to-refresh loader overlay */}
+      {refreshing && (
+        <View style={styles.refreshOverlay} pointerEvents="none">
+          <BlurView intensity={40} tint="dark" style={styles.refreshBlur} />
+          <View style={styles.refreshContent}>
+            <ActivityIndicator size="large" color="white" />
+          </View>
+        </View>
+      )}
 
       {selectedPost ? (
         <Modal
@@ -738,6 +765,33 @@ const styles = StyleSheet.create({
     padding: 8,
     backgroundColor: "rgba(0,0,0,0.4)",
     borderRadius: 999,
+  },
+  refreshOverlay: {
+    position: "absolute",
+    top: 60,
+    left: 0,
+    right: 0,
+    alignItems: "center",
+    zIndex: 20,
+  },
+  refreshBlur: {
+    position: "absolute",
+    borderRadius: 999,
+    width: 200,
+    height: 42,
+  },
+  refreshContent: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+    borderRadius: 999,
+  },
+  refreshText: {
+    marginLeft: 10,
+    color: "#fef3c7",
+    fontSize: 14,
+    fontWeight: "600",
   },
 });
 
