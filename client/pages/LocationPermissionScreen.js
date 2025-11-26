@@ -15,6 +15,9 @@ import { LinearGradient } from "expo-linear-gradient";
 import * as Location from "expo-location";
 
 import LogoIcon from "../assets/icon.png";
+import { useClient } from "../client";
+import { UPDATE_USER_PROFILE_MUTATION } from "../GraphQL/mutations";
+import { getToken } from "../utils/helpers";
 
 const PRIMARY_BG = "#050816";
 const CARD_BG = "rgba(15,23,42,0.96)";
@@ -22,8 +25,41 @@ const ACCENT = "#F59E0B";
 const ACCENT_SOFT = "#FBBF24";
 
 const LocationPermissionScreen = ({ navigation }) => {
+  const client = useClient();
   const [loading, setLoading] = useState(false);
   const [checking, setChecking] = useState(true);
+
+  const updateLocationIfPermitted = async () => {
+    try {
+      const token = await getToken();
+
+      if (!token) return;
+
+      const { status } = await Location.getForegroundPermissionsAsync();
+
+      if (status !== "granted") {
+        return;
+      }
+
+      const position = await Location.getCurrentPositionAsync({
+        accuracy: Location.Accuracy.Lowest,
+      });
+
+      const coords = position?.coords;
+
+      if (!coords?.latitude || !coords?.longitude) {
+        return;
+      }
+
+      await client.request(UPDATE_USER_PROFILE_MUTATION, {
+        token,
+        lat: coords.latitude,
+        long: coords.longitude,
+      });
+    } catch (err) {
+      console.log("Unable to store location:", err);
+    }
+  };
 
   useEffect(() => {
     checkPermissions();
@@ -40,7 +76,8 @@ const LocationPermissionScreen = ({ navigation }) => {
         bg.status === "granted";
 
       if (hasAlways) {
-        return routeToApp();
+        await routeToApp();
+        return;
       }
 
       setChecking(false);
@@ -50,7 +87,9 @@ const LocationPermissionScreen = ({ navigation }) => {
     }
   };
 
-  const routeToApp = () => {
+  const routeToApp = async () => {
+    await updateLocationIfPermitted();
+
     navigation.reset({
       index: 0,
       routes: [{ name: "MainTabs" }],
@@ -79,7 +118,8 @@ const LocationPermissionScreen = ({ navigation }) => {
         bg.status === "granted";
 
       if (hasAlways) {
-        return routeToApp();
+        await routeToApp();
+        return;
       }
 
       // iOS requires user to manually change to "Always"

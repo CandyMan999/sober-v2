@@ -53,6 +53,14 @@ const UserSchema = new mongoose.Schema(
       x: { type: String, trim: true }, // twitter/“X”
     },
 
+    // Last known device location (helps with venue alerts)
+    lat: {
+      type: Number,
+    },
+    long: {
+      type: Number,
+    },
+
     //  relapse history – so you can show "previous streaks"
     streaks: [
       {

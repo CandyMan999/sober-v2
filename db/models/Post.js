@@ -53,6 +53,21 @@ const PostSchema = new mongoose.Schema(
       default: false,
     },
 
+    lat: {
+      type: Number,
+      default: null,
+    },
+    long: {
+      type: Number,
+      default: null,
+    },
+
+    closestCity: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "City",
+      default: null,
+    },
+
     milestoneDays: {
       type: Number,
       default: null,

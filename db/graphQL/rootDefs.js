@@ -14,6 +14,8 @@ const typeDefs = gql`
     drunkPic: Picture
     drunkPicUrl: String
     sobrietyStartAt: String
+    lat: Float
+    long: Float
     streaks: [SobrietyStreak!]
     milestonesNotified: [Int!]
     notificationsEnabled: Boolean
@@ -78,6 +80,9 @@ const typeDefs = gql`
     comments: [Comment!]!
     createdAt: String
     updatedAt: String
+    lat: Float
+    long: Float
+    closestCity: City
   }
 
   type Like {
@@ -225,6 +230,8 @@ const typeDefs = gql`
       profilePicUrl: String
       sobrietyStartAt: String
       timezone: String
+      lat: Float
+      long: Float
     ): User!
     resetSobrietyDate(token: String!, newStartAt: String!): User!
     directUpload: DirectUploadImage!
@@ -234,7 +241,11 @@ const typeDefs = gql`
       publicId: String
       slot: PictureSlot = PROFILE
     ): Picture!
-    deletePhoto(token: String!, photoId: ID!, slot: PictureSlot = PROFILE): User!
+    deletePhoto(
+      token: String!
+      photoId: ID!
+      slot: PictureSlot = PROFILE
+    ): User!
     createRoom(name: String!): Room!
     sendComment(
       roomId: ID!
