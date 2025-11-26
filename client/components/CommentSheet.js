@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState, useContext } from "react";
 import {
   Animated,
   Dimensions,
@@ -16,10 +16,12 @@ import {
   View,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { LinearGradient } from "expo-linear-gradient";
 import { formatDistanceToNow } from "date-fns";
 import { useClient } from "../client";
 import { CREATE_POST_COMMENT } from "../GraphQL/mutations/comments";
 import { getToken } from "../utils/helpers";
+import Context from "../context";
 
 const { height: WINDOW_HEIGHT } = Dimensions.get("window");
 const SHEET_HEIGHT = Math.round(WINDOW_HEIGHT * 0.8);
@@ -41,6 +43,20 @@ const formatRelativeDate = (value) => {
   const parsed = parseDateValue(value);
   if (!parsed) return "";
   return `${formatDistanceToNow(parsed)} ago`;
+};
+
+// Remove line breaks entirely and keep text tight
+const sanitizeCommentText = (value) => {
+  if (!value) return "";
+  let text = String(value);
+
+  // Trim trailing/leading whitespace
+  text = text.trim();
+
+  // Replace all line breaks (and surrounding spaces) with a single space
+  text = text.replace(/\s*\n+\s*/g, " ");
+
+  return text;
 };
 
 const CommentSheet = ({
@@ -67,6 +83,7 @@ const CommentSheet = ({
   const [keyboardHeight, setKeyboardHeight] = useState(0);
   const sheetAnim = useRef(new Animated.Value(0)).current;
   const inputRef = useRef(null);
+  const { state } = useContext(Context);
 
   useEffect(() => {
     if (visible) {
@@ -109,8 +126,10 @@ const CommentSheet = ({
     };
     const handleKeyboardHide = () => setKeyboardHeight(0);
 
-    const showEvent = Platform.OS === "ios" ? "keyboardWillShow" : "keyboardDidShow";
-    const hideEvent = Platform.OS === "ios" ? "keyboardWillHide" : "keyboardDidHide";
+    const showEvent =
+      Platform.OS === "ios" ? "keyboardWillShow" : "keyboardDidShow";
+    const hideEvent =
+      Platform.OS === "ios" ? "keyboardWillHide" : "keyboardDidHide";
 
     const showSub = Keyboard.addListener(showEvent, handleKeyboardShow);
     const hideSub = Keyboard.addListener(hideEvent, handleKeyboardHide);
@@ -207,7 +226,16 @@ const CommentSheet = ({
     }, 150);
   };
 
-  const renderCommentItem = (comment, level = 0) => {
+  /**
+   * isLastReplyInThread:
+   * - false for all top-level comments
+   * - true ONLY for the last reply inside an open thread
+   */
+  const renderCommentItem = (
+    comment,
+    level = 0,
+    isLastReplyInThread = false
+  ) => {
     const name = comment?.author?.username || comment?.author?.name || "User";
     const dateText = formatRelativeDate(comment?.createdAt);
     const replyCount = Array.isArray(comment?.replies)
@@ -215,9 +243,18 @@ const CommentSheet = ({
       : 0;
     const showReplies = expandedThreads.has(comment.id);
     const avatarUri = comment?.author?.profilePicUrl;
+    const textValue = comment?.text || comment?.body || "";
+    const cleanedText = sanitizeCommentText(textValue);
+    const isTopLevel = level === 0;
 
     return (
-      <View key={comment.id || `${name}-${level}`} style={styles.commentSection}>
+      <View
+        key={comment.id || `${name}-${level}`}
+        style={[
+          styles.commentSection,
+          isLastReplyInThread && styles.commentSectionLastReply, // only last reply in thread gets the bottom line
+        ]}
+      >
         <View style={styles.commentRow}>
           <View style={styles.avatarWrapper}>
             {avatarUri ? (
@@ -232,12 +269,14 @@ const CommentSheet = ({
           <View style={styles.commentBody}>
             <View style={styles.commentHeaderRow}>
               <Text style={styles.commentAuthor}>{name}</Text>
-              {dateText ? <Text style={styles.commentDate}>{dateText}</Text> : null}
+              {dateText ? (
+                <Text style={styles.commentDate}>{dateText}</Text>
+              ) : null}
             </View>
 
-            <Text style={styles.commentText}>
-              {comment?.text || comment?.body || ""}
-            </Text>
+            {cleanedText ? (
+              <Text style={styles.commentText}>{cleanedText}</Text>
+            ) : null}
 
             <View style={styles.commentActionsRow}>
               <TouchableOpacity
@@ -275,18 +314,28 @@ const CommentSheet = ({
           </View>
         </View>
 
-        {showReplies && replyCount > 0
-          ? comment.replies.map((reply) => (
-              <View style={styles.replyIndent} key={reply.id}>
-                {renderCommentItem(reply, level + 1)}
-              </View>
-            ))
-          : null}
+        {/* Replies block – only controls spacing, NOT borders */}
+        {showReplies && replyCount > 0 ? (
+          <View style={styles.repliesBlock}>
+            {comment.replies.map((reply, index) => {
+              const isLastReply = index === replyCount - 1;
+              return (
+                <View style={styles.replyIndent} key={reply.id}>
+                  {renderCommentItem(reply, level + 1, isLastReply)}
+                </View>
+              );
+            })}
+          </View>
+        ) : null}
       </View>
     );
   };
 
   if (!mounted) return null;
+
+  const effectiveCount = commentCount || commentList.length;
+  const composerAvatarUri = state.user.profilePicUrl;
+  const canSend = draftComment.trim().length > 0 && !submitting;
 
   return (
     <Modal
@@ -305,25 +354,35 @@ const CommentSheet = ({
           <Animated.View
             style={[
               styles.sheet,
-              { transform: [{ translateY }], paddingBottom: 12 + keyboardHeight },
+              {
+                transform: [{ translateY }],
+                paddingBottom: 12 + keyboardHeight,
+              },
             ]}
           >
             <View style={styles.dragHandle} />
 
             <View style={styles.postHeader}>
               <View style={styles.posterRow}>
-                <View style={styles.avatarSmallWrapper}>
-                  {postAuthor?.profilePicUrl ? (
-                    <Image
-                      source={{ uri: postAuthor.profilePicUrl }}
-                      style={styles.avatarSmall}
-                    />
-                  ) : (
-                    <View style={[styles.avatarSmall, styles.avatarFallback]}>
-                      <Ionicons name="person" size={16} color="#111827" />
-                    </View>
-                  )}
-                </View>
+                <LinearGradient
+                  colors={["#fed7aa", "#f97316", "#facc15"]}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 1 }}
+                  style={styles.avatarRing}
+                >
+                  <View style={styles.avatarSmallWrapper}>
+                    {postAuthor?.profilePicUrl ? (
+                      <Image
+                        source={{ uri: postAuthor.profilePicUrl }}
+                        style={styles.avatarSmall}
+                      />
+                    ) : (
+                      <View style={[styles.avatarSmall, styles.avatarFallback]}>
+                        <Ionicons name="person" size={16} color="#111827" />
+                      </View>
+                    )}
+                  </View>
+                </LinearGradient>
 
                 <View style={styles.posterMeta}>
                   <Text style={styles.posterName} numberOfLines={1}>
@@ -335,8 +394,9 @@ const CommentSheet = ({
                   onPress={onClose}
                   accessibilityRole="button"
                   accessibilityLabel="Close comments"
+                  style={styles.closeButton}
                 >
-                  <Ionicons name="close" size={22} color="#cbd5e1" />
+                  <Ionicons name="close-circle" size={32} color="#e5e7eb" />
                 </TouchableOpacity>
               </View>
 
@@ -353,22 +413,26 @@ const CommentSheet = ({
 
             <ScrollView
               style={styles.commentsList}
-              contentContainerStyle={{ paddingBottom: 24 + keyboardHeight }}
+              contentContainerStyle={{ paddingBottom: 12 + keyboardHeight }}
               showsVerticalScrollIndicator={false}
               keyboardShouldPersistTaps="handled"
             >
               <Text style={styles.commentsCountLabel}>
-                {`${commentCount || commentList.length} comment${
-                  (commentCount || commentList.length) === 1 ? "" : "s"
-                }`}
+                {`${effectiveCount} Comment${effectiveCount === 1 ? "" : "s"}`}
               </Text>
 
               {commentList.length === 0 ? (
                 <Text style={styles.emptyText}>No comments yet</Text>
               ) : (
-                commentList.map((comment) => renderCommentItem(comment))
+                commentList.map((comment, index) =>
+                  // Top-level comments are NEVER "last reply in a thread"
+                  renderCommentItem(comment, 0, false)
+                )
               )}
             </ScrollView>
+
+            {/* Full-width top divider for emoji row, no extra padding/margin */}
+            <View style={styles.emojiDivider} />
 
             <View style={styles.emojiRow}>
               {EMOJI_ROW.map((emoji) => (
@@ -393,36 +457,65 @@ const CommentSheet = ({
               </View>
             ) : null}
 
-            <View style={styles.composerRow}>
-              <View style={styles.composerInputWrapper}>
-                <TextInput
-                  ref={inputRef}
-                  style={styles.composerInput}
-                  placeholder="Add a comment"
-                  placeholderTextColor="#94a3b8"
-                  value={draftComment}
-                  onChangeText={setDraftComment}
-                  multiline
-                  returnKeyType="done"
-                  blurOnSubmit
-                  onSubmitEditing={Keyboard.dismiss}
-                />
+            <View style={styles.composerContainer}>
+              {composerAvatarUri ? (
+                <LinearGradient
+                  colors={["#0ea5e9", "#6366f1", "#a855f7"]}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 1 }}
+                  style={styles.composerAvatarHalo}
+                >
+                  <Image
+                    source={{ uri: composerAvatarUri }}
+                    style={styles.composerAvatarImage}
+                  />
+                </LinearGradient>
+              ) : (
+                <LinearGradient
+                  colors={["#0ea5e9", "#6366f1", "#a855f7"]}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 1 }}
+                  style={styles.composerAvatarHalo}
+                >
+                  <View style={styles.composerAvatarFallback}>
+                    <Ionicons name="person" size={14} color="#020617" />
+                  </View>
+                </LinearGradient>
+              )}
+
+              <View style={styles.composerRow}>
+                <View style={styles.composerInputWrapper}>
+                  <TextInput
+                    ref={inputRef}
+                    style={styles.composerInput}
+                    placeholder="Add a comment"
+                    placeholderTextColor="#94a3b8"
+                    value={draftComment}
+                    onChangeText={setDraftComment}
+                    multiline
+                    returnKeyType="done"
+                    blurOnSubmit
+                    onSubmitEditing={Keyboard.dismiss}
+                  />
+
+                  <TouchableOpacity
+                    style={[
+                      styles.inlineSendButton,
+                      (!draftComment.trim() || submitting) &&
+                        styles.inlineSendButtonDisabled,
+                    ]}
+                    disabled={!draftComment.trim() || submitting}
+                    onPress={handleSend}
+                    accessibilityLabel={`Send comment on post ${postId || ""}`}
+                  >
+                    <Ionicons
+                      name={submitting ? "time-outline" : "send"}
+                      size={17}
+                      color={canSend ? "#38bdf8" : "#64748b"}
+                    />
+                  </TouchableOpacity>
+                </View>
               </View>
-              <TouchableOpacity
-                style={[
-                  styles.sendButton,
-                  (!draftComment.trim() || submitting) && styles.sendButtonDisabled,
-                ]}
-                disabled={!draftComment.trim() || submitting}
-                onPress={handleSend}
-                accessibilityLabel={`Send comment on post ${postId || ""}`}
-              >
-                {submitting ? (
-                  <Ionicons name="time-outline" size={18} color="#0b1224" />
-                ) : (
-                  <Ionicons name="send" size={18} color="#0b1224" />
-                )}
-              </TouchableOpacity>
             </View>
           </Animated.View>
         </KeyboardAvoidingView>
@@ -450,8 +543,8 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
     height: SHEET_HEIGHT,
-    paddingHorizontal: 20,
-    paddingTop: 10,
+    paddingHorizontal: 10, // horizontal padding = 10
+    paddingTop: 5,
     backgroundColor: "#0b1224",
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
@@ -469,28 +562,33 @@ const styles = StyleSheet.create({
     borderRadius: 999,
     alignSelf: "center",
     backgroundColor: "rgba(148,163,184,0.5)",
-    marginBottom: 12,
+    marginBottom: 8,
   },
   postHeader: {
     paddingHorizontal: 2,
-    paddingBottom: 10,
+    paddingBottom: 8,
   },
   posterRow: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    marginBottom: 8,
+    marginBottom: 4,
+  },
+  avatarRing: {
+    width: 36,
+    height: 36,
+    borderRadius: 20,
+    alignItems: "center",
+    justifyContent: "center",
   },
   avatarSmallWrapper: {
     width: 32,
     height: 32,
     borderRadius: 16,
-    backgroundColor: "rgba(255,255,255,0.04)",
+    backgroundColor: "#020617",
     alignItems: "center",
     justifyContent: "center",
     overflow: "hidden",
-    borderWidth: 1,
-    borderColor: "rgba(148,163,184,0.3)",
   },
   avatarSmall: {
     width: "100%",
@@ -505,6 +603,7 @@ const styles = StyleSheet.create({
   },
   posterMeta: {
     flex: 1,
+    marginHorizontal: 8,
   },
   posterName: {
     color: "#fef3c7",
@@ -512,49 +611,62 @@ const styles = StyleSheet.create({
     fontSize: 15,
   },
   posterDate: {
-    color: "#cbd5e1",
-    fontSize: 13,
-    marginTop: 4,
+    color: "#64748b",
+    fontSize: 11,
+    marginTop: 2,
+    textTransform: "uppercase",
+    letterSpacing: 0.7,
   },
   postCaption: {
-    color: "#e2e8f0",
+    color: "#e5e7eb",
     fontSize: 15,
-    lineHeight: 20,
+    lineHeight: 21,
+    fontWeight: "600",
+    marginTop: 4,
+  },
+  closeButton: {
+    padding: 0,
+    marginLeft: 6,
+    marginTop: -20,
   },
   headerDivider: {
-    height: 1,
+    height: StyleSheet.hairlineWidth,
     backgroundColor: "rgba(148,163,184,0.5)",
-    marginHorizontal: -20,
-    marginBottom: 12,
+    marginHorizontal: -10,
+    marginBottom: 6,
   },
   commentsList: {
     flex: 1,
   },
   commentsCountLabel: {
-    color: "#fef3c7",
+    color: "#F59E0B",
     fontWeight: "700",
     fontSize: 14,
-    marginBottom: 10,
+    marginBottom: 6,
   },
   emptyText: {
     color: "#94a3b8",
     fontSize: 13,
-    marginTop: 6,
+    marginTop: 4,
   },
   commentSection: {
-    paddingBottom: 12,
+    paddingBottom: 2,
+    // no borders here; border only on last reply in thread
+  },
+  commentSectionLastReply: {
+    paddingBottom: 4,
     borderBottomWidth: StyleSheet.hairlineWidth,
     borderBottomColor: "rgba(148,163,184,0.25)",
   },
   commentRow: {
     flexDirection: "row",
     alignItems: "flex-start",
-    columnGap: 10,
+    columnGap: 8,
   },
   avatarWrapper: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
+    width: 32,
+    height: 32,
+    borderRadius: 16,
     overflow: "hidden",
     borderWidth: 1,
     borderColor: "rgba(148,163,184,0.35)",
@@ -565,18 +677,19 @@ const styles = StyleSheet.create({
   avatar: {
     width: "100%",
     height: "100%",
-    borderRadius: 18,
+    borderRadius: 16,
     resizeMode: "cover",
   },
   commentBody: {
     flex: 1,
-    paddingRight: 12,
+    paddingRight: 4,
+    marginBottom: 15,
   },
   commentHeaderRow: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    marginBottom: 6,
+    marginBottom: 2,
   },
   commentAuthor: {
     color: "#fef3c7",
@@ -586,22 +699,22 @@ const styles = StyleSheet.create({
   },
   commentDate: {
     color: "#94a3b8",
-    fontSize: 12,
+    fontSize: 11,
   },
   commentText: {
     color: "#e5e7eb",
     fontSize: 14,
-    lineHeight: 20,
+    lineHeight: 18,
   },
   commentActionsRow: {
     flexDirection: "row",
     alignItems: "center",
-    marginTop: 8,
-    columnGap: 12,
+    marginTop: 4,
+    columnGap: 8,
   },
   replyButton: {
-    paddingVertical: 6,
-    paddingHorizontal: 8,
+    paddingVertical: 2,
+    paddingHorizontal: 2,
   },
   replyText: {
     color: "#38bdf8",
@@ -612,52 +725,59 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     columnGap: 4,
-    paddingHorizontal: 8,
-    paddingVertical: 6,
-    borderRadius: 10,
-    backgroundColor: "rgba(148,163,184,0.15)",
+    paddingHorizontal: 4,
+    paddingVertical: 2,
+    borderRadius: 999,
+    backgroundColor: "rgba(148,163,184,0.18)",
   },
   replyToggleText: {
     color: "#cbd5e1",
     fontSize: 12,
   },
   likeColumn: {
-    justifyContent: "center",
-    alignItems: "center",
-    marginLeft: 4,
-    alignSelf: "center",
+    justifyContent: "flex-start",
+    alignItems: "flex-end",
+    marginLeft: 2,
   },
   likePill: {
-    flexDirection: "column",
+    flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
     paddingHorizontal: 8,
-    paddingVertical: 8,
-    backgroundColor: "rgba(148,163,184,0.18)",
+    paddingVertical: 4,
     borderRadius: 999,
+    backgroundColor: "rgba(148,163,184,0.18)",
+    borderWidth: 1,
+    borderColor: "rgba(148,163,184,0.35)",
+    minWidth: 32,
+    columnGap: 4,
   },
   likeCountText: {
     color: "#fef3c7",
     fontWeight: "700",
     fontSize: 13,
   },
+  repliesBlock: {
+    marginTop: 2,
+  },
   replyIndent: {
-    marginLeft: 46,
-    marginTop: 10,
+    marginLeft: 40,
+  },
+  emojiDivider: {
+    height: StyleSheet.hairlineWidth,
+    backgroundColor: "rgba(148,163,184,0.5)",
+    marginHorizontal: -10,
   },
   emojiRow: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    paddingVertical: 10,
+    paddingVertical: 6,
     paddingHorizontal: 6,
-    borderTopWidth: StyleSheet.hairlineWidth,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderColor: "rgba(148,163,184,0.35)",
-    marginBottom: 10,
+    marginBottom: 4,
   },
   emojiButton: {
-    paddingHorizontal: 6,
+    paddingHorizontal: 4,
   },
   emojiText: {
     fontSize: 20,
@@ -669,43 +789,73 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(59,130,246,0.12)",
     borderWidth: 1,
     borderColor: "rgba(59,130,246,0.35)",
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    borderRadius: 12,
-    marginBottom: 8,
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderRadius: 10,
+    marginBottom: 6,
   },
   replyingToText: {
     color: "#bfdbfe",
     fontSize: 13,
   },
+  composerContainer: {
+    marginTop: 2,
+    paddingLeft: 40, // room for bottom-left avatar halo
+    position: "relative",
+  },
+  composerAvatarHalo: {
+    position: "absolute",
+    left: 0,
+    bottom: 8,
+    width: 35,
+    height: 35,
+    borderRadius: 16,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  composerAvatarImage: {
+    width: 32,
+    height: 32,
+    borderRadius: 13,
+  },
+  composerAvatarFallback: {
+    width: 26,
+    height: 26,
+    borderRadius: 13,
+    backgroundColor: "#e5e7eb",
+    alignItems: "center",
+    justifyContent: "center",
+  },
   composerRow: {
     flexDirection: "row",
     alignItems: "center",
-    columnGap: 10,
-    marginTop: 4,
+    paddingBottom: 3,
   },
   composerInputWrapper: {
     flex: 1,
-    backgroundColor: "rgba(30,41,59,0.85)",
-    borderRadius: 12,
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "rgba(15,23,42,0.96)",
+    borderRadius: 999,
     borderWidth: 1,
-    borderColor: "rgba(148,163,184,0.35)",
-    paddingHorizontal: 12,
-    paddingVertical: 8,
+    borderColor: "rgba(148,163,184,0.4)",
+    paddingHorizontal: 14,
+    paddingVertical: 6,
   },
   composerInput: {
+    flex: 1,
     color: "#fef3c7",
     fontSize: 14,
     maxHeight: 80,
+    paddingRight: 8,
   },
-  sendButton: {
-    backgroundColor: "#38bdf8",
-    borderRadius: 12,
-    paddingHorizontal: 16,
-    paddingVertical: 12,
+  inlineSendButton: {
+    paddingHorizontal: 8,
+    paddingVertical: 6,
+    borderRadius: 999,
   },
-  sendButtonDisabled: {
-    backgroundColor: "rgba(148,163,184,0.5)",
+  inlineSendButtonDisabled: {
+    opacity: 0.4,
   },
 });
 
