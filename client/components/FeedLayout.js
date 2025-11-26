@@ -89,7 +89,7 @@ const FeedLayout = ({
 
             {postAuthor ? (
               <Text style={styles.username} numberOfLines={1}>
-                {postAuthor?.username || postAuthor?.name || "Unknown"}
+                @{postAuthor?.username || "Unknown"}
               </Text>
             ) : null}
           </View>
@@ -119,7 +119,7 @@ const FeedLayout = ({
 
               {cityName ? (
                 <>
-                  {meta ? <Text style={styles.metaDivider}>, </Text> : null}
+                  {meta ? <Text style={styles.metaDivider}></Text> : null}
                   <View style={styles.metaItem}>
                     <Ionicons
                       name="location-outline"
@@ -136,8 +136,8 @@ const FeedLayout = ({
 
               {typeof viewsCount === "number" ? (
                 <>
-                  {(meta || cityName) ? (
-                    <Text style={styles.metaDivider}>, </Text>
+                  {meta || cityName ? (
+                    <Text style={styles.metaDivider}></Text>
                   ) : null}
                   <View style={styles.metaItem}>
                     <Ionicons
@@ -226,7 +226,6 @@ const styles = StyleSheet.create({
   userRow: {
     flexDirection: "row",
     alignItems: "center",
-    columnGap: 10,
   },
   captionWrapper: {
     flexShrink: 1,
@@ -238,7 +237,7 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(245,158,11,0.2)", // soft burnt orange glow
     alignItems: "center",
     justifyContent: "center",
-    marginRight: 10,
+    marginRight: 5,
     shadowColor: ACCENT,
     shadowOpacity: 0.6,
     shadowRadius: 12,
@@ -256,7 +255,7 @@ const styles = StyleSheet.create({
   username: {
     color: "#e2e8f0",
     fontWeight: "800",
-    fontSize: 15,
+    fontSize: 17,
     maxWidth: "75%",
   },
   caption: {
@@ -291,7 +290,7 @@ const styles = StyleSheet.create({
   metaDivider: {
     color: "#38bdf8",
     fontWeight: "700",
-    marginHorizontal: 2,
+    // marginHorizontal: 2,
   },
   metaEmphasis: {
     color: "#e5e7eb",
