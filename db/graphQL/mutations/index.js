@@ -10,6 +10,7 @@ const { sendPostResolver } = require("./sendPost");
 const { sendImagePostResolver } = require("./sendImagePost");
 const { setPostReviewResolver } = require("./review");
 const { creatingPostCommentResolver } = require("./comments");
+const { toggleLikeResolver } = require("./likes");
 
 module.exports = {
   directUploadResolver,
@@ -22,4 +23,5 @@ module.exports = {
   sendImagePostResolver,
   setPostReviewResolver,
   creatingPostCommentResolver,
+  toggleLikeResolver,
 };

@@ -1,7 +1,15 @@
-import React, { useEffect, useMemo, useRef, useState, useContext } from "react";
+import React, {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  useContext,
+  useCallback,
+} from "react";
 import {
   Animated,
   Dimensions,
+  Easing,
   Image,
   Keyboard,
   KeyboardAvoidingView,
@@ -19,6 +27,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { formatDistanceToNow } from "date-fns";
 import { useClient } from "../client";
+import { TOGGLE_LIKE_MUTATION } from "../GraphQL/mutations";
 import { CREATE_POST_COMMENT } from "../GraphQL/mutations/comments";
 import { getToken } from "../utils/helpers";
 import Context from "../context";
@@ -84,6 +93,9 @@ const CommentSheet = ({
   const sheetAnim = useRef(new Animated.Value(0)).current;
   const inputRef = useRef(null);
   const { state } = useContext(Context);
+  const likeScales = useRef({});
+  const likeBurstScales = useRef({});
+  const likeBurstOpacities = useRef({});
 
   useEffect(() => {
     if (visible) {
@@ -113,8 +125,8 @@ const CommentSheet = ({
   }, [sheetAnim, visible]);
 
   useEffect(() => {
-    setCommentList(comments || []);
-  }, [comments]);
+    setCommentList(mapCommentsWithLiked(comments || []));
+  }, [comments, mapCommentsWithLiked]);
 
   useEffect(() => {
     setCommentCount(totalComments || comments?.length || 0);
@@ -139,6 +151,109 @@ const CommentSheet = ({
       hideSub.remove();
     };
   }, []);
+
+  const userId = state?.user?.id;
+
+  const mapCommentsWithLiked = useCallback(
+    (list = []) =>
+      (list || []).map((comment) => {
+        const liked = Array.isArray(comment?.likes)
+          ? comment.likes.some((like) => like?.user?.id === userId)
+          : false;
+        const replies = comment?.replies?.length
+          ? mapCommentsWithLiked(comment.replies)
+          : [];
+
+        return { ...comment, liked, replies };
+      }),
+    [userId]
+  );
+
+  const findCommentById = (list, id) => {
+    for (const comment of list || []) {
+      if (comment.id === id) return comment;
+      if (comment.replies?.length) {
+        const found = findCommentById(comment.replies, id);
+        if (found) return found;
+      }
+    }
+    return null;
+  };
+
+  const updateCommentById = (list, id, updater) =>
+    (list || []).map((comment) => {
+      if (comment.id === id) {
+        return updater(comment);
+      }
+
+      if (comment.replies?.length) {
+        const updatedReplies = updateCommentById(
+          comment.replies,
+          id,
+          updater
+        );
+
+        if (updatedReplies !== comment.replies) {
+          return { ...comment, replies: updatedReplies };
+        }
+      }
+
+      return comment;
+    });
+
+  const ensureAnimValue = (store, key, initialValue) => {
+    if (!store.current[key]) {
+      store.current[key] = new Animated.Value(initialValue);
+    }
+    return store.current[key];
+  };
+
+  const getHeartScale = (commentId) => ensureAnimValue(likeScales, commentId, 1);
+  const getBurstScale = (commentId) => ensureAnimValue(likeBurstScales, commentId, 0);
+  const getBurstOpacity = (commentId) =>
+    ensureAnimValue(likeBurstOpacities, commentId, 0);
+
+  const runLikeAnimation = (commentId, activating) => {
+    const heartScale = getHeartScale(commentId);
+    const burstScale = getBurstScale(commentId);
+    const burstOpacity = getBurstOpacity(commentId);
+
+    Animated.sequence([
+      Animated.timing(heartScale, {
+        toValue: 1.12,
+        duration: 140,
+        easing: Easing.out(Easing.quad),
+        useNativeDriver: true,
+      }),
+      Animated.spring(heartScale, {
+        toValue: 1,
+        friction: 5,
+        tension: 140,
+        useNativeDriver: true,
+      }),
+    ]).start();
+
+    if (activating) {
+      burstScale.setValue(0.4);
+      burstOpacity.setValue(0.55);
+
+      Animated.parallel([
+        Animated.timing(burstScale, {
+          toValue: 1.3,
+          duration: 220,
+          easing: Easing.out(Easing.quad),
+          useNativeDriver: true,
+        }),
+        Animated.timing(burstOpacity, {
+          toValue: 0,
+          duration: 220,
+          delay: 70,
+          easing: Easing.inOut(Easing.quad),
+          useNativeDriver: true,
+        }),
+      ]).start();
+    }
+  };
 
   const translateY = sheetAnim.interpolate({
     inputRange: [0, 1],
@@ -182,6 +297,54 @@ const CommentSheet = ({
       return item;
     });
 
+  const handleToggleLike = async (commentId) => {
+    const snapshot = findCommentById(commentList, commentId);
+    if (!snapshot?.id) return;
+
+    const nextLiked = !snapshot.liked;
+    runLikeAnimation(commentId, nextLiked);
+
+    setCommentList((prev) =>
+      updateCommentById(prev, commentId, (comment) => {
+        const nextCount = Math.max(
+          0,
+          (comment.likesCount || 0) + (nextLiked ? 1 : -1)
+        );
+        return { ...comment, liked: nextLiked, likesCount: nextCount };
+      })
+    );
+
+    try {
+      const token = await getToken();
+      const data = await client.request(TOGGLE_LIKE_MUTATION, {
+        token,
+        targetType: "COMMENT",
+        targetId: commentId,
+      });
+
+      const payload = data?.toggleLike;
+
+      if (payload) {
+        setCommentList((prev) =>
+          updateCommentById(prev, commentId, (comment) => ({
+            ...comment,
+            liked: payload.liked,
+            likesCount: payload.likesCount ?? comment.likesCount ?? 0,
+          }))
+        );
+      }
+    } catch (err) {
+      console.error("Failed to toggle comment like", err);
+      setCommentList((prev) =>
+        updateCommentById(prev, commentId, (comment) => ({
+          ...comment,
+          liked: snapshot.liked,
+          likesCount: snapshot.likesCount ?? 0,
+        }))
+      );
+    }
+  };
+
   const handleSend = async () => {
     if (!draftComment.trim() || submitting || !postId) return;
 
@@ -199,14 +362,16 @@ const CommentSheet = ({
       const newComment = data?.createPostComment;
 
       if (newComment) {
+        const hydratedNewComment =
+          mapCommentsWithLiked([newComment])?.[0] || newComment;
         setCommentList((prev) => {
           if (replyTarget?.id) {
-            return mergeReply(prev, replyTarget.id, newComment);
+            return mergeReply(prev, replyTarget.id, hydratedNewComment);
           }
-          return [newComment, ...prev];
+          return [hydratedNewComment, ...prev];
         });
         setCommentCount((prev) => prev + 1);
-        onCommentAdded?.(newComment);
+        onCommentAdded?.(hydratedNewComment);
       }
 
       setDraftComment("");
@@ -253,6 +418,11 @@ const CommentSheet = ({
           comment.replyTo.author.name ||
           "User"
         : null;
+    const heartScale = getHeartScale(comment.id);
+    const burstScale = getBurstScale(comment.id);
+    const burstOpacity = getBurstOpacity(comment.id);
+    const likeIcon = comment.liked ? "heart" : "heart-outline";
+    const likeColor = comment.liked ? "#fb7185" : "#fef3c7";
 
     return (
       <View
@@ -324,12 +494,40 @@ const CommentSheet = ({
           </View>
 
           <View style={styles.likeColumn}>
-            <View style={styles.likePill}>
-              <Ionicons name="heart-outline" size={16} color="#fef3c7" />
-              <Text style={styles.likeCountText}>
+            <TouchableOpacity
+              style={[
+                styles.likePill,
+                comment.liked && styles.likePillActive,
+              ]}
+              onPress={() => handleToggleLike(comment.id)}
+            >
+              <View style={styles.likeBurstWrapper}>
+                <Animated.View
+                  pointerEvents="none"
+                  style={[
+                    styles.likeBurst,
+                    {
+                      opacity: burstOpacity,
+                      transform: [{ scale: burstScale }],
+                    },
+                  ]}
+                />
+                <Animated.View
+                  style={{ transform: [{ scale: heartScale }] }}
+                  pointerEvents="none"
+                >
+                  <Ionicons name={likeIcon} size={16} color={likeColor} />
+                </Animated.View>
+              </View>
+              <Text
+                style={[
+                  styles.likeCountText,
+                  comment.liked && styles.likeCountTextActive,
+                ]}
+              >
                 {comment?.likesCount || 0}
               </Text>
-            </View>
+            </TouchableOpacity>
           </View>
         </View>
 
@@ -353,7 +551,7 @@ const CommentSheet = ({
   if (!mounted) return null;
 
   const effectiveCount = commentCount || commentList.length;
-  const composerAvatarUri = state.user.profilePicUrl;
+  const composerAvatarUri = state?.user?.profilePicUrl;
   const canSend = draftComment.trim().length > 0 && !submitting;
 
   return (
@@ -797,10 +995,31 @@ const styles = StyleSheet.create({
     minWidth: 32,
     columnGap: 4,
   },
+  likePillActive: {
+    backgroundColor: "rgba(251, 113, 133, 0.16)",
+    borderColor: "rgba(251, 113, 133, 0.6)",
+  },
+  likeBurstWrapper: {
+    position: "relative",
+    width: 20,
+    height: 20,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  likeBurst: {
+    position: "absolute",
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    backgroundColor: "rgba(251, 113, 133, 0.2)",
+  },
   likeCountText: {
     color: "#fef3c7",
     fontWeight: "700",
     fontSize: 13,
+  },
+  likeCountTextActive: {
+    color: "#fb7185",
   },
   repliesBlock: {
     marginTop: 2,

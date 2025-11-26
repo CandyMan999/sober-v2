@@ -252,6 +252,19 @@ const typeDefs = gql`
       text: String!
       replyTo: ID
     ): Comment!
+    toggleLike(
+      token: String!
+      targetType: LikeTarget!
+      targetId: ID!
+    ): LikePayload!
+  }
+
+  type LikePayload {
+    liked: Boolean!
+    likesCount: Int!
+    targetType: LikeTarget!
+    targetId: ID!
+    like: Like
   }
 `;
 

@@ -1,5 +1,5 @@
 // screens/Sober/QuotesScreen.js
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -12,6 +12,9 @@ import { GET_QUOTES_QUERY } from "../../GraphQL/queries";
 import FeedLayout from "../../components/FeedLayout";
 import { useClient } from "../../client";
 import AlertModal from "../../components/AlertModal";
+import { TOGGLE_LIKE_MUTATION } from "../../GraphQL/mutations";
+import { getToken } from "../../utils/helpers";
+import Context from "../../context";
 
 // 👇 module-level flag: survives navigation, resets when app reloads
 let hasShownQuotesAlertThisSession = false;
@@ -19,6 +22,9 @@ let hasShownQuotesAlertThisSession = false;
 const QuotesScreen = () => {
   const client = useClient();
   const isFocused = useIsFocused();
+  const { state } = useContext(Context);
+  const currentUserId = state?.user?.id;
+  const currentUser = state?.user;
 
   const [quotes, setQuotes] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -27,6 +33,99 @@ const QuotesScreen = () => {
 
   // “Add your own quote” hint
   const [showAlert, setShowAlert] = useState(false);
+
+  const isQuoteLiked = useCallback(
+    (quote) => {
+      if (!currentUserId) return false;
+      return (quote?.likes || []).some((like) => like?.user?.id === currentUserId);
+    },
+    [currentUserId]
+  );
+
+  const applyLikePayload = useCallback(
+    (quoteId, payload) => {
+      if (!payload) return;
+
+      setQuotes((prev) =>
+        prev.map((quote) => {
+          if (quote.id !== quoteId) return quote;
+
+          const existingLikes = quote.likes || [];
+          const actorId = payload.like?.user?.id || currentUserId;
+          const filtered = existingLikes.filter((like) => like?.user?.id !== actorId);
+
+          if (payload.liked && payload.like) {
+            return {
+              ...quote,
+              likesCount: payload.likesCount,
+              likes: [...filtered, payload.like],
+            };
+          }
+
+          return {
+            ...quote,
+            likesCount: payload.likesCount,
+            likes: filtered,
+          };
+        })
+      );
+    },
+    [currentUserId]
+  );
+
+  const handleToggleLike = useCallback(
+    async (quoteId) => {
+      const token = await getToken();
+      if (!token) return;
+
+      const previous = quotes.map((quote) => ({
+        ...quote,
+        likes: quote.likes ? [...quote.likes] : [],
+      }));
+
+      const target = quotes.find((quote) => quote.id === quoteId);
+      const currentlyLiked = isQuoteLiked(target);
+
+      const optimisticUser = currentUser || { id: currentUserId };
+
+      setQuotes((prev) =>
+        prev.map((quote) => {
+          if (quote.id !== quoteId) return quote;
+
+          const filtered = (quote.likes || []).filter(
+            (like) => like?.user?.id !== currentUserId
+          );
+
+          const optimisticLikes = currentlyLiked
+            ? filtered
+            : [...filtered, { id: `temp-like-${quoteId}`, user: optimisticUser }];
+
+          return {
+            ...quote,
+            likesCount: Math.max(
+              0,
+              (quote.likesCount || 0) + (currentlyLiked ? -1 : 1)
+            ),
+            likes: optimisticLikes,
+          };
+        })
+      );
+
+      try {
+        const data = await client.request(TOGGLE_LIKE_MUTATION, {
+          token,
+          targetType: "QUOTE",
+          targetId: quoteId,
+        });
+
+        applyLikePayload(quoteId, data?.toggleLike);
+      } catch (err) {
+        console.error("Error toggling quote like", err);
+        setQuotes(previous);
+      }
+    },
+    [applyLikePayload, client, currentUser, currentUserId, isQuoteLiked, quotes]
+  );
 
   // Fetch quotes once on mount
   useEffect(() => {
@@ -156,6 +255,8 @@ const QuotesScreen = () => {
           commentsCount={item.commentsCount}
           comments={item.comments}
           avatarUrl={avatarUrl}
+          isLiked={isQuoteLiked(item)}
+          onLikePress={() => handleToggleLike(item.id)}
         >
           <View style={styles.quoteContainer}>
             <Text style={styles.quoteText}>“{item.text}”</Text>
@@ -181,6 +282,8 @@ const QuotesScreen = () => {
           commentsCount={item.commentsCount}
           comments={item.comments}
           avatarUrl={avatarUrl}
+          isLiked={isQuoteLiked(item)}
+          onLikePress={() => handleToggleLike(item.id)}
         >
           <View style={styles.quoteContainer}>
             <Text style={styles.quoteText}>“{item.text}”</Text>

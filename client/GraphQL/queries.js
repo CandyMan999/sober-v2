@@ -62,6 +62,7 @@ export const GET_QUOTES_QUERY = `
         id
         text
         createdAt
+        likesCount
 
         author {
           id
@@ -78,10 +79,20 @@ export const GET_QUOTES_QUERY = `
           }
         }
 
+        likes {
+          id
+          user {
+            id
+            username
+            profilePicUrl
+          }
+        }
+
         replies {
           id
           text
           createdAt
+          likesCount
           replyTo {
             id
             author {
@@ -96,10 +107,20 @@ export const GET_QUOTES_QUERY = `
             profilePicUrl
           }
 
+          likes {
+            id
+            user {
+              id
+              username
+              profilePicUrl
+            }
+          }
+
           replies {
             id
             text
             createdAt
+            likesCount
             author {
               id
               username
@@ -108,6 +129,14 @@ export const GET_QUOTES_QUERY = `
             replyTo {
               id
               author {
+                id
+                username
+                profilePicUrl
+              }
+            }
+            likes {
+              id
+              user {
                 id
                 username
                 profilePicUrl
@@ -149,6 +178,15 @@ export const GET_ALL_POSTS = `
           url
           flagged
         }
+        likes {
+          id
+          user {
+            id
+            username
+            profilePicUrl
+          }
+          createdAt
+        }
         comments {
           id
           text
@@ -159,6 +197,14 @@ export const GET_ALL_POSTS = `
           }
           createdAt
           likesCount
+          likes {
+            id
+            user {
+              id
+              username
+              profilePicUrl
+            }
+          }
           replyTo {
             id
             author {
@@ -172,6 +218,14 @@ export const GET_ALL_POSTS = `
             text
             createdAt
             likesCount
+            likes {
+              id
+              user {
+                id
+                username
+                profilePicUrl
+              }
+            }
             replyTo {
               id
               author {
@@ -191,6 +245,14 @@ export const GET_ALL_POSTS = `
               text
               createdAt
               likesCount
+              likes {
+                id
+                user {
+                  id
+                  username
+                  profilePicUrl
+                }
+              }
               author {
                 id
                 username

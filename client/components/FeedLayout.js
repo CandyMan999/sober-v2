@@ -22,6 +22,7 @@ const FeedLayout = ({
   captionStyle,
   children,
   onLikePress,
+  isLiked = false,
   onMorePress,
   contentStyle,
   showSoundToggle = false,
@@ -73,6 +74,7 @@ const FeedLayout = ({
         showSoundToggle={showSoundToggle}
         isMuted={isMuted}
         onToggleSound={onToggleSound}
+        isLiked={isLiked}
       />
 
       {/* Comment sheet (wire to actual comments later) */}

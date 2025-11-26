@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useContext, useEffect, useRef, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   Animated,
@@ -20,7 +20,9 @@ import { ResizeMode, Video } from "expo-av";
 import { FeedLayout } from "../../components";
 import { GET_ALL_POSTS } from "../../GraphQL/queries";
 import { useClient } from "../../client";
-import { SET_POST_REVIEW_MUTATION } from "../../GraphQL/mutations";
+import { SET_POST_REVIEW_MUTATION, TOGGLE_LIKE_MUTATION } from "../../GraphQL/mutations";
+import { getToken } from "../../utils/helpers";
+import Context from "../../context";
 
 const TUTORIAL_SEEN_KEY = "community_tutorial_seen";
 const tutorialImage = require("../../assets/swipe1.png");
@@ -32,6 +34,9 @@ const SHEET_HEIGHT = Math.round(WINDOW_HEIGHT * 0.33);
 const CommunityScreen = () => {
   const client = useClient();
   const isFocused = useIsFocused();
+  const { state } = useContext(Context);
+  const currentUserId = state?.user?.id;
+  const currentUser = state?.user;
   const [posts, setPosts] = useState([]);
   const [cursor, setCursor] = useState(null);
   const [hasMore, setHasMore] = useState(true);
@@ -47,6 +52,98 @@ const CommunityScreen = () => {
   const [selectedPost, setSelectedPost] = useState(null);
   const [showTutorial, setShowTutorial] = useState(false);
   const sheetAnim = useRef(new Animated.Value(0)).current;
+
+  const isPostLiked = useCallback(
+    (post) => {
+      if (!currentUserId) return false;
+      return (post?.likes || []).some((like) => like?.user?.id === currentUserId);
+    },
+    [currentUserId]
+  );
+
+  const applyPostLikePayload = useCallback(
+    (postId, payload) => {
+      if (!payload) return;
+
+      setPosts((prev) =>
+        prev.map((post) => {
+          if (post.id !== postId) return post;
+
+          const existingLikes = post.likes || [];
+          const actorId = payload.like?.user?.id || currentUserId;
+          const filtered = existingLikes.filter((like) => like?.user?.id !== actorId);
+
+          if (payload.liked && payload.like) {
+            return {
+              ...post,
+              likesCount: payload.likesCount,
+              likes: [...filtered, payload.like],
+            };
+          }
+
+          return {
+            ...post,
+            likesCount: payload.likesCount,
+            likes: filtered,
+          };
+        })
+      );
+    },
+    [currentUserId]
+  );
+
+  const handleToggleLike = useCallback(
+    async (postId) => {
+      const token = await getToken();
+      if (!token) return;
+
+      const previous = posts.map((post) => ({
+        ...post,
+        likes: post.likes ? [...post.likes] : [],
+      }));
+
+      const target = posts.find((post) => post.id === postId);
+      const currentlyLiked = isPostLiked(target);
+      const optimisticUser = currentUser || { id: currentUserId };
+
+      setPosts((prev) =>
+        prev.map((post) => {
+          if (post.id !== postId) return post;
+
+          const filtered = (post.likes || []).filter(
+            (like) => like?.user?.id !== currentUserId
+          );
+
+          const optimisticLikes = currentlyLiked
+            ? filtered
+            : [...filtered, { id: `temp-like-${postId}`, user: optimisticUser }];
+
+          return {
+            ...post,
+            likesCount: Math.max(
+              0,
+              (post.likesCount || 0) + (currentlyLiked ? -1 : 1)
+            ),
+            likes: optimisticLikes,
+          };
+        })
+      );
+
+      try {
+        const data = await client.request(TOGGLE_LIKE_MUTATION, {
+          token,
+          targetType: "POST",
+          targetId: postId,
+        });
+
+        applyPostLikePayload(postId, data?.toggleLike);
+      } catch (err) {
+        console.error("Error toggling post like", err);
+        setPosts(previous);
+      }
+    },
+    [applyPostLikePayload, client, currentUser, currentUserId, isPostLiked, posts]
+  );
 
   const cursorRef = useRef(null);
   const videoRefs = useRef({});
@@ -384,6 +481,8 @@ const CommunityScreen = () => {
           showSoundToggle={isVideoPost}
           isMuted={isVideoPost ? isMuted : true}
           onToggleSound={isVideoPost ? handleToggleSound : undefined}
+          isLiked={isPostLiked(item)}
+          onLikePress={() => handleToggleLike(item.id)}
           onMorePress={() => handleMorePress(item)}
         >
           {renderMedia(item, index)}
@@ -462,6 +561,8 @@ const CommunityScreen = () => {
           showSoundToggle={firstIsVideo}
           isMuted={firstIsVideo ? isMuted : true}
           onToggleSound={firstIsVideo ? handleToggleSound : undefined}
+          isLiked={isPostLiked(firstPost)}
+          onLikePress={() => handleToggleLike(firstPost.id)}
           onMorePress={() => handleMorePress(firstPost)}
         >
           {renderMedia(firstPost, 0)}
