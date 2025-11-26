@@ -1,5 +1,8 @@
 const mongoose = require("mongoose");
-const { AuthenticationError, UserInputError } = require("apollo-server-express");
+const {
+  AuthenticationError,
+  UserInputError,
+} = require("apollo-server-express");
 const { Comment, Post, Quote, User } = require("../../models");
 const { sendPushNotifications } = require("../../utils/pushNotifications");
 
@@ -81,15 +84,14 @@ const creatingPostCommentResolver = async (_, args) => {
   const targetOwner =
     targetType === "POST" ? target.author : target?.user ?? null;
 
+  console.log("target Owner: ", targetOwner);
+
   if (
     targetOwner &&
     targetOwner.token &&
-    targetOwner.notificationsEnabled !== false &&
-    String(targetOwner._id) !== String(user._id)
+    targetOwner.notificationsEnabled !== false
   ) {
-    const title = `${actorName} commented on your ${
-      targetType === "QUOTE" ? "quote" : "post"
-    }`;
+    const title = `${targetType === "QUOTE" ? "Quote" : "Post"} Comment`;
 
     const ownerNotificationData = {
       type: targetType === "QUOTE" ? "quote_comment" : "post_comment",
@@ -98,13 +100,15 @@ const creatingPostCommentResolver = async (_, args) => {
       commentId: String(newComment._id),
     };
 
-    if (targetType === "POST") ownerNotificationData.postId = String(target._id);
-    if (targetType === "QUOTE") ownerNotificationData.quoteId = String(target._id);
+    if (targetType === "POST")
+      ownerNotificationData.postId = String(target._id);
+    if (targetType === "QUOTE")
+      ownerNotificationData.quoteId = String(target._id);
 
     notifications.push({
       pushToken: targetOwner.token,
       title,
-      body: trimmedBody,
+      body: `${actorName} said ${trimmedBody}`,
       data: ownerNotificationData,
     });
   }
@@ -128,13 +132,15 @@ const creatingPostCommentResolver = async (_, args) => {
         parentCommentId: String(parent._id),
       };
 
-      if (targetType === "POST") replyNotificationData.postId = String(target._id);
-      if (targetType === "QUOTE") replyNotificationData.quoteId = String(target._id);
+      if (targetType === "POST")
+        replyNotificationData.postId = String(target._id);
+      if (targetType === "QUOTE")
+        replyNotificationData.quoteId = String(target._id);
 
       notifications.push({
         pushToken: parent.author.token,
         title,
-        body: trimmedBody,
+        body: `${actorName} said ${trimmedBody}`,
         data: replyNotificationData,
       });
     }

@@ -162,8 +162,9 @@ const CommentSheet = ({
     });
   };
 
+  // 🔧 FIX: emoji tap injects into input + focuses it
   const handleEmojiPress = (emoji) => {
-    setDraftComment((prev) => `${prev}${emoji}`);
+    setDraftComment((prev) => (prev ? `${prev}${emoji}` : emoji));
     inputRef.current?.focus();
   };
 
@@ -279,7 +280,9 @@ const CommentSheet = ({
                 {replyTargetName ? (
                   <View style={styles.replyTargetRow}>
                     <Text style={styles.replyArrow}>›</Text>
-                    <Text style={styles.replyTargetName}>{replyTargetName}</Text>
+                    <Text style={styles.replyTargetName}>
+                      {replyTargetName}
+                    </Text>
                   </View>
                 ) : null}
               </View>
@@ -293,16 +296,15 @@ const CommentSheet = ({
             ) : null}
 
             <View style={styles.commentActionsRow}>
-              {!isTopLevel && dateText ? (
-                <Text style={styles.commentReplyDate}>{dateText}</Text>
-              ) : null}
               <TouchableOpacity
                 style={styles.replyButton}
                 onPress={() => startReply(comment)}
               >
                 <Text style={styles.replyText}>Reply</Text>
               </TouchableOpacity>
-
+              {!isTopLevel && dateText ? (
+                <Text style={styles.commentReplyDate}>{dateText}</Text>
+              ) : null}
               {replyCount > 0 ? (
                 <TouchableOpacity
                   style={styles.replyToggle}
