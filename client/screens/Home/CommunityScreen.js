@@ -1,4 +1,10 @@
-import React, { useCallback, useContext, useEffect, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   Animated,
@@ -61,7 +67,9 @@ const CommunityScreen = () => {
   const isPostLiked = useCallback(
     (post) => {
       if (!currentUserId) return false;
-      return (post?.likes || []).some((like) => like?.user?.id === currentUserId);
+      return (post?.likes || []).some(
+        (like) => like?.user?.id === currentUserId
+      );
     },
     [currentUserId]
   );
@@ -76,7 +84,9 @@ const CommunityScreen = () => {
 
           const existingLikes = post.likes || [];
           const actorId = payload.like?.user?.id || currentUserId;
-          const filtered = existingLikes.filter((like) => like?.user?.id !== actorId);
+          const filtered = existingLikes.filter(
+            (like) => like?.user?.id !== actorId
+          );
 
           if (payload.liked && payload.like) {
             return {
@@ -121,7 +131,10 @@ const CommunityScreen = () => {
 
           const optimisticLikes = currentlyLiked
             ? filtered
-            : [...filtered, { id: `temp-like-${postId}`, user: optimisticUser }];
+            : [
+                ...filtered,
+                { id: `temp-like-${postId}`, user: optimisticUser },
+              ];
 
           return {
             ...post,
@@ -147,7 +160,14 @@ const CommunityScreen = () => {
         setPosts(previous);
       }
     },
-    [applyPostLikePayload, client, currentUser, currentUserId, isPostLiked, posts]
+    [
+      applyPostLikePayload,
+      client,
+      currentUser,
+      currentUserId,
+      isPostLiked,
+      posts,
+    ]
   );
 
   const cursorRef = useRef(null);
@@ -322,13 +342,23 @@ const CommunityScreen = () => {
 
   const renderReviewOverlay = (item) => (
     <View style={styles.reviewOverlay} pointerEvents="auto">
-      <BlurView tint="dark" intensity={50} style={StyleSheet.absoluteFillObject} />
-      <View style={styles.reviewContent}>
+      <BlurView
+        tint="dark"
+        intensity={90}
+        style={StyleSheet.absoluteFillObject}
+      />
+      <View style={styles.reviewCard}>
+        <View style={styles.reviewBadgeRow}>
+          <Ionicons name="shield-checkmark" size={16} color="#facc15" />
+          <Text style={styles.reviewBadgeText}>Safety filter</Text>
+        </View>
         <Text style={styles.reviewTitle}>
-          This Post May Contain Inappropriate Content and Is Under Review
+          This post is under review for possible inappropriate content.
         </Text>
+
         <TouchableOpacity
-          style={styles.reviewButton}
+          style={styles.reviewPrimaryButton}
+          activeOpacity={0.85}
           onPress={() =>
             setReviewBypass((prev) => ({
               ...prev,
@@ -336,7 +366,8 @@ const CommunityScreen = () => {
             }))
           }
         >
-          <Text style={styles.reviewButtonText}>View Anyways</Text>
+          <Ionicons name="eye-outline" size={18} color="#0f172a" />
+          <Text style={styles.reviewPrimaryText}>View anyway</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -354,7 +385,10 @@ const CommunityScreen = () => {
         style={styles.video}
         resizeMode={ResizeMode.COVER}
         shouldPlay={
-          isFocused && activeIndex === index && !finishedMap[index] && !isUnderReview
+          isFocused &&
+          activeIndex === index &&
+          !finishedMap[index] &&
+          !isUnderReview
         }
         isLooping={false}
         isMuted={isMuted}
@@ -385,7 +419,9 @@ const CommunityScreen = () => {
     const isUnderReview = item.review && !reviewBypass[item.id];
 
     const mediaContent =
-      type === "IMAGE" ? renderImage(item) : renderVideo(item, index, isUnderReview);
+      type === "IMAGE"
+        ? renderImage(item)
+        : renderVideo(item, index, isUnderReview);
 
     return (
       <View style={styles.mediaContainer}>
@@ -569,17 +605,19 @@ const CommunityScreen = () => {
       <View style={{ height: containerHeight || 0 }}>
         <FeedLayout
           caption={captionText}
-        captionStyle={captionStyle}
-        meta={metaText}
-        likesCount={item.likesCount}
-        commentsCount={item.commentsCount}
-        viewsCount={getViewsCount(item)}
-        comments={item.comments}
-        postId={item.id}
+          captionStyle={captionStyle}
+          meta={metaText}
+          likesCount={item.likesCount}
+          commentsCount={item.commentsCount}
+          viewsCount={getViewsCount(item)}
+          comments={item.comments}
+          postId={item.id}
           postCreatedAt={item.createdAt}
           postAuthor={item.author}
           avatarUrl={avatarUrl}
-          onCommentAdded={(newComment) => handleCommentAdded(item.id, newComment)}
+          onCommentAdded={(newComment) =>
+            handleCommentAdded(item.id, newComment)
+          }
           contentStyle={styles.feedContent}
           showSoundToggle={isVideoPost}
           isMuted={isVideoPost ? isMuted : true}
@@ -660,7 +698,9 @@ const CommunityScreen = () => {
           postAuthor={firstPost.author}
           avatarUrl={firstPost.author?.profilePicUrl || null}
           meta={firstMetaText}
-          onCommentAdded={(newComment) => handleCommentAdded(firstPost.id, newComment)}
+          onCommentAdded={(newComment) =>
+            handleCommentAdded(firstPost.id, newComment)
+          }
           contentStyle={styles.feedContent}
           showSoundToggle={firstIsVideo}
           isMuted={firstIsVideo ? isMuted : true}
@@ -905,28 +945,71 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  reviewContent: {
-    paddingHorizontal: 24,
-    paddingVertical: 20,
+  reviewCard: {
+    width: "86%",
+    borderRadius: 20,
+    paddingHorizontal: 20,
+    paddingVertical: 18,
+    backgroundColor: "rgba(15,23,42,0.94)",
+    borderWidth: 1,
+    borderColor: "rgba(248,250,252,0.16)",
+    shadowColor: "#000",
+    shadowOpacity: 0.4,
+    shadowRadius: 20,
+    shadowOffset: { width: 0, height: 14 },
+    elevation: 6,
+  },
+  reviewBadgeRow: {
+    flexDirection: "row",
     alignItems: "center",
+    alignSelf: "flex-start",
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 999,
+    backgroundColor: "rgba(15,23,42,0.9)",
+    borderWidth: 1,
+    borderColor: "rgba(250,204,21,0.4)",
+    marginBottom: 10,
+  },
+  reviewBadgeText: {
+    marginLeft: 6,
+    fontSize: 11,
+    fontWeight: "700",
+    textTransform: "uppercase",
+    letterSpacing: 0.8,
+    color: "#facc15",
   },
   reviewTitle: {
     color: "#f8fafc",
     fontSize: 16,
-    textAlign: "center",
+
+    textAlign: "left",
     fontWeight: "700",
-    marginBottom: 16,
+    marginBottom: 20,
   },
-  reviewButton: {
-    paddingHorizontal: 20,
+
+  reviewPrimaryButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    alignSelf: "stretch",
     paddingVertical: 12,
-    backgroundColor: "rgba(245, 158, 11, 0.9)",
+    paddingHorizontal: 18,
     borderRadius: 999,
+    backgroundColor: "#f59e0b",
+    shadowColor: "#f59e0b",
+    shadowOpacity: 0.55,
+    shadowRadius: 18,
+    shadowOffset: { width: 0, height: 8 },
+    elevation: 5,
   },
-  reviewButtonText: {
+  reviewPrimaryText: {
+    marginLeft: 8,
     color: "#0f172a",
-    fontWeight: "700",
+    fontWeight: "800",
     fontSize: 14,
+    letterSpacing: 0.6,
+    textTransform: "uppercase",
   },
   footer: {
     paddingVertical: 20,
