@@ -7,34 +7,55 @@ import {
   ScrollView,
   StyleSheet,
   Text,
+  TextInput,
   TouchableOpacity,
   View,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { formatDistanceToNow } from "date-fns";
 
 const { height: WINDOW_HEIGHT } = Dimensions.get("window");
-const SHEET_HEIGHT = Math.round(WINDOW_HEIGHT * 0.4);
+const SHEET_HEIGHT = Math.round(WINDOW_HEIGHT * 0.75);
+const EMOJI_ROW = ["❤️", "😍", "🔥", "👏", "😮", "🙏", "👍", "😢", "😂", "🎉"];
 
 const FALLBACK_COMMENTS = [
   {
     id: "placeholder-1",
-    author: { name: "Skylar" },
-    text: "Love the energy in this clip.",
+    author: { name: "northfreshfarm" },
+    text: "My solution is simple: I made a grow kit...",
+    createdAt: Date.now() - 6 * 24 * 60 * 60 * 1000,
+    likesCount: 83,
+    replies: [
+      {
+        id: "placeholder-1-1",
+        author: { name: "ueno_tp" },
+        text: "Oh, he's selling something OK, new here!",
+        createdAt: Date.now() - 5 * 24 * 60 * 60 * 1000,
+        likesCount: 4,
+      },
+    ],
   },
   {
     id: "placeholder-2",
-    author: { name: "Cameron" },
-    text: "Can we get more behind-the-scenes?",
-  },
-  {
-    id: "placeholder-3",
-    author: { name: "Jordan" },
-    text: "Cheering you on—this is inspiring!",
+    author: { name: "ron.marko" },
+    text: "You're awesome. Thank you for doing these, I'm trying...",
+    createdAt: Date.now() - 3 * 24 * 60 * 60 * 1000,
+    likesCount: 15,
   },
 ];
 
-const CommentSheet = ({ visible, onClose, comments = [] }) => {
+const CommentSheet = ({
+  visible,
+  onClose,
+  comments = [],
+  postCaption,
+  postAuthor,
+  postCreatedAt,
+  postId,
+  totalComments = 0,
+}) => {
   const [mounted, setMounted] = useState(visible);
+  const [draftComment, setDraftComment] = useState("");
   const sheetAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
@@ -69,6 +90,85 @@ const CommentSheet = ({ visible, onClose, comments = [] }) => {
 
   const renderComments = comments.length ? comments : FALLBACK_COMMENTS;
 
+  const formattedPostDate = postCreatedAt
+    ? formatDistanceToNow(new Date(postCreatedAt), { addSuffix: true })
+    : null;
+
+  const formatTimestamp = (value) => {
+    if (!value) return "";
+    try {
+      const parsed = Number(value) ? new Date(Number(value)) : new Date(value);
+      if (Number.isNaN(parsed.getTime())) return "";
+      return formatDistanceToNow(parsed, { addSuffix: true });
+    } catch (err) {
+      return "";
+    }
+  };
+
+  const handleEmojiPress = (emoji) => {
+    setDraftComment((prev) => `${prev}${emoji}`);
+  };
+
+  const handleSend = () => {
+    // Wire up to mutation later; keep UX responsive in the meantime
+    setDraftComment("");
+  };
+
+  const renderCommentItem = (comment, level = 0) => {
+    const name =
+      comment?.author?.username || comment?.author?.name || "Anonymous";
+    const dateText = formatTimestamp(comment?.createdAt);
+    const likesLabel = comment?.likesCount ? comment.likesCount : 0;
+    const hasReplies = Array.isArray(comment?.replies) && comment.replies.length;
+
+    return (
+      <View
+        key={comment.id || name}
+        style={[styles.commentBlock, level > 0 && styles.replyIndent]}
+      >
+        <View style={styles.commentRow}>
+          <View style={styles.avatarPlaceholder}>
+            <Ionicons name="person" size={16} color="#fef3c7" />
+          </View>
+
+          <View style={styles.commentBody}>
+            <View style={styles.commentHeaderRow}>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.commentAuthor}>{name}</Text>
+                {dateText ? (
+                  <Text style={styles.commentDate}>{dateText}</Text>
+                ) : null}
+              </View>
+              <View style={styles.likePill}>
+                <Ionicons name="heart-outline" size={14} color="#fef3c7" />
+                <Text style={styles.likeCountText}>{likesLabel}</Text>
+              </View>
+            </View>
+
+            <Text style={styles.commentText}>
+              {comment?.text || comment?.body || "Thanks for sharing!"}
+            </Text>
+
+            <View style={styles.commentActionsRow}>
+              <TouchableOpacity style={styles.replyButton} onPress={() => {}}>
+                <Text style={styles.replyText}>Reply</Text>
+              </TouchableOpacity>
+              {hasReplies ? (
+                <Text style={styles.replyCount}>{`${comment.replies.length} repl${
+                  comment.replies.length === 1 ? "y" : "ies"
+                }`}</Text>
+              ) : null}
+            </View>
+          </View>
+        </View>
+
+        {hasReplies
+          ? comment.replies.map((reply) => renderCommentItem(reply, level + 1))
+          : null}
+      </View>
+    );
+  };
+
   if (!mounted) return null;
 
   return (
@@ -81,13 +181,9 @@ const CommentSheet = ({ visible, onClose, comments = [] }) => {
       <View style={styles.modalContainer}>
         <Pressable style={styles.backdrop} onPress={onClose} />
         <Animated.View style={[styles.sheet, { transform: [{ translateY }] }]}>
+          <View style={styles.dragHandle} />
           <View style={styles.sheetHeader}>
-            <View>
-              <Text style={styles.sheetTitle}>Comments</Text>
-              <Text style={styles.sheetSubtitle}>
-                Share encouragement or ask a question.
-              </Text>
-            </View>
+            <Text style={styles.sheetTitle}>Comments</Text>
             <TouchableOpacity
               onPress={onClose}
               accessibilityRole="button"
@@ -100,49 +196,70 @@ const CommentSheet = ({ visible, onClose, comments = [] }) => {
 
           <ScrollView
             style={styles.commentsList}
-            contentContainerStyle={{ paddingBottom: 16 }}
+            contentContainerStyle={{ paddingBottom: 32 }}
             showsVerticalScrollIndicator={false}
           >
-            {renderComments.map((comment, idx) => (
-              <View
-                key={comment.id || idx}
-                style={[styles.commentRow, idx !== renderComments.length - 1 && styles.commentDivider]}
-              >
-                <View style={styles.avatarPlaceholder}>
-                  <Ionicons name="person" size={16} color="#fef3c7" />
+            <View style={styles.postHeaderCard}>
+              <View style={styles.posterRow}>
+                <View style={styles.avatarPlaceholderLarge}>
+                  <Ionicons name="person" size={18} color="#fef3c7" />
                 </View>
-                <View style={styles.commentBody}>
-                  <Text style={styles.commentAuthor}>
-                    {comment?.author?.name || "Anonymous"}
+                <View style={styles.posterMeta}>
+                  <Text style={styles.posterName}>
+                    {postAuthor?.username || postAuthor?.name || "Unknown"}
                   </Text>
-                  <Text style={styles.commentText}>
-                    {comment?.text || comment?.body || "Thanks for sharing!"}
-                  </Text>
+                  {formattedPostDate ? (
+                    <Text style={styles.posterDate}>{formattedPostDate}</Text>
+                  ) : null}
                 </View>
+                <TouchableOpacity style={styles.followButton}>
+                  <Text style={styles.followText}>Follow</Text>
+                </TouchableOpacity>
               </View>
-            ))}
+              {postCaption ? (
+                <Text style={styles.postCaption}>{postCaption}</Text>
+              ) : null}
+            </View>
+
+            <Text style={styles.commentsCountLabel}>
+              {`${totalComments || renderComments.length} comments`}
+            </Text>
+
+            {renderComments.map((comment) => renderCommentItem(comment))}
           </ScrollView>
 
-          <View style={styles.actionRow}>
-            <TouchableOpacity style={styles.actionButton} onPress={() => {}}>
-              <Ionicons name="bookmark-outline" size={18} color="#fef3c7" />
-              <Text style={styles.actionButtonText}>Save</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.actionButton} onPress={() => {}}>
-              <Ionicons
-                name="share-social-outline"
-                size={18}
-                color="#fef3c7"
-              />
-              <Text style={styles.actionButtonText}>Share</Text>
-            </TouchableOpacity>
+          <View style={styles.emojiRow}>
+            {EMOJI_ROW.map((emoji) => (
+              <TouchableOpacity
+                key={emoji}
+                style={styles.emojiButton}
+                onPress={() => handleEmojiPress(emoji)}
+              >
+                <Text style={styles.emojiText}>{emoji}</Text>
+              </TouchableOpacity>
+            ))}
           </View>
 
-          <TouchableOpacity style={styles.primaryButton} onPress={() => {}}>
-            <Text style={styles.primaryButtonText}>
-              Add a comment (coming soon)
-            </Text>
-          </TouchableOpacity>
+          <View style={styles.composerRow}>
+            <View style={styles.composerInputWrapper}>
+              <TextInput
+                style={styles.composerInput}
+                placeholder="Add a comment"
+                placeholderTextColor="#94a3b8"
+                value={draftComment}
+                onChangeText={setDraftComment}
+                multiline
+              />
+            </View>
+            <TouchableOpacity
+              style={[styles.sendButton, !draftComment.trim() && styles.sendButtonDisabled]}
+              disabled={!draftComment.trim()}
+              onPress={handleSend}
+              accessibilityLabel={`Send comment on post ${postId || ""}`}
+            >
+              <Ionicons name="send" size={18} color="#0b1224" />
+            </TouchableOpacity>
+          </View>
         </Animated.View>
       </View>
     </Modal>
@@ -166,8 +283,8 @@ const styles = StyleSheet.create({
     bottom: 0,
     height: SHEET_HEIGHT,
     paddingHorizontal: 20,
-    paddingTop: 20,
-    paddingBottom: 24,
+    paddingTop: 12,
+    paddingBottom: 18,
     backgroundColor: "#0f172a",
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
@@ -179,33 +296,103 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: -4 },
     elevation: 6,
   },
+  dragHandle: {
+    width: 46,
+    height: 5,
+    borderRadius: 999,
+    alignSelf: "center",
+    backgroundColor: "rgba(148,163,184,0.5)",
+    marginBottom: 10,
+  },
   sheetHeader: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    marginBottom: 14,
+    marginBottom: 10,
   },
   sheetTitle: {
     color: "#e5e7eb",
-    fontSize: 16,
-    fontWeight: "700",
-    marginBottom: 4,
-  },
-  sheetSubtitle: {
-    color: "#9ca3af",
-    fontSize: 13,
+    fontSize: 18,
+    fontWeight: "800",
   },
   commentsList: {
     flex: 1,
   },
+  postHeaderCard: {
+    backgroundColor: "rgba(30,41,59,0.75)",
+    borderRadius: 14,
+    padding: 12,
+    borderWidth: 1,
+    borderColor: "rgba(148,163,184,0.35)",
+    marginBottom: 12,
+  },
+  posterRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 8,
+  },
+  avatarPlaceholderLarge: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: "rgba(245,158,11,0.15)",
+    alignItems: "center",
+    justifyContent: "center",
+    marginRight: 12,
+    borderWidth: 1,
+    borderColor: "rgba(245,158,11,0.35)",
+  },
+  posterMeta: {
+    flex: 1,
+  },
+  posterName: {
+    color: "#fef3c7",
+    fontWeight: "800",
+    fontSize: 15,
+  },
+  posterDate: {
+    color: "#94a3b8",
+    fontSize: 13,
+    marginTop: 2,
+  },
+  followButton: {
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 12,
+    backgroundColor: "rgba(14,165,233,0.2)",
+    borderWidth: 1,
+    borderColor: "#38bdf8",
+  },
+  followText: {
+    color: "#e0f2fe",
+    fontWeight: "700",
+    fontSize: 13,
+  },
+  postCaption: {
+    color: "#e2e8f0",
+    fontSize: 14,
+    lineHeight: 20,
+  },
+  commentsCountLabel: {
+    color: "#fef3c7",
+    fontWeight: "700",
+    fontSize: 14,
+    marginBottom: 8,
+  },
+  commentBlock: {
+    paddingVertical: 10,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: "rgba(148,163,184,0.35)",
+  },
+  replyIndent: {
+    marginLeft: 48,
+    borderBottomWidth: 0,
+    paddingTop: 6,
+  },
   commentRow: {
     flexDirection: "row",
     alignItems: "flex-start",
-    paddingVertical: 10,
-  },
-  commentDivider: {
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: "rgba(148,163,184,0.35)",
+    columnGap: 10,
   },
   avatarPlaceholder: {
     width: 36,
@@ -214,64 +401,109 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(245,158,11,0.15)",
     alignItems: "center",
     justifyContent: "center",
-    marginRight: 12,
     borderWidth: 1,
     borderColor: "rgba(245,158,11,0.35)",
   },
   commentBody: {
     flex: 1,
   },
+  commentHeaderRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 6,
+  },
   commentAuthor: {
     color: "#fef3c7",
     fontWeight: "700",
-    marginBottom: 4,
     fontSize: 14,
+  },
+  commentDate: {
+    color: "#94a3b8",
+    fontSize: 12,
+    marginTop: 2,
+  },
+  likePill: {
+    flexDirection: "row",
+    alignItems: "center",
+    columnGap: 6,
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    backgroundColor: "rgba(148,163,184,0.25)",
+    borderRadius: 999,
+  },
+  likeCountText: {
+    color: "#fef3c7",
+    fontWeight: "700",
+    fontSize: 13,
   },
   commentText: {
     color: "#e5e7eb",
     fontSize: 14,
     lineHeight: 20,
   },
-  actionRow: {
+  commentActionsRow: {
     flexDirection: "row",
-    justifyContent: "space-between",
+    alignItems: "center",
+    marginTop: 6,
     columnGap: 12,
+  },
+  replyButton: {
+    paddingVertical: 6,
+    paddingHorizontal: 8,
+  },
+  replyText: {
+    color: "#38bdf8",
+    fontWeight: "700",
+    fontSize: 13,
+  },
+  replyCount: {
+    color: "#94a3b8",
+    fontSize: 12,
+  },
+  emojiRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingVertical: 10,
+    paddingHorizontal: 6,
+    borderTopWidth: StyleSheet.hairlineWidth,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderColor: "rgba(148,163,184,0.35)",
+    marginBottom: 10,
+  },
+  emojiButton: {
+    paddingHorizontal: 6,
+  },
+  emojiText: {
+    fontSize: 20,
+  },
+  composerRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    columnGap: 10,
     marginTop: 4,
   },
-  actionButton: {
+  composerInputWrapper: {
     flex: 1,
-    paddingVertical: 12,
+    backgroundColor: "rgba(30,41,59,0.85)",
     borderRadius: 12,
     borderWidth: 1,
     borderColor: "rgba(148,163,184,0.35)",
-    backgroundColor: "rgba(30,41,59,0.85)",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    columnGap: 8,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
   },
-  actionButtonText: {
+  composerInput: {
     color: "#fef3c7",
-    fontWeight: "700",
     fontSize: 14,
+    maxHeight: 80,
   },
-  primaryButton: {
-    marginTop: 12,
-    paddingVertical: 14,
-    borderRadius: 14,
-    backgroundColor: "#0ea5e9",
-    alignItems: "center",
-    justifyContent: "center",
-    shadowColor: "#0ea5e9",
-    shadowOpacity: 0.4,
-    shadowRadius: 10,
-    shadowOffset: { width: 0, height: 6 },
-    elevation: 4,
+  sendButton: {
+    backgroundColor: "#38bdf8",
+    borderRadius: 12,
+    padding: 12,
   },
-  primaryButtonText: {
-    color: "#0b1224",
-    fontWeight: "800",
-    fontSize: 15,
+  sendButtonDisabled: {
+    backgroundColor: "rgba(148,163,184,0.5)",
   },
 });
 

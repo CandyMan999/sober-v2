@@ -12,7 +12,7 @@ const LikeSchema = new mongoose.Schema(
     // What this like is attached to (must match GraphQL LikeTarget)
     targetType: {
       type: String,
-      enum: ["QUOTE", "POST"],
+      enum: ["QUOTE", "POST", "COMMENT"],
       required: true,
     },
 

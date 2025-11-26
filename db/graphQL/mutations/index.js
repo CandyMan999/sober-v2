@@ -9,6 +9,7 @@ const { addQuoteResolver } = require("./quote");
 const { sendPostResolver } = require("./sendPost");
 const { sendImagePostResolver } = require("./sendImagePost");
 const { setPostReviewResolver } = require("./review");
+const { creatingPostCommentResolver } = require("./comments");
 
 module.exports = {
   directUploadResolver,
@@ -20,4 +21,5 @@ module.exports = {
   sendPostResolver,
   sendImagePostResolver,
   setPostReviewResolver,
+  creatingPostCommentResolver,
 };

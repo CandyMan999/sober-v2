@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
+import { formatDistanceToNow } from "date-fns";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   Animated,
@@ -315,30 +316,16 @@ const CommunityScreen = () => {
   const formatDate = (dateString) => {
     if (!dateString) return "";
 
-    const parsed = new Date(String(dateString).trim());
-    const now = Date.now();
-    const diffMs = now - parsed.getTime();
+    const timestamp = Number(dateString) || new Date(String(dateString).trim());
+    const parsed = typeof timestamp === "number" ? new Date(timestamp) : timestamp;
 
-    if (Number.isNaN(parsed.getTime()) || diffMs < 0) return "";
+    if (Number.isNaN(parsed?.getTime?.())) return "";
 
-    const diffSeconds = Math.floor(diffMs / 1000);
-    const diffMinutes = Math.floor(diffSeconds / 60);
-    const diffHours = Math.floor(diffMinutes / 60);
-    const diffDays = Math.floor(diffHours / 24);
-    const diffMonths = Math.floor(diffDays / 30);
-    const diffYears = Math.floor(diffDays / 365);
-
-    if (diffSeconds < 60) return "Just now";
-    if (diffMinutes < 60)
-      return `about ${diffMinutes} min${diffMinutes === 1 ? "" : "s"} ago`;
-    if (diffHours < 24)
-      return `about ${diffHours} hour${diffHours === 1 ? "" : "s"} ago`;
-    if (diffDays < 30)
-      return `about ${diffDays} day${diffDays === 1 ? "" : "s"} ago`;
-    if (diffMonths < 12)
-      return `about ${diffMonths} month${diffMonths === 1 ? "" : "s"} ago`;
-
-    return `about ${diffYears} year${diffYears === 1 ? "" : "s"} ago`;
+    try {
+      return `${formatDistanceToNow(parsed, { addSuffix: true })}`;
+    } catch (err) {
+      return "";
+    }
   };
 
   const renderItem = ({ item, index }) => {
@@ -367,6 +354,9 @@ const CommunityScreen = () => {
           likesCount={item.likesCount}
           commentsCount={item.commentsCount}
           comments={item.comments}
+          postId={item.id}
+          postCreatedAt={item.createdAt}
+          postAuthor={item.author}
           avatarUrl={avatarUrl}
           contentStyle={styles.feedContent}
           showSoundToggle={isVideoPost}
@@ -440,6 +430,9 @@ const CommunityScreen = () => {
           likesCount={firstPost.likesCount}
           commentsCount={firstPost.commentsCount}
           comments={firstPost.comments}
+          postId={firstPost.id}
+          postCreatedAt={firstPost.createdAt}
+          postAuthor={firstPost.author}
           avatarUrl={firstPost.author?.profilePicUrl || null}
           meta={firstMetaText}
           contentStyle={styles.feedContent}

@@ -122,6 +122,18 @@ export const GET_ALL_POSTS = `
             profilePicUrl
           }
           createdAt
+          likesCount
+          replies {
+            id
+            text
+            createdAt
+            likesCount
+            author {
+              id
+              username
+              profilePicUrl
+            }
+          }
         }
       }
     }

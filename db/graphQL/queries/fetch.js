@@ -58,7 +58,13 @@ module.exports = {
         })
         .populate({
           path: "comments",
-          populate: { path: "author" },
+          populate: [
+            { path: "author" },
+            {
+              path: "replies",
+              populate: { path: "author" },
+            },
+          ],
         });
 
       const sanitized = posts
