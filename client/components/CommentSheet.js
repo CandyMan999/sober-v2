@@ -192,11 +192,7 @@ const CommentSheet = ({
       }
 
       if (comment.replies?.length) {
-        const updatedReplies = updateCommentById(
-          comment.replies,
-          id,
-          updater
-        );
+        const updatedReplies = updateCommentById(comment.replies, id, updater);
 
         if (updatedReplies !== comment.replies) {
           return { ...comment, replies: updatedReplies };
@@ -213,8 +209,10 @@ const CommentSheet = ({
     return store.current[key];
   };
 
-  const getHeartScale = (commentId) => ensureAnimValue(likeScales, commentId, 1);
-  const getBurstScale = (commentId) => ensureAnimValue(likeBurstScales, commentId, 0);
+  const getHeartScale = (commentId) =>
+    ensureAnimValue(likeScales, commentId, 1);
+  const getBurstScale = (commentId) =>
+    ensureAnimValue(likeBurstScales, commentId, 0);
   const getBurstOpacity = (commentId) =>
     ensureAnimValue(likeBurstOpacities, commentId, 0);
 
@@ -515,10 +513,7 @@ const CommentSheet = ({
 
           <View style={styles.likeColumn}>
             <TouchableOpacity
-              style={[
-                styles.likePill,
-                comment.liked && styles.likePillActive,
-              ]}
+              style={[styles.likePill, comment.liked && styles.likePillActive]}
               onPress={() => handleToggleLike(comment.id)}
             >
               <View style={styles.likeBurstWrapper}>

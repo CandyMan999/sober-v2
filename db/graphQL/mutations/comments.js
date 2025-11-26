@@ -60,6 +60,7 @@ const createCommentForTarget = async ({
   }
 
   const replyToId = replyTo ? new mongoose.Types.ObjectId(replyTo) : null;
+  const isReply = Boolean(replyToId);
 
   const newComment = await Comment.create({
     text: text.trim(),
@@ -89,10 +90,10 @@ const createCommentForTarget = async ({
   const targetOwner = target[targetConfig.ownerPath] || null;
 
   if (
+    !isReply &&
     targetOwner &&
     targetOwner.token &&
-    targetOwner.notificationsEnabled !== false &&
-    String(targetOwner._id) !== String(user._id)
+    targetOwner.notificationsEnabled !== false
   ) {
     const title = `${targetType === "QUOTE" ? "Quote" : "Post"} Comment`;
 
@@ -118,7 +119,7 @@ const createCommentForTarget = async ({
     });
   }
 
-  if (replyToId) {
+  if (isReply) {
     const parent = await Comment.findById(replyToId).populate("author");
 
     if (
@@ -130,7 +131,8 @@ const createCommentForTarget = async ({
       const title = `${actorName} replied to your comment`;
 
       const replyNotificationData = {
-        type: targetType === "QUOTE" ? "quote_comment_reply" : "post_comment_reply",
+        type:
+          targetType === "QUOTE" ? "quote_comment_reply" : "post_comment_reply",
         targetType,
         targetId: String(target._id),
         commentId: String(newComment._id),
