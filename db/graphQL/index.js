@@ -13,6 +13,7 @@ const {
   creatingPostCommentResolver,
   createQuoteCommentResolver,
   toggleLikeResolver,
+  recordPostViewResolver,
 } = require("./mutations/index.js");
 
 const {
@@ -73,6 +74,7 @@ const resolvers = {
     createPostComment: creatingPostCommentResolver,
     createQuoteComment: createQuoteCommentResolver,
     toggleLike: toggleLikeResolver,
+    recordPostView: recordPostViewResolver,
   },
 
   Upload: require("graphql-upload-minimal").GraphQLUpload,
@@ -84,6 +86,7 @@ const resolvers = {
 
   Post: {
     likes: resolveLikes("POST"),
+    viewsCount: (parent) => parent?.video?.viewsCount ?? 0,
   },
 
   Comment: {

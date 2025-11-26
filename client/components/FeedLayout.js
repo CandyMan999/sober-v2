@@ -14,6 +14,7 @@ const FeedLayout = ({
   meta,
   likesCount = 0,
   commentsCount = 0,
+  viewsCount = null,
   comments = [],
   postId,
   postCreatedAt,
@@ -71,6 +72,7 @@ const FeedLayout = ({
       <FloatingActionIcons
         likesCount={likesCount}
         commentsCount={commentsCount}
+        viewsCount={viewsCount}
         onLikePress={onLikePress || (() => {})}
         onCommentPress={handleCommentPress}
         onMorePress={onMorePress || (() => {})}

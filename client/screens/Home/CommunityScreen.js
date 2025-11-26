@@ -20,7 +20,11 @@ import { ResizeMode, Video } from "expo-av";
 import { FeedLayout } from "../../components";
 import { GET_ALL_POSTS } from "../../GraphQL/queries";
 import { useClient } from "../../client";
-import { SET_POST_REVIEW_MUTATION, TOGGLE_LIKE_MUTATION } from "../../GraphQL/mutations";
+import {
+  RECORD_POST_VIEW_MUTATION,
+  SET_POST_REVIEW_MUTATION,
+  TOGGLE_LIKE_MUTATION,
+} from "../../GraphQL/mutations";
 import { getToken } from "../../utils/helpers";
 import Context from "../../context";
 
@@ -51,6 +55,7 @@ const CommunityScreen = () => {
   const [reviewingPostId, setReviewingPostId] = useState(null);
   const [selectedPost, setSelectedPost] = useState(null);
   const [showTutorial, setShowTutorial] = useState(false);
+  const [reviewBypass, setReviewBypass] = useState({});
   const sheetAnim = useRef(new Animated.Value(0)).current;
 
   const isPostLiked = useCallback(
@@ -147,6 +152,7 @@ const CommunityScreen = () => {
 
   const cursorRef = useRef(null);
   const videoRefs = useRef({});
+  const viewedPostsRef = useRef(new Set());
 
   const fetchPosts = useCallback(
     async (append = false, { isRefresh = false } = {}) => {
@@ -258,6 +264,19 @@ const CommunityScreen = () => {
   }, [activeIndex, finishedMap, isFocused]);
 
   useEffect(() => {
+    const currentPost = posts[activeIndex];
+    if (!currentPost) return;
+
+    const type = currentPost.mediaType || "VIDEO";
+    const isVideoPost = type === "VIDEO";
+    const isUnderReview = currentPost.review && !reviewBypass[currentPost.id];
+
+    if (isVideoPost && !isUnderReview) {
+      recordViewForPost(currentPost);
+    }
+  }, [activeIndex, posts, recordViewForPost, reviewBypass]);
+
+  useEffect(() => {
     if (isFocused) return;
 
     // Pause all videos and mute audio when leaving the screen
@@ -301,7 +320,29 @@ const CommunityScreen = () => {
     </View>
   );
 
-  const renderVideo = (item, index) => (
+  const renderReviewOverlay = (item) => (
+    <View style={styles.reviewOverlay} pointerEvents="auto">
+      <BlurView tint="dark" intensity={50} style={StyleSheet.absoluteFillObject} />
+      <View style={styles.reviewContent}>
+        <Text style={styles.reviewTitle}>
+          This Post May Contain Inappropriate Content and Is Under Review
+        </Text>
+        <TouchableOpacity
+          style={styles.reviewButton}
+          onPress={() =>
+            setReviewBypass((prev) => ({
+              ...prev,
+              [item.id]: true,
+            }))
+          }
+        >
+          <Text style={styles.reviewButtonText}>View Anyways</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
+
+  const renderVideo = (item, index, isUnderReview) => (
     <Pressable style={styles.videoWrapper} onPress={() => setIsMuted(true)}>
       <Video
         ref={(ref) => {
@@ -312,7 +353,9 @@ const CommunityScreen = () => {
         source={{ uri: item.video?.url }}
         style={styles.video}
         resizeMode={ResizeMode.COVER}
-        shouldPlay={isFocused && activeIndex === index && !finishedMap[index]}
+        shouldPlay={
+          isFocused && activeIndex === index && !finishedMap[index] && !isUnderReview
+        }
         isLooping={false}
         isMuted={isMuted}
         onPlaybackStatusUpdate={(status) => handlePlaybackStatus(index, status)}
@@ -339,24 +382,33 @@ const CommunityScreen = () => {
 
   const renderMedia = (item, index) => {
     const type = item.mediaType || "VIDEO";
-    if (type === "IMAGE") {
-      return renderImage(item);
-    }
+    const isUnderReview = item.review && !reviewBypass[item.id];
 
-    return renderVideo(item, index);
+    const mediaContent =
+      type === "IMAGE" ? renderImage(item) : renderVideo(item, index, isUnderReview);
+
+    return (
+      <View style={styles.mediaContainer}>
+        {mediaContent}
+        {isUnderReview ? renderReviewOverlay(item) : null}
+      </View>
+    );
   };
 
   const handleReviewPress = async (postId, currentReviewState) => {
-    if (reviewingPostId) return;
+    if (reviewingPostId || currentReviewState) {
+      closeMoreSheet();
+      return;
+    }
 
     setReviewingPostId(postId);
     try {
       const data = await client.request(SET_POST_REVIEW_MUTATION, {
         postId,
-        review: !currentReviewState,
+        review: true,
       });
 
-      const updatedReview = data?.setPostReview?.review ?? !currentReviewState;
+      const updatedReview = data?.setPostReview?.review ?? true;
 
       setPosts((prev) =>
         prev.map((post) =>
@@ -405,6 +457,56 @@ const CommunityScreen = () => {
       )
     );
   }, []);
+
+  const getViewsCount = useCallback((post) => {
+    if (!post) return 0;
+    if (typeof post.viewsCount === "number") return post.viewsCount;
+    return post.video?.viewsCount ?? 0;
+  }, []);
+
+  const recordViewForPost = useCallback(
+    async (post) => {
+      if (!post?.id) return;
+      if (viewedPostsRef.current.has(post.id)) return;
+
+      const isUnderReview = post.review && !reviewBypass[post.id];
+      if (isUnderReview) return;
+
+      const token = await getToken();
+      if (!token) return;
+
+      try {
+        const data = await client.request(RECORD_POST_VIEW_MUTATION, {
+          token,
+          postId: post.id,
+        });
+
+        viewedPostsRef.current.add(post.id);
+        const updatedPost = data?.recordPostView;
+        if (updatedPost) {
+          setPosts((prev) =>
+            prev.map((p) =>
+              p.id === post.id
+                ? {
+                    ...p,
+                    video: updatedPost.video ?? p.video,
+                    viewsCount:
+                      updatedPost.viewsCount ??
+                      updatedPost.video?.viewsCount ??
+                      p.viewsCount ??
+                      p.video?.viewsCount ??
+                      0,
+                  }
+                : p
+            )
+          );
+        }
+      } catch (err) {
+        console.error("Error recording post view", err);
+      }
+    },
+    [client, reviewBypass]
+  );
 
   useEffect(() => {
     if (!selectedPost) return;
@@ -467,12 +569,13 @@ const CommunityScreen = () => {
       <View style={{ height: containerHeight || 0 }}>
         <FeedLayout
           caption={captionText}
-          captionStyle={captionStyle}
-          meta={metaText}
-          likesCount={item.likesCount}
-          commentsCount={item.commentsCount}
-          comments={item.comments}
-          postId={item.id}
+        captionStyle={captionStyle}
+        meta={metaText}
+        likesCount={item.likesCount}
+        commentsCount={item.commentsCount}
+        viewsCount={getViewsCount(item)}
+        comments={item.comments}
+        postId={item.id}
           postCreatedAt={item.createdAt}
           postAuthor={item.author}
           avatarUrl={avatarUrl}
@@ -550,6 +653,7 @@ const CommunityScreen = () => {
           captionStyle={firstIsMilestone ? styles.milestoneCaption : undefined}
           likesCount={firstPost.likesCount}
           commentsCount={firstPost.commentsCount}
+          viewsCount={getViewsCount(firstPost)}
           comments={firstPost.comments}
           postId={firstPost.id}
           postCreatedAt={firstPost.createdAt}
@@ -640,7 +744,9 @@ const CommunityScreen = () => {
                 onPress={() =>
                   handleReviewPress(selectedPost.id, selectedPost.review)
                 }
-                disabled={reviewingPostId === selectedPost.id}
+                disabled={
+                  reviewingPostId === selectedPost.id || selectedPost.review
+                }
               >
                 <View style={styles.sheetActionLeft}>
                   <Ionicons
@@ -650,7 +756,7 @@ const CommunityScreen = () => {
                   />
                   <Text style={styles.sheetActionText}>
                     {selectedPost.review
-                      ? "Unmark for review"
+                      ? "Already flagged for review"
                       : "Flag for review"}
                   </Text>
                 </View>
@@ -732,6 +838,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#000",
     overflow: "hidden",
   },
+  mediaContainer: {
+    position: "relative",
+    flex: 1,
+  },
   video: {
     width: "100%",
     height: "100%",
@@ -789,6 +899,34 @@ const styles = StyleSheet.create({
     fontWeight: "800",
     fontSize: 15,
     letterSpacing: 0.4,
+  },
+  reviewOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  reviewContent: {
+    paddingHorizontal: 24,
+    paddingVertical: 20,
+    alignItems: "center",
+  },
+  reviewTitle: {
+    color: "#f8fafc",
+    fontSize: 16,
+    textAlign: "center",
+    fontWeight: "700",
+    marginBottom: 16,
+  },
+  reviewButton: {
+    paddingHorizontal: 20,
+    paddingVertical: 12,
+    backgroundColor: "rgba(245, 158, 11, 0.9)",
+    borderRadius: 999,
+  },
+  reviewButtonText: {
+    color: "#0f172a",
+    fontWeight: "700",
+    fontSize: 14,
   },
   footer: {
     paddingVertical: 20,

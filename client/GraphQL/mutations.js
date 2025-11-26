@@ -203,4 +203,17 @@ export const TOGGLE_LIKE_MUTATION = gql`
   }
 `;
 
+export const RECORD_POST_VIEW_MUTATION = gql`
+  mutation RecordPostView($token: String!, $postId: ID!) {
+    recordPostView(token: $token, postId: $postId) {
+      id
+      viewsCount
+      video {
+        id
+        viewsCount
+      }
+    }
+  }
+`;
+
 export { CREATE_POST_COMMENT, CREATE_QUOTE_COMMENT } from "./mutations/comments";
