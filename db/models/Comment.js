@@ -42,6 +42,12 @@ const CommentSchema = new mongoose.Schema(
         ref: "Comment",
       },
     ],
+
+    // lightweight like counter (actual Like docs stored separately)
+    likesCount: {
+      type: Number,
+      default: 0,
+    },
   },
   {
     timestamps: true, // createdAt + updatedAt

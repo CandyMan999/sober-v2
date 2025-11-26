@@ -45,6 +45,7 @@ const typeDefs = gql`
   enum LikeTarget {
     QUOTE
     POST
+    COMMENT
   }
 
   enum PictureSlot {
@@ -141,6 +142,8 @@ const typeDefs = gql`
     text: String!
     createdAt: String
     author: User!
+    likesCount: Int!
+    likes: [Like!]!
     replyTo: Comment
     replies: [Comment!]
     targetType: CommentTarget!
@@ -243,6 +246,12 @@ const typeDefs = gql`
     sendPost(file: Upload!, senderID: ID!, text: String): Post
     sendImagePost(file: Upload!, senderID: ID!, text: String): Post
     setPostReview(postId: ID!, review: Boolean!): Post!
+    createPostComment(
+      token: String!
+      postId: ID!
+      text: String!
+      replyTo: ID
+    ): Comment!
   }
 `;
 

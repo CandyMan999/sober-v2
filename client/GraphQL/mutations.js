@@ -180,3 +180,5 @@ export const SET_POST_REVIEW_MUTATION = gql`
     }
   }
 `;
+
+export { CREATE_POST_COMMENT } from "./mutations/comments";

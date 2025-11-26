@@ -14,7 +14,11 @@ const FeedLayout = ({
   likesCount = 0,
   commentsCount = 0,
   comments = [],
+  postId,
+  postCreatedAt,
+  postAuthor,
   avatarUrl,
+  onCommentAdded,
   captionStyle,
   children,
   onLikePress,
@@ -76,6 +80,12 @@ const FeedLayout = ({
         visible={showComments}
         onClose={handleCommentPress}
         comments={comments}
+        postId={postId}
+        postCaption={caption}
+        postAuthor={postAuthor}
+        postCreatedAt={postCreatedAt}
+        totalComments={commentsCount}
+        onCommentAdded={onCommentAdded}
       />
     </View>
   );

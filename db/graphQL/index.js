@@ -10,6 +10,7 @@ const {
   sendPostResolver,
   sendImagePostResolver,
   setPostReviewResolver,
+  creatingPostCommentResolver,
 } = require("./mutations/index.js");
 
 const {
@@ -24,7 +25,7 @@ const {
 } = require("./queries/index.js");
 
 // Import models
-const { Like } = require("../models"); // ensure Like is exported from ../models/index.js
+const { Like, Comment } = require("../models"); // ensure Like is exported from ../models/index.js
 
 const typeDefs = [rootDefs];
 
@@ -67,6 +68,7 @@ const resolvers = {
     sendPost: sendPostResolver,
     sendImagePost: sendImagePostResolver,
     setPostReview: setPostReviewResolver,
+    createPostComment: creatingPostCommentResolver,
   },
 
   Upload: require("graphql-upload-minimal").GraphQLUpload,
@@ -78,6 +80,21 @@ const resolvers = {
 
   Post: {
     likes: resolveLikes("POST"),
+  },
+
+  Comment: {
+    likes: resolveLikes("COMMENT"),
+    likesCount: (parent) => parent?.likesCount ?? 0,
+    replyTo: async (parent) => {
+      if (!parent.replyTo) return null;
+      if (parent.replyTo._id) return parent.replyTo;
+      try {
+        return await Comment.findById(parent.replyTo).populate("author");
+      } catch (err) {
+        console.error("Error resolving comment replyTo", err);
+        return null;
+      }
+    },
   },
 };
 

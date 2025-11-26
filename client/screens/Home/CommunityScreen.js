@@ -295,6 +295,20 @@ const CommunityScreen = () => {
     setIsMuted((prev) => !prev);
   };
 
+  const handleCommentAdded = useCallback((postId, newComment) => {
+    setPosts((prev) =>
+      prev.map((post) =>
+        post.id === postId
+          ? {
+              ...post,
+              commentsCount: (post.commentsCount || 0) + 1,
+              comments: [newComment, ...(post.comments || [])],
+            }
+          : post
+      )
+    );
+  }, []);
+
   useEffect(() => {
     if (!selectedPost) return;
 
@@ -316,29 +330,23 @@ const CommunityScreen = () => {
     if (!dateString) return "";
 
     const parsed = new Date(String(dateString).trim());
-    const now = Date.now();
-    const diffMs = now - parsed.getTime();
 
-    if (Number.isNaN(parsed.getTime()) || diffMs < 0) return "";
+    if (Number.isNaN(parsed?.getTime?.())) {
+      const numericParsed = new Date(Number(dateString));
+      if (Number.isNaN(numericParsed?.getTime?.())) return "";
 
-    const diffSeconds = Math.floor(diffMs / 1000);
-    const diffMinutes = Math.floor(diffSeconds / 60);
-    const diffHours = Math.floor(diffMinutes / 60);
-    const diffDays = Math.floor(diffHours / 24);
-    const diffMonths = Math.floor(diffDays / 30);
-    const diffYears = Math.floor(diffDays / 365);
+      return numericParsed.toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+      });
+    }
 
-    if (diffSeconds < 60) return "Just now";
-    if (diffMinutes < 60)
-      return `about ${diffMinutes} min${diffMinutes === 1 ? "" : "s"} ago`;
-    if (diffHours < 24)
-      return `about ${diffHours} hour${diffHours === 1 ? "" : "s"} ago`;
-    if (diffDays < 30)
-      return `about ${diffDays} day${diffDays === 1 ? "" : "s"} ago`;
-    if (diffMonths < 12)
-      return `about ${diffMonths} month${diffMonths === 1 ? "" : "s"} ago`;
-
-    return `about ${diffYears} year${diffYears === 1 ? "" : "s"} ago`;
+    return parsed.toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    });
   };
 
   const renderItem = ({ item, index }) => {
@@ -367,7 +375,11 @@ const CommunityScreen = () => {
           likesCount={item.likesCount}
           commentsCount={item.commentsCount}
           comments={item.comments}
+          postId={item.id}
+          postCreatedAt={item.createdAt}
+          postAuthor={item.author}
           avatarUrl={avatarUrl}
+          onCommentAdded={(newComment) => handleCommentAdded(item.id, newComment)}
           contentStyle={styles.feedContent}
           showSoundToggle={isVideoPost}
           isMuted={isVideoPost ? isMuted : true}
@@ -440,8 +452,12 @@ const CommunityScreen = () => {
           likesCount={firstPost.likesCount}
           commentsCount={firstPost.commentsCount}
           comments={firstPost.comments}
+          postId={firstPost.id}
+          postCreatedAt={firstPost.createdAt}
+          postAuthor={firstPost.author}
           avatarUrl={firstPost.author?.profilePicUrl || null}
           meta={firstMetaText}
+          onCommentAdded={(newComment) => handleCommentAdded(firstPost.id, newComment)}
           contentStyle={styles.feedContent}
           showSoundToggle={firstIsVideo}
           isMuted={firstIsVideo ? isMuted : true}
