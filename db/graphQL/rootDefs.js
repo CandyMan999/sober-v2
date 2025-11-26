@@ -186,6 +186,7 @@ const typeDefs = gql`
   }
 
   type City {
+    id: ID!
     name: String
     bar: [Venue]
     liquor: [Venue]
