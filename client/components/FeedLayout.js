@@ -77,14 +77,23 @@ const FeedLayout = ({
         )}
       </View>
 
-      {/* Bottom-left: avatar halo + caption/handle */}
+      {/* Bottom-left: avatar + caption + meta */}
       <View style={styles.captionArea}>
-        <View style={styles.userRow}>
-          {avatarUrl ? (
-            <View style={styles.avatarHalo}>
-              <Image source={{ uri: avatarUrl }} style={styles.avatar} />
-            </View>
-          ) : null}
+        <View style={styles.captionCard}>
+          <View style={styles.userRow}>
+            {avatarUrl ? (
+              <View style={styles.avatarHalo}>
+                <Image source={{ uri: avatarUrl }} style={styles.avatar} />
+              </View>
+            ) : null}
+
+            {postAuthor ? (
+              <Text style={styles.username} numberOfLines={1}>
+                {postAuthor?.username || postAuthor?.name || "Unknown"}
+              </Text>
+            ) : null}
+          </View>
+
           {caption ? (
             <View style={styles.captionWrapper}>
               <Text
@@ -103,33 +112,48 @@ const FeedLayout = ({
               ) : null}
             </View>
           ) : null}
-        </View>
-        <View style={styles.metaRow}>
-          {meta ? <Text style={styles.meta}>{meta}</Text> : null}
-          <View style={styles.metaChips}>
-            {cityName ? (
-              <View style={styles.metaChip}>
-                <Ionicons
-                  name="location-outline"
-                  size={14}
-                  color="#f8fafc"
-                  style={styles.metaIcon}
-                />
-                <Text style={styles.metaChipText}>{cityName}</Text>
-              </View>
-            ) : null}
-            {typeof viewsCount === "number" ? (
-              <View style={styles.metaChip}>
-                <Ionicons
-                  name="play-circle"
-                  size={14}
-                  color="#f8fafc"
-                  style={styles.metaIcon}
-                />
-                <Text style={styles.metaChipText}>{formatCount(viewsCount)}</Text>
-              </View>
-            ) : null}
-          </View>
+
+          {(meta || cityName || typeof viewsCount === "number") && (
+            <View style={styles.metaRow}>
+              {meta ? <Text style={styles.meta}>{meta}</Text> : null}
+
+              {cityName ? (
+                <>
+                  {meta ? <Text style={styles.metaDivider}>, </Text> : null}
+                  <View style={styles.metaItem}>
+                    <Ionicons
+                      name="location-outline"
+                      size={14}
+                      color="#38bdf8"
+                      style={styles.metaInlineIcon}
+                    />
+                    <Text style={[styles.meta, styles.metaEmphasis]}>
+                      {cityName}
+                    </Text>
+                  </View>
+                </>
+              ) : null}
+
+              {typeof viewsCount === "number" ? (
+                <>
+                  {(meta || cityName) ? (
+                    <Text style={styles.metaDivider}>, </Text>
+                  ) : null}
+                  <View style={styles.metaItem}>
+                    <Ionicons
+                      name="eye-outline"
+                      size={14}
+                      color="#38bdf8"
+                      style={styles.metaInlineIcon}
+                    />
+                    <Text style={[styles.meta, styles.metaEmphasis]}>
+                      {`${formatCount(viewsCount)} views`}
+                    </Text>
+                  </View>
+                </>
+              ) : null}
+            </View>
+          )}
         </View>
       </View>
 
@@ -192,13 +216,17 @@ const styles = StyleSheet.create({
   },
   captionArea: {
     position: "absolute",
-    bottom: 32,
+    bottom: 18,
     left: 16,
     right: 120,
+  },
+  captionCard: {
+    gap: 6,
   },
   userRow: {
     flexDirection: "row",
     alignItems: "center",
+    columnGap: 10,
   },
   captionWrapper: {
     flexShrink: 1,
@@ -225,6 +253,12 @@ const styles = StyleSheet.create({
     borderColor: ACCENT,
     backgroundColor: "#111827",
   },
+  username: {
+    color: "#e2e8f0",
+    fontWeight: "800",
+    fontSize: 15,
+    maxWidth: "75%",
+  },
   caption: {
     color: "#e5e7eb",
     fontSize: 14,
@@ -239,38 +273,29 @@ const styles = StyleSheet.create({
   metaRow: {
     flexDirection: "row",
     alignItems: "center",
-    columnGap: 8,
-    marginTop: 6,
+    flexWrap: "wrap",
+    columnGap: 4,
   },
   meta: {
-    color: "#9ca3af",
+    color: "#cbd5e1",
     fontSize: 13,
-    marginTop: 4,
-    flex: 1,
-  },
-  metaChips: {
-    flexDirection: "row",
-    alignItems: "center",
-    columnGap: 8,
     flexShrink: 0,
   },
-  metaChip: {
+  metaItem: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "rgba(15,23,42,0.7)",
-    borderRadius: 999,
-    paddingHorizontal: 10,
-    paddingVertical: 6,
-    borderWidth: 1,
-    borderColor: "rgba(248,180,0,0.5)",
   },
-  metaChipText: {
-    color: "#f8fafc",
-    fontSize: 12,
+  metaInlineIcon: {
+    marginRight: 4,
+  },
+  metaDivider: {
+    color: "#38bdf8",
     fontWeight: "700",
+    marginHorizontal: 2,
   },
-  metaIcon: {
-    marginRight: 6,
+  metaEmphasis: {
+    color: "#e5e7eb",
+    fontWeight: "700",
   },
 });
 

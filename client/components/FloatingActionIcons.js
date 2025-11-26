@@ -77,8 +77,7 @@ const FloatingActionIcons = ({
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.pill} onPress={onFilterPress || (() => {})}>
-        <Ionicons name="filter" size={18} color="#fff" />
-        <Text style={styles.countText}>Filter</Text>
+        <Ionicons name="options-outline" size={20} color="#fff" />
       </TouchableOpacity>
 
       {/* ❤️ Like */}

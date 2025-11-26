@@ -633,24 +633,33 @@ const CommentSheet = ({
                 </TouchableOpacity>
               </View>
 
-              {postCityName ? (
-                <View style={styles.locationPill}>
-                  <Ionicons
-                    name="location-outline"
-                    size={14}
-                    color="#f8fafc"
-                    style={styles.locationIcon}
-                  />
-                  <Text style={styles.locationText}>{postCityName}</Text>
-                </View>
-              ) : null}
-
               {postCaption ? (
                 <Text style={styles.postCaption}>{postCaption}</Text>
               ) : null}
 
-              {formattedPostDate ? (
-                <Text style={styles.posterDate}>{formattedPostDate}</Text>
+              {formattedPostDate || postCityName ? (
+                <View style={styles.posterMetaRow}>
+                  {formattedPostDate ? (
+                    <Text style={styles.posterDate}>{formattedPostDate}</Text>
+                  ) : null}
+
+                  {postCityName ? (
+                    <>
+                      {formattedPostDate ? (
+                        <Text style={styles.posterMetaDivider}>, </Text>
+                      ) : null}
+                      <View style={styles.posterLocationRow}>
+                        <Ionicons
+                          name="location-outline"
+                          size={14}
+                          color="#38bdf8"
+                          style={styles.posterLocationIcon}
+                        />
+                        <Text style={styles.posterLocationText}>{postCityName}</Text>
+                      </View>
+                    </>
+                  ) : null}
+                </View>
               ) : null}
             </View>
 
@@ -850,23 +859,26 @@ const styles = StyleSheet.create({
     flex: 1,
     marginHorizontal: 8,
   },
-  locationPill: {
-    alignSelf: "flex-start",
+  posterMetaRow: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "rgba(15,23,42,0.85)",
-    borderRadius: 999,
-    paddingHorizontal: 10,
-    paddingVertical: 6,
-    borderWidth: 1,
-    borderColor: "rgba(236,72,153,0.5)",
-    marginTop: 10,
+    flexWrap: "wrap",
+    marginTop: 6,
   },
-  locationIcon: {
-    marginRight: 6,
+  posterMetaDivider: {
+    color: "#38bdf8",
+    fontWeight: "700",
   },
-  locationText: {
-    color: "#f8fafc",
+  posterLocationRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: 2,
+  },
+  posterLocationIcon: {
+    marginRight: 4,
+  },
+  posterLocationText: {
+    color: "#38bdf8",
     fontWeight: "700",
     letterSpacing: 0.2,
   },
