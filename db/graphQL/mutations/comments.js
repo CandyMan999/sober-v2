@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const { AuthenticationError, UserInputError } = require("apollo-server-express");
-const { Comment, Post, User } = require("../../models");
+const { Comment, Post, Quote, User } = require("../../models");
 const { sendPushNotifications } = require("../../utils/pushNotifications");
 
 const buildRepliesPopulate = (depth = 1) => {
@@ -31,9 +31,17 @@ const creatingPostCommentResolver = async (_, args) => {
     throw new AuthenticationError("Invalid token");
   }
 
-  const post = await Post.findById(postId).populate("author");
-  if (!post) {
-    throw new UserInputError("Post not found");
+  let targetType = "POST";
+  let target = await Post.findById(postId).populate("author");
+
+  // Allow quotes to use the same mutation while we add a dedicated one later
+  if (!target) {
+    target = await Quote.findById(postId).populate("user");
+    targetType = target ? "QUOTE" : targetType;
+  }
+
+  if (!target) {
+    throw new UserInputError("Post or quote not found");
   }
 
   const replyToId = replyTo ? new mongoose.Types.ObjectId(replyTo) : null;
@@ -41,8 +49,8 @@ const creatingPostCommentResolver = async (_, args) => {
   const newComment = await Comment.create({
     text: text.trim(),
     author: user._id,
-    targetType: "POST",
-    targetId: post._id,
+    targetType,
+    targetId: target._id,
     replyTo: replyToId,
   });
 
@@ -54,9 +62,15 @@ const creatingPostCommentResolver = async (_, args) => {
     }
   }
 
-  post.comments.push(newComment._id);
-  post.commentsCount = (post.commentsCount || 0) + 1;
-  await post.save();
+  if (targetType === "POST") {
+    target.comments.push(newComment._id);
+    target.commentsCount = (target.commentsCount || 0) + 1;
+    await target.save();
+  } else if (targetType === "QUOTE") {
+    target.comments.push(newComment._id);
+    target.commentsCount = (target.commentsCount || 0) + 1;
+    await target.save();
+  }
 
   await newComment.populate(buildRepliesPopulate(0));
 
@@ -64,22 +78,34 @@ const creatingPostCommentResolver = async (_, args) => {
   const actorName = user.username || "Someone";
   const trimmedBody = text.trim();
 
+  const targetOwner =
+    targetType === "POST" ? target.author : target?.user ?? null;
+
   if (
-    post.author &&
-    post.author.token &&
-    post.author.notificationsEnabled !== false &&
-    String(post.author._id) !== String(user._id)
+    targetOwner &&
+    targetOwner.token &&
+    targetOwner.notificationsEnabled !== false &&
+    String(targetOwner._id) !== String(user._id)
   ) {
-    const title = `${actorName} commented on your post`;
+    const title = `${actorName} commented on your ${
+      targetType === "QUOTE" ? "quote" : "post"
+    }`;
+
+    const ownerNotificationData = {
+      type: targetType === "QUOTE" ? "quote_comment" : "post_comment",
+      targetType,
+      targetId: String(target._id),
+      commentId: String(newComment._id),
+    };
+
+    if (targetType === "POST") ownerNotificationData.postId = String(target._id);
+    if (targetType === "QUOTE") ownerNotificationData.quoteId = String(target._id);
+
     notifications.push({
-      pushToken: post.author.token,
+      pushToken: targetOwner.token,
       title,
       body: trimmedBody,
-      data: {
-        type: "post_comment",
-        postId: String(post._id),
-        commentId: String(newComment._id),
-      },
+      data: ownerNotificationData,
     });
   }
 
@@ -93,16 +119,23 @@ const creatingPostCommentResolver = async (_, args) => {
       String(parent.author._id) !== String(user._id)
     ) {
       const title = `${actorName} replied to your comment`;
+
+      const replyNotificationData = {
+        type: "comment_reply",
+        targetType,
+        targetId: String(target._id),
+        commentId: String(newComment._id),
+        parentCommentId: String(parent._id),
+      };
+
+      if (targetType === "POST") replyNotificationData.postId = String(target._id);
+      if (targetType === "QUOTE") replyNotificationData.quoteId = String(target._id);
+
       notifications.push({
         pushToken: parent.author.token,
         title,
         body: trimmedBody,
-        data: {
-          type: "comment_reply",
-          postId: String(post._id),
-          commentId: String(newComment._id),
-          parentCommentId: String(parent._id),
-        },
+        data: replyNotificationData,
       });
     }
   }

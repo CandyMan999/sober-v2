@@ -274,14 +274,16 @@ const CommentSheet = ({
 
           <View style={styles.commentBody}>
             <View style={styles.commentHeaderRow}>
-              <Text style={styles.commentAuthor}>{name}</Text>
-              {replyTargetName ? (
-                <View style={styles.replyTargetRow}>
-                  <Text style={styles.replyArrow}>›</Text>
-                  <Text style={styles.replyTargetName}>{replyTargetName}</Text>
-                </View>
-              ) : null}
-              {dateText ? (
+              <View style={styles.commentHeaderMain}>
+                <Text style={styles.commentAuthor}>{name}</Text>
+                {replyTargetName ? (
+                  <View style={styles.replyTargetRow}>
+                    <Text style={styles.replyArrow}>›</Text>
+                    <Text style={styles.replyTargetName}>{replyTargetName}</Text>
+                  </View>
+                ) : null}
+              </View>
+              {dateText && isTopLevel ? (
                 <Text style={styles.commentDate}>{dateText}</Text>
               ) : null}
             </View>
@@ -291,6 +293,9 @@ const CommentSheet = ({
             ) : null}
 
             <View style={styles.commentActionsRow}>
+              {!isTopLevel && dateText ? (
+                <Text style={styles.commentReplyDate}>{dateText}</Text>
+              ) : null}
               <TouchableOpacity
                 style={styles.replyButton}
                 onPress={() => startReply(comment)}
@@ -703,6 +708,11 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     marginBottom: 2,
   },
+  commentHeaderMain: {
+    flexDirection: "row",
+    alignItems: "center",
+    flexShrink: 1,
+  },
   replyTargetRow: {
     flexDirection: "row",
     alignItems: "center",
@@ -728,6 +738,11 @@ const styles = StyleSheet.create({
   commentDate: {
     color: "#94a3b8",
     fontSize: 11,
+  },
+  commentReplyDate: {
+    color: "#94a3b8",
+    fontSize: 11,
+    marginRight: 6,
   },
   commentText: {
     color: "#e5e7eb",
