@@ -149,6 +149,15 @@ export const GET_ALL_POSTS = `
           url
           flagged
         }
+        likes {
+          id
+          user {
+            id
+            username
+            profilePicUrl
+          }
+          createdAt
+        }
         comments {
           id
           text

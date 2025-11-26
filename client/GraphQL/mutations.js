@@ -181,4 +181,26 @@ export const SET_POST_REVIEW_MUTATION = gql`
   }
 `;
 
+export const TOGGLE_LIKE_MUTATION = gql`
+  mutation ToggleLike($token: String!, $targetType: LikeTarget!, $targetId: ID!) {
+    toggleLike(token: $token, targetType: $targetType, targetId: $targetId) {
+      liked
+      likesCount
+      targetType
+      targetId
+      like {
+        id
+        targetType
+        targetId
+        createdAt
+        user {
+          id
+          username
+          profilePicUrl
+        }
+      }
+    }
+  }
+`;
+
 export { CREATE_POST_COMMENT } from "./mutations/comments";

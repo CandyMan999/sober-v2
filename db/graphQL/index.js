@@ -11,6 +11,7 @@ const {
   sendImagePostResolver,
   setPostReviewResolver,
   creatingPostCommentResolver,
+  toggleLikeResolver,
 } = require("./mutations/index.js");
 
 const {
@@ -69,6 +70,7 @@ const resolvers = {
     sendImagePost: sendImagePostResolver,
     setPostReview: setPostReviewResolver,
     createPostComment: creatingPostCommentResolver,
+    toggleLike: toggleLikeResolver,
   },
 
   Upload: require("graphql-upload-minimal").GraphQLUpload,
