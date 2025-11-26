@@ -18,6 +18,7 @@ const FeedLayout = ({
   postCreatedAt,
   postAuthor,
   avatarUrl,
+  onCommentAdded,
   captionStyle,
   children,
   onLikePress,
@@ -84,6 +85,7 @@ const FeedLayout = ({
         postAuthor={postAuthor}
         postCreatedAt={postCreatedAt}
         totalComments={commentsCount}
+        onCommentAdded={onCommentAdded}
       />
     </View>
   );

@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { formatDistanceToNow } from "date-fns";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   Animated,
@@ -296,6 +295,20 @@ const CommunityScreen = () => {
     setIsMuted((prev) => !prev);
   };
 
+  const handleCommentAdded = useCallback((postId, newComment) => {
+    setPosts((prev) =>
+      prev.map((post) =>
+        post.id === postId
+          ? {
+              ...post,
+              commentsCount: (post.commentsCount || 0) + 1,
+              comments: [newComment, ...(post.comments || [])],
+            }
+          : post
+      )
+    );
+  }, []);
+
   useEffect(() => {
     if (!selectedPost) return;
 
@@ -316,16 +329,24 @@ const CommunityScreen = () => {
   const formatDate = (dateString) => {
     if (!dateString) return "";
 
-    const timestamp = Number(dateString) || new Date(String(dateString).trim());
-    const parsed = typeof timestamp === "number" ? new Date(timestamp) : timestamp;
+    const parsed = new Date(String(dateString).trim());
 
-    if (Number.isNaN(parsed?.getTime?.())) return "";
+    if (Number.isNaN(parsed?.getTime?.())) {
+      const numericParsed = new Date(Number(dateString));
+      if (Number.isNaN(numericParsed?.getTime?.())) return "";
 
-    try {
-      return `${formatDistanceToNow(parsed, { addSuffix: true })}`;
-    } catch (err) {
-      return "";
+      return numericParsed.toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+      });
     }
+
+    return parsed.toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    });
   };
 
   const renderItem = ({ item, index }) => {
@@ -358,6 +379,7 @@ const CommunityScreen = () => {
           postCreatedAt={item.createdAt}
           postAuthor={item.author}
           avatarUrl={avatarUrl}
+          onCommentAdded={(newComment) => handleCommentAdded(item.id, newComment)}
           contentStyle={styles.feedContent}
           showSoundToggle={isVideoPost}
           isMuted={isVideoPost ? isMuted : true}
@@ -435,6 +457,7 @@ const CommunityScreen = () => {
           postAuthor={firstPost.author}
           avatarUrl={firstPost.author?.profilePicUrl || null}
           meta={firstMetaText}
+          onCommentAdded={(newComment) => handleCommentAdded(firstPost.id, newComment)}
           contentStyle={styles.feedContent}
           showSoundToggle={firstIsVideo}
           isMuted={firstIsVideo ? isMuted : true}
