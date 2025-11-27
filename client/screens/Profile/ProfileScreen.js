@@ -27,7 +27,12 @@ const ProfileScreen = ({ navigation }) => {
   const { dispatch } = useContext(Context);
   const client = useClient();
   const layout = useWindowDimensions();
-  const [loading, setLoading] = useState(true);
+  const [loadingSections, setLoadingSections] = useState({
+    profile: true,
+    posts: true,
+    quotes: true,
+    saved: true,
+  });
   const [profileData, setProfileData] = useState(null);
   const [posts, setPosts] = useState([]);
   const [quotes, setQuotes] = useState([]);
@@ -51,7 +56,7 @@ const ProfileScreen = ({ navigation }) => {
       try {
         const token = await getToken();
         if (!token) {
-          setLoading(false);
+          setLoadingSections({ profile: false, posts: false, quotes: false, saved: false });
           return;
         }
 
@@ -70,7 +75,7 @@ const ProfileScreen = ({ navigation }) => {
       } catch (err) {
         console.log("Profile load failed", err);
       } finally {
-        setLoading(false);
+        setLoadingSections({ profile: false, posts: false, quotes: false, saved: false });
       }
     };
 
@@ -166,6 +171,23 @@ const ProfileScreen = ({ navigation }) => {
   };
 
   const renderContent = (tabType) => {
+    const isTabLoading =
+      tabType === "POSTS"
+        ? loadingSections.posts
+        : tabType === "QUOTES"
+        ? loadingSections.quotes
+        : tabType === "SAVED"
+        ? loadingSections.saved
+        : loadingSections.profile;
+
+    if (isTabLoading) {
+      return (
+        <View style={styles.loadingBlock}>
+          <ActivityIndicator size="small" color="#f59e0b" />
+        </View>
+      );
+    }
+
     if (tabType === "DRUNK") {
       return renderDrunkContent();
     }
@@ -286,61 +308,69 @@ const ProfileScreen = ({ navigation }) => {
     </View>
   );
 
-  if (loading) {
-    return (
-      <View style={[styles.container, styles.centerContent]}>
-        <ActivityIndicator size="large" color="#f59e0b" />
-      </View>
-    );
-  }
-
   return (
     <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 48 }}>
       <View style={styles.bodyPadding}>
         <View style={styles.headerRow}>
           <View style={styles.avatarColumn}>
-            {renderAvatar(profileData?.profilePicUrl, ["#fcd34d", "#f97316"])}
-            <View style={styles.usernameRow}>
-              <Text style={styles.avatarLabel}>
-                {profileData?.username || "Your name"}
-              </Text>
-              <TouchableOpacity style={styles.usernameEdit} onPress={navigateToEditProfile}>
-                <Feather name="edit-3" size={14} color="#f59e0b" />
-              </TouchableOpacity>
-            </View>
+            {loadingSections.profile ? (
+              <ActivityIndicator size="small" color="#f59e0b" style={styles.inlineLoader} />
+            ) : (
+              <>
+                {renderAvatar(profileData?.profilePicUrl, ["#fcd34d", "#f97316"])}
+                <View style={styles.usernameRow}>
+                  <Text style={styles.avatarLabel}>
+                    {profileData?.username || "Your name"}
+                  </Text>
+                  <TouchableOpacity style={styles.usernameEdit} onPress={navigateToEditProfile}>
+                    <Feather name="edit-3" size={14} color="#f59e0b" />
+                  </TouchableOpacity>
+                </View>
+              </>
+            )}
           </View>
         </View>
 
         <View style={styles.metricsRow}>
-          <TouchableOpacity style={styles.metric} onPress={() => handleNavigate("Following")}>
-            <Text style={styles.metricValue}>{counts.following}</Text>
-            <Text style={styles.metricLabel}>Following</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.metric} onPress={() => handleNavigate("Followers")}>
-            <Text style={styles.metricValue}>{counts.followers}</Text>
-            <Text style={styles.metricLabel}>Followers</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.metric} onPress={() => handleNavigate("Buddies")}>
-            <Text style={styles.metricValue}>{counts.buddies}</Text>
-            <Text style={styles.metricLabel}>Buddies</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.metric} onPress={() => handleNavigate("Likes")}>
-            <Text style={styles.metricValue}>{counts.likes}</Text>
-            <Text style={styles.metricLabel}>Likes</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.metric} onPress={() => handleNavigate("Notifications")}>
-            <Ionicons name="notifications" size={18} color="#f59e0b" />
-            <Text style={styles.metricLabel}>Alerts</Text>
-          </TouchableOpacity>
+          {loadingSections.profile ? (
+            <ActivityIndicator size="small" color="#f59e0b" style={styles.inlineLoader} />
+          ) : (
+            <>
+              <TouchableOpacity style={styles.metric} onPress={() => handleNavigate("Following")}>
+                <Text style={styles.metricValue}>{counts.following}</Text>
+                <Text style={styles.metricLabel}>Following</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.metric} onPress={() => handleNavigate("Followers")}>
+                <Text style={styles.metricValue}>{counts.followers}</Text>
+                <Text style={styles.metricLabel}>Followers</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.metric} onPress={() => handleNavigate("Buddies")}>
+                <Text style={styles.metricValue}>{counts.buddies}</Text>
+                <Text style={styles.metricLabel}>Buddies</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.metric} onPress={() => handleNavigate("Likes")}>
+                <Text style={styles.metricValue}>{counts.likes}</Text>
+                <Text style={styles.metricLabel}>Likes</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.metric} onPress={() => handleNavigate("Notifications")}>
+                <Ionicons name="notifications" size={18} color="#f59e0b" />
+                <Text style={styles.metricLabel}>Alerts</Text>
+              </TouchableOpacity>
+            </>
+          )}
         </View>
 
         <View style={styles.whyWrapper}>
-          <Text style={styles.whyQuoted}>
-            “
-            {profileData?.whyStatement ||
-              "Share a quick reminder of why you chose sobriety. This helps keep you grounded."}
-            ”
-          </Text>
+          {loadingSections.profile ? (
+            <ActivityIndicator size="small" color="#f59e0b" style={styles.inlineLoader} />
+          ) : (
+            <Text style={styles.whyQuoted}>
+              “
+              {profileData?.whyStatement ||
+                "Share a quick reminder of why you chose sobriety. This helps keep you grounded."}
+              ”
+            </Text>
+          )}
           <TouchableOpacity style={styles.addWhyButton} onPress={() => navigation.navigate("AddWhy")}>
             <Feather name="plus" size={16} color="#0b1220" />
             <Text style={styles.addWhyText}>Add Why</Text>
@@ -512,6 +542,15 @@ const styles = StyleSheet.create({
   scene: {
     flex: 1,
     paddingBottom: 16,
+  },
+  inlineLoader: {
+    paddingVertical: 12,
+    alignSelf: "center",
+  },
+  loadingBlock: {
+    height: 140,
+    alignItems: "center",
+    justifyContent: "center",
   },
   tileWrapper: {
     width: "33.333%",
