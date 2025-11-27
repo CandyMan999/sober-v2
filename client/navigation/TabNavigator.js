@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { TouchableOpacity, View, StyleSheet } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -17,10 +17,23 @@ import SoberTimeScreen from "../screens/Sober/SoberTimeScreen";
 import PostCaptureScreen from "../screens/Post/PostCaptureScreen";
 import ProfileScreen from "../screens/Profile/ProfileScreen";
 import AddQuoteScreen from "../screens/Home/AddQuoteScreen";
+import FollowersScreen from "../screens/Profile/FollowersScreen";
+import FollowingScreen from "../screens/Profile/FollowingScreen";
+import BuddiesScreen from "../screens/Profile/BuddiesScreen";
+import LikesScreen from "../screens/Profile/LikesScreen";
+import NotificationsScreen from "../screens/Profile/NotificationsScreen";
+import NotificationSettingsScreen from "../screens/Profile/NotificationSettingsScreen";
+import EditProfileScreen from "../screens/Profile/EditProfileScreen";
+import AddWhyScreen from "../screens/Profile/AddWhyScreen";
+import Context from "../context";
+import { useClient } from "../client";
+import { getToken } from "../utils/helpers";
+import { PROFILE_OVERVIEW_QUERY, FETCH_ME_QUERY } from "../GraphQL/queries";
 
 const Tab = createBottomTabNavigator();
 const HomeStack = createStackNavigator();
 const ChatStack = createStackNavigator();
+const ProfileStack = createStackNavigator();
 
 const ACTIVE_COLOR = "#F59E0B";
 const INACTIVE_COLOR = "#6b7280";
@@ -35,6 +48,23 @@ const ChatStackScreen = () => (
   <ChatStack.Navigator screenOptions={{ headerShown: false }}>
     <ChatStack.Screen name="ChatRooms" component={ChatTabs} />
   </ChatStack.Navigator>
+);
+
+const ProfileStackScreen = () => (
+  <ProfileStack.Navigator screenOptions={{ headerShown: false }}>
+    <ProfileStack.Screen name="ProfileHome" component={ProfileScreen} />
+    <ProfileStack.Screen name="Followers" component={FollowersScreen} />
+    <ProfileStack.Screen name="Following" component={FollowingScreen} />
+    <ProfileStack.Screen name="Buddies" component={BuddiesScreen} />
+    <ProfileStack.Screen name="Likes" component={LikesScreen} />
+    <ProfileStack.Screen name="Notifications" component={NotificationsScreen} />
+    <ProfileStack.Screen
+      name="NotificationSettings"
+      component={NotificationSettingsScreen}
+    />
+    <ProfileStack.Screen name="EditProfile" component={EditProfileScreen} />
+    <ProfileStack.Screen name="AddWhy" component={AddWhyScreen} />
+  </ProfileStack.Navigator>
 );
 
 const getDeepActiveRoute = (state) => {
@@ -99,6 +129,46 @@ const PlusTabButton = (props) => {
 };
 
 const TabNavigator = () => {
+  const { state, dispatch } = useContext(Context);
+  const client = useClient();
+
+  useEffect(() => {
+    if (state?.profileOverview) return;
+
+    let mounted = true;
+
+    const warmProfile = async () => {
+      try {
+        const token = await getToken();
+        if (!token) return;
+
+        const overviewResponse = await client.request(PROFILE_OVERVIEW_QUERY, {
+          token,
+        });
+        const overview = overviewResponse?.profileOverview;
+        if (overview && mounted) {
+          dispatch({ type: "SET_PROFILE_OVERVIEW", payload: overview });
+          if (overview.user) {
+            dispatch({ type: "SET_USER", payload: overview.user });
+          }
+        }
+
+        const meResponse = await client.request(FETCH_ME_QUERY, { token });
+        if (meResponse?.fetchMe && mounted) {
+          dispatch({ type: "SET_USER", payload: meResponse.fetchMe });
+        }
+      } catch (err) {
+        console.log("Preload profile failed", err);
+      }
+    };
+
+    warmProfile();
+
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
   return (
     <Tab.Navigator
       screenOptions={{
@@ -182,7 +252,7 @@ const TabNavigator = () => {
 
       <Tab.Screen
         name="Profile"
-        component={ProfileScreen}
+        component={ProfileStackScreen}
         options={{
           tabBarLabel: "Profile",
           tabBarIcon: ({ focused, color }) => (

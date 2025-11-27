@@ -29,6 +29,7 @@ module.exports = {
       const user = await User.findOne({ token }).populate([
         "profilePic",
         "drunkPic",
+        "savedPosts",
       ]);
       if (!user) {
         throw new AuthenticationError("User not found");
@@ -204,5 +205,48 @@ module.exports = {
     } catch (err) {
       throw new Error(err.message);
     }
+  },
+
+  profileOverviewResolver: async (_, { token }) => {
+    if (!token) {
+      throw new AuthenticationError("Token is required");
+    }
+
+    const user = await User.findOne({ token }).populate([
+      "profilePic",
+      "drunkPic",
+      "savedPosts",
+    ]);
+
+    if (!user) {
+      throw new AuthenticationError("User not found");
+    }
+
+    const posts = await Post.find({ author: user._id })
+      .sort({ createdAt: -1 })
+      .populate("author")
+      .populate({
+        path: "video",
+        select: "url flagged viewsCount viewers",
+      });
+
+    const savedPosts = await Post.find({ _id: { $in: user.savedPosts || [] } })
+      .sort({ createdAt: -1 })
+      .populate("author")
+      .populate({
+        path: "video",
+        select: "url flagged viewsCount viewers",
+      });
+
+    const quotes = await Quote.find({ user: user._id })
+      .sort({ createdAt: -1 })
+      .populate("user");
+
+    return {
+      user,
+      posts,
+      quotes,
+      savedPosts,
+    };
   },
 };

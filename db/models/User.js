@@ -38,6 +38,12 @@ const UserSchema = new mongoose.Schema(
       type: String,
     },
 
+    // Personal motivation for sobriety
+    whyStatement: {
+      type: String,
+      trim: true,
+    },
+
     // ========= SOBRIETY TRACKING =========
 
     // When the CURRENT sobriety streak started.
@@ -101,6 +107,14 @@ const UserSchema = new mongoose.Schema(
       type: Boolean,
       default: true,
     },
+
+    // Saved posts for quick access
+    savedPosts: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Post",
+      },
+    ],
 
     // For timing pushes at correct local day.
     timezone: {

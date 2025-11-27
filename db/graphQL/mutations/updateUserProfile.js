@@ -5,7 +5,16 @@ const { User } = require("../../models");
 module.exports = {
   updateUserProfileResolver: async (
     _,
-    { token, username, profilePicUrl, sobrietyStartAt, timezone, lat, long }
+    {
+      token,
+      username,
+      profilePicUrl,
+      sobrietyStartAt,
+      timezone,
+      lat,
+      long,
+      whyStatement,
+    }
   ) => {
     try {
       let user = await User.findOne({ token });
@@ -37,6 +46,10 @@ module.exports = {
 
       if (typeof long === "number") {
         user.long = long;
+      }
+
+      if (typeof whyStatement === "string") {
+        user.whyStatement = whyStatement.trim();
       }
 
       await user.save();

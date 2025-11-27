@@ -6,10 +6,17 @@ export const FETCH_ME_QUERY = `
       username
       profilePicUrl
       drunkPicUrl
+      whyStatement
       sobrietyStartAt
       timezone
       lat
       long
+      followersCount
+      followingCount
+      buddiesCount
+      savedPosts {
+        id
+      }
       milestonesNotified
       notificationsEnabled
       streaks{
@@ -30,6 +37,75 @@ export const FETCH_ME_QUERY = `
       }
       createdAt
       updatedAt
+    }
+  }
+`;
+
+export const PROFILE_OVERVIEW_QUERY = `
+  query ProfileOverview($token: String!) {
+    profileOverview(token: $token) {
+      user {
+        id
+        username
+        profilePicUrl
+        drunkPicUrl
+        profilePic {
+          id
+          url
+        }
+        drunkPic {
+          id
+          url
+        }
+        whyStatement
+        followersCount
+        followingCount
+        buddiesCount
+        savedPosts {
+          id
+        }
+      }
+      posts {
+        id
+        text
+        mediaType
+        imageUrl
+        flagged
+        review
+        likesCount
+        commentsCount
+        createdAt
+        video {
+          id
+          url
+          flagged
+          viewsCount
+        }
+      }
+      quotes {
+        id
+        text
+        isApproved
+        isDenied
+        createdAt
+      }
+      savedPosts {
+        id
+        text
+        mediaType
+        imageUrl
+        flagged
+        review
+        likesCount
+        commentsCount
+        createdAt
+        video {
+          id
+          url
+          flagged
+          viewsCount
+        }
+      }
     }
   }
 `;

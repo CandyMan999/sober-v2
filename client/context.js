@@ -6,6 +6,7 @@ const Context = createContext({
     long: null,
   },
   user: null,
+  profileOverview: null,
 });
 
 export default Context;
