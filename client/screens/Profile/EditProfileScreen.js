@@ -38,6 +38,7 @@ const EditProfileScreen = ({ navigation }) => {
             accessibilityLabel="Go back"
           >
             <Feather name="arrow-left" size={20} color="#e5e7eb" />
+            <Text style={styles.backLabel}>Profile</Text>
           </TouchableOpacity>
           <Text style={styles.headerTitle}>Edit profile</Text>
         </View>
@@ -141,7 +142,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#050816",
     paddingHorizontal: 16,
-    paddingTop: 12,
+    paddingTop: 22,
   },
   header: {
     marginBottom: 18,
@@ -151,6 +152,13 @@ const styles = StyleSheet.create({
   backButton: {
     marginRight: 12,
     padding: 4,
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  backLabel: {
+    color: "#e5e7eb",
+    marginLeft: 6,
+    fontWeight: "700",
   },
   headerTitle: {
     color: "#f9fafb",

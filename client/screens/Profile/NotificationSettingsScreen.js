@@ -17,6 +17,7 @@ const NotificationSettingsScreen = ({ navigation }) => {
             accessibilityLabel="Go back"
           >
             <Feather name="arrow-left" size={20} color="#e5e7eb" />
+            <Text style={styles.backLabel}>Profile</Text>
           </TouchableOpacity>
           <Text style={styles.title}>Notification Settings</Text>
         </View>
@@ -67,7 +68,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#050816",
     paddingHorizontal: 20,
-    paddingTop: 12,
+    paddingTop: 22,
   },
   header: {
     flexDirection: "row",
@@ -76,6 +77,13 @@ const styles = StyleSheet.create({
   backButton: {
     marginRight: 12,
     padding: 4,
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  backLabel: {
+    color: "#e5e7eb",
+    marginLeft: 6,
+    fontWeight: "700",
   },
   title: {
     color: "#e5e7eb",

@@ -12,6 +12,8 @@ import {
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Feather, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
+import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import { TabView } from "react-native-tab-view";
 
 import Context from "../../context";
@@ -31,6 +33,7 @@ const ProfileScreen = ({ navigation }) => {
   const [quotes, setQuotes] = useState([]);
   const [savedPosts, setSavedPosts] = useState([]);
   const [tabIndex, setTabIndex] = useState(0);
+  const [tabRefreshing, setTabRefreshing] = useState(false);
 
   const counts = useMemo(() => {
     const likesTotal = posts.reduce((sum, post) => sum + (post?.likesCount || 0), 0);
@@ -74,6 +77,38 @@ const ProfileScreen = ({ navigation }) => {
 
     fetchProfile();
   }, [client, dispatch]);
+
+  useEffect(() => {
+    let isActive = true;
+
+    const refreshTab = async () => {
+      if (!profileData) return;
+      setTabRefreshing(true);
+      try {
+        const token = await getToken();
+        if (!token) return;
+        const data = await client.request(PROFILE_OVERVIEW_QUERY, { token });
+        if (!isActive) return;
+        const overview = data?.profileOverview;
+        setProfileData(overview?.user || null);
+        setPosts(overview?.posts || []);
+        setQuotes(overview?.quotes || []);
+        setSavedPosts(overview?.savedPosts || []);
+      } catch (err) {
+        console.log("Tab refresh failed", err);
+      } finally {
+        if (isActive) {
+          setTabRefreshing(false);
+        }
+      }
+    };
+
+    refreshTab();
+
+    return () => {
+      isActive = false;
+    };
+  }, [tabIndex, client]);
 
   const handleNavigate = (screen) => {
     navigation.navigate(screen);
@@ -127,6 +162,10 @@ const ProfileScreen = ({ navigation }) => {
     return (
       <View style={styles.tileWrapper}>
         <View style={[styles.tile, styles.quoteTile]}>
+          <View style={styles.quoteHeader}>
+            <MaterialCommunityIcons name="format-quote-open" size={16} color="#f59e0b" />
+            <Text style={styles.quoteBadge}>Quote</Text>
+          </View>
           <Text style={styles.quoteText} numberOfLines={3}>
             {item.text}
           </Text>
@@ -206,10 +245,10 @@ const ProfileScreen = ({ navigation }) => {
   };
 
   const routes = [
-    { key: "POSTS", icon: "view-grid" },
+    { key: "POSTS", icon: "images" },
     { key: "QUOTES", icon: "format-quote-close" },
     { key: "SAVED", icon: "bookmark" },
-    { key: "DRUNK", icon: "glass-mug-variant" },
+    { key: "DRUNK", icon: "wine-bottle" },
   ];
 
   const activeTab = routes[tabIndex]?.key;
@@ -239,18 +278,28 @@ const ProfileScreen = ({ navigation }) => {
     <View style={styles.tabBar}>
       {routes.map((route, i) => {
         const focused = tabIndex === i;
+        const color = focused ? "#f59e0b" : "#9ca3af";
+        const icon =
+          route.key === "POSTS" ? (
+            <FontAwesome6 name={route.icon} size={22} color={color} />
+          ) : route.key === "DRUNK" ? (
+            <FontAwesome5 name={route.icon} size={22} color={color} />
+          ) : route.key === "QUOTES" ? (
+            <MaterialCommunityIcons name={route.icon} size={24} color={color} />
+          ) : (
+            <Feather name={route.icon} size={22} color={color} />
+          );
         return (
           <TouchableOpacity
             key={route.key}
             style={styles.tabItem}
-            onPress={() => setTabIndex(i)}
+            onPress={() => {
+              setTabRefreshing(true);
+              setTabIndex(i);
+            }}
             activeOpacity={0.8}
           >
-            <MaterialCommunityIcons
-              name={route.icon}
-              size={24}
-              color={focused ? "#f59e0b" : "#9ca3af"}
-            />
+            {icon}
             <View style={[styles.tabIndicator, focused && styles.tabIndicatorActive]} />
           </TouchableOpacity>
         );
@@ -320,15 +369,28 @@ const ProfileScreen = ({ navigation }) => {
 
       {renderTabBar()}
 
-      <TabView
-        navigationState={{ index: tabIndex, routes }}
-        renderScene={renderScene}
-        onIndexChange={setTabIndex}
-        initialLayout={{ width: layout.width }}
-        renderTabBar={() => null}
-        style={[styles.tabView, { height: gridHeight }]}
-        swipeEnabled
-      />
+      <View style={styles.tabWrapper}>
+        {tabRefreshing && (
+          <View style={styles.tabLoader}>
+            <ActivityIndicator size="small" color="#f59e0b" />
+          </View>
+        )}
+        <TabView
+          navigationState={{ index: tabIndex, routes }}
+          renderScene={renderScene}
+          onIndexChange={setTabIndex}
+          initialLayout={{ width: layout.width }}
+          renderTabBar={() => null}
+          style={[styles.tabView, { height: gridHeight }]}
+          swipeEnabled
+          lazy
+          renderLazyPlaceholder={() => (
+            <View style={styles.lazyPlaceholder}>
+              <ActivityIndicator size="small" color="#f59e0b" />
+            </View>
+          )}
+        />
+      </View>
     </ScrollView>
   );
 };
@@ -338,7 +400,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#050816",
     paddingHorizontal: 16,
-    paddingTop: 36,
+    paddingTop: 52,
   },
   centerContent: {
     justifyContent: "center",
@@ -470,6 +532,25 @@ const styles = StyleSheet.create({
   tabView: {
     marginHorizontal: -16,
   },
+  tabWrapper: {
+    position: "relative",
+  },
+  tabLoader: {
+    position: "absolute",
+    zIndex: 2,
+    top: 0,
+    left: 0,
+    right: 0,
+    height: 4,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  lazyPlaceholder: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#050816",
+  },
   scene: {
     flex: 1,
     paddingBottom: 16,
@@ -524,12 +605,29 @@ const styles = StyleSheet.create({
     padding: 4,
   },
   quoteTile: {
-    padding: 10,
+    padding: 12,
     justifyContent: "space-between",
+    borderWidth: 1,
+    borderColor: "#1f2937",
+    backgroundColor: "#0b1220",
+  },
+  quoteHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 6,
+  },
+  quoteBadge: {
+    color: "#f59e0b",
+    fontWeight: "700",
+    marginLeft: 6,
+    textTransform: "uppercase",
+    letterSpacing: 0.6,
+    fontSize: 11,
   },
   quoteText: {
     color: "#e5e7eb",
-    fontWeight: "600",
+    fontWeight: "700",
+    lineHeight: 18,
   },
   statusPill: {
     flexDirection: "row",
