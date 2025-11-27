@@ -121,6 +121,21 @@ const FeedLayout = ({
     ? "Following"
     : "Follow";
 
+  const followIcon = isBuddy
+    ? "people"
+    : isFollowed
+    ? "checkmark-circle-outline"
+    : "person-add-outline";
+
+  const followTextStyle = [
+    styles.followButtonText,
+    isBuddy
+      ? styles.buddyButtonText
+      : isFollowed
+      ? styles.followingButtonText
+      : null,
+  ];
+
   const handleFollowPress = async () => {
     if (!onToggleFollow || followPending || !canFollow) return;
 
@@ -250,9 +265,23 @@ const FeedLayout = ({
                     onPress={handleFollowPress}
                     disabled={followPending}
                   >
-                    <Text style={styles.followButtonText}>
-                      {followPending ? "..." : followLabel}
-                    </Text>
+                    <View style={styles.followButtonContent}>
+                      <Ionicons
+                        name={followIcon}
+                        size={14}
+                        color={
+                          isBuddy
+                            ? "#0b1222"
+                            : isFollowed
+                            ? "#e2e8f0"
+                            : "#0b1222"
+                        }
+                        style={styles.followButtonIcon}
+                      />
+                      <Text style={followTextStyle}>
+                        {followPending ? "..." : followLabel}
+                      </Text>
+                    </View>
                   </TouchableOpacity>
                 ) : null}
               </>
@@ -373,13 +402,27 @@ const styles = StyleSheet.create({
     borderColor: "#334155",
   },
   buddyButton: {
-    backgroundColor: "#22c55e",
-    borderColor: "#15803d",
+    backgroundColor: "#0ea5e9",
+    borderColor: "#38bdf8",
+  },
+  followButtonContent: {
+    flexDirection: "row",
+    alignItems: "center",
+    columnGap: 6,
+  },
+  followButtonIcon: {
+    marginLeft: -2,
   },
   followButtonText: {
     color: "#0b1222",
     fontWeight: "800",
     fontSize: 12,
+  },
+  followingButtonText: {
+    color: "#e2e8f0",
+  },
+  buddyButtonText: {
+    color: "#0b1222",
   },
   captionWrapper: {
     flexShrink: 1,
