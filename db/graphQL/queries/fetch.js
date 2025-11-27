@@ -92,16 +92,17 @@ module.exports = {
       ];
     }
 
+    const maxDistanceMiles = 50;
+    const earthRadiusMeters = 6_378_137;
+    const maxDistanceMeters = maxDistanceMiles * 1609.34;
+    const maxDistanceRadians = maxDistanceMeters / earthRadiusMeters;
+
     const geoFilter =
       refLat != null && refLong != null
         ? {
             location: {
-              $near: {
-                $geometry: {
-                  type: "Point",
-                  coordinates: [refLong, refLat],
-                },
-                $maxDistance: 50 * 1609.34,
+              $geoWithin: {
+                $centerSphere: [[refLong, refLat], maxDistanceRadians],
               },
             },
           }
@@ -110,12 +111,8 @@ module.exports = {
     const query = { ...baseQuery, ...geoFilter };
 
     try {
-      let postQuery = Post.find(query);
-      if (!geoFilter.location) {
-        postQuery = postQuery.sort({ createdAt: -1 });
-      }
-
-      const posts = await postQuery
+      const posts = await Post.find(query)
+        .sort({ createdAt: -1 })
         .limit(limit + 1)
         .populate("author")
         .populate({
@@ -158,10 +155,10 @@ module.exports = {
 
       const postsWithDistance = sanitized.map((entry) => {
         const hasCoords =
-          referenceCoords.lat !== null &&
-          referenceCoords.long !== null &&
-          entry.post.lat !== null &&
-          entry.post.long !== null;
+          referenceCoords.lat != null &&
+          referenceCoords.long != null &&
+          entry.post.lat != null &&
+          entry.post.long != null;
 
         const distance = hasCoords
           ? getDistanceFromCoords(
