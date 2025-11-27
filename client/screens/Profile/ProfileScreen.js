@@ -33,7 +33,6 @@ const ProfileScreen = ({ navigation }) => {
   const [quotes, setQuotes] = useState([]);
   const [savedPosts, setSavedPosts] = useState([]);
   const [tabIndex, setTabIndex] = useState(0);
-  const [tabRefreshing, setTabRefreshing] = useState(false);
 
   const counts = useMemo(() => {
     const likesTotal = posts.reduce((sum, post) => sum + (post?.likesCount || 0), 0);
@@ -77,38 +76,6 @@ const ProfileScreen = ({ navigation }) => {
 
     fetchProfile();
   }, [client, dispatch]);
-
-  useEffect(() => {
-    let isActive = true;
-
-    const refreshTab = async () => {
-      if (!profileData) return;
-      setTabRefreshing(true);
-      try {
-        const token = await getToken();
-        if (!token) return;
-        const data = await client.request(PROFILE_OVERVIEW_QUERY, { token });
-        if (!isActive) return;
-        const overview = data?.profileOverview;
-        setProfileData(overview?.user || null);
-        setPosts(overview?.posts || []);
-        setQuotes(overview?.quotes || []);
-        setSavedPosts(overview?.savedPosts || []);
-      } catch (err) {
-        console.log("Tab refresh failed", err);
-      } finally {
-        if (isActive) {
-          setTabRefreshing(false);
-        }
-      }
-    };
-
-    refreshTab();
-
-    return () => {
-      isActive = false;
-    };
-  }, [tabIndex, client]);
 
   const handleNavigate = (screen) => {
     navigation.navigate(screen);
@@ -178,17 +145,37 @@ const ProfileScreen = ({ navigation }) => {
     );
   };
 
+  const renderDrunkContent = () => {
+    if (!profileData?.drunkPicUrl) {
+      return (
+        <View style={styles.emptyState}>
+          <Text style={styles.emptyText}>No drunk pic yet</Text>
+        </View>
+      );
+    }
+
+    return (
+      <View style={styles.drunkWrapper}>
+        <LinearGradient colors={["#2563eb", "#60a5fa"]} style={styles.drunkHalo}>
+          <View style={styles.drunkInner}>
+            <Image source={{ uri: profileData.drunkPicUrl }} style={styles.drunkImage} />
+          </View>
+        </LinearGradient>
+      </View>
+    );
+  };
+
   const renderContent = (tabKey) => {
+    if (tabKey === "DRUNK") {
+      return renderDrunkContent();
+    }
+
     const data =
       tabKey === "POSTS"
         ? posts
         : tabKey === "QUOTES"
         ? quotes
-        : tabKey === "SAVED"
-        ? savedPosts
-        : profileData?.drunkPicUrl
-        ? [{ id: "drunk", imageUrl: profileData.drunkPicUrl, mediaType: "IMAGE" }]
-        : [];
+        : savedPosts;
 
     if (!data?.length) {
       const emptyCopy =
@@ -196,9 +183,7 @@ const ProfileScreen = ({ navigation }) => {
           ? "No posts yet"
           : tabKey === "QUOTES"
           ? "No quotes yet"
-          : tabKey === "SAVED"
-          ? "No saved posts yet"
-          : "No drunk pic yet";
+          : "No saved posts yet";
       return (
         <View style={styles.emptyState}>
           <Text style={styles.emptyText}>{emptyCopy}</Text>
@@ -254,16 +239,16 @@ const ProfileScreen = ({ navigation }) => {
   const activeTab = routes[tabIndex]?.key;
 
   const gridHeight = useMemo(() => {
+    if (activeTab === "DRUNK") {
+      return profileData?.drunkPicUrl ? 360 : 180;
+    }
+
     const dataLength =
       activeTab === "POSTS"
         ? posts.length
         : activeTab === "QUOTES"
         ? quotes.length
-        : activeTab === "SAVED"
-        ? savedPosts.length
-        : profileData?.drunkPicUrl
-        ? 1
-        : 0;
+        : savedPosts.length;
 
     if (!dataLength) return 180;
     const rows = Math.ceil(dataLength / 3);
@@ -293,10 +278,7 @@ const ProfileScreen = ({ navigation }) => {
           <TouchableOpacity
             key={route.key}
             style={styles.tabItem}
-            onPress={() => {
-              setTabRefreshing(true);
-              setTabIndex(i);
-            }}
+            onPress={() => setTabIndex(i)}
             activeOpacity={0.8}
           >
             {icon}
@@ -317,64 +299,61 @@ const ProfileScreen = ({ navigation }) => {
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 48 }}>
-      <View style={styles.headerRow}>
-        <View style={styles.avatarColumn}>
-          {renderAvatar(profileData?.profilePicUrl, ["#fcd34d", "#f97316"])}
-          <View style={styles.usernameRow}>
-            <Text style={styles.avatarLabel}>
-              {profileData?.username || "Your name"}
-            </Text>
-            <TouchableOpacity style={styles.usernameEdit} onPress={navigateToEditProfile}>
-              <Feather name="edit-3" size={14} color="#f59e0b" />
-            </TouchableOpacity>
+      <View style={styles.bodyPadding}>
+        <View style={styles.headerRow}>
+          <View style={styles.avatarColumn}>
+            {renderAvatar(profileData?.profilePicUrl, ["#fcd34d", "#f97316"])}
+            <View style={styles.usernameRow}>
+              <Text style={styles.avatarLabel}>
+                {profileData?.username || "Your name"}
+              </Text>
+              <TouchableOpacity style={styles.usernameEdit} onPress={navigateToEditProfile}>
+                <Feather name="edit-3" size={14} color="#f59e0b" />
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
-      </View>
 
-      <View style={styles.metricsRow}>
-        <TouchableOpacity style={styles.metric} onPress={() => handleNavigate("Following")}>
-          <Text style={styles.metricValue}>{counts.following}</Text>
-          <Text style={styles.metricLabel}>Following</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.metric} onPress={() => handleNavigate("Followers")}>
-          <Text style={styles.metricValue}>{counts.followers}</Text>
-          <Text style={styles.metricLabel}>Followers</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.metric} onPress={() => handleNavigate("Buddies")}>
-          <Text style={styles.metricValue}>{counts.buddies}</Text>
-          <Text style={styles.metricLabel}>Buddies</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.metric} onPress={() => handleNavigate("Likes")}>
-          <Text style={styles.metricValue}>{counts.likes}</Text>
-          <Text style={styles.metricLabel}>Likes</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.metric} onPress={() => handleNavigate("Notifications")}>
-          <Ionicons name="notifications" size={18} color="#f59e0b" />
-          <Text style={styles.metricLabel}>Alerts</Text>
-        </TouchableOpacity>
-      </View>
+        <View style={styles.metricsRow}>
+          <TouchableOpacity style={styles.metric} onPress={() => handleNavigate("Following")}>
+            <Text style={styles.metricValue}>{counts.following}</Text>
+            <Text style={styles.metricLabel}>Following</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.metric} onPress={() => handleNavigate("Followers")}>
+            <Text style={styles.metricValue}>{counts.followers}</Text>
+            <Text style={styles.metricLabel}>Followers</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.metric} onPress={() => handleNavigate("Buddies")}>
+            <Text style={styles.metricValue}>{counts.buddies}</Text>
+            <Text style={styles.metricLabel}>Buddies</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.metric} onPress={() => handleNavigate("Likes")}>
+            <Text style={styles.metricValue}>{counts.likes}</Text>
+            <Text style={styles.metricLabel}>Likes</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.metric} onPress={() => handleNavigate("Notifications")}>
+            <Ionicons name="notifications" size={18} color="#f59e0b" />
+            <Text style={styles.metricLabel}>Alerts</Text>
+          </TouchableOpacity>
+        </View>
 
-      <View style={styles.whyWrapper}>
-        <Text style={styles.whyQuoted}>
-          “
-          {profileData?.whyStatement ||
-            "Share a quick reminder of why you chose sobriety. This helps keep you grounded."}
-          ”
-        </Text>
-        <TouchableOpacity style={styles.addWhyButton} onPress={() => navigation.navigate("AddQuote")}>
-          <Feather name="plus" size={16} color="#0b1220" />
-          <Text style={styles.addWhyText}>Add Why</Text>
-        </TouchableOpacity>
+        <View style={styles.whyWrapper}>
+          <Text style={styles.whyQuoted}>
+            “
+            {profileData?.whyStatement ||
+              "Share a quick reminder of why you chose sobriety. This helps keep you grounded."}
+            ”
+          </Text>
+          <TouchableOpacity style={styles.addWhyButton} onPress={() => navigation.navigate("AddWhy")}>
+            <Feather name="plus" size={16} color="#0b1220" />
+            <Text style={styles.addWhyText}>Add Why</Text>
+          </TouchableOpacity>
+        </View>
       </View>
 
       {renderTabBar()}
 
       <View style={styles.tabWrapper}>
-        {tabRefreshing && (
-          <View style={styles.tabLoader}>
-            <ActivityIndicator size="small" color="#f59e0b" />
-          </View>
-        )}
         <TabView
           navigationState={{ index: tabIndex, routes }}
           renderScene={renderScene}
@@ -383,12 +362,7 @@ const ProfileScreen = ({ navigation }) => {
           renderTabBar={() => null}
           style={[styles.tabView, { height: gridHeight }]}
           swipeEnabled
-          lazy
-          renderLazyPlaceholder={() => (
-            <View style={styles.lazyPlaceholder}>
-              <ActivityIndicator size="small" color="#f59e0b" />
-            </View>
-          )}
+          lazy={false}
         />
       </View>
     </ScrollView>
@@ -399,8 +373,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#050816",
+    paddingHorizontal: 0,
+    paddingTop: 64,
+  },
+  bodyPadding: {
     paddingHorizontal: 16,
-    paddingTop: 52,
   },
   centerContent: {
     justifyContent: "center",
@@ -513,7 +490,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     marginTop: 6,
     marginBottom: 6,
-    paddingHorizontal: 6,
+    paddingHorizontal: 16,
   },
   tabItem: {
     flex: 1,
@@ -530,26 +507,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#f59e0b",
   },
   tabView: {
-    marginHorizontal: -16,
+    marginHorizontal: 0,
   },
   tabWrapper: {
     position: "relative",
-  },
-  tabLoader: {
-    position: "absolute",
-    zIndex: 2,
-    top: 0,
-    left: 0,
-    right: 0,
-    height: 4,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  lazyPlaceholder: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "#050816",
   },
   scene: {
     flex: 1,
@@ -648,6 +609,31 @@ const styles = StyleSheet.create({
   },
   emptyText: {
     color: "#9ca3af",
+  },
+  drunkWrapper: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: 12,
+  },
+  drunkHalo: {
+    width: 260,
+    height: 260,
+    borderRadius: 130,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  drunkInner: {
+    width: 230,
+    height: 230,
+    borderRadius: 115,
+    backgroundColor: "#0b1220",
+    padding: 6,
+  },
+  drunkImage: {
+    width: "100%",
+    height: "100%",
+    borderRadius: 115,
   },
 });
 
