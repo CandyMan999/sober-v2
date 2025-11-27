@@ -480,28 +480,11 @@ const CommunityScreen = () => {
   );
 
   const renderFilterStatus = useCallback(() => {
-    const label = activeFilter || "All";
-    const iconName =
-      label === "Nearby"
-        ? "location-outline"
-        : label === "Milestones"
-        ? "ribbon-outline"
-        : label === "Images"
-        ? "image-outline"
-        : "globe-outline";
-
-    const text = label === "All" ? "All posts" : `${label} only`;
+    if (activeFilter) return null;
 
     return (
       <View style={styles.filterStatusBadge} pointerEvents="none">
-        <Ionicons
-          name={iconName}
-          size={14}
-          color="#38bdf8"
-          style={styles.filterStatusIcon}
-        />
-        <Text style={styles.filterStatusText}>{text}</Text>
-        {label === "Nearby" ? <View style={styles.filterLiveDot} /> : null}
+        <Text style={styles.filterStatusText}>All posts</Text>
       </View>
     );
   }, [activeFilter]);
@@ -1000,24 +983,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "rgba(56,189,248,0.6)",
   },
-  filterStatusIcon: {
-    marginRight: 6,
-  },
   filterStatusText: {
     color: "#e2e8f0",
     fontWeight: "700",
     fontSize: 13,
-  },
-  filterLiveDot: {
-    width: 8,
-    height: 8,
-    borderRadius: 999,
-    marginLeft: 8,
-    backgroundColor: "#38bdf8",
-    shadowColor: "#38bdf8",
-    shadowOpacity: 0.7,
-    shadowRadius: 6,
-    shadowOffset: { width: 0, height: 1 },
   },
   emptyText: {
     color: "#fff",

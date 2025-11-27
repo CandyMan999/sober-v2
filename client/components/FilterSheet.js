@@ -160,6 +160,17 @@ const FilterSheet = ({ visible, onClose, activeFilter, onFilterChange }) => {
                   />
                   <Text style={styles.chipSecondaryText}>Newest First</Text>
                 </View>
+
+                {!localFilter ? (
+                  <TouchableOpacity
+                    activeOpacity={0.9}
+                    onPress={() => onFilterChange?.(null)}
+                    style={styles.chipAll}
+                    accessibilityLabel="Show all posts"
+                  >
+                    <Text style={styles.chipAllText}>All posts</Text>
+                  </TouchableOpacity>
+                ) : null}
               </View>
 
               <View style={styles.sectionHeaderRow}>
@@ -355,6 +366,24 @@ const styles = StyleSheet.create({
   },
   chipSecondaryText: {
     color: "#38bdf8",
+    fontSize: 10,
+    fontWeight: "600",
+    textTransform: "uppercase",
+    letterSpacing: 0.7,
+  },
+  chipAll: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: 9,
+    paddingVertical: 3,
+    borderRadius: 999,
+    backgroundColor: "rgba(15,23,42,0.9)",
+    borderWidth: 1,
+    borderColor: "rgba(148,163,184,0.7)",
+    marginLeft: 8,
+  },
+  chipAllText: {
+    color: "#e2e8f0",
     fontSize: 10,
     fontWeight: "600",
     textTransform: "uppercase",
