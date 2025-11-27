@@ -27,6 +27,7 @@ const {
   getVenuesResolver,
   getQuotesResolver,
   getAllPostsResolver,
+  profileOverviewResolver,
 } = require("./queries/index.js");
 
 // Import models
@@ -60,6 +61,7 @@ const resolvers = {
     runPush: runPushResolver,
     getQuotes: getQuotesResolver,
     getAllPosts: getAllPostsResolver,
+    profileOverview: profileOverviewResolver,
   },
 
   Mutation: {

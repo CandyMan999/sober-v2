@@ -17,10 +17,17 @@ import SoberTimeScreen from "../screens/Sober/SoberTimeScreen";
 import PostCaptureScreen from "../screens/Post/PostCaptureScreen";
 import ProfileScreen from "../screens/Profile/ProfileScreen";
 import AddQuoteScreen from "../screens/Home/AddQuoteScreen";
+import FollowersScreen from "../screens/Profile/FollowersScreen";
+import FollowingScreen from "../screens/Profile/FollowingScreen";
+import BuddiesScreen from "../screens/Profile/BuddiesScreen";
+import LikesScreen from "../screens/Profile/LikesScreen";
+import NotificationsScreen from "../screens/Profile/NotificationsScreen";
+import NotificationSettingsScreen from "../screens/Profile/NotificationSettingsScreen";
 
 const Tab = createBottomTabNavigator();
 const HomeStack = createStackNavigator();
 const ChatStack = createStackNavigator();
+const ProfileStack = createStackNavigator();
 
 const ACTIVE_COLOR = "#F59E0B";
 const INACTIVE_COLOR = "#6b7280";
@@ -35,6 +42,24 @@ const ChatStackScreen = () => (
   <ChatStack.Navigator screenOptions={{ headerShown: false }}>
     <ChatStack.Screen name="ChatRooms" component={ChatTabs} />
   </ChatStack.Navigator>
+);
+
+const ProfileStackScreen = () => (
+  <ProfileStack.Navigator screenOptions={{ headerShown: false }}>
+    <ProfileStack.Screen name="ProfileHome" component={ProfileScreen} />
+    <ProfileStack.Screen name="Followers" component={FollowersScreen} />
+    <ProfileStack.Screen name="Following" component={FollowingScreen} />
+    <ProfileStack.Screen name="Buddies" component={BuddiesScreen} />
+    <ProfileStack.Screen name="Likes" component={LikesScreen} />
+    <ProfileStack.Screen
+      name="Notifications"
+      component={NotificationsScreen}
+    />
+    <ProfileStack.Screen
+      name="NotificationSettings"
+      component={NotificationSettingsScreen}
+    />
+  </ProfileStack.Navigator>
 );
 
 const getDeepActiveRoute = (state) => {
@@ -182,7 +207,7 @@ const TabNavigator = () => {
 
       <Tab.Screen
         name="Profile"
-        component={ProfileScreen}
+        component={ProfileStackScreen}
         options={{
           tabBarLabel: "Profile",
           tabBarIcon: ({ focused, color }) => (

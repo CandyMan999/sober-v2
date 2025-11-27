@@ -13,6 +13,11 @@ const QuoteSchema = new mongoose.Schema(
       default: false,
     },
 
+    isDenied: {
+      type: Boolean,
+      default: false,
+    },
+
     isUsed: {
       type: Boolean,
       default: false,

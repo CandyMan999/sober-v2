@@ -10,6 +10,7 @@ export const UPDATE_USER_PROFILE_MUTATION = gql`
     $timezone: String
     $lat: Float
     $long: Float
+    $whyStatement: String
   ) {
     updateUserProfile(
       token: $token
@@ -19,6 +20,7 @@ export const UPDATE_USER_PROFILE_MUTATION = gql`
       timezone: $timezone
       lat: $lat
       long: $long
+      whyStatement: $whyStatement
     ) {
       id
       token
@@ -28,6 +30,7 @@ export const UPDATE_USER_PROFILE_MUTATION = gql`
       timezone
       lat
       long
+      whyStatement
     }
   }
 `;

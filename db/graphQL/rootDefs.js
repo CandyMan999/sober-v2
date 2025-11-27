@@ -13,6 +13,7 @@ const typeDefs = gql`
     profilePicUrl: String
     drunkPic: Picture
     drunkPicUrl: String
+    whyStatement: String
     sobrietyStartAt: String
     lat: Float
     long: Float
@@ -25,6 +26,7 @@ const typeDefs = gql`
     followersCount: Int!
     followingCount: Int!
     buddiesCount: Int!
+    savedPosts: [Post!]!
     isFollowedByViewer: Boolean!
     isBuddyWithViewer: Boolean!
     followers: [User!]!
@@ -45,6 +47,7 @@ const typeDefs = gql`
     id: ID!
     text: String!
     isApproved: Boolean
+    isDenied: Boolean
     user: User
     isUsed: Boolean
     likesCount: Int!
@@ -152,6 +155,13 @@ const typeDefs = gql`
     cursor: String
   }
 
+  type ProfileOverview {
+    user: User!
+    posts: [Post!]!
+    quotes: [Quote!]!
+    savedPosts: [Post!]!
+  }
+
   type Room {
     id: ID!
     name: String
@@ -249,6 +259,7 @@ const typeDefs = gql`
       mediaType: PostMediaType
       isMilestone: Boolean
     ): PostConnection!
+    profileOverview(token: String!): ProfileOverview!
   }
 
   type Mutation {
@@ -260,6 +271,7 @@ const typeDefs = gql`
       timezone: String
       lat: Float
       long: Float
+      whyStatement: String
     ): User!
     resetSobrietyDate(token: String!, newStartAt: String!): User!
     directUpload: DirectUploadImage!
