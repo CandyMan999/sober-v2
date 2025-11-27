@@ -29,12 +29,7 @@ const ProfileScreen = ({ navigation }) => {
   const layout = useWindowDimensions();
   const cachedOverview = state?.profileOverview;
   const hasCachedProfile = Boolean(cachedOverview);
-  const [loadingSections, setLoadingSections] = useState({
-    profile: !hasCachedProfile,
-    posts: !hasCachedProfile,
-    quotes: !hasCachedProfile,
-    saved: !hasCachedProfile,
-  });
+  const [loading, setLoading] = useState(!hasCachedProfile);
   const [profileData, setProfileData] = useState(cachedOverview?.user || null);
   const [posts, setPosts] = useState(cachedOverview?.posts || []);
   const [quotes, setQuotes] = useState(cachedOverview?.quotes || []);
@@ -60,7 +55,7 @@ const ProfileScreen = ({ navigation }) => {
     setPosts(cachedOverview.posts || []);
     setQuotes(cachedOverview.quotes || []);
     setSavedPosts(cachedOverview.savedPosts || []);
-    setLoadingSections({ profile: false, posts: false, quotes: false, saved: false });
+    setLoading(false);
   }, [cachedOverview]);
 
   useEffect(() => {
@@ -68,7 +63,7 @@ const ProfileScreen = ({ navigation }) => {
       try {
         const token = await getToken();
         if (!token) {
-          setLoadingSections({ profile: false, posts: false, quotes: false, saved: false });
+          setLoading(false);
           return;
         }
 
@@ -94,7 +89,7 @@ const ProfileScreen = ({ navigation }) => {
       } catch (err) {
         console.log("Profile load failed", err);
       } finally {
-        setLoadingSections({ profile: false, posts: false, quotes: false, saved: false });
+        setLoading(false);
       }
     };
 
@@ -190,23 +185,6 @@ const ProfileScreen = ({ navigation }) => {
   };
 
   const renderContent = (tabType) => {
-    const isTabLoading =
-      tabType === "POSTS"
-        ? loadingSections.posts
-        : tabType === "QUOTES"
-        ? loadingSections.quotes
-        : tabType === "SAVED"
-        ? loadingSections.saved
-        : loadingSections.profile;
-
-    if (isTabLoading) {
-      return (
-        <View style={styles.loadingBlock}>
-          <ActivityIndicator size="small" color="#f59e0b" />
-        </View>
-      );
-    }
-
     if (tabType === "DRUNK") {
       return renderDrunkContent();
     }
@@ -288,7 +266,7 @@ const ProfileScreen = ({ navigation }) => {
     const savedRows = Math.max(1, Math.ceil(savedPosts.length / 3));
 
     const maxRows = Math.max(postRows, quoteRows, savedRows);
-    return maxRows * 140;
+    return maxRows * 180;
   }, [activeTab, posts.length, quotes.length, savedPosts.length, profileData?.drunkPicUrl]);
 
   const renderScene = ({ route }) => {
@@ -327,69 +305,61 @@ const ProfileScreen = ({ navigation }) => {
     </View>
   );
 
+  if (loading && !profileData) {
+    return (
+      <View style={styles.loadingScreen}>
+        <ActivityIndicator size="large" color="#f59e0b" />
+      </View>
+    );
+  }
+
   return (
     <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 48 }}>
       <View style={styles.bodyPadding}>
         <View style={styles.headerRow}>
           <View style={styles.avatarColumn}>
-            {loadingSections.profile ? (
-              <ActivityIndicator size="small" color="#f59e0b" style={styles.inlineLoader} />
-            ) : (
-              <>
-                {renderAvatar(profileData?.profilePicUrl, ["#fcd34d", "#f97316"])}
-                <View style={styles.usernameRow}>
-                  <Text style={styles.avatarLabel}>
-                    {profileData?.username || "Your name"}
-                  </Text>
-                  <TouchableOpacity style={styles.usernameEdit} onPress={navigateToEditProfile}>
-                    <Feather name="edit-3" size={14} color="#f59e0b" />
-                  </TouchableOpacity>
-                </View>
-              </>
-            )}
+            {renderAvatar(profileData?.profilePicUrl, ["#fcd34d", "#f97316"])}
+            <View style={styles.usernameRow}>
+              <Text style={styles.avatarLabel}>{profileData?.username || "Your name"}</Text>
+              <TouchableOpacity style={styles.usernameEdit} onPress={navigateToEditProfile}>
+                <Feather name="edit-3" size={14} color="#f59e0b" />
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
 
         <View style={styles.metricsRow}>
-          {loadingSections.profile ? (
-            <ActivityIndicator size="small" color="#f59e0b" style={styles.inlineLoader} />
-          ) : (
-            <>
-              <TouchableOpacity style={styles.metric} onPress={() => handleNavigate("Following")}>
-                <Text style={styles.metricValue}>{counts.following}</Text>
-                <Text style={styles.metricLabel}>Following</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.metric} onPress={() => handleNavigate("Followers")}>
-                <Text style={styles.metricValue}>{counts.followers}</Text>
-                <Text style={styles.metricLabel}>Followers</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.metric} onPress={() => handleNavigate("Buddies")}>
-                <Text style={styles.metricValue}>{counts.buddies}</Text>
-                <Text style={styles.metricLabel}>Buddies</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.metric} onPress={() => handleNavigate("Likes")}>
-                <Text style={styles.metricValue}>{counts.likes}</Text>
-                <Text style={styles.metricLabel}>Likes</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.metric} onPress={() => handleNavigate("Notifications")}>
-                <Ionicons name="notifications" size={18} color="#f59e0b" />
-                <Text style={styles.metricLabel}>Alerts</Text>
-              </TouchableOpacity>
-            </>
-          )}
+          <>
+            <TouchableOpacity style={styles.metric} onPress={() => handleNavigate("Following")}>
+              <Text style={styles.metricValue}>{counts.following}</Text>
+              <Text style={styles.metricLabel}>Following</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.metric} onPress={() => handleNavigate("Followers")}>
+              <Text style={styles.metricValue}>{counts.followers}</Text>
+              <Text style={styles.metricLabel}>Followers</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.metric} onPress={() => handleNavigate("Buddies")}>
+              <Text style={styles.metricValue}>{counts.buddies}</Text>
+              <Text style={styles.metricLabel}>Buddies</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.metric} onPress={() => handleNavigate("Likes")}>
+              <Text style={styles.metricValue}>{counts.likes}</Text>
+              <Text style={styles.metricLabel}>Likes</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.metric} onPress={() => handleNavigate("Notifications")}>
+              <Ionicons name="notifications" size={18} color="#f59e0b" />
+              <Text style={styles.metricLabel}>Alerts</Text>
+            </TouchableOpacity>
+          </>
         </View>
 
         <View style={styles.whyWrapper}>
-          {loadingSections.profile ? (
-            <ActivityIndicator size="small" color="#f59e0b" style={styles.inlineLoader} />
-          ) : (
-            <Text style={styles.whyQuoted}>
-              “
-              {profileData?.whyStatement ||
-                "Share a quick reminder of why you chose sobriety. This helps keep you grounded."}
-              ”
-            </Text>
-          )}
+          <Text style={styles.whyQuoted}>
+            “
+            {profileData?.whyStatement ||
+              "Share a quick reminder of why you chose sobriety. This helps keep you grounded."}
+            ”
+          </Text>
           <TouchableOpacity style={styles.addWhyButton} onPress={() => navigation.navigate("AddWhy")}>
             <Feather name="plus" size={16} color="#0b1220" />
             <Text style={styles.addWhyText}>Add Why</Text>
@@ -562,20 +532,17 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingBottom: 16,
   },
-  inlineLoader: {
-    paddingVertical: 12,
-    alignSelf: "center",
-  },
-  loadingBlock: {
-    height: 140,
-    alignItems: "center",
+  loadingScreen: {
+    flex: 1,
     justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#050816",
   },
   tileWrapper: {
     width: "33.333%",
   },
   tile: {
-    height: 140,
+    height: 170,
     overflow: "hidden",
     backgroundColor: "#111827",
   },
@@ -638,12 +605,13 @@ const styles = StyleSheet.create({
     marginLeft: 6,
     textTransform: "uppercase",
     letterSpacing: 0.6,
-    fontSize: 11,
+    fontSize: 10,
   },
   quoteText: {
     color: "#e5e7eb",
-    fontWeight: "700",
-    lineHeight: 18,
+    fontWeight: "600",
+    fontSize: 12,
+    lineHeight: 16,
   },
   statusPill: {
     flexDirection: "row",
@@ -654,7 +622,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   statusText: {
-    fontSize: 12,
+    fontSize: 11,
     fontWeight: "700",
     marginLeft: 4,
   },

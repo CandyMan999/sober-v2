@@ -1,9 +1,17 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { Feather } from "@expo/vector-icons";
 
 const BuddiesScreen = () => {
+  const navigation = useNavigation();
+
   return (
     <View style={styles.container}>
+      <TouchableOpacity style={styles.backRow} onPress={() => navigation.goBack()}>
+        <Feather name="arrow-left" size={18} color="#f59e0b" />
+        <Text style={styles.backText}>Profile</Text>
+      </TouchableOpacity>
       <Text style={styles.title}>Buddies</Text>
       <Text style={styles.subtitle}>
         Your sober buddies will be listed here soon.
@@ -17,6 +25,17 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#050816",
     padding: 24,
+  },
+  backRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 12,
+  },
+  backText: {
+    color: "#f59e0b",
+    fontSize: 14,
+    fontWeight: "700",
+    marginLeft: 6,
   },
   title: {
     color: "#f3f4f6",
