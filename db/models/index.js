@@ -9,4 +9,5 @@ module.exports = {
   City: require("./City"),
   Post: require("./Post"),
   Like: require("./Like"),
+  Connection: require("./Connection"),
 };

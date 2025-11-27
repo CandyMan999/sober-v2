@@ -76,6 +76,19 @@ const UserSchema = new mongoose.Schema(
       },
     ],
 
+    buddiesCount: {
+      type: Number,
+      default: 0,
+    },
+    followersCount: {
+      type: Number,
+      default: 0,
+    },
+    followingCount: {
+      type: Number,
+      default: 0,
+    },
+
     // Which milestones we've already sent push notifications for, e.g. [1, 3, 7, 30]
     milestonesNotified: [
       {

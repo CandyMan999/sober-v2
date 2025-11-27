@@ -22,6 +22,21 @@ const typeDefs = gql`
     timezone: String
     createdAt: String
     updatedAt: String
+    followersCount: Int!
+    followingCount: Int!
+    buddiesCount: Int!
+    followers: [User!]!
+    following: [User!]!
+    buddies: [User!]!
+  }
+
+  type Connection {
+    id: ID!
+    follower: User!
+    followee: User!
+    isBuddy: Boolean!
+    createdAt: String
+    updatedAt: String
   }
 
   type Quote {
