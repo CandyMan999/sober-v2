@@ -164,6 +164,15 @@ const FilterSheet = ({ visible, onClose, activeFilter, onFilterChange }) => {
                   />
                   <Text style={styles.chipSecondaryText}>Newest First</Text>
                 </View>
+                <View style={[styles.chipSecondary, styles.chipSecondaryAlt]}>
+                  <Ionicons
+                    name="sparkles-outline"
+                    size={13}
+                    color="#22c55e"
+                    style={{ marginRight: 4 }}
+                  />
+                  <Text style={styles.chipSecondaryText}>Smart Sort</Text>
+                </View>
               </View>
 
               <View style={styles.sectionHeaderRow}>
@@ -172,7 +181,13 @@ const FilterSheet = ({ visible, onClose, activeFilter, onFilterChange }) => {
                   <Text style={styles.sectionHint}>Tap again to remove filter</Text>
                 </View>
                 {!localFilter ? (
-                  <Animated.View style={[styles.chipAll, { opacity: flashAnim }]}>
+                  <Animated.View
+                    style={[
+                      styles.chipAll,
+                      styles.chipAllFlashing,
+                      { opacity: flashAnim },
+                    ]}
+                  >
                     <TouchableOpacity
                       activeOpacity={0.9}
                       onPress={() => onFilterChange?.(null)}
@@ -347,6 +362,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "rgba(56,189,248,0.8)",
   },
+  chipSecondaryAlt: {
+    marginLeft: 10,
+    borderColor: "rgba(34,197,94,0.7)",
+  },
   chipSecondaryText: {
     color: "#38bdf8",
     fontSize: 10,
@@ -366,6 +385,9 @@ const styles = StyleSheet.create({
     shadowRadius: 12,
     shadowOffset: { width: 0, height: 4 },
     elevation: 10,
+  },
+  chipAllFlashing: {
+    borderColor: "#F59E0B",
   },
   chipAllPressable: {
     flexDirection: "row",

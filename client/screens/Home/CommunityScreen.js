@@ -41,6 +41,16 @@ const { height: WINDOW_HEIGHT } = Dimensions.get("window");
 const PAGE_SIZE = 5;
 const SHEET_HEIGHT = Math.round(WINDOW_HEIGHT * 0.33);
 
+const dedupeById = (list = []) => {
+  const seen = new Set();
+  return list.filter((item) => {
+    const key = item?.id;
+    if (!key || seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+};
+
 const CommunityScreen = () => {
   const client = useClient();
   const isFocused = useIsFocused();
@@ -65,6 +75,7 @@ const CommunityScreen = () => {
   const [showFilterSheet, setShowFilterSheet] = useState(false);
   const [activeFilter, setActiveFilter] = useState(null);
   const sheetAnim = useRef(new Animated.Value(0)).current;
+  const fetchGenerationRef = useRef(0);
 
   const isPostLiked = useCallback(
     (post) => {
@@ -215,6 +226,7 @@ const CommunityScreen = () => {
 
   const fetchPosts = useCallback(
     async (append = false, { isRefresh = false, filterOverride } = {}) => {
+      const requestId = ++fetchGenerationRef.current;
       const nextCursor = append ? cursorRef.current : null;
 
       const filterParams = buildFilterParams(filterOverride);
@@ -253,8 +265,14 @@ const CommunityScreen = () => {
           throw new Error("No posts returned");
         }
 
+        if (requestId !== fetchGenerationRef.current) {
+          return;
+        }
+
         setPosts((prev) =>
-          append ? [...prev, ...(payload.posts || [])] : payload.posts || []
+          append
+            ? dedupeById([...prev, ...(payload.posts || [])])
+            : dedupeById(payload.posts || [])
         );
         const nextCursorValue = payload.cursor || null;
         setCursor(nextCursorValue);
