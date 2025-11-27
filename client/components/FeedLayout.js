@@ -72,18 +72,26 @@ const FeedLayout = ({
   const renderAvatar = () => {
     if (!avatarUrl && !fallbackAvatarSource) return null;
 
+    const gradientColors = avatarUrl
+      ? ["#fed7aa", "#f97316", "#facc15"]
+      : ["#0ea5e9", "#6366f1", "#a855f7"];
+
     const avatarContent = avatarUrl ? (
       <Image source={{ uri: avatarUrl }} style={styles.avatar} />
-    ) : (
+    ) : fallbackAvatarSource ? (
       <Image source={fallbackAvatarSource} style={styles.avatar} />
+    ) : (
+      <View style={[styles.avatar, styles.avatarFallback]}>
+        <Ionicons name="person" size={18} color="#0b1222" />
+      </View>
     );
 
     return (
       <LinearGradient
-        colors={avatarUrl ? ["rgba(245,158,11,0.3)", "rgba(245,158,11,0.65)"] : ["#0ea5e9", "#6366f1", "#a855f7"]}
+        colors={gradientColors}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
-        style={[styles.avatarHalo, avatarUrl ? styles.avatarHaloStandard : styles.avatarHaloGradient]}
+        style={styles.avatarHalo}
       >
         <View style={styles.avatarInner}>{avatarContent}</View>
       </LinearGradient>
@@ -296,44 +304,43 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
   },
-  avatarHaloStandard: {
-    backgroundColor: "transparent",
-  },
-  avatarHaloGradient: {
-    shadowColor: "#38bdf8",
-    shadowOpacity: 0.45,
-    shadowRadius: 14,
-    shadowOffset: { width: 0, height: 6 },
-  },
   captionWrapper: {
     flexShrink: 1,
   },
   avatarHalo: {
-    width: 48,
-    height: 48,
-    borderRadius: 999,
+    width: 44,
+    height: 44,
+    borderRadius: 22,
     alignItems: "center",
     justifyContent: "center",
-    marginRight: 5,
-    padding: 3,
-    shadowColor: ACCENT,
-    shadowOpacity: 0.6,
-    shadowRadius: 12,
+    marginRight: 6,
+    padding: 2,
+    shadowColor: "#0ea5e9",
+    shadowOpacity: 0.5,
+    shadowRadius: 10,
     shadowOffset: { width: 0, height: 4 },
-    elevation: 8,
+    elevation: 6,
   },
   avatarInner: {
-    backgroundColor: "#0b1222",
-    borderRadius: 999,
-    padding: 2,
+    width: "100%",
+    height: "100%",
+    borderRadius: 19,
+    backgroundColor: "#020617",
+    alignItems: "center",
+    justifyContent: "center",
+    overflow: "hidden",
   },
   avatar: {
-    width: 40,
-    height: 40,
-    borderRadius: 999,
-    borderWidth: 2,
-    borderColor: ACCENT,
-    backgroundColor: "#111827",
+    width: 38,
+    height: 38,
+    borderRadius: 19,
+    resizeMode: "cover",
+    backgroundColor: "#0f172a",
+  },
+  avatarFallback: {
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#facc15",
   },
   username: {
     color: "#e2e8f0",
