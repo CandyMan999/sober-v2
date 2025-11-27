@@ -98,7 +98,7 @@ module.exports = {
     const maxDistanceRadians = maxDistanceMeters / earthRadiusMeters;
 
     const geoFilter =
-      refLat != null && refLong != null
+      sortByClosest && refLat != null && refLong != null
         ? {
             location: {
               $geoWithin: {

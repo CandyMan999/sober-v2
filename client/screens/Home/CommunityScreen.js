@@ -183,14 +183,14 @@ const CommunityScreen = () => {
           return {
             isMilestone: true,
             mediaType: null,
-            excludeViewed: false,
+            excludeViewed: true,
             sortByClosest: false,
           };
         case "Images":
           return {
             isMilestone: null,
             mediaType: "IMAGE",
-            excludeViewed: false,
+            excludeViewed: true,
             sortByClosest: false,
           };
         case "Nearby":
@@ -265,6 +265,12 @@ const CommunityScreen = () => {
     [buildFilterParams, client, state?.user?.lat, state?.user?.long]
   );
 
+  const fetchPostsRef = useRef(fetchPosts);
+
+  useEffect(() => {
+    fetchPostsRef.current = fetchPosts;
+  }, [fetchPosts]);
+
   useEffect(() => {
     setHasMore(true);
     setCursor(null);
@@ -272,8 +278,11 @@ const CommunityScreen = () => {
     setPosts([]);
     setError("");
     setLoading(true);
-    fetchPosts(false, { isRefresh: true, filterOverride: activeFilter });
-  }, [activeFilter, fetchPosts]);
+    fetchPostsRef.current(false, {
+      isRefresh: true,
+      filterOverride: activeFilter,
+    });
+  }, [activeFilter]);
 
   useEffect(() => {
     const maybeShowTutorial = async () => {
