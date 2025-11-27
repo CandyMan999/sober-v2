@@ -25,6 +25,8 @@ const FilterSheet = ({ visible, onClose, activeFilter, onFilterChange }) => {
   const [mounted, setMounted] = useState(visible);
   const [localFilter, setLocalFilter] = useState(activeFilter || null);
   const sheetAnim = useRef(new Animated.Value(0)).current;
+  const flashAnim = useRef(new Animated.Value(1)).current;
+  const flashLoopRef = useRef(null);
 
   useEffect(() => {
     if (visible) {
@@ -70,6 +72,37 @@ const FilterSheet = ({ visible, onClose, activeFilter, onFilterChange }) => {
   useEffect(() => {
     setLocalFilter(activeFilter || null);
   }, [activeFilter]);
+
+  useEffect(() => {
+    if (!localFilter) {
+      flashLoopRef.current = Animated.loop(
+        Animated.sequence([
+          Animated.timing(flashAnim, {
+            toValue: 0.55,
+            duration: 750,
+            useNativeDriver: true,
+          }),
+          Animated.timing(flashAnim, {
+            toValue: 1,
+            duration: 750,
+            useNativeDriver: true,
+          }),
+        ])
+      );
+      flashLoopRef.current.start();
+    } else if (flashLoopRef.current) {
+      flashLoopRef.current.stop();
+      flashLoopRef.current = null;
+      flashAnim.setValue(1);
+    }
+
+    return () => {
+      if (flashLoopRef.current) {
+        flashLoopRef.current.stop();
+        flashLoopRef.current = null;
+      }
+    };
+  }, [flashAnim, localFilter]);
 
   const handleFilterPress = (option) => {
     if (option.label === "Friends") return; // not yet supported
@@ -122,15 +155,6 @@ const FilterSheet = ({ visible, onClose, activeFilter, onFilterChange }) => {
               </View>
 
               <View style={styles.chipRow}>
-                <View style={styles.chipPrimary}>
-                  <Ionicons
-                    name="sparkles-outline"
-                    size={13}
-                    color="#F59E0B"
-                    style={{ marginRight: 4 }}
-                  />
-                  <Text style={styles.chipPrimaryText}>Smart Sort</Text>
-                </View>
                 <View style={styles.chipSecondary}>
                   <Ionicons
                     name="time-outline"
@@ -140,33 +164,37 @@ const FilterSheet = ({ visible, onClose, activeFilter, onFilterChange }) => {
                   />
                   <Text style={styles.chipSecondaryText}>Newest First</Text>
                 </View>
-
-                {!localFilter ? (
-                  <TouchableOpacity
-                    activeOpacity={0.9}
-                    onPress={() => onFilterChange?.(null)}
-                    style={styles.chipAll}
-                    accessibilityLabel="Show all posts"
-                  >
-                    <View style={styles.liveBadgeFloating}>
-                      <View style={styles.liveDot} />
-                      <Text style={styles.liveBadgeText}>Live</Text>
-                    </View>
-                    <View style={styles.chipAllContent}>
-                      <Ionicons
-                        name="globe-outline"
-                        size={13}
-                        color="#38bdf8"
-                        style={{ marginRight: 6 }}
-                      />
-                      <Text style={styles.chipAllText}>All posts</Text>
-                    </View>
-                  </TouchableOpacity>
-                ) : null}
               </View>
 
               <View style={styles.sectionHeaderRow}>
-                <Text style={styles.sectionTitle}>Quick Filters</Text>
+                <View style={styles.sectionHeaderTextGroup}>
+                  <Text style={styles.sectionTitle}>Quick Filters</Text>
+                  <Text style={styles.sectionHint}>Tap again to remove filter</Text>
+                </View>
+                {!localFilter ? (
+                  <Animated.View style={[styles.chipAll, { opacity: flashAnim }]}>
+                    <TouchableOpacity
+                      activeOpacity={0.9}
+                      onPress={() => onFilterChange?.(null)}
+                      style={styles.chipAllPressable}
+                      accessibilityLabel="Show all posts"
+                    >
+                      <View style={styles.liveBadgeFloating}>
+                        <View style={styles.liveDot} />
+                        <Text style={styles.liveBadgeText}>Live</Text>
+                      </View>
+                      <View style={styles.chipAllContent}>
+                        <Ionicons
+                          name="globe-outline"
+                          size={16}
+                          color="#38bdf8"
+                          style={{ marginRight: 8 }}
+                        />
+                        <Text style={styles.chipAllText}>All posts</Text>
+                      </View>
+                    </TouchableOpacity>
+                  </Animated.View>
+                ) : null}
               </View>
 
               <View className="optionGrid" style={styles.optionGrid}>
@@ -309,29 +337,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 10,
   },
-  chipPrimary: {
-    flexDirection: "row",
-    alignItems: "center",
-    paddingHorizontal: 9,
-    paddingVertical: 3,
-    borderRadius: 999,
-    backgroundColor: "rgba(15,23,42,0.9)",
-    borderWidth: 1,
-    borderColor: "rgba(245,158,11,0.8)",
-    marginRight: 8,
-  },
-  chipPrimaryText: {
-    color: "#F59E0B",
-    fontSize: 10,
-    fontWeight: "700",
-    textTransform: "uppercase",
-    letterSpacing: 0.7,
-  },
   chipSecondary: {
     flexDirection: "row",
     alignItems: "center",
-    paddingHorizontal: 9,
-    paddingVertical: 3,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
     borderRadius: 999,
     backgroundColor: "rgba(15,23,42,0.9)",
     borderWidth: 1,
@@ -346,15 +356,23 @@ const styles = StyleSheet.create({
   },
   chipAll: {
     position: "relative",
-    flexDirection: "row",
-    alignItems: "center",
-    paddingHorizontal: 9,
-    paddingVertical: 3,
-    borderRadius: 999,
-    backgroundColor: "rgba(15,23,42,0.9)",
+    borderRadius: 16,
+    backgroundColor: "rgba(15,23,42,0.98)",
     borderWidth: 1,
     borderColor: "rgba(148,163,184,0.7)",
-    marginLeft: 8,
+    marginLeft: 12,
+    shadowColor: "#38bdf8",
+    shadowOpacity: 0.35,
+    shadowRadius: 12,
+    shadowOffset: { width: 0, height: 4 },
+    elevation: 10,
+  },
+  chipAllPressable: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: 14,
+    paddingVertical: 9,
+    borderRadius: 16,
   },
   chipAllContent: {
     flexDirection: "row",
@@ -362,15 +380,15 @@ const styles = StyleSheet.create({
   },
   chipAllText: {
     color: "#e2e8f0",
-    fontSize: 10,
-    fontWeight: "600",
+    fontSize: 12,
+    fontWeight: "700",
     textTransform: "uppercase",
     letterSpacing: 0.7,
   },
   liveBadgeFloating: {
     position: "absolute",
-    top: -8,
-    right: 8,
+    top: -10,
+    right: 12,
     flexDirection: "row",
     alignItems: "center",
     paddingHorizontal: 7,
@@ -384,7 +402,16 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    marginBottom: 6,
+    marginBottom: 10,
+    gap: 12,
+  },
+  sectionHeaderTextGroup: {
+    flex: 1,
+  },
+  sectionHint: {
+    color: "#94a3b8",
+    fontSize: 11,
+    marginTop: 2,
   },
   sectionTitle: {
     color: "#38bdf8",
