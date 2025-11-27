@@ -94,7 +94,7 @@ const ProfileScreen = ({ navigation }) => {
     };
 
     fetchProfile();
-  }, [cachedOverview, client, dispatch]);
+  }, [cachedOverview]);
 
   const handleNavigate = (screen) => {
     navigation.navigate(screen);

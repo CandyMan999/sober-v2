@@ -34,6 +34,8 @@ const AddWhyScreen = ({ navigation }) => {
   const [text, setText] = useState(currentWhy);
   const [submitting, setSubmitting] = useState(false);
 
+  const hasExisting = currentWhy.trim().length > 0;
+
   const trimmed = text.trim();
   const ready = trimmed.length >= 8;
 
@@ -201,14 +203,23 @@ const AddWhyScreen = ({ navigation }) => {
             </View>
 
             <TouchableOpacity
-              style={[styles.sendButtonWrapper, (!ready || submitting) && styles.sendButtonDisabled]}
+              style={[
+                styles.sendButtonWrapper,
+                hasExisting && styles.changeButtonWrapper,
+                (!ready || submitting) && styles.sendButtonDisabled,
+              ]}
               activeOpacity={ready && !submitting ? 0.9 : 1}
               onPress={handleSubmit}
               disabled={!ready || submitting}
             >
-              <View style={styles.sendButton}>
+              <View style={[styles.sendButton, hasExisting && styles.changeButton]}>
                 {submitting ? (
-                  <ActivityIndicator color="#0b1220" size="small" />
+                  <ActivityIndicator color={hasExisting ? "#0ea5e9" : "#0b1220"} size="small" />
+                ) : hasExisting ? (
+                  <>
+                    <Feather name="refresh-cw" size={16} color="#0ea5e9" />
+                    <Text style={styles.changeLabel}>Change</Text>
+                  </>
                 ) : (
                   <Feather name="send" size={18} color="#0b1220" />
                 )}
@@ -409,15 +420,33 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   sendButton: {
-    width: 40,
+    minWidth: 40,
     height: 40,
     borderRadius: 999,
     backgroundColor: "#facc15",
     alignItems: "center",
     justifyContent: "center",
+    flexDirection: "row",
+    gap: 6,
   },
   sendButtonDisabled: {
     opacity: 0.5,
+  },
+  changeButtonWrapper: {
+    backgroundColor: "#0b1220",
+    borderWidth: 1,
+    borderColor: "#0ea5e9",
+    width: 98,
+  },
+  changeButton: {
+    backgroundColor: "rgba(14,165,233,0.12)",
+    paddingHorizontal: 10,
+    justifyContent: "space-evenly",
+  },
+  changeLabel: {
+    color: "#0ea5e9",
+    fontSize: 14,
+    fontWeight: "700",
   },
   footerHint: {
     fontSize: 11,
