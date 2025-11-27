@@ -435,7 +435,12 @@ const CommentSheet = ({
     level = 0,
     isLastReplyInThread = false
   ) => {
-    const name = comment?.author?.username || comment?.author?.name || "User";
+    const isSoberQuoteComment = isQuoteSheet && !comment?.author;
+    const name =
+      (isSoberQuoteComment && "Sober Motivation") ||
+      comment?.author?.username ||
+      comment?.author?.name ||
+      "User";
     const dateText = formatRelativeDate(comment?.createdAt);
     const replyCount = Array.isArray(comment?.replies)
       ? comment.replies.length
@@ -466,15 +471,28 @@ const CommentSheet = ({
         ]}
       >
         <View style={styles.commentRow}>
-          <View style={styles.avatarWrapper}>
-            {avatarUri ? (
-              <Image source={{ uri: avatarUri }} style={styles.avatar} />
-            ) : (
-              <View style={[styles.avatar, styles.avatarFallback]}>
-                <Ionicons name="person" size={16} color="#111827" />
-              </View>
-            )}
-          </View>
+          <LinearGradient
+            colors={
+              avatarUri
+                ? ["#fed7aa", "#f97316", "#facc15"]
+                : ["#0ea5e9", "#6366f1", "#a855f7"]
+            }
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={styles.commentAvatarHalo}
+          >
+            <View style={styles.commentAvatarInner}>
+              {avatarUri ? (
+                <Image source={{ uri: avatarUri }} style={styles.commentAvatar} />
+              ) : isSoberQuoteComment ? (
+                <Image source={soberLogo} style={styles.commentAvatar} />
+              ) : (
+                <View style={[styles.commentAvatar, styles.avatarFallback]}>
+                  <Ionicons name="person" size={16} color="#111827" />
+                </View>
+              )}
+            </View>
+          </LinearGradient>
 
           <View style={styles.commentBody}>
             <View style={styles.commentHeaderRow}>
@@ -951,20 +969,26 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
     columnGap: 8,
   },
-  avatarWrapper: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    overflow: "hidden",
-    borderWidth: 1,
-    borderColor: "rgba(148,163,184,0.35)",
-    backgroundColor: "rgba(255,255,255,0.05)",
+  commentAvatarHalo: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
     alignItems: "center",
     justifyContent: "center",
+    padding: 2,
   },
-  avatar: {
+  commentAvatarInner: {
     width: "100%",
     height: "100%",
+    borderRadius: 16,
+    backgroundColor: "#020617",
+    alignItems: "center",
+    justifyContent: "center",
+    overflow: "hidden",
+  },
+  commentAvatar: {
+    width: 32,
+    height: 32,
     borderRadius: 16,
     resizeMode: "cover",
   },

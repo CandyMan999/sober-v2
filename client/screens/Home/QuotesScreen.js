@@ -9,6 +9,7 @@ import {
   Modal,
   TouchableOpacity,
   Pressable,
+  Animated,
 } from "react-native";
 import { useIsFocused } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
@@ -37,6 +38,7 @@ const QuotesScreen = () => {
   const [error, setError] = useState("");
   const [containerHeight, setContainerHeight] = useState(null);
   const [showSaveSheet, setShowSaveSheet] = useState(false);
+  const [saveAnim] = useState(() => new Animated.Value(0));
 
   // “Add your own quote” hint
   const [showAlert, setShowAlert] = useState(false);
@@ -205,19 +207,55 @@ const QuotesScreen = () => {
     setContainerHeight(height);
   };
 
-  const openSaveSheet = () => setShowSaveSheet(true);
-  const closeSaveSheet = () => setShowSaveSheet(false);
+  const openSaveSheet = () => {
+    setShowSaveSheet(true);
+    Animated.spring(saveAnim, {
+      toValue: 1,
+      useNativeDriver: true,
+      damping: 16,
+      stiffness: 180,
+      mass: 0.9,
+    }).start();
+  };
+
+  const closeSaveSheet = () => {
+    Animated.spring(saveAnim, {
+      toValue: 0,
+      useNativeDriver: true,
+      damping: 16,
+      stiffness: 180,
+      mass: 0.9,
+    }).start(({ finished }) => {
+      if (finished) {
+        setShowSaveSheet(false);
+      }
+    });
+  };
 
   const renderSaveSheet = () => (
     <Modal
       transparent
-      animationType="fade"
+      animationType="none"
       visible={showSaveSheet}
       onRequestClose={closeSaveSheet}
     >
       <Pressable style={styles.sheetBackdrop} onPress={closeSaveSheet} />
       <View style={styles.sheetContainer}>
-        <View style={styles.sheet}>
+        <Animated.View
+          style={[
+            styles.sheet,
+            {
+              transform: [
+                {
+                  translateY: saveAnim.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: [140, 0],
+                  }),
+                },
+              ],
+            },
+          ]}
+        >
           <Text style={styles.sheetTitle}>Quote options</Text>
 
           <TouchableOpacity style={styles.sheetAction} onPress={closeSaveSheet}>
@@ -231,7 +269,7 @@ const QuotesScreen = () => {
           <TouchableOpacity style={styles.sheetCancel} onPress={closeSaveSheet}>
             <Text style={styles.sheetCancelText}>Close</Text>
           </TouchableOpacity>
-        </View>
+        </Animated.View>
       </View>
     </Modal>
   );
@@ -303,7 +341,7 @@ const QuotesScreen = () => {
       <View style={styles.root} onLayout={handleLayout}>
         {renderAlert()}
         <FeedLayout
-          caption={handle}
+          caption={null}
           commentSheetCaption={`“${item.text}”`}
           likesCount={item.likesCount}
           commentsCount={item.commentsCount}
@@ -342,7 +380,7 @@ const QuotesScreen = () => {
     return (
       <View style={{ height: containerHeight }}>
         <FeedLayout
-          caption={handle}
+          caption={null}
           commentSheetCaption={`“${item.text}”`}
           likesCount={item.likesCount}
           commentsCount={item.commentsCount}
