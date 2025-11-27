@@ -168,17 +168,23 @@ const FilterSheet = ({ visible, onClose, activeFilter, onFilterChange }) => {
                   <Ionicons
                     name="sparkles-outline"
                     size={13}
-                    color="#22c55e"
+                    color="#F59E0B"
                     style={{ marginRight: 4 }}
                   />
-                  <Text style={styles.chipSecondaryText}>Smart Sort</Text>
+                  <Text
+                    style={{ ...styles.chipSecondaryText, color: "#F59E0B" }}
+                  >
+                    Smart Sort
+                  </Text>
                 </View>
               </View>
 
               <View style={styles.sectionHeaderRow}>
                 <View style={styles.sectionHeaderTextGroup}>
                   <Text style={styles.sectionTitle}>Quick Filters</Text>
-                  <Text style={styles.sectionHint}>Tap again to remove filter</Text>
+                  <Text style={styles.sectionHint}>
+                    Tap again to remove filter
+                  </Text>
                 </View>
                 {!localFilter ? (
                   <Animated.View
@@ -196,7 +202,7 @@ const FilterSheet = ({ visible, onClose, activeFilter, onFilterChange }) => {
                     >
                       <View style={styles.liveBadgeFloating}>
                         <View style={styles.liveDot} />
-                        <Text style={styles.liveBadgeText}>Live</Text>
+                        <Text style={styles.liveBadgeText}>On</Text>
                       </View>
                       <View style={styles.chipAllContent}>
                         <Ionicons
@@ -232,7 +238,7 @@ const FilterSheet = ({ visible, onClose, activeFilter, onFilterChange }) => {
                         {isActive && (
                           <View style={styles.liveBadge}>
                             <View style={styles.liveDot} />
-                            <Text style={styles.liveBadgeText}>Live</Text>
+                            <Text style={styles.liveBadgeText}>On</Text>
                           </View>
                         )}
 
@@ -364,7 +370,7 @@ const styles = StyleSheet.create({
   },
   chipSecondaryAlt: {
     marginLeft: 10,
-    borderColor: "rgba(34,197,94,0.7)",
+    borderColor: "#F59E0B",
   },
   chipSecondaryText: {
     color: "#38bdf8",
