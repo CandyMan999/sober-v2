@@ -8,9 +8,11 @@ import {
   Image,
   FlatList,
   ActivityIndicator,
+  useWindowDimensions,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Feather, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+import { TabView } from "react-native-tab-view";
 
 import Context from "../../context";
 import { useClient } from "../../client";
@@ -22,12 +24,13 @@ const AVATAR_SIZE = 110;
 const ProfileScreen = ({ navigation }) => {
   const { dispatch } = useContext(Context);
   const client = useClient();
+  const layout = useWindowDimensions();
   const [loading, setLoading] = useState(true);
   const [profileData, setProfileData] = useState(null);
   const [posts, setPosts] = useState([]);
   const [quotes, setQuotes] = useState([]);
   const [savedPosts, setSavedPosts] = useState([]);
-  const [activeTab, setActiveTab] = useState("POSTS");
+  const [tabIndex, setTabIndex] = useState(0);
 
   const counts = useMemo(() => {
     const likesTotal = posts.reduce((sum, post) => sum + (post?.likesCount || 0), 0);
@@ -198,18 +201,62 @@ const ProfileScreen = ({ navigation }) => {
     );
   };
 
-  const activeIconColor = (tab, current) => (current === tab ? "#f59e0b" : "#9ca3af");
-
   const navigateToEditProfile = () => {
     navigation.navigate("EditProfile");
   };
 
-  const tabs = [
-    { key: "POSTS", icon: "image-multiple" },
+  const routes = [
+    { key: "POSTS", icon: "view-grid" },
     { key: "QUOTES", icon: "format-quote-close" },
     { key: "SAVED", icon: "bookmark" },
     { key: "DRUNK", icon: "glass-mug-variant" },
   ];
+
+  const activeTab = routes[tabIndex]?.key;
+
+  const gridHeight = useMemo(() => {
+    const dataLength =
+      activeTab === "POSTS"
+        ? posts.length
+        : activeTab === "QUOTES"
+        ? quotes.length
+        : activeTab === "SAVED"
+        ? savedPosts.length
+        : profileData?.drunkPicUrl
+        ? 1
+        : 0;
+
+    if (!dataLength) return 180;
+    const rows = Math.ceil(dataLength / 3);
+    return rows * 140;
+  }, [activeTab, posts.length, quotes.length, savedPosts.length, profileData?.drunkPicUrl]);
+
+  const renderScene = ({ route }) => (
+    <View style={styles.scene}>{renderContent(route.key)}</View>
+  );
+
+  const renderTabBar = () => (
+    <View style={styles.tabBar}>
+      {routes.map((route, i) => {
+        const focused = tabIndex === i;
+        return (
+          <TouchableOpacity
+            key={route.key}
+            style={styles.tabItem}
+            onPress={() => setTabIndex(i)}
+            activeOpacity={0.8}
+          >
+            <MaterialCommunityIcons
+              name={route.icon}
+              size={24}
+              color={focused ? "#f59e0b" : "#9ca3af"}
+            />
+            <View style={[styles.tabIndicator, focused && styles.tabIndicatorActive]} />
+          </TouchableOpacity>
+        );
+      })}
+    </View>
+  );
 
   if (loading) {
     return (
@@ -271,23 +318,17 @@ const ProfileScreen = ({ navigation }) => {
         </TouchableOpacity>
       </View>
 
-      <View style={styles.switchRow}>
-        {tabs.map((tab) => (
-          <TouchableOpacity
-            key={tab.key}
-            style={[styles.switchButton, activeTab === tab.key && styles.switchButtonActive]}
-            onPress={() => setActiveTab(tab.key)}
-          >
-            <MaterialCommunityIcons
-              name={tab.icon}
-              size={22}
-              color={activeIconColor(tab.key, activeTab)}
-            />
-          </TouchableOpacity>
-        ))}
-      </View>
+      {renderTabBar()}
 
-      <View style={styles.gridContainer}>{renderContent(activeTab)}</View>
+      <TabView
+        navigationState={{ index: tabIndex, routes }}
+        renderScene={renderScene}
+        onIndexChange={setTabIndex}
+        initialLayout={{ width: layout.width }}
+        renderTabBar={() => null}
+        style={[styles.tabView, { height: gridHeight }]}
+        swipeEnabled
+      />
     </ScrollView>
   );
 };
@@ -297,7 +338,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#050816",
     paddingHorizontal: 16,
-    paddingTop: 48,
+    paddingTop: 36,
   },
   centerContent: {
     justifyContent: "center",
@@ -405,33 +446,33 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     marginLeft: 8,
   },
-  switchRow: {
+  tabBar: {
     flexDirection: "row",
-    alignItems: "center",
     justifyContent: "space-between",
-    marginTop: 10,
+    marginTop: 6,
     marginBottom: 6,
     paddingHorizontal: 6,
   },
-  switchButton: {
+  tabItem: {
     flex: 1,
-    paddingVertical: 12,
-    borderRadius: 12,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#0b1220",
-    borderWidth: 1,
-    borderColor: "#111827",
-    marginHorizontal: 4,
   },
-  switchButtonActive: {
-    backgroundColor: "rgba(245,158,11,0.1)",
-    borderColor: "#f59e0b",
+  tabIndicator: {
+    height: 2,
+    width: "100%",
+    marginTop: 8,
+    backgroundColor: "transparent",
   },
-  gridContainer: {
-    marginTop: 6,
-    paddingBottom: 16,
+  tabIndicatorActive: {
+    backgroundColor: "#f59e0b",
+  },
+  tabView: {
     marginHorizontal: -16,
+  },
+  scene: {
+    flex: 1,
+    paddingBottom: 16,
   },
   tileWrapper: {
     width: "33.333%",
