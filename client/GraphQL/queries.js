@@ -161,6 +161,8 @@ export const GET_ALL_POSTS = `
     $token: String
     $excludeViewed: Boolean
     $sortByClosest: Boolean
+    $mediaType: PostMediaType
+    $isMilestone: Boolean
   ) {
     getAllPosts(
       limit: $limit
@@ -170,6 +172,8 @@ export const GET_ALL_POSTS = `
       token: $token
       excludeViewed: $excludeViewed
       sortByClosest: $sortByClosest
+      mediaType: $mediaType
+      isMilestone: $isMilestone
     ) {
       hasMore
       cursor

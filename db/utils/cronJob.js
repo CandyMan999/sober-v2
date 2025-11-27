@@ -133,6 +133,14 @@ const ensureMilestonePost = async (user, milestoneDays) => {
 
   const milestoneTag = `[${milestoneDays}]`;
 
+  const geoLocation =
+    user?.lat != null && user?.long != null
+      ? {
+          type: "Point",
+          coordinates: [user.long, user.lat],
+        }
+      : null;
+
   const created = await Post.create({
     author: user._id,
     text: buildMilestoneCaptionText(user, milestoneDays),
@@ -144,6 +152,9 @@ const ensureMilestonePost = async (user, milestoneDays) => {
     isMilestone: true,
     milestoneDays,
     milestoneTag,
+    lat: user?.lat ?? null,
+    long: user?.long ?? null,
+    ...(geoLocation ? { location: geoLocation } : {}),
   });
 
   console.log("!!!!!!!!!!! POST CREATED: ", created);

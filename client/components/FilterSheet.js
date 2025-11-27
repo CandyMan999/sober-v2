@@ -21,9 +21,9 @@ const FILTER_OPTIONS = [
   { label: "Images", icon: "image-outline" },
 ];
 
-const FilterSheet = ({ visible, onClose }) => {
+const FilterSheet = ({ visible, onClose, activeFilter, onFilterChange }) => {
   const [mounted, setMounted] = useState(visible);
-  const [activeFilter, setActiveFilter] = useState("Nearby");
+  const [localFilter, setLocalFilter] = useState(activeFilter || "Nearby");
   const sheetAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
@@ -66,6 +66,17 @@ const FilterSheet = ({ visible, onClose }) => {
       }),
     [sheetAnim]
   );
+
+  useEffect(() => {
+    if (!activeFilter) return;
+    setLocalFilter(activeFilter);
+  }, [activeFilter]);
+
+  const handleFilterPress = (option) => {
+    if (option.label === "Friends") return; // not yet supported
+    setLocalFilter(option.label);
+    onFilterChange?.(option.label);
+  };
 
   if (!mounted) return null;
 
@@ -137,12 +148,12 @@ const FilterSheet = ({ visible, onClose }) => {
 
               <View className="optionGrid" style={styles.optionGrid}>
                 {FILTER_OPTIONS.map((option) => {
-                  const isActive = activeFilter === option.label;
+                  const isActive = localFilter === option.label;
                   return (
                     <TouchableOpacity
                       key={option.label}
                       activeOpacity={0.9}
-                      onPress={() => setActiveFilter(option.label)}
+                      onPress={() => handleFilterPress(option)}
                       style={styles.optionTap}
                     >
                       <View

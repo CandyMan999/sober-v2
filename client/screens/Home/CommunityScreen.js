@@ -63,6 +63,7 @@ const CommunityScreen = () => {
   const [showTutorial, setShowTutorial] = useState(false);
   const [reviewBypass, setReviewBypass] = useState({});
   const [showFilterSheet, setShowFilterSheet] = useState(false);
+  const [activeFilter, setActiveFilter] = useState("Nearby");
   const sheetAnim = useRef(new Animated.Value(0)).current;
 
   const isPostLiked = useCallback(
@@ -175,9 +176,41 @@ const CommunityScreen = () => {
   const videoRefs = useRef({});
   const viewedPostsRef = useRef(new Set());
 
+  const buildFilterParams = useCallback(
+    (filterLabel = activeFilter) => {
+      switch (filterLabel) {
+        case "Milestones":
+          return {
+            isMilestone: true,
+            mediaType: null,
+            excludeViewed: false,
+            sortByClosest: false,
+          };
+        case "Images":
+          return {
+            isMilestone: null,
+            mediaType: "IMAGE",
+            excludeViewed: false,
+            sortByClosest: false,
+          };
+        case "Nearby":
+        default:
+          return {
+            isMilestone: null,
+            mediaType: null,
+            excludeViewed: true,
+            sortByClosest: true,
+          };
+      }
+    },
+    [activeFilter]
+  );
+
   const fetchPosts = useCallback(
-    async (append = false, { isRefresh = false } = {}) => {
+    async (append = false, { isRefresh = false, filterOverride } = {}) => {
       const nextCursor = append ? cursorRef.current : null;
+
+      const filterParams = buildFilterParams(filterOverride);
 
       try {
         if (!append) {
@@ -201,8 +234,10 @@ const CommunityScreen = () => {
           token: token || null,
           lat: viewerLat,
           long: viewerLong,
-          excludeViewed: true,
-          sortByClosest: true,
+          excludeViewed: filterParams.excludeViewed,
+          sortByClosest: filterParams.sortByClosest,
+          isMilestone: filterParams.isMilestone,
+          mediaType: filterParams.mediaType,
         });
 
         const payload = data?.getAllPosts;
@@ -227,14 +262,18 @@ const CommunityScreen = () => {
         setRefreshing(false);
       }
     },
-    [client, state?.user?.lat, state?.user?.long]
+    [buildFilterParams, client, state?.user?.lat, state?.user?.long]
   );
 
   useEffect(() => {
-    fetchPosts(false);
-    // Intentionally run once on mount to avoid re-fetch loops
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    setHasMore(true);
+    setCursor(null);
+    cursorRef.current = null;
+    setPosts([]);
+    setError("");
+    setLoading(true);
+    fetchPosts(false, { isRefresh: true, filterOverride: activeFilter });
+  }, [activeFilter, fetchPosts]);
 
   useEffect(() => {
     const maybeShowTutorial = async () => {
@@ -488,6 +527,15 @@ const CommunityScreen = () => {
 
   const openFilterSheet = useCallback(() => setShowFilterSheet(true), []);
   const closeFilterSheet = useCallback(() => setShowFilterSheet(false), []);
+
+  const handleFilterChange = useCallback(
+    (nextFilter) => {
+      if (nextFilter === "Friends") return;
+      setActiveFilter(nextFilter);
+      closeFilterSheet();
+    },
+    [closeFilterSheet]
+  );
 
   const handleToggleSound = () => {
     setIsMuted((prev) => !prev);
@@ -843,7 +891,12 @@ const CommunityScreen = () => {
         </Modal>
       ) : null}
 
-      <FilterSheet visible={showFilterSheet} onClose={closeFilterSheet} />
+      <FilterSheet
+        visible={showFilterSheet}
+        onClose={closeFilterSheet}
+        activeFilter={activeFilter}
+        onFilterChange={handleFilterChange}
+      />
 
       <Modal transparent visible={showTutorial} animationType="fade">
         <Pressable

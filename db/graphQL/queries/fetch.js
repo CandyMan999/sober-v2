@@ -63,35 +63,59 @@ module.exports = {
       token,
       excludeViewed = false,
       sortByClosest = false,
+      mediaType,
+      isMilestone,
     } = args || {};
 
     const limit = Math.min(limitArg || 10, 50);
     const cursor = cursorArg ? new Date(cursorArg) : null;
 
-    const query = { flagged: false };
-    if (cursor) {
-      query.createdAt = { $lt: cursor };
-    }
-
-    const referenceCoords = {
-      lat: lat ?? null,
-      long: long ?? null,
-    };
-
+    let refLat = lat ?? null;
+    let refLong = long ?? null;
     let viewer = null;
     if (token) {
       viewer = await User.findOne({ token });
       if (viewer) {
-        if (referenceCoords.lat === null || referenceCoords.long === null) {
-          referenceCoords.lat = viewer.lat ?? null;
-          referenceCoords.long = viewer.long ?? null;
-        }
+        if (refLat == null) refLat = viewer.lat ?? null;
+        if (refLong == null) refLong = viewer.long ?? null;
       }
     }
 
+    const baseQuery = { flagged: false };
+    if (cursor) baseQuery.createdAt = { $lt: cursor };
+    if (mediaType) baseQuery.mediaType = mediaType;
+    if (isMilestone) {
+      baseQuery.$or = [
+        { isMilestone: true },
+        { milestoneTag: { $ne: null } },
+        { milestoneDays: { $ne: null } },
+      ];
+    }
+
+    const geoFilter =
+      refLat != null && refLong != null
+        ? {
+            location: {
+              $near: {
+                $geometry: {
+                  type: "Point",
+                  coordinates: [refLong, refLat],
+                },
+                $maxDistance: 50 * 1609.34,
+              },
+            },
+          }
+        : {};
+
+    const query = { ...baseQuery, ...geoFilter };
+
     try {
-      const posts = await Post.find(query)
-        .sort({ createdAt: -1 })
+      let postQuery = Post.find(query);
+      if (!geoFilter.location) {
+        postQuery = postQuery.sort({ createdAt: -1 });
+      }
+
+      const posts = await postQuery
         .limit(limit + 1)
         .populate("author")
         .populate({
@@ -126,6 +150,11 @@ module.exports = {
             : false;
           return { post, viewed };
         });
+
+      const referenceCoords = {
+        lat: refLat,
+        long: refLong,
+      };
 
       const postsWithDistance = sanitized.map((entry) => {
         const hasCoords =
