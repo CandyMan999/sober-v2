@@ -17,7 +17,11 @@ import { GET_QUOTES_QUERY } from "../../GraphQL/queries";
 import FeedLayout from "../../components/FeedLayout";
 import { useClient } from "../../client";
 import AlertModal from "../../components/AlertModal";
-import { TOGGLE_LIKE_MUTATION } from "../../GraphQL/mutations";
+import {
+  FOLLOW_USER_MUTATION,
+  TOGGLE_LIKE_MUTATION,
+  UNFOLLOW_USER_MUTATION,
+} from "../../GraphQL/mutations";
 import { getToken } from "../../utils/helpers";
 import Context from "../../context";
 
@@ -82,6 +86,32 @@ const QuotesScreen = () => {
     [currentUserId]
   );
 
+  const updateQuoteAuthor = useCallback((authorId, fields = {}) => {
+    if (!authorId) return;
+
+    setQuotes((prev) =>
+      prev.map((quote) =>
+        quote.user?.id === authorId
+          ? { ...quote, user: { ...quote.user, ...fields } }
+          : quote
+      )
+    );
+  }, []);
+
+  const [followLoadingIds, setFollowLoadingIds] = useState(new Set());
+
+  const setFollowLoading = useCallback((userId, loading) => {
+    setFollowLoadingIds((prev) => {
+      const next = new Set(prev);
+      if (loading) {
+        next.add(userId);
+      } else {
+        next.delete(userId);
+      }
+      return next;
+    });
+  }, []);
+
   const handleToggleLike = useCallback(
     async (quoteId) => {
       const token = await getToken();
@@ -134,6 +164,73 @@ const QuotesScreen = () => {
       }
     },
     [applyLikePayload, client, currentUser, currentUserId, isQuoteLiked, quotes]
+  );
+
+  const handleToggleFollowUser = useCallback(
+    async (author) => {
+      if (!author?.id) return { isFollowed: false, isBuddy: false };
+      if (followLoadingIds.has(author.id)) {
+        return {
+          isFollowed: Boolean(author.isFollowedByViewer),
+          isBuddy: Boolean(author.isBuddyWithViewer),
+        };
+      }
+
+      const token = await getToken();
+      if (!token) {
+        return {
+          isFollowed: Boolean(author.isFollowedByViewer),
+          isBuddy: Boolean(author.isBuddyWithViewer),
+        };
+      }
+
+      const isCurrentlyFollowed = Boolean(author.isFollowedByViewer);
+      const previousState = {
+        isFollowed: Boolean(author.isFollowedByViewer),
+        isBuddy: Boolean(author.isBuddyWithViewer),
+      };
+
+      updateQuoteAuthor(author.id, {
+        isFollowedByViewer: !isCurrentlyFollowed,
+        isBuddyWithViewer: false,
+      });
+      setFollowLoading(author.id, true);
+
+      try {
+        const mutation = isCurrentlyFollowed
+          ? UNFOLLOW_USER_MUTATION
+          : FOLLOW_USER_MUTATION;
+
+        const data = await client.request(mutation, {
+          token,
+          userId: author.id,
+        });
+
+        const nextState = isCurrentlyFollowed
+          ? { isFollowed: false, isBuddy: false }
+          : {
+              isFollowed: true,
+              isBuddy: Boolean(data?.followUser?.isBuddy),
+            };
+
+        updateQuoteAuthor(author.id, {
+          isFollowedByViewer: nextState.isFollowed,
+          isBuddyWithViewer: nextState.isBuddy,
+        });
+
+        return nextState;
+      } catch (err) {
+        console.error("Error toggling follow", err);
+        updateQuoteAuthor(author.id, {
+          isFollowedByViewer: previousState.isFollowed,
+          isBuddyWithViewer: previousState.isBuddy,
+        });
+        throw err;
+      } finally {
+        setFollowLoading(author.id, false);
+      }
+    },
+    [client, followLoadingIds, setFollowLoading, updateQuoteAuthor]
   );
 
   const handleCommentAdded = useCallback((quoteId, newComment) => {
@@ -330,12 +427,14 @@ const QuotesScreen = () => {
   // Until we know the height, just render first quote without paging
   if (!containerHeight) {
     const item = quotes[0];
+    const author = item.user;
     const handle =
-      item.user?.username && item.user.username.trim().length > 0
-        ? `@${item.user.username}`
+      author?.username && author.username.trim().length > 0
+        ? `@${author.username}`
         : "Sober Motivation";
-    const avatarUrl = item.user?.profilePicUrl || null;
+    const avatarUrl = author?.profilePicUrl || null;
     const fallbackAvatar = !item.user ? soberLogo : null;
+    const isOwnQuote = author?.id === currentUserId;
 
     return (
       <View style={styles.root} onLayout={handleLayout}>
@@ -348,7 +447,7 @@ const QuotesScreen = () => {
           comments={item.comments}
           commentTargetType="QUOTE"
           commentTargetId={item.id}
-          postAuthor={item.user}
+          postAuthor={author}
           postCreatedAt={item.createdAt}
           avatarUrl={avatarUrl}
           fallbackAvatarSource={fallbackAvatar}
@@ -358,6 +457,14 @@ const QuotesScreen = () => {
           isLiked={isQuoteLiked(item)}
           onLikePress={() => handleToggleLike(item.id)}
           onCommentAdded={(newComment) => handleCommentAdded(item.id, newComment)}
+          onToggleFollow={
+            !isOwnQuote && author?.id
+              ? () => handleToggleFollowUser(author)
+              : undefined
+          }
+          isFollowed={author?.isFollowedByViewer}
+          isBuddy={author?.isBuddyWithViewer}
+          viewerUserId={currentUserId}
         >
           <View style={styles.quoteContainer}>
             <Text style={styles.quoteText}>“{item.text}”</Text>
@@ -369,13 +476,15 @@ const QuotesScreen = () => {
   }
 
   const renderItem = ({ item }) => {
+    const author = item.user;
     const handle =
-      item.user?.username && item.user.username.trim().length > 0
-        ? `@${item.user.username}`
+      author?.username && author.username.trim().length > 0
+        ? `@${author.username}`
         : "Sober Motivation";
 
-    const avatarUrl = item.user?.profilePicUrl || null;
+    const avatarUrl = author?.profilePicUrl || null;
     const fallbackAvatar = !item.user ? soberLogo : null;
+    const isOwnQuote = author?.id === currentUserId;
 
     return (
       <View style={{ height: containerHeight }}>
@@ -387,7 +496,7 @@ const QuotesScreen = () => {
           comments={item.comments}
           commentTargetType="QUOTE"
           commentTargetId={item.id}
-          postAuthor={item.user}
+          postAuthor={author}
           postCreatedAt={item.createdAt}
           avatarUrl={avatarUrl}
           fallbackAvatarSource={fallbackAvatar}
@@ -397,6 +506,14 @@ const QuotesScreen = () => {
           isLiked={isQuoteLiked(item)}
           onLikePress={() => handleToggleLike(item.id)}
           onCommentAdded={(newComment) => handleCommentAdded(item.id, newComment)}
+          onToggleFollow={
+            !isOwnQuote && author?.id
+              ? () => handleToggleFollowUser(author)
+              : undefined
+          }
+          isFollowed={author?.isFollowedByViewer}
+          isBuddy={author?.isBuddyWithViewer}
+          viewerUserId={currentUserId}
         >
           <View style={styles.quoteContainer}>
             <Text style={styles.quoteText}>“{item.text}”</Text>

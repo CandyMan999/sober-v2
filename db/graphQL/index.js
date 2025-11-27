@@ -14,6 +14,8 @@ const {
   createQuoteCommentResolver,
   toggleLikeResolver,
   recordPostViewResolver,
+  followUserResolver,
+  unfollowUserResolver,
 } = require("./mutations/index.js");
 
 const {
@@ -28,7 +30,7 @@ const {
 } = require("./queries/index.js");
 
 // Import models
-const { Like, Comment } = require("../models"); // ensure Like is exported from ../models/index.js
+const { Like, Comment, Connection } = require("../models"); // ensure Like is exported from ../models/index.js
 
 const typeDefs = [rootDefs];
 
@@ -75,6 +77,8 @@ const resolvers = {
     createQuoteComment: createQuoteCommentResolver,
     toggleLike: toggleLikeResolver,
     recordPostView: recordPostViewResolver,
+    followUser: followUserResolver,
+    unfollowUser: unfollowUserResolver,
   },
 
   Upload: require("graphql-upload-minimal").GraphQLUpload,
@@ -100,6 +104,131 @@ const resolvers = {
       } catch (err) {
         console.error("Error resolving comment replyTo", err);
         return null;
+      }
+    },
+  },
+
+  User: {
+    followers: async (parent) => {
+      const targetId = parent.id || parent._id;
+      if (!targetId) return [];
+
+      try {
+        const connections = await Connection.find({ followee: targetId }).populate(
+          "follower"
+        );
+
+        return connections.map((connection) => connection.follower).filter(Boolean);
+      } catch (err) {
+        console.error("Error resolving followers", err);
+        return [];
+      }
+    },
+
+    following: async (parent) => {
+      const targetId = parent.id || parent._id;
+      if (!targetId) return [];
+
+      try {
+        const connections = await Connection.find({ follower: targetId }).populate(
+          "followee"
+        );
+
+        return connections.map((connection) => connection.followee).filter(Boolean);
+      } catch (err) {
+        console.error("Error resolving following", err);
+        return [];
+      }
+    },
+
+    buddies: async (parent) => {
+      const targetId = parent.id || parent._id;
+      if (!targetId) return [];
+
+      try {
+        const connections = await Connection.find({
+          follower: targetId,
+          isBuddy: true,
+        }).populate("followee");
+
+        return connections.map((connection) => connection.followee).filter(Boolean);
+      } catch (err) {
+        console.error("Error resolving buddies", err);
+        return [];
+      }
+    },
+
+    followersCount: async (parent) => {
+      const targetId = parent.id || parent._id;
+      if (!targetId) return 0;
+
+      try {
+        return await Connection.countDocuments({ followee: targetId });
+      } catch (err) {
+        console.error("Error resolving followersCount", err);
+        return 0;
+      }
+    },
+
+    followingCount: async (parent) => {
+      const targetId = parent.id || parent._id;
+      if (!targetId) return 0;
+
+      try {
+        return await Connection.countDocuments({ follower: targetId });
+      } catch (err) {
+        console.error("Error resolving followingCount", err);
+        return 0;
+      }
+    },
+
+    buddiesCount: async (parent) => {
+      const targetId = parent.id || parent._id;
+      if (!targetId) return 0;
+
+      try {
+        return await Connection.countDocuments({ follower: targetId, isBuddy: true });
+      } catch (err) {
+        console.error("Error resolving buddiesCount", err);
+        return 0;
+      }
+    },
+
+    isFollowedByViewer: async (parent, _, { currentUser }) => {
+      const targetId = parent.id || parent._id;
+      if (!currentUser?._id || !targetId || currentUser._id.equals(targetId)) {
+        return false;
+      }
+
+      try {
+        const existing = await Connection.exists({
+          follower: currentUser._id,
+          followee: targetId,
+        });
+
+        return Boolean(existing);
+      } catch (err) {
+        console.error("Error resolving isFollowedByViewer", err);
+        return false;
+      }
+    },
+
+    isBuddyWithViewer: async (parent, _, { currentUser }) => {
+      const targetId = parent.id || parent._id;
+      if (!currentUser?._id || !targetId || currentUser._id.equals(targetId)) {
+        return false;
+      }
+
+      try {
+        const connection = await Connection.findOne({
+          follower: currentUser._id,
+          followee: targetId,
+        });
+
+        return Boolean(connection?.isBuddy);
+      } catch (err) {
+        console.error("Error resolving isBuddyWithViewer", err);
+        return false;
       }
     },
   },

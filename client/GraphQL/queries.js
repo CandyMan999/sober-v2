@@ -202,6 +202,8 @@ export const GET_ALL_POSTS = `
           id
           username
           profilePicUrl
+          isFollowedByViewer
+          isBuddyWithViewer
         }
         video {
           id
@@ -211,11 +213,13 @@ export const GET_ALL_POSTS = `
         }
         likes {
           id
-          user {
-            id
-            username
-            profilePicUrl
-          }
+      user {
+        id
+        username
+        profilePicUrl
+        isFollowedByViewer
+        isBuddyWithViewer
+      }
           createdAt
         }
         comments {

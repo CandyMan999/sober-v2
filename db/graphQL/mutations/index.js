@@ -15,6 +15,7 @@ const {
 } = require("./comments");
 const { toggleLikeResolver } = require("./likes");
 const { recordPostViewResolver } = require("./views");
+const { followUserResolver, unfollowUserResolver } = require("./follow");
 
 module.exports = {
   directUploadResolver,
@@ -30,4 +31,6 @@ module.exports = {
   createQuoteCommentResolver,
   toggleLikeResolver,
   recordPostViewResolver,
+  followUserResolver,
+  unfollowUserResolver,
 };

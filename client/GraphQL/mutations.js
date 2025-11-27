@@ -199,6 +199,31 @@ export const SET_POST_REVIEW_MUTATION = gql`
   }
 `;
 
+export const FOLLOW_USER_MUTATION = gql`
+  mutation FollowUser($token: String!, $userId: ID!) {
+    followUser(token: $token, userId: $userId) {
+      id
+      isBuddy
+      follower {
+        id
+      }
+      followee {
+        id
+        username
+        profilePicUrl
+        isFollowedByViewer
+        isBuddyWithViewer
+      }
+    }
+  }
+`;
+
+export const UNFOLLOW_USER_MUTATION = gql`
+  mutation UnfollowUser($token: String!, $userId: ID!) {
+    unfollowUser(token: $token, userId: $userId)
+  }
+`;
+
 export const TOGGLE_LIKE_MUTATION = gql`
   mutation ToggleLike($token: String!, $targetType: LikeTarget!, $targetId: ID!) {
     toggleLike(token: $token, targetType: $targetType, targetId: $targetId) {
