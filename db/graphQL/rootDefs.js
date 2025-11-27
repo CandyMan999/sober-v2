@@ -25,6 +25,8 @@ const typeDefs = gql`
     followersCount: Int!
     followingCount: Int!
     buddiesCount: Int!
+    isFollowedByViewer: Boolean!
+    isBuddyWithViewer: Boolean!
     followers: [User!]!
     following: [User!]!
     buddies: [User!]!
@@ -302,6 +304,8 @@ const typeDefs = gql`
       targetType: LikeTarget!
       targetId: ID!
     ): LikePayload!
+    followUser(token: String!, userId: ID!): Connection!
+    unfollowUser(token: String!, userId: ID!): Boolean!
   }
 
   type LikePayload {

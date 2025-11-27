@@ -41,10 +41,15 @@ const FeedLayout = ({
   showFilter = true,
   isMilestonePost = false,
   isVideoPost = false,
+  onToggleFollow,
+  isFollowed = false,
+  isBuddy = false,
+  viewerUserId,
 }) => {
   const [showComments, setShowComments] = useState(false);
   const [isCaptionExpanded, setIsCaptionExpanded] = useState(false);
   const [isCaptionTruncated, setIsCaptionTruncated] = useState(false);
+  const [followPending, setFollowPending] = useState(false);
 
   const formatCount = (n) => {
     if (typeof n !== "number") return "0";
@@ -103,6 +108,31 @@ const FeedLayout = ({
     (postAuthor
       ? `@${postAuthor?.username || postAuthor?.name || "Unknown"}`
       : null);
+
+  const canFollow =
+    Boolean(onToggleFollow) &&
+    Boolean(postAuthor?.id) &&
+    Boolean(viewerUserId) &&
+    postAuthor?.id !== viewerUserId;
+
+  const followLabel = isBuddy
+    ? "Buddies"
+    : isFollowed
+    ? "Following"
+    : "Follow";
+
+  const handleFollowPress = async () => {
+    if (!onToggleFollow || followPending || !canFollow) return;
+
+    try {
+      setFollowPending(true);
+      await onToggleFollow();
+    } catch (err) {
+      console.error("Failed to toggle follow", err);
+    } finally {
+      setFollowPending(false);
+    }
+  };
 
   const hasViews = typeof viewsCount === "number";
   const metaItems = [];
@@ -202,9 +232,30 @@ const FeedLayout = ({
             {renderAvatar()}
 
             {displayName ? (
-              <Text style={styles.username} numberOfLines={1}>
-                {displayName}
-              </Text>
+              <>
+                <Text style={styles.username} numberOfLines={1}>
+                  {displayName}
+                </Text>
+
+                {canFollow ? (
+                  <TouchableOpacity
+                    style={[
+                      styles.followButton,
+                      isBuddy
+                        ? styles.buddyButton
+                        : isFollowed
+                        ? styles.followingButton
+                        : null,
+                    ]}
+                    onPress={handleFollowPress}
+                    disabled={followPending}
+                  >
+                    <Text style={styles.followButtonText}>
+                      {followPending ? "..." : followLabel}
+                    </Text>
+                  </TouchableOpacity>
+                ) : null}
+              </>
             ) : null}
           </View>
 
@@ -262,6 +313,10 @@ const FeedLayout = ({
         postCityName={cityName}
         totalComments={commentsCount}
         onCommentAdded={onCommentAdded}
+        onToggleFollow={onToggleFollow}
+        isFollowed={isFollowed}
+        isBuddy={isBuddy}
+        canFollow={canFollow}
       />
     </View>
   );
@@ -303,6 +358,28 @@ const styles = StyleSheet.create({
   userRow: {
     flexDirection: "row",
     alignItems: "center",
+  },
+  followButton: {
+    marginLeft: 10,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 999,
+    backgroundColor: "#facc15",
+    borderWidth: 1,
+    borderColor: "#fde68a",
+  },
+  followingButton: {
+    backgroundColor: "#0f172a",
+    borderColor: "#334155",
+  },
+  buddyButton: {
+    backgroundColor: "#22c55e",
+    borderColor: "#15803d",
+  },
+  followButtonText: {
+    color: "#0b1222",
+    fontWeight: "800",
+    fontSize: 12,
   },
   captionWrapper: {
     flexShrink: 1,

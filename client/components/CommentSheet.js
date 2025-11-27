@@ -86,6 +86,10 @@ const CommentSheet = ({
   targetType = "POST",
   targetId,
   postCityName,
+  onToggleFollow,
+  canFollow = false,
+  isFollowed = false,
+  isBuddy = false,
 }) => {
   const client = useClient();
   const [mounted, setMounted] = useState(visible);
@@ -104,6 +108,11 @@ const CommentSheet = ({
   const likeScales = useRef({});
   const likeBurstScales = useRef({});
   const likeBurstOpacities = useRef({});
+  const [followState, setFollowState] = useState({
+    isFollowed,
+    isBuddy,
+  });
+  const [followPending, setFollowPending] = useState(false);
   const isQuoteSheet = targetType === "QUOTE";
 
   useEffect(() => {
@@ -136,6 +145,10 @@ const CommentSheet = ({
   useEffect(() => {
     setCommentList(mapCommentsWithLiked(comments || []));
   }, [comments, mapCommentsWithLiked]);
+
+  useEffect(() => {
+    setFollowState({ isFollowed, isBuddy });
+  }, [isBuddy, isFollowed]);
 
   useEffect(() => {
     setCommentCount(totalComments || comments?.length || 0);
@@ -285,6 +298,35 @@ const CommentSheet = ({
     effectiveAuthor?.username ||
     effectiveAuthor?.name ||
     (isQuoteSheet ? "Sober Motivation" : "Unknown");
+
+  const followLabel = followState.isBuddy
+    ? "Buddies"
+    : followState.isFollowed
+    ? "Following"
+    : "Follow";
+
+  const handleFollowPress = async () => {
+    if (!onToggleFollow || followPending || !canFollow) return;
+
+    const previous = followState;
+    setFollowState({ isFollowed: !previous.isFollowed, isBuddy: false });
+    try {
+      setFollowPending(true);
+      const result = await onToggleFollow();
+
+      if (result) {
+        setFollowState({
+          isFollowed: Boolean(result.isFollowed),
+          isBuddy: Boolean(result.isBuddy),
+        });
+      }
+    } catch (err) {
+      console.error("Failed to toggle follow", err);
+      setFollowState(previous);
+    } finally {
+      setFollowPending(false);
+    }
+  };
 
   const toggleReplies = (commentId) => {
     setExpandedThreads((prev) => {
@@ -647,9 +689,30 @@ const CommentSheet = ({
                 </LinearGradient>
 
                 <View style={styles.posterMeta}>
-                  <Text style={styles.posterName} numberOfLines={1}>
-                    {posterName}
-                  </Text>
+                  <View style={styles.posterNameRow}>
+                    <Text style={styles.posterName} numberOfLines={1}>
+                      {posterName}
+                    </Text>
+
+                    {canFollow ? (
+                      <TouchableOpacity
+                        style={[
+                          styles.followChip,
+                          followState.isBuddy
+                            ? styles.buddyChip
+                            : followState.isFollowed
+                            ? styles.followingChip
+                            : null,
+                        ]}
+                        onPress={handleFollowPress}
+                        disabled={followPending}
+                      >
+                        <Text style={styles.followChipText}>
+                          {followPending ? "..." : followLabel}
+                        </Text>
+                      </TouchableOpacity>
+                    ) : null}
+                  </View>
                 </View>
 
                 <TouchableOpacity
@@ -888,6 +951,12 @@ const styles = StyleSheet.create({
     flex: 1,
     marginHorizontal: 8,
   },
+  posterNameRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    flexWrap: "wrap",
+    gap: 8,
+  },
   posterMetaRow: {
     flexDirection: "row",
     alignItems: "center",
@@ -915,6 +984,27 @@ const styles = StyleSheet.create({
     color: "#fef3c7",
     fontWeight: "800",
     fontSize: 15,
+  },
+  followChip: {
+    backgroundColor: "#facc15",
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 999,
+    borderWidth: 1,
+    borderColor: "#fde68a",
+  },
+  followingChip: {
+    backgroundColor: "#0f172a",
+    borderColor: "#334155",
+  },
+  buddyChip: {
+    backgroundColor: "#22c55e",
+    borderColor: "#15803d",
+  },
+  followChipText: {
+    color: "#0b1222",
+    fontWeight: "800",
+    fontSize: 12,
   },
   posterDate: {
     color: "#64748b",

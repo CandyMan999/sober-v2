@@ -30,6 +30,8 @@ import {
   RECORD_POST_VIEW_MUTATION,
   SET_POST_REVIEW_MUTATION,
   TOGGLE_LIKE_MUTATION,
+  FOLLOW_USER_MUTATION,
+  UNFOLLOW_USER_MUTATION,
 } from "../../GraphQL/mutations";
 import { getToken } from "../../utils/helpers";
 import Context from "../../context";
@@ -74,6 +76,7 @@ const CommunityScreen = () => {
   const [reviewBypass, setReviewBypass] = useState({});
   const [showFilterSheet, setShowFilterSheet] = useState(false);
   const [activeFilter, setActiveFilter] = useState(null);
+  const [followLoadingIds, setFollowLoadingIds] = useState(new Set());
   const sheetAnim = useRef(new Animated.Value(0)).current;
   const fetchGenerationRef = useRef(0);
 
@@ -119,6 +122,30 @@ const CommunityScreen = () => {
     },
     [currentUserId]
   );
+
+  const updateAuthorRelationship = useCallback((authorId, fields = {}) => {
+    if (!authorId) return;
+
+    setPosts((prev) =>
+      prev.map((post) =>
+        post.author?.id === authorId
+          ? { ...post, author: { ...post.author, ...fields } }
+          : post
+      )
+    );
+  }, []);
+
+  const setFollowLoading = useCallback((userId, loading) => {
+    setFollowLoadingIds((prev) => {
+      const next = new Set(prev);
+      if (loading) {
+        next.add(userId);
+      } else {
+        next.delete(userId);
+      }
+      return next;
+    });
+  }, []);
 
   const handleToggleLike = useCallback(
     async (postId) => {
@@ -180,6 +207,78 @@ const CommunityScreen = () => {
       currentUserId,
       isPostLiked,
       posts,
+    ]
+  );
+
+  const handleToggleFollowUser = useCallback(
+    async (author) => {
+      if (!author?.id) return { isFollowed: false, isBuddy: false };
+      if (followLoadingIds.has(author.id)) {
+        return {
+          isFollowed: Boolean(author.isFollowedByViewer),
+          isBuddy: Boolean(author.isBuddyWithViewer),
+        };
+      }
+
+      const token = await getToken();
+      if (!token) {
+        return {
+          isFollowed: Boolean(author.isFollowedByViewer),
+          isBuddy: Boolean(author.isBuddyWithViewer),
+        };
+      }
+
+      const isCurrentlyFollowed = Boolean(author.isFollowedByViewer);
+      const previousState = {
+        isFollowed: Boolean(author.isFollowedByViewer),
+        isBuddy: Boolean(author.isBuddyWithViewer),
+      };
+
+      updateAuthorRelationship(author.id, {
+        isFollowedByViewer: !isCurrentlyFollowed,
+        isBuddyWithViewer: false,
+      });
+      setFollowLoading(author.id, true);
+
+      try {
+        const mutation = isCurrentlyFollowed
+          ? UNFOLLOW_USER_MUTATION
+          : FOLLOW_USER_MUTATION;
+
+        const data = await client.request(mutation, {
+          token,
+          userId: author.id,
+        });
+
+        const nextState = isCurrentlyFollowed
+          ? { isFollowed: false, isBuddy: false }
+          : {
+              isFollowed: true,
+              isBuddy: Boolean(data?.followUser?.isBuddy),
+            };
+
+        updateAuthorRelationship(author.id, {
+          isFollowedByViewer: nextState.isFollowed,
+          isBuddyWithViewer: nextState.isBuddy,
+        });
+
+        return nextState;
+      } catch (err) {
+        console.error("Error toggling follow", err);
+        updateAuthorRelationship(author.id, {
+          isFollowedByViewer: previousState.isFollowed,
+          isBuddyWithViewer: previousState.isBuddy,
+        });
+        throw err;
+      } finally {
+        setFollowLoading(author.id, false);
+      }
+    },
+    [
+      client,
+      followLoadingIds,
+      setFollowLoading,
+      updateAuthorRelationship,
     ]
   );
 
@@ -681,7 +780,8 @@ const CommunityScreen = () => {
 
   const renderItem = ({ item, index }) => {
     const captionText = item.text || "";
-    const avatarUrl = item.author?.profilePicUrl || null;
+    const author = item.author;
+    const avatarUrl = author?.profilePicUrl || null;
     const postDate = formatDate(item.createdAt);
     const type = item.mediaType || "VIDEO";
     const isVideoPost = type === "VIDEO";
@@ -696,6 +796,7 @@ const CommunityScreen = () => {
         ? `${milestoneLabel} • ${postDate}`
         : postDate;
     const captionStyle = isMilestonePost ? styles.milestoneCaption : undefined;
+    const isOwnPost = author?.id === currentUserId;
 
     return (
       <View style={{ height: containerHeight || 0 }}>
@@ -709,7 +810,7 @@ const CommunityScreen = () => {
           comments={item.comments}
           postId={item.id}
           postCreatedAt={item.createdAt}
-          postAuthor={item.author}
+          postAuthor={author}
           avatarUrl={avatarUrl}
           cityName={cityName}
           isMilestonePost={isMilestonePost}
@@ -725,6 +826,14 @@ const CommunityScreen = () => {
           onLikePress={() => handleToggleLike(item.id)}
           onMorePress={() => handleMorePress(item)}
           onFilterPress={openFilterSheet}
+          onToggleFollow={
+            !isOwnPost && author?.id
+              ? () => handleToggleFollowUser(author)
+              : undefined
+          }
+          isFollowed={author?.isFollowedByViewer}
+          isBuddy={author?.isBuddyWithViewer}
+          viewerUserId={currentUserId}
         >
           {renderMedia(item, index)}
         </FeedLayout>
