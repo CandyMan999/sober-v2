@@ -630,6 +630,8 @@ const CommunityScreen = () => {
           postAuthor={item.author}
           avatarUrl={avatarUrl}
           cityName={cityName}
+          isMilestonePost={isMilestonePost}
+          isVideoPost={isVideoPost}
           onCommentAdded={(newComment) =>
             handleCommentAdded(item.id, newComment)
           }
@@ -716,6 +718,8 @@ const CommunityScreen = () => {
           avatarUrl={firstPost.author?.profilePicUrl || null}
           cityName={firstCityName}
           meta={firstMetaText}
+          isMilestonePost={firstIsMilestone}
+          isVideoPost={firstIsVideo}
           onCommentAdded={(newComment) =>
             handleCommentAdded(firstPost.id, newComment)
           }

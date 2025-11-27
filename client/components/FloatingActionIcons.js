@@ -15,6 +15,7 @@ const FloatingActionIcons = ({
   commentsCount = 0,
   isLiked = false,
   onFilterPress,
+  showFilter = true,
 }) => {
   const heartScale = useRef(new Animated.Value(1)).current;
   const burstScale = useRef(new Animated.Value(0)).current;
@@ -76,9 +77,11 @@ const FloatingActionIcons = ({
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.pill} onPress={onFilterPress || (() => {})}>
-        <Ionicons name="options-outline" size={20} color="#fff" />
-      </TouchableOpacity>
+      {showFilter ? (
+        <TouchableOpacity style={styles.pill} onPress={onFilterPress || (() => {})}>
+          <Ionicons name="options-outline" size={20} color="#fff" />
+        </TouchableOpacity>
+      ) : null}
 
       {/* ❤️ Like */}
       <TouchableOpacity style={styles.pill} onPress={handleLikePress}>

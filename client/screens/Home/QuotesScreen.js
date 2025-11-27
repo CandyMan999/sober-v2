@@ -6,8 +6,13 @@ import {
   StyleSheet,
   ActivityIndicator,
   FlatList,
+  Modal,
+  TouchableOpacity,
+  Pressable,
+  Animated,
 } from "react-native";
 import { useIsFocused } from "@react-navigation/native";
+import { Ionicons } from "@expo/vector-icons";
 import { GET_QUOTES_QUERY } from "../../GraphQL/queries";
 import FeedLayout from "../../components/FeedLayout";
 import { useClient } from "../../client";
@@ -15,6 +20,8 @@ import AlertModal from "../../components/AlertModal";
 import { TOGGLE_LIKE_MUTATION } from "../../GraphQL/mutations";
 import { getToken } from "../../utils/helpers";
 import Context from "../../context";
+
+const soberLogo = require("../../assets/icon.png");
 
 // 👇 module-level flag: survives navigation, resets when app reloads
 let hasShownQuotesAlertThisSession = false;
@@ -30,6 +37,8 @@ const QuotesScreen = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [containerHeight, setContainerHeight] = useState(null);
+  const [showSaveSheet, setShowSaveSheet] = useState(false);
+  const [saveAnim] = useState(() => new Animated.Value(0));
 
   // “Add your own quote” hint
   const [showAlert, setShowAlert] = useState(false);
@@ -198,6 +207,73 @@ const QuotesScreen = () => {
     setContainerHeight(height);
   };
 
+  const openSaveSheet = () => {
+    setShowSaveSheet(true);
+    Animated.spring(saveAnim, {
+      toValue: 1,
+      useNativeDriver: true,
+      damping: 16,
+      stiffness: 180,
+      mass: 0.9,
+    }).start();
+  };
+
+  const closeSaveSheet = () => {
+    Animated.spring(saveAnim, {
+      toValue: 0,
+      useNativeDriver: true,
+      damping: 16,
+      stiffness: 180,
+      mass: 0.9,
+    }).start(({ finished }) => {
+      if (finished) {
+        setShowSaveSheet(false);
+      }
+    });
+  };
+
+  const renderSaveSheet = () => (
+    <Modal
+      transparent
+      animationType="none"
+      visible={showSaveSheet}
+      onRequestClose={closeSaveSheet}
+    >
+      <Pressable style={styles.sheetBackdrop} onPress={closeSaveSheet} />
+      <View style={styles.sheetContainer}>
+        <Animated.View
+          style={[
+            styles.sheet,
+            {
+              transform: [
+                {
+                  translateY: saveAnim.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: [140, 0],
+                  }),
+                },
+              ],
+            },
+          ]}
+        >
+          <Text style={styles.sheetTitle}>Quote options</Text>
+
+          <TouchableOpacity style={styles.sheetAction} onPress={closeSaveSheet}>
+            <View style={styles.sheetActionLeft}>
+              <Ionicons name="bookmark-outline" size={20} color="#fef3c7" />
+              <Text style={styles.sheetActionText}>Save</Text>
+            </View>
+            <Ionicons name="chevron-forward" size={18} color="#9ca3af" />
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.sheetCancel} onPress={closeSaveSheet}>
+            <Text style={styles.sheetCancelText}>Close</Text>
+          </TouchableOpacity>
+        </Animated.View>
+      </View>
+    </Modal>
+  );
+
   const renderAlert = () => (
     <AlertModal
       visible={showAlert}
@@ -259,12 +335,13 @@ const QuotesScreen = () => {
         ? `@${item.user.username}`
         : "Sober Motivation";
     const avatarUrl = item.user?.profilePicUrl || null;
+    const fallbackAvatar = !item.user ? soberLogo : null;
 
     return (
       <View style={styles.root} onLayout={handleLayout}>
         {renderAlert()}
         <FeedLayout
-          caption={handle}
+          caption={null}
           commentSheetCaption={`“${item.text}”`}
           likesCount={item.likesCount}
           commentsCount={item.commentsCount}
@@ -274,6 +351,10 @@ const QuotesScreen = () => {
           postAuthor={item.user}
           postCreatedAt={item.createdAt}
           avatarUrl={avatarUrl}
+          fallbackAvatarSource={fallbackAvatar}
+          authorLabel={handle}
+          showFilter={false}
+          onMorePress={openSaveSheet}
           isLiked={isQuoteLiked(item)}
           onLikePress={() => handleToggleLike(item.id)}
           onCommentAdded={(newComment) => handleCommentAdded(item.id, newComment)}
@@ -282,6 +363,7 @@ const QuotesScreen = () => {
             <Text style={styles.quoteText}>“{item.text}”</Text>
           </View>
         </FeedLayout>
+        {renderSaveSheet()}
       </View>
     );
   }
@@ -293,11 +375,12 @@ const QuotesScreen = () => {
         : "Sober Motivation";
 
     const avatarUrl = item.user?.profilePicUrl || null;
+    const fallbackAvatar = !item.user ? soberLogo : null;
 
     return (
       <View style={{ height: containerHeight }}>
         <FeedLayout
-          caption={handle}
+          caption={null}
           commentSheetCaption={`“${item.text}”`}
           likesCount={item.likesCount}
           commentsCount={item.commentsCount}
@@ -307,6 +390,10 @@ const QuotesScreen = () => {
           postAuthor={item.user}
           postCreatedAt={item.createdAt}
           avatarUrl={avatarUrl}
+          fallbackAvatarSource={fallbackAvatar}
+          authorLabel={handle}
+          showFilter={false}
+          onMorePress={openSaveSheet}
           isLiked={isQuoteLiked(item)}
           onLikePress={() => handleToggleLike(item.id)}
           onCommentAdded={(newComment) => handleCommentAdded(item.id, newComment)}
@@ -338,6 +425,7 @@ const QuotesScreen = () => {
           index,
         })}
       />
+      {renderSaveSheet()}
     </View>
   );
 };
@@ -365,6 +453,60 @@ const styles = StyleSheet.create({
     color: "#f97373",
     fontSize: 16,
     textAlign: "center",
+  },
+  sheetBackdrop: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "rgba(0,0,0,0.45)",
+  },
+  sheetContainer: {
+    flex: 1,
+    justifyContent: "flex-end",
+  },
+  sheet: {
+    marginHorizontal: 16,
+    marginBottom: 18,
+    paddingHorizontal: 18,
+    paddingVertical: 18,
+    backgroundColor: "#0f172a",
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: "rgba(245,158,11,0.35)",
+  },
+  sheetTitle: {
+    color: "#e5e7eb",
+    fontSize: 16,
+    fontWeight: "700",
+    marginBottom: 14,
+  },
+  sheetAction: {
+    paddingVertical: 12,
+    paddingHorizontal: 12,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    backgroundColor: "rgba(30,41,59,0.85)",
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: "rgba(148,163,184,0.35)",
+    marginBottom: 10,
+  },
+  sheetActionLeft: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  sheetActionText: {
+    color: "#fef3c7",
+    fontSize: 16,
+    fontWeight: "700",
+    marginLeft: 12,
+  },
+  sheetCancel: {
+    paddingVertical: 10,
+  },
+  sheetCancelText: {
+    color: "#93c5fd",
+    textAlign: "center",
+    fontWeight: "600",
   },
 });
 
