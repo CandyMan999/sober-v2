@@ -317,15 +317,17 @@ const ProfileScreen = ({ navigation }) => {
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 48 }}>
+      <View style={styles.editIconWrapper}>
+        <TouchableOpacity style={styles.editIconButton} onPress={navigateToEditProfile}>
+          <Feather name="edit-3" size={18} color="#f59e0b" />
+        </TouchableOpacity>
+      </View>
       <View style={styles.bodyPadding}>
         <View style={styles.headerRow}>
           <View style={styles.avatarColumn}>
             {renderAvatar(profileData?.profilePicUrl, ["#fcd34d", "#f97316"])}
             <View style={styles.usernameRow}>
               <Text style={styles.avatarLabel}>{profileData?.username || "Your name"}</Text>
-              <TouchableOpacity style={styles.usernameEdit} onPress={navigateToEditProfile}>
-                <Feather name="edit-3" size={14} color="#f59e0b" />
-              </TouchableOpacity>
             </View>
           </View>
         </View>
@@ -419,6 +421,16 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flex: 1,
   },
+  editIconWrapper: {
+    paddingHorizontal: 16,
+    marginBottom: 8,
+    alignItems: "flex-end",
+  },
+  editIconButton: {
+    padding: 10,
+    borderRadius: 999,
+    backgroundColor: "rgba(245,158,11,0.12)",
+  },
   avatarContainer: {
     width: AVATAR_SIZE + 16,
     height: AVATAR_SIZE + 16,
@@ -462,10 +474,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 8,
   },
-  usernameEdit: {
-    marginLeft: 8,
-    padding: 6,
-  },
   metricsRow: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -502,7 +510,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     backgroundColor: "#f59e0b",
     paddingHorizontal: 14,
-    paddingVertical: 10,
+    paddingVertical: 8,
     borderRadius: 12,
     flexDirection: "row",
     alignItems: "center",
