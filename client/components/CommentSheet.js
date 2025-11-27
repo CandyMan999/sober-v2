@@ -35,6 +35,8 @@ import {
 import { getToken } from "../utils/helpers";
 import Context from "../context";
 
+const soberLogo = require("../assets/icon.png");
+
 const { height: WINDOW_HEIGHT } = Dimensions.get("window");
 const SHEET_HEIGHT = Math.round(WINDOW_HEIGHT * 0.8);
 const EMOJI_ROW = ["❤️", "😍", "🔥", "👏", "😮", "🙏", "👍", "😢", "😂", "🎉"];
@@ -102,6 +104,7 @@ const CommentSheet = ({
   const likeScales = useRef({});
   const likeBurstScales = useRef({});
   const likeBurstOpacities = useRef({});
+  const isQuoteSheet = targetType === "QUOTE";
 
   useEffect(() => {
     if (visible) {
@@ -271,6 +274,17 @@ const CommentSheet = ({
 
   const commentTargetId = targetId || postId;
   const isQuoteTarget = targetType === "QUOTE";
+  const effectiveAuthor =
+    isQuoteSheet && !postAuthor ? { username: "Sober Motivation" } : postAuthor;
+  const avatarSource = effectiveAuthor?.profilePicUrl
+    ? { uri: effectiveAuthor.profilePicUrl }
+    : isQuoteSheet && !postAuthor
+    ? soberLogo
+    : null;
+  const posterName =
+    effectiveAuthor?.username ||
+    effectiveAuthor?.name ||
+    (isQuoteSheet ? "Sober Motivation" : "Unknown");
 
   const toggleReplies = (commentId) => {
     setExpandedThreads((prev) => {
@@ -604,11 +618,8 @@ const CommentSheet = ({
                   style={styles.avatarRing}
                 >
                   <View style={styles.avatarSmallWrapper}>
-                    {postAuthor?.profilePicUrl ? (
-                      <Image
-                        source={{ uri: postAuthor.profilePicUrl }}
-                        style={styles.avatarSmall}
-                      />
+                    {avatarSource ? (
+                      <Image source={avatarSource} style={styles.avatarSmall} />
                     ) : (
                       <View style={[styles.avatarSmall, styles.avatarFallback]}>
                         <Ionicons name="person" size={16} color="#111827" />
@@ -619,7 +630,7 @@ const CommentSheet = ({
 
                 <View style={styles.posterMeta}>
                   <Text style={styles.posterName} numberOfLines={1}>
-                    {postAuthor?.username || postAuthor?.name || "Unknown"}
+                    {posterName}
                   </Text>
                 </View>
 
@@ -633,7 +644,7 @@ const CommentSheet = ({
                 </TouchableOpacity>
               </View>
 
-              {postCaption ? (
+              {postCaption && !isQuoteSheet ? (
                 <Text style={styles.postCaption}>{postCaption}</Text>
               ) : null}
 
