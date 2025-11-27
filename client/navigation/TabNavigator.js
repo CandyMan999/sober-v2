@@ -23,6 +23,7 @@ import BuddiesScreen from "../screens/Profile/BuddiesScreen";
 import LikesScreen from "../screens/Profile/LikesScreen";
 import NotificationsScreen from "../screens/Profile/NotificationsScreen";
 import NotificationSettingsScreen from "../screens/Profile/NotificationSettingsScreen";
+import EditProfileScreen from "../screens/Profile/EditProfileScreen";
 
 const Tab = createBottomTabNavigator();
 const HomeStack = createStackNavigator();
@@ -59,6 +60,7 @@ const ProfileStackScreen = () => (
       name="NotificationSettings"
       component={NotificationSettingsScreen}
     />
+    <ProfileStack.Screen name="EditProfile" component={EditProfileScreen} />
   </ProfileStack.Navigator>
 );
 
