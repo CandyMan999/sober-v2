@@ -148,11 +148,19 @@ const FilterSheet = ({ visible, onClose, activeFilter, onFilterChange }) => {
                     style={styles.chipAll}
                     accessibilityLabel="Show all posts"
                   >
-                    <View style={styles.liveBadgeInline}>
+                    <View style={styles.liveBadgeFloating}>
                       <View style={styles.liveDot} />
                       <Text style={styles.liveBadgeText}>Live</Text>
                     </View>
-                    <Text style={styles.chipAllText}>All posts</Text>
+                    <View style={styles.chipAllContent}>
+                      <Ionicons
+                        name="globe-outline"
+                        size={13}
+                        color="#38bdf8"
+                        style={{ marginRight: 6 }}
+                      />
+                      <Text style={styles.chipAllText}>All posts</Text>
+                    </View>
                   </TouchableOpacity>
                 ) : null}
               </View>
@@ -337,6 +345,7 @@ const styles = StyleSheet.create({
     letterSpacing: 0.7,
   },
   chipAll: {
+    position: "relative",
     flexDirection: "row",
     alignItems: "center",
     paddingHorizontal: 9,
@@ -347,6 +356,10 @@ const styles = StyleSheet.create({
     borderColor: "rgba(148,163,184,0.7)",
     marginLeft: 8,
   },
+  chipAllContent: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
   chipAllText: {
     color: "#e2e8f0",
     fontSize: 10,
@@ -354,14 +367,16 @@ const styles = StyleSheet.create({
     textTransform: "uppercase",
     letterSpacing: 0.7,
   },
-  liveBadgeInline: {
+  liveBadgeFloating: {
+    position: "absolute",
+    top: -8,
+    right: 8,
     flexDirection: "row",
     alignItems: "center",
-    paddingHorizontal: 8,
-    paddingVertical: 2,
+    paddingHorizontal: 7,
+    paddingVertical: 3,
     borderRadius: 999,
-    backgroundColor: "rgba(14,165,233,0.12)",
-    marginRight: 8,
+    backgroundColor: "#020617",
     borderWidth: 1,
     borderColor: "rgba(56,189,248,0.65)",
   },
