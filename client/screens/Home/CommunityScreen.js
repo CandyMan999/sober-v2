@@ -479,16 +479,6 @@ const CommunityScreen = () => {
     </View>
   );
 
-  const renderFilterStatus = useCallback(() => {
-    if (activeFilter) return null;
-
-    return (
-      <View style={styles.filterStatusBadge} pointerEvents="none">
-        <Text style={styles.filterStatusText}>All posts</Text>
-      </View>
-    );
-  }, [activeFilter]);
-
   const renderMedia = (item, index) => {
     const type = item.mediaType || "VIDEO";
     const isUnderReview = item.review && !reviewBypass[item.id];
@@ -727,9 +717,6 @@ const CommunityScreen = () => {
   if (loading) {
     return (
       <View style={styles.root} onLayout={handleLayout}>
-        <View style={styles.filterStatusContainer} pointerEvents="none">
-          {renderFilterStatus()}
-        </View>
         <FeedLayout caption="Loading posts...">
           <View style={styles.center}>
             <ActivityIndicator size="large" color="#f59e0b" />
@@ -742,9 +729,6 @@ const CommunityScreen = () => {
   if (error) {
     return (
       <View style={styles.root} onLayout={handleLayout}>
-        <View style={styles.filterStatusContainer} pointerEvents="none">
-          {renderFilterStatus()}
-        </View>
         <FeedLayout caption="Community">
           <View style={styles.center}>
             <Text style={styles.errorText}>{error}</Text>
@@ -757,9 +741,6 @@ const CommunityScreen = () => {
   if (!posts.length) {
     return (
       <View style={styles.root} onLayout={handleLayout}>
-        <View style={styles.filterStatusContainer} pointerEvents="none">
-          {renderFilterStatus()}
-        </View>
         <FeedLayout caption="Community">
           <View style={styles.center}>
             <Text style={styles.emptyText}>No posts yet. Check back soon.</Text>
@@ -788,9 +769,6 @@ const CommunityScreen = () => {
 
     return (
       <View style={styles.root} onLayout={handleLayout}>
-        <View style={styles.filterStatusContainer} pointerEvents="none">
-          {renderFilterStatus()}
-        </View>
         <FeedLayout
           caption={firstPost.text || ""}
           captionStyle={firstIsMilestone ? styles.milestoneCaption : undefined}
@@ -826,9 +804,6 @@ const CommunityScreen = () => {
 
   return (
     <View style={styles.root} onLayout={handleLayout}>
-      <View style={styles.filterStatusContainer} pointerEvents="none">
-        {renderFilterStatus()}
-      </View>
       <FlatList
         data={posts}
         keyExtractor={(item) => item.id}
@@ -966,27 +941,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-  },
-  filterStatusContainer: {
-    position: "absolute",
-    top: 12,
-    left: 12,
-    zIndex: 2,
-  },
-  filterStatusBadge: {
-    flexDirection: "row",
-    alignItems: "center",
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    borderRadius: 999,
-    backgroundColor: "rgba(15,23,42,0.85)",
-    borderWidth: 1,
-    borderColor: "rgba(56,189,248,0.6)",
-  },
-  filterStatusText: {
-    color: "#e2e8f0",
-    fontWeight: "700",
-    fontSize: 13,
   },
   emptyText: {
     color: "#fff",

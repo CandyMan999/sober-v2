@@ -110,26 +110,6 @@ const FilterSheet = ({ visible, onClose, activeFilter, onFilterChange }) => {
                   <Text style={styles.subtitle}>
                     Switch lanes without leaving the feed.
                   </Text>
-
-                  <View style={styles.modeBadge}>
-                    <Ionicons
-                      name={
-                        localFilter === "Nearby"
-                          ? "location-outline"
-                          : localFilter === "Milestones"
-                          ? "ribbon-outline"
-                          : localFilter === "Images"
-                          ? "image-outline"
-                          : "globe-outline"
-                      }
-                      size={14}
-                      color="#38bdf8"
-                      style={{ marginRight: 6 }}
-                    />
-                    <Text style={styles.modeBadgeText}>
-                      {localFilter ? `${localFilter} only` : "All posts"}
-                    </Text>
-                  </View>
                 </View>
 
                 <TouchableOpacity
@@ -168,6 +148,10 @@ const FilterSheet = ({ visible, onClose, activeFilter, onFilterChange }) => {
                     style={styles.chipAll}
                     accessibilityLabel="Show all posts"
                   >
+                    <View style={styles.liveBadgeInline}>
+                      <View style={styles.liveDot} />
+                      <Text style={styles.liveBadgeText}>Live</Text>
+                    </View>
                     <Text style={styles.chipAllText}>All posts</Text>
                   </TouchableOpacity>
                 ) : null}
@@ -194,12 +178,10 @@ const FilterSheet = ({ visible, onClose, activeFilter, onFilterChange }) => {
                         ]}
                       >
                         {/* Live pill floating slightly above the badge when active */}
-                        {option.badge && isActive && (
+                        {isActive && (
                           <View style={styles.liveBadge}>
                             <View style={styles.liveDot} />
-                            <Text style={styles.liveBadgeText}>
-                              {option.badge}
-                            </Text>
+                            <Text style={styles.liveBadgeText}>Live</Text>
                           </View>
                         )}
 
@@ -299,23 +281,6 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingRight: 8,
   },
-  modeBadge: {
-    marginTop: 8,
-    alignSelf: "flex-start",
-    flexDirection: "row",
-    alignItems: "center",
-    paddingHorizontal: 10,
-    paddingVertical: 6,
-    borderRadius: 999,
-    backgroundColor: "rgba(15,23,42,0.9)",
-    borderWidth: 1,
-    borderColor: "rgba(56,189,248,0.5)",
-  },
-  modeBadgeText: {
-    color: "#e5e7eb",
-    fontSize: 13,
-    fontWeight: "700",
-  },
   title: {
     color: "#fef3c7",
     fontSize: 18,
@@ -388,6 +353,17 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     textTransform: "uppercase",
     letterSpacing: 0.7,
+  },
+  liveBadgeInline: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    borderRadius: 999,
+    backgroundColor: "rgba(14,165,233,0.12)",
+    marginRight: 8,
+    borderWidth: 1,
+    borderColor: "rgba(56,189,248,0.65)",
   },
   sectionHeaderRow: {
     flexDirection: "row",
