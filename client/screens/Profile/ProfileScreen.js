@@ -165,23 +165,18 @@ const ProfileScreen = ({ navigation }) => {
     );
   };
 
-  const renderContent = (tabKey) => {
-    if (tabKey === "DRUNK") {
+  const renderContent = (tabType) => {
+    if (tabType === "DRUNK") {
       return renderDrunkContent();
     }
 
-    const data =
-      tabKey === "POSTS"
-        ? posts
-        : tabKey === "QUOTES"
-        ? quotes
-        : savedPosts;
+    const data = tabType === "POSTS" ? posts : tabType === "QUOTES" ? quotes : savedPosts;
 
     if (!data?.length) {
       const emptyCopy =
-        tabKey === "POSTS"
+        tabType === "POSTS"
           ? "No posts yet"
-          : tabKey === "QUOTES"
+          : tabType === "QUOTES"
           ? "No quotes yet"
           : "No saved posts yet";
       return (
@@ -192,9 +187,9 @@ const ProfileScreen = ({ navigation }) => {
     }
 
     const renderer =
-      tabKey === "QUOTES"
+      tabType === "QUOTES"
         ? renderQuoteTile
-        : ({ item }) => renderPostTile({ item, saved: tabKey === "SAVED" });
+        : ({ item }) => renderPostTile({ item, saved: tabType === "SAVED" });
 
     return (
       <FlatList
@@ -229,47 +224,49 @@ const ProfileScreen = ({ navigation }) => {
     navigation.navigate("EditProfile");
   };
 
-  const routes = [
-    { key: "POSTS", icon: "images" },
-    { key: "QUOTES", icon: "format-quote-close" },
-    { key: "SAVED", icon: "bookmark" },
-    { key: "DRUNK", icon: "wine-bottle" },
-  ];
+  const tabConfig = useMemo(
+    () => [
+      { key: "0", icon: "images", type: "POSTS" },
+      { key: "1", icon: "format-quote-close", type: "QUOTES" },
+      { key: "2", icon: "bookmark", type: "SAVED" },
+      { key: "3", icon: "wine-bottle", type: "DRUNK" },
+    ],
+    []
+  );
 
-  const activeTab = routes[tabIndex]?.key;
+  const routes = useMemo(() => tabConfig.map(({ key }) => ({ key })), [tabConfig]);
+  const activeTab = tabConfig[tabIndex]?.type;
 
   const gridHeight = useMemo(() => {
     if (activeTab === "DRUNK") {
       return profileData?.drunkPicUrl ? 360 : 180;
     }
 
-    const dataLength =
-      activeTab === "POSTS"
-        ? posts.length
-        : activeTab === "QUOTES"
-        ? quotes.length
-        : savedPosts.length;
+    const postRows = Math.max(1, Math.ceil(posts.length / 3));
+    const quoteRows = Math.max(1, Math.ceil(quotes.length / 3));
+    const savedRows = Math.max(1, Math.ceil(savedPosts.length / 3));
 
-    if (!dataLength) return 180;
-    const rows = Math.ceil(dataLength / 3);
-    return rows * 140;
+    const maxRows = Math.max(postRows, quoteRows, savedRows);
+    return maxRows * 140;
   }, [activeTab, posts.length, quotes.length, savedPosts.length, profileData?.drunkPicUrl]);
 
-  const renderScene = ({ route }) => (
-    <View style={styles.scene}>{renderContent(route.key)}</View>
-  );
+  const renderScene = ({ route }) => {
+    const tabIdx = Number(route.key);
+    const tabType = tabConfig[tabIdx]?.type || "POSTS";
+    return <View style={styles.scene}>{renderContent(tabType)}</View>;
+  };
 
   const renderTabBar = () => (
     <View style={styles.tabBar}>
-      {routes.map((route, i) => {
+      {tabConfig.map((route, i) => {
         const focused = tabIndex === i;
         const color = focused ? "#f59e0b" : "#9ca3af";
         const icon =
-          route.key === "POSTS" ? (
+          route.type === "POSTS" ? (
             <FontAwesome6 name={route.icon} size={22} color={color} />
-          ) : route.key === "DRUNK" ? (
+          ) : route.type === "DRUNK" ? (
             <FontAwesome5 name={route.icon} size={22} color={color} />
-          ) : route.key === "QUOTES" ? (
+          ) : route.type === "QUOTES" ? (
             <MaterialCommunityIcons name={route.icon} size={24} color={color} />
           ) : (
             <Feather name={route.icon} size={22} color={color} />
