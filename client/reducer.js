@@ -12,6 +12,12 @@ export default function reducer(state, { type, payload }) {
         user: payload,
       };
 
+    case "SET_PROFILE_OVERVIEW":
+      return {
+        ...state,
+        profileOverview: payload,
+      };
+
     case "CURRENT_POSITION":
       return {
         ...state,

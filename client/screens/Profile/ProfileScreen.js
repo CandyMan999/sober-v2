@@ -24,19 +24,21 @@ import { PROFILE_OVERVIEW_QUERY, FETCH_ME_QUERY } from "../../GraphQL/queries";
 const AVATAR_SIZE = 110;
 
 const ProfileScreen = ({ navigation }) => {
-  const { dispatch } = useContext(Context);
+  const { state, dispatch } = useContext(Context);
   const client = useClient();
   const layout = useWindowDimensions();
+  const cachedOverview = state?.profileOverview;
+  const hasCachedProfile = Boolean(cachedOverview);
   const [loadingSections, setLoadingSections] = useState({
-    profile: true,
-    posts: true,
-    quotes: true,
-    saved: true,
+    profile: !hasCachedProfile,
+    posts: !hasCachedProfile,
+    quotes: !hasCachedProfile,
+    saved: !hasCachedProfile,
   });
-  const [profileData, setProfileData] = useState(null);
-  const [posts, setPosts] = useState([]);
-  const [quotes, setQuotes] = useState([]);
-  const [savedPosts, setSavedPosts] = useState([]);
+  const [profileData, setProfileData] = useState(cachedOverview?.user || null);
+  const [posts, setPosts] = useState(cachedOverview?.posts || []);
+  const [quotes, setQuotes] = useState(cachedOverview?.quotes || []);
+  const [savedPosts, setSavedPosts] = useState(cachedOverview?.savedPosts || []);
   const [tabIndex, setTabIndex] = useState(0);
 
   const counts = useMemo(() => {
@@ -50,6 +52,16 @@ const ProfileScreen = ({ navigation }) => {
       notifications: 0,
     };
   }, [posts, profileData]);
+
+  useEffect(() => {
+    if (!cachedOverview) return;
+
+    setProfileData(cachedOverview.user || null);
+    setPosts(cachedOverview.posts || []);
+    setQuotes(cachedOverview.quotes || []);
+    setSavedPosts(cachedOverview.savedPosts || []);
+    setLoadingSections({ profile: false, posts: false, quotes: false, saved: false });
+  }, [cachedOverview]);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -67,6 +79,13 @@ const ProfileScreen = ({ navigation }) => {
         setQuotes(overview?.quotes || []);
         setSavedPosts(overview?.savedPosts || []);
 
+        if (overview) {
+          dispatch({ type: "SET_PROFILE_OVERVIEW", payload: overview });
+          if (overview.user) {
+            dispatch({ type: "SET_USER", payload: overview.user });
+          }
+        }
+
         const meData = await client.request(FETCH_ME_QUERY, { token });
         const me = meData?.fetchMe;
         if (me) {
@@ -80,7 +99,7 @@ const ProfileScreen = ({ navigation }) => {
     };
 
     fetchProfile();
-  }, [client, dispatch]);
+  }, [cachedOverview, client, dispatch]);
 
   const handleNavigate = (screen) => {
     navigation.navigate(screen);

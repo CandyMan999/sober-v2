@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { TouchableOpacity, View, StyleSheet } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -25,6 +25,10 @@ import NotificationsScreen from "../screens/Profile/NotificationsScreen";
 import NotificationSettingsScreen from "../screens/Profile/NotificationSettingsScreen";
 import EditProfileScreen from "../screens/Profile/EditProfileScreen";
 import AddWhyScreen from "../screens/Profile/AddWhyScreen";
+import Context from "../context";
+import { useClient } from "../client";
+import { getToken } from "../utils/helpers";
+import { PROFILE_OVERVIEW_QUERY, FETCH_ME_QUERY } from "../GraphQL/queries";
 
 const Tab = createBottomTabNavigator();
 const HomeStack = createStackNavigator();
@@ -128,6 +132,44 @@ const PlusTabButton = (props) => {
 };
 
 const TabNavigator = () => {
+  const { state, dispatch } = useContext(Context);
+  const client = useClient();
+
+  useEffect(() => {
+    if (state?.profileOverview) return;
+
+    let mounted = true;
+
+    const warmProfile = async () => {
+      try {
+        const token = await getToken();
+        if (!token) return;
+
+        const overviewResponse = await client.request(PROFILE_OVERVIEW_QUERY, { token });
+        const overview = overviewResponse?.profileOverview;
+        if (overview && mounted) {
+          dispatch({ type: "SET_PROFILE_OVERVIEW", payload: overview });
+          if (overview.user) {
+            dispatch({ type: "SET_USER", payload: overview.user });
+          }
+        }
+
+        const meResponse = await client.request(FETCH_ME_QUERY, { token });
+        if (meResponse?.fetchMe && mounted) {
+          dispatch({ type: "SET_USER", payload: meResponse.fetchMe });
+        }
+      } catch (err) {
+        console.log("Preload profile failed", err);
+      }
+    };
+
+    warmProfile();
+
+    return () => {
+      mounted = false;
+    };
+  }, [client, dispatch, state?.profileOverview]);
+
   return (
     <Tab.Navigator
       screenOptions={{
