@@ -48,6 +48,8 @@ const ProfileScreen = ({ navigation }) => {
     };
   }, [posts, profileData]);
 
+  const hasWhy = Boolean(profileData?.whyStatement?.trim());
+
   useEffect(() => {
     if (!cachedOverview) return;
 
@@ -360,9 +362,18 @@ const ProfileScreen = ({ navigation }) => {
               "Share a quick reminder of why you chose sobriety. This helps keep you grounded."}
             ”
           </Text>
-          <TouchableOpacity style={styles.addWhyButton} onPress={() => navigation.navigate("AddWhy")}>
-            <Feather name="plus" size={16} color="#0b1220" />
-            <Text style={styles.addWhyText}>Add Why</Text>
+          <TouchableOpacity
+            style={[styles.addWhyButton, hasWhy && styles.changeWhyButton]}
+            onPress={() => navigation.navigate("AddWhy")}
+          >
+            <Feather
+              name={hasWhy ? "refresh-cw" : "plus"}
+              size={16}
+              color={hasWhy ? "#0ea5e9" : "#0b1220"}
+            />
+            <Text style={[styles.addWhyText, hasWhy && styles.changeWhyText]}>
+              {hasWhy ? "Change" : "Add Why"}
+            </Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -500,6 +511,14 @@ const styles = StyleSheet.create({
     color: "#0b1220",
     fontWeight: "700",
     marginLeft: 8,
+  },
+  changeWhyButton: {
+    backgroundColor: "#0b1220",
+    borderWidth: 1,
+    borderColor: "#0ea5e9",
+  },
+  changeWhyText: {
+    color: "#0ea5e9",
   },
   tabBar: {
     flexDirection: "row",
