@@ -15,7 +15,6 @@ import { LinearGradient } from "expo-linear-gradient";
 const SHEET_HEIGHT = 320;
 
 const FILTER_OPTIONS = [
-  { label: "All", icon: "globe-outline" },
   { label: "Nearby", icon: "location-outline", badge: "Live" },
   { label: "Friends", icon: "people-outline" },
   { label: "Milestones", icon: "ribbon-outline" },
@@ -24,7 +23,7 @@ const FILTER_OPTIONS = [
 
 const FilterSheet = ({ visible, onClose, activeFilter, onFilterChange }) => {
   const [mounted, setMounted] = useState(visible);
-  const [localFilter, setLocalFilter] = useState(activeFilter || "All");
+  const [localFilter, setLocalFilter] = useState(activeFilter || null);
   const sheetAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
@@ -69,14 +68,14 @@ const FilterSheet = ({ visible, onClose, activeFilter, onFilterChange }) => {
   );
 
   useEffect(() => {
-    if (!activeFilter) return;
-    setLocalFilter(activeFilter);
+    setLocalFilter(activeFilter || null);
   }, [activeFilter]);
 
   const handleFilterPress = (option) => {
     if (option.label === "Friends") return; // not yet supported
-    setLocalFilter(option.label);
-    onFilterChange?.(option.label);
+    const nextValue = localFilter === option.label ? null : option.label;
+    setLocalFilter(nextValue);
+    onFilterChange?.(nextValue);
   };
 
   if (!mounted) return null;
@@ -111,6 +110,26 @@ const FilterSheet = ({ visible, onClose, activeFilter, onFilterChange }) => {
                   <Text style={styles.subtitle}>
                     Switch lanes without leaving the feed.
                   </Text>
+
+                  <View style={styles.modeBadge}>
+                    <Ionicons
+                      name={
+                        localFilter === "Nearby"
+                          ? "location-outline"
+                          : localFilter === "Milestones"
+                          ? "ribbon-outline"
+                          : localFilter === "Images"
+                          ? "image-outline"
+                          : "globe-outline"
+                      }
+                      size={14}
+                      color="#38bdf8"
+                      style={{ marginRight: 6 }}
+                    />
+                    <Text style={styles.modeBadgeText}>
+                      {localFilter ? `${localFilter} only` : "All posts"}
+                    </Text>
+                  </View>
                 </View>
 
                 <TouchableOpacity
@@ -268,6 +287,23 @@ const styles = StyleSheet.create({
   headerTextBlock: {
     flex: 1,
     paddingRight: 8,
+  },
+  modeBadge: {
+    marginTop: 8,
+    alignSelf: "flex-start",
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderRadius: 999,
+    backgroundColor: "rgba(15,23,42,0.9)",
+    borderWidth: 1,
+    borderColor: "rgba(56,189,248,0.5)",
+  },
+  modeBadgeText: {
+    color: "#e5e7eb",
+    fontSize: 13,
+    fontWeight: "700",
   },
   title: {
     color: "#fef3c7",

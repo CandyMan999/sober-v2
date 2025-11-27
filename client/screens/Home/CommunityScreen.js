@@ -63,7 +63,7 @@ const CommunityScreen = () => {
   const [showTutorial, setShowTutorial] = useState(false);
   const [reviewBypass, setReviewBypass] = useState({});
   const [showFilterSheet, setShowFilterSheet] = useState(false);
-  const [activeFilter, setActiveFilter] = useState("All");
+  const [activeFilter, setActiveFilter] = useState(null);
   const sheetAnim = useRef(new Animated.Value(0)).current;
 
   const isPostLiked = useCallback(
@@ -479,6 +479,33 @@ const CommunityScreen = () => {
     </View>
   );
 
+  const renderFilterStatus = useCallback(() => {
+    const label = activeFilter || "All";
+    const iconName =
+      label === "Nearby"
+        ? "location-outline"
+        : label === "Milestones"
+        ? "ribbon-outline"
+        : label === "Images"
+        ? "image-outline"
+        : "globe-outline";
+
+    const text = label === "All" ? "All posts" : `${label} only`;
+
+    return (
+      <View style={styles.filterStatusBadge} pointerEvents="none">
+        <Ionicons
+          name={iconName}
+          size={14}
+          color="#38bdf8"
+          style={styles.filterStatusIcon}
+        />
+        <Text style={styles.filterStatusText}>{text}</Text>
+        {label === "Nearby" ? <View style={styles.filterLiveDot} /> : null}
+      </View>
+    );
+  }, [activeFilter]);
+
   const renderMedia = (item, index) => {
     const type = item.mediaType || "VIDEO";
     const isUnderReview = item.review && !reviewBypass[item.id];
@@ -547,7 +574,7 @@ const CommunityScreen = () => {
   const handleFilterChange = useCallback(
     (nextFilter) => {
       if (nextFilter === "Friends") return;
-      setActiveFilter(nextFilter);
+      setActiveFilter(nextFilter || null);
       closeFilterSheet();
     },
     [closeFilterSheet]
@@ -717,6 +744,9 @@ const CommunityScreen = () => {
   if (loading) {
     return (
       <View style={styles.root} onLayout={handleLayout}>
+        <View style={styles.filterStatusContainer} pointerEvents="none">
+          {renderFilterStatus()}
+        </View>
         <FeedLayout caption="Loading posts...">
           <View style={styles.center}>
             <ActivityIndicator size="large" color="#f59e0b" />
@@ -729,6 +759,9 @@ const CommunityScreen = () => {
   if (error) {
     return (
       <View style={styles.root} onLayout={handleLayout}>
+        <View style={styles.filterStatusContainer} pointerEvents="none">
+          {renderFilterStatus()}
+        </View>
         <FeedLayout caption="Community">
           <View style={styles.center}>
             <Text style={styles.errorText}>{error}</Text>
@@ -741,6 +774,9 @@ const CommunityScreen = () => {
   if (!posts.length) {
     return (
       <View style={styles.root} onLayout={handleLayout}>
+        <View style={styles.filterStatusContainer} pointerEvents="none">
+          {renderFilterStatus()}
+        </View>
         <FeedLayout caption="Community">
           <View style={styles.center}>
             <Text style={styles.emptyText}>No posts yet. Check back soon.</Text>
@@ -769,6 +805,9 @@ const CommunityScreen = () => {
 
     return (
       <View style={styles.root} onLayout={handleLayout}>
+        <View style={styles.filterStatusContainer} pointerEvents="none">
+          {renderFilterStatus()}
+        </View>
         <FeedLayout
           caption={firstPost.text || ""}
           captionStyle={firstIsMilestone ? styles.milestoneCaption : undefined}
@@ -804,6 +843,9 @@ const CommunityScreen = () => {
 
   return (
     <View style={styles.root} onLayout={handleLayout}>
+      <View style={styles.filterStatusContainer} pointerEvents="none">
+        {renderFilterStatus()}
+      </View>
       <FlatList
         data={posts}
         keyExtractor={(item) => item.id}
@@ -941,6 +983,41 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
+  },
+  filterStatusContainer: {
+    position: "absolute",
+    top: 12,
+    left: 12,
+    zIndex: 2,
+  },
+  filterStatusBadge: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 999,
+    backgroundColor: "rgba(15,23,42,0.85)",
+    borderWidth: 1,
+    borderColor: "rgba(56,189,248,0.6)",
+  },
+  filterStatusIcon: {
+    marginRight: 6,
+  },
+  filterStatusText: {
+    color: "#e2e8f0",
+    fontWeight: "700",
+    fontSize: 13,
+  },
+  filterLiveDot: {
+    width: 8,
+    height: 8,
+    borderRadius: 999,
+    marginLeft: 8,
+    backgroundColor: "#38bdf8",
+    shadowColor: "#38bdf8",
+    shadowOpacity: 0.7,
+    shadowRadius: 6,
+    shadowOffset: { width: 0, height: 1 },
   },
   emptyText: {
     color: "#fff",
