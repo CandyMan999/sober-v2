@@ -125,7 +125,7 @@ const ProfileScreen = ({ navigation }) => {
           />
           <View style={styles.tileFooter}>
             <View style={styles.viewsChip}>
-              <Ionicons name="eye" size={14} color="#3b82f6" />
+              <Ionicons name="eye-outline" size={14} color="#38bdf8" />
               <Text style={styles.viewsText}>{views}</Text>
             </View>
             {saved && <Feather name="bookmark" size={16} color="#fef3c7" />}
