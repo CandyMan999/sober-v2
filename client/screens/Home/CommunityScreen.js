@@ -41,6 +41,16 @@ const { height: WINDOW_HEIGHT } = Dimensions.get("window");
 const PAGE_SIZE = 5;
 const SHEET_HEIGHT = Math.round(WINDOW_HEIGHT * 0.33);
 
+const dedupeById = (list = []) => {
+  const seen = new Set();
+  return list.filter((item) => {
+    const key = item?.id;
+    if (!key || seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+};
+
 const CommunityScreen = () => {
   const client = useClient();
   const isFocused = useIsFocused();
@@ -63,7 +73,9 @@ const CommunityScreen = () => {
   const [showTutorial, setShowTutorial] = useState(false);
   const [reviewBypass, setReviewBypass] = useState({});
   const [showFilterSheet, setShowFilterSheet] = useState(false);
+  const [activeFilter, setActiveFilter] = useState(null);
   const sheetAnim = useRef(new Animated.Value(0)).current;
+  const fetchGenerationRef = useRef(0);
 
   const isPostLiked = useCallback(
     (post) => {
@@ -175,9 +187,49 @@ const CommunityScreen = () => {
   const videoRefs = useRef({});
   const viewedPostsRef = useRef(new Set());
 
+  const buildFilterParams = useCallback(
+    (filterLabel = activeFilter) => {
+      switch (filterLabel) {
+        case "Milestones":
+          return {
+            isMilestone: true,
+            mediaType: null,
+            excludeViewed: true,
+            sortByClosest: false,
+          };
+        case "Images":
+          return {
+            isMilestone: null,
+            mediaType: "IMAGE",
+            excludeViewed: true,
+            sortByClosest: false,
+          };
+        case "Nearby":
+          return {
+            isMilestone: null,
+            mediaType: null,
+            excludeViewed: true,
+            sortByClosest: true,
+          };
+        case "All":
+        default:
+          return {
+            isMilestone: null,
+            mediaType: null,
+            excludeViewed: true,
+            sortByClosest: false,
+          };
+      }
+    },
+    [activeFilter]
+  );
+
   const fetchPosts = useCallback(
-    async (append = false, { isRefresh = false } = {}) => {
+    async (append = false, { isRefresh = false, filterOverride } = {}) => {
+      const requestId = ++fetchGenerationRef.current;
       const nextCursor = append ? cursorRef.current : null;
+
+      const filterParams = buildFilterParams(filterOverride);
 
       try {
         if (!append) {
@@ -201,8 +253,10 @@ const CommunityScreen = () => {
           token: token || null,
           lat: viewerLat,
           long: viewerLong,
-          excludeViewed: true,
-          sortByClosest: true,
+          excludeViewed: filterParams.excludeViewed,
+          sortByClosest: filterParams.sortByClosest,
+          isMilestone: filterParams.isMilestone,
+          mediaType: filterParams.mediaType,
         });
 
         const payload = data?.getAllPosts;
@@ -211,8 +265,14 @@ const CommunityScreen = () => {
           throw new Error("No posts returned");
         }
 
+        if (requestId !== fetchGenerationRef.current) {
+          return;
+        }
+
         setPosts((prev) =>
-          append ? [...prev, ...(payload.posts || [])] : payload.posts || []
+          append
+            ? dedupeById([...prev, ...(payload.posts || [])])
+            : dedupeById(payload.posts || [])
         );
         const nextCursorValue = payload.cursor || null;
         setCursor(nextCursorValue);
@@ -227,14 +287,27 @@ const CommunityScreen = () => {
         setRefreshing(false);
       }
     },
-    [client, state?.user?.lat, state?.user?.long]
+    [buildFilterParams, client, state?.user?.lat, state?.user?.long]
   );
 
+  const fetchPostsRef = useRef(fetchPosts);
+
   useEffect(() => {
-    fetchPosts(false);
-    // Intentionally run once on mount to avoid re-fetch loops
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    fetchPostsRef.current = fetchPosts;
+  }, [fetchPosts]);
+
+  useEffect(() => {
+    setHasMore(true);
+    setCursor(null);
+    cursorRef.current = null;
+    setPosts([]);
+    setError("");
+    setLoading(true);
+    fetchPostsRef.current(false, {
+      isRefresh: true,
+      filterOverride: activeFilter,
+    });
+  }, [activeFilter]);
 
   useEffect(() => {
     const maybeShowTutorial = async () => {
@@ -488,6 +561,15 @@ const CommunityScreen = () => {
 
   const openFilterSheet = useCallback(() => setShowFilterSheet(true), []);
   const closeFilterSheet = useCallback(() => setShowFilterSheet(false), []);
+
+  const handleFilterChange = useCallback(
+    (nextFilter) => {
+      if (nextFilter === "Friends") return;
+      setActiveFilter(nextFilter || null);
+      closeFilterSheet();
+    },
+    [closeFilterSheet]
+  );
 
   const handleToggleSound = () => {
     setIsMuted((prev) => !prev);
@@ -843,7 +925,12 @@ const CommunityScreen = () => {
         </Modal>
       ) : null}
 
-      <FilterSheet visible={showFilterSheet} onClose={closeFilterSheet} />
+      <FilterSheet
+        visible={showFilterSheet}
+        onClose={closeFilterSheet}
+        activeFilter={activeFilter}
+        onFilterChange={handleFilterChange}
+      />
 
       <Modal transparent visible={showTutorial} animationType="fade">
         <Pressable

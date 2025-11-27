@@ -427,6 +427,14 @@ module.exports = {
         closestCity: null,
       };
 
+      const geoLocation =
+        postLocation.lat !== null && postLocation.long !== null
+          ? {
+              type: "Point",
+              coordinates: [postLocation.long, postLocation.lat],
+            }
+          : null;
+
       if (postLocation.lat !== null && postLocation.long !== null) {
         const nearestCity = await findClosestCity(postLocation.lat, postLocation.long);
         if (nearestCity?._id) {
@@ -443,6 +451,7 @@ module.exports = {
         likesCount: 0,
         commentsCount: 0,
         ...postLocation,
+        ...(geoLocation ? { location: geoLocation } : {}),
       });
 
       video.post = newPost._id;

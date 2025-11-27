@@ -78,6 +78,18 @@ const PostSchema = new mongoose.Schema(
       default: null,
     },
 
+    location: {
+      type: {
+        type: String,
+        enum: ["Point"],
+        default: null,
+      },
+      coordinates: {
+        type: [Number],
+        default: null,
+      },
+    },
+
     // Comments (referenced)
     comments: [
       {
@@ -100,5 +112,7 @@ const PostSchema = new mongoose.Schema(
     timestamps: true, // createdAt + updatedAt
   }
 );
+
+PostSchema.index({ location: "2dsphere" });
 
 module.exports = mongoose.model("Post", PostSchema);

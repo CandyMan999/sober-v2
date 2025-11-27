@@ -63,31 +63,52 @@ module.exports = {
       token,
       excludeViewed = false,
       sortByClosest = false,
+      mediaType,
+      isMilestone,
     } = args || {};
 
     const limit = Math.min(limitArg || 10, 50);
     const cursor = cursorArg ? new Date(cursorArg) : null;
 
-    const query = { flagged: false };
-    if (cursor) {
-      query.createdAt = { $lt: cursor };
-    }
-
-    const referenceCoords = {
-      lat: lat ?? null,
-      long: long ?? null,
-    };
-
+    let refLat = lat ?? null;
+    let refLong = long ?? null;
     let viewer = null;
     if (token) {
       viewer = await User.findOne({ token });
       if (viewer) {
-        if (referenceCoords.lat === null || referenceCoords.long === null) {
-          referenceCoords.lat = viewer.lat ?? null;
-          referenceCoords.long = viewer.long ?? null;
-        }
+        if (refLat == null) refLat = viewer.lat ?? null;
+        if (refLong == null) refLong = viewer.long ?? null;
       }
     }
+
+    const baseQuery = { flagged: false };
+    if (cursor) baseQuery.createdAt = { $lt: cursor };
+    if (mediaType) baseQuery.mediaType = mediaType;
+    if (isMilestone) {
+      baseQuery.$or = [
+        { isMilestone: true },
+        { milestoneTag: { $ne: null } },
+        { milestoneDays: { $ne: null } },
+      ];
+    }
+
+    const maxDistanceMiles = 50;
+    const earthRadiusMeters = 6_378_137;
+    const maxDistanceMeters = maxDistanceMiles * 1609.34;
+    const maxDistanceRadians = maxDistanceMeters / earthRadiusMeters;
+
+    const geoFilter =
+      sortByClosest && refLat != null && refLong != null
+        ? {
+            location: {
+              $geoWithin: {
+                $centerSphere: [[refLong, refLat], maxDistanceRadians],
+              },
+            },
+          }
+        : {};
+
+    const query = { ...baseQuery, ...geoFilter };
 
     try {
       const posts = await Post.find(query)
@@ -127,12 +148,17 @@ module.exports = {
           return { post, viewed };
         });
 
+      const referenceCoords = {
+        lat: refLat,
+        long: refLong,
+      };
+
       const postsWithDistance = sanitized.map((entry) => {
         const hasCoords =
-          referenceCoords.lat !== null &&
-          referenceCoords.long !== null &&
-          entry.post.lat !== null &&
-          entry.post.long !== null;
+          referenceCoords.lat != null &&
+          referenceCoords.long != null &&
+          entry.post.lat != null &&
+          entry.post.long != null;
 
         const distance = hasCoords
           ? getDistanceFromCoords(

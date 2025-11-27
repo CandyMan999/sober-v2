@@ -229,6 +229,8 @@ const typeDefs = gql`
       token: String
       excludeViewed: Boolean
       sortByClosest: Boolean
+      mediaType: PostMediaType
+      isMilestone: Boolean
     ): PostConnection!
   }
 
