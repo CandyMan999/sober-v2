@@ -57,10 +57,7 @@ const ProfileStackScreen = () => (
     <ProfileStack.Screen name="Following" component={FollowingScreen} />
     <ProfileStack.Screen name="Buddies" component={BuddiesScreen} />
     <ProfileStack.Screen name="Likes" component={LikesScreen} />
-    <ProfileStack.Screen
-      name="Notifications"
-      component={NotificationsScreen}
-    />
+    <ProfileStack.Screen name="Notifications" component={NotificationsScreen} />
     <ProfileStack.Screen
       name="NotificationSettings"
       component={NotificationSettingsScreen}
@@ -145,7 +142,9 @@ const TabNavigator = () => {
         const token = await getToken();
         if (!token) return;
 
-        const overviewResponse = await client.request(PROFILE_OVERVIEW_QUERY, { token });
+        const overviewResponse = await client.request(PROFILE_OVERVIEW_QUERY, {
+          token,
+        });
         const overview = overviewResponse?.profileOverview;
         if (overview && mounted) {
           dispatch({ type: "SET_PROFILE_OVERVIEW", payload: overview });
@@ -168,7 +167,7 @@ const TabNavigator = () => {
     return () => {
       mounted = false;
     };
-  }, [client, dispatch, state?.profileOverview]);
+  }, []);
 
   return (
     <Tab.Navigator
