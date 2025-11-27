@@ -15,6 +15,7 @@ import { LinearGradient } from "expo-linear-gradient";
 const SHEET_HEIGHT = 320;
 
 const FILTER_OPTIONS = [
+  { label: "All", icon: "globe-outline" },
   { label: "Nearby", icon: "location-outline", badge: "Live" },
   { label: "Friends", icon: "people-outline" },
   { label: "Milestones", icon: "ribbon-outline" },
@@ -23,7 +24,7 @@ const FILTER_OPTIONS = [
 
 const FilterSheet = ({ visible, onClose, activeFilter, onFilterChange }) => {
   const [mounted, setMounted] = useState(visible);
-  const [localFilter, setLocalFilter] = useState(activeFilter || "Nearby");
+  const [localFilter, setLocalFilter] = useState(activeFilter || "All");
   const sheetAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {

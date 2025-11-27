@@ -63,7 +63,7 @@ const CommunityScreen = () => {
   const [showTutorial, setShowTutorial] = useState(false);
   const [reviewBypass, setReviewBypass] = useState({});
   const [showFilterSheet, setShowFilterSheet] = useState(false);
-  const [activeFilter, setActiveFilter] = useState("Nearby");
+  const [activeFilter, setActiveFilter] = useState("All");
   const sheetAnim = useRef(new Animated.Value(0)).current;
 
   const isPostLiked = useCallback(
@@ -194,12 +194,19 @@ const CommunityScreen = () => {
             sortByClosest: false,
           };
         case "Nearby":
-        default:
           return {
             isMilestone: null,
             mediaType: null,
             excludeViewed: true,
             sortByClosest: true,
+          };
+        case "All":
+        default:
+          return {
+            isMilestone: null,
+            mediaType: null,
+            excludeViewed: true,
+            sortByClosest: false,
           };
       }
     },
