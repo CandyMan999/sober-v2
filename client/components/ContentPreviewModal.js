@@ -195,8 +195,6 @@ const ContentPreviewModal = ({
     [backdropOpacity, dragY, handleClose]
   );
 
-  if (!mounted) return null;
-
   const isPost = type === "POST";
   const viewerId = viewerUser?.id;
   const content = localItem
@@ -234,6 +232,8 @@ const ContentPreviewModal = ({
     const likes = content.likes || [];
     return likes.some((like) => like?.user?.id === viewerId);
   }, [content, viewerId]);
+
+  if (!mounted) return null;
 
   const handleLikePress = () => {
     if (!content?.id) return;
