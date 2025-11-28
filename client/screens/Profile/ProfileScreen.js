@@ -33,11 +33,16 @@ const ProfileScreen = ({ navigation }) => {
   const [profileData, setProfileData] = useState(cachedOverview?.user || null);
   const [posts, setPosts] = useState(cachedOverview?.posts || []);
   const [quotes, setQuotes] = useState(cachedOverview?.quotes || []);
-  const [savedPosts, setSavedPosts] = useState(cachedOverview?.savedPosts || []);
+  const [savedPosts, setSavedPosts] = useState(
+    cachedOverview?.savedPosts || []
+  );
   const [tabIndex, setTabIndex] = useState(0);
 
   const counts = useMemo(() => {
-    const likesTotal = posts.reduce((sum, post) => sum + (post?.likesCount || 0), 0);
+    const likesTotal = posts.reduce(
+      (sum, post) => sum + (post?.likesCount || 0),
+      0
+    );
 
     return {
       following: profileData?.followingCount || 0,
@@ -58,7 +63,7 @@ const ProfileScreen = ({ navigation }) => {
     setQuotes(cachedOverview.quotes || []);
     setSavedPosts(cachedOverview.savedPosts || []);
     setLoading(false);
-  }, [cachedOverview]);
+  }, []);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -96,7 +101,7 @@ const ProfileScreen = ({ navigation }) => {
     };
 
     fetchProfile();
-  }, [cachedOverview]);
+  }, []);
 
   const handleNavigate = (screen) => {
     navigation.navigate(screen);
@@ -104,7 +109,10 @@ const ProfileScreen = ({ navigation }) => {
 
   const renderPostTile = ({ item, saved = false }) => {
     const thumbnail =
-      item.imageUrl || item.video?.thumbnailUrl || item.video?.url || item.previewUrl;
+      item.imageUrl ||
+      item.video?.thumbnailUrl ||
+      item.video?.url ||
+      item.previewUrl;
     const imageSource = thumbnail ? { uri: thumbnail } : null;
     const isFlagged = item.flagged;
     const views = item?.video?.viewsCount || 0;
@@ -132,7 +140,11 @@ const ProfileScreen = ({ navigation }) => {
           </View>
           {isFlagged && (
             <View style={styles.flaggedBadge}>
-              <MaterialCommunityIcons name="alert-circle" size={16} color="#f87171" />
+              <MaterialCommunityIcons
+                name="alert-circle"
+                size={16}
+                color="#f87171"
+              />
             </View>
           )}
         </View>
@@ -151,15 +163,30 @@ const ProfileScreen = ({ navigation }) => {
       <View style={styles.tileWrapper}>
         <View style={[styles.tile, styles.quoteTile]}>
           <View style={styles.quoteHeader}>
-            <MaterialCommunityIcons name="format-quote-open" size={16} color="#f59e0b" />
+            <MaterialCommunityIcons
+              name="format-quote-open"
+              size={16}
+              color="#f59e0b"
+            />
             <Text style={styles.quoteBadge}>Quote</Text>
           </View>
           <Text style={styles.quoteText} numberOfLines={3}>
             {item.text}
           </Text>
-          <View style={[styles.statusPill, { backgroundColor: `${status.color}22` }]}>
-            <MaterialCommunityIcons name={status.icon} size={14} color={status.color} />
-            <Text style={[styles.statusText, { color: status.color }]}>{status.label}</Text>
+          <View
+            style={[
+              styles.statusPill,
+              { backgroundColor: `${status.color}22` },
+            ]}
+          >
+            <MaterialCommunityIcons
+              name={status.icon}
+              size={14}
+              color={status.color}
+            />
+            <Text style={[styles.statusText, { color: status.color }]}>
+              {status.label}
+            </Text>
           </View>
         </View>
       </View>
@@ -177,9 +204,15 @@ const ProfileScreen = ({ navigation }) => {
 
     return (
       <View style={styles.drunkWrapper}>
-        <LinearGradient colors={["#2563eb", "#60a5fa"]} style={styles.drunkHalo}>
+        <LinearGradient
+          colors={["#2563eb", "#60a5fa"]}
+          style={styles.drunkHalo}
+        >
           <View style={styles.drunkInner}>
-            <Image source={{ uri: profileData.drunkPicUrl }} style={styles.drunkImage} />
+            <Image
+              source={{ uri: profileData.drunkPicUrl }}
+              style={styles.drunkImage}
+            />
           </View>
         </LinearGradient>
       </View>
@@ -191,7 +224,8 @@ const ProfileScreen = ({ navigation }) => {
       return renderDrunkContent();
     }
 
-    const data = tabType === "POSTS" ? posts : tabType === "QUOTES" ? quotes : savedPosts;
+    const data =
+      tabType === "POSTS" ? posts : tabType === "QUOTES" ? quotes : savedPosts;
 
     if (!data?.length) {
       const emptyCopy =
@@ -229,9 +263,18 @@ const ProfileScreen = ({ navigation }) => {
         <LinearGradient colors={haloColors} style={styles.avatarHalo}>
           <View style={styles.avatarInner}>
             {uri ? (
-              <Image source={{ uri }} style={[styles.avatarImageBase, styles.avatarImage]} />
+              <Image
+                source={{ uri }}
+                style={[styles.avatarImageBase, styles.avatarImage]}
+              />
             ) : (
-              <View style={[styles.avatarImageBase, styles.avatarPlaceholder, styles.avatarImage]}>
+              <View
+                style={[
+                  styles.avatarImageBase,
+                  styles.avatarPlaceholder,
+                  styles.avatarImage,
+                ]}
+              >
                 <Feather name="user" size={32} color="#9ca3af" />
               </View>
             )}
@@ -255,7 +298,10 @@ const ProfileScreen = ({ navigation }) => {
     []
   );
 
-  const routes = useMemo(() => tabConfig.map(({ key }) => ({ key })), [tabConfig]);
+  const routes = useMemo(
+    () => tabConfig.map(({ key }) => ({ key })),
+    [tabConfig]
+  );
   const activeTab = tabConfig[tabIndex]?.type;
 
   const gridHeight = useMemo(() => {
@@ -269,7 +315,13 @@ const ProfileScreen = ({ navigation }) => {
 
     const maxRows = Math.max(postRows, quoteRows, savedRows);
     return maxRows * 180;
-  }, [activeTab, posts.length, quotes.length, savedPosts.length, profileData?.drunkPicUrl]);
+  }, [
+    activeTab,
+    posts.length,
+    quotes.length,
+    savedPosts.length,
+    profileData?.drunkPicUrl,
+  ]);
 
   const renderScene = ({ route }) => {
     const tabIdx = Number(route.key);
@@ -300,7 +352,12 @@ const ProfileScreen = ({ navigation }) => {
             activeOpacity={0.8}
           >
             {icon}
-            <View style={[styles.tabIndicator, focused && styles.tabIndicatorActive]} />
+            <View
+              style={[
+                styles.tabIndicator,
+                focused && styles.tabIndicatorActive,
+              ]}
+            />
           </TouchableOpacity>
         );
       })}
@@ -316,9 +373,15 @@ const ProfileScreen = ({ navigation }) => {
   }
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 48 }}>
+    <ScrollView
+      style={styles.container}
+      contentContainerStyle={{ paddingBottom: 48 }}
+    >
       <View style={styles.editIconWrapper}>
-        <TouchableOpacity style={styles.editIconButton} onPress={navigateToEditProfile}>
+        <TouchableOpacity
+          style={styles.editIconButton}
+          onPress={navigateToEditProfile}
+        >
           <Feather name="edit-3" size={18} color="#f59e0b" />
         </TouchableOpacity>
       </View>
@@ -327,30 +390,47 @@ const ProfileScreen = ({ navigation }) => {
           <View style={styles.avatarColumn}>
             {renderAvatar(profileData?.profilePicUrl, ["#fcd34d", "#f97316"])}
             <View style={styles.usernameRow}>
-              <Text style={styles.avatarLabel}>{profileData?.username || "Your name"}</Text>
+              <Text style={styles.avatarLabel}>
+                {profileData?.username || "Your name"}
+              </Text>
             </View>
           </View>
         </View>
 
         <View style={styles.metricsRow}>
           <>
-            <TouchableOpacity style={styles.metric} onPress={() => handleNavigate("Following")}>
+            <TouchableOpacity
+              style={styles.metric}
+              onPress={() => handleNavigate("Following")}
+            >
               <Text style={styles.metricValue}>{counts.following}</Text>
               <Text style={styles.metricLabel}>Following</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.metric} onPress={() => handleNavigate("Followers")}>
+            <TouchableOpacity
+              style={styles.metric}
+              onPress={() => handleNavigate("Followers")}
+            >
               <Text style={styles.metricValue}>{counts.followers}</Text>
               <Text style={styles.metricLabel}>Followers</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.metric} onPress={() => handleNavigate("Buddies")}>
+            <TouchableOpacity
+              style={styles.metric}
+              onPress={() => handleNavigate("Buddies")}
+            >
               <Text style={styles.metricValue}>{counts.buddies}</Text>
               <Text style={styles.metricLabel}>Buddies</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.metric} onPress={() => handleNavigate("Likes")}>
+            <TouchableOpacity
+              style={styles.metric}
+              onPress={() => handleNavigate("Likes")}
+            >
               <Text style={styles.metricValue}>{counts.likes}</Text>
               <Text style={styles.metricLabel}>Likes</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.metric} onPress={() => handleNavigate("Notifications")}>
+            <TouchableOpacity
+              style={styles.metric}
+              onPress={() => handleNavigate("Notifications")}
+            >
               <Ionicons name="notifications" size={18} color="#f59e0b" />
               <Text style={styles.metricLabel}>Alerts</Text>
             </TouchableOpacity>
