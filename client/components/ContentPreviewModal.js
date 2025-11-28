@@ -232,6 +232,12 @@ const ContentPreviewModal = ({
   const content = localItem
     ? {
         ...localItem,
+        createdAt:
+          localItem.createdAt ||
+          localItem.postCreatedAt ||
+          localItem.video?.createdAt ||
+          localItem.created_at ||
+          null,
         author:
           localItem.author ||
           localItem.user ||
@@ -256,6 +262,10 @@ const ContentPreviewModal = ({
           localItem.user ||
           localItem.postAuthor ||
           viewerUser,
+        closestCity:
+          localItem.closestCity ||
+          (localItem.cityName ? { name: localItem.cityName } : null) ||
+          null,
       }
     : null;
 
@@ -381,6 +391,13 @@ const ContentPreviewModal = ({
               style={[styles.bottomSheet, { transform: [{ translateY: actionsTranslateY }] }]}
             >
               <Text style={styles.sheetTitle}>Post options</Text>
+              <TouchableOpacity style={styles.sheetAction} onPress={() => {}}>
+                <View style={styles.sheetActionLeft}>
+                  <Ionicons name="bookmark-outline" size={20} color="#fef3c7" />
+                  <Text style={styles.sheetActionText}>Save</Text>
+                </View>
+                <Ionicons name="chevron-forward" size={18} color="#9ca3af" />
+              </TouchableOpacity>
               <TouchableOpacity
                 style={styles.sheetAction}
                 onPress={handleFlagPress}
