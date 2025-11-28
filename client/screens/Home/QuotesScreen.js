@@ -1,5 +1,12 @@
 // screens/Sober/QuotesScreen.js
-import React, { useCallback, useContext, useEffect, useState } from "react";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import {
   View,
   Text,
@@ -14,18 +21,11 @@ import {
 import { useIsFocused } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import { GET_QUOTES_QUERY } from "../../GraphQL/queries";
-import FeedLayout from "../../components/FeedLayout";
+import { FeedLayout, QuoteFeedLayout } from "../../components";
 import { useClient } from "../../client";
 import AlertModal from "../../components/AlertModal";
-import {
-  FOLLOW_USER_MUTATION,
-  TOGGLE_LIKE_MUTATION,
-  UNFOLLOW_USER_MUTATION,
-} from "../../GraphQL/mutations";
-import { getToken } from "../../utils/helpers";
 import Context from "../../context";
-
-const soberLogo = require("../../assets/icon.png");
+import FeedInteractionModel from "../../utils/feed/FeedInteractionModel";
 
 // 👇 module-level flag: survives navigation, resets when app reloads
 let hasShownQuotesAlertThisSession = false;
@@ -46,191 +46,55 @@ const QuotesScreen = () => {
 
   // “Add your own quote” hint
   const [showAlert, setShowAlert] = useState(false);
-
-  const isQuoteLiked = useCallback(
-    (quote) => {
-      if (!currentUserId) return false;
-      return (quote?.likes || []).some((like) => like?.user?.id === currentUserId);
-    },
-    [currentUserId]
-  );
-
-  const applyLikePayload = useCallback(
-    (quoteId, payload) => {
-      if (!payload) return;
-
-      setQuotes((prev) =>
-        prev.map((quote) => {
-          if (quote.id !== quoteId) return quote;
-
-          const existingLikes = quote.likes || [];
-          const actorId = payload.like?.user?.id || currentUserId;
-          const filtered = existingLikes.filter((like) => like?.user?.id !== actorId);
-
-          if (payload.liked && payload.like) {
-            return {
-              ...quote,
-              likesCount: payload.likesCount,
-              likes: [...filtered, payload.like],
-            };
-          }
-
-          return {
-            ...quote,
-            likesCount: payload.likesCount,
-            likes: filtered,
-          };
-        })
-      );
-    },
-    [currentUserId]
-  );
-
-  const updateQuoteAuthor = useCallback((authorId, fields = {}) => {
-    if (!authorId) return;
-
-    setQuotes((prev) =>
-      prev.map((quote) =>
-        quote.user?.id === authorId
-          ? { ...quote, user: { ...quote.user, ...fields } }
-          : quote
-      )
-    );
-  }, []);
-
   const [followLoadingIds, setFollowLoadingIds] = useState(new Set());
 
-  const setFollowLoading = useCallback((userId, loading) => {
-    setFollowLoadingIds((prev) => {
-      const next = new Set(prev);
-      if (loading) {
-        next.add(userId);
-      } else {
-        next.delete(userId);
-      }
-      return next;
-    });
-  }, []);
+  const quotesRef = useRef(quotes);
+  const followLoadingRef = useRef(followLoadingIds);
+
+  useEffect(() => {
+    quotesRef.current = quotes;
+  }, [quotes]);
+
+  useEffect(() => {
+    followLoadingRef.current = followLoadingIds;
+  }, [followLoadingIds]);
+
+  const getQuotes = useCallback(() => quotesRef.current, []);
+  const getFollowLoading = useCallback(() => followLoadingRef.current, []);
+
+  const feedModel = useMemo(
+    () =>
+      new FeedInteractionModel({
+        client,
+        currentUser,
+        currentUserId,
+        getItems: getQuotes,
+        setItems: setQuotes,
+        authorKey: "user",
+        targetType: "QUOTE",
+        itemLabel: "quote",
+        getLoadingUserIds: getFollowLoading,
+        setLoadingUserIds: setFollowLoadingIds,
+      }),
+    [
+      client,
+      currentUser,
+      currentUserId,
+      getFollowLoading,
+      getQuotes,
+      setFollowLoadingIds,
+      setQuotes,
+    ]
+  );
 
   const handleToggleLike = useCallback(
-    async (quoteId) => {
-      const token = await getToken();
-      if (!token) return;
-
-      const previous = quotes.map((quote) => ({
-        ...quote,
-        likes: quote.likes ? [...quote.likes] : [],
-      }));
-
-      const target = quotes.find((quote) => quote.id === quoteId);
-      const currentlyLiked = isQuoteLiked(target);
-
-      const optimisticUser = currentUser || { id: currentUserId };
-
-      setQuotes((prev) =>
-        prev.map((quote) => {
-          if (quote.id !== quoteId) return quote;
-
-          const filtered = (quote.likes || []).filter(
-            (like) => like?.user?.id !== currentUserId
-          );
-
-          const optimisticLikes = currentlyLiked
-            ? filtered
-            : [...filtered, { id: `temp-like-${quoteId}`, user: optimisticUser }];
-
-          return {
-            ...quote,
-            likesCount: Math.max(
-              0,
-              (quote.likesCount || 0) + (currentlyLiked ? -1 : 1)
-            ),
-            likes: optimisticLikes,
-          };
-        })
-      );
-
-      try {
-        const data = await client.request(TOGGLE_LIKE_MUTATION, {
-          token,
-          targetType: "QUOTE",
-          targetId: quoteId,
-        });
-
-        applyLikePayload(quoteId, data?.toggleLike);
-      } catch (err) {
-        console.error("Error toggling quote like", err);
-        setQuotes(previous);
-      }
-    },
-    [applyLikePayload, client, currentUser, currentUserId, isQuoteLiked, quotes]
+    async (quoteId) => feedModel.toggleLike(quoteId),
+    [feedModel]
   );
 
   const handleToggleFollowUser = useCallback(
-    async (author) => {
-      if (!author?.id) return { isFollowed: false, isBuddy: false };
-      if (followLoadingIds.has(author.id)) {
-        return {
-          isFollowed: Boolean(author.isFollowedByViewer),
-          isBuddy: Boolean(author.isBuddyWithViewer),
-        };
-      }
-
-      const token = await getToken();
-      if (!token) {
-        return {
-          isFollowed: Boolean(author.isFollowedByViewer),
-          isBuddy: Boolean(author.isBuddyWithViewer),
-        };
-      }
-
-      const isCurrentlyFollowed = Boolean(author.isFollowedByViewer);
-      const previousState = {
-        isFollowed: Boolean(author.isFollowedByViewer),
-        isBuddy: Boolean(author.isBuddyWithViewer),
-      };
-
-      updateQuoteAuthor(author.id, {
-        isFollowedByViewer: !isCurrentlyFollowed,
-        isBuddyWithViewer: false,
-      });
-      setFollowLoading(author.id, true);
-
-      try {
-        const mutation = isCurrentlyFollowed
-          ? UNFOLLOW_USER_MUTATION
-          : FOLLOW_USER_MUTATION;
-
-        const data = await client.request(mutation, {
-          token,
-          userId: author.id,
-        });
-
-        const nextState = isCurrentlyFollowed
-          ? { isFollowed: false, isBuddy: false }
-          : {
-              isFollowed: true,
-              isBuddy: Boolean(data?.followUser?.isBuddy),
-            };
-
-        updateQuoteAuthor(author.id, {
-          isFollowedByViewer: nextState.isFollowed,
-          isBuddyWithViewer: nextState.isBuddy,
-        });
-
-        return nextState;
-      } catch (err) {
-        console.error("Error toggling follow", err);
-        updateQuoteAuthor(author.id, {
-          isFollowedByViewer: previousState.isFollowed,
-          isBuddyWithViewer: previousState.isBuddy,
-        });
-        throw err;
-      } finally {
-        setFollowLoading(author.id, false);
-      }
-    },
-    [client, followLoadingIds, setFollowLoading, updateQuoteAuthor]
+    async (author) => feedModel.toggleFollow(author),
+    [feedModel]
   );
 
   const handleCommentAdded = useCallback((quoteId, newComment) => {
@@ -427,101 +291,41 @@ const QuotesScreen = () => {
   // Until we know the height, just render first quote without paging
   if (!containerHeight) {
     const item = quotes[0];
-    const author = item.user;
-    const handle =
-      author?.username && author.username.trim().length > 0
-        ? `@${author.username}`
-        : "Sober Motivation";
-    const avatarUrl = author?.profilePicUrl || null;
-    const fallbackAvatar = !item.user ? soberLogo : null;
-    const isOwnQuote = author?.id === currentUserId;
 
     return (
       <View style={styles.root} onLayout={handleLayout}>
         {renderAlert()}
-        <FeedLayout
-          caption={null}
-          commentSheetCaption={`“${item.text}”`}
-          likesCount={item.likesCount}
-          commentsCount={item.commentsCount}
-          comments={item.comments}
-          commentTargetType="QUOTE"
-          commentTargetId={item.id}
-          postAuthor={author}
-          postCreatedAt={item.createdAt}
-          avatarUrl={avatarUrl}
-          fallbackAvatarSource={fallbackAvatar}
-          authorLabel={handle}
-          showFilter={false}
-          onMorePress={openSaveSheet}
-          isLiked={isQuoteLiked(item)}
+        <QuoteFeedLayout
+          quote={item}
+          isLiked={feedModel.isItemLiked(item)}
           onLikePress={() => handleToggleLike(item.id)}
           onCommentAdded={(newComment) => handleCommentAdded(item.id, newComment)}
           onToggleFollow={
-            !isOwnQuote && author?.id
-              ? () => handleToggleFollowUser(author)
-              : undefined
+            item.user?.id ? () => handleToggleFollowUser(item.user) : undefined
           }
-          isFollowed={author?.isFollowedByViewer}
-          isBuddy={author?.isBuddyWithViewer}
           viewerUserId={currentUserId}
-        >
-          <View style={styles.quoteContainer}>
-            <Text style={styles.quoteText}>“{item.text}”</Text>
-          </View>
-        </FeedLayout>
+          onMorePress={openSaveSheet}
+        />
         {renderSaveSheet()}
       </View>
     );
   }
 
-  const renderItem = ({ item }) => {
-    const author = item.user;
-    const handle =
-      author?.username && author.username.trim().length > 0
-        ? `@${author.username}`
-        : "Sober Motivation";
-
-    const avatarUrl = author?.profilePicUrl || null;
-    const fallbackAvatar = !item.user ? soberLogo : null;
-    const isOwnQuote = author?.id === currentUserId;
-
-    return (
-      <View style={{ height: containerHeight }}>
-        <FeedLayout
-          caption={null}
-          commentSheetCaption={`“${item.text}”`}
-          likesCount={item.likesCount}
-          commentsCount={item.commentsCount}
-          comments={item.comments}
-          commentTargetType="QUOTE"
-          commentTargetId={item.id}
-          postAuthor={author}
-          postCreatedAt={item.createdAt}
-          avatarUrl={avatarUrl}
-          fallbackAvatarSource={fallbackAvatar}
-          authorLabel={handle}
-          showFilter={false}
-          onMorePress={openSaveSheet}
-          isLiked={isQuoteLiked(item)}
-          onLikePress={() => handleToggleLike(item.id)}
-          onCommentAdded={(newComment) => handleCommentAdded(item.id, newComment)}
-          onToggleFollow={
-            !isOwnQuote && author?.id
-              ? () => handleToggleFollowUser(author)
-              : undefined
-          }
-          isFollowed={author?.isFollowedByViewer}
-          isBuddy={author?.isBuddyWithViewer}
-          viewerUserId={currentUserId}
-        >
-          <View style={styles.quoteContainer}>
-            <Text style={styles.quoteText}>“{item.text}”</Text>
-          </View>
-        </FeedLayout>
-      </View>
-    );
-  };
+  const renderItem = ({ item }) => (
+    <View style={{ height: containerHeight }}>
+      <QuoteFeedLayout
+        quote={item}
+        isLiked={feedModel.isItemLiked(item)}
+        onLikePress={() => handleToggleLike(item.id)}
+        onCommentAdded={(newComment) => handleCommentAdded(item.id, newComment)}
+        onToggleFollow={
+          item.user?.id ? () => handleToggleFollowUser(item.user) : undefined
+        }
+        viewerUserId={currentUserId}
+        onMorePress={openSaveSheet}
+      />
+    </View>
+  );
 
   return (
     <View style={styles.root} onLayout={handleLayout}>
@@ -556,9 +360,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-  },
-  quoteContainer: {
-    alignItems: "center",
   },
   quoteText: {
     color: "#fff",

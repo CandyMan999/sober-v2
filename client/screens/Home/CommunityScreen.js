@@ -2,6 +2,7 @@ import React, {
   useCallback,
   useContext,
   useEffect,
+  useMemo,
   useRef,
   useState,
 } from "react";
@@ -23,18 +24,16 @@ import { useIsFocused } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import { BlurView } from "expo-blur";
 import { ResizeMode, Video } from "expo-av";
-import { FeedLayout, FilterSheet } from "../../components";
+import { CommunityFeedLayout, FeedLayout, FilterSheet } from "../../components";
 import { GET_ALL_POSTS } from "../../GraphQL/queries";
 import { useClient } from "../../client";
 import {
   RECORD_POST_VIEW_MUTATION,
   SET_POST_REVIEW_MUTATION,
-  TOGGLE_LIKE_MUTATION,
-  FOLLOW_USER_MUTATION,
-  UNFOLLOW_USER_MUTATION,
 } from "../../GraphQL/mutations";
 import { getToken } from "../../utils/helpers";
 import Context from "../../context";
+import FeedInteractionModel from "../../utils/feed/FeedInteractionModel";
 
 const TUTORIAL_SEEN_KEY = "community_tutorial_seen";
 const tutorialImage = require("../../assets/swipe1.png");
@@ -80,206 +79,53 @@ const CommunityScreen = () => {
   const sheetAnim = useRef(new Animated.Value(0)).current;
   const fetchGenerationRef = useRef(0);
 
-  const isPostLiked = useCallback(
-    (post) => {
-      if (!currentUserId) return false;
-      return (post?.likes || []).some(
-        (like) => like?.user?.id === currentUserId
-      );
-    },
-    [currentUserId]
-  );
+  const postsRef = useRef(posts);
+  const followLoadingRef = useRef(followLoadingIds);
 
-  const applyPostLikePayload = useCallback(
-    (postId, payload) => {
-      if (!payload) return;
+  useEffect(() => {
+    postsRef.current = posts;
+  }, [posts]);
 
-      setPosts((prev) =>
-        prev.map((post) => {
-          if (post.id !== postId) return post;
+  useEffect(() => {
+    followLoadingRef.current = followLoadingIds;
+  }, [followLoadingIds]);
 
-          const existingLikes = post.likes || [];
-          const actorId = payload.like?.user?.id || currentUserId;
-          const filtered = existingLikes.filter(
-            (like) => like?.user?.id !== actorId
-          );
+  const getPosts = useCallback(() => postsRef.current, []);
+  const getFollowLoading = useCallback(() => followLoadingRef.current, []);
 
-          if (payload.liked && payload.like) {
-            return {
-              ...post,
-              likesCount: payload.likesCount,
-              likes: [...filtered, payload.like],
-            };
-          }
-
-          return {
-            ...post,
-            likesCount: payload.likesCount,
-            likes: filtered,
-          };
-        })
-      );
-    },
-    [currentUserId]
-  );
-
-  const updateAuthorRelationship = useCallback((authorId, fields = {}) => {
-    if (!authorId) return;
-
-    setPosts((prev) =>
-      prev.map((post) =>
-        post.author?.id === authorId
-          ? { ...post, author: { ...post.author, ...fields } }
-          : post
-      )
-    );
-  }, []);
-
-  const setFollowLoading = useCallback((userId, loading) => {
-    setFollowLoadingIds((prev) => {
-      const next = new Set(prev);
-      if (loading) {
-        next.add(userId);
-      } else {
-        next.delete(userId);
-      }
-      return next;
-    });
-  }, []);
-
-  const handleToggleLike = useCallback(
-    async (postId) => {
-      const token = await getToken();
-      if (!token) return;
-
-      const previous = posts.map((post) => ({
-        ...post,
-        likes: post.likes ? [...post.likes] : [],
-      }));
-
-      const target = posts.find((post) => post.id === postId);
-      const currentlyLiked = isPostLiked(target);
-      const optimisticUser = currentUser || { id: currentUserId };
-
-      setPosts((prev) =>
-        prev.map((post) => {
-          if (post.id !== postId) return post;
-
-          const filtered = (post.likes || []).filter(
-            (like) => like?.user?.id !== currentUserId
-          );
-
-          const optimisticLikes = currentlyLiked
-            ? filtered
-            : [
-                ...filtered,
-                { id: `temp-like-${postId}`, user: optimisticUser },
-              ];
-
-          return {
-            ...post,
-            likesCount: Math.max(
-              0,
-              (post.likesCount || 0) + (currentlyLiked ? -1 : 1)
-            ),
-            likes: optimisticLikes,
-          };
-        })
-      );
-
-      try {
-        const data = await client.request(TOGGLE_LIKE_MUTATION, {
-          token,
-          targetType: "POST",
-          targetId: postId,
-        });
-
-        applyPostLikePayload(postId, data?.toggleLike);
-      } catch (err) {
-        console.error("Error toggling post like", err);
-        setPosts(previous);
-      }
-    },
+  const feedModel = useMemo(
+    () =>
+      new FeedInteractionModel({
+        client,
+        currentUser,
+        currentUserId,
+        getItems: getPosts,
+        setItems: setPosts,
+        authorKey: "author",
+        targetType: "POST",
+        itemLabel: "post",
+        getLoadingUserIds: getFollowLoading,
+        setLoadingUserIds: setFollowLoadingIds,
+      }),
     [
-      applyPostLikePayload,
       client,
       currentUser,
       currentUserId,
-      isPostLiked,
-      posts,
+      getFollowLoading,
+      getPosts,
+      setFollowLoadingIds,
+      setPosts,
     ]
   );
 
+  const handleToggleLike = useCallback(
+    async (postId) => feedModel.toggleLike(postId),
+    [feedModel]
+  );
+
   const handleToggleFollowUser = useCallback(
-    async (author) => {
-      if (!author?.id) return { isFollowed: false, isBuddy: false };
-      if (followLoadingIds.has(author.id)) {
-        return {
-          isFollowed: Boolean(author.isFollowedByViewer),
-          isBuddy: Boolean(author.isBuddyWithViewer),
-        };
-      }
-
-      const token = await getToken();
-      if (!token) {
-        return {
-          isFollowed: Boolean(author.isFollowedByViewer),
-          isBuddy: Boolean(author.isBuddyWithViewer),
-        };
-      }
-
-      const isCurrentlyFollowed = Boolean(author.isFollowedByViewer);
-      const previousState = {
-        isFollowed: Boolean(author.isFollowedByViewer),
-        isBuddy: Boolean(author.isBuddyWithViewer),
-      };
-
-      updateAuthorRelationship(author.id, {
-        isFollowedByViewer: !isCurrentlyFollowed,
-        isBuddyWithViewer: false,
-      });
-      setFollowLoading(author.id, true);
-
-      try {
-        const mutation = isCurrentlyFollowed
-          ? UNFOLLOW_USER_MUTATION
-          : FOLLOW_USER_MUTATION;
-
-        const data = await client.request(mutation, {
-          token,
-          userId: author.id,
-        });
-
-        const nextState = isCurrentlyFollowed
-          ? { isFollowed: false, isBuddy: false }
-          : {
-              isFollowed: true,
-              isBuddy: Boolean(data?.followUser?.isBuddy),
-            };
-
-        updateAuthorRelationship(author.id, {
-          isFollowedByViewer: nextState.isFollowed,
-          isBuddyWithViewer: nextState.isBuddy,
-        });
-
-        return nextState;
-      } catch (err) {
-        console.error("Error toggling follow", err);
-        updateAuthorRelationship(author.id, {
-          isFollowedByViewer: previousState.isFollowed,
-          isBuddyWithViewer: previousState.isBuddy,
-        });
-        throw err;
-      } finally {
-        setFollowLoading(author.id, false);
-      }
-    },
-    [
-      client,
-      followLoadingIds,
-      setFollowLoading,
-      updateAuthorRelationship,
-    ]
+    async (author) => feedModel.toggleFollow(author),
+    [feedModel]
   );
 
   const cursorRef = useRef(null);
@@ -688,12 +534,6 @@ const CommunityScreen = () => {
     );
   }, []);
 
-  const getViewsCount = useCallback((post) => {
-    if (!post) return 0;
-    if (typeof post.viewsCount === "number") return post.viewsCount;
-    return post.video?.viewsCount ?? 0;
-  }, []);
-
   const recordViewForPost = useCallback(
     async (post) => {
       if (!post?.id) return;
@@ -755,88 +595,32 @@ const CommunityScreen = () => {
     outputRange: [SHEET_HEIGHT + 60, 0],
   });
 
-  const formatDate = (dateString) => {
-    if (!dateString) return "";
-
-    const parsed = new Date(String(dateString).trim());
-
-    if (Number.isNaN(parsed?.getTime?.())) {
-      const numericParsed = new Date(Number(dateString));
-      if (Number.isNaN(numericParsed?.getTime?.())) return "";
-
-      return numericParsed.toLocaleDateString("en-US", {
-        month: "short",
-        day: "numeric",
-        year: "numeric",
-      });
-    }
-
-    return parsed.toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric",
-      year: "numeric",
-    });
-  };
-
   const renderItem = ({ item, index }) => {
-    const captionText = item.text || "";
-    const author = item.author;
-    const avatarUrl = author?.profilePicUrl || null;
-    const postDate = formatDate(item.createdAt);
-    const type = item.mediaType || "VIDEO";
-    const isVideoPost = type === "VIDEO";
-    const cityName = item.closestCity?.name || null;
-    const isMilestonePost = item.isMilestone || Boolean(item.milestoneTag);
-    const milestoneLabel =
-      item.milestoneDays !== null && item.milestoneDays !== undefined
-        ? `Day ${item.milestoneDays} milestone`
-        : item.milestoneTag || null;
-    const metaText =
-      isMilestonePost && milestoneLabel
-        ? `${milestoneLabel} • ${postDate}`
-        : postDate;
-    const captionStyle = isMilestonePost ? styles.milestoneCaption : undefined;
-    const isOwnPost = author?.id === currentUserId;
+    const isOwnPost = item.author?.id === currentUserId;
 
     return (
       <View style={{ height: containerHeight || 0 }}>
-        <FeedLayout
-          caption={captionText}
-          captionStyle={captionStyle}
-          meta={metaText}
-          likesCount={item.likesCount}
-          commentsCount={item.commentsCount}
-          viewsCount={getViewsCount(item)}
-          comments={item.comments}
-          postId={item.id}
-          postCreatedAt={item.createdAt}
-          postAuthor={author}
-          avatarUrl={avatarUrl}
-          cityName={cityName}
-          isMilestonePost={isMilestonePost}
-          isVideoPost={isVideoPost}
+        <CommunityFeedLayout
+          post={item}
+          isMuted={isMuted}
+          onToggleSound={handleToggleSound}
+          isLiked={feedModel.isItemLiked(item)}
+          onLikePress={() => handleToggleLike(item.id)}
+          onMorePress={() => handleMorePress(item)}
+          onFilterPress={openFilterSheet}
           onCommentAdded={(newComment) =>
             handleCommentAdded(item.id, newComment)
           }
           contentStyle={styles.feedContent}
-          showSoundToggle={isVideoPost}
-          isMuted={isVideoPost ? isMuted : true}
-          onToggleSound={isVideoPost ? handleToggleSound : undefined}
-          isLiked={isPostLiked(item)}
-          onLikePress={() => handleToggleLike(item.id)}
-          onMorePress={() => handleMorePress(item)}
-          onFilterPress={openFilterSheet}
           onToggleFollow={
-            !isOwnPost && author?.id
-              ? () => handleToggleFollowUser(author)
+            !isOwnPost && item.author?.id
+              ? () => handleToggleFollowUser(item.author)
               : undefined
           }
-          isFollowed={author?.isFollowedByViewer}
-          isBuddy={author?.isBuddyWithViewer}
           viewerUserId={currentUserId}
         >
           {renderMedia(item, index)}
-        </FeedLayout>
+        </CommunityFeedLayout>
       </View>
     );
   };
@@ -879,52 +663,31 @@ const CommunityScreen = () => {
 
   if (!containerHeight) {
     const firstPost = posts[0];
-    const firstType = firstPost.mediaType || "VIDEO";
-    const firstIsVideo = firstType === "VIDEO";
-    const firstPostDate = formatDate(firstPost.createdAt);
-    const firstCityName = firstPost.closestCity?.name || null;
-    const firstIsMilestone =
-      firstPost.isMilestone || Boolean(firstPost.milestoneTag);
-    const firstMilestoneLabel =
-      firstPost.milestoneDays !== null && firstPost.milestoneDays !== undefined
-        ? `Day ${firstPost.milestoneDays} milestone`
-        : firstPost.milestoneTag || null;
-    const firstMetaText =
-      firstIsMilestone && firstMilestoneLabel
-        ? `${firstMilestoneLabel} • ${firstPostDate}`
-        : firstPostDate;
+    const isOwnPost = firstPost.author?.id === currentUserId;
 
     return (
       <View style={styles.root} onLayout={handleLayout}>
-        <FeedLayout
-          caption={firstPost.text || ""}
-          captionStyle={firstIsMilestone ? styles.milestoneCaption : undefined}
-          likesCount={firstPost.likesCount}
-          commentsCount={firstPost.commentsCount}
-          viewsCount={getViewsCount(firstPost)}
-          comments={firstPost.comments}
-          postId={firstPost.id}
-          postCreatedAt={firstPost.createdAt}
-          postAuthor={firstPost.author}
-          avatarUrl={firstPost.author?.profilePicUrl || null}
-          cityName={firstCityName}
-          meta={firstMetaText}
-          isMilestonePost={firstIsMilestone}
-          isVideoPost={firstIsVideo}
+        <CommunityFeedLayout
+          post={firstPost}
+          isMuted={isMuted}
+          onToggleSound={handleToggleSound}
+          isLiked={feedModel.isItemLiked(firstPost)}
+          onLikePress={() => handleToggleLike(firstPost.id)}
+          onMorePress={() => handleMorePress(firstPost)}
+          onFilterPress={openFilterSheet}
           onCommentAdded={(newComment) =>
             handleCommentAdded(firstPost.id, newComment)
           }
           contentStyle={styles.feedContent}
-          showSoundToggle={firstIsVideo}
-          isMuted={firstIsVideo ? isMuted : true}
-          onToggleSound={firstIsVideo ? handleToggleSound : undefined}
-          isLiked={isPostLiked(firstPost)}
-          onLikePress={() => handleToggleLike(firstPost.id)}
-          onMorePress={() => handleMorePress(firstPost)}
-          onFilterPress={openFilterSheet}
+          onToggleFollow={
+            !isOwnPost && firstPost.author?.id
+              ? () => handleToggleFollowUser(firstPost.author)
+              : undefined
+          }
+          viewerUserId={currentUserId}
         >
           {renderMedia(firstPost, 0)}
-        </FeedLayout>
+        </CommunityFeedLayout>
       </View>
     );
   }
@@ -1084,14 +847,6 @@ const styles = StyleSheet.create({
     paddingTop: 0,
     alignItems: "stretch",
     justifyContent: "flex-start",
-  },
-  milestoneCaption: {
-    color: "#fff",
-    fontSize: 20,
-    fontWeight: "800",
-    textShadowColor: "rgba(0,0,0,0.35)",
-    textShadowOffset: { width: 0, height: 2 },
-    textShadowRadius: 6,
   },
   videoWrapper: {
     flex: 1,
