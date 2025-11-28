@@ -25,6 +25,7 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import { formatDistanceToNow } from "date-fns";
+import { LinearGradient } from "expo-linear-gradient";
 import { useClient } from "../client";
 import { TOGGLE_LIKE_MUTATION } from "../GraphQL/mutations";
 import {
@@ -40,6 +41,8 @@ const soberLogo = require("../assets/icon.png");
 const { height: WINDOW_HEIGHT } = Dimensions.get("window");
 const SHEET_HEIGHT = Math.round(WINDOW_HEIGHT * 0.8);
 const EMOJI_ROW = ["❤️", "😍", "🔥", "👏", "😮", "🙏", "👍", "😢", "😂", "🎉"];
+const FOLLOW_GRADIENT = ["#0ea5e9", "#38bdf8", "#2563eb"];
+const BUDDY_GRADIENT = ["#22d3ee", "#0ea5e9", "#2563eb"];
 
 const parseDateValue = (value) => {
   if (!value) return null;
@@ -300,6 +303,8 @@ const CommentSheet = ({
     ? "Following"
     : "Follow";
 
+  const followGradient = followState.isBuddy ? BUDDY_GRADIENT : FOLLOW_GRADIENT;
+
   const followIcon = followState.isBuddy
     ? "people"
     : followState.isFollowed
@@ -308,12 +313,10 @@ const CommentSheet = ({
 
   const followTextStyle = [
     styles.followChipText,
-    followState.isBuddy
-      ? styles.buddyChipText
-      : followState.isFollowed
-      ? styles.followingChipText
-      : null,
+    followState.isFollowed ? styles.followingChipText : null,
   ];
+
+  const followIconColor = followState.isFollowed ? "#e2e8f0" : "#f8fafc";
 
   const handleFollowPress = async () => {
     if (!onToggleFollow || followPending || !canFollow) return;
@@ -715,34 +718,32 @@ const CommentSheet = ({
 
                     {canFollow ? (
                       <TouchableOpacity
-                        style={[
-                          styles.followChip,
-                          followState.isBuddy
-                            ? styles.buddyChip
-                            : followState.isFollowed
-                            ? styles.followingChip
-                            : null,
-                        ]}
+                        style={styles.followChipWrapper}
                         onPress={handleFollowPress}
+                        activeOpacity={0.9}
                         disabled={followPending}
                       >
-                        <View style={styles.followChipContent}>
-                          <Ionicons
-                            name={followIcon}
-                            size={14}
-                            color={
-                              followState.isBuddy
-                                ? "#0b1222"
-                                : followState.isFollowed
-                                ? "#e2e8f0"
-                                : "#0b1222"
-                            }
-                            style={styles.followChipIcon}
-                          />
-                          <Text style={followTextStyle}>
-                            {followPending ? "..." : followLabel}
-                          </Text>
-                        </View>
+                        <LinearGradient
+                          colors={followGradient}
+                          start={{ x: 0, y: 0 }}
+                          end={{ x: 1, y: 1 }}
+                          style={[
+                            styles.followChip,
+                            followState.isFollowed ? styles.followingChip : null,
+                          ]}
+                        >
+                          <View style={styles.followChipContent}>
+                            <Ionicons
+                              name={followIcon}
+                              size={14}
+                              color={followIconColor}
+                              style={styles.followChipIcon}
+                            />
+                            <Text style={followTextStyle}>
+                              {followPending ? "..." : followLabel}
+                            </Text>
+                          </View>
+                        </LinearGradient>
                       </TouchableOpacity>
                     ) : null}
                   </View>
@@ -977,21 +978,20 @@ const styles = StyleSheet.create({
     fontWeight: "800",
     fontSize: 15,
   },
+  followChipWrapper: {
+    marginLeft: 8,
+    borderRadius: 999,
+    overflow: "hidden",
+  },
   followChip: {
-    backgroundColor: "#facc15",
-    paddingHorizontal: 10,
-    paddingVertical: 5,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
     borderRadius: 999,
     borderWidth: 1,
-    borderColor: "#fde68a",
+    borderColor: "rgba(255,255,255,0.18)",
   },
   followingChip: {
-    backgroundColor: "#0f172a",
-    borderColor: "#334155",
-  },
-  buddyChip: {
-    backgroundColor: "#0ea5e9",
-    borderColor: "#38bdf8",
+    borderColor: "rgba(255,255,255,0.4)",
   },
   followChipContent: {
     flexDirection: "row",
@@ -1002,15 +1002,12 @@ const styles = StyleSheet.create({
     marginLeft: -2,
   },
   followChipText: {
-    color: "#0b1222",
+    color: "#f8fafc",
     fontWeight: "800",
     fontSize: 12,
   },
   followingChipText: {
     color: "#e2e8f0",
-  },
-  buddyChipText: {
-    color: "#0b1222",
   },
   posterDate: {
     color: "#64748b",
