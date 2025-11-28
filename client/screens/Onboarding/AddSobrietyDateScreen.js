@@ -18,6 +18,14 @@ import Context from "../../context";
 
 import LogoIcon from "../../assets/icon.png";
 import { COLORS } from "../../constants/colors";
+const {
+  primaryBackground,
+  cardBackground,
+  accent,
+
+  textPrimary,
+  textSecondary,
+} = COLORS;
 
 const AddSobrietyDateScreen = ({ navigation, route }) => {
   const client = useClient();
@@ -25,8 +33,7 @@ const AddSobrietyDateScreen = ({ navigation, route }) => {
   const username = route?.params?.username || "you";
   const token = route?.params?.pushToken || null;
 
-  const { primaryBackground, cardBackground, accent, accentSoft, textPrimary, textSecondary } =
-    COLORS;
+  const { accent, accentSoft } = COLORS;
   // Default to today's date, but user will pick their sobriety start date
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [showPicker, setShowPicker] = useState(false);

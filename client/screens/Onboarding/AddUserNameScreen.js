@@ -26,18 +26,20 @@ import { COLORS } from "../../constants/colors";
 const MIN_LEN = 3;
 const PUSH_TOKEN_KEY = "expoPushToken";
 
+const {
+  primaryBackground,
+  cardBackground,
+  accent,
+
+  textPrimary,
+  textSecondary,
+} = COLORS;
+
 const UsernameScreen = ({ navigation }) => {
   const client = useClient();
   const { dispatch } = useContext(Context);
 
-  const {
-    primaryBackground,
-    cardBackground,
-    accent,
-    accentSoft,
-    textPrimary,
-    textSecondary,
-  } = COLORS;
+  const { accent, accentSoft } = COLORS;
 
   // 1 = notifications, 2 = username
   const [step, setStep] = useState(1);

@@ -23,21 +23,23 @@ import { EXPO_CF_ACCOUNT_HASH, EXPO_CF_VARIANT } from "@env";
 
 import LogoIcon from "../../assets/icon.png";
 import { COLORS } from "../../constants/colors";
+const {
+  primaryBackground,
+  cardBackground,
+  accent,
+
+  textPrimary,
+  textSecondary,
+
+  border,
+} = COLORS;
 
 const AddPhotoScreen = ({ navigation, route }) => {
   const client = useClient();
   const username = route?.params?.username || "you";
   const token = route?.params?.pushToken || null;
 
-  const {
-    primaryBackground,
-    cardBackground,
-    accent,
-    accentSoft,
-    textPrimary,
-    textSecondary,
-    border,
-  } = COLORS;
+  const { accent, accentSoft } = COLORS;
 
   // flow state
   const [step, setStep] = useState(1);

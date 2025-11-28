@@ -19,14 +19,21 @@ import { useClient } from "../../client";
 import { UPDATE_USER_PROFILE_MUTATION } from "../../GraphQL/mutations";
 import { getToken } from "../../utils/helpers";
 import { COLORS } from "../../constants/colors";
+const {
+  primaryBackground,
+  cardBackground,
+  accent,
+
+  textPrimary,
+  textSecondary,
+} = COLORS;
 
 const LocationPermissionScreen = ({ navigation }) => {
   const client = useClient();
   const [loading, setLoading] = useState(false);
   const [checking, setChecking] = useState(true);
 
-  const { primaryBackground, cardBackground, accent, accentSoft, textPrimary, textSecondary } =
-    COLORS;
+  const { accent, accentSoft } = COLORS;
 
   const updateLocationIfPermitted = async () => {
     try {
@@ -213,9 +220,7 @@ const LocationPermissionScreen = ({ navigation }) => {
               onPress={handlePermissionRequest}
             >
               <LinearGradient
-                colors={
-                  loading ? ["#4B5563", "#4B5563"] : [accent, accentSoft]
-                }
+                colors={loading ? ["#4B5563", "#4B5563"] : [accent, accentSoft]}
                 style={styles.primaryGradient}
               >
                 {loading ? (
@@ -268,9 +273,19 @@ const styles = StyleSheet.create({
     textTransform: "uppercase",
     marginBottom: 12,
   },
-  title: { fontSize: 24, fontWeight: "700", color: textPrimary, marginBottom: 8 },
+  title: {
+    fontSize: 24,
+    fontWeight: "700",
+    color: textPrimary,
+    marginBottom: 8,
+  },
   titleAccent: { color: accent },
-  helper: { fontSize: 14, color: textSecondary, marginBottom: 24, lineHeight: 20 },
+  helper: {
+    fontSize: 14,
+    color: textSecondary,
+    marginBottom: 24,
+    lineHeight: 20,
+  },
 
   infoBox: {
     backgroundColor: "rgba(245, 158, 11, 0.1)",
@@ -297,7 +312,11 @@ const styles = StyleSheet.create({
   primaryText: { color: "#111827", fontSize: 16, fontWeight: "700" },
 
   skipWrapper: { marginTop: 10, alignItems: "center" },
-  skipText: { fontSize: 13, color: textSecondary, textDecorationLine: "underline" },
+  skipText: {
+    fontSize: 13,
+    color: textSecondary,
+    textDecorationLine: "underline",
+  },
 });
 
 export default LocationPermissionScreen;
