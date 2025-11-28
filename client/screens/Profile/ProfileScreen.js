@@ -110,7 +110,7 @@ const ProfileScreen = ({ navigation }) => {
   const renderPostTile = ({ item, saved = false }) => {
     const isVideo = item.mediaType === "VIDEO";
     const thumbnail = isVideo
-      ? item.video?.thumbnailUrl || item.previewUrl
+      ? item.video?.thumbnailUrl || item.previewUrl || item.imageUrl
       : item.imageUrl || item.previewUrl;
     const imageSource = thumbnail ? { uri: thumbnail } : null;
     const isFlagged = item.flagged;

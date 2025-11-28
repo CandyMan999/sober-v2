@@ -218,11 +218,13 @@ const toCfHls = (uid) => {
   return url;
 };
 
+const PORTRAIT_THUMBNAIL_PARAMS = "?time=0s&width=720&height=960&fit=crop";
+
 const toCfThumbnail = (uid) => {
   // Portrait (3:4) aspect ratio thumbnail
   const url =
     `https://${CF_STREAM_CUSTOMER_DOMAIN}/${uid}/thumbnails/thumbnail.jpg` +
-    "?width=720&height=960&fit=cover";
+    PORTRAIT_THUMBNAIL_PARAMS;
   console.log("[urls] thumbnail:", url);
   return url;
 };
@@ -421,7 +423,7 @@ module.exports = {
         hlsUrl = cfResult?.playback?.hls || toCfHls(publicId);
         const rawThumbnail = cfResult?.thumbnail || null;
         thumbnailUrl = rawThumbnail
-          ? `${rawThumbnail}?width=720&height=960&fit=cover`
+          ? `${rawThumbnail}${PORTRAIT_THUMBNAIL_PARAMS}`
           : null;
       } finally {
         if (uploadInfo?.tempPath) {
