@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import {
+  ActivityIndicator,
   Animated,
   Dimensions,
   Easing,
@@ -18,6 +19,7 @@ import CommunityFeedLayout from "./CommunityFeedLayout";
 import QuoteFeedLayout from "./QuoteFeedLayout";
 
 const { height: WINDOW_HEIGHT } = Dimensions.get("window");
+const ACTION_SHEET_HEIGHT = Math.round(WINDOW_HEIGHT * 0.33);
 const ANIMATION_DURATION = 240;
 
 const ContentPreviewModal = ({
@@ -37,9 +39,12 @@ const ContentPreviewModal = ({
   const [mounted, setMounted] = useState(visible);
   const [localItem, setLocalItem] = useState(item);
   const [showActions, setShowActions] = useState(false);
+  const [actionsVisible, setActionsVisible] = useState(false);
+  const [flagging, setFlagging] = useState(false);
   const backdropOpacity = useRef(new Animated.Value(0)).current;
   const translateY = useRef(new Animated.Value(WINDOW_HEIGHT)).current;
   const dragY = useRef(new Animated.Value(0)).current;
+  const actionsTranslateY = useRef(new Animated.Value(ACTION_SHEET_HEIGHT + 60)).current;
   const backdropFalloffOpacity = useMemo(
     () =>
       dragY.interpolate({
@@ -125,6 +130,33 @@ const ContentPreviewModal = ({
       videoRef.current.setStatusAsync?.({ shouldPlay: true, positionMillis: 0 });
     }
   }, [localItem, visible]);
+
+  useEffect(() => {
+    if (showActions) {
+      setActionsVisible(true);
+      Animated.spring(actionsTranslateY, {
+        toValue: 0,
+        useNativeDriver: true,
+        damping: 16,
+        stiffness: 180,
+        mass: 0.9,
+      }).start();
+    } else {
+      Animated.timing(actionsTranslateY, {
+        toValue: ACTION_SHEET_HEIGHT + 60,
+        duration: 160,
+        easing: Easing.out(Easing.ease),
+        useNativeDriver: true,
+      }).start(() => setActionsVisible(false));
+    }
+  }, [actionsTranslateY, showActions]);
+
+  useEffect(() => {
+    if (!visible) {
+      setShowActions(false);
+      setFlagging(false);
+    }
+  }, [visible]);
 
   const handleClose = () => {
     dragY.setValue(0);
@@ -235,6 +267,8 @@ const ContentPreviewModal = ({
 
   if (!mounted) return null;
 
+  const closeActionsSheet = () => setShowActions(false);
+
   const handleLikePress = () => {
     if (!content?.id) return;
     if (isPost) {
@@ -244,10 +278,15 @@ const ContentPreviewModal = ({
     }
   };
 
-  const handleFlagPress = () => {
-    if (!content?.id) return;
-    onFlagForReview?.(content.id, content.review);
-    setShowActions(false);
+  const handleFlagPress = async () => {
+    if (!content?.id || flagging) return;
+    setFlagging(true);
+    try {
+      await onFlagForReview?.(content.id, content.review);
+    } finally {
+      setFlagging(false);
+      closeActionsSheet();
+    }
   };
 
   const renderPostMedia = () => {
@@ -334,37 +373,39 @@ const ContentPreviewModal = ({
         </Animated.View>
       </PanGestureHandler>
 
-      {isPost && showActions ? (
-        <Modal
-          visible
-          animationType="fade"
-          transparent
-          onRequestClose={() => setShowActions(false)}
-        >
-          <View style={styles.actionsOverlay}>
-            <Pressable style={StyleSheet.absoluteFill} onPress={() => setShowActions(false)} />
-            <View style={styles.actionsSheet}>
-              <Text style={styles.actionsTitle}>Post options</Text>
-              <TouchableOpacity style={styles.actionsButton} onPress={handleFlagPress}>
-                <Ionicons
-                  name={content?.review ? "flag" : "flag-outline"}
-                  size={18}
-                  color="#fef3c7"
-                  style={styles.actionsIcon}
-                />
-                <Text style={styles.actionsLabel}>
-                  {content?.review ? "Already flagged for review" : "Flag for review"}
-                </Text>
-              </TouchableOpacity>
-
+      {isPost && actionsVisible ? (
+        <Modal visible animationType="fade" transparent onRequestClose={closeActionsSheet}>
+          <View style={styles.modalContainer}>
+            <Pressable style={styles.sheetBackdrop} onPress={closeActionsSheet} />
+            <Animated.View
+              style={[styles.bottomSheet, { transform: [{ translateY: actionsTranslateY }] }]}
+            >
+              <Text style={styles.sheetTitle}>Post options</Text>
               <TouchableOpacity
-                style={[styles.actionsButton, styles.actionsCancel]}
-                onPress={() => setShowActions(false)}
+                style={styles.sheetAction}
+                onPress={handleFlagPress}
+                disabled={flagging || content?.review}
               >
-                <Ionicons name="close" size={18} color="#cbd5e1" style={styles.actionsIcon} />
-                <Text style={[styles.actionsLabel, styles.actionsCancelText]}>Close</Text>
+                <View style={styles.sheetActionLeft}>
+                  <Ionicons
+                    name={content?.review ? "flag" : "flag-outline"}
+                    size={20}
+                    color="#fef3c7"
+                  />
+                  <Text style={styles.sheetActionText}>
+                    {content?.review ? "Already flagged for review" : "Flag for review"}
+                  </Text>
+                </View>
+                {flagging ? (
+                  <ActivityIndicator color="#f59e0b" style={styles.sheetSpinner} />
+                ) : (
+                  <Ionicons name="chevron-forward" size={18} color="#9ca3af" />
+                )}
               </TouchableOpacity>
-            </View>
+              <TouchableOpacity style={styles.sheetCancel} onPress={closeActionsSheet}>
+                <Text style={styles.sheetCancelText}>Close</Text>
+              </TouchableOpacity>
+            </Animated.View>
           </View>
         </Modal>
       ) : null}
@@ -415,48 +456,74 @@ const styles = StyleSheet.create({
     paddingTop: 0,
     paddingHorizontal: 0,
   },
-  actionsOverlay: {
+  modalContainer: {
     flex: 1,
-    backgroundColor: "rgba(0,0,0,0.55)",
+    ...StyleSheet.absoluteFillObject,
     justifyContent: "flex-end",
   },
-  actionsSheet: {
-    backgroundColor: "#0b1220",
-    paddingHorizontal: 18,
-    paddingTop: 16,
-    paddingBottom: 32,
-    borderTopLeftRadius: 18,
-    borderTopRightRadius: 18,
-    borderWidth: 1,
-    borderColor: "#1f2937",
+  sheetBackdrop: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "rgba(0,0,0,0.45)",
   },
-  actionsTitle: {
+  bottomSheet: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    bottom: 0,
+    height: ACTION_SHEET_HEIGHT,
+    paddingHorizontal: 20,
+    paddingTop: 20,
+    paddingBottom: 28,
+    backgroundColor: "#0f172a",
+    borderTopLeftRadius: 16,
+    borderTopRightRadius: 16,
+    borderWidth: 1,
+    borderColor: "rgba(245,158,11,0.3)",
+  },
+  sheetTitle: {
     color: "#e5e7eb",
     fontSize: 16,
     fontWeight: "700",
-    marginBottom: 12,
+    marginBottom: 16,
   },
-  actionsButton: {
+  sheetAction: {
+    paddingVertical: 14,
+    paddingHorizontal: 12,
+    marginBottom: 10,
     flexDirection: "row",
     alignItems: "center",
-    paddingVertical: 12,
+    justifyContent: "space-between",
+    backgroundColor: "rgba(30,41,59,0.85)",
     borderRadius: 12,
-    paddingHorizontal: 10,
+    borderWidth: 1,
+    borderColor: "rgba(148,163,184,0.35)",
+    shadowColor: "#0ea5e9",
+    shadowOpacity: 0.25,
+    shadowRadius: 10,
+    shadowOffset: { width: 0, height: 6 },
+    elevation: 3,
   },
-  actionsIcon: {
-    marginRight: 10,
+  sheetActionLeft: {
+    flexDirection: "row",
+    alignItems: "center",
   },
-  actionsLabel: {
-    color: "#e5e7eb",
-    fontSize: 15,
-    fontWeight: "600",
-  },
-  actionsCancel: {
-    marginTop: 4,
-  },
-  actionsCancelText: {
-    color: "#cbd5e1",
+  sheetActionText: {
+    color: "#fef3c7",
+    fontSize: 16,
     fontWeight: "700",
+    marginLeft: 12,
+  },
+  sheetSpinner: {
+    marginLeft: 8,
+  },
+  sheetCancel: {
+    marginTop: 4,
+    paddingVertical: 12,
+  },
+  sheetCancelText: {
+    color: "#93c5fd",
+    textAlign: "center",
+    fontWeight: "600",
   },
 });
 
