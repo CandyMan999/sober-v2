@@ -49,7 +49,6 @@ const FeedLayout = ({
   const [showComments, setShowComments] = useState(false);
   const [isCaptionExpanded, setIsCaptionExpanded] = useState(false);
   const [isCaptionTruncated, setIsCaptionTruncated] = useState(false);
-  const [followPending, setFollowPending] = useState(false);
 
   const formatCount = (n) => {
     if (typeof n !== "number") return "0";
@@ -88,40 +87,6 @@ const FeedLayout = ({
     Boolean(postAuthor?.id) &&
     Boolean(viewerUserId) &&
     postAuthor?.id !== viewerUserId;
-
-  const followLabel = isBuddy
-    ? "Buddies"
-    : isFollowed
-    ? "Following"
-    : "Follow";
-
-  const followIcon = isBuddy
-    ? "people"
-    : isFollowed
-    ? "checkmark-circle-outline"
-    : "person-add-outline";
-
-  const followTextStyle = [
-    styles.followButtonText,
-    isBuddy
-      ? styles.buddyButtonText
-      : isFollowed
-      ? styles.followingButtonText
-      : null,
-  ];
-
-  const handleFollowPress = async () => {
-    if (!onToggleFollow || followPending || !canFollow) return;
-
-    try {
-      setFollowPending(true);
-      await onToggleFollow();
-    } catch (err) {
-      console.error("Failed to toggle follow", err);
-    } finally {
-      setFollowPending(false);
-    }
-  };
 
   const hasViews = typeof viewsCount === "number";
   const metaItems = [];
@@ -229,44 +194,9 @@ const FeedLayout = ({
             />
 
             {displayName ? (
-              <>
-                <Text style={styles.username} numberOfLines={1}>
-                  {displayName}
-                </Text>
-
-                {canFollow ? (
-                  <TouchableOpacity
-                    style={[
-                      styles.followButton,
-                      isBuddy
-                        ? styles.buddyButton
-                        : isFollowed
-                        ? styles.followingButton
-                        : null,
-                    ]}
-                    onPress={handleFollowPress}
-                    disabled={followPending}
-                  >
-                    <View style={styles.followButtonContent}>
-                      <Ionicons
-                        name={followIcon}
-                        size={14}
-                        color={
-                          isBuddy
-                            ? "#0b1222"
-                            : isFollowed
-                            ? "#e2e8f0"
-                            : "#0b1222"
-                        }
-                        style={styles.followButtonIcon}
-                      />
-                      <Text style={followTextStyle}>
-                        {followPending ? "..." : followLabel}
-                      </Text>
-                    </View>
-                  </TouchableOpacity>
-                ) : null}
-              </>
+              <Text style={styles.username} numberOfLines={1}>
+                {displayName}
+              </Text>
             ) : null}
           </View>
 
@@ -369,42 +299,6 @@ const styles = StyleSheet.create({
   userRow: {
     flexDirection: "row",
     alignItems: "center",
-  },
-  followButton: {
-    marginLeft: 10,
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 999,
-    backgroundColor: "#facc15",
-    borderWidth: 1,
-    borderColor: "#fde68a",
-  },
-  followingButton: {
-    backgroundColor: "#0f172a",
-    borderColor: "#334155",
-  },
-  buddyButton: {
-    backgroundColor: "#0ea5e9",
-    borderColor: "#38bdf8",
-  },
-  followButtonContent: {
-    flexDirection: "row",
-    alignItems: "center",
-    columnGap: 6,
-  },
-  followButtonIcon: {
-    marginLeft: -2,
-  },
-  followButtonText: {
-    color: "#0b1222",
-    fontWeight: "800",
-    fontSize: 12,
-  },
-  followingButtonText: {
-    color: "#e2e8f0",
-  },
-  buddyButtonText: {
-    color: "#0b1222",
   },
   captionWrapper: {
     flexShrink: 1,

@@ -300,6 +300,15 @@ const CommentSheet = ({
     ? "Following"
     : "Follow";
 
+  const followChipStyles = [
+    styles.followChip,
+    followState.isBuddy
+      ? styles.buddyChip
+      : followState.isFollowed
+      ? styles.followingChip
+      : null,
+  ];
+
   const followIcon = followState.isBuddy
     ? "people"
     : followState.isFollowed
@@ -308,12 +317,14 @@ const CommentSheet = ({
 
   const followTextStyle = [
     styles.followChipText,
-    followState.isBuddy
-      ? styles.buddyChipText
-      : followState.isFollowed
+    followState.isBuddy ? styles.buddyChipText : null,
+    followState.isFollowed && !followState.isBuddy
       ? styles.followingChipText
       : null,
   ];
+
+  const followIconColor =
+    followState.isFollowed && !followState.isBuddy ? "#e2e8f0" : "#0b1222";
 
   const handleFollowPress = async () => {
     if (!onToggleFollow || followPending || !canFollow) return;
@@ -715,33 +726,23 @@ const CommentSheet = ({
 
                     {canFollow ? (
                       <TouchableOpacity
-                        style={[
-                          styles.followChip,
-                          followState.isBuddy
-                            ? styles.buddyChip
-                            : followState.isFollowed
-                            ? styles.followingChip
-                            : null,
-                        ]}
+                        style={styles.followChipWrapper}
                         onPress={handleFollowPress}
+                        activeOpacity={0.9}
                         disabled={followPending}
                       >
-                        <View style={styles.followChipContent}>
-                          <Ionicons
-                            name={followIcon}
-                            size={14}
-                            color={
-                              followState.isBuddy
-                                ? "#0b1222"
-                                : followState.isFollowed
-                                ? "#e2e8f0"
-                                : "#0b1222"
-                            }
-                            style={styles.followChipIcon}
-                          />
-                          <Text style={followTextStyle}>
-                            {followPending ? "..." : followLabel}
-                          </Text>
+                        <View style={followChipStyles}>
+                          <View style={styles.followChipContent}>
+                            <Ionicons
+                              name={followIcon}
+                              size={16}
+                              color={followIconColor}
+                              style={styles.followChipIcon}
+                            />
+                            <Text style={followTextStyle}>
+                              {followPending ? "..." : followLabel}
+                            </Text>
+                          </View>
                         </View>
                       </TouchableOpacity>
                     ) : null}
@@ -977,21 +978,26 @@ const styles = StyleSheet.create({
     fontWeight: "800",
     fontSize: 15,
   },
+  followChipWrapper: {
+    marginLeft: 8,
+    borderRadius: 12,
+    overflow: "hidden",
+  },
   followChip: {
-    backgroundColor: "#facc15",
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    borderRadius: 999,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 12,
+    backgroundColor: "#fbbf24",
     borderWidth: 1,
-    borderColor: "#fde68a",
+    borderColor: "#f59e0b",
   },
   followingChip: {
-    backgroundColor: "#0f172a",
-    borderColor: "#334155",
+    backgroundColor: "#0b1222",
+    borderColor: "#fbbf24",
   },
   buddyChip: {
-    backgroundColor: "#0ea5e9",
-    borderColor: "#38bdf8",
+    backgroundColor: "#22d3ee",
+    borderColor: "#0ea5e9",
   },
   followChipContent: {
     flexDirection: "row",
@@ -999,12 +1005,12 @@ const styles = StyleSheet.create({
     columnGap: 6,
   },
   followChipIcon: {
-    marginLeft: -2,
+    marginRight: 6,
   },
   followChipText: {
     color: "#0b1222",
     fontWeight: "800",
-    fontSize: 12,
+    fontSize: 14,
   },
   followingChipText: {
     color: "#e2e8f0",
