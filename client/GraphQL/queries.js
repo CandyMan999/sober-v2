@@ -78,7 +78,6 @@ export const PROFILE_OVERVIEW_QUERY = `
         lat
         long
         closestCity {
-          id
           name
         }
         video {
@@ -109,7 +108,6 @@ export const PROFILE_OVERVIEW_QUERY = `
         lat
         long
         closestCity {
-          id
           name
         }
         video {
@@ -139,7 +137,6 @@ export const USER_PROFILE_QUERY = `
         lat
         long
         closestCity {
-          id
           name
         }
         profilePic {
@@ -166,7 +163,6 @@ export const USER_PROFILE_QUERY = `
         lat
         long
         closestCity {
-          id
           name
         }
         video {
@@ -197,7 +193,6 @@ export const USER_PROFILE_QUERY = `
         lat
         long
         closestCity {
-          id
           name
         }
         video {
@@ -372,7 +367,6 @@ export const GET_ALL_POSTS = `
         lat
         long
         closestCity {
-          id
           name
         }
         createdAt
