@@ -83,10 +83,22 @@ const ContentPreviewModal = ({
   }, [backdropOpacity, translateY, visible]);
 
   useEffect(() => {
-    if (!visible && videoRef.current) {
+    if (!videoRef.current) return;
+
+    if (visible) {
+      videoRef.current.setStatusAsync?.({ shouldPlay: true, positionMillis: 0 });
+    } else {
       videoRef.current.pauseAsync?.();
     }
   }, [visible]);
+
+  useEffect(() => {
+    if (!videoRef.current || !visible) return;
+    const isVideo = (localItem?.mediaType || "VIDEO") === "VIDEO";
+    if (isVideo) {
+      videoRef.current.setStatusAsync?.({ shouldPlay: true, positionMillis: 0 });
+    }
+  }, [localItem, visible]);
 
   const handleClose = () => {
     onClose?.();
@@ -110,7 +122,9 @@ const ContentPreviewModal = ({
     () =>
       PanResponder.create({
         onMoveShouldSetPanResponder: (_, gesture) =>
-          Math.abs(gesture.dy) > Math.abs(gesture.dx) && Math.abs(gesture.dy) > 6,
+          Math.abs(gesture.dy) > Math.abs(gesture.dx) && Math.abs(gesture.dy) > 4,
+        onMoveShouldSetPanResponderCapture: (_, gesture) =>
+          Math.abs(gesture.dy) > Math.abs(gesture.dx) && Math.abs(gesture.dy) > 4,
         onPanResponderMove: (_, gesture) => {
           if (gesture.dy > 0) {
             translateY.setValue(gesture.dy);
@@ -118,7 +132,7 @@ const ContentPreviewModal = ({
           }
         },
         onPanResponderRelease: (_, gesture) => {
-          if (gesture.dy > WINDOW_HEIGHT * 0.2 || gesture.vy > 1.2) {
+          if (gesture.dy > WINDOW_HEIGHT * 0.18 || gesture.vy > 1.05) {
             handleClose();
           } else {
             Animated.spring(translateY, {
@@ -136,6 +150,21 @@ const ContentPreviewModal = ({
             }).start();
           }
         },
+        onPanResponderTerminate: () => {
+          Animated.spring(translateY, {
+            toValue: 0,
+            useNativeDriver: true,
+            damping: 18,
+            stiffness: 220,
+            mass: 0.9,
+          }).start();
+          Animated.timing(backdropOpacity, {
+            toValue: 1,
+            duration: ANIMATION_DURATION,
+            easing: Easing.out(Easing.ease),
+            useNativeDriver: true,
+          }).start();
+        },
       }),
     [backdropOpacity, translateY]
   );
@@ -143,7 +172,16 @@ const ContentPreviewModal = ({
   if (!mounted) return null;
 
   const isPost = type === "POST";
-  const content = localItem;
+  const content = localItem
+    ? {
+        ...localItem,
+        author:
+          localItem.author ||
+          localItem.user ||
+          localItem.postAuthor ||
+          localItem.createdBy,
+      }
+    : null;
 
   const renderPostMedia = () => {
     if (!content) return null;
@@ -159,6 +197,7 @@ const ContentPreviewModal = ({
           shouldPlay={visible}
           isLooping
           isMuted={isMuted}
+          key={content.id || content.video?.url}
         />
       );
     }
@@ -233,11 +272,11 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
     backgroundColor: "#000",
-    paddingTop: 32,
+    paddingTop: 0,
   },
   closeButton: {
     position: "absolute",
-    top: 32,
+    top: 28,
     right: 18,
     zIndex: 10,
     backgroundColor: "rgba(0,0,0,0.5)",
@@ -246,8 +285,9 @@ const styles = StyleSheet.create({
   },
   mediaContainer: {
     width: "100%",
-    aspectRatio: 9 / 16,
+    height: "100%",
     backgroundColor: "#0f172a",
+    flex: 1,
   },
   media: {
     width: "100%",
@@ -257,7 +297,11 @@ const styles = StyleSheet.create({
     backgroundColor: "#111827",
   },
   feedContent: {
-    paddingTop: 84,
+    flex: 1,
+    alignItems: "stretch",
+    justifyContent: "center",
+    paddingTop: 0,
+    paddingHorizontal: 0,
   },
 });
 
