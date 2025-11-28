@@ -1,4 +1,4 @@
-// pages/LocationPermissionScreen.js
+// screens/Onboarding/LocationPermissionScreen.js
 import React, { useEffect, useState } from "react";
 import {
   View,
@@ -14,20 +14,26 @@ import {
 import { LinearGradient } from "expo-linear-gradient";
 import * as Location from "expo-location";
 
-import LogoIcon from "../assets/icon.png";
-import { useClient } from "../client";
-import { UPDATE_USER_PROFILE_MUTATION } from "../GraphQL/mutations";
-import { getToken } from "../utils/helpers";
+import LogoIcon from "../../assets/icon.png";
+import { useClient } from "../../client";
+import { UPDATE_USER_PROFILE_MUTATION } from "../../GraphQL/mutations";
+import { getToken } from "../../utils/helpers";
+import { COLORS } from "../../constants/colors";
+const {
+  primaryBackground,
+  cardBackground,
+  accent,
 
-const PRIMARY_BG = "#050816";
-const CARD_BG = "rgba(15,23,42,0.96)";
-const ACCENT = "#F59E0B";
-const ACCENT_SOFT = "#FBBF24";
+  textPrimary,
+  textSecondary,
+} = COLORS;
 
 const LocationPermissionScreen = ({ navigation }) => {
   const client = useClient();
   const [loading, setLoading] = useState(false);
   const [checking, setChecking] = useState(true);
+
+  const { accent, accentSoft } = COLORS;
 
   const updateLocationIfPermitted = async () => {
     try {
@@ -160,7 +166,7 @@ const LocationPermissionScreen = ({ navigation }) => {
         style={styles.root}
       >
         <View style={styles.center}>
-          <ActivityIndicator size="large" color={ACCENT} />
+          <ActivityIndicator size="large" color={accent} />
         </View>
       </LinearGradient>
     );
@@ -214,9 +220,7 @@ const LocationPermissionScreen = ({ navigation }) => {
               onPress={handlePermissionRequest}
             >
               <LinearGradient
-                colors={
-                  loading ? ["#4B5563", "#4B5563"] : [ACCENT, ACCENT_SOFT]
-                }
+                colors={loading ? ["#4B5563", "#4B5563"] : [accent, accentSoft]}
                 style={styles.primaryGradient}
               >
                 {loading ? (
@@ -240,7 +244,7 @@ const LocationPermissionScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  root: { flex: 1, backgroundColor: PRIMARY_BG },
+  root: { flex: 1, backgroundColor: primaryBackground },
   center: { flex: 1, justifyContent: "center", alignItems: "center" },
   flex: { flex: 1, paddingHorizontal: 24, paddingTop: 48, paddingBottom: 32 },
   header: { marginBottom: 24 },
@@ -249,29 +253,39 @@ const styles = StyleSheet.create({
   appName: {
     fontSize: 20,
     fontWeight: "700",
-    color: "#E5E7EB",
+    color: textPrimary,
     textTransform: "uppercase",
   },
-  appAccent: { color: ACCENT },
-  tagline: { marginTop: 6, fontSize: 14, color: "#9CA3AF" },
+  appAccent: { color: accent },
+  tagline: { marginTop: 6, fontSize: 14, color: textSecondary },
 
   cardContainer: { flex: 1, justifyContent: "center" },
   card: {
     borderRadius: 24,
     padding: 24,
-    backgroundColor: CARD_BG,
+    backgroundColor: cardBackground,
     borderWidth: 1,
     borderColor: "rgba(148,163,184,0.35)",
   },
   sectionLabel: {
     fontSize: 12,
-    color: "#6B7280",
+    color: textSecondary,
     textTransform: "uppercase",
     marginBottom: 12,
   },
-  title: { fontSize: 24, fontWeight: "700", color: "#F9FAFB", marginBottom: 8 },
-  titleAccent: { color: ACCENT },
-  helper: { fontSize: 14, color: "#9CA3AF", marginBottom: 24, lineHeight: 20 },
+  title: {
+    fontSize: 24,
+    fontWeight: "700",
+    color: textPrimary,
+    marginBottom: 8,
+  },
+  titleAccent: { color: accent },
+  helper: {
+    fontSize: 14,
+    color: textSecondary,
+    marginBottom: 24,
+    lineHeight: 20,
+  },
 
   infoBox: {
     backgroundColor: "rgba(245, 158, 11, 0.1)",
@@ -284,10 +298,10 @@ const styles = StyleSheet.create({
   infoTitle: {
     fontSize: 14,
     fontWeight: "700",
-    color: ACCENT,
+    color: accent,
     marginBottom: 8,
   },
-  infoText: { fontSize: 13, color: "#D1D5DB", marginBottom: 4 },
+  infoText: { fontSize: 13, color: textPrimary, marginBottom: 4 },
 
   primaryButton: { borderRadius: 999, overflow: "hidden", marginTop: 8 },
   primaryGradient: {
@@ -298,7 +312,11 @@ const styles = StyleSheet.create({
   primaryText: { color: "#111827", fontSize: 16, fontWeight: "700" },
 
   skipWrapper: { marginTop: 10, alignItems: "center" },
-  skipText: { fontSize: 13, color: "#9CA3AF", textDecorationLine: "underline" },
+  skipText: {
+    fontSize: 13,
+    color: textSecondary,
+    textDecorationLine: "underline",
+  },
 });
 
 export default LocationPermissionScreen;

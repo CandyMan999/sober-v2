@@ -20,7 +20,7 @@ import {
   AddPhotoScreen,
   AddSobrietyDateScreen,
   LocationPermissionScreen,
-} from "./pages";
+} from "./screens/Onboarding";
 import UserProfileScreen from "./screens/Profile/UserProfileScreen";
 
 import Context from "./context";

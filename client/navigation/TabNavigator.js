@@ -29,14 +29,15 @@ import Context from "../context";
 import { useClient } from "../client";
 import { getToken } from "../utils/helpers";
 import { PROFILE_OVERVIEW_QUERY, FETCH_ME_QUERY } from "../GraphQL/queries";
+import { COLORS } from "../constants/colors";
 
 const Tab = createBottomTabNavigator();
 const HomeStack = createStackNavigator();
 const ChatStack = createStackNavigator();
 const ProfileStack = createStackNavigator();
 
-const ACTIVE_COLOR = "#F59E0B";
-const INACTIVE_COLOR = "#6b7280";
+const ACTIVE_COLOR = COLORS.accent;
+const INACTIVE_COLOR = COLORS.muted;
 
 const HomeStackScreen = () => (
   <HomeStack.Navigator screenOptions={{ headerShown: false }}>

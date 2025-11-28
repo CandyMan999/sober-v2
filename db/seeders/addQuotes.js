@@ -15,8 +15,6 @@ const addQuotes = async () => {
     token: "ExponentPushToken[sVBPscAOM1nADnm8Pn4Wct]",
   });
 
-  console.log("user: ", user);
-
   const QUOTES = await Quote.find();
   if (QUOTES.length) await Quote.collection.drop();
 
@@ -54,7 +52,7 @@ const addQuotes = async () => {
   for (let i = 0; seedData.length > i; i++) {
     const data = await Quote.create({
       text: seedData[i],
-      user,
+      // user,
       isApproved: true,
     });
 

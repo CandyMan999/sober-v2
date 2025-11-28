@@ -1,4 +1,4 @@
-// pages/AddSobrietyDateScreen.js
+// screens/Onboarding/AddSobrietyDateScreen.js
 import React, { useState, useContext } from "react";
 import {
   View,
@@ -12,22 +12,28 @@ import {
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import { useClient } from "../client";
-import { RESET_SOBRIETY_MUTATION } from "../GraphQL/mutations";
-import Context from "../context";
+import { useClient } from "../../client";
+import { RESET_SOBRIETY_MUTATION } from "../../GraphQL/mutations";
+import Context from "../../context";
 
-import LogoIcon from "../assets/icon.png";
+import LogoIcon from "../../assets/icon.png";
+import { COLORS } from "../../constants/colors";
+const {
+  primaryBackground,
+  cardBackground,
+  accent,
 
-const PRIMARY_BG = "#050816";
-const CARD_BG = "rgba(15,23,42,0.96)";
-const ACCENT = "#F59E0B";
-const ACCENT_SOFT = "#FBBF24";
+  textPrimary,
+  textSecondary,
+} = COLORS;
 
 const AddSobrietyDateScreen = ({ navigation, route }) => {
   const client = useClient();
   const { dispatch } = useContext(Context);
   const username = route?.params?.username || "you";
   const token = route?.params?.pushToken || null;
+
+  const { accent, accentSoft } = COLORS;
   // Default to today's date, but user will pick their sobriety start date
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [showPicker, setShowPicker] = useState(false);
@@ -307,7 +313,7 @@ const AddSobrietyDateScreen = ({ navigation, route }) => {
               <LinearGradient
                 colors={
                   !error && !saving
-                    ? [ACCENT, ACCENT_SOFT]
+                    ? [accent, accentSoft]
                     : ["#4B5563", "#4B5563"]
                 }
                 start={{ x: 0, y: 0 }}
@@ -341,7 +347,7 @@ const AddSobrietyDateScreen = ({ navigation, route }) => {
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    backgroundColor: PRIMARY_BG,
+    backgroundColor: primaryBackground,
   },
   flex: {
     flex: 1,
@@ -371,20 +377,20 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     letterSpacing: 1.2,
     textTransform: "uppercase",
-    color: "#E5E7EB",
+    color: textPrimary,
   },
   appAccent: {
-    color: ACCENT,
+    color: accent,
   },
   tagline: {
     marginTop: 6,
     fontSize: 14,
-    color: "#9CA3AF",
+    color: textSecondary,
   },
   card: {
     borderRadius: 24,
     padding: 24,
-    backgroundColor: CARD_BG,
+    backgroundColor: cardBackground,
     borderWidth: 1,
     borderColor: "rgba(148,163,184,0.35)",
     shadowColor: "#000",
@@ -395,7 +401,7 @@ const styles = StyleSheet.create({
   },
   sectionLabel: {
     fontSize: 12,
-    color: "#6B7280",
+    color: textSecondary,
     textTransform: "uppercase",
     letterSpacing: 1.4,
     marginBottom: 12,
@@ -403,15 +409,15 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: "700",
-    color: "#F9FAFB",
+    color: textPrimary,
     marginBottom: 8,
   },
   titleAccent: {
-    color: ACCENT,
+    color: accent,
   },
   helper: {
     fontSize: 14,
-    color: "#9CA3AF",
+    color: textSecondary,
     marginBottom: 20,
   },
   optionsContainer: {
@@ -432,15 +438,15 @@ const styles = StyleSheet.create({
   },
   optionButtonActive: {
     backgroundColor: "rgba(245, 158, 11, 0.15)",
-    borderColor: ACCENT,
+    borderColor: accent,
   },
   optionButtonText: {
-    color: "#9CA3AF",
+    color: textSecondary,
     fontSize: 15,
     fontWeight: "600",
   },
   optionButtonTextActive: {
-    color: ACCENT,
+    color: accent,
   },
   daysCounterWrapper: {
     alignItems: "center",
@@ -448,7 +454,7 @@ const styles = StyleSheet.create({
   },
   daysCounter: {
     fontSize: 32,
-    color: ACCENT,
+    color: accent,
     fontWeight: "700",
     letterSpacing: 0.5,
   },
