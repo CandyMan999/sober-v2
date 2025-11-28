@@ -75,6 +75,12 @@ export const PROFILE_OVERVIEW_QUERY = `
         likesCount
         commentsCount
         createdAt
+        lat
+        long
+        closestCity {
+          id
+          name
+        }
         video {
           id
           url
@@ -100,6 +106,12 @@ export const PROFILE_OVERVIEW_QUERY = `
         likesCount
         commentsCount
         createdAt
+        lat
+        long
+        closestCity {
+          id
+          name
+        }
         video {
           id
           url
@@ -151,6 +163,12 @@ export const USER_PROFILE_QUERY = `
         likesCount
         commentsCount
         createdAt
+        lat
+        long
+        closestCity {
+          id
+          name
+        }
         video {
           id
           url
@@ -176,6 +194,12 @@ export const USER_PROFILE_QUERY = `
         likesCount
         commentsCount
         createdAt
+        lat
+        long
+        closestCity {
+          id
+          name
+        }
         video {
           id
           url
