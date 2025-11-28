@@ -468,7 +468,7 @@ const UserProfileScreen = ({ route, navigation }) => {
                     {followPending
                       ? "..."
                       : isBuddy
-                      ? "My Buddy"
+                      ? "Buddies"
                       : isFollowed
                       ? "Following"
                       : "Follow"}
@@ -702,6 +702,8 @@ const styles = StyleSheet.create({
     height: 170,
     overflow: "hidden",
     backgroundColor: "#111827",
+    borderWidth: 1,
+    borderColor: "#38bdf8",
   },
   tileImage: {
     width: "100%",
@@ -748,7 +750,7 @@ const styles = StyleSheet.create({
     padding: 12,
     justifyContent: "space-between",
     borderWidth: 1,
-    borderColor: "#1f2937",
+    borderColor: "#38bdf8",
     backgroundColor: "#0b1220",
   },
   quoteHeader: {
