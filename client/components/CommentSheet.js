@@ -41,7 +41,7 @@ const soberLogo = require("../assets/icon.png");
 const { height: WINDOW_HEIGHT } = Dimensions.get("window");
 const SHEET_HEIGHT = Math.round(WINDOW_HEIGHT * 0.8);
 const EMOJI_ROW = ["❤️", "😍", "🔥", "👏", "😮", "🙏", "👍", "😢", "😂", "🎉"];
-const FOLLOW_GRADIENT = ["#0ea5e9", "#38bdf8", "#2563eb"];
+const FOLLOW_GRADIENT = ["#fcd34d", "#f59e0b", "#f97316"];
 const BUDDY_GRADIENT = ["#22d3ee", "#0ea5e9", "#2563eb"];
 
 const parseDateValue = (value) => {
@@ -1005,18 +1005,18 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
   followChip: {
-    paddingHorizontal: 16,
-    paddingVertical: 10,
-    borderRadius: 12,
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderRadius: 999,
     borderWidth: 1,
-    borderColor: "#0ea5e9",
+    borderColor: "#f59e0b",
   },
   followingChip: {
     backgroundColor: "#0b1222",
     borderColor: "#fbbf24",
   },
   buddyChip: {
-    borderColor: "#22d3ee",
+    borderColor: "#0ea5e9",
   },
   followChipContent: {
     flexDirection: "row",
@@ -1029,7 +1029,7 @@ const styles = StyleSheet.create({
   followChipText: {
     color: "#0b1222",
     fontWeight: "800",
-    fontSize: 14,
+    fontSize: 12,
   },
   followingChipText: {
     color: "#e2e8f0",

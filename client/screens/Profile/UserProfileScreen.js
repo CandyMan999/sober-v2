@@ -31,6 +31,8 @@ import { formatDistance, getDistanceFromCoords } from "../../utils/distance";
 
 const AVATAR_SIZE = 110;
 const soberLogo = require("../../assets/icon.png");
+const FOLLOW_GRADIENT = ["#fcd34d", "#f59e0b", "#f97316"];
+const BUDDY_GRADIENT = ["#22d3ee", "#0ea5e9", "#2563eb"];
 
 const UserProfileScreen = ({ route, navigation }) => {
   const { userId, initialUser } = route.params || {};
@@ -683,55 +685,65 @@ const UserProfileScreen = ({ route, navigation }) => {
             </View>
             {profileData?.id !== state?.user?.id ? (
               <TouchableOpacity
-                style={[
-                  styles.followButton,
-                  isBuddy
-                    ? styles.buddyButton
-                    : isFollowed
-                    ? styles.followingButton
-                    : null,
-                ]}
+                style={styles.followButton}
                 onPress={handleToggleFollow}
                 disabled={followPending}
+                activeOpacity={0.9}
               >
-                <View style={styles.followButtonContent}>
-                  <Ionicons
-                    name={
-                      isBuddy
-                        ? "people"
-                        : isFollowed
-                        ? "checkmark-circle-outline"
-                        : "person-add-outline"
-                    }
-                    size={18}
-                    color={
-                      isBuddy
-                        ? "#0b1222"
-                        : isFollowed
-                        ? "#e2e8f0"
-                        : "#0b1222"
-                    }
-                    style={styles.followButtonIcon}
-                  />
-                  <Text
+                {isBuddy || !isFollowed ? (
+                  <LinearGradient
+                    colors={isBuddy ? BUDDY_GRADIENT : FOLLOW_GRADIENT}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 1 }}
                     style={[
-                      styles.followButtonText,
-                      isBuddy
-                        ? styles.buddyButtonText
-                        : isFollowed
-                        ? styles.followingButtonText
-                        : null,
+                      styles.followButtonFill,
+                      isBuddy ? styles.buddyButton : styles.followHalo,
                     ]}
                   >
-                    {followPending
-                      ? "..."
-                      : isBuddy
-                      ? "Buddies"
-                      : isFollowed
-                      ? "Following"
-                      : "Follow"}
-                  </Text>
-                </View>
+                    <View style={styles.followButtonContent}>
+                      <Ionicons
+                        name={
+                          isBuddy
+                            ? "people"
+                            : isFollowed
+                            ? "checkmark-circle-outline"
+                            : "person-add-outline"
+                        }
+                        size={18}
+                        color={isBuddy ? "#0b1222" : "#0b1222"}
+                        style={styles.followButtonIcon}
+                      />
+                      <Text
+                        style={[
+                          styles.followButtonText,
+                          isBuddy ? styles.buddyButtonText : null,
+                        ]}
+                      >
+                        {followPending
+                          ? "..."
+                          : isBuddy
+                          ? "Buddies"
+                          : "Follow"}
+                      </Text>
+                    </View>
+                  </LinearGradient>
+                ) : (
+                  <View style={[styles.followButtonFill, styles.followingButton]}>
+                    <View style={styles.followButtonContent}>
+                      <Ionicons
+                        name="checkmark-circle-outline"
+                        size={18}
+                        color="#e2e8f0"
+                        style={styles.followButtonIcon}
+                      />
+                      <Text
+                        style={[styles.followButtonText, styles.followingButtonText]}
+                      >
+                        {followPending ? "..." : "Following"}
+                      </Text>
+                    </View>
+                  </View>
+                )}
               </TouchableOpacity>
             ) : null}
           </View>
@@ -1103,6 +1115,10 @@ const styles = StyleSheet.create({
   },
   followButton: {
     marginTop: 12,
+    borderRadius: 12,
+    overflow: "hidden",
+  },
+  followButtonFill: {
     backgroundColor: "#fbbf24",
     paddingHorizontal: 16,
     paddingVertical: 10,
@@ -1110,6 +1126,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     borderWidth: 1,
+    borderColor: "#f59e0b",
+  },
+  followHalo: {
     borderColor: "#f59e0b",
   },
   followButtonContent: {
@@ -1132,7 +1151,6 @@ const styles = StyleSheet.create({
     color: "#e2e8f0",
   },
   buddyButton: {
-    backgroundColor: "#22d3ee",
     borderColor: "#0ea5e9",
   },
   buddyButtonText: {

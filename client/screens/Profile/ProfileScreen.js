@@ -876,7 +876,9 @@ const styles = StyleSheet.create({
   },
   addWhyButton: {
     marginTop: 10,
-    backgroundColor: "#f59e0b",
+    backgroundColor: "#fcd34d",
+    borderWidth: 1,
+    borderColor: "#f59e0b",
     paddingHorizontal: 14,
     paddingVertical: 8,
     borderRadius: 12,
