@@ -145,6 +145,7 @@ const typeDefs = gql`
     post: Post!
     viewsCount: Int!
     publicId: String
+    thumbnailUrl: String!
     createdAt: String
     updatedAt: String
   }
