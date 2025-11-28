@@ -318,8 +318,10 @@ const ProfileScreen = ({ navigation }) => {
 
   const gridHeight = useMemo(() => {
     if (activeTab === "DRUNK") {
-      const drunkHeight = Math.max(420, layout.width * (4 / 3) * 0.9);
-      return profileData?.drunkPicUrl ? drunkHeight : 200;
+      const haloHeight = layout.width * (4 / 3);
+      const paddedHeight = haloHeight + 48; // gradient padding + container spacing
+      const drunkHeight = Math.max(520, paddedHeight);
+      return profileData?.drunkPicUrl ? drunkHeight : 220;
     }
 
     const postRows = Math.max(1, Math.ceil(posts.length / 3));
