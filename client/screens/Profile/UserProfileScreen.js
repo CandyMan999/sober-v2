@@ -16,6 +16,7 @@ import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import { TabView } from "react-native-tab-view";
 
 import Avatar from "../../components/Avatar";
+import { ContentPreviewModal } from "../../components";
 import Context from "../../context";
 import { useClient } from "../../client";
 import { getToken } from "../../utils/helpers";
@@ -41,6 +42,10 @@ const UserProfileScreen = ({ route, navigation }) => {
   const [loading, setLoading] = useState(true);
   const [tabIndex, setTabIndex] = useState(0);
   const [followPending, setFollowPending] = useState(false);
+  const [previewVisible, setPreviewVisible] = useState(false);
+  const [previewItem, setPreviewItem] = useState(null);
+  const [previewType, setPreviewType] = useState("POST");
+  const [previewMuted, setPreviewMuted] = useState(true);
 
   const viewerCoords = useMemo(() => {
     if (state?.currentPosition?.lat && state?.currentPosition?.long) {
@@ -168,6 +173,58 @@ const UserProfileScreen = ({ route, navigation }) => {
     }
   }, [client, followPending, isFollowed, profileData, state?.user?.id]);
 
+  const openPreview = (item, type = "POST") => {
+    setPreviewItem(item);
+    setPreviewType(type);
+    setPreviewVisible(true);
+  };
+
+  const closePreview = () => setPreviewVisible(false);
+
+  const handlePreviewCommentAdded = (newComment) => {
+    if (!previewItem) return;
+    const targetId = previewItem.id;
+
+    if (previewType === "QUOTE") {
+      setQuotes((prev) =>
+        prev.map((quote) =>
+          quote.id === targetId
+            ? {
+                ...quote,
+                comments: [newComment, ...(quote.comments || [])],
+                commentsCount: (quote.commentsCount || 0) + 1,
+              }
+            : quote
+        )
+      );
+      return;
+    }
+
+    setPosts((prev) =>
+      prev.map((post) =>
+        post.id === targetId
+          ? {
+              ...post,
+              comments: [newComment, ...(post.comments || [])],
+              commentsCount: (post.commentsCount || 0) + 1,
+            }
+          : post
+      )
+    );
+
+    setSavedPosts((prev) =>
+      prev.map((post) =>
+        post.id === targetId
+          ? {
+              ...post,
+              comments: [newComment, ...(post.comments || [])],
+              commentsCount: (post.commentsCount || 0) + 1,
+            }
+          : post
+      )
+    );
+  };
+
   useEffect(() => {
     let mounted = true;
 
@@ -212,7 +269,12 @@ const UserProfileScreen = ({ route, navigation }) => {
     const key = item?.id || `${thumbnail || "media"}-${saved ? "saved" : "post"}`;
 
     return (
-      <View style={styles.tileWrapper} key={key}>
+      <TouchableOpacity
+        style={styles.tileWrapper}
+        key={key}
+        activeOpacity={0.85}
+        onPress={() => openPreview(item, "POST")}
+      >
         <View style={styles.tile}>
           {imageSource ? (
             <Image source={imageSource} style={styles.tileImage} />
@@ -242,7 +304,7 @@ const UserProfileScreen = ({ route, navigation }) => {
             </View>
           )}
         </View>
-      </View>
+      </TouchableOpacity>
     );
   };
 
@@ -255,7 +317,12 @@ const UserProfileScreen = ({ route, navigation }) => {
     const key = item?.id || item?.text || "quote";
 
     return (
-      <View style={styles.tileWrapper} key={key}>
+      <TouchableOpacity
+        style={styles.tileWrapper}
+        key={key}
+        activeOpacity={0.85}
+        onPress={() => openPreview(item, "QUOTE")}
+      >
         <View style={[styles.tile, styles.quoteTile]}>
           <View style={styles.quoteHeader}>
             <MaterialCommunityIcons
@@ -284,7 +351,7 @@ const UserProfileScreen = ({ route, navigation }) => {
             </Text>
           </View>
         </View>
-      </View>
+      </TouchableOpacity>
     );
   };
 
@@ -397,10 +464,11 @@ const UserProfileScreen = ({ route, navigation }) => {
   }
 
   return (
-    <ScrollView
-      style={styles.container}
-      contentContainerStyle={styles.containerContent}
-    >
+    <>
+      <ScrollView
+        style={styles.container}
+        contentContainerStyle={styles.containerContent}
+      >
       <View style={styles.editIconWrapper}>
         <TouchableOpacity
           style={styles.editIconButton}
@@ -540,7 +608,19 @@ const UserProfileScreen = ({ route, navigation }) => {
           lazy={false}
         />
       </View>
-    </ScrollView>
+      </ScrollView>
+
+      <ContentPreviewModal
+        visible={previewVisible}
+        item={previewItem}
+        type={previewType}
+        viewerUser={state?.user}
+        onClose={closePreview}
+        isMuted={previewMuted}
+        onToggleSound={() => setPreviewMuted((prev) => !prev)}
+        onCommentAdded={handlePreviewCommentAdded}
+      />
+    </>
   );
 };
 

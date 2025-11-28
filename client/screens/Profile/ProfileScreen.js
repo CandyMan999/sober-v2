@@ -20,6 +20,7 @@ import Context from "../../context";
 import { useClient } from "../../client";
 import { getToken } from "../../utils/helpers";
 import { PROFILE_OVERVIEW_QUERY, FETCH_ME_QUERY } from "../../GraphQL/queries";
+import { ContentPreviewModal } from "../../components";
 
 const AVATAR_SIZE = 110;
 
@@ -37,6 +38,10 @@ const ProfileScreen = ({ navigation }) => {
     cachedOverview?.savedPosts || []
   );
   const [tabIndex, setTabIndex] = useState(0);
+  const [previewVisible, setPreviewVisible] = useState(false);
+  const [previewItem, setPreviewItem] = useState(null);
+  const [previewType, setPreviewType] = useState("POST");
+  const [previewMuted, setPreviewMuted] = useState(true);
 
   const counts = useMemo(() => {
     const likesTotal = posts.reduce(
@@ -107,6 +112,60 @@ const ProfileScreen = ({ navigation }) => {
     navigation.navigate(screen);
   };
 
+  const openPreview = (item, type = "POST") => {
+    setPreviewItem(item);
+    setPreviewType(type);
+    setPreviewVisible(true);
+  };
+
+  const closePreview = () => {
+    setPreviewVisible(false);
+  };
+
+  const handlePreviewCommentAdded = (newComment) => {
+    if (!previewItem) return;
+    const targetId = previewItem.id;
+
+    if (previewType === "QUOTE") {
+      setQuotes((prev) =>
+        prev.map((quote) =>
+          quote.id === targetId
+            ? {
+                ...quote,
+                comments: [newComment, ...(quote.comments || [])],
+                commentsCount: (quote.commentsCount || 0) + 1,
+              }
+            : quote
+        )
+      );
+      return;
+    }
+
+    setPosts((prev) =>
+      prev.map((post) =>
+        post.id === targetId
+          ? {
+              ...post,
+              comments: [newComment, ...(post.comments || [])],
+              commentsCount: (post.commentsCount || 0) + 1,
+            }
+          : post
+      )
+    );
+
+    setSavedPosts((prev) =>
+      prev.map((post) =>
+        post.id === targetId
+          ? {
+              ...post,
+              comments: [newComment, ...(post.comments || [])],
+              commentsCount: (post.commentsCount || 0) + 1,
+            }
+          : post
+      )
+    );
+  };
+
   const renderPostTile = ({ item, saved = false }) => {
     const isVideo = item.mediaType === "VIDEO";
     const thumbnail = isVideo
@@ -117,7 +176,11 @@ const ProfileScreen = ({ navigation }) => {
     const views = item?.video?.viewsCount || 0;
 
     return (
-      <View style={styles.tileWrapper}>
+      <TouchableOpacity
+        style={styles.tileWrapper}
+        activeOpacity={0.85}
+        onPress={() => openPreview(item, "POST")}
+      >
         <View style={styles.tile}>
           {imageSource ? (
             <Image source={imageSource} style={styles.tileImage} />
@@ -147,7 +210,7 @@ const ProfileScreen = ({ navigation }) => {
             </View>
           )}
         </View>
-      </View>
+      </TouchableOpacity>
     );
   };
 
@@ -159,7 +222,11 @@ const ProfileScreen = ({ navigation }) => {
       : { label: "Pending", color: "#f59e0b", icon: "clock-outline" };
 
     return (
-      <View style={styles.tileWrapper}>
+      <TouchableOpacity
+        style={styles.tileWrapper}
+        activeOpacity={0.85}
+        onPress={() => openPreview(item, "QUOTE")}
+      >
         <View style={[styles.tile, styles.quoteTile]}>
           <View style={styles.quoteHeader}>
             <MaterialCommunityIcons
@@ -188,7 +255,7 @@ const ProfileScreen = ({ navigation }) => {
             </Text>
           </View>
         </View>
-      </View>
+      </TouchableOpacity>
     );
   };
 
@@ -389,10 +456,11 @@ const ProfileScreen = ({ navigation }) => {
   }
 
   return (
-    <ScrollView
-      style={styles.container}
-      contentContainerStyle={{ paddingBottom: 48 }}
-    >
+    <>
+      <ScrollView
+        style={styles.container}
+        contentContainerStyle={{ paddingBottom: 48 }}
+      >
       <View style={styles.editIconWrapper}>
         <TouchableOpacity
           style={styles.editIconButton}
@@ -490,7 +558,19 @@ const ProfileScreen = ({ navigation }) => {
           lazy={false}
         />
       </View>
-    </ScrollView>
+      </ScrollView>
+
+      <ContentPreviewModal
+        visible={previewVisible}
+        item={previewItem}
+        type={previewType}
+        viewerUser={state?.user}
+        onClose={closePreview}
+        isMuted={previewMuted}
+        onToggleSound={() => setPreviewMuted((prev) => !prev)}
+        onCommentAdded={handlePreviewCommentAdded}
+      />
+    </>
   );
 };
 
