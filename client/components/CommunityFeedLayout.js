@@ -44,6 +44,7 @@ const CommunityFeedLayout = ({
   onLikePress,
   onMorePress,
   onFilterPress,
+  showFilter = true,
   onToggleFollow,
   viewerUserId,
   onCommentAdded,
@@ -81,6 +82,7 @@ const CommunityFeedLayout = ({
       onLikePress={onLikePress}
       onMorePress={onMorePress}
       onFilterPress={onFilterPress}
+      showFilter={showFilter}
       onToggleFollow={onToggleFollow}
       isFollowed={author?.isFollowedByViewer}
       isBuddy={author?.isBuddyWithViewer}

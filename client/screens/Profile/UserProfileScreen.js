@@ -23,6 +23,8 @@ import { getToken } from "../../utils/helpers";
 import { USER_PROFILE_QUERY } from "../../GraphQL/queries";
 import {
   FOLLOW_USER_MUTATION,
+  SET_POST_REVIEW_MUTATION,
+  TOGGLE_LIKE_MUTATION,
   UNFOLLOW_USER_MUTATION,
 } from "../../GraphQL/mutations";
 import { formatDistance, getDistanceFromCoords } from "../../utils/distance";
@@ -46,6 +48,8 @@ const UserProfileScreen = ({ route, navigation }) => {
   const [previewItem, setPreviewItem] = useState(null);
   const [previewType, setPreviewType] = useState("POST");
   const [previewMuted, setPreviewMuted] = useState(true);
+  const currentUser = state?.user;
+  const currentUserId = currentUser?.id;
 
   const viewerCoords = useMemo(() => {
     if (state?.currentPosition?.lat && state?.currentPosition?.long) {
@@ -241,6 +245,174 @@ const UserProfileScreen = ({ route, navigation }) => {
           : post
       )
     );
+  };
+
+  const applyPostPatch = (postId, updater) => {
+    setPosts((prev) => prev.map((post) => (post.id === postId ? updater(post) : post)));
+    setSavedPosts((prev) => prev.map((post) => (post.id === postId ? updater(post) : post)));
+    setPreviewItem((prev) => (prev && prev.id === postId ? updater(prev) : prev));
+  };
+
+  const applyQuotePatch = (quoteId, updater) => {
+    setQuotes((prev) => prev.map((quote) => (quote.id === quoteId ? updater(quote) : quote)));
+    setPreviewItem((prev) => (prev && prev.id === quoteId ? updater(prev) : prev));
+  };
+
+  const handleTogglePostLike = async (postId) => {
+    if (!postId || !currentUserId) return;
+
+    const token = await getToken();
+    if (!token) return;
+
+    const existing =
+      posts.find((post) => post.id === postId) ||
+      savedPosts.find((post) => post.id === postId) ||
+      (previewItem?.id === postId ? previewItem : null);
+
+    const currentlyLiked = (existing?.likes || []).some(
+      (like) => like?.user?.id === currentUserId
+    );
+    const optimisticUser = currentUser || { id: currentUserId };
+
+    const previousPosts = posts;
+    const previousSaved = savedPosts;
+    const previousPreview = previewItem;
+
+    applyPostPatch(postId, (post) => {
+      const filtered = (post.likes || []).filter((like) => like?.user?.id !== currentUserId);
+      const nextLikes = currentlyLiked
+        ? filtered
+        : [...filtered, { id: `temp-like-${postId}`, user: optimisticUser }];
+
+      return {
+        ...post,
+        likesCount: Math.max(0, (post.likesCount || 0) + (currentlyLiked ? -1 : 1)),
+        likes: nextLikes,
+      };
+    });
+
+    try {
+      const data = await client.request(TOGGLE_LIKE_MUTATION, {
+        token,
+        targetType: "POST",
+        targetId: postId,
+      });
+
+      const payload = data?.toggleLike;
+      if (payload) {
+        applyPostPatch(postId, (post) => {
+          const actorId = payload.like?.user?.id || currentUserId;
+          const filtered = (post.likes || []).filter((like) => like?.user?.id !== actorId);
+          const nextLikes = payload.liked && payload.like ? [...filtered, payload.like] : filtered;
+
+          return {
+            ...post,
+            likesCount: payload.likesCount,
+            likes: nextLikes,
+          };
+        });
+      }
+    } catch (err) {
+      console.error("Error toggling post like", err);
+      setPosts(previousPosts);
+      setSavedPosts(previousSaved);
+      setPreviewItem(previousPreview);
+    }
+  };
+
+  const handleToggleQuoteLike = async (quoteId) => {
+    if (!quoteId || !currentUserId) return;
+
+    const token = await getToken();
+    if (!token) return;
+
+    const existing = quotes.find((quote) => quote.id === quoteId) || previewItem;
+    const currentlyLiked = (existing?.likes || []).some(
+      (like) => like?.user?.id === currentUserId
+    );
+    const optimisticUser = currentUser || { id: currentUserId };
+
+    const previousQuotes = quotes;
+    const previousPreview = previewItem;
+
+    applyQuotePatch(quoteId, (quote) => {
+      const filtered = (quote.likes || []).filter((like) => like?.user?.id !== currentUserId);
+      const nextLikes = currentlyLiked
+        ? filtered
+        : [...filtered, { id: `temp-like-${quoteId}`, user: optimisticUser }];
+
+      return {
+        ...quote,
+        likesCount: Math.max(0, (quote.likesCount || 0) + (currentlyLiked ? -1 : 1)),
+        likes: nextLikes,
+      };
+    });
+
+    try {
+      const data = await client.request(TOGGLE_LIKE_MUTATION, {
+        token,
+        targetType: "QUOTE",
+        targetId: quoteId,
+      });
+
+      const payload = data?.toggleLike;
+      if (payload) {
+        applyQuotePatch(quoteId, (quote) => {
+          const actorId = payload.like?.user?.id || currentUserId;
+          const filtered = (quote.likes || []).filter((like) => like?.user?.id !== actorId);
+          const nextLikes = payload.liked && payload.like ? [...filtered, payload.like] : filtered;
+
+          return {
+            ...quote,
+            likesCount: payload.likesCount,
+            likes: nextLikes,
+          };
+        });
+      }
+    } catch (err) {
+      console.error("Error toggling quote like", err);
+      setQuotes(previousQuotes);
+      setPreviewItem(previousPreview);
+    }
+  };
+
+  const handleFlagForReview = async (postId, alreadyFlagged) => {
+    if (!postId) return;
+    if (alreadyFlagged) {
+      setPreviewItem((prev) => (prev && prev.id === postId ? { ...prev } : prev));
+      return;
+    }
+
+    const token = await getToken();
+    if (!token) return;
+
+    const previousPosts = posts;
+    const previousSaved = savedPosts;
+    const previousPreview = previewItem;
+
+    applyPostPatch(postId, (post) => ({ ...post, review: true, flagged: true }));
+
+    try {
+      const data = await client.request(SET_POST_REVIEW_MUTATION, {
+        token,
+        postId,
+        review: true,
+      });
+
+      const updated = data?.setPostReview;
+      if (updated) {
+        applyPostPatch(postId, (post) => ({
+          ...post,
+          review: updated.review,
+          flagged: updated.flagged,
+        }));
+      }
+    } catch (err) {
+      console.error("Error updating review status", err);
+      setPosts(previousPosts);
+      setSavedPosts(previousSaved);
+      setPreviewItem(previousPreview);
+    }
   };
 
   useEffect(() => {
@@ -637,6 +809,9 @@ const UserProfileScreen = ({ route, navigation }) => {
         isMuted={previewMuted}
         onToggleSound={() => setPreviewMuted((prev) => !prev)}
         onCommentAdded={handlePreviewCommentAdded}
+        onTogglePostLike={handleTogglePostLike}
+        onToggleQuoteLike={handleToggleQuoteLike}
+        onFlagForReview={handleFlagForReview}
       />
     </>
   );

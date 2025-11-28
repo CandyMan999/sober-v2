@@ -7,6 +7,7 @@ import {
   Modal,
   Pressable,
   StyleSheet,
+  Text,
   TouchableOpacity,
   View,
 } from "react-native";
@@ -29,9 +30,13 @@ const ContentPreviewModal = ({
   isMuted = true,
   onCommentAdded,
   onToggleFollow,
+  onTogglePostLike,
+  onToggleQuoteLike,
+  onFlagForReview,
 }) => {
   const [mounted, setMounted] = useState(visible);
   const [localItem, setLocalItem] = useState(item);
+  const [showActions, setShowActions] = useState(false);
   const backdropOpacity = useRef(new Animated.Value(0)).current;
   const translateY = useRef(new Animated.Value(WINDOW_HEIGHT)).current;
   const dragY = useRef(new Animated.Value(0)).current;
@@ -123,6 +128,7 @@ const ContentPreviewModal = ({
 
   const handleClose = () => {
     dragY.setValue(0);
+    setShowActions(false);
     onClose?.();
   };
 
@@ -192,6 +198,7 @@ const ContentPreviewModal = ({
   if (!mounted) return null;
 
   const isPost = type === "POST";
+  const viewerId = viewerUser?.id;
   const content = localItem
     ? {
         ...localItem,
@@ -221,6 +228,27 @@ const ContentPreviewModal = ({
           viewerUser,
       }
     : null;
+
+  const isLiked = useMemo(() => {
+    if (!content || !viewerId) return false;
+    const likes = content.likes || [];
+    return likes.some((like) => like?.user?.id === viewerId);
+  }, [content, viewerId]);
+
+  const handleLikePress = () => {
+    if (!content?.id) return;
+    if (isPost) {
+      onTogglePostLike?.(content.id);
+    } else {
+      onToggleQuoteLike?.(content.id);
+    }
+  };
+
+  const handleFlagPress = () => {
+    if (!content?.id) return;
+    onFlagForReview?.(content.id, content.review);
+    setShowActions(false);
+  };
 
   const renderPostMedia = () => {
     if (!content) return null;
@@ -261,6 +289,10 @@ const ContentPreviewModal = ({
           contentStyle={styles.feedContent}
           viewerUserId={viewerUser?.id}
           onToggleFollow={onToggleFollow}
+          isLiked={isLiked}
+          onLikePress={handleLikePress}
+          onMorePress={() => setShowActions(true)}
+          showFilter={false}
         >
           <View style={styles.mediaContainer}>{renderPostMedia()}</View>
         </CommunityFeedLayout>
@@ -273,6 +305,8 @@ const ContentPreviewModal = ({
         onCommentAdded={handleCommentAdded}
         viewerUserId={viewerUser?.id}
         onToggleFollow={onToggleFollow}
+        isLiked={isLiked}
+        onLikePress={handleLikePress}
       />
     );
   };
@@ -299,6 +333,41 @@ const ContentPreviewModal = ({
           {renderContent()}
         </Animated.View>
       </PanGestureHandler>
+
+      {isPost && showActions ? (
+        <Modal
+          visible
+          animationType="fade"
+          transparent
+          onRequestClose={() => setShowActions(false)}
+        >
+          <View style={styles.actionsOverlay}>
+            <Pressable style={StyleSheet.absoluteFill} onPress={() => setShowActions(false)} />
+            <View style={styles.actionsSheet}>
+              <Text style={styles.actionsTitle}>Post options</Text>
+              <TouchableOpacity style={styles.actionsButton} onPress={handleFlagPress}>
+                <Ionicons
+                  name={content?.review ? "flag" : "flag-outline"}
+                  size={18}
+                  color="#fef3c7"
+                  style={styles.actionsIcon}
+                />
+                <Text style={styles.actionsLabel}>
+                  {content?.review ? "Already flagged for review" : "Flag for review"}
+                </Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={[styles.actionsButton, styles.actionsCancel]}
+                onPress={() => setShowActions(false)}
+              >
+                <Ionicons name="close" size={18} color="#cbd5e1" style={styles.actionsIcon} />
+                <Text style={[styles.actionsLabel, styles.actionsCancelText]}>Close</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
+      ) : null}
     </Modal>
   );
 };
@@ -345,6 +414,49 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     paddingTop: 0,
     paddingHorizontal: 0,
+  },
+  actionsOverlay: {
+    flex: 1,
+    backgroundColor: "rgba(0,0,0,0.55)",
+    justifyContent: "flex-end",
+  },
+  actionsSheet: {
+    backgroundColor: "#0b1220",
+    paddingHorizontal: 18,
+    paddingTop: 16,
+    paddingBottom: 32,
+    borderTopLeftRadius: 18,
+    borderTopRightRadius: 18,
+    borderWidth: 1,
+    borderColor: "#1f2937",
+  },
+  actionsTitle: {
+    color: "#e5e7eb",
+    fontSize: 16,
+    fontWeight: "700",
+    marginBottom: 12,
+  },
+  actionsButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingVertical: 12,
+    borderRadius: 12,
+    paddingHorizontal: 10,
+  },
+  actionsIcon: {
+    marginRight: 10,
+  },
+  actionsLabel: {
+    color: "#e5e7eb",
+    fontSize: 15,
+    fontWeight: "600",
+  },
+  actionsCancel: {
+    marginTop: 4,
+  },
+  actionsCancelText: {
+    color: "#cbd5e1",
+    fontWeight: "700",
   },
 });
 
