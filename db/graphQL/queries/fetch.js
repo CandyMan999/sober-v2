@@ -119,7 +119,7 @@ module.exports = {
         .populate({
           path: "video",
           match: { flagged: false },
-          select: "url flagged viewsCount viewers",
+          select: "url flagged viewsCount viewers thumbnailUrl",
         })
         .populate("closestCity")
         .populate({
@@ -227,7 +227,7 @@ module.exports = {
       .populate("author")
       .populate({
         path: "video",
-        select: "url flagged viewsCount viewers",
+        select: "url flagged viewsCount viewers thumbnailUrl",
       });
 
     const savedPosts = await Post.find({ _id: { $in: user.savedPosts || [] } })
@@ -235,7 +235,7 @@ module.exports = {
       .populate("author")
       .populate({
         path: "video",
-        select: "url flagged viewsCount viewers",
+        select: "url flagged viewsCount viewers thumbnailUrl",
       });
 
     const quotes = await Quote.find({ user: user._id })

@@ -218,6 +218,15 @@ const toCfHls = (uid) => {
   return url;
 };
 
+const toCfThumbnail = (uid) => {
+  // Portrait (3:4) aspect ratio thumbnail
+  const url =
+    `https://${CF_STREAM_CUSTOMER_DOMAIN}/${uid}/thumbnails/thumbnail.jpg` +
+    "?width=720&height=960&fit=cover";
+  console.log("[urls] thumbnail:", url);
+  return url;
+};
+
 /**
  * Kickoff and wait until MP4 download is actually available.
  * Returns the final MP4 URL.
@@ -419,6 +428,7 @@ module.exports = {
         url: hlsUrl,
         publicId,
         sender: senderID,
+        thumbnailUrl: toCfThumbnail(publicId),
       });
 
       const postLocation = {
