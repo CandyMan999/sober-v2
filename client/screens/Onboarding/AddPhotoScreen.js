@@ -13,25 +13,31 @@ import { LinearGradient } from "expo-linear-gradient";
 import * as ImagePicker from "expo-image-picker";
 import * as ImageManipulator from "expo-image-manipulator";
 import { MaterialIcons } from "@expo/vector-icons";
-import { useClient } from "../client";
+import { useClient } from "../../client";
 import {
   DIRECT_UPLOAD_MUTATION,
   ADD_PICTURE_MUTATION,
   DELETE_PHOTO_MUTATION,
-} from "../GraphQL/mutations";
+} from "../../GraphQL/mutations";
 import { EXPO_CF_ACCOUNT_HASH, EXPO_CF_VARIANT } from "@env";
 
-import LogoIcon from "../assets/icon.png";
-
-const PRIMARY_BG = "#050816";
-const CARD_BG = "rgba(15,23,42,0.96)";
-const ACCENT = "#F59E0B";
-const ACCENT_SOFT = "#FBBF24";
+import LogoIcon from "../../assets/icon.png";
+import { COLORS } from "../../constants/colors";
 
 const AddPhotoScreen = ({ navigation, route }) => {
   const client = useClient();
   const username = route?.params?.username || "you";
   const token = route?.params?.pushToken || null;
+
+  const {
+    primaryBackground,
+    cardBackground,
+    accent,
+    accentSoft,
+    textPrimary,
+    textSecondary,
+    border,
+  } = COLORS;
 
   // flow state
   const [step, setStep] = useState(1);
@@ -372,7 +378,7 @@ const AddPhotoScreen = ({ navigation, route }) => {
                 colors={
                   isPrimaryDisabled
                     ? ["#4B5563", "#6B7280"]
-                    : [ACCENT, ACCENT_SOFT]
+                    : [accent, accentSoft]
                 }
                 style={styles.primaryGradient}
               >
@@ -413,7 +419,7 @@ const AddPhotoScreen = ({ navigation, route }) => {
 };
 
 const styles = StyleSheet.create({
-  root: { flex: 1, backgroundColor: PRIMARY_BG },
+  root: { flex: 1, backgroundColor: primaryBackground },
   flex: { flex: 1, paddingHorizontal: 24, paddingTop: 48, paddingBottom: 32 },
   header: { marginBottom: 24 },
   headerRow: { flexDirection: "row", alignItems: "center" },
@@ -422,29 +428,34 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "700",
     textTransform: "uppercase",
-    color: "#E5E7EB",
+    color: textPrimary,
   },
-  appAccent: { color: ACCENT },
-  tagline: { marginTop: 4, color: "#9CA3AF", fontSize: 14 },
+  appAccent: { color: accent },
+  tagline: { marginTop: 4, color: textSecondary, fontSize: 14 },
   cardContainer: { flex: 1, justifyContent: "center" },
   card: {
     borderRadius: 24,
     padding: 24,
-    backgroundColor: CARD_BG,
+    backgroundColor: cardBackground,
     borderWidth: 1,
-    borderColor: "rgba(148,163,184,0.35)",
+    borderColor: border,
   },
 
   sectionLabel: {
     fontSize: 12,
     textTransform: "uppercase",
     letterSpacing: 1.4,
-    color: "#6B7280",
+    color: textSecondary,
     marginBottom: 12,
   },
-  title: { fontSize: 24, fontWeight: "700", color: "#FFF", marginBottom: 8 },
-  titleAccent: { color: ACCENT },
-  helper: { color: "#9CA3AF", fontSize: 14, marginBottom: 20 },
+  title: {
+    fontSize: 24,
+    fontWeight: "700",
+    color: textPrimary,
+    marginBottom: 8,
+  },
+  titleAccent: { color: accent },
+  helper: { color: textSecondary, fontSize: 14, marginBottom: 20 },
 
   // profile UI
   avatarWrapper: {
@@ -463,7 +474,7 @@ const styles = StyleSheet.create({
   },
   avatarImage: { width: "100%", height: "100%", borderRadius: 999 },
   avatarEmptyContent: { alignItems: "center", justifyContent: "center" },
-  avatarTapText: { marginTop: 8, color: "#9CA3AF", fontSize: 13 },
+  avatarTapText: { marginTop: 8, color: textSecondary, fontSize: 13 },
 
   // drunk UI
   drunkWrapper: {
@@ -491,7 +502,7 @@ const styles = StyleSheet.create({
     borderRadius: 14,
   },
   drunkEmpty: { alignItems: "center", justifyContent: "center" },
-  drunkTapText: { marginTop: 6, color: "#9CA3AF", fontSize: 13 },
+  drunkTapText: { marginTop: 6, color: textSecondary, fontSize: 13 },
 
   deleteButton: {
     position: "absolute",

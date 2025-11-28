@@ -16,23 +16,28 @@ import * as Notifications from "expo-notifications";
 import * as Location from "expo-location";
 import * as Device from "expo-device";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import Context from "../context";
-import LogoIcon from "../assets/icon.png";
+import Context from "../../context";
+import LogoIcon from "../../assets/icon.png";
 
-import { useClient } from "../client";
-import { UPDATE_USER_PROFILE_MUTATION } from "../GraphQL/mutations";
-import { FETCH_ME_QUERY } from "../GraphQL/queries";
-
-const PRIMARY_BG = "#050816";
-const CARD_BG = "rgba(15,23,42,0.96)";
-const ACCENT = "#F59E0B";
-const ACCENT_SOFT = "#FBBF24";
+import { useClient } from "../../client";
+import { UPDATE_USER_PROFILE_MUTATION } from "../../GraphQL/mutations";
+import { FETCH_ME_QUERY } from "../../GraphQL/queries";
+import { COLORS } from "../../constants/colors";
 const MIN_LEN = 3;
 const PUSH_TOKEN_KEY = "expoPushToken";
 
 const UsernameScreen = ({ navigation }) => {
   const client = useClient();
   const { dispatch } = useContext(Context);
+
+  const {
+    primaryBackground,
+    cardBackground,
+    accent,
+    accentSoft,
+    textPrimary,
+    textSecondary,
+  } = COLORS;
 
   // 1 = notifications, 2 = username
   const [step, setStep] = useState(1);
@@ -341,7 +346,7 @@ const UsernameScreen = ({ navigation }) => {
         disabled={notifLoading}
       >
         <LinearGradient
-          colors={notifLoading ? ["#4B5563", "#4B5563"] : [ACCENT, ACCENT_SOFT]}
+          colors={notifLoading ? ["#4B5563", "#4B5563"] : [accent, accentSoft]}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
           style={styles.buttonGradient}
@@ -416,7 +421,7 @@ const UsernameScreen = ({ navigation }) => {
       >
         <LinearGradient
           colors={
-            !isValid || saving ? ["#4B5563", "#4B5563"] : [ACCENT, ACCENT_SOFT]
+            !isValid || saving ? ["#4B5563", "#4B5563"] : [accent, accentSoft]
           }
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
@@ -440,7 +445,7 @@ const UsernameScreen = ({ navigation }) => {
         style={styles.root}
       >
         <View style={[styles.flex, { justifyContent: "center" }]}>
-          <ActivityIndicator size="large" color={ACCENT} />
+          <ActivityIndicator size="large" color={accent} />
         </View>
       </LinearGradient>
     );
@@ -488,7 +493,7 @@ const UsernameScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    backgroundColor: PRIMARY_BG,
+    backgroundColor: primaryBackground,
   },
   flex: {
     flex: 1,
@@ -524,25 +529,25 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     letterSpacing: 1.2,
     textTransform: "uppercase",
-    color: "#E5E7EB",
+    color: textPrimary,
     textAlign: "left",
   },
 
   tagline: {
     marginTop: 4,
     fontSize: 14,
-    color: "#9CA3AF",
+    color: textSecondary,
     textAlign: "left",
   },
 
   appAccent: {
-    color: ACCENT,
+    color: accent,
   },
 
   card: {
     borderRadius: 24,
     padding: 24,
-    backgroundColor: CARD_BG,
+    backgroundColor: cardBackground,
     borderWidth: 1,
     borderColor: "rgba(148,163,184,0.35)",
     shadowColor: "#000",
@@ -565,7 +570,7 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   titleAccent: {
-    color: ACCENT,
+    color: accent,
   },
   helper: {
     fontSize: 14,
@@ -638,7 +643,7 @@ const styles = StyleSheet.create({
   infoTitle: {
     fontSize: 14,
     fontWeight: "700",
-    color: ACCENT,
+    color: accent,
     marginBottom: 8,
   },
   infoText: {

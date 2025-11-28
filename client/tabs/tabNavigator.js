@@ -7,7 +7,7 @@ import {
   AddSobrietyDateScreen,
   LocationPermissionScreen,
   HomeScreen,
-} from "../pages";
+} from "../screens/Onboarding";
 
 const Stack = createStackNavigator();
 
