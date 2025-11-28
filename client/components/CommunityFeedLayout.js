@@ -1,9 +1,18 @@
 import React, { useMemo } from "react";
 import FeedLayout from "./FeedLayout";
 
-const formatDate = (dateString) => {
-  if (!dateString) return "";
-  const parsed = new Date(dateString);
+const formatDate = (dateInput) => {
+  if (!dateInput) return "";
+
+  const numericValue =
+    typeof dateInput === "number" || typeof dateInput === "bigint"
+      ? Number(dateInput)
+      : Number.parseInt(dateInput, 10);
+
+  const parsed = Number.isFinite(numericValue)
+    ? new Date(numericValue)
+    : new Date(dateInput);
+
   if (Number.isNaN(parsed.getTime())) return "";
 
   return parsed.toLocaleDateString("en-US", {
@@ -44,6 +53,7 @@ const CommunityFeedLayout = ({
   onLikePress,
   onMorePress,
   onFilterPress,
+  showFilter = true,
   onToggleFollow,
   viewerUserId,
   onCommentAdded,
@@ -53,7 +63,7 @@ const CommunityFeedLayout = ({
   const avatarUrl = author?.profilePicUrl || null;
   const type = post.mediaType || "VIDEO";
   const isVideoPost = type === "VIDEO";
-  const cityName = post.closestCity?.name || null;
+  const cityName = post.closestCity?.name || post.cityName || null;
   const { isMilestonePost, metaText } = useMemo(() => buildMeta(post), [post]);
 
   return (
@@ -81,6 +91,7 @@ const CommunityFeedLayout = ({
       onLikePress={onLikePress}
       onMorePress={onMorePress}
       onFilterPress={onFilterPress}
+      showFilter={showFilter}
       onToggleFollow={onToggleFollow}
       isFollowed={author?.isFollowedByViewer}
       isBuddy={author?.isBuddyWithViewer}

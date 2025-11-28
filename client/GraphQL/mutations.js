@@ -134,7 +134,6 @@ export const SEND_POST_MUTATION = gql`
       lat
       long
       closestCity {
-        id
         name
       }
 
@@ -176,7 +175,6 @@ export const SEND_IMAGE_POST_MUTATION = gql`
       lat
       long
       closestCity {
-        id
         name
       }
 
