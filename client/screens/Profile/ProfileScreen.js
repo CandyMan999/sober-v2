@@ -204,14 +204,27 @@ const ProfileScreen = ({ navigation }) => {
     return (
       <View style={styles.drunkWrapper}>
         <LinearGradient
-          colors={["#2563eb", "#60a5fa"]}
+          colors={["#0ea5e9", "#38bdf8", "#2563eb"]}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
           style={styles.drunkHalo}
         >
           <View style={styles.drunkInner}>
             <Image
               source={{ uri: profileData.drunkPicUrl }}
               style={styles.drunkImage}
+              resizeMode="cover"
             />
+            <LinearGradient
+              colors={["rgba(5,8,22,0.7)", "transparent"]}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 0, y: 1 }}
+              style={styles.drunkOverlay}
+            >
+              <Text style={styles.drunkOverlayText}>
+                Back when I used to drink too much
+              </Text>
+            </LinearGradient>
           </View>
         </LinearGradient>
       </View>
@@ -305,7 +318,8 @@ const ProfileScreen = ({ navigation }) => {
 
   const gridHeight = useMemo(() => {
     if (activeTab === "DRUNK") {
-      return profileData?.drunkPicUrl ? 360 : 180;
+      const drunkHeight = Math.max(420, layout.width * (4 / 3) * 0.9);
+      return profileData?.drunkPicUrl ? drunkHeight : 200;
     }
 
     const postRows = Math.max(1, Math.ceil(posts.length / 3));
@@ -316,6 +330,7 @@ const ProfileScreen = ({ navigation }) => {
     return maxRows * 180;
   }, [
     activeTab,
+    layout.width,
     posts.length,
     quotes.length,
     savedPosts.length,
@@ -735,34 +750,43 @@ const styles = StyleSheet.create({
   emptyState: {
     padding: 24,
     alignItems: "center",
+    justifyContent: "center",
   },
   emptyText: {
     color: "#9ca3af",
   },
   drunkWrapper: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
     paddingVertical: 12,
+    paddingHorizontal: 12,
   },
   drunkHalo: {
-    width: 260,
-    height: 260,
-    borderRadius: 130,
-    alignItems: "center",
-    justifyContent: "center",
+    width: "100%",
+    aspectRatio: 3 / 4,
+    borderRadius: 18,
+    padding: 3,
   },
   drunkInner: {
-    width: 230,
-    height: 230,
-    borderRadius: 115,
+    flex: 1,
+    borderRadius: 14,
+    overflow: "hidden",
     backgroundColor: "#0b1220",
-    padding: 6,
   },
   drunkImage: {
     width: "100%",
     height: "100%",
-    borderRadius: 115,
+  },
+  drunkOverlay: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    padding: 12,
+  },
+  drunkOverlayText: {
+    color: "#e0f2fe",
+    fontWeight: "800",
+    textTransform: "uppercase",
+    letterSpacing: 0.8,
   },
 });
 

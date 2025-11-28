@@ -99,7 +99,8 @@ const UserProfileScreen = ({ route, navigation }) => {
 
   const gridHeight = useMemo(() => {
     if (activeTab === "DRUNK") {
-      return profileData?.drunkPicUrl ? 360 : 180;
+      const drunkHeight = Math.max(420, layout.width * (4 / 3) * 0.9);
+      return profileData?.drunkPicUrl ? drunkHeight : 200;
     }
 
     const postRows = Math.max(1, Math.ceil(posts.length / 3));
@@ -108,7 +109,14 @@ const UserProfileScreen = ({ route, navigation }) => {
 
     const maxRows = Math.max(postRows, quoteRows, savedRows);
     return maxRows * 180;
-  }, [activeTab, posts.length, quotes.length, savedPosts.length, profileData?.drunkPicUrl]);
+  }, [
+    activeTab,
+    layout.width,
+    posts.length,
+    quotes.length,
+    savedPosts.length,
+    profileData?.drunkPicUrl,
+  ]);
 
   const isFollowed = Boolean(profileData?.isFollowedByViewer);
   const isBuddy = Boolean(profileData?.isBuddyWithViewer);
@@ -301,6 +309,16 @@ const UserProfileScreen = ({ route, navigation }) => {
               style={styles.drunkImage}
               resizeMode="cover"
             />
+            <LinearGradient
+              colors={["rgba(5,8,22,0.7)", "transparent"]}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 0, y: 1 }}
+              style={styles.drunkOverlay}
+            >
+              <Text style={styles.drunkOverlayText}>
+                Back when I used to drink too much
+              </Text>
+            </LinearGradient>
           </View>
         </LinearGradient>
       </View>
@@ -379,7 +397,7 @@ const UserProfileScreen = ({ route, navigation }) => {
   return (
     <ScrollView
       style={styles.container}
-      contentContainerStyle={{ paddingBottom: 48 }}
+      contentContainerStyle={styles.containerContent}
     >
       <View style={styles.editIconWrapper}>
         <TouchableOpacity
@@ -448,7 +466,7 @@ const UserProfileScreen = ({ route, navigation }) => {
                     {followPending
                       ? "..."
                       : isBuddy
-                      ? "Buddies"
+                      ? "My Buddy"
                       : isFollowed
                       ? "Following"
                       : "Follow"}
@@ -530,6 +548,9 @@ const styles = StyleSheet.create({
     backgroundColor: "#050816",
     paddingHorizontal: 0,
     paddingTop: 64,
+  },
+  containerContent: {
+    paddingBottom: 48,
   },
   bodyPadding: {
     paddingHorizontal: 16,
@@ -793,6 +814,19 @@ const styles = StyleSheet.create({
   drunkImage: {
     width: "100%",
     height: "100%",
+  },
+  drunkOverlay: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    padding: 12,
+  },
+  drunkOverlayText: {
+    color: "#e0f2fe",
+    fontWeight: "800",
+    textTransform: "uppercase",
+    letterSpacing: 0.8,
   },
   followButton: {
     marginTop: 12,
