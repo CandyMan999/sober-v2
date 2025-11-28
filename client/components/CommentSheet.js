@@ -528,7 +528,7 @@ const CommentSheet = ({
             fallbackSource={isSoberQuoteComment ? soberLogo : null}
             haloColor={avatarUri ? "orange" : "blue"}
             size={32}
-            userId={comment?.author?.id}
+            userId={comment?.author?.id || comment?.author?._id}
             username={comment?.author?.username}
             onPress={() => handleProfilePress(comment?.author)}
             style={styles.commentAvatarHalo}
@@ -638,15 +638,16 @@ const CommentSheet = ({
 
   const handleProfilePress = useCallback(
     (author) => {
-      if (!author?.id || author?.id === userId) return;
+      const targetId = author?.id || author?._id;
+      if (!targetId || targetId === userId) return;
 
       const profileImage = author?.profilePicUrl || author?.profilePic?.url || null;
       onClose?.();
       navigation.navigate("UserProfile", {
-        userId: author.id,
+        userId: targetId,
         initialUser: {
-          id: author.id,
-          username: author.username,
+          id: targetId,
+          username: author?.username,
           profilePicUrl: profileImage,
         },
       });
@@ -694,7 +695,7 @@ const CommentSheet = ({
                       : "blue"
                   }
                   size={32}
-                  userId={effectiveAuthor?.id}
+                  userId={effectiveAuthor?.id || effectiveAuthor?._id}
                   username={effectiveAuthor?.username}
                   onPress={() => handleProfilePress(effectiveAuthor)}
                   style={styles.headerAvatarHalo}
@@ -833,6 +834,7 @@ const CommentSheet = ({
               <Avatar
                 uri={composerAvatarUri}
                 haloColor="blue"
+                haloColors={["#0ea5e9", "#6366f1", "#a855f7"]}
                 size={32}
                 disableNavigation
                 style={styles.composerAvatarHalo}

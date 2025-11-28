@@ -300,12 +300,27 @@ module.exports = {
       .populate("user");
 
     const city = await findClosestCity(user.lat ?? null, user.long ?? null);
+    const serializePicture = (picture) => {
+      if (!picture) return null;
+
+      const plain = picture.toObject ? picture.toObject() : picture;
+
+      return {
+        ...plain,
+        id: plain.id || plain._id?.toString(),
+      };
+    };
+
     const serializedUser = user.toObject ? user.toObject() : user;
+    const profilePic = serializePicture(serializedUser.profilePic);
+    const drunkPic = serializePicture(serializedUser.drunkPic);
 
     return {
       user: {
         ...serializedUser,
         id: serializedUser.id || serializedUser._id?.toString(),
+        profilePic,
+        drunkPic,
         closestCity: city,
       },
       posts,
