@@ -80,6 +80,7 @@ export const PROFILE_OVERVIEW_QUERY = `
           url
           flagged
           viewsCount
+          thumbnailUrl
         }
       }
       quotes {
@@ -104,6 +105,7 @@ export const PROFILE_OVERVIEW_QUERY = `
           url
           flagged
           viewsCount
+          thumbnailUrl
         }
       }
     }

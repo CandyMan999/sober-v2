@@ -108,11 +108,10 @@ const ProfileScreen = ({ navigation }) => {
   };
 
   const renderPostTile = ({ item, saved = false }) => {
-    const thumbnail =
-      item.imageUrl ||
-      item.video?.thumbnailUrl ||
-      item.video?.url ||
-      item.previewUrl;
+    const isVideo = item.mediaType === "VIDEO";
+    const thumbnail = isVideo
+      ? item.video?.thumbnailUrl || item.previewUrl || item.imageUrl
+      : item.imageUrl || item.previewUrl;
     const imageSource = thumbnail ? { uri: thumbnail } : null;
     const isFlagged = item.flagged;
     const views = item?.video?.viewsCount || 0;

@@ -218,6 +218,17 @@ const toCfHls = (uid) => {
   return url;
 };
 
+const PORTRAIT_THUMBNAIL_PARAMS = "?time=0s&width=720&height=960&fit=crop";
+
+const toCfThumbnail = (uid) => {
+  // Portrait (3:4) aspect ratio thumbnail
+  const url =
+    `https://${CF_STREAM_CUSTOMER_DOMAIN}/${uid}/thumbnails/thumbnail.jpg` +
+    PORTRAIT_THUMBNAIL_PARAMS;
+  console.log("[urls] thumbnail:", url);
+  return url;
+};
+
 /**
  * Kickoff and wait until MP4 download is actually available.
  * Returns the final MP4 URL.
@@ -399,6 +410,7 @@ module.exports = {
       const uploadInfo = await uploadStreamToTempFile(file);
       let publicId = null;
       let hlsUrl = null;
+      let thumbnailUrl = null;
 
       try {
         const cfResult = await uploadVideoWithRetry(uploadInfo);
@@ -409,16 +421,25 @@ module.exports = {
         }
 
         hlsUrl = cfResult?.playback?.hls || toCfHls(publicId);
+        const rawThumbnail = cfResult?.thumbnail || null;
+        thumbnailUrl = rawThumbnail
+          ? `${rawThumbnail}${PORTRAIT_THUMBNAIL_PARAMS}`
+          : null;
       } finally {
         if (uploadInfo?.tempPath) {
           fs.promises.unlink(uploadInfo.tempPath).catch(() => {});
         }
       }
 
+      if (!thumbnailUrl && publicId) {
+        thumbnailUrl = toCfThumbnail(publicId);
+      }
+
       const video = await Video.create({
         url: hlsUrl,
         publicId,
         sender: senderID,
+        thumbnailUrl,
       });
 
       const postLocation = {
