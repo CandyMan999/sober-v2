@@ -304,10 +304,13 @@ module.exports = {
       if (!picture) return null;
 
       const plain = picture.toObject ? picture.toObject() : picture;
+      const pictureId = plain.id || plain._id?.toString();
+
+      if (!pictureId) return null;
 
       return {
         ...plain,
-        id: plain.id || plain._id?.toString(),
+        id: pictureId,
       };
     };
 

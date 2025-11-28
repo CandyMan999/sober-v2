@@ -289,10 +289,20 @@ const UserProfileScreen = ({ route, navigation }) => {
 
     return (
       <View style={styles.drunkContainer}>
-        <Image
-          source={{ uri: profileData.drunkPicUrl }}
-          style={styles.drunkImage}
-        />
+        <LinearGradient
+          colors={["#0ea5e9", "#38bdf8", "#2563eb"]}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+          style={styles.drunkHalo}
+        >
+          <View style={styles.drunkImageFrame}>
+            <Image
+              source={{ uri: profileData.drunkPicUrl }}
+              style={styles.drunkImage}
+              resizeMode="cover"
+            />
+          </View>
+        </LinearGradient>
       </View>
     );
   };
@@ -453,7 +463,12 @@ const UserProfileScreen = ({ route, navigation }) => {
           <View style={styles.metaRow}>
             {distanceLabel ? (
               <View style={styles.distancePill}>
-                <Image source={soberLogo} style={styles.distanceIcon} />
+                <MaterialCommunityIcons
+                  name="map-marker-distance"
+                  size={18}
+                  color="#38bdf8"
+                  style={styles.distanceIcon}
+                />
                 <Text style={styles.distanceText}>{distanceLabel}</Text>
               </View>
             ) : null}
@@ -566,9 +581,7 @@ const styles = StyleSheet.create({
     gap: 6,
   },
   distanceIcon: {
-    width: 16,
-    height: 16,
-    borderRadius: 8,
+    marginTop: 1,
   },
   distanceText: {
     color: "#bae6fd",
@@ -765,11 +778,21 @@ const styles = StyleSheet.create({
   drunkContainer: {
     padding: 12,
   },
+  drunkHalo: {
+    width: "100%",
+    aspectRatio: 3 / 4,
+    borderRadius: 18,
+    padding: 3,
+  },
+  drunkImageFrame: {
+    flex: 1,
+    borderRadius: 14,
+    overflow: "hidden",
+    backgroundColor: "#0b1222",
+  },
   drunkImage: {
     width: "100%",
-    height: 320,
-    borderRadius: 14,
-    backgroundColor: "#111827",
+    height: "100%",
   },
   followButton: {
     marginTop: 12,

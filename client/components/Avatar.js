@@ -8,7 +8,7 @@ import Context from "../context";
 
 const HALO_MAP = {
   orange: ["#fed7aa", "#f97316", "#facc15"],
-  blue: ["#0ea5e9", "#6366f1", "#a855f7"],
+  blue: ["#38bdf8", "#0ea5e9", "#2563eb"],
 };
 
 const Avatar = ({
