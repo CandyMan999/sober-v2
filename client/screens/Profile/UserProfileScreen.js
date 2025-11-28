@@ -174,7 +174,25 @@ const UserProfileScreen = ({ route, navigation }) => {
   }, [client, followPending, isFollowed, profileData, state?.user?.id]);
 
   const openPreview = (item, type = "POST") => {
-    setPreviewItem(item);
+    const authorFallback = profileData
+      ? {
+          id: profileData.id,
+          username: profileData.username,
+          profilePicUrl: profileData.profilePicUrl,
+          isFollowedByViewer: profileData.isFollowedByViewer,
+          isBuddyWithViewer: profileData.isBuddyWithViewer,
+        }
+      : null;
+
+    const hydratedItem = {
+      ...item,
+      author: item.author || item.user || authorFallback,
+      user: item.user || item.author || authorFallback,
+      postAuthor: item.postAuthor || item.author || item.user || authorFallback,
+      createdBy: item.createdBy || item.author || item.user || authorFallback,
+    };
+
+    setPreviewItem(hydratedItem);
     setPreviewType(type);
     setPreviewVisible(true);
   };

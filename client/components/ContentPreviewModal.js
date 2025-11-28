@@ -121,6 +121,8 @@ const ContentPreviewModal = ({
   const panResponder = useMemo(
     () =>
       PanResponder.create({
+        onStartShouldSetPanResponderCapture: (_, gesture) =>
+          Math.abs(gesture.dy) > Math.abs(gesture.dx),
         onMoveShouldSetPanResponder: (_, gesture) =>
           Math.abs(gesture.dy) > Math.abs(gesture.dx) && Math.abs(gesture.dy) > 4,
         onMoveShouldSetPanResponderCapture: (_, gesture) =>
@@ -132,7 +134,7 @@ const ContentPreviewModal = ({
           }
         },
         onPanResponderRelease: (_, gesture) => {
-          if (gesture.dy > WINDOW_HEIGHT * 0.18 || gesture.vy > 1.05) {
+          if (gesture.dy > WINDOW_HEIGHT * 0.12 || gesture.vy > 0.65) {
             handleClose();
           } else {
             Animated.spring(translateY, {
@@ -179,7 +181,26 @@ const ContentPreviewModal = ({
           localItem.author ||
           localItem.user ||
           localItem.postAuthor ||
-          localItem.createdBy,
+          localItem.createdBy ||
+          viewerUser,
+        user:
+          localItem.user ||
+          localItem.author ||
+          localItem.postAuthor ||
+          localItem.createdBy ||
+          viewerUser,
+        postAuthor:
+          localItem.postAuthor ||
+          localItem.author ||
+          localItem.user ||
+          localItem.createdBy ||
+          viewerUser,
+        createdBy:
+          localItem.createdBy ||
+          localItem.author ||
+          localItem.user ||
+          localItem.postAuthor ||
+          viewerUser,
       }
     : null;
 
