@@ -5,12 +5,12 @@ import {
   Easing,
   Image,
   Modal,
-  PanResponder,
   Pressable,
   StyleSheet,
   TouchableOpacity,
   View,
 } from "react-native";
+import { PanGestureHandler, State } from "react-native-gesture-handler";
 import { Ionicons } from "@expo/vector-icons";
 import { ResizeMode, Video } from "expo-av";
 import CommunityFeedLayout from "./CommunityFeedLayout";
@@ -34,6 +34,7 @@ const ContentPreviewModal = ({
   const [localItem, setLocalItem] = useState(item);
   const backdropOpacity = useRef(new Animated.Value(0)).current;
   const translateY = useRef(new Animated.Value(WINDOW_HEIGHT)).current;
+  const dragY = useRef(new Animated.Value(0)).current;
   const videoRef = useRef(null);
 
   useEffect(() => {
@@ -43,6 +44,7 @@ const ContentPreviewModal = ({
   useEffect(() => {
     if (visible) {
       setMounted(true);
+      dragY.setValue(0);
       translateY.setValue(WINDOW_HEIGHT * 0.12);
       Animated.parallel([
         Animated.timing(backdropOpacity, {
@@ -80,7 +82,13 @@ const ContentPreviewModal = ({
         }
       });
     }
-  }, [backdropOpacity, translateY, visible]);
+  }, [backdropOpacity, dragY, translateY, visible]);
+
+  useEffect(() => {
+    if (!visible) {
+      dragY.setValue(0);
+    }
+  }, [dragY, visible]);
 
   useEffect(() => {
     if (!videoRef.current) return;
@@ -101,6 +109,7 @@ const ContentPreviewModal = ({
   }, [localItem, visible]);
 
   const handleClose = () => {
+    dragY.setValue(0);
     onClose?.();
   };
 
@@ -118,57 +127,60 @@ const ContentPreviewModal = ({
     onCommentAdded?.(newComment);
   };
 
-  const panResponder = useMemo(
+  const combinedTranslateY = useMemo(
+    () => Animated.add(translateY, dragY),
+    [dragY, translateY]
+  );
+
+  const handleGestureEvent = useMemo(
     () =>
-      PanResponder.create({
-        onStartShouldSetPanResponderCapture: (_, gesture) =>
-          Math.abs(gesture.dy) > Math.abs(gesture.dx),
-        onMoveShouldSetPanResponder: (_, gesture) =>
-          Math.abs(gesture.dy) > Math.abs(gesture.dx) && Math.abs(gesture.dy) > 4,
-        onMoveShouldSetPanResponderCapture: (_, gesture) =>
-          Math.abs(gesture.dy) > Math.abs(gesture.dx) && Math.abs(gesture.dy) > 4,
-        onPanResponderMove: (_, gesture) => {
-          if (gesture.dy > 0) {
-            translateY.setValue(gesture.dy);
-            backdropOpacity.setValue(Math.max(0, 1 - gesture.dy / WINDOW_HEIGHT));
+      Animated.event([{ nativeEvent: { translationY: dragY } }], {
+        useNativeDriver: true,
+        listener: ({ nativeEvent }) => {
+          if (nativeEvent.translationY > 0) {
+            backdropOpacity.setValue(
+              Math.max(0, 1 - nativeEvent.translationY / WINDOW_HEIGHT)
+            );
           }
-        },
-        onPanResponderRelease: (_, gesture) => {
-          if (gesture.dy > WINDOW_HEIGHT * 0.12 || gesture.vy > 0.65) {
-            handleClose();
-          } else {
-            Animated.spring(translateY, {
-              toValue: 0,
-              useNativeDriver: true,
-              damping: 18,
-              stiffness: 220,
-              mass: 0.9,
-            }).start();
-            Animated.timing(backdropOpacity, {
-              toValue: 1,
-              duration: ANIMATION_DURATION,
-              easing: Easing.out(Easing.ease),
-              useNativeDriver: true,
-            }).start();
-          }
-        },
-        onPanResponderTerminate: () => {
-          Animated.spring(translateY, {
-            toValue: 0,
-            useNativeDriver: true,
-            damping: 18,
-            stiffness: 220,
-            mass: 0.9,
-          }).start();
-          Animated.timing(backdropOpacity, {
-            toValue: 1,
-            duration: ANIMATION_DURATION,
-            easing: Easing.out(Easing.ease),
-            useNativeDriver: true,
-          }).start();
         },
       }),
-    [backdropOpacity, translateY]
+    [backdropOpacity, dragY]
+  );
+
+  const handleGestureStateChange = useMemo(
+    () =>
+      ({ nativeEvent }) => {
+        if (
+          nativeEvent.state === State.END ||
+          nativeEvent.state === State.CANCELLED ||
+          nativeEvent.state === State.FAILED
+        ) {
+          const shouldClose =
+            nativeEvent.translationY > WINDOW_HEIGHT * 0.12 ||
+            nativeEvent.velocityY > 850;
+
+          if (shouldClose) {
+            handleClose();
+          } else {
+            Animated.parallel([
+              Animated.spring(dragY, {
+                toValue: 0,
+                useNativeDriver: true,
+                damping: 18,
+                stiffness: 220,
+                mass: 0.9,
+              }),
+              Animated.timing(backdropOpacity, {
+                toValue: 1,
+                duration: ANIMATION_DURATION,
+                easing: Easing.out(Easing.ease),
+                useNativeDriver: true,
+              }),
+            ]).start();
+          }
+        }
+      },
+    [backdropOpacity, dragY, handleClose]
   );
 
   if (!mounted) return null;
@@ -268,15 +280,19 @@ const ContentPreviewModal = ({
         <Pressable style={StyleSheet.absoluteFill} onPress={handleClose} />
       </Animated.View>
 
-      <Animated.View
-        style={[styles.card, { transform: [{ translateY }] }]}
-        {...panResponder.panHandlers}
+      <PanGestureHandler
+        onGestureEvent={handleGestureEvent}
+        onHandlerStateChange={handleGestureStateChange}
+        activeOffsetY={[-6, 6]}
+        failOffsetX={[-16, 16]}
       >
-        <TouchableOpacity style={styles.closeButton} onPress={handleClose}>
-          <Ionicons name="close" size={24} color="#fef3c7" />
-        </TouchableOpacity>
-        {renderContent()}
-      </Animated.View>
+        <Animated.View style={[styles.card, { transform: [{ translateY: combinedTranslateY }] }]}>
+          <TouchableOpacity style={styles.closeButton} onPress={handleClose}>
+            <Ionicons name="close" size={24} color="#fef3c7" />
+          </TouchableOpacity>
+          {renderContent()}
+        </Animated.View>
+      </PanGestureHandler>
     </Modal>
   );
 };
