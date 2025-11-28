@@ -23,6 +23,7 @@ import { useFocusEffect, useIsFocused } from "@react-navigation/native";
 import { CameraView, Camera } from "expo-camera";
 import { useVideoPlayer, VideoView } from "expo-video";
 import * as ImagePicker from "expo-image-picker";
+import * as FileSystem from "expo-file-system/legacy";
 
 import { MaterialIcons, Feather } from "@expo/vector-icons";
 import { ReactNativeFile } from "extract-files";
@@ -70,6 +71,11 @@ const PostCaptureScreen = ({ navigation }) => {
     mediaType === "VIDEO" && mediaUri ? { uri: mediaUri } : null,
     (playerInstance) => {
       playerInstance.loop = true;
+
+      playerInstance.addListener("error", (e) => {
+        console.log("🔥 Video player error:", e);
+        handleError("This video can't be previewed on your device.");
+      });
     }
   );
 
@@ -200,7 +206,7 @@ const PostCaptureScreen = ({ navigation }) => {
       };
 
       const startTime = Date.now();
-      recordingStartRef.current = startTime; // mark the real start time
+      recordingStartRef.current = startTime; // mark the real start timem
 
       const data = await cameraRef.current.recordAsync(options);
       const endTime = Date.now();
@@ -288,13 +294,6 @@ const PostCaptureScreen = ({ navigation }) => {
           ? Math.ceil(pickedDurationMs / 1000)
           : null;
 
-      if (
-        pickedDurationSeconds &&
-        pickedDurationSeconds > MAX_DURATION_SECONDS + 1
-      ) {
-        return handleError("Please choose a video that is 2 minutes or less.");
-      }
-
       if (!pickedUri) {
         return handleError("Couldn't read that video. Please try another one.");
       }
@@ -350,14 +349,14 @@ const PostCaptureScreen = ({ navigation }) => {
     }
   };
 
+  const MAX_UPLOAD_BYTES = 200 * 1024 * 1024; // ~80 MB safety cap
+
   const handleSend = async () => {
-    // Close keyboard if it's open
     Keyboard.dismiss();
 
     if (!mediaUri || uploading) return;
 
     const senderID = state?.user?.id || null;
-
     if (!senderID) {
       return handleError("Missing user id for this post.");
     }
@@ -367,8 +366,32 @@ const PostCaptureScreen = ({ navigation }) => {
     try {
       setUploading(true);
 
+      const info = await FileSystem.getInfoAsync(mediaUri, { size: true });
+      console.log("Picked file info:", info);
+
+      if (!info.exists) {
+        throw new Error("We couldn't find that file on your device.");
+      }
+
+      if (info.size && info.size > MAX_UPLOAD_BYTES) {
+        return handleError(
+          "This video is too large to upload. Try trimming it or recording a shorter clip."
+        );
+      }
+
+      // 2) Normalize URI to a guaranteed local file:// path
+      let uploadUri = mediaUri;
+      if (!uploadUri.startsWith("file://")) {
+        const destPath =
+          FileSystem.documentDirectory +
+          `upload-${Date.now()}${isImage ? ".jpg" : ".mp4"}`;
+
+        await FileSystem.copyAsync({ from: mediaUri, to: destPath });
+        uploadUri = destPath;
+      }
+
       const fileForUpload = new ReactNativeFile({
-        uri: mediaUri,
+        uri: uploadUri,
         type: mediaMimeType || (isImage ? "image/jpeg" : "video/mp4"),
         name: isImage ? "post-image.jpg" : "post-video.mp4",
       });
@@ -382,23 +405,24 @@ const PostCaptureScreen = ({ navigation }) => {
         }
       );
 
+      console.log("✅ Upload response:", response);
+
       const savedPost = isImage ? response?.sendImagePost : response?.sendPost;
 
       if (!savedPost) {
         throw new Error("We couldn't save your post. Please try again.");
-      } else {
-        Toast.show({
-          type: "success",
-          text1: "Post Sent",
-          text2: "This post will soon be in the community.",
-          position: "top",
-          autoHide: true,
-          visibilityTime: 6000,
-          topOffset: 80,
-        });
       }
 
-      // Clear state and navigate away
+      Toast.show({
+        type: "success",
+        text1: "Post Sent",
+        text2: "This post will soon be in the community.",
+        position: "top",
+        autoHide: true,
+        visibilityTime: 6000,
+        topOffset: 80,
+      });
+
       setMediaUri(null);
       setMediaType(null);
       setMediaMimeType(null);
@@ -406,7 +430,7 @@ const PostCaptureScreen = ({ navigation }) => {
 
       navigation.navigate("HomeTabRoot");
     } catch (err) {
-      console.log("Error in handleSend:", err);
+      console.log("❌ Error in handleSend:", err);
       const message =
         err?.response?.errors?.[0]?.message ||
         err?.message ||
