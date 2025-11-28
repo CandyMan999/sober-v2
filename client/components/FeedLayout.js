@@ -80,6 +80,9 @@ const FeedLayout = ({
       ? `@${postAuthor?.username || postAuthor?.name || "Unknown"}`
       : null);
 
+  const resolvedAvatarUrl =
+    avatarUrl || postAuthor?.profilePicUrl || postAuthor?.profilePic?.url || null;
+
   const canFollow =
     Boolean(onToggleFollow) &&
     Boolean(postAuthor?.id) &&
@@ -216,9 +219,9 @@ const FeedLayout = ({
         <View style={styles.captionCard}>
           <View style={styles.userRow}>
             <Avatar
-              uri={avatarUrl}
+              uri={resolvedAvatarUrl}
               fallbackSource={fallbackAvatarSource}
-              haloColor={avatarUrl ? "orange" : "blue"}
+              haloColor={resolvedAvatarUrl ? "orange" : "blue"}
               size={38}
               userId={postAuthor?.id}
               username={postAuthor?.username || postAuthor?.name}

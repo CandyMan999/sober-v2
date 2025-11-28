@@ -23,6 +23,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { formatDistanceToNow } from "date-fns";
@@ -115,6 +116,7 @@ const CommentSheet = ({
   });
   const [followPending, setFollowPending] = useState(false);
   const isQuoteSheet = targetType === "QUOTE";
+  const navigation = useNavigation();
 
   useEffect(() => {
     if (visible) {
@@ -176,6 +178,8 @@ const CommentSheet = ({
   }, []);
 
   const userId = state?.user?.id;
+  const composerAvatarUri =
+    state?.user?.profilePicUrl || state?.user?.profilePic?.url || null;
 
   const mapCommentsWithLiked = useCallback(
     (list = []) =>
@@ -536,6 +540,7 @@ const CommentSheet = ({
             size={32}
             userId={comment?.author?.id}
             username={comment?.author?.username}
+            onPress={() => handleProfilePress(comment?.author)}
             style={styles.commentAvatarHalo}
           />
 
@@ -644,7 +649,23 @@ const CommentSheet = ({
   if (!mounted) return null;
 
   const effectiveCount = commentCount || commentList.length;
-  const composerAvatarUri = state?.user?.profilePicUrl;
+  const handleProfilePress = useCallback(
+    (author) => {
+      if (!author?.id || author?.id === userId) return;
+
+      const profileImage = author?.profilePicUrl || author?.profilePic?.url || null;
+      onClose?.();
+      navigation.navigate("UserProfile", {
+        userId: author.id,
+        initialUser: {
+          id: author.id,
+          username: author.username,
+          profilePicUrl: profileImage,
+        },
+      });
+    },
+    [navigation, onClose, userId]
+  );
   const canSend = draftComment.trim().length > 0 && !submitting;
 
   return (
