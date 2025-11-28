@@ -24,7 +24,20 @@ module.exports = {
       }
 
       if (typeof username === "string") {
-        user.username = username.trim();
+        const trimmedUsername = username.trim();
+
+        if (trimmedUsername) {
+          const duplicateUser = await User.findOne({
+            username: trimmedUsername,
+            _id: { $ne: user._id },
+          });
+
+          if (duplicateUser) {
+            throw new AuthenticationError("That username is already taken. Pick another.");
+          }
+
+          user.username = trimmedUsername;
+        }
       }
 
       if (typeof profilePicUrl === "string") {
