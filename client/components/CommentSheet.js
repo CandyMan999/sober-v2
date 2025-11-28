@@ -10,7 +10,6 @@ import {
   Animated,
   Dimensions,
   Easing,
-  Image,
   Keyboard,
   KeyboardAvoidingView,
   Modal,
@@ -25,7 +24,6 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
-import { LinearGradient } from "expo-linear-gradient";
 import { formatDistanceToNow } from "date-fns";
 import { useClient } from "../client";
 import { TOGGLE_LIKE_MUTATION } from "../GraphQL/mutations";
@@ -291,11 +289,6 @@ const CommentSheet = ({
   const isQuoteTarget = targetType === "QUOTE";
   const effectiveAuthor =
     isQuoteSheet && !postAuthor ? { username: "Sober Motivation" } : postAuthor;
-  const avatarSource = effectiveAuthor?.profilePicUrl
-    ? { uri: effectiveAuthor.profilePicUrl }
-    : isQuoteSheet && !postAuthor
-    ? soberLogo
-    : null;
   const posterName =
     effectiveAuthor?.username ||
     effectiveAuthor?.name ||
@@ -692,22 +685,20 @@ const CommentSheet = ({
 
             <View style={styles.postHeader}>
               <View style={styles.posterRow}>
-                <LinearGradient
-                  colors={["#fed7aa", "#f97316", "#facc15"]}
-                  start={{ x: 0, y: 0 }}
-                  end={{ x: 1, y: 1 }}
-                  style={styles.avatarRing}
-                >
-                  <View style={styles.avatarSmallWrapper}>
-                    {avatarSource ? (
-                      <Image source={avatarSource} style={styles.avatarSmall} />
-                    ) : (
-                      <View style={[styles.avatarSmall, styles.avatarFallback]}>
-                        <Ionicons name="person" size={16} color="#111827" />
-                      </View>
-                    )}
-                  </View>
-                </LinearGradient>
+                <Avatar
+                  uri={effectiveAuthor?.profilePicUrl || effectiveAuthor?.profilePic?.url}
+                  fallbackSource={isQuoteSheet && !postAuthor ? soberLogo : null}
+                  haloColor={
+                    effectiveAuthor?.profilePicUrl || effectiveAuthor?.profilePic?.url
+                      ? "orange"
+                      : "blue"
+                  }
+                  size={32}
+                  userId={effectiveAuthor?.id}
+                  username={effectiveAuthor?.username}
+                  onPress={() => handleProfilePress(effectiveAuthor)}
+                  style={styles.headerAvatarHalo}
+                />
 
                 <View style={styles.posterMeta}>
                   <View style={styles.posterNameRow}>
@@ -841,7 +832,7 @@ const CommentSheet = ({
             <View style={styles.composerContainer}>
               <Avatar
                 uri={composerAvatarUri}
-                haloColor={composerAvatarUri ? "orange" : "blue"}
+                haloColor="blue"
                 size={32}
                 disableNavigation
                 style={styles.composerAvatarHalo}
@@ -938,32 +929,8 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     marginBottom: 4,
   },
-  avatarRing: {
-    width: 36,
-    height: 36,
-    borderRadius: 20,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  avatarSmallWrapper: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    backgroundColor: "#020617",
-    alignItems: "center",
-    justifyContent: "center",
-    overflow: "hidden",
-  },
-  avatarSmall: {
-    width: "100%",
-    height: "100%",
-    borderRadius: 16,
-    resizeMode: "cover",
-  },
-  avatarFallback: {
-    backgroundColor: "#facc15",
-    alignItems: "center",
-    justifyContent: "center",
+  headerAvatarHalo: {
+    marginRight: 10,
   },
   posterMeta: {
     flex: 1,

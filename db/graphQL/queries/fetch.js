@@ -305,6 +305,7 @@ module.exports = {
     return {
       user: {
         ...serializedUser,
+        id: serializedUser.id || serializedUser._id?.toString(),
         closestCity: city,
       },
       posts,
