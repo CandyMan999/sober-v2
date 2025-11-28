@@ -145,9 +145,21 @@ const CommentSheet = ({
     }
   }, [sheetAnim, visible]);
 
+  const mapCommentsWithLiked = (list = []) =>
+    (list || []).map((comment) => {
+      const liked = Array.isArray(comment?.likes)
+        ? comment.likes.some((like) => like?.user?.id === userId)
+        : false;
+      const replies = comment?.replies?.length
+        ? mapCommentsWithLiked(comment.replies)
+        : [];
+
+      return { ...comment, liked, replies };
+    });
+
   useEffect(() => {
     setCommentList(mapCommentsWithLiked(comments || []));
-  }, [comments, mapCommentsWithLiked]);
+  }, [comments, userId]);
 
   useEffect(() => {
     setFollowState({ isFollowed, isBuddy });
@@ -180,21 +192,6 @@ const CommentSheet = ({
   const userId = state?.user?.id;
   const composerAvatarUri =
     state?.user?.profilePicUrl || state?.user?.profilePic?.url || null;
-
-  const mapCommentsWithLiked = useCallback(
-    (list = []) =>
-      (list || []).map((comment) => {
-        const liked = Array.isArray(comment?.likes)
-          ? comment.likes.some((like) => like?.user?.id === userId)
-          : false;
-        const replies = comment?.replies?.length
-          ? mapCommentsWithLiked(comment.replies)
-          : [];
-
-        return { ...comment, liked, replies };
-      }),
-    [userId]
-  );
 
   const findCommentById = (list, id) => {
     for (const comment of list || []) {
@@ -646,9 +643,6 @@ const CommentSheet = ({
     );
   };
 
-  if (!mounted) return null;
-
-  const effectiveCount = commentCount || commentList.length;
   const handleProfilePress = useCallback(
     (author) => {
       if (!author?.id || author?.id === userId) return;
@@ -666,6 +660,9 @@ const CommentSheet = ({
     },
     [navigation, onClose, userId]
   );
+  if (!mounted) return null;
+
+  const effectiveCount = commentCount || commentList.length;
   const canSend = draftComment.trim().length > 0 && !submitting;
 
   return (

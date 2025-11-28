@@ -28,10 +28,12 @@ const {
   getQuotesResolver,
   getAllPostsResolver,
   profileOverviewResolver,
+  userProfileResolver,
 } = require("./queries/index.js");
 
 // Import models
-const { Like, Comment, Connection } = require("../models"); // ensure Like is exported from ../models/index.js
+const { Like, Comment, Connection, City } = require("../models"); // ensure Like is exported from ../models/index.js
+const { findClosestCity } = require("../utils/location");
 
 const typeDefs = [rootDefs];
 
@@ -62,6 +64,7 @@ const resolvers = {
     getQuotes: getQuotesResolver,
     getAllPosts: getAllPostsResolver,
     profileOverview: profileOverviewResolver,
+    userProfile: userProfileResolver,
   },
 
   Mutation: {
@@ -231,6 +234,32 @@ const resolvers = {
       } catch (err) {
         console.error("Error resolving isBuddyWithViewer", err);
         return false;
+      }
+    },
+
+    closestCity: async (parent) => {
+      if (parent.closestCity && parent.closestCity.name) {
+        return parent.closestCity;
+      }
+
+      if (parent.closestCity) {
+        try {
+          const cityId = parent.closestCity._id || parent.closestCity;
+          return await City.findById(cityId);
+        } catch (err) {
+          console.error("Error resolving closestCity by id", err);
+        }
+      }
+
+      if (parent.lat == null || parent.long == null) {
+        return null;
+      }
+
+      try {
+        return await findClosestCity(parent.lat, parent.long);
+      } catch (err) {
+        console.error("Error resolving closestCity", err);
+        return null;
       }
     },
   },

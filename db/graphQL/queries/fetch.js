@@ -2,6 +2,7 @@ const { AuthenticationError } = require("apollo-server-express");
 
 const { User, Quote, Post } = require("../../models");
 const { getDistanceFromCoords } = require("../../utils/helpers");
+const { findClosestCity } = require("../../utils/location");
 
 require("dotenv").config();
 
@@ -244,6 +245,68 @@ module.exports = {
 
     return {
       user,
+      posts,
+      quotes,
+      savedPosts,
+    };
+  },
+
+  userProfileResolver: async (_, { token, userId }, { currentUser }) => {
+    if (!token) {
+      throw new AuthenticationError("Token is required");
+    }
+
+    if (!userId) {
+      throw new Error("userId is required");
+    }
+
+    const viewer =
+      currentUser || (await User.findOne({ token }).populate("profilePic"));
+
+    if (!viewer) {
+      throw new AuthenticationError("User not found");
+    }
+
+    const user = await User.findById(userId).populate([
+      "profilePic",
+      "drunkPic",
+      "savedPosts",
+    ]);
+
+    if (!user) {
+      throw new AuthenticationError("User not found");
+    }
+
+    const posts = await Post.find({ author: user._id })
+      .sort({ createdAt: -1 })
+      .populate("author")
+      .populate("closestCity")
+      .populate({
+        path: "video",
+        select: "url flagged viewsCount viewers thumbnailUrl",
+      });
+
+    const savedPosts = await Post.find({ _id: { $in: user.savedPosts || [] } })
+      .sort({ createdAt: -1 })
+      .populate("author")
+      .populate("closestCity")
+      .populate({
+        path: "video",
+        select: "url flagged viewsCount viewers thumbnailUrl",
+      });
+
+    const quotes = await Quote.find({ user: user._id })
+      .sort({ createdAt: -1 })
+      .populate("user");
+
+    const city = await findClosestCity(user.lat ?? null, user.long ?? null);
+    const serializedUser = user.toObject ? user.toObject() : user;
+
+    return {
+      user: {
+        ...serializedUser,
+        closestCity: city,
+      },
       posts,
       quotes,
       savedPosts,

@@ -17,6 +17,7 @@ const typeDefs = gql`
     sobrietyStartAt: String
     lat: Float
     long: Float
+    closestCity: City
     streaks: [SobrietyStreak!]
     milestonesNotified: [Int!]
     notificationsEnabled: Boolean
@@ -261,6 +262,7 @@ const typeDefs = gql`
       isMilestone: Boolean
     ): PostConnection!
     profileOverview(token: String!): ProfileOverview!
+    userProfile(token: String!, userId: ID!): ProfileOverview!
   }
 
   type Mutation {

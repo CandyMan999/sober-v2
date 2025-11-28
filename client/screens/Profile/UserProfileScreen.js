@@ -189,7 +189,7 @@ const UserProfileScreen = ({ route, navigation }) => {
     return () => {
       mounted = false;
     };
-  }, [client, initialUser, userId]);
+  }, [initialUser, userId]);
 
   const renderPostTile = ({ item, saved = false }) => {
     const isVideo = item.mediaType === "VIDEO";
