@@ -112,6 +112,82 @@ export const PROFILE_OVERVIEW_QUERY = `
   }
 `;
 
+export const USER_PROFILE_QUERY = `
+  query UserProfile($token: String!, $userId: ID!) {
+    userProfile(token: $token, userId: $userId) {
+      user {
+        id
+        username
+        profilePicUrl
+        drunkPicUrl
+        whyStatement
+        followersCount
+        followingCount
+        buddiesCount
+        lat
+        long
+        closestCity {
+          id
+          name
+        }
+        profilePic {
+          id
+          url
+        }
+        drunkPic {
+          id
+          url
+        }
+        isFollowedByViewer
+        isBuddyWithViewer
+      }
+      posts {
+        id
+        text
+        mediaType
+        imageUrl
+        flagged
+        review
+        likesCount
+        commentsCount
+        createdAt
+        video {
+          id
+          url
+          flagged
+          viewsCount
+          thumbnailUrl
+        }
+      }
+      quotes {
+        id
+        text
+        isApproved
+        isDenied
+        createdAt
+      }
+      savedPosts {
+        id
+        text
+        mediaType
+        imageUrl
+        flagged
+        review
+        likesCount
+        commentsCount
+        createdAt
+        video {
+          id
+          url
+          flagged
+          viewsCount
+          thumbnailUrl
+        }
+      }
+    }
+  }
+`;
+
 export const GET_QUOTES_QUERY = `
   query GetQuotes {
     getQuotes {

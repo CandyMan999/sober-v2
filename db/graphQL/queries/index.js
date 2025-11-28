@@ -3,6 +3,7 @@ const {
   getQuotesResolver,
   getAllPostsResolver,
   profileOverviewResolver,
+  userProfileResolver,
 } = require("./fetch");
 const {
   getBarLocationResolver,
@@ -22,4 +23,5 @@ module.exports = {
   getQuotesResolver,
   getAllPostsResolver,
   profileOverviewResolver,
+  userProfileResolver,
 };

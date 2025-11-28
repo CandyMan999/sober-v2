@@ -21,6 +21,7 @@ import {
   AddSobrietyDateScreen,
   LocationPermissionScreen,
 } from "./pages";
+import UserProfileScreen from "./screens/Profile/UserProfileScreen";
 
 import Context from "./context";
 import reducer from "./reducer";
@@ -122,6 +123,11 @@ export default function App() {
                 <Stack.Screen
                   name="MainTabs"
                   component={TabNavigator}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="UserProfile"
+                  component={UserProfileScreen}
                   options={{ headerShown: false }}
                 />
               </Stack.Navigator>

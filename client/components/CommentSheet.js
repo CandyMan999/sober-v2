@@ -10,7 +10,6 @@ import {
   Animated,
   Dimensions,
   Easing,
-  Image,
   Keyboard,
   KeyboardAvoidingView,
   Modal,
@@ -23,8 +22,8 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
-import { LinearGradient } from "expo-linear-gradient";
 import { formatDistanceToNow } from "date-fns";
 import { useClient } from "../client";
 import { TOGGLE_LIKE_MUTATION } from "../GraphQL/mutations";
@@ -34,6 +33,7 @@ import {
 } from "../GraphQL/mutations/comments";
 import { getToken } from "../utils/helpers";
 import Context from "../context";
+import Avatar from "./Avatar";
 
 const soberLogo = require("../assets/icon.png");
 
@@ -114,6 +114,7 @@ const CommentSheet = ({
   });
   const [followPending, setFollowPending] = useState(false);
   const isQuoteSheet = targetType === "QUOTE";
+  const navigation = useNavigation();
 
   useEffect(() => {
     if (visible) {
@@ -142,9 +143,21 @@ const CommentSheet = ({
     }
   }, [sheetAnim, visible]);
 
+  const mapCommentsWithLiked = (list = []) =>
+    (list || []).map((comment) => {
+      const liked = Array.isArray(comment?.likes)
+        ? comment.likes.some((like) => like?.user?.id === userId)
+        : false;
+      const replies = comment?.replies?.length
+        ? mapCommentsWithLiked(comment.replies)
+        : [];
+
+      return { ...comment, liked, replies };
+    });
+
   useEffect(() => {
     setCommentList(mapCommentsWithLiked(comments || []));
-  }, [comments, mapCommentsWithLiked]);
+  }, [comments, userId]);
 
   useEffect(() => {
     setFollowState({ isFollowed, isBuddy });
@@ -175,21 +188,8 @@ const CommentSheet = ({
   }, []);
 
   const userId = state?.user?.id;
-
-  const mapCommentsWithLiked = useCallback(
-    (list = []) =>
-      (list || []).map((comment) => {
-        const liked = Array.isArray(comment?.likes)
-          ? comment.likes.some((like) => like?.user?.id === userId)
-          : false;
-        const replies = comment?.replies?.length
-          ? mapCommentsWithLiked(comment.replies)
-          : [];
-
-        return { ...comment, liked, replies };
-      }),
-    [userId]
-  );
+  const composerAvatarUri =
+    state?.user?.profilePicUrl || state?.user?.profilePic?.url || null;
 
   const findCommentById = (list, id) => {
     for (const comment of list || []) {
@@ -289,11 +289,6 @@ const CommentSheet = ({
   const isQuoteTarget = targetType === "QUOTE";
   const effectiveAuthor =
     isQuoteSheet && !postAuthor ? { username: "Sober Motivation" } : postAuthor;
-  const avatarSource = effectiveAuthor?.profilePicUrl
-    ? { uri: effectiveAuthor.profilePicUrl }
-    : isQuoteSheet && !postAuthor
-    ? soberLogo
-    : null;
   const posterName =
     effectiveAuthor?.username ||
     effectiveAuthor?.name ||
@@ -528,28 +523,18 @@ const CommentSheet = ({
         ]}
       >
         <View style={styles.commentRow}>
-          <LinearGradient
-            colors={
-              avatarUri
-                ? ["#fed7aa", "#f97316", "#facc15"]
-                : ["#0ea5e9", "#6366f1", "#a855f7"]
+          <Avatar
+            uri={avatarUri}
+            fallbackSource={isSoberQuoteComment ? soberLogo : null}
+            haloColor={avatarUri ? "orange" : "blue"}
+            size={32}
+            userId={
+              comment?.author?.id || comment?.author?._id || comment?.author?.userId
             }
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }}
+            username={comment?.author?.username}
+            onPress={() => handleProfilePress(comment?.author)}
             style={styles.commentAvatarHalo}
-          >
-            <View style={styles.commentAvatarInner}>
-              {avatarUri ? (
-                <Image source={{ uri: avatarUri }} style={styles.commentAvatar} />
-              ) : isSoberQuoteComment ? (
-                <Image source={soberLogo} style={styles.commentAvatar} />
-              ) : (
-                <View style={[styles.commentAvatar, styles.avatarFallback]}>
-                  <Ionicons name="person" size={16} color="#111827" />
-                </View>
-              )}
-            </View>
-          </LinearGradient>
+          />
 
           <View style={styles.commentBody}>
             <View style={styles.commentHeaderRow}>
@@ -653,10 +638,27 @@ const CommentSheet = ({
     );
   };
 
+  const handleProfilePress = useCallback(
+    (author) => {
+      const targetId = author?.id || author?._id || author?.userId;
+      if (!targetId || targetId === userId) return;
+
+      const profileImage = author?.profilePicUrl || author?.profilePic?.url || null;
+      onClose?.();
+      navigation.navigate("UserProfile", {
+        userId: targetId,
+        initialUser: {
+          id: targetId,
+          username: author?.username,
+          profilePicUrl: profileImage,
+        },
+      });
+    },
+    [navigation, onClose, userId]
+  );
   if (!mounted) return null;
 
   const effectiveCount = commentCount || commentList.length;
-  const composerAvatarUri = state?.user?.profilePicUrl;
   const canSend = draftComment.trim().length > 0 && !submitting;
 
   return (
@@ -686,22 +688,24 @@ const CommentSheet = ({
 
             <View style={styles.postHeader}>
               <View style={styles.posterRow}>
-                <LinearGradient
-                  colors={["#fed7aa", "#f97316", "#facc15"]}
-                  start={{ x: 0, y: 0 }}
-                  end={{ x: 1, y: 1 }}
-                  style={styles.avatarRing}
-                >
-                  <View style={styles.avatarSmallWrapper}>
-                    {avatarSource ? (
-                      <Image source={avatarSource} style={styles.avatarSmall} />
-                    ) : (
-                      <View style={[styles.avatarSmall, styles.avatarFallback]}>
-                        <Ionicons name="person" size={16} color="#111827" />
-                      </View>
-                    )}
-                  </View>
-                </LinearGradient>
+                <Avatar
+                  uri={effectiveAuthor?.profilePicUrl || effectiveAuthor?.profilePic?.url}
+                  fallbackSource={isQuoteSheet && !postAuthor ? soberLogo : null}
+                  haloColor={
+                    effectiveAuthor?.profilePicUrl || effectiveAuthor?.profilePic?.url
+                      ? "orange"
+                      : "blue"
+                  }
+                  size={32}
+                  userId={
+                    effectiveAuthor?.id ||
+                    effectiveAuthor?._id ||
+                    effectiveAuthor?.userId
+                  }
+                  username={effectiveAuthor?.username}
+                  onPress={() => handleProfilePress(effectiveAuthor)}
+                  style={styles.headerAvatarHalo}
+                />
 
                 <View style={styles.posterMeta}>
                   <View style={styles.posterNameRow}>
@@ -833,30 +837,13 @@ const CommentSheet = ({
             ) : null}
 
             <View style={styles.composerContainer}>
-              {composerAvatarUri ? (
-                <LinearGradient
-                  colors={["#0ea5e9", "#6366f1", "#a855f7"]}
-                  start={{ x: 0, y: 0 }}
-                  end={{ x: 1, y: 1 }}
-                  style={styles.composerAvatarHalo}
-                >
-                  <Image
-                    source={{ uri: composerAvatarUri }}
-                    style={styles.composerAvatarImage}
-                  />
-                </LinearGradient>
-              ) : (
-                <LinearGradient
-                  colors={["#0ea5e9", "#6366f1", "#a855f7"]}
-                  start={{ x: 0, y: 0 }}
-                  end={{ x: 1, y: 1 }}
-                  style={styles.composerAvatarHalo}
-                >
-                  <View style={styles.composerAvatarFallback}>
-                    <Ionicons name="person" size={14} color="#020617" />
-                  </View>
-                </LinearGradient>
-              )}
+              <Avatar
+                uri={composerAvatarUri}
+                haloColor="blue"
+                size={32}
+                disableNavigation
+                style={styles.composerAvatarHalo}
+              />
 
               <View style={styles.composerRow}>
                 <View style={styles.composerInputWrapper}>
@@ -949,32 +936,8 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     marginBottom: 4,
   },
-  avatarRing: {
-    width: 36,
-    height: 36,
-    borderRadius: 20,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  avatarSmallWrapper: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    backgroundColor: "#020617",
-    alignItems: "center",
-    justifyContent: "center",
-    overflow: "hidden",
-  },
-  avatarSmall: {
-    width: "100%",
-    height: "100%",
-    borderRadius: 16,
-    resizeMode: "cover",
-  },
-  avatarFallback: {
-    backgroundColor: "#facc15",
-    alignItems: "center",
-    justifyContent: "center",
+  headerAvatarHalo: {
+    marginRight: 10,
   },
   posterMeta: {
     flex: 1,
@@ -1103,27 +1066,7 @@ const styles = StyleSheet.create({
     columnGap: 8,
   },
   commentAvatarHalo: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    alignItems: "center",
-    justifyContent: "center",
-    padding: 2,
-  },
-  commentAvatarInner: {
-    width: "100%",
-    height: "100%",
-    borderRadius: 16,
-    backgroundColor: "#020617",
-    alignItems: "center",
-    justifyContent: "center",
-    overflow: "hidden",
-  },
-  commentAvatar: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    resizeMode: "cover",
+    paddingVertical: 2,
   },
   commentBody: {
     flex: 1,
@@ -1299,24 +1242,6 @@ const styles = StyleSheet.create({
     position: "absolute",
     left: 0,
     bottom: 8,
-    width: 35,
-    height: 35,
-    borderRadius: 16,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  composerAvatarImage: {
-    width: 32,
-    height: 32,
-    borderRadius: 13,
-  },
-  composerAvatarFallback: {
-    width: 26,
-    height: 26,
-    borderRadius: 13,
-    backgroundColor: "#e5e7eb",
-    alignItems: "center",
-    justifyContent: "center",
   },
   composerRow: {
     flexDirection: "row",
