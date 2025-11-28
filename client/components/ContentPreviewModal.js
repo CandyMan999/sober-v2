@@ -35,6 +35,19 @@ const ContentPreviewModal = ({
   const backdropOpacity = useRef(new Animated.Value(0)).current;
   const translateY = useRef(new Animated.Value(WINDOW_HEIGHT)).current;
   const dragY = useRef(new Animated.Value(0)).current;
+  const backdropFalloffOpacity = useMemo(
+    () =>
+      dragY.interpolate({
+        inputRange: [0, WINDOW_HEIGHT * 0.45],
+        outputRange: [1, 0],
+        extrapolate: "clamp",
+      }),
+    [dragY]
+  );
+  const combinedBackdropOpacity = useMemo(
+    () => Animated.multiply(backdropOpacity, backdropFalloffOpacity),
+    [backdropFalloffOpacity, backdropOpacity]
+  );
   const videoRef = useRef(null);
 
   useEffect(() => {
@@ -45,7 +58,7 @@ const ContentPreviewModal = ({
     if (visible) {
       setMounted(true);
       dragY.setValue(0);
-      translateY.setValue(WINDOW_HEIGHT * 0.12);
+      translateY.setValue(48);
       Animated.parallel([
         Animated.timing(backdropOpacity, {
           toValue: 1,
@@ -56,9 +69,9 @@ const ContentPreviewModal = ({
         Animated.spring(translateY, {
           toValue: 0,
           useNativeDriver: true,
-          damping: 16,
-          stiffness: 180,
-          mass: 0.9,
+          damping: 18,
+          stiffness: 140,
+          mass: 1.05,
         }),
       ]).start();
     } else {
@@ -136,15 +149,8 @@ const ContentPreviewModal = ({
     () =>
       Animated.event([{ nativeEvent: { translationY: dragY } }], {
         useNativeDriver: true,
-        listener: ({ nativeEvent }) => {
-          if (nativeEvent.translationY > 0) {
-            backdropOpacity.setValue(
-              Math.max(0, 1 - nativeEvent.translationY / WINDOW_HEIGHT)
-            );
-          }
-        },
       }),
-    [backdropOpacity, dragY]
+    [dragY]
   );
 
   const handleGestureStateChange = useMemo(
@@ -166,9 +172,9 @@ const ContentPreviewModal = ({
               Animated.spring(dragY, {
                 toValue: 0,
                 useNativeDriver: true,
-                damping: 18,
-                stiffness: 220,
-                mass: 0.9,
+                damping: 20,
+                stiffness: 170,
+                mass: 1,
               }),
               Animated.timing(backdropOpacity, {
                 toValue: 1,
@@ -274,7 +280,7 @@ const ContentPreviewModal = ({
   return (
     <Modal transparent animationType="none" visible={mounted} onRequestClose={handleClose}>
       <Animated.View
-        style={[styles.backdrop, { opacity: backdropOpacity }]}
+        style={[styles.backdrop, { opacity: combinedBackdropOpacity }]}
         pointerEvents={visible ? "auto" : "none"}
       >
         <Pressable style={StyleSheet.absoluteFill} onPress={handleClose} />
