@@ -33,11 +33,23 @@ import { formatDistance, getDistanceFromCoords } from "../../utils/distance";
 
 const AVATAR_SIZE = 110;
 const soberLogo = require("../../assets/icon.png");
+const SOCIAL_ICON_SIZE = 22;
+const SOCIAL_ICON_COLOR = "#e5e7eb";
 
 const SOCIAL_ICON_PROPS = {
-  instagram: { Component: Ionicons, name: "logo-instagram", color: "#f472b6" },
-  tiktok: { Component: FontAwesome6, name: "tiktok", color: "#000", size: 24 },
-  x: { Component: AntDesign, name: "x", color: "#000", size: 24 },
+  instagram: {
+    Component: Ionicons,
+    name: "logo-instagram",
+    color: SOCIAL_ICON_COLOR,
+    size: SOCIAL_ICON_SIZE,
+  },
+  tiktok: {
+    Component: FontAwesome6,
+    name: "tiktok",
+    color: SOCIAL_ICON_COLOR,
+    size: SOCIAL_ICON_SIZE,
+  },
+  x: { Component: AntDesign, name: "x", color: SOCIAL_ICON_COLOR, size: SOCIAL_ICON_SIZE },
 };
 
 const UserProfileScreen = ({ route, navigation }) => {

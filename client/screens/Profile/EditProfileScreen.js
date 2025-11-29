@@ -53,26 +53,37 @@ const {
 const MIN_USERNAME_LENGTH = 3;
 const MAX_USERNAME_LENGTH = 13;
 
+const SOCIAL_ICON_SIZE = 22;
+const SOCIAL_ICON_COLOR = textPrimary;
+
 const SOCIAL_CONFIG = {
   instagram: {
     label: "Instagram (Optional)",
-    placeholder: "@username (Optional)",
+    placeholder: "@username",
     errorLabel: "Instagram",
     regex: /^[A-Za-z0-9._]{1,30}$/,
     urlPrefixes: [/^https?:\/\/(www\.)?instagram\.com\//i, /^instagram:\/\/user\?username=/i],
-    icon: <Feather name="instagram" size={18} color="#f472b6" />,
+    icon: (
+      <Feather name="instagram" size={SOCIAL_ICON_SIZE} color={SOCIAL_ICON_COLOR} />
+    ),
   },
   tiktok: {
     label: "TikTok (Optional)",
-    placeholder: "@username (Optional)",
+    placeholder: "@username",
     errorLabel: "TikTok",
     regex: /^[A-Za-z0-9._]{1,24}$/,
     urlPrefixes: [/^https?:\/\/(www\.)?tiktok\.com\/[@]?/i, /^tiktok:\/\/user\?username=/i],
-    icon: <FontAwesome6 name="tiktok" size={24} color="#000" />,
+    icon: (
+      <FontAwesome6
+        name="tiktok"
+        size={SOCIAL_ICON_SIZE}
+        color={SOCIAL_ICON_COLOR}
+      />
+    ),
   },
   x: {
     label: "X (Optional)",
-    placeholder: "@handle (Optional)",
+    placeholder: "@handle",
     errorLabel: "X",
     regex: /^[A-Za-z0-9_]{1,15}$/,
     urlPrefixes: [
@@ -80,7 +91,13 @@ const SOCIAL_CONFIG = {
       /^twitter:\/\//i,
       /^x:\/\/profile\//i,
     ],
-    icon: <AntDesign name="x" size={24} color="#000" />,
+    icon: (
+      <AntDesign
+        name="x"
+        size={SOCIAL_ICON_SIZE}
+        color={SOCIAL_ICON_COLOR}
+      />
+    ),
   },
 };
 

@@ -8,6 +8,7 @@ const {
   buildDeepLink,
 } = require("../../utils/handleValidators");
 const { checkHandleExists } = require("../../utils/checkHandleExists");
+const { serializeUser } = require("../../utils/serializeUser");
 
 const validatePlatform = (platform) => {
   if (!platform || typeof platform !== "string") {
@@ -66,7 +67,8 @@ module.exports = {
 
       user.social = { ...existingSocial, [normalizedPlatform]: null };
       await user.save();
-      return user;
+      await user.populate(["profilePic", "drunkPic"]);
+      return serializeUser(user);
     }
 
     const socialEntry = await buildSocialEntry(normalizedPlatform, handle);
@@ -78,6 +80,7 @@ module.exports = {
 
     user.social = { ...existingSocial, [normalizedPlatform]: socialEntry };
     await user.save();
-    return user;
+    await user.populate(["profilePic", "drunkPic"]);
+    return serializeUser(user);
   },
 };
