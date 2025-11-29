@@ -36,13 +36,9 @@ const {
   primaryBackground,
   cardBackground,
   accent,
-  accentSoft,
-  accentDeep,
   textPrimary,
   textSecondary,
   border,
-  canyonBlue,
-  canyonBlueBright,
   oceanBlue,
   nightBlue,
 } = COLORS;
@@ -50,32 +46,26 @@ const {
 const MIN_USERNAME_LENGTH = 3;
 const MAX_USERNAME_LENGTH = 13;
 
-const PhotoTile = ({
-  label,
-  uri,
-  isUploading,
-  onPick,
-  onDelete,
-  haloColors = [accentSoft, accent],
-  style,
-}) => (
+const PhotoTileBase = ({ children, label, onPress, style }) => (
   <TouchableOpacity
     activeOpacity={0.85}
+    onPress={onPress}
     style={[styles.photoTile, style]}
-    onPress={onPick}
   >
-    <LinearGradient
-      colors={haloColors}
-      start={{ x: 0, y: 0 }}
-      end={{ x: 1, y: 1 }}
-      style={[styles.photoHalo, { shadowColor: haloColors?.[1] || haloColors?.[0] }]}
-    >
-      <View style={styles.photoPreview}>
+    {children}
+    <Text style={styles.photoLabel}>{label}</Text>
+  </TouchableOpacity>
+);
+
+const ProfilePhotoTile = ({ label, uri, isUploading, onPick, onDelete }) => (
+  <PhotoTileBase label={label} onPress={onPick}>
+    <LinearGradient colors={[accent, accent]} style={styles.profileHalo}>
+      <View style={styles.profilePreview}>
         {uri ? (
-          <Image source={{ uri }} style={styles.photoImage} resizeMode="cover" />
+          <Image source={{ uri }} style={styles.profileImage} resizeMode="cover" />
         ) : (
-          <View style={styles.photoPlaceholder}>
-            <Feather name="camera" color={textSecondary} size={26} />
+          <View style={[styles.profileImage, styles.photoPlaceholder]}>
+            <Feather name="camera" color={textSecondary} size={24} />
             <Text style={styles.placeholderText}>Tap to upload</Text>
           </View>
         )}
@@ -97,9 +87,40 @@ const PhotoTile = ({
         ) : null}
       </View>
     </LinearGradient>
+  </PhotoTileBase>
+);
 
-    <Text style={styles.photoLabel}>{label}</Text>
-  </TouchableOpacity>
+const DrunkPhotoTile = ({ label, uri, isUploading, onPick, onDelete }) => (
+  <PhotoTileBase label={label} onPress={onPick} style={styles.drunkTile}>
+    <LinearGradient colors={[oceanBlue, oceanBlue]} style={styles.drunkHalo}>
+      <View style={styles.drunkPreview}>
+        {uri ? (
+          <Image source={{ uri }} style={styles.drunkImage} resizeMode="cover" />
+        ) : (
+          <View style={[styles.drunkImage, styles.photoPlaceholder]}>
+            <Feather name="image" color={textSecondary} size={24} />
+            <Text style={styles.placeholderText}>Tap to add</Text>
+          </View>
+        )}
+
+        {isUploading ? (
+          <View style={styles.loadingOverlay}>
+            <ActivityIndicator color={primaryBackground} />
+          </View>
+        ) : null}
+
+        {uri && !isUploading ? (
+          <TouchableOpacity
+            onPress={onDelete}
+            style={styles.deleteButton}
+            hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+          >
+            <Feather name="trash-2" size={16} color="#fff" />
+          </TouchableOpacity>
+        ) : null}
+      </View>
+    </LinearGradient>
+  </PhotoTileBase>
 );
 
 const ToggleRow = ({ icon, label, value, onValueChange, activeColor }) => (
@@ -434,22 +455,19 @@ const EditProfileScreen = ({ navigation }) => {
         <View style={styles.sectionCard}>
           <Text style={styles.sectionLabel}>Photos</Text>
           <View style={styles.photoRow}>
-            <PhotoTile
+            <ProfilePhotoTile
               label="Profile Photo"
               uri={profileUri}
               isUploading={uploadingSlot === "PROFILE"}
               onPick={() => pickImage("PROFILE")}
               onDelete={() => deletePhoto("PROFILE")}
-              style={{ marginRight: 8 }}
             />
-            <PhotoTile
+            <DrunkPhotoTile
               label="Drunk Photo"
               uri={drunkUri}
               isUploading={uploadingSlot === "DRUNK"}
               onPick={() => pickImage("DRUNK")}
               onDelete={() => deletePhoto("DRUNK")}
-              haloColors={[canyonBlue, canyonBlueBright]}
-              style={{ marginLeft: 8 }}
             />
           </View>
         </View>
@@ -511,7 +529,7 @@ const EditProfileScreen = ({ navigation }) => {
                   colors={
                     !isUsernameValid || savingUsername
                       ? [border, border]
-                      : [accent, accentSoft]
+                      : [accent, accent]
                   }
                   start={{ x: 0, y: 0 }}
                   end={{ x: 1, y: 1 }}
@@ -556,40 +574,40 @@ const EditProfileScreen = ({ navigation }) => {
                 activeColor={accent}
               />
               <ToggleRow
-                icon={<Feather name="message-circle" size={18} color={textSecondary} />}
+                icon={<Feather name="message-circle" size={18} color={oceanBlue} />}
                 label="Comments"
                 value={notificationPrefs.comments}
                 onValueChange={(value) =>
                   setNotificationPrefs((prev) => ({ ...prev, comments: value }))
                 }
-                activeColor={canyonBlueBright}
+                activeColor={oceanBlue}
               />
               <ToggleRow
-                icon={<Feather name="users" size={18} color={accentSoft} />}
+                icon={<Feather name="users" size={18} color={accent} />}
                 label="Friends posts"
                 value={notificationPrefs.friendsPosts}
                 onValueChange={(value) =>
                   setNotificationPrefs((prev) => ({ ...prev, friendsPosts: value }))
                 }
-                activeColor={accentSoft}
+                activeColor={accent}
               />
               <ToggleRow
-                icon={<MaterialCommunityIcons name="beer" size={18} color={accentDeep} />}
+                icon={<MaterialCommunityIcons name="beer" size={18} color={oceanBlue} />}
                 label="Buddies near bars"
                 value={notificationPrefs.buddiesNear}
                 onValueChange={(value) =>
                   setNotificationPrefs((prev) => ({ ...prev, buddiesNear: value }))
                 }
-                activeColor={accentDeep}
+                activeColor={oceanBlue}
               />
               <ToggleRow
-                icon={<MaterialCommunityIcons name="glass-cocktail" size={18} color={oceanBlue} />}
+                icon={<MaterialCommunityIcons name="glass-cocktail" size={18} color={accent} />}
                 label="Liquor & bars"
                 value={notificationPrefs.liquorBars}
                 onValueChange={(value) =>
                   setNotificationPrefs((prev) => ({ ...prev, liquorBars: value }))
                 }
-                activeColor={canyonBlue}
+                activeColor={accent}
               />
             </View>
           ) : null}
@@ -609,7 +627,7 @@ const EditProfileScreen = ({ navigation }) => {
             label="Location tracking"
             value={locationEnabled}
             onValueChange={setLocationEnabled}
-            activeColor={canyonBlue}
+            activeColor={oceanBlue}
           />
           <Text style={styles.helperText}>
             We only use your location to surface buddy alerts near bars and safe
@@ -697,34 +715,66 @@ const styles = StyleSheet.create({
   photoRow: {
     flexDirection: "row",
     justifyContent: "space-between",
-    gap: 12,
+    gap: 16,
   },
   photoTile: {
     flex: 1,
     alignItems: "center",
   },
-  photoHalo: {
-    width: "100%",
-    borderRadius: 16,
-    padding: 4,
-    height: 210,
-    shadowColor: "#f97316",
-    shadowOpacity: 0.22,
+  profileHalo: {
+    width: 170,
+    height: 170,
+    borderRadius: 85,
+    padding: 5,
+    shadowColor: accent,
+    shadowOpacity: 0.28,
     shadowRadius: 12,
-    shadowOffset: { width: 0, height: 10 },
+    shadowOffset: { width: 0, height: 6 },
     elevation: 6,
+    alignItems: "center",
+    justifyContent: "center",
   },
-  photoPreview: {
-    borderRadius: 12,
+  profilePreview: {
+    width: 160,
+    height: 160,
+    borderRadius: 80,
     overflow: "hidden",
     backgroundColor: nightBlue,
-    height: 180,
     position: "relative",
-    width: "100%",
+    alignItems: "center",
+    justifyContent: "center",
     borderWidth: 1,
     borderColor: "rgba(255,255,255,0.08)",
   },
-  photoImage: {
+  profileImage: {
+    width: "100%",
+    height: "100%",
+    borderRadius: 80,
+  },
+  drunkTile: {
+    justifyContent: "flex-start",
+  },
+  drunkHalo: {
+    width: "100%",
+    aspectRatio: 3 / 4,
+    borderRadius: 18,
+    padding: 4,
+    shadowColor: oceanBlue,
+    shadowOpacity: 0.28,
+    shadowRadius: 12,
+    shadowOffset: { width: 0, height: 8 },
+    elevation: 6,
+  },
+  drunkPreview: {
+    flex: 1,
+    borderRadius: 14,
+    overflow: "hidden",
+    backgroundColor: nightBlue,
+    position: "relative",
+    borderWidth: 1,
+    borderColor: "rgba(255,255,255,0.08)",
+  },
+  drunkImage: {
     width: "100%",
     height: "100%",
   },
@@ -732,6 +782,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
+    padding: 12,
   },
   placeholderText: {
     color: textSecondary,
