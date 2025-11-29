@@ -28,11 +28,20 @@ export const UPDATE_USER_PROFILE_MUTATION = gql`
       token
       username
       profilePicUrl
+      drunkPicUrl
       sobrietyStartAt
       timezone
       lat
       long
       whyStatement
+      followersCount
+      followingCount
+      buddiesCount
+      savedPosts {
+        id
+      }
+      milestonesNotified
+      notificationsEnabled
       social {
         instagram {
           handle
@@ -62,6 +71,24 @@ export const UPDATE_USER_PROFILE_MUTATION = gql`
           }
         }
       }
+      streaks {
+        startAt
+        endAt
+      }
+      profilePic {
+        id
+        url
+        publicId
+        provider
+      }
+      drunkPic {
+        id
+        url
+        publicId
+        provider
+      }
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -73,11 +100,20 @@ export const UPDATE_SOCIAL_MUTATION = gql`
       token
       username
       profilePicUrl
+      drunkPicUrl
       sobrietyStartAt
       timezone
       lat
       long
       whyStatement
+      followersCount
+      followingCount
+      buddiesCount
+      savedPosts {
+        id
+      }
+      milestonesNotified
+      notificationsEnabled
       social {
         instagram {
           handle
@@ -107,6 +143,24 @@ export const UPDATE_SOCIAL_MUTATION = gql`
           }
         }
       }
+      streaks {
+        startAt
+        endAt
+      }
+      profilePic {
+        id
+        url
+        publicId
+        provider
+      }
+      drunkPic {
+        id
+        url
+        publicId
+        provider
+      }
+      createdAt
+      updatedAt
     }
   }
 `;

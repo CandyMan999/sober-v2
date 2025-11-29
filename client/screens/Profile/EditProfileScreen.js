@@ -55,29 +55,32 @@ const MAX_USERNAME_LENGTH = 13;
 
 const SOCIAL_CONFIG = {
   instagram: {
-    label: "Instagram",
-    placeholder: "@username",
+    label: "Instagram (Optional)",
+    placeholder: "@username (Optional)",
+    errorLabel: "Instagram",
     regex: /^[A-Za-z0-9._]{1,30}$/,
     urlPrefixes: [/^https?:\/\/(www\.)?instagram\.com\//i, /^instagram:\/\/user\?username=/i],
     icon: <Feather name="instagram" size={18} color="#f472b6" />,
   },
   tiktok: {
-    label: "TikTok",
-    placeholder: "@username",
+    label: "TikTok (Optional)",
+    placeholder: "@username (Optional)",
+    errorLabel: "TikTok",
     regex: /^[A-Za-z0-9._]{1,24}$/,
     urlPrefixes: [/^https?:\/\/(www\.)?tiktok\.com\/[@]?/i, /^tiktok:\/\/user\?username=/i],
-    icon: <FontAwesome6 name="tiktok" size={18} color="#111827" />,
+    icon: <FontAwesome6 name="tiktok" size={24} color="#000" />,
   },
   x: {
-    label: "X (Twitter)",
-    placeholder: "@handle",
+    label: "X (Optional)",
+    placeholder: "@handle (Optional)",
+    errorLabel: "X",
     regex: /^[A-Za-z0-9_]{1,15}$/,
     urlPrefixes: [
       /^https?:\/\/(www\.)?(x|twitter)\.com\//i,
       /^twitter:\/\//i,
       /^x:\/\/profile\//i,
     ],
-    icon: <AntDesign name="x" size={18} color="#111827" />,
+    icon: <AntDesign name="x" size={24} color="#000" />,
   },
 };
 
@@ -92,7 +95,7 @@ const normalizeSocialInput = (platform, rawValue) => {
   let handle = (value || "").trim();
   if (!handle) return "";
 
-  handle = handle.replace(/^@/, "");
+  handle = handle.replace(/@/g, "");
 
   SOCIAL_CONFIG[platform]?.urlPrefixes?.forEach((pattern) => {
     handle = handle.replace(pattern, "");
@@ -478,9 +481,10 @@ const EditProfileScreen = ({ navigation }) => {
     Object.entries(socialInputs).forEach(([platform, value]) => {
       const cleaned = normalizeSocialInput(platform, value);
       const config = SOCIAL_CONFIG[platform];
+      const label = config?.errorLabel || config?.label || platform;
 
       if (cleaned && config?.regex && !config.regex.test(cleaned)) {
-        errors[platform] = `Enter a valid ${config.label} username.`;
+        errors[platform] = `Enter a valid ${label} username.`;
       }
     });
 
@@ -508,7 +512,7 @@ const EditProfileScreen = ({ navigation }) => {
       );
 
       setUser(updateUserProfile);
-      dispatch({ type: "SET_USER", payload: updateUserProfile });
+      dispatch({ type: "SET_USER", payload: { ...user, ...updateUserProfile } });
       setUsernameOpen(false);
     } catch (err) {
       const message =
@@ -558,7 +562,7 @@ const EditProfileScreen = ({ navigation }) => {
 
       if (latestUser) {
         setUser(latestUser);
-        dispatch({ type: "SET_USER", payload: latestUser });
+        dispatch({ type: "SET_USER", payload: { ...user, ...latestUser } });
         setSocialInputs({
           instagram: normalizeSocialInput("instagram", latestUser.social?.instagram),
           tiktok: normalizeSocialInput("tiktok", latestUser.social?.tiktok),
@@ -715,7 +719,7 @@ const EditProfileScreen = ({ navigation }) => {
           {socialOpen ? (
             <>
               <Text style={styles.helperText}>
-                Add your usernames so friends can tap straight to your profile.
+                Add your usernames (Optional) so friends can tap straight to your profile.
               </Text>
 
               {Object.entries(SOCIAL_CONFIG).map(([platform, config]) => {

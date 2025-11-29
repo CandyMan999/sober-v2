@@ -36,8 +36,8 @@ const soberLogo = require("../../assets/icon.png");
 
 const SOCIAL_ICON_PROPS = {
   instagram: { Component: Ionicons, name: "logo-instagram", color: "#f472b6" },
-  tiktok: { Component: FontAwesome6, name: "tiktok", color: "#111827", size: 20 },
-  x: { Component: AntDesign, name: "x", color: "#111827", size: 20 },
+  tiktok: { Component: FontAwesome6, name: "tiktok", color: "#000", size: 24 },
+  x: { Component: AntDesign, name: "x", color: "#000", size: 24 },
 };
 
 const UserProfileScreen = ({ route, navigation }) => {
