@@ -182,8 +182,8 @@ const UserProfileScreen = ({ route, navigation }) => {
         if (isNowBuddy) {
           Toast.show({
             type: "info",
-            text1: "You're now buddies",
-            text2: `${profileData?.username || "This member"} will get a heads up.`,
+            text1: "You're sober accountability buddies",
+            text2: `You can DM ${profileData?.username || "this member"} to keep each other on track.`,
             position: "top",
             autoHide: true,
             visibilityTime: 5000,

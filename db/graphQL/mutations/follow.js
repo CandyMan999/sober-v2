@@ -48,7 +48,7 @@ const followUserResolver = async (_, { token, userId }) => {
       buddyAlerts.push({
         pushToken: followeeUser.token,
         title: "You have a new sober buddy",
-        body: `${followerUser?.username || "A member"} just connected with you.`,
+        body: `${followerUser?.username || "A member"} is now your accountability buddy—start a direct message!`,
         data: {
           type: "buddy_connection",
           followerId: String(followerUser?._id || ""),

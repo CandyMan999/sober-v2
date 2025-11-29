@@ -925,12 +925,9 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(245,158,11,0.12)",
   },
   metricIconWrapper: {
-    width: 24,
-    height: 24,
+    position: "relative",
     justifyContent: "center",
     alignItems: "center",
-    position: "relative",
-    marginBottom: 2,
   },
   metricBadge: {
     position: "absolute",

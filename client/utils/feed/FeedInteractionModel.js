@@ -101,8 +101,8 @@ class FeedInteractionModel {
 
     Toast.show({
       type: "info",
-      text1: "You're now buddies",
-      text2: `${author?.username || "This member"} will get a heads up.`,
+      text1: "You're sober accountability buddies",
+      text2: `You can DM ${author?.username || "this member"} to stay accountable together.`,
       position: "top",
       autoHide: true,
       visibilityTime: 5000,
