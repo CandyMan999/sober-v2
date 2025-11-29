@@ -8,6 +8,9 @@ import {
   Image,
   TextInput,
   ActivityIndicator,
+  KeyboardAvoidingView,
+  Platform,
+  Keyboard,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Feather, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
@@ -38,74 +41,54 @@ const {
   textPrimary,
   textSecondary,
   border,
-  gradientStart,
-  gradientMid,
-  gradientEnd,
   oceanBlue,
   nightBlue,
 } = COLORS;
 
 const MIN_USERNAME_LENGTH = 3;
+const MAX_USERNAME_LENGTH = 13;
 
-const PhotoTile = ({
-  label,
-  helper,
-  uri,
-  isUploading,
-  onPick,
-  onDelete,
-  style,
-}) => (
+const PhotoTile = ({ label, uri, isUploading, onPick, onDelete, style }) => (
   <TouchableOpacity
     activeOpacity={0.85}
     style={[styles.photoTile, style]}
     onPress={onPick}
   >
     <LinearGradient
-      colors={[gradientStart, gradientMid]}
+      colors={["#fcd34d", "#f97316"]}
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}
-      style={styles.photoGradient}
+      style={styles.photoHalo}
     >
-      <LinearGradient
-        colors={[accentSoft, gradientMid]}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 1 }}
-        style={styles.photoHalo}
-      >
-        <View style={styles.photoPreview}>
-          {uri ? (
-            <Image source={{ uri }} style={styles.photoImage} resizeMode="cover" />
-          ) : (
-            <View style={styles.photoPlaceholder}>
-              <Feather name="camera" color={textSecondary} size={26} />
-              <Text style={styles.placeholderText}>Tap to upload</Text>
-            </View>
-          )}
+      <View style={styles.photoPreview}>
+        {uri ? (
+          <Image source={{ uri }} style={styles.photoImage} resizeMode="cover" />
+        ) : (
+          <View style={styles.photoPlaceholder}>
+            <Feather name="camera" color={textSecondary} size={26} />
+            <Text style={styles.placeholderText}>Tap to upload</Text>
+          </View>
+        )}
 
-          {isUploading ? (
-            <View style={styles.loadingOverlay}>
-              <ActivityIndicator color={primaryBackground} />
-            </View>
-          ) : null}
+        {isUploading ? (
+          <View style={styles.loadingOverlay}>
+            <ActivityIndicator color={primaryBackground} />
+          </View>
+        ) : null}
 
-          {uri && !isUploading ? (
-            <TouchableOpacity
-              onPress={onDelete}
-              style={styles.deleteButton}
-              hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
-            >
-              <Feather name="trash-2" size={16} color="#fff" />
-            </TouchableOpacity>
-          ) : null}
-        </View>
-      </LinearGradient>
-
-      <View style={styles.photoMeta}>
-        <Text style={styles.photoLabel}>{label}</Text>
-        {helper ? <Text style={styles.photoHelper}>{helper}</Text> : null}
+        {uri && !isUploading ? (
+          <TouchableOpacity
+            onPress={onDelete}
+            style={styles.deleteButton}
+            hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+          >
+            <Feather name="trash-2" size={16} color="#fff" />
+          </TouchableOpacity>
+        ) : null}
       </View>
     </LinearGradient>
+
+    <Text style={styles.photoLabel}>{label}</Text>
   </TouchableOpacity>
 );
 
@@ -116,12 +99,17 @@ const FancyToggle = ({ value, onValueChange }) => (
     style={styles.togglePressable}
   >
     <LinearGradient
-      colors={value ? [accent, accentSoft] : [border, nightBlue]}
+      colors={value ? [accent, accentSoft] : ["#1f2937", "#0f172a"]}
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}
       style={[styles.toggleTrack, value && styles.toggleTrackOn]}
     >
-      <View style={[styles.toggleThumb, value && styles.toggleThumbOn]} />
+      <LinearGradient
+        colors={value ? ["#f97316", "#fb923c"] : ["#9ca3af", "#9ca3af"]}
+        style={[styles.toggleThumb, value && styles.toggleThumbOn]}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+      />
     </LinearGradient>
   </TouchableOpacity>
 );
@@ -129,7 +117,7 @@ const FancyToggle = ({ value, onValueChange }) => (
 const ToggleRow = ({ icon, label, value, onValueChange }) => (
   <View style={styles.toggleRow}>
     <View style={styles.rowLeft}>
-      <View style={styles.iconBadge}>{icon}</View>
+      {icon}
       <Text style={styles.rowLabelWithIcon}>{label}</Text>
     </View>
     <FancyToggle value={value} onValueChange={onValueChange} />
@@ -351,12 +339,15 @@ const EditProfileScreen = ({ navigation }) => {
   );
 
   const trimmedUsername = useMemo(() => usernameInput.trim(), [usernameInput]);
-  const isUsernameValid = trimmedUsername.length >= MIN_USERNAME_LENGTH;
+  const isUsernameValid =
+    trimmedUsername.length >= MIN_USERNAME_LENGTH &&
+    trimmedUsername.length <= MAX_USERNAME_LENGTH;
   const usernameValidationText = useMemo(() => {
     if (usernameInput.length === 0) return "You can change this later.";
-    if (!isUsernameValid) return "At least 3 characters.";
+    if (trimmedUsername.length < MIN_USERNAME_LENGTH) return "At least 3 characters.";
+    if (trimmedUsername.length > MAX_USERNAME_LENGTH) return "Max 13 characters.";
     return "Looks good.";
-  }, [isUsernameValid, usernameInput]);
+  }, [trimmedUsername.length, usernameInput]);
 
   const handleSaveUsername = async () => {
     if (!token || savingUsername || !isUsernameValid) return;
@@ -388,42 +379,35 @@ const EditProfileScreen = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.safeArea} edges={["top", "left", "right"]}>
-      <LinearGradient
-        colors={[gradientStart, gradientEnd]}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 1 }}
-        style={styles.headerGradient}
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === "ios" ? "padding" : undefined}
+        keyboardVerticalOffset={12}
       >
-        <View style={styles.headerTopRow}>
+        <View style={styles.topBar}>
           <TouchableOpacity
-            style={styles.backPill}
+            style={styles.backButton}
             onPress={() => navigation?.goBack?.()}
             accessibilityLabel="Go back"
             activeOpacity={0.85}
           >
-            <Feather name="arrow-left" size={18} color={textPrimary} />
-            <Text style={styles.backLabel}>Back to profile</Text>
+            <Feather name="chevron-left" size={20} color="#f59e0b" />
           </TouchableOpacity>
+          <Text style={styles.screenTitle}>Edit profile</Text>
         </View>
-        <View style={styles.headerTextBlock}>
-          <Text style={styles.headerTitle}>Edit profile</Text>
-          <Text style={styles.headerSubtitle}>
-            Update your look and how you want to be notified.
-          </Text>
-        </View>
-      </LinearGradient>
 
-      <ScrollView
-        style={styles.container}
-        contentContainerStyle={{ paddingBottom: 32 }}
-        showsVerticalScrollIndicator={false}
-      >
+        <ScrollView
+          style={styles.container}
+          contentContainerStyle={{ paddingBottom: 32 }}
+          showsVerticalScrollIndicator={false}
+          keyboardShouldPersistTaps="handled"
+          keyboardDismissMode="on-drag"
+        >
         <View style={styles.sectionCard}>
           <Text style={styles.sectionLabel}>Photos</Text>
           <View style={styles.photoRow}>
             <PhotoTile
-              label="Profile photo"
-              helper="Shows across your profile and replies."
+              label="Profile Photo"
               uri={profileUri}
               isUploading={uploadingSlot === "PROFILE"}
               onPick={() => pickImage("PROFILE")}
@@ -431,8 +415,7 @@ const EditProfileScreen = ({ navigation }) => {
               style={{ marginRight: 8 }}
             />
             <PhotoTile
-              label="Drunk photo"
-              helper="Keep as a before-and-after reminder."
+              label="Drunk Photo"
               uri={drunkUri}
               isUploading={uploadingSlot === "DRUNK"}
               onPick={() => pickImage("DRUNK")}
@@ -449,9 +432,7 @@ const EditProfileScreen = ({ navigation }) => {
             activeOpacity={0.8}
           >
             <View style={styles.rowLeft}>
-              <View style={styles.iconBadge}>
-                <Feather name="at-sign" size={18} color={accent} />
-              </View>
+              <Feather name="at-sign" size={18} color={accent} />
               <View style={styles.rowTextBlock}>
                 <Text style={styles.rowLabel}>Username</Text>
                 <Text style={styles.rowValue}>{usernameDisplay}</Text>
@@ -475,6 +456,13 @@ const EditProfileScreen = ({ navigation }) => {
                 value={usernameInput}
                 onChangeText={setUsernameInput}
                 autoCapitalize="none"
+                autoCorrect={false}
+                maxLength={MAX_USERNAME_LENGTH}
+                returnKeyType="done"
+                onSubmitEditing={() => {
+                  Keyboard.dismiss();
+                  if (isUsernameValid) handleSaveUsername();
+                }}
               />
               <Text
                 style={[
@@ -518,9 +506,7 @@ const EditProfileScreen = ({ navigation }) => {
             activeOpacity={0.8}
           >
             <View style={styles.rowLeft}>
-              <View style={styles.iconBadge}>
-                <Ionicons name="notifications" size={18} color={oceanBlue} />
-              </View>
+              <Ionicons name="notifications" size={18} color={oceanBlue} />
               <Text style={styles.rowLabelWithIcon}>Notification settings</Text>
             </View>
             <Feather
@@ -594,7 +580,14 @@ const EditProfileScreen = ({ navigation }) => {
             meetup spots.
           </Text>
         </View>
-      </ScrollView>
+        </ScrollView>
+
+        {loading ? (
+          <View style={styles.loadingScreen}>
+            <ActivityIndicator color={accent} size="large" />
+          </View>
+        ) : null}
+      </KeyboardAvoidingView>
 
       <AlertModal
         visible={alertState.visible}
@@ -603,11 +596,6 @@ const EditProfileScreen = ({ navigation }) => {
         message={alertState.message}
         onConfirm={() => setAlertState({ visible: false, title: "", message: "" })}
       />
-      {loading ? (
-        <View style={styles.loadingScreen}>
-          <ActivityIndicator color={accent} size="large" />
-        </View>
-      ) : null}
     </SafeAreaView>
   );
 };
@@ -617,49 +605,28 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: primaryBackground,
   },
-  headerGradient: {
-    paddingHorizontal: 16,
-    paddingTop: 14,
-    paddingBottom: 18,
-    borderBottomLeftRadius: 18,
-    borderBottomRightRadius: 18,
-  },
-  headerTopRow: {
-    flexDirection: "row",
-    justifyContent: "flex-start",
-    marginBottom: 10,
-  },
-  backPill: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "rgba(0,0,0,0.25)",
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-    borderRadius: 14,
-    borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.08)",
-  },
   container: {
     flex: 1,
     backgroundColor: primaryBackground,
     paddingHorizontal: 16,
-    paddingTop: 12,
   },
-  backLabel: {
-    color: textPrimary,
-    marginLeft: 8,
-    fontWeight: "700",
+  topBar: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: 16,
+    paddingTop: 6,
+    paddingBottom: 10,
+    gap: 12,
   },
-  headerTextBlock: {},
-  headerTitle: {
+  backButton: {
+    padding: 10,
+    borderRadius: 999,
+    backgroundColor: "rgba(245,158,11,0.12)",
+  },
+  screenTitle: {
     color: textPrimary,
-    fontSize: 22,
+    fontSize: 20,
     fontWeight: "800",
-    marginBottom: 4,
-  },
-  headerSubtitle: {
-    color: textSecondary,
-    fontSize: 13,
   },
   sectionCard: {
     backgroundColor: cardBackground,
@@ -673,37 +640,37 @@ const styles = StyleSheet.create({
     color: textSecondary,
     fontSize: 12,
     letterSpacing: 0.6,
-    marginBottom: 8,
+    marginBottom: 12,
   },
   photoRow: {
     flexDirection: "row",
     justifyContent: "space-between",
+    gap: 12,
   },
   photoTile: {
     flex: 1,
-  },
-  photoGradient: {
-    borderRadius: 14,
-    padding: 10,
-    height: 210,
-    borderWidth: 1,
-    borderColor: border,
-    shadowColor: accent,
-    shadowOpacity: 0.16,
-    shadowRadius: 10,
-    shadowOffset: { width: 0, height: 8 },
-    elevation: 5,
+    alignItems: "center",
   },
   photoHalo: {
-    borderRadius: 12,
-    padding: 3,
+    width: "100%",
+    borderRadius: 16,
+    padding: 4,
+    height: 210,
+    shadowColor: "#f97316",
+    shadowOpacity: 0.22,
+    shadowRadius: 12,
+    shadowOffset: { width: 0, height: 10 },
+    elevation: 6,
   },
   photoPreview: {
-    borderRadius: 10,
+    borderRadius: 12,
     overflow: "hidden",
     backgroundColor: nightBlue,
-    height: 140,
+    height: 180,
     position: "relative",
+    width: "100%",
+    borderWidth: 1,
+    borderColor: "rgba(255,255,255,0.08)",
   },
   photoImage: {
     width: "100%",
@@ -719,18 +686,11 @@ const styles = StyleSheet.create({
     fontSize: 12,
     marginTop: 6,
   },
-  photoMeta: {
-    marginTop: 10,
-  },
   photoLabel: {
     color: textPrimary,
     fontWeight: "700",
     fontSize: 14,
-  },
-  photoHelper: {
-    color: textSecondary,
-    fontSize: 12,
-    marginTop: 4,
+    marginTop: 10,
   },
   deleteButton: {
     position: "absolute",
@@ -754,13 +714,6 @@ const styles = StyleSheet.create({
   rowLeft: {
     flexDirection: "row",
     alignItems: "center",
-  },
-  iconBadge: {
-    padding: 8,
-    borderRadius: 12,
-    backgroundColor: "rgba(255,255,255,0.05)",
-    borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.06)",
   },
   rowTextBlock: {
     marginLeft: 10,
@@ -800,6 +753,7 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 14,
     color: textPrimary,
+    marginTop: 10,
     marginBottom: 10,
   },
   validationText: {
