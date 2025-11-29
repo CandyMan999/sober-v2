@@ -14,6 +14,7 @@ const typeDefs = gql`
     drunkPic: Picture
     drunkPicUrl: String
     whyStatement: String
+    social: Social
     sobrietyStartAt: String
     lat: Float
     long: Float
@@ -119,7 +120,25 @@ const typeDefs = gql`
     endAt: String!
   }
 
+  type SocialDeepLink {
+    app: String
+    web: String
+  }
+
+  type SocialAccount {
+    handle: String
+    deeplink: SocialDeepLink
+    website: String
+    verified: Boolean
+  }
+
   type Social {
+    instagram: SocialAccount
+    tiktok: SocialAccount
+    x: SocialAccount
+  }
+
+  input SocialInput {
     instagram: String
     tiktok: String
     x: String
@@ -265,6 +284,12 @@ const typeDefs = gql`
     userProfile(token: String!, userId: ID!): ProfileOverview!
   }
 
+  enum SocialPlatform {
+    instagram
+    tiktok
+    x
+  }
+
   type Mutation {
     updateUserProfile(
       token: String!
@@ -275,7 +300,9 @@ const typeDefs = gql`
       lat: Float
       long: Float
       whyStatement: String
+      social: SocialInput
     ): User!
+    updateSocial(token: String!, platform: SocialPlatform!, handle: String): User!
     resetSobrietyDate(token: String!, newStartAt: String!): User!
     directUpload: DirectUploadImage!
     addPicture(

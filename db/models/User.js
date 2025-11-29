@@ -54,9 +54,33 @@ const UserSchema = new mongoose.Schema(
 
     // --- Social links (optional) ---
     social: {
-      instagram: { type: String, trim: true }, // handle or full URL
-      tiktok: { type: String, trim: true },
-      x: { type: String, trim: true }, // twitter/“X”
+      instagram: {
+        handle: { type: String, trim: true },
+        deeplink: {
+          app: { type: String, trim: true },
+          web: { type: String, trim: true },
+        },
+        website: { type: String, trim: true },
+        verified: { type: Boolean, default: false },
+      },
+      tiktok: {
+        handle: { type: String, trim: true },
+        deeplink: {
+          app: { type: String, trim: true },
+          web: { type: String, trim: true },
+        },
+        website: { type: String, trim: true },
+        verified: { type: Boolean, default: false },
+      },
+      x: {
+        handle: { type: String, trim: true }, // twitter/“X”
+        deeplink: {
+          app: { type: String, trim: true },
+          web: { type: String, trim: true },
+        },
+        website: { type: String, trim: true },
+        verified: { type: Boolean, default: false },
+      },
     },
 
     // Last known device location (helps with venue alerts)

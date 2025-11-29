@@ -27,6 +27,7 @@ import {
   ADD_PICTURE_MUTATION,
   DELETE_PHOTO_MUTATION,
   UPDATE_USER_PROFILE_MUTATION,
+  UPDATE_SOCIAL_MUTATION,
 } from "../../GraphQL/mutations";
 import { FETCH_ME_QUERY } from "../../GraphQL/queries";
 import { getToken } from "../../utils/helpers";
@@ -45,6 +46,55 @@ const {
 
 const MIN_USERNAME_LENGTH = 3;
 const MAX_USERNAME_LENGTH = 13;
+
+const SOCIAL_CONFIG = {
+  instagram: {
+    label: "Instagram",
+    placeholder: "@username",
+    regex: /^[A-Za-z0-9._]{1,30}$/,
+    urlPrefixes: [/^https?:\/\/(www\.)?instagram\.com\//i, /^instagram:\/\/user\?username=/i],
+    icon: <Feather name="instagram" size={18} color="#f472b6" />,
+  },
+  tiktok: {
+    label: "TikTok",
+    placeholder: "@username",
+    regex: /^[A-Za-z0-9._]{1,24}$/,
+    urlPrefixes: [/^https?:\/\/(www\.)?tiktok\.com\/[@]?/i, /^tiktok:\/\/user\?username=/i],
+    icon: <MaterialCommunityIcons name="tiktok" size={18} color="#38bdf8" />,
+  },
+  x: {
+    label: "X (Twitter)",
+    placeholder: "@handle",
+    regex: /^[A-Za-z0-9_]{1,15}$/,
+    urlPrefixes: [
+      /^https?:\/\/(www\.)?(x|twitter)\.com\//i,
+      /^twitter:\/\//i,
+      /^x:\/\/profile\//i,
+    ],
+    icon: <Feather name="twitter" size={18} color="#60a5fa" />,
+  },
+};
+
+const normalizeSocialInput = (platform, rawValue) => {
+  const value =
+    typeof rawValue === "string"
+      ? rawValue
+      : typeof rawValue === "object" && rawValue !== null
+      ? rawValue.handle
+      : "";
+
+  let handle = (value || "").trim();
+  if (!handle) return "";
+
+  handle = handle.replace(/^@/, "");
+
+  SOCIAL_CONFIG[platform]?.urlPrefixes?.forEach((pattern) => {
+    handle = handle.replace(pattern, "");
+  });
+
+  handle = handle.split(/[/?#]/)[0];
+  return handle;
+};
 
 const PhotoTileBase = ({ children, label, onPress, style }) => (
   <TouchableOpacity
@@ -153,6 +203,13 @@ const EditProfileScreen = ({ navigation }) => {
   const [usernameInput, setUsernameInput] = useState(user?.username || "");
   const [savingUsername, setSavingUsername] = useState(false);
 
+  const [socialInputs, setSocialInputs] = useState({
+    instagram: normalizeSocialInput("instagram", user?.social?.instagram),
+    tiktok: normalizeSocialInput("tiktok", user?.social?.tiktok),
+    x: normalizeSocialInput("x", user?.social?.x),
+  });
+  const [savingSocial, setSavingSocial] = useState(false);
+
   const [pushEnabled, setPushEnabled] = useState(true);
   const [locationEnabled, setLocationEnabled] = useState(false);
   const [notificationsOpen, setNotificationsOpen] = useState(false);
@@ -203,6 +260,11 @@ const EditProfileScreen = ({ navigation }) => {
           setProfileId(fetchedUser.profilePic?.id || null);
           setDrunkId(fetchedUser.drunkPic?.id || null);
           setUsernameInput(fetchedUser.username || "");
+          setSocialInputs({
+            instagram: normalizeSocialInput("instagram", fetchedUser.social?.instagram),
+            tiktok: normalizeSocialInput("tiktok", fetchedUser.social?.tiktok),
+            x: normalizeSocialInput("x", fetchedUser.social?.x),
+          });
           setPushEnabled(Boolean(fetchedUser.notificationsEnabled));
           dispatch({ type: "SET_USER", payload: fetchedUser });
         }
@@ -224,6 +286,11 @@ const EditProfileScreen = ({ navigation }) => {
     setProfileId(user.profilePic?.id || null);
     setDrunkId(user.drunkPic?.id || null);
     setUsernameInput(user.username || "");
+    setSocialInputs({
+      instagram: normalizeSocialInput("instagram", user.social?.instagram),
+      tiktok: normalizeSocialInput("tiktok", user.social?.tiktok),
+      x: normalizeSocialInput("x", user.social?.x),
+    });
   }, [user]);
 
   const showError = (message, title = "Heads up") => {
@@ -398,6 +465,26 @@ const EditProfileScreen = ({ navigation }) => {
     return "Looks good.";
   }, [trimmedUsername.length, usernameInput]);
 
+  const socialValidation = useMemo(() => {
+    const errors = {};
+
+    Object.entries(socialInputs).forEach(([platform, value]) => {
+      const cleaned = normalizeSocialInput(platform, value);
+      const config = SOCIAL_CONFIG[platform];
+
+      if (cleaned && config?.regex && !config.regex.test(cleaned)) {
+        errors[platform] = `Enter a valid ${config.label} username.`;
+      }
+    });
+
+    return errors;
+  }, [socialInputs]);
+
+  const isSocialValid = useMemo(
+    () => Object.keys(socialValidation).length === 0,
+    [socialValidation]
+  );
+
   const handleSaveUsername = async () => {
     if (!token || savingUsername || !isUsernameValid) return;
     const trimmed = trimmedUsername;
@@ -406,6 +493,8 @@ const EditProfileScreen = ({ navigation }) => {
       return;
     }
 
+    let updated = false;
+
     try {
       setSavingUsername(true);
       const { updateUserProfile } = await client.request(
@@ -413,9 +502,10 @@ const EditProfileScreen = ({ navigation }) => {
         { token, username: trimmed }
       );
 
+      updated = Boolean(updateUserProfile);
+
       setUser(updateUserProfile);
       dispatch({ type: "SET_USER", payload: updateUserProfile });
-      setUsernameOpen(false);
     } catch (err) {
       const message =
         err?.response?.errors?.[0]?.message ||
@@ -423,6 +513,65 @@ const EditProfileScreen = ({ navigation }) => {
       showError(message, "Username error");
     } finally {
       setSavingUsername(false);
+
+      if (updated) {
+        setUsernameOpen(false);
+      }
+    }
+  };
+
+  const handleSaveSocialLinks = async () => {
+    if (!token || savingSocial || !isSocialValid) return;
+
+    const payload = Object.fromEntries(
+      Object.entries(socialInputs).map(([platform, value]) => [
+        platform,
+        normalizeSocialInput(platform, value) || null,
+      ])
+    );
+
+    const currentHandles = {
+      instagram: normalizeSocialInput("instagram", user?.social?.instagram),
+      tiktok: normalizeSocialInput("tiktok", user?.social?.tiktok),
+      x: normalizeSocialInput("x", user?.social?.x),
+    };
+
+    const updates = Object.entries(payload).filter(
+      ([platform, handle]) => handle !== currentHandles[platform]
+    );
+
+    if (!updates.length) return;
+
+    try {
+      setSavingSocial(true);
+      let latestUser = user;
+
+      for (const [platform, handle] of updates) {
+        const { updateSocial } = await client.request(UPDATE_SOCIAL_MUTATION, {
+          token,
+          platform,
+          handle,
+        });
+
+        latestUser = updateSocial;
+      }
+
+      if (latestUser) {
+        setUser(latestUser);
+        dispatch({ type: "SET_USER", payload: latestUser });
+        setSocialInputs({
+          instagram: normalizeSocialInput("instagram", latestUser.social?.instagram),
+          tiktok: normalizeSocialInput("tiktok", latestUser.social?.tiktok),
+          x: normalizeSocialInput("x", latestUser.social?.x),
+        });
+      }
+    } catch (err) {
+      const message =
+        err?.response?.errors?.[0]?.message ||
+        "We couldn't update your social links right now.";
+      showError(message, "Social links");
+    } finally {
+      setSavingSocial(false);
     }
   };
 
@@ -544,6 +693,68 @@ const EditProfileScreen = ({ navigation }) => {
               </TouchableOpacity>
             </View>
           ) : null}
+        </View>
+
+        <View style={styles.sectionCard}>
+          <Text style={styles.sectionLabel}>Social links</Text>
+          <Text style={styles.helperText}>
+            Add your usernames so friends can tap straight to your profile.
+          </Text>
+
+          {Object.entries(SOCIAL_CONFIG).map(([platform, config]) => {
+            const error = socialValidation[platform];
+
+            return (
+              <View key={platform} style={styles.socialRow}>
+                <View style={styles.rowLeft}>
+                  {config.icon}
+                  <Text style={styles.rowLabelWithIcon}>{config.label}</Text>
+                </View>
+                <TextInput
+                  style={styles.input}
+                  placeholder={config.placeholder}
+                  placeholderTextColor={textSecondary}
+                  value={socialInputs[platform] || ""}
+                  onChangeText={(text) =>
+                    setSocialInputs((prev) => ({ ...prev, [platform]: text }))
+                  }
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  returnKeyType="done"
+                />
+                <Text
+                  style={[
+                    styles.validationText,
+                    error ? styles.validationError : null,
+                  ]}
+                >
+                  {error || `Paste a link or ${config.placeholder}.`}
+                </Text>
+              </View>
+            );
+          })}
+
+          <TouchableOpacity
+            style={styles.saveButton}
+            onPress={handleSaveSocialLinks}
+            disabled={!isSocialValid || savingSocial}
+            activeOpacity={0.9}
+          >
+            <LinearGradient
+              colors={
+                !isSocialValid || savingSocial ? [border, border] : [accent, accent]
+              }
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={[styles.saveButtonInner, (!isSocialValid || savingSocial) && styles.saveButtonDisabled]}
+            >
+              {savingSocial ? (
+                <ActivityIndicator color={nightBlue} />
+              ) : (
+                <Text style={styles.saveButtonText}>Save social links</Text>
+              )}
+            </LinearGradient>
+          </TouchableOpacity>
         </View>
 
         <View style={styles.sectionCard}>
@@ -846,6 +1057,9 @@ const styles = StyleSheet.create({
     fontSize: 12,
     lineHeight: 18,
     marginBottom: 8,
+  },
+  socialRow: {
+    marginTop: 8,
   },
   input: {
     backgroundColor: nightBlue,

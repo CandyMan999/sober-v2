@@ -16,6 +16,7 @@ const {
   recordPostViewResolver,
   followUserResolver,
   unfollowUserResolver,
+  updateSocialResolver,
 } = require("./mutations/index.js");
 
 const {
@@ -84,6 +85,7 @@ const resolvers = {
     recordPostView: recordPostViewResolver,
     followUser: followUserResolver,
     unfollowUser: unfollowUserResolver,
+    updateSocial: updateSocialResolver,
   },
 
   Upload: require("graphql-upload-minimal").GraphQLUpload,
