@@ -5,7 +5,6 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
-  Switch,
   Image,
   TextInput,
   ActivityIndicator,
@@ -46,6 +45,8 @@ const {
   nightBlue,
 } = COLORS;
 
+const MIN_USERNAME_LENGTH = 3;
+
 const PhotoTile = ({
   label,
   helper,
@@ -66,32 +67,39 @@ const PhotoTile = ({
       end={{ x: 1, y: 1 }}
       style={styles.photoGradient}
     >
-      <View style={styles.photoPreview}>
-        {uri ? (
-          <Image source={{ uri }} style={styles.photoImage} resizeMode="cover" />
-        ) : (
-          <View style={styles.photoPlaceholder}>
-            <Feather name="camera" color={textSecondary} size={26} />
-            <Text style={styles.placeholderText}>Tap to upload</Text>
-          </View>
-        )}
+      <LinearGradient
+        colors={[accentSoft, gradientMid]}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        style={styles.photoHalo}
+      >
+        <View style={styles.photoPreview}>
+          {uri ? (
+            <Image source={{ uri }} style={styles.photoImage} resizeMode="cover" />
+          ) : (
+            <View style={styles.photoPlaceholder}>
+              <Feather name="camera" color={textSecondary} size={26} />
+              <Text style={styles.placeholderText}>Tap to upload</Text>
+            </View>
+          )}
 
-        {isUploading ? (
-          <View style={styles.loadingOverlay}>
-            <ActivityIndicator color={primaryBackground} />
-          </View>
-        ) : null}
+          {isUploading ? (
+            <View style={styles.loadingOverlay}>
+              <ActivityIndicator color={primaryBackground} />
+            </View>
+          ) : null}
 
-        {uri && !isUploading ? (
-          <TouchableOpacity
-            onPress={onDelete}
-            style={styles.deleteButton}
-            hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
-          >
-            <Feather name="trash-2" size={16} color="#fff" />
-          </TouchableOpacity>
-        ) : null}
-      </View>
+          {uri && !isUploading ? (
+            <TouchableOpacity
+              onPress={onDelete}
+              style={styles.deleteButton}
+              hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+            >
+              <Feather name="trash-2" size={16} color="#fff" />
+            </TouchableOpacity>
+          ) : null}
+        </View>
+      </LinearGradient>
 
       <View style={styles.photoMeta}>
         <Text style={styles.photoLabel}>{label}</Text>
@@ -101,18 +109,30 @@ const PhotoTile = ({
   </TouchableOpacity>
 );
 
+const FancyToggle = ({ value, onValueChange }) => (
+  <TouchableOpacity
+    activeOpacity={0.9}
+    onPress={() => onValueChange(!value)}
+    style={styles.togglePressable}
+  >
+    <LinearGradient
+      colors={value ? [accent, accentSoft] : [border, nightBlue]}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 1 }}
+      style={[styles.toggleTrack, value && styles.toggleTrackOn]}
+    >
+      <View style={[styles.toggleThumb, value && styles.toggleThumbOn]} />
+    </LinearGradient>
+  </TouchableOpacity>
+);
+
 const ToggleRow = ({ icon, label, value, onValueChange }) => (
   <View style={styles.toggleRow}>
     <View style={styles.rowLeft}>
-      {icon}
-      <Text style={styles.rowLabel}>{label}</Text>
+      <View style={styles.iconBadge}>{icon}</View>
+      <Text style={styles.rowLabelWithIcon}>{label}</Text>
     </View>
-    <Switch
-      value={value}
-      onValueChange={onValueChange}
-      thumbColor={accent}
-      trackColor={{ true: accentSoft, false: border }}
-    />
+    <FancyToggle value={value} onValueChange={onValueChange} />
   </View>
 );
 
@@ -330,9 +350,17 @@ const EditProfileScreen = ({ navigation }) => {
     [usernameInput]
   );
 
+  const trimmedUsername = useMemo(() => usernameInput.trim(), [usernameInput]);
+  const isUsernameValid = trimmedUsername.length >= MIN_USERNAME_LENGTH;
+  const usernameValidationText = useMemo(() => {
+    if (usernameInput.length === 0) return "You can change this later.";
+    if (!isUsernameValid) return "At least 3 characters.";
+    return "Looks good.";
+  }, [isUsernameValid, usernameInput]);
+
   const handleSaveUsername = async () => {
-    if (!token || savingUsername) return;
-    const trimmed = usernameInput.trim();
+    if (!token || savingUsername || !isUsernameValid) return;
+    const trimmed = trimmedUsername;
     if (!trimmed) {
       showError("Please enter a username to continue.");
       return;
@@ -366,15 +394,18 @@ const EditProfileScreen = ({ navigation }) => {
         end={{ x: 1, y: 1 }}
         style={styles.headerGradient}
       >
-        <TouchableOpacity
-          style={styles.backButton}
-          onPress={() => navigation?.goBack?.()}
-          accessibilityLabel="Go back"
-        >
-          <Feather name="arrow-left" size={20} color={textPrimary} />
-          <Text style={styles.backLabel}>Profile</Text>
-        </TouchableOpacity>
-        <View>
+        <View style={styles.headerTopRow}>
+          <TouchableOpacity
+            style={styles.backPill}
+            onPress={() => navigation?.goBack?.()}
+            accessibilityLabel="Go back"
+            activeOpacity={0.85}
+          >
+            <Feather name="arrow-left" size={18} color={textPrimary} />
+            <Text style={styles.backLabel}>Back to profile</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.headerTextBlock}>
           <Text style={styles.headerTitle}>Edit profile</Text>
           <Text style={styles.headerSubtitle}>
             Update your look and how you want to be notified.
@@ -392,7 +423,7 @@ const EditProfileScreen = ({ navigation }) => {
           <View style={styles.photoRow}>
             <PhotoTile
               label="Profile photo"
-              helper="Cropped square"
+              helper="Shows across your profile and replies."
               uri={profileUri}
               isUploading={uploadingSlot === "PROFILE"}
               onPick={() => pickImage("PROFILE")}
@@ -401,7 +432,7 @@ const EditProfileScreen = ({ navigation }) => {
             />
             <PhotoTile
               label="Drunk photo"
-              helper="Uncropped for before/after"
+              helper="Keep as a before-and-after reminder."
               uri={drunkUri}
               isUploading={uploadingSlot === "DRUNK"}
               onPick={() => pickImage("DRUNK")}
@@ -418,7 +449,9 @@ const EditProfileScreen = ({ navigation }) => {
             activeOpacity={0.8}
           >
             <View style={styles.rowLeft}>
-              <Feather name="at-sign" size={18} color={accent} />
+              <View style={styles.iconBadge}>
+                <Feather name="at-sign" size={18} color={accent} />
+              </View>
               <View style={styles.rowTextBlock}>
                 <Text style={styles.rowLabel}>Username</Text>
                 <Text style={styles.rowValue}>{usernameDisplay}</Text>
@@ -443,17 +476,36 @@ const EditProfileScreen = ({ navigation }) => {
                 onChangeText={setUsernameInput}
                 autoCapitalize="none"
               />
+              <Text
+                style={[
+                  styles.validationText,
+                  !isUsernameValid && trimmedUsername.length > 0 && styles.validationError,
+                ]}
+              >
+                {usernameValidationText}
+              </Text>
               <TouchableOpacity
                 style={styles.saveButton}
                 onPress={handleSaveUsername}
-                disabled={savingUsername}
+                disabled={!isUsernameValid || savingUsername}
                 activeOpacity={0.9}
               >
-                {savingUsername ? (
-                  <ActivityIndicator color={nightBlue} />
-                ) : (
-                  <Text style={styles.saveButtonText}>Save username</Text>
-                )}
+                <LinearGradient
+                  colors={
+                    !isUsernameValid || savingUsername
+                      ? [border, border]
+                      : [accent, accentSoft]
+                  }
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 1 }}
+                  style={[styles.saveButtonInner, (!isUsernameValid || savingUsername) && styles.saveButtonDisabled]}
+                >
+                  {savingUsername ? (
+                    <ActivityIndicator color={nightBlue} />
+                  ) : (
+                    <Text style={styles.saveButtonText}>Save username</Text>
+                  )}
+                </LinearGradient>
               </TouchableOpacity>
             </View>
           ) : null}
@@ -466,8 +518,10 @@ const EditProfileScreen = ({ navigation }) => {
             activeOpacity={0.8}
           >
             <View style={styles.rowLeft}>
-              <Ionicons name="notifications" size={18} color={oceanBlue} />
-              <Text style={styles.rowLabel}>Notification settings</Text>
+              <View style={styles.iconBadge}>
+                <Ionicons name="notifications" size={18} color={oceanBlue} />
+              </View>
+              <Text style={styles.rowLabelWithIcon}>Notification settings</Text>
             </View>
             <Feather
               name={notificationsOpen ? "chevron-up" : "chevron-down"}
@@ -570,23 +624,33 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 18,
     borderBottomRightRadius: 18,
   },
+  headerTopRow: {
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    marginBottom: 10,
+  },
+  backPill: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "rgba(0,0,0,0.25)",
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    borderRadius: 14,
+    borderWidth: 1,
+    borderColor: "rgba(255,255,255,0.08)",
+  },
   container: {
     flex: 1,
     backgroundColor: primaryBackground,
     paddingHorizontal: 16,
     paddingTop: 12,
   },
-  backButton: {
-    marginBottom: 12,
-    padding: 6,
-    flexDirection: "row",
-    alignItems: "center",
-  },
   backLabel: {
     color: textPrimary,
     marginLeft: 8,
     fontWeight: "700",
   },
+  headerTextBlock: {},
   headerTitle: {
     color: textPrimary,
     fontSize: 22,
@@ -624,9 +688,18 @@ const styles = StyleSheet.create({
     height: 210,
     borderWidth: 1,
     borderColor: border,
+    shadowColor: accent,
+    shadowOpacity: 0.16,
+    shadowRadius: 10,
+    shadowOffset: { width: 0, height: 8 },
+    elevation: 5,
+  },
+  photoHalo: {
+    borderRadius: 12,
+    padding: 3,
   },
   photoPreview: {
-    borderRadius: 12,
+    borderRadius: 10,
     overflow: "hidden",
     backgroundColor: nightBlue,
     height: 140,
@@ -682,12 +755,24 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
   },
+  iconBadge: {
+    padding: 8,
+    borderRadius: 12,
+    backgroundColor: "rgba(255,255,255,0.05)",
+    borderWidth: 1,
+    borderColor: "rgba(255,255,255,0.06)",
+  },
   rowTextBlock: {
     marginLeft: 10,
   },
   rowLabel: {
     color: textPrimary,
     fontWeight: "700",
+  },
+  rowLabelWithIcon: {
+    color: textPrimary,
+    fontWeight: "700",
+    marginLeft: 12,
   },
   rowValue: {
     color: textSecondary,
@@ -717,11 +802,25 @@ const styles = StyleSheet.create({
     color: textPrimary,
     marginBottom: 10,
   },
+  validationText: {
+    color: textSecondary,
+    fontSize: 12,
+    marginBottom: 10,
+  },
+  validationError: {
+    color: accent,
+  },
   saveButton: {
-    backgroundColor: accent,
     borderRadius: 12,
+    overflow: "hidden",
+  },
+  saveButtonInner: {
     alignItems: "center",
     paddingVertical: 12,
+    borderRadius: 12,
+  },
+  saveButtonDisabled: {
+    opacity: 0.6,
   },
   saveButtonText: {
     color: nightBlue,
@@ -734,6 +833,36 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     borderBottomWidth: 1,
     borderBottomColor: border,
+  },
+  togglePressable: {
+    paddingLeft: 8,
+  },
+  toggleTrack: {
+    width: 56,
+    height: 30,
+    borderRadius: 20,
+    justifyContent: "center",
+    paddingHorizontal: 4,
+    borderWidth: 1,
+    borderColor: "rgba(255,255,255,0.08)",
+  },
+  toggleTrackOn: {
+    shadowColor: accent,
+    shadowOpacity: 0.35,
+    shadowRadius: 10,
+    shadowOffset: { width: 0, height: 4 },
+    elevation: 4,
+  },
+  toggleThumb: {
+    width: 22,
+    height: 22,
+    borderRadius: 11,
+    backgroundColor: "#e5e7eb",
+    alignSelf: "flex-start",
+  },
+  toggleThumbOn: {
+    alignSelf: "flex-end",
+    backgroundColor: nightBlue,
   },
   loadingScreen: {
     ...StyleSheet.absoluteFillObject,
