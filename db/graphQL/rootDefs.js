@@ -186,9 +186,12 @@ const typeDefs = gql`
   type Room {
     id: ID!
     name: String
+    isDirect: Boolean! # NEW
     createdAt: String
     users: [User!]
     comments: [Comment!]
+    lastMessageAt: String # optional but nice
+    lastMessage: Comment
   }
 
   type Comment {
@@ -302,7 +305,11 @@ const typeDefs = gql`
       whyStatement: String
       social: SocialInput
     ): User!
-    updateSocial(token: String!, platform: SocialPlatform!, handle: String): User!
+    updateSocial(
+      token: String!
+      platform: SocialPlatform!
+      handle: String
+    ): User!
     resetSobrietyDate(token: String!, newStartAt: String!): User!
     directUpload: DirectUploadImage!
     addPicture(

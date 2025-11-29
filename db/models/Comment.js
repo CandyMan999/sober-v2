@@ -17,6 +17,7 @@ const CommentSchema = new mongoose.Schema(
     },
 
     // What content this comment belongs to
+    //For DMs, targetType = "ROOM", targetId = roomId where that Room is flagged as isDirect: true.
     targetType: {
       type: String,
       enum: ["ROOM", "POST", "QUOTE"],
