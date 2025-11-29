@@ -757,30 +757,24 @@ const ProfileScreen = ({ navigation }) => {
         style={styles.container}
         contentContainerStyle={{ paddingBottom: 48 }}
       >
-        <View style={styles.editIconWrapper}>
+        <View style={styles.topActionsRow}>
+          <TouchableOpacity
+            style={styles.messagesIconButton}
+            onPress={handleOpenMessages}
+            activeOpacity={0.85}
+          >
+            <Ionicons name="chatbubbles" size={18} color="#f59e0b" />
+            {unreadCount > 0 ? (
+              <View style={styles.messagesBadge}>
+                <Text style={styles.messagesBadgeText}>{unreadCount}</Text>
+              </View>
+            ) : null}
+          </TouchableOpacity>
           <TouchableOpacity
             style={styles.editIconButton}
             onPress={navigateToEditProfile}
           >
             <Feather name="edit-3" size={18} color="#f59e0b" />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.messagesButton}
-            onPress={handleOpenMessages}
-            activeOpacity={0.85}
-          >
-            <View style={styles.messagesIconWrapper}>
-              <Ionicons name="chatbubbles" size={18} color="#f59e0b" />
-              {unreadCount > 0 ? (
-                <View style={styles.messagesBadge}>
-                  <Text style={styles.messagesBadgeText}>{unreadCount}</Text>
-                </View>
-              ) : null}
-            </View>
-            <View>
-              <Text style={styles.messagesLabel}>Messages</Text>
-              <Text style={styles.messagesSubLabel}>Buddy DMs</Text>
-            </View>
           </TouchableOpacity>
         </View>
         <View style={styles.bodyPadding}>
@@ -914,37 +908,27 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flex: 1,
   },
-  editIconWrapper: {
+  topActionsRow: {
     paddingHorizontal: 16,
     marginBottom: 8,
     alignItems: "center",
     flexDirection: "row",
-    justifyContent: "flex-end",
+    justifyContent: "space-between",
   },
   editIconButton: {
     padding: 10,
     borderRadius: 999,
     backgroundColor: "rgba(245,158,11,0.12)",
-    marginRight: 12,
   },
-  messagesButton: {
-    flexDirection: "row",
-    alignItems: "center",
-    paddingVertical: 10,
-    paddingHorizontal: 12,
+  messagesIconButton: {
+    width: 42,
+    height: 42,
     borderRadius: 14,
-    backgroundColor: "#0b1220",
-    borderWidth: 1,
-    borderColor: "rgba(245,158,11,0.25)",
-  },
-  messagesIconWrapper: {
-    width: 36,
-    height: 36,
-    borderRadius: 12,
     backgroundColor: "rgba(245,158,11,0.12)",
     justifyContent: "center",
     alignItems: "center",
-    marginRight: 10,
+    borderWidth: 1,
+    borderColor: "rgba(245,158,11,0.25)",
   },
   messagesBadge: {
     position: "absolute",
@@ -961,16 +945,6 @@ const styles = StyleSheet.create({
     color: "#0b1220",
     fontSize: 10,
     fontWeight: "800",
-  },
-  messagesLabel: {
-    color: "#e5e7eb",
-    fontWeight: "700",
-    fontSize: 14,
-  },
-  messagesSubLabel: {
-    color: "#94a3b8",
-    fontSize: 12,
-    marginTop: 2,
   },
   avatarContainer: {
     width: AVATAR_SIZE + 16,

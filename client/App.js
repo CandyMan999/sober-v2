@@ -28,8 +28,8 @@ import BuddiesScreen from "./screens/Profile/BuddiesScreen";
 import LikesScreen from "./screens/Profile/LikesScreen";
 import NotificationsScreen from "./screens/Profile/NotificationsScreen";
 import NotificationSettingsScreen from "./screens/Profile/NotificationSettingsScreen";
-import DirectMessageScreen from "./screens/Chat/DirectMessageScreen";
-import MessageListScreen from "./screens/Chat/MessageListScreen";
+import DirectMessageScreen from "./screens/DirectMessage/DirectMessageScreen";
+import MessageListScreen from "./screens/DirectMessage/MessageListScreen";
 
 import Context from "./context";
 import reducer from "./reducer";

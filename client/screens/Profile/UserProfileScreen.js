@@ -766,72 +766,74 @@ const UserProfileScreen = ({ route, navigation }) => {
               </Text>
             </View>
             {profileData?.id !== state?.user?.id ? (
-              <TouchableOpacity
-                style={[
-                  styles.followButton,
-                  isBuddy
-                    ? styles.buddyButton
-                    : isFollowed
-                    ? styles.followingButton
-                    : null,
-                ]}
-                onPress={handleToggleFollow}
-                disabled={followPending}
-              >
-                <View style={styles.followButtonContent}>
-                  <Ionicons
-                    name={
-                      isBuddy
-                        ? "people"
-                        : isFollowed
-                        ? "checkmark-circle-outline"
-                        : "person-add-outline"
-                    }
-                    size={18}
-                    color={
-                      isBuddy
-                        ? "#0b1222"
-                        : isFollowed
-                        ? "#e2e8f0"
-                        : "#0b1222"
-                    }
-                    style={styles.followButtonIcon}
-                  />
-                  <Text
-                    style={[
-                      styles.followButtonText,
-                      isBuddy
-                        ? styles.buddyButtonText
-                        : isFollowed
-                        ? styles.followingButtonText
-                        : null,
-                    ]}
+              <View style={styles.profileActionsRow}>
+                {isBuddy ? (
+                  <TouchableOpacity
+                    style={styles.messageButton}
+                    onPress={handleOpenDirectMessage}
+                    activeOpacity={0.85}
                   >
-                    {followPending
-                      ? "..."
-                      : isBuddy
-                      ? "Buddies"
+                    <Ionicons
+                      name="chatbubbles"
+                      size={18}
+                      color="#0b1222"
+                      style={styles.messageIcon}
+                    />
+                    <Text style={styles.messageText}>Message</Text>
+                  </TouchableOpacity>
+                ) : null}
+                <TouchableOpacity
+                  style={[
+                    styles.followButton,
+                    isBuddy
+                      ? styles.buddyButton
                       : isFollowed
-                      ? "Following"
-                      : "Follow"}
-                  </Text>
-                </View>
-              </TouchableOpacity>
-            ) : null}
-            {profileData?.id !== state?.user?.id && isBuddy ? (
-              <TouchableOpacity
-                style={styles.messageButton}
-                onPress={handleOpenDirectMessage}
-                activeOpacity={0.85}
-              >
-                <Ionicons
-                  name="chatbubbles"
-                  size={18}
-                  color="#0b1222"
-                  style={styles.messageIcon}
-                />
-                <Text style={styles.messageText}>Message</Text>
-              </TouchableOpacity>
+                      ? styles.followingButton
+                      : null,
+                  ]}
+                  onPress={handleToggleFollow}
+                  disabled={followPending}
+                >
+                  <View style={styles.followButtonContent}>
+                    <Ionicons
+                      name={
+                        isBuddy
+                          ? "people"
+                          : isFollowed
+                          ? "checkmark-circle-outline"
+                          : "person-add-outline"
+                      }
+                      size={18}
+                      color={
+                        isBuddy
+                          ? "#0b1222"
+                          : isFollowed
+                          ? "#e2e8f0"
+                          : "#0b1222"
+                      }
+                      style={styles.followButtonIcon}
+                    />
+                    <Text
+                      style={[
+                        styles.followButtonText,
+                        isBuddy
+                          ? styles.buddyButtonText
+                          : isFollowed
+                          ? styles.followingButtonText
+                          : null,
+                      ]}
+                    >
+                      {followPending
+                        ? "..."
+                        : isBuddy
+                        ? "Buddies"
+                        : isFollowed
+                        ? "Following"
+                        : "Follow"}
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
             ) : null}
           </View>
         </View>
@@ -1216,8 +1218,14 @@ const styles = StyleSheet.create({
     textTransform: "uppercase",
     letterSpacing: 0.8,
   },
-  followButton: {
+  profileActionsRow: {
     marginTop: 12,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    columnGap: 10,
+  },
+  followButton: {
     backgroundColor: "#fbbf24",
     paddingHorizontal: 16,
     paddingVertical: 10,
@@ -1240,7 +1248,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   messageButton: {
-    marginTop: 10,
     backgroundColor: "#fde68a",
     borderColor: "#f59e0b",
     borderWidth: 1,

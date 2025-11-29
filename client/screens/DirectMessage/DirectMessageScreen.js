@@ -1,5 +1,6 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 
 import Avatar from "../../components/Avatar";
@@ -9,7 +10,7 @@ const DirectMessageScreen = ({ route, navigation }) => {
   const username = user.username || "Buddy";
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container} edges={["top", "left", "right"]}>
       <View style={styles.header}>
         <TouchableOpacity
           style={styles.backButton}
@@ -37,7 +38,7 @@ const DirectMessageScreen = ({ route, navigation }) => {
         <Text style={styles.inputPlaceholder}>Type a message...</Text>
         <Ionicons name="send" size={18} color="#f59e0b" />
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
