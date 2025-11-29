@@ -48,7 +48,13 @@ const LikesScreen = () => {
   const navigation = useNavigation();
   const route = useRoute();
   const { state } = useContext(Context);
-  const { likesTotal = 0, posts = [], quotes = [], username } = route.params || {};
+  const {
+    likesTotal = 0,
+    posts = [],
+    quotes = [],
+    username,
+    profilePicUrl,
+  } = route.params || {};
   const [previewVisible, setPreviewVisible] = useState(false);
   const [previewItem, setPreviewItem] = useState(null);
   const [previewType, setPreviewType] = useState("POST");
@@ -101,19 +107,28 @@ const LikesScreen = () => {
       raw?.user?.profilePicUrl ||
       raw?.author?.profilePicUrl ||
       raw?.postAuthor?.profilePicUrl ||
-      raw?.createdBy?.profilePicUrl;
+      raw?.createdBy?.profilePicUrl ||
+      profilePicUrl ||
+      state?.user?.profilePicUrl;
+
+    const displayName =
+      raw.author?.username ||
+      raw.user?.username ||
+      raw.postAuthor?.username ||
+      raw.createdBy?.username ||
+      raw.username ||
+      username ||
+      state?.user?.username ||
+      "User";
 
     const authorFallback =
       raw.author ||
       raw.user ||
       raw.postAuthor ||
-      raw.createdBy ||
-      (username
-        ? {
-            username,
-            profilePicUrl: fallbackPic,
-          }
-        : null);
+      raw.createdBy || {
+        username: displayName,
+        profilePicUrl: fallbackPic,
+      };
 
     const hydratedItem = {
       ...raw,

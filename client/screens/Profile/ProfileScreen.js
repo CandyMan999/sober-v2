@@ -140,6 +140,7 @@ const ProfileScreen = ({ navigation }) => {
   const handleNavigate = (screen) => {
     const commonParams = {
       username: profileData?.username,
+      profilePicUrl: profileData?.profilePicUrl,
     };
 
     switch (screen) {

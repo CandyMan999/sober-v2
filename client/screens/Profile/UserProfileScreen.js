@@ -199,6 +199,7 @@ const UserProfileScreen = ({ route, navigation }) => {
     const commonParams = {
       username: profileData?.username,
       userId: profileData?.id,
+      profilePicUrl: profileData?.profilePicUrl,
     };
 
     switch (screen) {
