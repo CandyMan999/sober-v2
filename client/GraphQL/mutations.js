@@ -33,32 +33,32 @@ export const UPDATE_USER_PROFILE_MUTATION = gql`
       lat
       long
       whyStatement
-        social {
-          instagram {
-            handle
-            verified
-            website
-            deeplink {
-              app
-              web
-            }
+      social {
+        instagram {
+          handle
+          verified
+          website
+          deeplink {
+            app
+            web
           }
-          tiktok {
-            handle
-            verified
-            website
-            deeplink {
-              app
-              web
-            }
+        }
+        tiktok {
+          handle
+          verified
+          website
+          deeplink {
+            app
+            web
           }
-          x {
-            handle
-            verified
-            website
-            deeplink {
-              app
-              web
+        }
+        x {
+          handle
+          verified
+          website
+          deeplink {
+            app
+            web
           }
         }
       }
@@ -70,34 +70,42 @@ export const UPDATE_SOCIAL_MUTATION = gql`
   mutation UpdateSocial($token: String!, $platform: SocialPlatform!, $handle: String) {
     updateSocial(token: $token, platform: $platform, handle: $handle) {
       id
-        social {
-          instagram {
-            handle
-            verified
-            website
-            deeplink {
-              app
-              web
-            }
+      token
+      username
+      profilePicUrl
+      sobrietyStartAt
+      timezone
+      lat
+      long
+      whyStatement
+      social {
+        instagram {
+          handle
+          verified
+          website
+          deeplink {
+            app
+            web
           }
-          tiktok {
-            handle
-            verified
-            website
-            deeplink {
-              app
-              web
-            }
+        }
+        tiktok {
+          handle
+          verified
+          website
+          deeplink {
+            app
+            web
           }
-          x {
-            handle
-            verified
-            website
-            deeplink {
-              app
-              web
-            }
+        }
+        x {
+          handle
+          verified
+          website
+          deeplink {
+            app
+            web
           }
+        }
       }
     }
   }

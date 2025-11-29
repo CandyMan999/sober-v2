@@ -37,10 +37,16 @@ const buildSocialEntry = async (platform, handle) => {
   }
 
   const deeplink = buildDeepLink(platform, normalizedHandle);
+  if (!deeplink?.app && !deeplink?.web) {
+    throw new UserInputError(`Unable to build a ${platform} profile link.`);
+  }
+
+  const webLink = deeplink?.web || null;
+  const appLink = deeplink?.app || webLink;
   return {
     handle: normalizedHandle,
-    deeplink,
-    website: deeplink?.web || null,
+    deeplink: { app: appLink, web: webLink },
+    website: webLink,
     verified: true,
   };
 };

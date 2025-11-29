@@ -43,7 +43,7 @@ const SOCIAL_RULES = {
       app: `twitter://user?screen_name=${handle}`,
       web: `https://x.com/${handle}`,
     }),
-    existsUrl: (handle) => `https://www.x.com/${handle}`,
+    existsUrl: (handle) => `https://x.com/${handle}`,
   },
 };
 

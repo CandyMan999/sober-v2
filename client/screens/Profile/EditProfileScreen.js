@@ -13,7 +13,13 @@ import {
   Keyboard,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import { Feather, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+import {
+  Feather,
+  Ionicons,
+  MaterialCommunityIcons,
+  AntDesign,
+  FontAwesome6,
+} from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import * as ImagePicker from "expo-image-picker";
 import * as ImageManipulator from "expo-image-manipulator";
@@ -60,7 +66,7 @@ const SOCIAL_CONFIG = {
     placeholder: "@username",
     regex: /^[A-Za-z0-9._]{1,24}$/,
     urlPrefixes: [/^https?:\/\/(www\.)?tiktok\.com\/[@]?/i, /^tiktok:\/\/user\?username=/i],
-    icon: <MaterialCommunityIcons name="tiktok" size={18} color="#38bdf8" />,
+    icon: <FontAwesome6 name="tiktok" size={18} color="#111827" />,
   },
   x: {
     label: "X (Twitter)",
@@ -71,7 +77,7 @@ const SOCIAL_CONFIG = {
       /^twitter:\/\//i,
       /^x:\/\/profile\//i,
     ],
-    icon: <Feather name="twitter" size={18} color="#60a5fa" />,
+    icon: <AntDesign name="x" size={18} color="#111827" />,
   },
 };
 
@@ -209,6 +215,7 @@ const EditProfileScreen = ({ navigation }) => {
     x: normalizeSocialInput("x", user?.social?.x),
   });
   const [savingSocial, setSavingSocial] = useState(false);
+  const [socialOpen, setSocialOpen] = useState(false);
 
   const [pushEnabled, setPushEnabled] = useState(true);
   const [locationEnabled, setLocationEnabled] = useState(false);
@@ -689,65 +696,89 @@ const EditProfileScreen = ({ navigation }) => {
         </View>
 
         <View style={styles.sectionCard}>
-          <Text style={styles.sectionLabel}>Social links</Text>
-          <Text style={styles.helperText}>
-            Add your usernames so friends can tap straight to your profile.
-          </Text>
+          <TouchableOpacity
+            style={styles.dropdownHeader}
+            onPress={() => setSocialOpen((prev) => !prev)}
+            activeOpacity={0.8}
+          >
+            <View style={styles.rowLeft}>
+              <Ionicons name="share-social" size={18} color={oceanBlue} />
+              <Text style={styles.rowLabelWithIcon}>Social links</Text>
+            </View>
+            <Feather
+              name={socialOpen ? "chevron-up" : "chevron-down"}
+              size={18}
+              color={textSecondary}
+            />
+          </TouchableOpacity>
 
-          {Object.entries(SOCIAL_CONFIG).map(([platform, config]) => {
-            const error = socialValidation[platform];
+          {socialOpen ? (
+            <>
+              <Text style={styles.helperText}>
+                Add your usernames so friends can tap straight to your profile.
+              </Text>
 
-            return (
-              <View key={platform} style={styles.socialRow}>
-                <View style={styles.rowLeft}>
-                  {config.icon}
-                  <Text style={styles.rowLabelWithIcon}>{config.label}</Text>
-                </View>
-                <TextInput
-                  style={styles.input}
-                  placeholder={config.placeholder}
-                  placeholderTextColor={textSecondary}
-                  value={socialInputs[platform] || ""}
-                  onChangeText={(text) =>
-                    setSocialInputs((prev) => ({ ...prev, [platform]: text }))
+              {Object.entries(SOCIAL_CONFIG).map(([platform, config]) => {
+                const error = socialValidation[platform];
+
+                return (
+                  <View key={platform} style={styles.socialRow}>
+                    <View style={styles.rowLeft}>
+                      {config.icon}
+                      <Text style={styles.rowLabelWithIcon}>{config.label}</Text>
+                    </View>
+                    <TextInput
+                      style={styles.input}
+                      placeholder={config.placeholder}
+                      placeholderTextColor={textSecondary}
+                      value={socialInputs[platform] || ""}
+                      onChangeText={(text) =>
+                        setSocialInputs((prev) => ({ ...prev, [platform]: text }))
+                      }
+                      autoCapitalize="none"
+                      autoCorrect={false}
+                      returnKeyType="done"
+                    />
+                    <Text
+                      style={[
+                        styles.validationText,
+                        error ? styles.validationError : null,
+                      ]}
+                    >
+                      {error || `Paste a link or ${config.placeholder}.`}
+                    </Text>
+                  </View>
+                );
+              })}
+
+              <TouchableOpacity
+                style={styles.saveButton}
+                onPress={handleSaveSocialLinks}
+                disabled={!isSocialValid || savingSocial}
+                activeOpacity={0.9}
+              >
+                <LinearGradient
+                  colors={
+                    !isSocialValid || savingSocial
+                      ? [border, border]
+                      : [accent, accent]
                   }
-                  autoCapitalize="none"
-                  autoCorrect={false}
-                  returnKeyType="done"
-                />
-                <Text
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 1 }}
                   style={[
-                    styles.validationText,
-                    error ? styles.validationError : null,
+                    styles.saveButtonInner,
+                    (!isSocialValid || savingSocial) && styles.saveButtonDisabled,
                   ]}
                 >
-                  {error || `Paste a link or ${config.placeholder}.`}
-                </Text>
-              </View>
-            );
-          })}
-
-          <TouchableOpacity
-            style={styles.saveButton}
-            onPress={handleSaveSocialLinks}
-            disabled={!isSocialValid || savingSocial}
-            activeOpacity={0.9}
-          >
-            <LinearGradient
-              colors={
-                !isSocialValid || savingSocial ? [border, border] : [accent, accent]
-              }
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 1 }}
-              style={[styles.saveButtonInner, (!isSocialValid || savingSocial) && styles.saveButtonDisabled]}
-            >
-              {savingSocial ? (
-                <ActivityIndicator color={nightBlue} />
-              ) : (
-                <Text style={styles.saveButtonText}>Save social links</Text>
-              )}
-            </LinearGradient>
-          </TouchableOpacity>
+                  {savingSocial ? (
+                    <ActivityIndicator color={nightBlue} />
+                  ) : (
+                    <Text style={styles.saveButtonText}>Save social links</Text>
+                  )}
+                </LinearGradient>
+              </TouchableOpacity>
+            </>
+          ) : null}
         </View>
 
         <View style={styles.sectionCard}>
