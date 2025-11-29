@@ -1,9 +1,22 @@
-import React, { useMemo } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { View, Text, StyleSheet, FlatList, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  TouchableOpacity,
+  ActivityIndicator,
+} from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { useQuery, useSubscription } from "@apollo/client";
 
 import Avatar from "../../components/Avatar";
+import Context from "../../context";
+import {
+  DIRECT_ROOM_UPDATED,
+  MY_DIRECT_ROOMS,
+} from "../../GraphQL/directMessages";
 
 const timeAgo = (timestamp) => {
   if (!timestamp) return "Just now";
@@ -23,24 +36,78 @@ const timeAgo = (timestamp) => {
 };
 
 const MessageListScreen = ({ route, navigation }) => {
+  const { state } = useContext(Context);
+  const currentUserId = state?.user?.id;
   const conversations = route?.params?.conversations || [];
 
-  const listData = useMemo(() => {
-    if (conversations.length) return conversations;
+  const [rooms, setRooms] = useState([]);
 
-    return [
-      {
-        id: "welcome",
-        user: {
-          username: "Sober Support",
-          profilePicUrl: null,
+  const { data, loading } = useQuery(MY_DIRECT_ROOMS, {
+    fetchPolicy: "cache-and-network",
+    skip: !currentUserId,
+  });
+
+  useEffect(() => {
+    if (data?.myDirectRooms) {
+      setRooms(data.myDirectRooms);
+    }
+  }, [data]);
+
+  useSubscription(DIRECT_ROOM_UPDATED, {
+    skip: !currentUserId,
+    onData: ({ data: subscriptionData }) => {
+      const updatedRoom = subscriptionData?.data?.directRoomUpdated;
+      if (!updatedRoom) return;
+
+      setRooms((prev) => {
+        const filtered = prev.filter((room) => room.id !== updatedRoom.id);
+        return [updatedRoom, ...filtered].sort(
+          (a, b) =>
+            new Date(b.lastMessageAt || b.lastMessage?.createdAt || 0) -
+            new Date(a.lastMessageAt || a.lastMessage?.createdAt || 0)
+        );
+      });
+    },
+  });
+
+  const listData = useMemo(() => {
+    const sourceRooms = rooms.length ? rooms : conversations;
+
+    if (!sourceRooms.length) {
+      return [
+        {
+          id: "welcome",
+          user: {
+            username: "Sober Support",
+            profilePicUrl: null,
+          },
+          lastMessage:
+            "Welcome! Start a chat with your buddies to stay accountable.",
+          lastActivity: Date.now(),
+          unread: true,
         },
-        lastMessage: "Welcome! Start a chat with your buddies to stay accountable.",
-        lastActivity: Date.now(),
-        unread: true,
-      },
-    ];
-  }, [conversations]);
+      ];
+    }
+
+    return sourceRooms.map((room, index) => {
+      const participants = room.users || [];
+      const otherUser =
+        participants.find((participant) => participant.id !== currentUserId) ||
+        participants[0] ||
+        room.user;
+      const lastMessageText = room.lastMessage?.text || room.lastMessage || "New chat";
+      const lastActivity =
+        room.lastMessageAt || room.lastMessage?.createdAt || Date.now() - index * 1000;
+
+      return {
+        id: room.id || room._id || `room-${index}`,
+        user: otherUser,
+        lastMessage: lastMessageText,
+        lastActivity,
+        unread: room.unread || false,
+      };
+    });
+  }, [rooms, conversations, currentUserId]);
 
   const renderConversation = ({ item }) => {
     const username = item.user?.username || "Buddy";
@@ -93,6 +160,12 @@ const MessageListScreen = ({ route, navigation }) => {
           </View>
         </View>
       </View>
+
+      {loading && !rooms.length ? (
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="small" color="#fbbf24" />
+        </View>
+      ) : null}
 
       <FlatList
         data={listData}
@@ -205,6 +278,10 @@ const styles = StyleSheet.create({
     height: 1,
     backgroundColor: "#0f172a",
     marginLeft: 76,
+  },
+  loadingContainer: {
+    paddingVertical: 8,
+    alignItems: "center",
   },
 });
 

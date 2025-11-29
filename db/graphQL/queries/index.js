@@ -12,6 +12,10 @@ const {
   addVenueResolver,
   runPushResolver,
 } = require("./venues");
+const {
+  myDirectRoomsResolver,
+  directRoomWithUserResolver,
+} = require("./directMessage");
 
 module.exports = {
   fetchMeResolver,
@@ -24,4 +28,6 @@ module.exports = {
   getAllPostsResolver,
   profileOverviewResolver,
   userProfileResolver,
+  myDirectRoomsResolver,
+  directRoomWithUserResolver,
 };

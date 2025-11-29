@@ -2,18 +2,19 @@ const mongoose = require("mongoose");
 
 const RoomSchema = new mongoose.Schema(
   {
-    name: { type: String, required: true, trim: true },
+    name: {
+      type: String,
+      trim: true,
+      required: function requiredName() {
+        // Direct message rooms don't need a custom name
+        return !this.isDirect;
+      },
+    },
 
     users: [
       {
-        user: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "User",
-        },
-        joinedAt: {
-          type: Date,
-          default: Date.now,
-        },
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
       },
     ],
 
@@ -24,7 +25,6 @@ const RoomSchema = new mongoose.Schema(
     },
 
     // Participants in this room (for DM, length === 2)
-
     comments: [
       {
         type: mongoose.Schema.Types.ObjectId,

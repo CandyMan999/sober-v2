@@ -17,6 +17,7 @@ const { toggleLikeResolver } = require("./likes");
 const { recordPostViewResolver } = require("./views");
 const { followUserResolver, unfollowUserResolver } = require("./follow");
 const { updateSocialResolver } = require("./updateSocial");
+const { sendDirectMessageResolver } = require("./directMessage");
 
 module.exports = {
   directUploadResolver,
@@ -35,4 +36,5 @@ module.exports = {
   followUserResolver,
   unfollowUserResolver,
   updateSocialResolver,
+  sendDirectMessageResolver,
 };

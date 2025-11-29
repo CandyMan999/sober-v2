@@ -1,6 +1,10 @@
 // server.js
 const express = require("express");
+const http = require("http");
 const { ApolloServer } = require("apollo-server-express");
+const { execute, subscribe } = require("graphql");
+const { makeExecutableSchema } = require("@graphql-tools/schema");
+const { SubscriptionServer } = require("subscriptions-transport-ws");
 const { graphqlUploadExpress } = require("graphql-upload-minimal");
 const mongoose = require("mongoose");
 const { typeDefs, resolvers } = require("./graphQL");
@@ -9,6 +13,20 @@ const { cronJob } = require("./utils/cronJob");
 require("dotenv").config();
 
 const PORT = process.env.PORT || 4000;
+
+const buildContext = async (token) => {
+  let currentUser = null;
+
+  if (token) {
+    try {
+      currentUser = await User.findOne({ token }).populate("profilePic");
+    } catch (err) {
+      console.error("❌ Error fetching user from token:", err);
+    }
+  }
+
+  return { token, currentUser };
+};
 
 async function start() {
   try {
@@ -19,30 +37,18 @@ async function start() {
     console.log("✅ MongoDB connected");
 
     const app = express();
+    const httpServer = http.createServer(app);
+    const schema = makeExecutableSchema({ typeDefs, resolvers });
 
     const server = new ApolloServer({
-      typeDefs,
-      resolvers,
+      schema,
       introspection: true,
       playground: true,
 
       // 👇 attach logged-in user via Expo token
       context: async ({ req }) => {
         const token = req.headers["x-push-token"] || null;
-        let currentUser = null;
-
-        if (token) {
-          try {
-            currentUser = await User.findOne({ token }).populate("profilePic");
-          } catch (err) {
-            console.error("❌ Error fetching user from token:", err);
-          }
-        }
-
-        return {
-          token, // always useful
-          currentUser,
-        };
+        return buildContext(token);
       },
     });
 
@@ -57,7 +63,27 @@ async function start() {
 
     server.applyMiddleware({ app, path: "/graphql" });
 
-    await new Promise((resolve) => app.listen({ port: PORT }, resolve));
+    SubscriptionServer.create(
+      {
+        schema,
+        execute,
+        subscribe,
+        onConnect: async (connectionParams) => {
+          const token =
+            connectionParams?.["x-push-token"] ||
+            connectionParams?.headers?.["x-push-token"] ||
+            null;
+
+          return buildContext(token);
+        },
+      },
+      {
+        server: httpServer,
+        path: server.graphqlPath,
+      }
+    );
+
+    await new Promise((resolve) => httpServer.listen({ port: PORT }, resolve));
 
     cronJob();
     console.log(`🚀 Server ready at http://localhost:${PORT}${server.graphqlPath}`);

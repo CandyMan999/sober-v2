@@ -4,7 +4,20 @@ const {
   UserInputError,
 } = require("apollo-server-express");
 
-const { Room, User, Comment } = require("../models");
+const { Room, User, Comment } = require("../../models");
+const {
+  publishDirectMessage,
+  publishDirectRoomUpdate,
+} = require("../subscriptions");
+
+const populateRoom = async (room) =>
+  room
+    .populate(["users", { path: "lastMessage", populate: "author" }])
+    .populate({
+      path: "comments",
+      populate: "author",
+      options: { sort: { createdAt: 1 } },
+    });
 
 module.exports = {
   // QUERY: list all DM rooms for the current user
@@ -12,14 +25,18 @@ module.exports = {
     const me = ctx.currentUser;
     if (!me) throw new AuthenticationError("Not authenticated");
 
-    return Room.find({
+    const rooms = await Room.find({
       isDirect: true,
       users: me._id,
     })
       .sort({ lastMessageAt: -1 })
-      .populate("users")
-      .populate("lastMessage")
+      .populate([
+        { path: "users", populate: "profilePic" },
+        { path: "lastMessage", populate: "author" },
+      ])
       .exec();
+
+    return rooms;
   },
 
   // QUERY: get (or inspect) the DM room between current user and a specific user
@@ -27,13 +44,33 @@ module.exports = {
     const me = ctx.currentUser;
     if (!me) throw new AuthenticationError("Not authenticated");
 
-    return Room.findOne({
+    if (String(me._id) === String(userId)) {
+      throw new UserInputError("Cannot start a DM with yourself.");
+    }
+
+    let room = await Room.findOne({
       isDirect: true,
       users: { $all: [me._id, userId], $size: 2 },
-    })
-      .populate("users")
-      .populate("lastMessage")
-      .exec();
+    });
+
+    if (!room) {
+      const participantIds = [me._id, userId];
+      room = await Room.create({
+        isDirect: true,
+        users: participantIds,
+        lastMessageAt: new Date(),
+      });
+    }
+
+    const populatedRoom = await populateRoom(room);
+    const sortedComments = [...(populatedRoom.comments || [])].sort(
+      (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
+    );
+
+    return {
+      ...populatedRoom.toObject(),
+      comments: sortedComments,
+    };
   },
 
   // MUTATION: send a DM to a specific user (creates the room if needed)
@@ -80,9 +117,19 @@ module.exports = {
     // 3. Update room metadata for inbox previews
     room.lastMessageAt = new Date();
     room.lastMessage = comment._id;
+    room.comments.push(comment._id);
     await room.save();
 
     // 4. Return populated comment
-    return Comment.findById(comment._id).populate("author").exec();
+    const populatedComment = await Comment.findById(comment._id)
+      .populate("author")
+      .exec();
+
+    publishDirectMessage(populatedComment);
+
+    const hydratedRoom = await populateRoom(room);
+    publishDirectRoomUpdate(hydratedRoom);
+
+    return populatedComment;
   },
 };

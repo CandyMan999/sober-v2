@@ -7,12 +7,21 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import Toast from "react-native-toast-message";
 
-import { ApolloClient, InMemoryCache, HttpLink } from "@apollo/client";
+import {
+  ApolloClient,
+  InMemoryCache,
+  HttpLink,
+  split,
+} from "@apollo/client";
 import { ApolloProvider } from "@apollo/client/react";
+import { WebSocketLink } from "@apollo/client/link/ws";
+import { setContext } from "@apollo/client/link/context";
+import { getMainDefinition } from "@apollo/client/utilities";
 
 import * as Notifications from "expo-notifications";
 
 import { GRAPHQL_URI } from "./config/endpoint";
+import { getToken } from "./utils/helpers";
 
 import { TabNavigator } from "./navigation";
 import {
@@ -36,9 +45,43 @@ import reducer from "./reducer";
 
 const Stack = createStackNavigator();
 
-// --- Apollo Client instance ---
+// --- Apollo Client instance with subscriptions ---
+const httpLink = new HttpLink({ uri: GRAPHQL_URI });
+
+const authLink = setContext(async (_, { headers }) => {
+  const token = await getToken();
+  return {
+    headers: {
+      ...headers,
+      "x-push-token": token || "",
+    },
+  };
+});
+
+const wsLink = new WebSocketLink({
+  uri: GRAPHQL_URI.replace(/^http/, "ws"),
+  options: {
+    reconnect: true,
+    connectionParams: async () => ({
+      "x-push-token": (await getToken()) || "",
+    }),
+  },
+});
+
+const splitLink = split(
+  ({ query }) => {
+    const definition = getMainDefinition(query);
+    return (
+      definition.kind === "OperationDefinition" &&
+      definition.operation === "subscription"
+    );
+  },
+  wsLink,
+  authLink.concat(httpLink)
+);
+
 const client = new ApolloClient({
-  link: new HttpLink({ uri: GRAPHQL_URI }),
+  link: splitLink,
   cache: new InMemoryCache(),
 });
 
