@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
 import { Feather } from "@expo/vector-icons";
 
@@ -78,36 +79,38 @@ const UserConnectionsList = ({
   );
 
   return (
-    <View style={styles.container}>
-      <TouchableOpacity style={styles.backRow} onPress={() => navigation.goBack()}>
-        <Feather name="arrow-left" size={18} color="#f59e0b" />
-        <Text style={styles.backText}>{backLabel}</Text>
-      </TouchableOpacity>
+    <SafeAreaView style={styles.safeArea} edges={["top", "left", "right"]}>
+      <View style={styles.container}>
+        <TouchableOpacity style={styles.backRow} onPress={() => navigation.goBack()}>
+          <Feather name="arrow-left" size={18} color="#f59e0b" />
+          <Text style={styles.backText}>{backLabel}</Text>
+        </TouchableOpacity>
 
-      <Text style={styles.title}>{title}</Text>
-      {subtitle ? <Text style={styles.subtitle}>{subtitle}</Text> : null}
+        <Text style={styles.title}>{title}</Text>
+        {subtitle ? <Text style={styles.subtitle}>{subtitle}</Text> : null}
 
-      {loading ? (
-        <ActivityIndicator size="small" color="#f59e0b" style={{ marginTop: 24 }} />
-      ) : users.length ? (
-        <FlatList
-          data={users}
-          renderItem={renderUser}
-          keyExtractor={(item, index) => item?.id || `${item?.username || "person"}-${index}`}
-          ItemSeparatorComponent={() => <View style={styles.separator} />}
-          contentContainerStyle={{ paddingVertical: 12 }}
-          showsVerticalScrollIndicator={false}
-        />
-      ) : (
-        <View style={styles.emptyCard}>
-          <View style={styles.emptyIconWrapper}>
-            <Feather name="users" size={28} color="#9ca3af" />
+        {loading ? (
+          <ActivityIndicator size="small" color="#f59e0b" style={{ marginTop: 24 }} />
+        ) : users.length ? (
+          <FlatList
+            data={users}
+            renderItem={renderUser}
+            keyExtractor={(item, index) => item?.id || `${item?.username || "person"}-${index}`}
+            ItemSeparatorComponent={() => <View style={styles.separator} />}
+            contentContainerStyle={{ paddingVertical: 12 }}
+            showsVerticalScrollIndicator={false}
+          />
+        ) : (
+          <View style={styles.emptyCard}>
+            <View style={styles.emptyIconWrapper}>
+              <Feather name="users" size={28} color="#9ca3af" />
+            </View>
+            <Text style={styles.emptyTitle}>{emptyTitle}</Text>
+            <Text style={styles.emptyDescription}>{emptyDescription}</Text>
           </View>
-          <Text style={styles.emptyTitle}>{emptyTitle}</Text>
-          <Text style={styles.emptyDescription}>{emptyDescription}</Text>
-        </View>
-      )}
-    </View>
+        )}
+      </View>
+    </SafeAreaView>
   );
 };
 
@@ -181,6 +184,10 @@ const styles = StyleSheet.create({
   },
   badgeTextDark: {
     color: "#0b1220",
+  },
+  safeArea: {
+    flex: 1,
+    backgroundColor: "#050816",
   },
   avatar: {
     width: 54,

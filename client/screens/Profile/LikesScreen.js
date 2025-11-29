@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { Feather, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 
@@ -81,43 +82,49 @@ const LikesScreen = () => {
   );
 
   return (
-    <View style={styles.container}>
-      <TouchableOpacity style={styles.backRow} onPress={() => navigation.goBack()}>
-        <Feather name="arrow-left" size={18} color="#f59e0b" />
-        <Text style={styles.backText}>Profile</Text>
-      </TouchableOpacity>
+    <SafeAreaView style={styles.safeArea} edges={["top", "left", "right"]}>
+      <View style={styles.container}>
+        <TouchableOpacity style={styles.backRow} onPress={() => navigation.goBack()}>
+          <Feather name="arrow-left" size={18} color="#f59e0b" />
+          <Text style={styles.backText}>Profile</Text>
+        </TouchableOpacity>
 
-      <Text style={styles.title}>Likes</Text>
-      <Text style={styles.subtitle}>
-        {username
-          ? `${username}'s content has ${likesTotal} likes so far.`
-          : `You've earned ${likesTotal} likes across your posts and quotes.`}
-      </Text>
+        <Text style={styles.title}>Likes</Text>
+        <Text style={styles.subtitle}>
+          {username
+            ? `${username}'s content has ${likesTotal} likes so far.`
+            : `You've earned ${likesTotal} likes across your posts and quotes.`}
+        </Text>
 
-      {likedItems.length === 0 ? (
-        <View style={styles.emptyCard}>
-          <View style={styles.emptyIconWrapper}>
-            <Ionicons name="heart-circle" size={32} color="#f59e0b" />
+        {likedItems.length === 0 ? (
+          <View style={styles.emptyCard}>
+            <View style={styles.emptyIconWrapper}>
+              <Ionicons name="heart-circle" size={32} color="#f59e0b" />
+            </View>
+            <Text style={styles.emptyTitle}>No likes to show</Text>
+            <Text style={styles.emptyDescription}>
+              Share updates and quotes to start collecting likes from the community.
+            </Text>
           </View>
-          <Text style={styles.emptyTitle}>No likes to show</Text>
-          <Text style={styles.emptyDescription}>
-            Share updates and quotes to start collecting likes from the community.
-          </Text>
-        </View>
-      ) : (
-        <FlatList
-          data={likedItems}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.id}
-          contentContainerStyle={{ paddingVertical: 12, gap: 14 }}
-          showsVerticalScrollIndicator={false}
-        />
-      )}
-    </View>
+        ) : (
+          <FlatList
+            data={likedItems}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.id}
+            contentContainerStyle={{ paddingVertical: 12, gap: 14 }}
+            showsVerticalScrollIndicator={false}
+          />
+        )}
+      </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: "#050816",
+  },
   container: {
     flex: 1,
     backgroundColor: "#050816",
