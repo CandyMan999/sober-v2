@@ -11,6 +11,7 @@ export const UPDATE_USER_PROFILE_MUTATION = gql`
     $lat: Float
     $long: Float
     $whyStatement: String
+    $social: SocialInput
   ) {
     updateUserProfile(
       token: $token
@@ -21,6 +22,7 @@ export const UPDATE_USER_PROFILE_MUTATION = gql`
       lat: $lat
       long: $long
       whyStatement: $whyStatement
+      social: $social
     ) {
       id
       token
@@ -31,6 +33,72 @@ export const UPDATE_USER_PROFILE_MUTATION = gql`
       lat
       long
       whyStatement
+        social {
+          instagram {
+            handle
+            verified
+            website
+            deeplink {
+              app
+              web
+            }
+          }
+          tiktok {
+            handle
+            verified
+            website
+            deeplink {
+              app
+              web
+            }
+          }
+          x {
+            handle
+            verified
+            website
+            deeplink {
+              app
+              web
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const UPDATE_SOCIAL_MUTATION = gql`
+  mutation UpdateSocial($token: String!, $platform: SocialPlatform!, $handle: String) {
+    updateSocial(token: $token, platform: $platform, handle: $handle) {
+      id
+        social {
+          instagram {
+            handle
+            verified
+            website
+            deeplink {
+              app
+              web
+            }
+          }
+          tiktok {
+            handle
+            verified
+            website
+            deeplink {
+              app
+              web
+            }
+          }
+          x {
+            handle
+            verified
+            website
+            deeplink {
+              app
+              web
+            }
+          }
+      }
     }
   }
 `;
