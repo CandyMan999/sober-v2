@@ -101,7 +101,7 @@ const ProfileScreen = ({ navigation }) => {
       followers: profileData?.followersCount ?? (followers?.length || 0),
       buddies: profileData?.buddiesCount ?? (buddies?.length || 0),
       likes: likesTotal + quoteLikesTotal,
-      notifications: 0,
+      notifications: state?.notifications?.length || 0,
     };
   }, [
     buddies?.length,
@@ -781,15 +781,15 @@ const ProfileScreen = ({ navigation }) => {
           <View style={styles.metricsRow}>
             <>
               <TouchableOpacity
-                style={[styles.metric, styles.messageMetric]}
+                style={styles.metric}
                 onPress={handleOpenMessages}
                 activeOpacity={0.85}
               >
-                <View style={styles.messageMetricIcon}>
-                  <Ionicons name="chatbubbles" size={16} color="#f59e0b" />
+                <View style={styles.metricIconWrapper}>
+                  <Ionicons name="chatbubbles" size={20} color="#f59e0b" />
                   {unreadCount > 0 ? (
-                    <View style={styles.messagesBadge}>
-                      <Text style={styles.messagesBadgeText}>{unreadCount}</Text>
+                    <View style={styles.metricBadge}>
+                      <Text style={styles.metricBadgeText}>{unreadCount}</Text>
                     </View>
                   ) : null}
                 </View>
@@ -820,7 +820,14 @@ const ProfileScreen = ({ navigation }) => {
                 style={styles.metric}
                 onPress={() => handleNavigate("Notifications")}
               >
-                <Ionicons name="notifications" size={18} color="#f59e0b" />
+                <View style={styles.metricIconWrapper}>
+                  <Ionicons name="notifications" size={20} color="#f59e0b" />
+                  {counts.notifications > 0 ? (
+                    <View style={styles.metricBadge}>
+                      <Text style={styles.metricBadgeText}>{counts.notifications}</Text>
+                    </View>
+                  ) : null}
+                </View>
                 <Text style={styles.metricLabel}>Alerts</Text>
               </TouchableOpacity>
             </>
@@ -917,21 +924,14 @@ const styles = StyleSheet.create({
     borderRadius: 999,
     backgroundColor: "rgba(245,158,11,0.12)",
   },
-  messageMetric: {
-    width: 64,
-  },
-  messageMetricIcon: {
-    width: 42,
-    height: 42,
-    borderRadius: 14,
-    backgroundColor: "rgba(245,158,11,0.12)",
+  metricIconWrapper: {
+    width: 34,
+    height: 34,
     justifyContent: "center",
     alignItems: "center",
-    borderWidth: 1,
-    borderColor: "rgba(245,158,11,0.25)",
     position: "relative",
   },
-  messagesBadge: {
+  metricBadge: {
     position: "absolute",
     top: -6,
     right: -6,
@@ -942,7 +942,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#0b1220",
   },
-  messagesBadgeText: {
+  metricBadgeText: {
     color: "#0b1220",
     fontSize: 10,
     fontWeight: "800",
@@ -998,6 +998,7 @@ const styles = StyleSheet.create({
   },
   metric: {
     alignItems: "center",
+    flex: 1,
   },
   metricValue: {
     color: "#e5e7eb",

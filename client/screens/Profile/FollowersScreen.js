@@ -10,7 +10,7 @@ const FollowersScreen = () => {
 
   const buddiesLine =
     typeof buddiesCount === "number"
-      ? `${buddiesCount} sober buddy${buddiesCount === 1 ? "" : "ies"}`
+      ? `${buddiesCount} sober ${buddiesCount === 1 ? "buddy" : "buddies"}`
       : null;
 
   const subtitleWithBuddies = buddiesLine

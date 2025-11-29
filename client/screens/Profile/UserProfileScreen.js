@@ -24,9 +24,11 @@ import { USER_PROFILE_QUERY } from "../../GraphQL/queries";
 import {
   FOLLOW_USER_MUTATION,
   SET_POST_REVIEW_MUTATION,
+  SEND_BUDDY_PUSH_MUTATION,
   TOGGLE_LIKE_MUTATION,
   UNFOLLOW_USER_MUTATION,
 } from "../../GraphQL/mutations";
+import Toast from "react-native-toast-message";
 import { formatDistance, getDistanceFromCoords } from "../../utils/distance";
 
 const AVATAR_SIZE = 110;
@@ -177,6 +179,31 @@ const UserProfileScreen = ({ route, navigation }) => {
           userId: profileData.id,
         });
         const isNowBuddy = Boolean(data?.followUser?.isBuddy);
+
+        if (isNowBuddy) {
+          try {
+            const buddyTitle = "You have a new sober buddy";
+            const buddyBody = `${state?.user?.username || "A member"} just connected with you.`;
+            await client.request(SEND_BUDDY_PUSH_MUTATION, {
+              token,
+              buddyId: profileData.id,
+              title: buddyTitle,
+              body: buddyBody,
+            });
+          } catch (err) {
+            console.log("Buddy push failed", err);
+          }
+
+          Toast.show({
+            type: "info",
+            text1: "You're now buddies",
+            text2: `${profileData?.username || "This member"} will get a heads up.`,
+            position: "top",
+            autoHide: true,
+            visibilityTime: 5000,
+            topOffset: 80,
+          });
+        }
         setProfileData((prev) =>
           prev
             ? {

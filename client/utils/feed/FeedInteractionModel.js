@@ -1,9 +1,11 @@
 import {
   FOLLOW_USER_MUTATION,
+  SEND_BUDDY_PUSH_MUTATION,
   TOGGLE_LIKE_MUTATION,
   UNFOLLOW_USER_MUTATION,
 } from "../../GraphQL/mutations";
 import { getToken } from "../helpers";
+import Toast from "react-native-toast-message";
 
 class FeedInteractionModel {
   constructor({
@@ -93,6 +95,34 @@ class FeedInteractionModel {
     if (!this.getLoadingUserIds) return new Set();
     const ids = this.getLoadingUserIds();
     return ids instanceof Set ? ids : new Set();
+  }
+
+  async notifyBuddyConnection(author, token) {
+    if (!author?.id || !token) return;
+
+    try {
+      const title = "You have a new sober buddy";
+      const body = `${this.currentUser?.username || "A member"} just connected with you.`;
+
+      await this.client.request(SEND_BUDDY_PUSH_MUTATION, {
+        token,
+        buddyId: author.id,
+        title,
+        body,
+      });
+    } catch (err) {
+      console.log("Buddy push failed", err);
+    }
+
+    Toast.show({
+      type: "info",
+      text1: "You're now buddies",
+      text2: `${author?.username || "This member"} will get a heads up.`,
+      position: "top",
+      autoHide: true,
+      visibilityTime: 5000,
+      topOffset: 80,
+    });
   }
 
   async toggleLike(itemId) {
@@ -194,6 +224,10 @@ class FeedInteractionModel {
         isFollowedByViewer: nextState.isFollowed,
         isBuddyWithViewer: nextState.isBuddy,
       });
+
+      if (nextState.isBuddy) {
+        await this.notifyBuddyConnection(author, token);
+      }
 
       return nextState;
     } catch (err) {
