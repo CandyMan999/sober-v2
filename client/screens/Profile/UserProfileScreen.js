@@ -109,7 +109,7 @@ const UserProfileScreen = ({ route, navigation }) => {
 
   const tabConfig = useMemo(
     () => [
-      { key: "0", icon: "images", type: "POSTS" },
+      { key: "0", icon: "signs-post", type: "POSTS" },
       { key: "1", icon: "format-quote-close", type: "QUOTES" },
       { key: "2", icon: "bookmark", type: "SAVED" },
       { key: "3", icon: "wine-bottle", type: "DRUNK" },
@@ -851,6 +851,13 @@ const UserProfileScreen = ({ route, navigation }) => {
           >
             <Text style={styles.metricValue}>{counts.buddies}</Text>
             <Text style={styles.metricLabel}>Buddies</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.metric}
+            onPress={() => handleOpenConnections("Likes")}
+          >
+            <Text style={styles.metricValue}>{likesTotal}</Text>
+            <Text style={styles.metricLabel}>Likes</Text>
           </TouchableOpacity>
         </View>
 
