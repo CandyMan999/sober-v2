@@ -38,6 +38,13 @@ const ProfileScreen = ({ navigation }) => {
   const [savedPosts, setSavedPosts] = useState(
     cachedOverview?.savedPosts || []
   );
+  const [following, setFollowing] = useState(
+    cachedOverview?.user?.following || []
+  );
+  const [followers, setFollowers] = useState(
+    cachedOverview?.user?.followers || []
+  );
+  const [buddies, setBuddies] = useState(cachedOverview?.user?.buddies || []);
   const [tabIndex, setTabIndex] = useState(0);
   const [previewVisible, setPreviewVisible] = useState(false);
   const [previewItem, setPreviewItem] = useState(null);
@@ -52,14 +59,27 @@ const ProfileScreen = ({ navigation }) => {
       0
     );
 
+    const quoteLikesTotal = quotes.reduce(
+      (sum, quote) => sum + (quote?.likesCount || 0),
+      0
+    );
+
     return {
-      following: profileData?.followingCount || 0,
-      followers: profileData?.followersCount || 0,
-      buddies: profileData?.buddiesCount || 0,
-      likes: likesTotal,
+      following:
+        profileData?.followingCount ?? (following?.length || 0),
+      followers: profileData?.followersCount ?? (followers?.length || 0),
+      buddies: profileData?.buddiesCount ?? (buddies?.length || 0),
+      likes: likesTotal + quoteLikesTotal,
       notifications: 0,
     };
-  }, [posts, profileData]);
+  }, [
+    buddies?.length,
+    followers?.length,
+    following?.length,
+    posts,
+    profileData,
+    quotes,
+  ]);
 
   const hasWhy = Boolean(profileData?.whyStatement?.trim());
 
@@ -70,6 +90,9 @@ const ProfileScreen = ({ navigation }) => {
     setPosts(cachedOverview.posts || []);
     setQuotes(cachedOverview.quotes || []);
     setSavedPosts(cachedOverview.savedPosts || []);
+    setFollowers(cachedOverview.user?.followers || []);
+    setFollowing(cachedOverview.user?.following || []);
+    setBuddies(cachedOverview.user?.buddies || []);
     setLoading(false);
   }, []);
 
@@ -88,6 +111,9 @@ const ProfileScreen = ({ navigation }) => {
         setPosts(overview?.posts || []);
         setQuotes(overview?.quotes || []);
         setSavedPosts(overview?.savedPosts || []);
+        setFollowers(overview?.user?.followers || []);
+        setFollowing(overview?.user?.following || []);
+        setBuddies(overview?.user?.buddies || []);
 
         if (overview) {
           dispatch({ type: "SET_PROFILE_OVERVIEW", payload: overview });
@@ -112,7 +138,53 @@ const ProfileScreen = ({ navigation }) => {
   }, []);
 
   const handleNavigate = (screen) => {
-    navigation.navigate(screen);
+    const commonParams = {
+      username: profileData?.username,
+      profilePicUrl: profileData?.profilePicUrl,
+    };
+
+    switch (screen) {
+      case "Following":
+        navigation.navigate("Following", {
+          ...commonParams,
+          users: following || [],
+          title: "Following",
+          subtitle: "People you're keeping up with",
+        });
+        break;
+      case "Followers":
+        navigation.navigate("Followers", {
+          ...commonParams,
+          users: followers || [],
+          title: "Followers",
+          subtitle: "Everyone cheering you on",
+        });
+        break;
+      case "Buddies":
+        navigation.navigate("Buddies", {
+          ...commonParams,
+          users: buddies || [],
+          title: "Sober Buddies",
+          subtitle: "Your accountability crew",
+        });
+        break;
+      case "Likes":
+        navigation.navigate("Likes", {
+          ...commonParams,
+          likesTotal: counts.likes,
+          posts: posts || [],
+          quotes: quotes || [],
+        });
+        break;
+      case "Notifications":
+        navigation.navigate("Notifications", {
+          ...commonParams,
+          alerts: state?.notifications || [],
+        });
+        break;
+      default:
+        navigation.navigate(screen);
+    }
   };
 
   const openPreview = (item, type = "POST") => {
@@ -558,7 +630,7 @@ const ProfileScreen = ({ navigation }) => {
 
   const tabConfig = useMemo(
     () => [
-      { key: "0", icon: "images", type: "POSTS" },
+      { key: "0", icon: "signs-post", type: "POSTS" },
       { key: "1", icon: "format-quote-close", type: "QUOTES" },
       { key: "2", icon: "bookmark", type: "SAVED" },
       { key: "3", icon: "wine-bottle", type: "DRUNK" },

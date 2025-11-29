@@ -16,11 +16,11 @@ const NotificationSettingsScreen = ({ navigation }) => {
             onPress={() => navigation?.goBack?.()}
             accessibilityLabel="Go back"
           >
-            <Feather name="arrow-left" size={20} color="#e5e7eb" />
-            <Text style={styles.backLabel}>Profile</Text>
+            <Feather name="chevron-left" size={18} color="#f59e0b" />
           </TouchableOpacity>
-          <Text style={styles.title}>Notification Settings</Text>
+          <Text style={styles.backLabel}>Profile</Text>
         </View>
+        <Text style={styles.title}>Notification Settings</Text>
         <Text style={styles.subtitle}>
           Toggle how you want to stay up-to-date with your buddies and posts.
         </Text>
@@ -68,21 +68,20 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#050816",
     paddingHorizontal: 20,
-    paddingTop: 22,
+    paddingTop: 28,
   },
   header: {
     flexDirection: "row",
     alignItems: "center",
+    gap: 10,
   },
   backButton: {
-    marginRight: 12,
-    padding: 4,
-    flexDirection: "row",
-    alignItems: "center",
+    padding: 10,
+    borderRadius: 999,
+    backgroundColor: "rgba(245,158,11,0.12)",
   },
   backLabel: {
-    color: "#e5e7eb",
-    marginLeft: 6,
+    color: "#f3f4f6",
     fontWeight: "700",
   },
   title: {
