@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useContext, useMemo, useState } from "react";
 import {
   FlatList,
   Image,
@@ -10,6 +10,10 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { Feather, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
+
+import Context from "../../context";
+import { ContentPreviewModal } from "../../components";
 
 const parseDate = (timestamp) => {
   if (!timestamp) return null;
@@ -43,7 +47,12 @@ const formatDate = (timestamp) => {
 const LikesScreen = () => {
   const navigation = useNavigation();
   const route = useRoute();
+  const { state } = useContext(Context);
   const { likesTotal = 0, posts = [], quotes = [], username } = route.params || {};
+  const [previewVisible, setPreviewVisible] = useState(false);
+  const [previewItem, setPreviewItem] = useState(null);
+  const [previewType, setPreviewType] = useState("POST");
+  const [previewMuted, setPreviewMuted] = useState(true);
 
   const computedLikesTotal = useMemo(() => {
     const postLikes = posts.reduce((sum, post) => sum + (post?.likesCount || 0), 0);
@@ -59,35 +68,75 @@ const LikesScreen = () => {
     const postItems = (posts || []).map((post) => ({
       id: `post-${post.id}`,
       type: "Post",
+      contentType: "POST",
       text: post.text || "Shared a post",
       likes: post.likesCount || 0,
       comments: post.commentsCount || 0,
       createdAt: post.createdAt,
       thumbnail: post.imageUrl || post.video?.thumbnailUrl,
+      raw: post,
     }));
 
     const quoteItems = (quotes || []).map((quote) => ({
       id: `quote-${quote.id}`,
       type: "Quote",
+      contentType: "QUOTE",
       text: quote.text || "Shared a quote",
       likes: quote.likesCount || 0,
       comments: quote.commentsCount || 0,
       createdAt: quote.createdAt,
       thumbnail: null,
+      raw: quote,
     }));
 
     return [...postItems, ...quoteItems].sort((a, b) => (b.likes || 0) - (a.likes || 0));
   }, [posts, quotes]);
 
+  const handleOpenPreview = (item) => {
+    if (!item?.raw) return;
+
+    const raw = item.raw;
+    const authorFallback =
+      raw.author ||
+      raw.user ||
+      raw.postAuthor ||
+      raw.createdBy ||
+      (username
+        ? {
+            username,
+          }
+        : null);
+
+    const hydratedItem = {
+      ...raw,
+      author: raw.author || raw.user || authorFallback,
+      user: raw.user || raw.author || authorFallback,
+      postAuthor: raw.postAuthor || raw.author || raw.user || authorFallback,
+      createdBy: raw.createdBy || raw.author || raw.user || authorFallback,
+    };
+
+    setPreviewItem(hydratedItem);
+    setPreviewType(item.contentType || "POST");
+    setPreviewVisible(true);
+  };
+
+  const handleClosePreview = () => {
+    setPreviewVisible(false);
+  };
+
   const renderItem = ({ item }) => (
-    <View style={styles.card}>
+    <TouchableOpacity
+      style={styles.card}
+      onPress={() => handleOpenPreview(item)}
+      activeOpacity={0.85}
+    >
       <View style={styles.cardHeader}>
         <View style={styles.typePill}>
-          <MaterialCommunityIcons
-            name={item.type === "Post" ? "image-multiple" : "format-quote-close"}
-            size={14}
-            color="#0b1220"
-          />
+          {item.type === "Post" ? (
+            <FontAwesome6 name="signs-post" size={14} color="black" />
+          ) : (
+            <MaterialCommunityIcons name="format-quote-close" size={14} color="#0b1220" />
+          )}
           <Text style={styles.typePillText}>{item.type}</Text>
         </View>
         <Text style={styles.timestamp}>{formatDate(item.createdAt)}</Text>
@@ -111,7 +160,7 @@ const LikesScreen = () => {
       {item.thumbnail ? (
         <Image source={{ uri: item.thumbnail }} style={styles.thumbnail} />
       ) : null}
-    </View>
+    </TouchableOpacity>
   );
 
   return (
@@ -134,11 +183,11 @@ const LikesScreen = () => {
             : `You've earned ${computedLikesTotal || likesTotal} likes across your posts and quotes.`}
         </Text>
 
-        {likedItems.length === 0 ? (
-          <View style={styles.emptyCard}>
-            <View style={styles.emptyIconWrapper}>
-              <Ionicons name="heart-circle" size={32} color="#f59e0b" />
-            </View>
+      {likedItems.length === 0 ? (
+        <View style={styles.emptyCard}>
+          <View style={styles.emptyIconWrapper}>
+            <Ionicons name="heart-circle" size={32} color="#f59e0b" />
+          </View>
             <Text style={styles.emptyTitle}>No likes to show</Text>
             <Text style={styles.emptyDescription}>
               Share updates and quotes to start collecting likes from the community.
@@ -154,6 +203,15 @@ const LikesScreen = () => {
           />
         )}
       </View>
+      <ContentPreviewModal
+        visible={previewVisible}
+        item={previewItem}
+        type={previewType}
+        viewerUser={state?.user}
+        onClose={handleClosePreview}
+        isMuted={previewMuted}
+        onToggleSound={() => setPreviewMuted((prev) => !prev)}
+      />
     </SafeAreaView>
   );
 };
