@@ -1,53 +1,26 @@
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { Feather } from "@expo/vector-icons";
+import { useRoute } from "@react-navigation/native";
+
+import UserConnectionsList from "./components/UserConnectionsList";
 
 const FollowersScreen = () => {
-  const navigation = useNavigation();
+  const route = useRoute();
+  const { users = [], title, subtitle, username } = route.params || {};
 
   return (
-    <View style={styles.container}>
-      <TouchableOpacity style={styles.backRow} onPress={() => navigation.goBack()}>
-        <Feather name="arrow-left" size={18} color="#f59e0b" />
-        <Text style={styles.backText}>Profile</Text>
-      </TouchableOpacity>
-      <Text style={styles.title}>Followers</Text>
-      <Text style={styles.subtitle}>
-        This screen will show everyone who follows you.
-      </Text>
-    </View>
+    <UserConnectionsList
+      title={title || "Followers"}
+      subtitle={
+        subtitle ||
+        (username
+          ? `People who follow ${username}`
+          : "Everyone who follows you shows up here.")
+      }
+      users={users}
+      emptyTitle="No followers yet"
+      emptyDescription="When someone follows you, they'll appear in this list."
+    />
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#050816",
-    padding: 24,
-  },
-  backRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 12,
-  },
-  backText: {
-    color: "#f59e0b",
-    fontSize: 14,
-    fontWeight: "700",
-    marginLeft: 6,
-  },
-  title: {
-    color: "#f3f4f6",
-    fontSize: 22,
-    fontWeight: "700",
-    marginBottom: 8,
-  },
-  subtitle: {
-    color: "#9ca3af",
-    fontSize: 16,
-    lineHeight: 22,
-  },
-});
 
 export default FollowersScreen;

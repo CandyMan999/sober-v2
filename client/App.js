@@ -22,6 +22,12 @@ import {
   LocationPermissionScreen,
 } from "./screens/Onboarding";
 import UserProfileScreen from "./screens/Profile/UserProfileScreen";
+import FollowersScreen from "./screens/Profile/FollowersScreen";
+import FollowingScreen from "./screens/Profile/FollowingScreen";
+import BuddiesScreen from "./screens/Profile/BuddiesScreen";
+import LikesScreen from "./screens/Profile/LikesScreen";
+import NotificationsScreen from "./screens/Profile/NotificationsScreen";
+import NotificationSettingsScreen from "./screens/Profile/NotificationSettingsScreen";
 
 import Context from "./context";
 import reducer from "./reducer";
@@ -128,6 +134,36 @@ export default function App() {
                 <Stack.Screen
                   name="UserProfile"
                   component={UserProfileScreen}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="Followers"
+                  component={FollowersScreen}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="Following"
+                  component={FollowingScreen}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="Buddies"
+                  component={BuddiesScreen}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="Likes"
+                  component={LikesScreen}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="Notifications"
+                  component={NotificationsScreen}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="NotificationSettings"
+                  component={NotificationSettingsScreen}
                   options={{ headerShown: false }}
                 />
               </Stack.Navigator>

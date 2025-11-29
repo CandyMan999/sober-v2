@@ -41,6 +41,9 @@ const UserProfileScreen = ({ route, navigation }) => {
   const [posts, setPosts] = useState([]);
   const [quotes, setQuotes] = useState([]);
   const [savedPosts, setSavedPosts] = useState([]);
+  const [following, setFollowing] = useState(initialUser?.following || []);
+  const [followers, setFollowers] = useState(initialUser?.followers || []);
+  const [buddies, setBuddies] = useState(initialUser?.buddies || []);
   const [loading, setLoading] = useState(true);
   const [tabIndex, setTabIndex] = useState(0);
   const [followPending, setFollowPending] = useState(false);
@@ -82,11 +85,17 @@ const UserProfileScreen = ({ route, navigation }) => {
 
   const counts = useMemo(
     () => ({
-      following: profileData?.followingCount || 0,
-      followers: profileData?.followersCount || 0,
-      buddies: profileData?.buddiesCount || 0,
+      following:
+        profileData?.followingCount ?? (following?.length || 0),
+      followers: profileData?.followersCount ?? (followers?.length || 0),
+      buddies: profileData?.buddiesCount ?? (buddies?.length || 0),
     }),
-    [profileData]
+    [followers?.length, following?.length, buddies?.length, profileData]
+  );
+
+  const likesTotal = useMemo(
+    () => posts.reduce((sum, post) => sum + (post?.likesCount || 0), 0),
+    [posts]
   );
 
   const tabConfig = useMemo(
@@ -176,6 +185,56 @@ const UserProfileScreen = ({ route, navigation }) => {
       setFollowPending(false);
     }
   }, [client, followPending, isFollowed, profileData, state?.user?.id]);
+
+  const handleOpenConnections = (screen) => {
+    const commonParams = {
+      username: profileData?.username,
+      userId: profileData?.id,
+    };
+
+    switch (screen) {
+      case "Following":
+        navigation.navigate("Following", {
+          ...commonParams,
+          users: following || [],
+          title: `${profileData?.username || "User"}'s Following`,
+          subtitle: "People they're keeping up with",
+        });
+        break;
+      case "Followers":
+        navigation.navigate("Followers", {
+          ...commonParams,
+          users: followers || [],
+          title: `${profileData?.username || "User"}'s Followers`,
+          subtitle: "Supporters and cheerleaders",
+        });
+        break;
+      case "Buddies":
+        navigation.navigate("Buddies", {
+          ...commonParams,
+          users: buddies || [],
+          title: `${profileData?.username || "User"}'s Buddies`,
+          subtitle: "Accountability partners",
+        });
+        break;
+      case "Likes":
+        navigation.navigate("Likes", {
+          ...commonParams,
+          likesTotal,
+          posts: posts || [],
+          quotes: quotes || [],
+        });
+        break;
+      case "Notifications":
+        navigation.navigate("Notifications", {
+          ...commonParams,
+          alerts: [],
+        });
+        break;
+      default:
+        break;
+    }
+  };
 
   const openPreview = (item, type = "POST") => {
     const authorFallback = profileData
@@ -434,6 +493,9 @@ const UserProfileScreen = ({ route, navigation }) => {
         setPosts(overview?.posts || []);
         setQuotes(overview?.quotes || []);
         setSavedPosts(overview?.savedPosts || []);
+        setFollowers(overview?.user?.followers || []);
+        setFollowing(overview?.user?.following || []);
+        setBuddies(overview?.user?.buddies || []);
       } catch (err) {
         console.log("User profile load failed", err);
       } finally {
@@ -760,18 +822,27 @@ const UserProfileScreen = ({ route, navigation }) => {
         )}
 
         <View style={styles.metricsRow}>
-          <View style={styles.metric}>
+          <TouchableOpacity
+            style={styles.metric}
+            onPress={() => handleOpenConnections("Following")}
+          >
             <Text style={styles.metricValue}>{counts.following}</Text>
             <Text style={styles.metricLabel}>Following</Text>
-          </View>
-          <View style={styles.metric}>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.metric}
+            onPress={() => handleOpenConnections("Followers")}
+          >
             <Text style={styles.metricValue}>{counts.followers}</Text>
             <Text style={styles.metricLabel}>Followers</Text>
-          </View>
-          <View style={styles.metric}>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.metric}
+            onPress={() => handleOpenConnections("Buddies")}
+          >
             <Text style={styles.metricValue}>{counts.buddies}</Text>
             <Text style={styles.metricLabel}>Buddies</Text>
-          </View>
+          </TouchableOpacity>
         </View>
 
         <View style={styles.whyWrapper}>

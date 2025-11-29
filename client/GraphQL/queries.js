@@ -64,6 +64,27 @@ export const PROFILE_OVERVIEW_QUERY = `
         savedPosts {
           id
         }
+        followers {
+          id
+          username
+          profilePicUrl
+          isFollowedByViewer
+          isBuddyWithViewer
+        }
+        following {
+          id
+          username
+          profilePicUrl
+          isFollowedByViewer
+          isBuddyWithViewer
+        }
+        buddies {
+          id
+          username
+          profilePicUrl
+          isFollowedByViewer
+          isBuddyWithViewer
+        }
       }
       posts {
         id
@@ -149,6 +170,27 @@ export const USER_PROFILE_QUERY = `
         }
         isFollowedByViewer
         isBuddyWithViewer
+        followers {
+          id
+          username
+          profilePicUrl
+          isFollowedByViewer
+          isBuddyWithViewer
+        }
+        following {
+          id
+          username
+          profilePicUrl
+          isFollowedByViewer
+          isBuddyWithViewer
+        }
+        buddies {
+          id
+          username
+          profilePicUrl
+          isFollowedByViewer
+          isBuddyWithViewer
+        }
       }
       posts {
         id
