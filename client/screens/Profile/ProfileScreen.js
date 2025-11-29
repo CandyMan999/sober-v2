@@ -53,6 +53,37 @@ const ProfileScreen = ({ navigation }) => {
   const currentUser = state?.user;
   const currentUserId = currentUser?.id;
 
+  const conversations = useMemo(() => {
+    const buddyList = Array.isArray(buddies) ? buddies : [];
+    const prompts = [
+      "Let's check in later today.",
+      "Proud of you for showing up!",
+      "How's the day going?",
+      "Need a quick accountability chat?",
+    ];
+
+    return buddyList.map((buddy, index) => {
+      const unreadFlag =
+        typeof buddy.unreadMessagesCount === "number"
+          ? buddy.unreadMessagesCount > 0
+          : buddy.hasUnreadMessages === true;
+
+      return {
+        id: buddy.id || `buddy-${index}`,
+        user: buddy,
+        lastMessage:
+          buddy.lastMessage?.text || buddy.lastMessageText || prompts[index % prompts.length],
+        lastActivity: buddy.lastMessage?.createdAt || Date.now() - index * 45 * 60 * 1000,
+        unread: unreadFlag || index === 0,
+      };
+    });
+  }, [buddies]);
+
+  const unreadCount = useMemo(
+    () => conversations.filter((conversation) => conversation.unread).length,
+    [conversations]
+  );
+
   const counts = useMemo(() => {
     const likesTotal = posts.reduce(
       (sum, post) => sum + (post?.likesCount || 0),
@@ -70,7 +101,7 @@ const ProfileScreen = ({ navigation }) => {
       followers: profileData?.followersCount ?? (followers?.length || 0),
       buddies: profileData?.buddiesCount ?? (buddies?.length || 0),
       likes: likesTotal + quoteLikesTotal,
-      notifications: 0,
+      notifications: state?.notifications?.length || 0,
     };
   }, [
     buddies?.length,
@@ -158,6 +189,7 @@ const ProfileScreen = ({ navigation }) => {
           users: followers || [],
           title: "Followers",
           subtitle: "Everyone cheering you on",
+          buddiesCount: counts.buddies,
         });
         break;
       case "Buddies":
@@ -628,6 +660,10 @@ const ProfileScreen = ({ navigation }) => {
     navigation.navigate("EditProfile");
   };
 
+  const handleOpenMessages = () => {
+    navigation.navigate("Messages", { conversations });
+  };
+
   const tabConfig = useMemo(
     () => [
       { key: "0", icon: "signs-post", type: "POSTS" },
@@ -722,65 +758,80 @@ const ProfileScreen = ({ navigation }) => {
         style={styles.container}
         contentContainerStyle={{ paddingBottom: 48 }}
       >
-      <View style={styles.editIconWrapper}>
-        <TouchableOpacity
-          style={styles.editIconButton}
-          onPress={navigateToEditProfile}
-        >
-          <Feather name="edit-3" size={18} color="#f59e0b" />
-        </TouchableOpacity>
-      </View>
-      <View style={styles.bodyPadding}>
-        <View style={styles.headerRow}>
-          <View style={styles.avatarColumn}>
-            {renderAvatar(profileData?.profilePicUrl, ["#fcd34d", "#f97316"])}
-            <View style={styles.usernameRow}>
-              <Text style={styles.avatarLabel}>
-                {profileData?.username || "Your name"}
-              </Text>
+        <View style={styles.topActionsRow}>
+          <TouchableOpacity
+            style={styles.editIconButton}
+            onPress={navigateToEditProfile}
+          >
+            <Feather name="edit-3" size={18} color="#f59e0b" />
+          </TouchableOpacity>
+        </View>
+        <View style={styles.bodyPadding}>
+          <View style={styles.headerRow}>
+            <View style={styles.avatarColumn}>
+              {renderAvatar(profileData?.profilePicUrl, ["#fcd34d", "#f97316"])}
+              <View style={styles.usernameRow}>
+                <Text style={styles.avatarLabel}>
+                  {profileData?.username || "Your name"}
+                </Text>
+              </View>
             </View>
           </View>
-        </View>
 
-        <View style={styles.metricsRow}>
-          <>
-            <TouchableOpacity
-              style={styles.metric}
-              onPress={() => handleNavigate("Following")}
-            >
-              <Text style={styles.metricValue}>{counts.following}</Text>
-              <Text style={styles.metricLabel}>Following</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.metric}
-              onPress={() => handleNavigate("Followers")}
-            >
-              <Text style={styles.metricValue}>{counts.followers}</Text>
-              <Text style={styles.metricLabel}>Followers</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.metric}
-              onPress={() => handleNavigate("Buddies")}
-            >
-              <Text style={styles.metricValue}>{counts.buddies}</Text>
-              <Text style={styles.metricLabel}>Buddies</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.metric}
-              onPress={() => handleNavigate("Likes")}
-            >
-              <Text style={styles.metricValue}>{counts.likes}</Text>
-              <Text style={styles.metricLabel}>Likes</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.metric}
-              onPress={() => handleNavigate("Notifications")}
-            >
-              <Ionicons name="notifications" size={18} color="#f59e0b" />
-              <Text style={styles.metricLabel}>Alerts</Text>
-            </TouchableOpacity>
-          </>
-        </View>
+          <View style={styles.metricsRow}>
+            <>
+              <TouchableOpacity
+                style={styles.metric}
+                onPress={handleOpenMessages}
+                activeOpacity={0.85}
+              >
+                <View style={styles.metricIconWrapper}>
+                  <Ionicons name="chatbubbles" size={18} color="#f59e0b" />
+                  {unreadCount > 0 ? (
+                    <View style={styles.metricBadge}>
+                      <Text style={styles.metricBadgeText}>{unreadCount}</Text>
+                    </View>
+                  ) : null}
+                </View>
+                <Text style={styles.metricLabel}>DM's</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.metric}
+                onPress={() => handleNavigate("Following")}
+              >
+                <Text style={styles.metricValue}>{counts.following}</Text>
+                <Text style={styles.metricLabel}>Following</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.metric}
+                onPress={() => handleNavigate("Followers")}
+              >
+                <Text style={styles.metricValue}>{counts.followers}</Text>
+                <Text style={styles.metricLabel}>Followers</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.metric}
+                onPress={() => handleNavigate("Likes")}
+              >
+                <Text style={styles.metricValue}>{counts.likes}</Text>
+                <Text style={styles.metricLabel}>Likes</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.metric}
+                onPress={() => handleNavigate("Notifications")}
+              >
+                <View style={styles.metricIconWrapper}>
+                  <Ionicons name="notifications" size={18} color="#f59e0b" />
+                  {counts.notifications > 0 ? (
+                    <View style={styles.metricBadge}>
+                      <Text style={styles.metricBadgeText}>{counts.notifications}</Text>
+                    </View>
+                  ) : null}
+                </View>
+                <Text style={styles.metricLabel}>Alerts</Text>
+              </TouchableOpacity>
+            </>
+          </View>
 
         <View style={styles.whyWrapper}>
           <Text style={styles.whyQuoted}>
@@ -861,15 +912,41 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flex: 1,
   },
-  editIconWrapper: {
+  topActionsRow: {
     paddingHorizontal: 16,
     marginBottom: 8,
-    alignItems: "flex-end",
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "flex-end",
   },
   editIconButton: {
     padding: 10,
     borderRadius: 999,
     backgroundColor: "rgba(245,158,11,0.12)",
+  },
+  metricIconWrapper: {
+    position: "relative",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  metricBadge: {
+    position: "absolute",
+    top: -6,
+    right: -10,
+    backgroundColor: "#f59e0b",
+    borderRadius: 999,
+    minWidth: 16,
+    height: 16,
+    paddingHorizontal: 4,
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 1,
+    borderColor: "#0b1220",
+  },
+  metricBadgeText: {
+    color: "#0b1220",
+    fontSize: 10,
+    fontWeight: "800",
   },
   avatarContainer: {
     width: AVATAR_SIZE + 16,
@@ -922,6 +999,7 @@ const styles = StyleSheet.create({
   },
   metric: {
     alignItems: "center",
+    flex: 1,
   },
   metricValue: {
     color: "#e5e7eb",

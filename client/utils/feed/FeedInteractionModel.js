@@ -4,6 +4,7 @@ import {
   UNFOLLOW_USER_MUTATION,
 } from "../../GraphQL/mutations";
 import { getToken } from "../helpers";
+import Toast from "react-native-toast-message";
 
 class FeedInteractionModel {
   constructor({
@@ -95,6 +96,20 @@ class FeedInteractionModel {
     return ids instanceof Set ? ids : new Set();
   }
 
+  async notifyBuddyConnection(author) {
+    if (!author?.id) return;
+
+    Toast.show({
+      type: "info",
+      text1: "You're sober accountability buddies",
+      text2: `You can DM ${author?.username || "this member"} to stay accountable together.`,
+      position: "top",
+      autoHide: true,
+      visibilityTime: 5000,
+      topOffset: 80,
+    });
+  }
+
   async toggleLike(itemId) {
     const token = await getToken();
     if (!token) return;
@@ -178,10 +193,7 @@ class FeedInteractionModel {
         ? UNFOLLOW_USER_MUTATION
         : FOLLOW_USER_MUTATION;
 
-      const data = await this.client.request(mutation, {
-        token,
-        userId: author.id,
-      });
+      const data = await this.client.request(mutation, { token, userId: author.id });
 
       const nextState = isCurrentlyFollowed
         ? { isFollowed: false, isBuddy: false }
@@ -194,6 +206,10 @@ class FeedInteractionModel {
         isFollowedByViewer: nextState.isFollowed,
         isBuddyWithViewer: nextState.isBuddy,
       });
+
+      if (nextState.isBuddy) {
+        await this.notifyBuddyConnection(author);
+      }
 
       return nextState;
     } catch (err) {

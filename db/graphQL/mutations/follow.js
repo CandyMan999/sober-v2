@@ -1,5 +1,6 @@
 const { AuthenticationError } = require("apollo-server-express");
 const { Connection, User } = require("../../models");
+const { sendPushNotifications } = require("../../utils/pushNotifications");
 
 const populateConnection = (query) =>
   query.populate("follower").populate("followee");
@@ -35,6 +36,30 @@ const followUserResolver = async (_, { token, userId }) => {
     reverse.isBuddy = true;
     await connection.save();
     await reverse.save();
+
+    const buddyAlerts = [];
+    const followerUser = connection.follower;
+    const followeeUser = connection.followee;
+
+    if (
+      followeeUser?.token &&
+      followeeUser?.notificationsEnabled !== false
+    ) {
+      buddyAlerts.push({
+        pushToken: followeeUser.token,
+        title: "You have a new sober buddy",
+        body: `${followerUser?.username || "A member"} is now your accountability buddy—start a direct message!`,
+        data: {
+          type: "buddy_connection",
+          followerId: String(followerUser?._id || ""),
+          followeeId: String(followeeUser?._id || ""),
+        },
+      });
+    }
+
+    if (buddyAlerts.length) {
+      await sendPushNotifications(buddyAlerts);
+    }
   }
 
   return connection;
