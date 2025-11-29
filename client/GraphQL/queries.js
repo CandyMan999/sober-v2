@@ -11,6 +11,35 @@ export const FETCH_ME_QUERY = `
       timezone
       lat
       long
+      social {
+        instagram {
+          handle
+          verified
+          website
+          deeplink {
+            app
+            web
+          }
+        }
+        tiktok {
+          handle
+          verified
+          website
+          deeplink {
+            app
+            web
+          }
+        }
+        x {
+          handle
+          verified
+          website
+          deeplink {
+            app
+            web
+          }
+        }
+      }
       followersCount
       followingCount
       buddiesCount
@@ -58,6 +87,35 @@ export const PROFILE_OVERVIEW_QUERY = `
           url
         }
         whyStatement
+        social {
+          instagram {
+            handle
+            verified
+            website
+            deeplink {
+              app
+              web
+            }
+          }
+          tiktok {
+            handle
+            verified
+            website
+            deeplink {
+              app
+              web
+            }
+          }
+          x {
+            handle
+            verified
+            website
+            deeplink {
+              app
+              web
+            }
+          }
+        }
         followersCount
         followingCount
         buddiesCount
@@ -170,6 +228,35 @@ export const USER_PROFILE_QUERY = `
         }
         isFollowedByViewer
         isBuddyWithViewer
+        social {
+          instagram {
+            handle
+            verified
+            website
+            deeplink {
+              app
+              web
+            }
+          }
+          tiktok {
+            handle
+            verified
+            website
+            deeplink {
+              app
+              web
+            }
+          }
+          x {
+            handle
+            verified
+            website
+            deeplink {
+              app
+              web
+            }
+          }
+        }
         followers {
           id
           username

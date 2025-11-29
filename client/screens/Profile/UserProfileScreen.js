@@ -21,6 +21,7 @@ import Context from "../../context";
 import { useClient } from "../../client";
 import { getToken } from "../../utils/helpers";
 import { USER_PROFILE_QUERY } from "../../GraphQL/queries";
+import { useOpenSocial } from "../../hooks/useOpenSocial";
 import {
   FOLLOW_USER_MUTATION,
   SET_POST_REVIEW_MUTATION,
@@ -32,6 +33,12 @@ import { formatDistance, getDistanceFromCoords } from "../../utils/distance";
 
 const AVATAR_SIZE = 110;
 const soberLogo = require("../../assets/icon.png");
+
+const SOCIAL_ICON_PROPS = {
+  instagram: { name: "logo-instagram", color: "#f472b6" },
+  tiktok: { name: "logo-tiktok", color: "#22d3ee" },
+  x: { name: "logo-twitter", color: "#60a5fa" },
+};
 
 const UserProfileScreen = ({ route, navigation }) => {
   const { userId, initialUser } = route.params || {};
@@ -54,6 +61,7 @@ const UserProfileScreen = ({ route, navigation }) => {
   const [previewMuted, setPreviewMuted] = useState(true);
   const currentUser = state?.user;
   const currentUserId = currentUser?.id;
+  const { openSocial } = useOpenSocial();
 
   const viewerCoords = useMemo(() => {
     if (state?.currentPosition?.lat && state?.currentPosition?.long) {
@@ -150,6 +158,36 @@ const UserProfileScreen = ({ route, navigation }) => {
 
   const isFollowed = Boolean(profileData?.isFollowedByViewer);
   const isBuddy = Boolean(profileData?.isBuddyWithViewer);
+
+  const socialLinks = useMemo(() => {
+    const social = profileData?.social;
+    if (!social) return [];
+
+    const platforms = ["instagram", "tiktok", "x"];
+
+    return platforms
+      .map((platform) => {
+        const data = social[platform];
+        if (!data?.handle) return null;
+
+        const app = data.deeplink?.app || null;
+        const web = data.deeplink?.web || data.website || null;
+
+        if (!app && !web) return null;
+
+        return {
+          platform,
+          data: {
+            ...data,
+            deeplink: {
+              app: app || web,
+              web: web || app,
+            },
+          },
+        };
+      })
+      .filter(Boolean);
+  }, [profileData?.social]);
 
   const handleToggleFollow = useCallback(async () => {
     if (!profileData?.id || profileData?.id === state?.user?.id || followPending)
@@ -756,13 +794,36 @@ const UserProfileScreen = ({ route, navigation }) => {
         style={styles.container}
         contentContainerStyle={styles.containerContent}
       >
-      <View style={styles.editIconWrapper}>
-        <TouchableOpacity
-          style={styles.editIconButton}
-          onPress={() => navigation.goBack()}
-        >
-          <Feather name="chevron-left" size={20} color="#f59e0b" />
-        </TouchableOpacity>
+      <View style={styles.topActionsRow}>
+        <View style={styles.editIconWrapper}>
+          <TouchableOpacity
+            style={styles.editIconButton}
+            onPress={() => navigation.goBack()}
+          >
+            <Feather name="chevron-left" size={20} color="#f59e0b" />
+          </TouchableOpacity>
+        </View>
+        {socialLinks.length ? (
+          <View style={styles.socialIconsRow}>
+            {socialLinks.map(({ platform, data }) => {
+              const icon = SOCIAL_ICON_PROPS[platform];
+              return (
+                <TouchableOpacity
+                  key={platform}
+                  style={styles.socialIconButton}
+                  onPress={() => openSocial(platform, data)}
+                  activeOpacity={0.85}
+                >
+                  <Ionicons
+                    name={icon?.name || "share-social"}
+                    size={18}
+                    color={icon?.color || "#e5e7eb"}
+                  />
+                </TouchableOpacity>
+              );
+            })}
+          </View>
+        ) : null}
       </View>
       <View style={styles.bodyPadding}>
         <View style={styles.headerRow}>
@@ -969,15 +1030,31 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flex: 1,
   },
-  editIconWrapper: {
+  topActionsRow: {
     paddingHorizontal: 16,
     marginBottom: 8,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    gap: 12,
+  },
+  editIconWrapper: {
     alignItems: "flex-start",
   },
   editIconButton: {
     padding: 10,
     borderRadius: 999,
     backgroundColor: "rgba(245,158,11,0.12)",
+  },
+  socialIconsRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 10,
+  },
+  socialIconButton: {
+    padding: 9,
+    borderRadius: 999,
+    backgroundColor: "rgba(255,255,255,0.06)",
   },
   avatarLabel: {
     color: "#e5e7eb",
