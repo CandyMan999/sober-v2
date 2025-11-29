@@ -219,12 +219,6 @@ export const FOLLOW_USER_MUTATION = gql`
   }
 `;
 
-export const SEND_BUDDY_PUSH_MUTATION = gql`
-  mutation SendBuddyPush($token: String!, $buddyId: ID!, $title: String!, $body: String!) {
-    sendBuddyPush(token: $token, buddyId: $buddyId, title: $title, body: $body)
-  }
-`;
-
 export const UNFOLLOW_USER_MUTATION = gql`
   mutation UnfollowUser($token: String!, $userId: ID!) {
     unfollowUser(token: $token, userId: $userId)

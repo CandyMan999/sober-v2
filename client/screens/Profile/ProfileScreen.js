@@ -786,7 +786,7 @@ const ProfileScreen = ({ navigation }) => {
                 activeOpacity={0.85}
               >
                 <View style={styles.metricIconWrapper}>
-                  <Ionicons name="chatbubbles" size={20} color="#f59e0b" />
+                  <Ionicons name="chatbubbles" size={18} color="#f59e0b" />
                   {unreadCount > 0 ? (
                     <View style={styles.metricBadge}>
                       <Text style={styles.metricBadgeText}>{unreadCount}</Text>
@@ -821,7 +821,7 @@ const ProfileScreen = ({ navigation }) => {
                 onPress={() => handleNavigate("Notifications")}
               >
                 <View style={styles.metricIconWrapper}>
-                  <Ionicons name="notifications" size={20} color="#f59e0b" />
+                  <Ionicons name="notifications" size={18} color="#f59e0b" />
                   {counts.notifications > 0 ? (
                     <View style={styles.metricBadge}>
                       <Text style={styles.metricBadgeText}>{counts.notifications}</Text>
@@ -925,20 +925,24 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(245,158,11,0.12)",
   },
   metricIconWrapper: {
-    width: 34,
-    height: 34,
+    width: 24,
+    height: 24,
     justifyContent: "center",
     alignItems: "center",
     position: "relative",
+    marginBottom: 2,
   },
   metricBadge: {
     position: "absolute",
     top: -6,
-    right: -6,
+    right: -10,
     backgroundColor: "#f59e0b",
     borderRadius: 999,
-    paddingHorizontal: 6,
-    paddingVertical: 2,
+    minWidth: 16,
+    height: 16,
+    paddingHorizontal: 4,
+    alignItems: "center",
+    justifyContent: "center",
     borderWidth: 1,
     borderColor: "#0b1220",
   },

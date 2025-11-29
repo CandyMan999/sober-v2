@@ -1,6 +1,5 @@
 import {
   FOLLOW_USER_MUTATION,
-  SEND_BUDDY_PUSH_MUTATION,
   TOGGLE_LIKE_MUTATION,
   UNFOLLOW_USER_MUTATION,
 } from "../../GraphQL/mutations";
@@ -97,22 +96,8 @@ class FeedInteractionModel {
     return ids instanceof Set ? ids : new Set();
   }
 
-  async notifyBuddyConnection(author, token) {
-    if (!author?.id || !token) return;
-
-    try {
-      const title = "You have a new sober buddy";
-      const body = `${this.currentUser?.username || "A member"} just connected with you.`;
-
-      await this.client.request(SEND_BUDDY_PUSH_MUTATION, {
-        token,
-        buddyId: author.id,
-        title,
-        body,
-      });
-    } catch (err) {
-      console.log("Buddy push failed", err);
-    }
+  async notifyBuddyConnection(author) {
+    if (!author?.id) return;
 
     Toast.show({
       type: "info",
@@ -208,10 +193,7 @@ class FeedInteractionModel {
         ? UNFOLLOW_USER_MUTATION
         : FOLLOW_USER_MUTATION;
 
-      const data = await this.client.request(mutation, {
-        token,
-        userId: author.id,
-      });
+      const data = await this.client.request(mutation, { token, userId: author.id });
 
       const nextState = isCurrentlyFollowed
         ? { isFollowed: false, isBuddy: false }
@@ -226,7 +208,7 @@ class FeedInteractionModel {
       });
 
       if (nextState.isBuddy) {
-        await this.notifyBuddyConnection(author, token);
+        await this.notifyBuddyConnection(author);
       }
 
       return nextState;

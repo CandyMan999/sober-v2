@@ -24,7 +24,6 @@ import { USER_PROFILE_QUERY } from "../../GraphQL/queries";
 import {
   FOLLOW_USER_MUTATION,
   SET_POST_REVIEW_MUTATION,
-  SEND_BUDDY_PUSH_MUTATION,
   TOGGLE_LIKE_MUTATION,
   UNFOLLOW_USER_MUTATION,
 } from "../../GraphQL/mutations";
@@ -181,19 +180,6 @@ const UserProfileScreen = ({ route, navigation }) => {
         const isNowBuddy = Boolean(data?.followUser?.isBuddy);
 
         if (isNowBuddy) {
-          try {
-            const buddyTitle = "You have a new sober buddy";
-            const buddyBody = `${state?.user?.username || "A member"} just connected with you.`;
-            await client.request(SEND_BUDDY_PUSH_MUTATION, {
-              token,
-              buddyId: profileData.id,
-              title: buddyTitle,
-              body: buddyBody,
-            });
-          } catch (err) {
-            console.log("Buddy push failed", err);
-          }
-
           Toast.show({
             type: "info",
             text1: "You're now buddies",

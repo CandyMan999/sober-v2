@@ -77,10 +77,21 @@ const MessageListScreen = ({ route, navigation }) => {
   return (
     <SafeAreaView style={styles.container} edges={["top", "left", "right"]}>
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>Messages</Text>
-        <Text style={styles.headerSubtitle}>
-          Direct conversations with your sober buddies
-        </Text>
+        <View style={styles.headerRow}>
+          <TouchableOpacity
+            style={styles.backButton}
+            onPress={() => navigation.goBack()}
+            activeOpacity={0.8}
+          >
+            <Ionicons name="arrow-back" size={22} color="#fbbf24" />
+          </TouchableOpacity>
+          <View style={styles.headerTextBlock}>
+            <Text style={styles.headerTitle}>Messages</Text>
+            <Text style={styles.headerSubtitle}>
+              Direct conversations with your sober buddies
+            </Text>
+          </View>
+        </View>
       </View>
 
       <FlatList
@@ -105,6 +116,22 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: "#111827",
     backgroundColor: "#0b1220",
+  },
+  headerRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 12,
+  },
+  backButton: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "rgba(245,158,11,0.12)",
+  },
+  headerTextBlock: {
+    flex: 1,
   },
   headerTitle: {
     color: "#f9fafb",
