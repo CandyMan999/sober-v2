@@ -189,6 +189,7 @@ const ProfileScreen = ({ navigation }) => {
           users: followers || [],
           title: "Followers",
           subtitle: "Everyone cheering you on",
+          buddiesCount: counts.buddies,
         });
         break;
       case "Buddies":
@@ -759,18 +760,6 @@ const ProfileScreen = ({ navigation }) => {
       >
         <View style={styles.topActionsRow}>
           <TouchableOpacity
-            style={styles.messagesIconButton}
-            onPress={handleOpenMessages}
-            activeOpacity={0.85}
-          >
-            <Ionicons name="chatbubbles" size={18} color="#f59e0b" />
-            {unreadCount > 0 ? (
-              <View style={styles.messagesBadge}>
-                <Text style={styles.messagesBadgeText}>{unreadCount}</Text>
-              </View>
-            ) : null}
-          </TouchableOpacity>
-          <TouchableOpacity
             style={styles.editIconButton}
             onPress={navigateToEditProfile}
           >
@@ -792,6 +781,21 @@ const ProfileScreen = ({ navigation }) => {
           <View style={styles.metricsRow}>
             <>
               <TouchableOpacity
+                style={[styles.metric, styles.messageMetric]}
+                onPress={handleOpenMessages}
+                activeOpacity={0.85}
+              >
+                <View style={styles.messageMetricIcon}>
+                  <Ionicons name="chatbubbles" size={16} color="#f59e0b" />
+                  {unreadCount > 0 ? (
+                    <View style={styles.messagesBadge}>
+                      <Text style={styles.messagesBadgeText}>{unreadCount}</Text>
+                    </View>
+                  ) : null}
+                </View>
+                <Text style={styles.metricLabel}>DM's</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
                 style={styles.metric}
                 onPress={() => handleNavigate("Following")}
               >
@@ -804,13 +808,6 @@ const ProfileScreen = ({ navigation }) => {
               >
                 <Text style={styles.metricValue}>{counts.followers}</Text>
                 <Text style={styles.metricLabel}>Followers</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.metric}
-                onPress={() => handleNavigate("Buddies")}
-              >
-                <Text style={styles.metricValue}>{counts.buddies}</Text>
-                <Text style={styles.metricLabel}>Buddies</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.metric}
@@ -913,14 +910,17 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     alignItems: "center",
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "flex-end",
   },
   editIconButton: {
     padding: 10,
     borderRadius: 999,
     backgroundColor: "rgba(245,158,11,0.12)",
   },
-  messagesIconButton: {
+  messageMetric: {
+    width: 64,
+  },
+  messageMetricIcon: {
     width: 42,
     height: 42,
     borderRadius: 14,
@@ -929,6 +929,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderWidth: 1,
     borderColor: "rgba(245,158,11,0.25)",
+    position: "relative",
   },
   messagesBadge: {
     position: "absolute",

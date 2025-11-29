@@ -1,4 +1,5 @@
 import React, { useMemo } from "react";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { View, Text, StyleSheet, FlatList, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
@@ -74,8 +75,8 @@ const MessageListScreen = ({ route, navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.header}> 
+    <SafeAreaView style={styles.container} edges={["top", "left", "right"]}>
+      <View style={styles.header}>
         <Text style={styles.headerTitle}>Messages</Text>
         <Text style={styles.headerSubtitle}>
           Direct conversations with your sober buddies
@@ -89,7 +90,7 @@ const MessageListScreen = ({ route, navigation }) => {
         ItemSeparatorComponent={() => <View style={styles.separator} />}
         contentContainerStyle={styles.listContent}
       />
-    </View>
+    </SafeAreaView>
   );
 };
 
