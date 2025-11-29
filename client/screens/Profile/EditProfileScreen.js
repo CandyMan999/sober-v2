@@ -13,7 +13,13 @@ import {
   Keyboard,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import { Feather, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+import {
+  Feather,
+  Ionicons,
+  MaterialCommunityIcons,
+  AntDesign,
+  FontAwesome6,
+} from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import * as ImagePicker from "expo-image-picker";
 import * as ImageManipulator from "expo-image-manipulator";
@@ -47,31 +53,57 @@ const {
 const MIN_USERNAME_LENGTH = 3;
 const MAX_USERNAME_LENGTH = 13;
 
+const SOCIAL_ICON_SIZE = 22;
+const SOCIAL_ICON_COLOR = textPrimary;
+
 const SOCIAL_CONFIG = {
   instagram: {
-    label: "Instagram",
+    label: "Instagram (Optional)",
     placeholder: "@username",
+    errorLabel: "Instagram",
     regex: /^[A-Za-z0-9._]{1,30}$/,
-    urlPrefixes: [/^https?:\/\/(www\.)?instagram\.com\//i, /^instagram:\/\/user\?username=/i],
-    icon: <Feather name="instagram" size={18} color="#f472b6" />,
+    urlPrefixes: [
+      /^https?:\/\/(www\.)?instagram\.com\//i,
+      /^instagram:\/\/user\?username=/i,
+    ],
+    icon: (
+      <Feather
+        name="instagram"
+        size={SOCIAL_ICON_SIZE}
+        color={SOCIAL_ICON_COLOR}
+      />
+    ),
   },
   tiktok: {
-    label: "TikTok",
+    label: "TikTok (Optional)",
     placeholder: "@username",
+    errorLabel: "TikTok",
     regex: /^[A-Za-z0-9._]{1,24}$/,
-    urlPrefixes: [/^https?:\/\/(www\.)?tiktok\.com\/[@]?/i, /^tiktok:\/\/user\?username=/i],
-    icon: <MaterialCommunityIcons name="tiktok" size={18} color="#38bdf8" />,
+    urlPrefixes: [
+      /^https?:\/\/(www\.)?tiktok\.com\/[@]?/i,
+      /^tiktok:\/\/user\?username=/i,
+    ],
+    icon: (
+      <FontAwesome6
+        name="tiktok"
+        size={SOCIAL_ICON_SIZE}
+        color={SOCIAL_ICON_COLOR}
+      />
+    ),
   },
   x: {
-    label: "X (Twitter)",
+    label: "X (Optional)",
     placeholder: "@handle",
+    errorLabel: "X",
     regex: /^[A-Za-z0-9_]{1,15}$/,
     urlPrefixes: [
       /^https?:\/\/(www\.)?(x|twitter)\.com\//i,
       /^twitter:\/\//i,
       /^x:\/\/profile\//i,
     ],
-    icon: <Feather name="twitter" size={18} color="#60a5fa" />,
+    icon: (
+      <AntDesign name="x" size={SOCIAL_ICON_SIZE} color={SOCIAL_ICON_COLOR} />
+    ),
   },
 };
 
@@ -86,7 +118,7 @@ const normalizeSocialInput = (platform, rawValue) => {
   let handle = (value || "").trim();
   if (!handle) return "";
 
-  handle = handle.replace(/^@/, "");
+  handle = handle.replace(/@/g, "");
 
   SOCIAL_CONFIG[platform]?.urlPrefixes?.forEach((pattern) => {
     handle = handle.replace(pattern, "");
@@ -112,7 +144,11 @@ const ProfilePhotoTile = ({ label, uri, isUploading, onPick, onDelete }) => (
     <LinearGradient colors={[accent, accent]} style={styles.profileHalo}>
       <View style={styles.profilePreview}>
         {uri ? (
-          <Image source={{ uri }} style={styles.profileImage} resizeMode="cover" />
+          <Image
+            source={{ uri }}
+            style={styles.profileImage}
+            resizeMode="cover"
+          />
         ) : (
           <View style={[styles.profileImage, styles.photoPlaceholder]}>
             <Feather name="camera" color={textSecondary} size={24} />
@@ -145,7 +181,11 @@ const DrunkPhotoTile = ({ label, uri, isUploading, onPick, onDelete }) => (
     <LinearGradient colors={[oceanBlue, oceanBlue]} style={styles.drunkHalo}>
       <View style={styles.drunkPreview}>
         {uri ? (
-          <Image source={{ uri }} style={styles.drunkImage} resizeMode="cover" />
+          <Image
+            source={{ uri }}
+            style={styles.drunkImage}
+            resizeMode="cover"
+          />
         ) : (
           <View style={[styles.drunkImage, styles.photoPlaceholder]}>
             <Feather name="image" color={textSecondary} size={24} />
@@ -179,7 +219,11 @@ const ToggleRow = ({ icon, label, value, onValueChange, activeColor }) => (
       {icon}
       <Text style={styles.rowLabelWithIcon}>{label}</Text>
     </View>
-    <ToggleSwitch value={value} onValueChange={onValueChange} activeColor={activeColor} />
+    <ToggleSwitch
+      value={value}
+      onValueChange={onValueChange}
+      activeColor={activeColor}
+    />
   </View>
 );
 
@@ -209,6 +253,7 @@ const EditProfileScreen = ({ navigation }) => {
     x: normalizeSocialInput("x", user?.social?.x),
   });
   const [savingSocial, setSavingSocial] = useState(false);
+  const [socialOpen, setSocialOpen] = useState(false);
 
   const [pushEnabled, setPushEnabled] = useState(true);
   const [locationEnabled, setLocationEnabled] = useState(false);
@@ -251,7 +296,9 @@ const EditProfileScreen = ({ navigation }) => {
         }
         setToken(storedToken);
 
-        const data = await client.request(FETCH_ME_QUERY, { token: storedToken });
+        const data = await client.request(FETCH_ME_QUERY, {
+          token: storedToken,
+        });
         const fetchedUser = data?.fetchMe;
         if (fetchedUser) {
           setUser(fetchedUser);
@@ -261,7 +308,10 @@ const EditProfileScreen = ({ navigation }) => {
           setDrunkId(fetchedUser.drunkPic?.id || null);
           setUsernameInput(fetchedUser.username || "");
           setSocialInputs({
-            instagram: normalizeSocialInput("instagram", fetchedUser.social?.instagram),
+            instagram: normalizeSocialInput(
+              "instagram",
+              fetchedUser.social?.instagram
+            ),
             tiktok: normalizeSocialInput("tiktok", fetchedUser.social?.tiktok),
             x: normalizeSocialInput("x", fetchedUser.social?.x),
           });
@@ -270,7 +320,10 @@ const EditProfileScreen = ({ navigation }) => {
         }
       } catch (err) {
         console.log("Failed to fetch profile", err);
-        showError("We couldn't load your profile right now. Please try again.", "Profile error");
+        showError(
+          "We couldn't load your profile right now. Please try again.",
+          "Profile error"
+        );
       } finally {
         setLoading(false);
       }
@@ -372,7 +425,9 @@ const EditProfileScreen = ({ navigation }) => {
   const pickImage = async (slot) => {
     const isProfile = slot === "PROFILE";
     if (!token) {
-      showError("We need your device ID to update photos. Please restart the app.");
+      showError(
+        "We need your device ID to update photos. Please restart the app."
+      );
       return;
     }
 
@@ -420,7 +475,9 @@ const EditProfileScreen = ({ navigation }) => {
     const photoId = isProfile ? profileId : drunkId;
     if (!photoId || deletingSlot) return;
     if (!token) {
-      showError("We need your device ID to delete photos. Please restart the app.");
+      showError(
+        "We need your device ID to delete photos. Please restart the app."
+      );
       return;
     }
 
@@ -460,8 +517,10 @@ const EditProfileScreen = ({ navigation }) => {
     trimmedUsername.length <= MAX_USERNAME_LENGTH;
   const usernameValidationText = useMemo(() => {
     if (usernameInput.length === 0) return "You can change this later.";
-    if (trimmedUsername.length < MIN_USERNAME_LENGTH) return "At least 3 characters.";
-    if (trimmedUsername.length > MAX_USERNAME_LENGTH) return "Max 13 characters.";
+    if (trimmedUsername.length < MIN_USERNAME_LENGTH)
+      return "At least 3 characters.";
+    if (trimmedUsername.length > MAX_USERNAME_LENGTH)
+      return "Max 13 characters.";
     return "Looks good.";
   }, [trimmedUsername.length, usernameInput]);
 
@@ -471,9 +530,10 @@ const EditProfileScreen = ({ navigation }) => {
     Object.entries(socialInputs).forEach(([platform, value]) => {
       const cleaned = normalizeSocialInput(platform, value);
       const config = SOCIAL_CONFIG[platform];
+      const label = config?.errorLabel || config?.label || platform;
 
       if (cleaned && config?.regex && !config.regex.test(cleaned)) {
-        errors[platform] = `Enter a valid ${config.label} username.`;
+        errors[platform] = `Enter a valid ${label} username.`;
       }
     });
 
@@ -493,8 +553,6 @@ const EditProfileScreen = ({ navigation }) => {
       return;
     }
 
-    let updated = false;
-
     try {
       setSavingUsername(true);
       const { updateUserProfile } = await client.request(
@@ -502,10 +560,12 @@ const EditProfileScreen = ({ navigation }) => {
         { token, username: trimmed }
       );
 
-      updated = Boolean(updateUserProfile);
-
       setUser(updateUserProfile);
-      dispatch({ type: "SET_USER", payload: updateUserProfile });
+      dispatch({
+        type: "SET_USER",
+        payload: { ...user, ...updateUserProfile },
+      });
+      setUsernameOpen(false);
     } catch (err) {
       const message =
         err?.response?.errors?.[0]?.message ||
@@ -513,10 +573,7 @@ const EditProfileScreen = ({ navigation }) => {
       showError(message, "Username error");
     } finally {
       setSavingUsername(false);
-
-      if (updated) {
-        setUsernameOpen(false);
-      }
+      setUsernameOpen(false);
     }
   };
 
@@ -558,9 +615,12 @@ const EditProfileScreen = ({ navigation }) => {
 
       if (latestUser) {
         setUser(latestUser);
-        dispatch({ type: "SET_USER", payload: latestUser });
+        dispatch({ type: "SET_USER", payload: { ...user, ...latestUser } });
         setSocialInputs({
-          instagram: normalizeSocialInput("instagram", latestUser.social?.instagram),
+          instagram: normalizeSocialInput(
+            "instagram",
+            latestUser.social?.instagram
+          ),
           tiktok: normalizeSocialInput("tiktok", latestUser.social?.tiktok),
           x: normalizeSocialInput("x", latestUser.social?.x),
         });
@@ -572,6 +632,7 @@ const EditProfileScreen = ({ navigation }) => {
       showError(message, "Social links");
     } finally {
       setSavingSocial(false);
+      setSocialOpen(false);
     }
   };
 
@@ -601,266 +662,340 @@ const EditProfileScreen = ({ navigation }) => {
           keyboardShouldPersistTaps="handled"
           keyboardDismissMode="on-drag"
         >
-        <View style={styles.sectionCard}>
-          <Text style={styles.sectionLabel}>Photos</Text>
-          <View style={styles.photoRow}>
-            <ProfilePhotoTile
-              label="Profile Photo"
-              uri={profileUri}
-              isUploading={uploadingSlot === "PROFILE"}
-              onPick={() => pickImage("PROFILE")}
-              onDelete={() => deletePhoto("PROFILE")}
-            />
-            <DrunkPhotoTile
-              label="Drunk Photo"
-              uri={drunkUri}
-              isUploading={uploadingSlot === "DRUNK"}
-              onPick={() => pickImage("DRUNK")}
-              onDelete={() => deletePhoto("DRUNK")}
-            />
-          </View>
-        </View>
-
-        <View style={styles.sectionCard}>
-          <TouchableOpacity
-            style={styles.dropdownHeader}
-            onPress={() => setUsernameOpen((prev) => !prev)}
-            activeOpacity={0.8}
-          >
-            <View style={styles.rowLeft}>
-              <Feather name="at-sign" size={18} color={accent} />
-              <View style={styles.rowTextBlock}>
-                <Text style={styles.rowLabel}>Username</Text>
-                <Text style={styles.rowValue}>{usernameDisplay}</Text>
-              </View>
-            </View>
-            <Feather
-              name={usernameOpen ? "chevron-up" : "chevron-down"}
-              size={18}
-              color={textSecondary}
-            />
-          </TouchableOpacity>
-          {usernameOpen ? (
-            <View style={styles.dropdownBody}>
-              <Text style={styles.helperText}>
-                This is how friends find you. Usernames must be unique.
-              </Text>
-              <TextInput
-                style={styles.input}
-                placeholder="Enter username"
-                placeholderTextColor={textSecondary}
-                value={usernameInput}
-                onChangeText={setUsernameInput}
-                autoCapitalize="none"
-                autoCorrect={false}
-                maxLength={MAX_USERNAME_LENGTH}
-                returnKeyType="done"
-                onSubmitEditing={() => {
-                  Keyboard.dismiss();
-                  if (isUsernameValid) handleSaveUsername();
-                }}
+          <View style={styles.sectionCard}>
+            <Text style={styles.sectionLabel}>Photos</Text>
+            <View style={styles.photoRow}>
+              <ProfilePhotoTile
+                label="Profile Photo"
+                uri={profileUri}
+                isUploading={uploadingSlot === "PROFILE"}
+                onPick={() => pickImage("PROFILE")}
+                onDelete={() => deletePhoto("PROFILE")}
               />
-              <Text
-                style={[
-                  styles.validationText,
-                  !isUsernameValid && trimmedUsername.length > 0 && styles.validationError,
-                ]}
-              >
-                {usernameValidationText}
-              </Text>
-              <TouchableOpacity
-                style={styles.saveButton}
-                onPress={handleSaveUsername}
-                disabled={!isUsernameValid || savingUsername}
-                activeOpacity={0.9}
-              >
-                <LinearGradient
-                  colors={
-                    !isUsernameValid || savingUsername
-                      ? [border, border]
-                      : [accent, accent]
-                  }
-                  start={{ x: 0, y: 0 }}
-                  end={{ x: 1, y: 1 }}
-                  style={[styles.saveButtonInner, (!isUsernameValid || savingUsername) && styles.saveButtonDisabled]}
-                >
-                  {savingUsername ? (
-                    <ActivityIndicator color={nightBlue} />
-                  ) : (
-                    <Text style={styles.saveButtonText}>Save username</Text>
-                  )}
-                </LinearGradient>
-              </TouchableOpacity>
+              <DrunkPhotoTile
+                label="Drunk Photo"
+                uri={drunkUri}
+                isUploading={uploadingSlot === "DRUNK"}
+                onPick={() => pickImage("DRUNK")}
+                onDelete={() => deletePhoto("DRUNK")}
+              />
             </View>
-          ) : null}
-        </View>
+          </View>
 
-        <View style={styles.sectionCard}>
-          <Text style={styles.sectionLabel}>Social links</Text>
-          <Text style={styles.helperText}>
-            Add your usernames so friends can tap straight to your profile.
-          </Text>
-
-          {Object.entries(SOCIAL_CONFIG).map(([platform, config]) => {
-            const error = socialValidation[platform];
-
-            return (
-              <View key={platform} style={styles.socialRow}>
-                <View style={styles.rowLeft}>
-                  {config.icon}
-                  <Text style={styles.rowLabelWithIcon}>{config.label}</Text>
+          <View style={styles.sectionCard}>
+            <TouchableOpacity
+              style={styles.dropdownHeader}
+              onPress={() => setUsernameOpen((prev) => !prev)}
+              activeOpacity={0.8}
+            >
+              <View style={styles.rowLeft}>
+                <Feather name="at-sign" size={18} color={accent} />
+                <View style={styles.rowTextBlock}>
+                  <Text style={styles.rowLabel}>Username</Text>
+                  <Text style={styles.rowValue}>{usernameDisplay}</Text>
                 </View>
+              </View>
+              <Feather
+                name={usernameOpen ? "chevron-up" : "chevron-down"}
+                size={18}
+                color={textSecondary}
+              />
+            </TouchableOpacity>
+            {usernameOpen ? (
+              <View style={styles.dropdownBody}>
+                <Text style={styles.helperText}>
+                  This is how friends find you. Usernames must be unique.
+                </Text>
                 <TextInput
                   style={styles.input}
-                  placeholder={config.placeholder}
+                  placeholder="Enter username"
                   placeholderTextColor={textSecondary}
-                  value={socialInputs[platform] || ""}
-                  onChangeText={(text) =>
-                    setSocialInputs((prev) => ({ ...prev, [platform]: text }))
-                  }
+                  value={usernameInput}
+                  onChangeText={setUsernameInput}
                   autoCapitalize="none"
                   autoCorrect={false}
+                  maxLength={MAX_USERNAME_LENGTH}
                   returnKeyType="done"
+                  onSubmitEditing={() => {
+                    Keyboard.dismiss();
+                    if (isUsernameValid) handleSaveUsername();
+                  }}
                 />
                 <Text
                   style={[
                     styles.validationText,
-                    error ? styles.validationError : null,
+                    !isUsernameValid &&
+                      trimmedUsername.length > 0 &&
+                      styles.validationError,
                   ]}
                 >
-                  {error || `Paste a link or ${config.placeholder}.`}
+                  {usernameValidationText}
+                </Text>
+                <TouchableOpacity
+                  style={styles.saveButton}
+                  onPress={handleSaveUsername}
+                  disabled={!isUsernameValid || savingUsername}
+                  activeOpacity={0.9}
+                >
+                  <LinearGradient
+                    colors={
+                      !isUsernameValid || savingUsername
+                        ? [border, border]
+                        : [accent, accent]
+                    }
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 1 }}
+                    style={[
+                      styles.saveButtonInner,
+                      (!isUsernameValid || savingUsername) &&
+                        styles.saveButtonDisabled,
+                    ]}
+                  >
+                    {savingUsername ? (
+                      <ActivityIndicator color={nightBlue} />
+                    ) : (
+                      <Text style={styles.saveButtonText}>Save username</Text>
+                    )}
+                  </LinearGradient>
+                </TouchableOpacity>
+              </View>
+            ) : null}
+          </View>
+
+          <View style={styles.sectionCard}>
+            <TouchableOpacity
+              style={styles.dropdownHeader}
+              onPress={() => setSocialOpen((prev) => !prev)}
+              activeOpacity={0.8}
+            >
+              <View style={styles.rowLeft}>
+                <Ionicons name="share-social" size={18} color={oceanBlue} />
+                <Text style={styles.rowLabelWithIcon}>Social links</Text>
+              </View>
+              <Feather
+                name={socialOpen ? "chevron-up" : "chevron-down"}
+                size={18}
+                color={textSecondary}
+              />
+            </TouchableOpacity>
+
+            {socialOpen ? (
+              <>
+                <Text style={styles.helperText}>
+                  Add your usernames (Optional) so friends can tap straight to
+                  your profile.
+                </Text>
+
+                {Object.entries(SOCIAL_CONFIG).map(([platform, config]) => {
+                  const error = socialValidation[platform];
+
+                  return (
+                    <View key={platform} style={styles.socialRow}>
+                      <View style={styles.rowLeft}>
+                        {config.icon}
+                        <Text style={styles.rowLabelWithIcon}>
+                          {config.label}
+                        </Text>
+                      </View>
+                      <TextInput
+                        style={styles.input}
+                        placeholder={config.placeholder}
+                        placeholderTextColor={textSecondary}
+                        value={socialInputs[platform] || ""}
+                        onChangeText={(text) =>
+                          setSocialInputs((prev) => ({
+                            ...prev,
+                            [platform]: text,
+                          }))
+                        }
+                        autoCapitalize="none"
+                        autoCorrect={false}
+                        returnKeyType="done"
+                      />
+                      <Text
+                        style={[
+                          styles.validationText,
+                          error ? styles.validationError : null,
+                        ]}
+                      >
+                        {error || `Paste a link or ${config.placeholder}.`}
+                      </Text>
+                    </View>
+                  );
+                })}
+
+                <TouchableOpacity
+                  style={styles.saveButton}
+                  onPress={handleSaveSocialLinks}
+                  disabled={!isSocialValid || savingSocial}
+                  activeOpacity={0.9}
+                >
+                  <LinearGradient
+                    colors={
+                      !isSocialValid || savingSocial
+                        ? [border, border]
+                        : [accent, accent]
+                    }
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 1 }}
+                    style={[
+                      styles.saveButtonInner,
+                      (!isSocialValid || savingSocial) &&
+                        styles.saveButtonDisabled,
+                    ]}
+                  >
+                    {savingSocial ? (
+                      <ActivityIndicator color={nightBlue} />
+                    ) : (
+                      <Text style={styles.saveButtonText}>
+                        Save social links
+                      </Text>
+                    )}
+                  </LinearGradient>
+                </TouchableOpacity>
+              </>
+            ) : null}
+          </View>
+
+          <View style={styles.sectionCard}>
+            <TouchableOpacity
+              style={styles.dropdownHeader}
+              onPress={() => setNotificationsOpen((prev) => !prev)}
+              activeOpacity={0.8}
+            >
+              <View style={styles.rowLeft}>
+                <Ionicons name="notifications" size={18} color={oceanBlue} />
+                <Text style={styles.rowLabelWithIcon}>
+                  Notification settings
                 </Text>
               </View>
-            );
-          })}
+              <Feather
+                name={notificationsOpen ? "chevron-up" : "chevron-down"}
+                size={18}
+                color={textSecondary}
+              />
+            </TouchableOpacity>
+            {notificationsOpen ? (
+              <View style={styles.dropdownBody}>
+                <ToggleRow
+                  icon={<Feather name="award" size={18} color={accent} />}
+                  label="Milestones"
+                  value={notificationPrefs.milestones}
+                  onValueChange={(value) =>
+                    setNotificationPrefs((prev) => ({
+                      ...prev,
+                      milestones: value,
+                    }))
+                  }
+                  activeColor={accent}
+                />
+                <ToggleRow
+                  icon={
+                    <Feather
+                      name="message-circle"
+                      size={18}
+                      color={oceanBlue}
+                    />
+                  }
+                  label="Comments"
+                  value={notificationPrefs.comments}
+                  onValueChange={(value) =>
+                    setNotificationPrefs((prev) => ({
+                      ...prev,
+                      comments: value,
+                    }))
+                  }
+                  activeColor={oceanBlue}
+                />
+                <ToggleRow
+                  icon={<Feather name="users" size={18} color={accent} />}
+                  label="Friends posts"
+                  value={notificationPrefs.friendsPosts}
+                  onValueChange={(value) =>
+                    setNotificationPrefs((prev) => ({
+                      ...prev,
+                      friendsPosts: value,
+                    }))
+                  }
+                  activeColor={accent}
+                />
+                <ToggleRow
+                  icon={
+                    <MaterialCommunityIcons
+                      name="beer"
+                      size={18}
+                      color={oceanBlue}
+                    />
+                  }
+                  label="Buddies near bars"
+                  value={notificationPrefs.buddiesNear}
+                  onValueChange={(value) =>
+                    setNotificationPrefs((prev) => ({
+                      ...prev,
+                      buddiesNear: value,
+                    }))
+                  }
+                  activeColor={oceanBlue}
+                />
+                <ToggleRow
+                  icon={
+                    <MaterialCommunityIcons
+                      name="glass-cocktail"
+                      size={18}
+                      color={accent}
+                    />
+                  }
+                  label="Liquor & bars"
+                  value={notificationPrefs.liquorBars}
+                  onValueChange={(value) =>
+                    setNotificationPrefs((prev) => ({
+                      ...prev,
+                      liquorBars: value,
+                    }))
+                  }
+                  activeColor={accent}
+                />
+              </View>
+            ) : null}
+          </View>
 
-          <TouchableOpacity
-            style={styles.saveButton}
-            onPress={handleSaveSocialLinks}
-            disabled={!isSocialValid || savingSocial}
-            activeOpacity={0.9}
-          >
-            <LinearGradient
-              colors={
-                !isSocialValid || savingSocial ? [border, border] : [accent, accent]
-              }
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 1 }}
-              style={[styles.saveButtonInner, (!isSocialValid || savingSocial) && styles.saveButtonDisabled]}
-            >
-              {savingSocial ? (
-                <ActivityIndicator color={nightBlue} />
-              ) : (
-                <Text style={styles.saveButtonText}>Save social links</Text>
-              )}
-            </LinearGradient>
-          </TouchableOpacity>
-        </View>
-
-        <View style={styles.sectionCard}>
-          <TouchableOpacity
-            style={styles.dropdownHeader}
-            onPress={() => setNotificationsOpen((prev) => !prev)}
-            activeOpacity={0.8}
-          >
-            <View style={styles.rowLeft}>
-              <Ionicons name="notifications" size={18} color={oceanBlue} />
-              <Text style={styles.rowLabelWithIcon}>Notification settings</Text>
-            </View>
-            <Feather
-              name={notificationsOpen ? "chevron-up" : "chevron-down"}
-              size={18}
-              color={textSecondary}
+          <View style={styles.sectionCard}>
+            <Text style={styles.sectionLabel}>Privacy</Text>
+            <ToggleRow
+              icon={<Ionicons name="notifications" size={18} color={accent} />}
+              label="All push notifications"
+              value={pushEnabled}
+              onValueChange={setPushEnabled}
+              activeColor={accent}
             />
-          </TouchableOpacity>
-          {notificationsOpen ? (
-            <View style={styles.dropdownBody}>
-              <ToggleRow
-                icon={<Feather name="award" size={18} color={accent} />}
-                label="Milestones"
-                value={notificationPrefs.milestones}
-                onValueChange={(value) =>
-                  setNotificationPrefs((prev) => ({ ...prev, milestones: value }))
-                }
-                activeColor={accent}
-              />
-              <ToggleRow
-                icon={<Feather name="message-circle" size={18} color={oceanBlue} />}
-                label="Comments"
-                value={notificationPrefs.comments}
-                onValueChange={(value) =>
-                  setNotificationPrefs((prev) => ({ ...prev, comments: value }))
-                }
-                activeColor={oceanBlue}
-              />
-              <ToggleRow
-                icon={<Feather name="users" size={18} color={accent} />}
-                label="Friends posts"
-                value={notificationPrefs.friendsPosts}
-                onValueChange={(value) =>
-                  setNotificationPrefs((prev) => ({ ...prev, friendsPosts: value }))
-                }
-                activeColor={accent}
-              />
-              <ToggleRow
-                icon={<MaterialCommunityIcons name="beer" size={18} color={oceanBlue} />}
-                label="Buddies near bars"
-                value={notificationPrefs.buddiesNear}
-                onValueChange={(value) =>
-                  setNotificationPrefs((prev) => ({ ...prev, buddiesNear: value }))
-                }
-                activeColor={oceanBlue}
-              />
-              <ToggleRow
-                icon={<MaterialCommunityIcons name="glass-cocktail" size={18} color={accent} />}
-                label="Liquor & bars"
-                value={notificationPrefs.liquorBars}
-                onValueChange={(value) =>
-                  setNotificationPrefs((prev) => ({ ...prev, liquorBars: value }))
-                }
-                activeColor={accent}
-              />
-            </View>
-          ) : null}
-        </View>
-
-        <View style={styles.sectionCard}>
-          <Text style={styles.sectionLabel}>Privacy</Text>
-          <ToggleRow
-            icon={<Ionicons name="notifications" size={18} color={accent} />}
-            label="All push notifications"
-            value={pushEnabled}
-            onValueChange={setPushEnabled}
-            activeColor={accent}
-          />
-          <ToggleRow
-            icon={<Feather name="map-pin" size={18} color={oceanBlue} />}
-            label="Location tracking"
-            value={locationEnabled}
-            onValueChange={setLocationEnabled}
-            activeColor={oceanBlue}
-          />
-          <Text style={styles.helperText}>
-            We only use your location to catch when you might be hanging at a bar
-            or liquor store so we can ping your sober buddies before you make any
-            dumb decisions.
-          </Text>
-          <TouchableOpacity
-            style={styles.deleteProfileButton}
-            activeOpacity={0.9}
-            onPress={handleDeleteProfile}
-          >
-            <LinearGradient
-              colors={["#991b1b", "#f97316"]}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 1 }}
-              style={styles.deleteProfileInner}
+            <ToggleRow
+              icon={<Feather name="map-pin" size={18} color={oceanBlue} />}
+              label="Location tracking"
+              value={locationEnabled}
+              onValueChange={setLocationEnabled}
+              activeColor={oceanBlue}
+            />
+            <Text style={styles.helperText}>
+              We only use your location to catch when you might be hanging at a
+              bar or liquor store so we can ping your sober buddies before you
+              make any dumb decisions.
+            </Text>
+            <TouchableOpacity
+              style={styles.deleteProfileButton}
+              activeOpacity={0.9}
+              onPress={handleDeleteProfile}
             >
-              <Feather name="trash-2" size={16} color="#fff" />
-              <Text style={styles.deleteProfileText}>Delete profile</Text>
-            </LinearGradient>
-          </TouchableOpacity>
-        </View>
+              <LinearGradient
+                colors={["#991b1b", "#f97316"]}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+                style={styles.deleteProfileInner}
+              >
+                <Feather name="trash-2" size={16} color="#fff" />
+                <Text style={styles.deleteProfileText}>Delete profile</Text>
+              </LinearGradient>
+            </TouchableOpacity>
+          </View>
         </ScrollView>
 
         {loading ? (

@@ -10,7 +10,7 @@ import {
   useWindowDimensions,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import { Feather, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+import { Feather, Ionicons, MaterialCommunityIcons, AntDesign } from "@expo/vector-icons";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import { TabView } from "react-native-tab-view";
@@ -33,11 +33,23 @@ import { formatDistance, getDistanceFromCoords } from "../../utils/distance";
 
 const AVATAR_SIZE = 110;
 const soberLogo = require("../../assets/icon.png");
+const SOCIAL_ICON_SIZE = 22;
+const SOCIAL_ICON_COLOR = "#e5e7eb";
 
 const SOCIAL_ICON_PROPS = {
-  instagram: { name: "logo-instagram", color: "#f472b6" },
-  tiktok: { name: "logo-tiktok", color: "#22d3ee" },
-  x: { name: "logo-twitter", color: "#60a5fa" },
+  instagram: {
+    Component: Ionicons,
+    name: "logo-instagram",
+    color: SOCIAL_ICON_COLOR,
+    size: SOCIAL_ICON_SIZE,
+  },
+  tiktok: {
+    Component: FontAwesome6,
+    name: "tiktok",
+    color: SOCIAL_ICON_COLOR,
+    size: SOCIAL_ICON_SIZE,
+  },
+  x: { Component: AntDesign, name: "x", color: SOCIAL_ICON_COLOR, size: SOCIAL_ICON_SIZE },
 };
 
 const UserProfileScreen = ({ route, navigation }) => {
@@ -807,6 +819,7 @@ const UserProfileScreen = ({ route, navigation }) => {
           <View style={styles.socialIconsRow}>
             {socialLinks.map(({ platform, data }) => {
               const icon = SOCIAL_ICON_PROPS[platform];
+              const IconComponent = icon?.Component || Ionicons;
               return (
                 <TouchableOpacity
                   key={platform}
@@ -814,9 +827,9 @@ const UserProfileScreen = ({ route, navigation }) => {
                   onPress={() => openSocial(platform, data)}
                   activeOpacity={0.85}
                 >
-                  <Ionicons
+                  <IconComponent
                     name={icon?.name || "share-social"}
-                    size={18}
+                    size={icon?.size || 18}
                     color={icon?.color || "#e5e7eb"}
                   />
                 </TouchableOpacity>

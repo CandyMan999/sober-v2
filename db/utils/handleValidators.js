@@ -9,7 +9,7 @@ const normalizeHandle = (platform, rawValue) => {
   const config = SOCIAL_RULES[platform];
   const urlPatterns = config?.urlPatterns ?? [];
 
-  let handle = trimmed;
+  let handle = trimmed.replace(/@/g, "");
 
   urlPatterns.forEach((pattern) => {
     handle = handle.replace(pattern, "");

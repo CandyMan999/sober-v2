@@ -28,40 +28,67 @@ export const UPDATE_USER_PROFILE_MUTATION = gql`
       token
       username
       profilePicUrl
+      drunkPicUrl
       sobrietyStartAt
       timezone
       lat
       long
       whyStatement
-        social {
-          instagram {
-            handle
-            verified
-            website
-            deeplink {
-              app
-              web
-            }
+      followersCount
+      followingCount
+      buddiesCount
+      savedPosts {
+        id
+      }
+      milestonesNotified
+      notificationsEnabled
+      social {
+        instagram {
+          handle
+          verified
+          website
+          deeplink {
+            app
+            web
           }
-          tiktok {
-            handle
-            verified
-            website
-            deeplink {
-              app
-              web
-            }
+        }
+        tiktok {
+          handle
+          verified
+          website
+          deeplink {
+            app
+            web
           }
-          x {
-            handle
-            verified
-            website
-            deeplink {
-              app
-              web
+        }
+        x {
+          handle
+          verified
+          website
+          deeplink {
+            app
+            web
           }
         }
       }
+      streaks {
+        startAt
+        endAt
+      }
+      profilePic {
+        id
+        url
+        publicId
+        provider
+      }
+      drunkPic {
+        id
+        url
+        publicId
+        provider
+      }
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -70,35 +97,70 @@ export const UPDATE_SOCIAL_MUTATION = gql`
   mutation UpdateSocial($token: String!, $platform: SocialPlatform!, $handle: String) {
     updateSocial(token: $token, platform: $platform, handle: $handle) {
       id
-        social {
-          instagram {
-            handle
-            verified
-            website
-            deeplink {
-              app
-              web
-            }
-          }
-          tiktok {
-            handle
-            verified
-            website
-            deeplink {
-              app
-              web
-            }
-          }
-          x {
-            handle
-            verified
-            website
-            deeplink {
-              app
-              web
-            }
-          }
+      token
+      username
+      profilePicUrl
+      drunkPicUrl
+      sobrietyStartAt
+      timezone
+      lat
+      long
+      whyStatement
+      followersCount
+      followingCount
+      buddiesCount
+      savedPosts {
+        id
       }
+      milestonesNotified
+      notificationsEnabled
+      social {
+        instagram {
+          handle
+          verified
+          website
+          deeplink {
+            app
+            web
+          }
+        }
+        tiktok {
+          handle
+          verified
+          website
+          deeplink {
+            app
+            web
+          }
+        }
+        x {
+          handle
+          verified
+          website
+          deeplink {
+            app
+            web
+          }
+        }
+      }
+      streaks {
+        startAt
+        endAt
+      }
+      profilePic {
+        id
+        url
+        publicId
+        provider
+      }
+      drunkPic {
+        id
+        url
+        publicId
+        provider
+      }
+      createdAt
+      updatedAt
     }
   }
 `;

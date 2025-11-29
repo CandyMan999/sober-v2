@@ -32,7 +32,7 @@ const SOCIAL_RULES = {
   x: {
     label: "X",
     pattern: /^[A-Za-z0-9_]{1,15}$/,
-    error: "Please enter a valid X (Twitter) username.",
+    error: "Please enter a valid X username.",
     urlPatterns: [
       /^https?:\/\/(www\.)?(x|twitter)\.com\//i,
       /^twitter:\/\//i,
@@ -43,7 +43,7 @@ const SOCIAL_RULES = {
       app: `twitter://user?screen_name=${handle}`,
       web: `https://x.com/${handle}`,
     }),
-    existsUrl: (handle) => `https://www.x.com/${handle}`,
+    existsUrl: (handle) => `https://x.com/${handle}`,
   },
 };
 

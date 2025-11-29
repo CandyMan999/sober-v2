@@ -8,6 +8,7 @@ const {
   buildDeepLink,
 } = require("../../utils/handleValidators");
 const { checkHandleExists } = require("../../utils/checkHandleExists");
+const { serializeUser } = require("../../utils/serializeUser");
 
 const validatePlatform = (platform) => {
   if (!platform || typeof platform !== "string") {
@@ -37,10 +38,16 @@ const buildSocialEntry = async (platform, handle) => {
   }
 
   const deeplink = buildDeepLink(platform, normalizedHandle);
+  if (!deeplink?.app && !deeplink?.web) {
+    throw new UserInputError(`Unable to build a ${platform} profile link.`);
+  }
+
+  const webLink = deeplink?.web || null;
+  const appLink = deeplink?.app || webLink;
   return {
     handle: normalizedHandle,
-    deeplink,
-    website: deeplink?.web || null,
+    deeplink: { app: appLink, web: webLink },
+    website: webLink,
     verified: true,
   };
 };
@@ -60,7 +67,8 @@ module.exports = {
 
       user.social = { ...existingSocial, [normalizedPlatform]: null };
       await user.save();
-      return user;
+      await user.populate(["profilePic", "drunkPic"]);
+      return serializeUser(user);
     }
 
     const socialEntry = await buildSocialEntry(normalizedPlatform, handle);
@@ -72,6 +80,7 @@ module.exports = {
 
     user.social = { ...existingSocial, [normalizedPlatform]: socialEntry };
     await user.save();
-    return user;
+    await user.populate(["profilePic", "drunkPic"]);
+    return serializeUser(user);
   },
 };
