@@ -96,6 +96,13 @@ const LikesScreen = () => {
     if (!item?.raw) return;
 
     const raw = item.raw;
+    const fallbackPic =
+      raw.profilePicUrl ||
+      raw?.user?.profilePicUrl ||
+      raw?.author?.profilePicUrl ||
+      raw?.postAuthor?.profilePicUrl ||
+      raw?.createdBy?.profilePicUrl;
+
     const authorFallback =
       raw.author ||
       raw.user ||
@@ -104,6 +111,7 @@ const LikesScreen = () => {
       (username
         ? {
             username,
+            profilePicUrl: fallbackPic,
           }
         : null);
 
@@ -114,6 +122,19 @@ const LikesScreen = () => {
       postAuthor: raw.postAuthor || raw.author || raw.user || authorFallback,
       createdBy: raw.createdBy || raw.author || raw.user || authorFallback,
     };
+
+    if (!hydratedItem.author?.profilePicUrl && fallbackPic) {
+      hydratedItem.author = { ...hydratedItem.author, profilePicUrl: fallbackPic };
+    }
+    if (!hydratedItem.user?.profilePicUrl && fallbackPic) {
+      hydratedItem.user = { ...hydratedItem.user, profilePicUrl: fallbackPic };
+    }
+    if (!hydratedItem.postAuthor?.profilePicUrl && fallbackPic) {
+      hydratedItem.postAuthor = { ...hydratedItem.postAuthor, profilePicUrl: fallbackPic };
+    }
+    if (!hydratedItem.createdBy?.profilePicUrl && fallbackPic) {
+      hydratedItem.createdBy = { ...hydratedItem.createdBy, profilePicUrl: fallbackPic };
+    }
 
     setPreviewItem(hydratedItem);
     setPreviewType(item.contentType || "POST");

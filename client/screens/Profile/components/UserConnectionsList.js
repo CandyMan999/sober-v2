@@ -182,8 +182,8 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(255,255,255,0.04)",
   },
   badgeAccent: {
-    backgroundColor: "#fef3c7",
-    borderColor: "#f59e0b",
+    backgroundColor: "#e0f2fe",
+    borderColor: "#22d3ee",
   },
   badgeMuted: {
     backgroundColor: "rgba(255,255,255,0.06)",
