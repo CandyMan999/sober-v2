@@ -11,6 +11,8 @@ export const COLORS = {
   textSecondary: "#9CA3AF",
   surface: "#111827",
   border: "#1f2937",
+  canyonBlue: "#1E3A8A",
+  canyonBlueBright: "#3B82F6",
   oceanBlue: "#0EA5E9",
   nightBlue: "#0B1220",
   gradientStart: "#0B1A2A",

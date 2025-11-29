@@ -19,7 +19,7 @@ import * as ImagePicker from "expo-image-picker";
 import * as ImageManipulator from "expo-image-manipulator";
 import { EXPO_CF_ACCOUNT_HASH, EXPO_CF_VARIANT } from "@env";
 
-import AlertModal from "../../components/AlertModal";
+import { AlertModal, ToggleSwitch } from "../../components";
 import Context from "../../context";
 import { useClient } from "../../client";
 import {
@@ -41,6 +41,8 @@ const {
   textPrimary,
   textSecondary,
   border,
+  canyonBlue,
+  canyonBlueBright,
   oceanBlue,
   nightBlue,
 } = COLORS;
@@ -48,17 +50,25 @@ const {
 const MIN_USERNAME_LENGTH = 3;
 const MAX_USERNAME_LENGTH = 13;
 
-const PhotoTile = ({ label, uri, isUploading, onPick, onDelete, style }) => (
+const PhotoTile = ({
+  label,
+  uri,
+  isUploading,
+  onPick,
+  onDelete,
+  haloColors = [accentSoft, accent],
+  style,
+}) => (
   <TouchableOpacity
     activeOpacity={0.85}
     style={[styles.photoTile, style]}
     onPress={onPick}
   >
     <LinearGradient
-      colors={["#fcd34d", "#f97316"]}
+      colors={haloColors}
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}
-      style={styles.photoHalo}
+      style={[styles.photoHalo, { shadowColor: haloColors?.[1] || haloColors?.[0] }]}
     >
       <View style={styles.photoPreview}>
         {uri ? (
@@ -92,35 +102,13 @@ const PhotoTile = ({ label, uri, isUploading, onPick, onDelete, style }) => (
   </TouchableOpacity>
 );
 
-const FancyToggle = ({ value, onValueChange }) => (
-  <TouchableOpacity
-    activeOpacity={0.9}
-    onPress={() => onValueChange(!value)}
-    style={styles.togglePressable}
-  >
-    <LinearGradient
-      colors={value ? [accent, accentSoft] : ["#1f2937", "#0f172a"]}
-      start={{ x: 0, y: 0 }}
-      end={{ x: 1, y: 1 }}
-      style={[styles.toggleTrack, value && styles.toggleTrackOn]}
-    >
-      <LinearGradient
-        colors={value ? ["#f97316", "#fb923c"] : ["#9ca3af", "#9ca3af"]}
-        style={[styles.toggleThumb, value && styles.toggleThumbOn]}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 1 }}
-      />
-    </LinearGradient>
-  </TouchableOpacity>
-);
-
-const ToggleRow = ({ icon, label, value, onValueChange }) => (
+const ToggleRow = ({ icon, label, value, onValueChange, activeColor }) => (
   <View style={styles.toggleRow}>
     <View style={styles.rowLeft}>
       {icon}
       <Text style={styles.rowLabelWithIcon}>{label}</Text>
     </View>
-    <FancyToggle value={value} onValueChange={onValueChange} />
+    <ToggleSwitch value={value} onValueChange={onValueChange} activeColor={activeColor} />
   </View>
 );
 
@@ -155,7 +143,24 @@ const EditProfileScreen = ({ navigation }) => {
     liquorBars: false,
   });
 
-  const [alertState, setAlertState] = useState({ visible: false, title: "", message: "" });
+  const [alertState, setAlertState] = useState({
+    visible: false,
+    title: "",
+    message: "",
+    type: "info",
+    onConfirm: null,
+    onCancel: null,
+  });
+
+  const closeAlert = () =>
+    setAlertState({
+      visible: false,
+      title: "",
+      message: "",
+      type: "info",
+      onConfirm: null,
+      onCancel: null,
+    });
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -182,11 +187,7 @@ const EditProfileScreen = ({ navigation }) => {
         }
       } catch (err) {
         console.log("Failed to fetch profile", err);
-        setAlertState({
-          visible: true,
-          title: "Profile error",
-          message: "We couldn't load your profile right now. Please try again.",
-        });
+        showError("We couldn't load your profile right now. Please try again.", "Profile error");
       } finally {
         setLoading(false);
       }
@@ -205,7 +206,14 @@ const EditProfileScreen = ({ navigation }) => {
   }, [user]);
 
   const showError = (message, title = "Heads up") => {
-    setAlertState({ visible: true, title, message });
+    setAlertState({
+      visible: true,
+      title,
+      message,
+      type: "error",
+      onConfirm: closeAlert,
+      onCancel: closeAlert,
+    });
   };
 
   const requestMediaPermission = async () => {
@@ -215,6 +223,26 @@ const EditProfileScreen = ({ navigation }) => {
       return false;
     }
     return true;
+  };
+
+  const handleDeleteProfile = () => {
+    setAlertState({
+      visible: true,
+      type: "confirm",
+      title: "Delete profile",
+      message: "This will remove your profile and history. Continue?",
+      onCancel: closeAlert,
+      onConfirm: () =>
+        setAlertState({
+          visible: true,
+          type: "info",
+          title: "We're here to help",
+          message:
+            "Profile deletion requires a quick confirmation with support. Email support@sober.com to finish up.",
+          onConfirm: closeAlert,
+          onCancel: closeAlert,
+        }),
+    });
   };
 
   const uploadToCloudflare = async (localUri, slot) => {
@@ -420,6 +448,7 @@ const EditProfileScreen = ({ navigation }) => {
               isUploading={uploadingSlot === "DRUNK"}
               onPick={() => pickImage("DRUNK")}
               onDelete={() => deletePhoto("DRUNK")}
+              haloColors={[canyonBlue, canyonBlueBright]}
               style={{ marginLeft: 8 }}
             />
           </View>
@@ -524,6 +553,7 @@ const EditProfileScreen = ({ navigation }) => {
                 onValueChange={(value) =>
                   setNotificationPrefs((prev) => ({ ...prev, milestones: value }))
                 }
+                activeColor={accent}
               />
               <ToggleRow
                 icon={<Feather name="message-circle" size={18} color={textSecondary} />}
@@ -532,6 +562,7 @@ const EditProfileScreen = ({ navigation }) => {
                 onValueChange={(value) =>
                   setNotificationPrefs((prev) => ({ ...prev, comments: value }))
                 }
+                activeColor={canyonBlueBright}
               />
               <ToggleRow
                 icon={<Feather name="users" size={18} color={accentSoft} />}
@@ -540,6 +571,7 @@ const EditProfileScreen = ({ navigation }) => {
                 onValueChange={(value) =>
                   setNotificationPrefs((prev) => ({ ...prev, friendsPosts: value }))
                 }
+                activeColor={accentSoft}
               />
               <ToggleRow
                 icon={<MaterialCommunityIcons name="beer" size={18} color={accentDeep} />}
@@ -548,6 +580,7 @@ const EditProfileScreen = ({ navigation }) => {
                 onValueChange={(value) =>
                   setNotificationPrefs((prev) => ({ ...prev, buddiesNear: value }))
                 }
+                activeColor={accentDeep}
               />
               <ToggleRow
                 icon={<MaterialCommunityIcons name="glass-cocktail" size={18} color={oceanBlue} />}
@@ -556,6 +589,7 @@ const EditProfileScreen = ({ navigation }) => {
                 onValueChange={(value) =>
                   setNotificationPrefs((prev) => ({ ...prev, liquorBars: value }))
                 }
+                activeColor={canyonBlue}
               />
             </View>
           ) : null}
@@ -568,17 +602,34 @@ const EditProfileScreen = ({ navigation }) => {
             label="All push notifications"
             value={pushEnabled}
             onValueChange={setPushEnabled}
+            activeColor={accent}
           />
           <ToggleRow
             icon={<Feather name="map-pin" size={18} color={oceanBlue} />}
             label="Location tracking"
             value={locationEnabled}
             onValueChange={setLocationEnabled}
+            activeColor={canyonBlue}
           />
           <Text style={styles.helperText}>
             We only use your location to surface buddy alerts near bars and safe
             meetup spots.
           </Text>
+          <TouchableOpacity
+            style={styles.deleteProfileButton}
+            activeOpacity={0.9}
+            onPress={handleDeleteProfile}
+          >
+            <LinearGradient
+              colors={["#991b1b", "#f97316"]}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={styles.deleteProfileInner}
+            >
+              <Feather name="trash-2" size={16} color="#fff" />
+              <Text style={styles.deleteProfileText}>Delete profile</Text>
+            </LinearGradient>
+          </TouchableOpacity>
         </View>
         </ScrollView>
 
@@ -591,10 +642,11 @@ const EditProfileScreen = ({ navigation }) => {
 
       <AlertModal
         visible={alertState.visible}
-        type="error"
+        type={alertState.type || "info"}
         title={alertState.title}
         message={alertState.message}
-        onConfirm={() => setAlertState({ visible: false, title: "", message: "" })}
+        onConfirm={alertState.onConfirm || closeAlert}
+        onCancel={alertState.onCancel || closeAlert}
       />
     </SafeAreaView>
   );
@@ -788,35 +840,23 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: border,
   },
-  togglePressable: {
-    paddingLeft: 8,
+  deleteProfileButton: {
+    marginTop: 18,
+    borderRadius: 14,
+    overflow: "hidden",
   },
-  toggleTrack: {
-    width: 56,
-    height: 30,
-    borderRadius: 20,
+  deleteProfileInner: {
+    flexDirection: "row",
+    alignItems: "center",
     justifyContent: "center",
-    paddingHorizontal: 4,
-    borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.08)",
+    gap: 10,
+    paddingVertical: 12,
+    borderRadius: 14,
   },
-  toggleTrackOn: {
-    shadowColor: accent,
-    shadowOpacity: 0.35,
-    shadowRadius: 10,
-    shadowOffset: { width: 0, height: 4 },
-    elevation: 4,
-  },
-  toggleThumb: {
-    width: 22,
-    height: 22,
-    borderRadius: 11,
-    backgroundColor: "#e5e7eb",
-    alignSelf: "flex-start",
-  },
-  toggleThumbOn: {
-    alignSelf: "flex-end",
-    backgroundColor: nightBlue,
+  deleteProfileText: {
+    color: "#fff",
+    fontWeight: "800",
+    fontSize: 14,
   },
   loadingScreen: {
     ...StyleSheet.absoluteFillObject,
