@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from "react";
+import * as Haptics from "expo-haptics";
 import { Animated, Easing, StyleSheet, TouchableOpacity, View } from "react-native";
 
 import { COLORS } from "../constants/colors";
@@ -13,8 +14,11 @@ const ToggleSwitch = ({
   onValueChange,
   activeColor = COLORS.accent,
   disabled = false,
+  hapticsEnabled = true,
+  hapticStyle = Haptics.ImpactFeedbackStyle.Medium,
 }) => {
   const animation = useRef(new Animated.Value(value ? 1 : 0)).current;
+  const hasMounted = useRef(false);
 
   useEffect(() => {
     Animated.timing(animation, {
@@ -23,7 +27,15 @@ const ToggleSwitch = ({
       easing: Easing.out(Easing.cubic),
       useNativeDriver: false,
     }).start();
-  }, [value, animation]);
+
+    if (hasMounted.current) {
+      if (hapticsEnabled) {
+        Haptics.selectionAsync();
+      }
+    } else {
+      hasMounted.current = true;
+    }
+  }, [value, animation, hapticsEnabled]);
 
   const translateX = animation.interpolate({
     inputRange: [0, 1],
@@ -50,10 +62,20 @@ const ToggleSwitch = ({
     outputRange: [0.2, 0.35],
   });
 
+  const handlePress = () => {
+    if (disabled) return;
+
+    if (hapticsEnabled) {
+      Haptics.impactAsync(hapticStyle);
+    }
+
+    onValueChange?.(!value);
+  };
+
   return (
     <TouchableOpacity
       activeOpacity={0.85}
-      onPress={() => !disabled && onValueChange?.(!value)}
+      onPress={handlePress}
       disabled={disabled}
       style={styles.touchable}
     >
