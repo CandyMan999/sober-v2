@@ -315,7 +315,7 @@ const EditProfileScreen = ({ navigation }) => {
 
     const pickerResult = await ImagePicker.launchImageLibraryAsync({
       allowsEditing: isProfile,
-      aspect: isProfile ? [1, 1] : undefined,
+      aspect: isProfile ? [3, 4] : undefined,
       quality: 1,
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
     });
@@ -630,8 +630,9 @@ const EditProfileScreen = ({ navigation }) => {
             activeColor={oceanBlue}
           />
           <Text style={styles.helperText}>
-            We only use your location to surface buddy alerts near bars and safe
-            meetup spots.
+            We only use your location to catch when you might be hanging at a bar
+            or liquor store so we can ping your sober buddies before you make any
+            dumb decisions.
           </Text>
           <TouchableOpacity
             style={styles.deleteProfileButton}
@@ -746,6 +747,7 @@ const styles = StyleSheet.create({
   profileImage: {
     width: "100%",
     height: "100%",
+    borderRadius: 14,
   },
   drunkTile: {
     justifyContent: "flex-start",
@@ -773,6 +775,7 @@ const styles = StyleSheet.create({
   drunkImage: {
     width: "100%",
     height: "100%",
+    borderRadius: 14,
   },
   photoPlaceholder: {
     flex: 1,
