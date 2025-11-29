@@ -81,10 +81,15 @@ const UserConnectionsList = ({
   return (
     <SafeAreaView style={styles.safeArea} edges={["top", "left", "right"]}>
       <View style={styles.container}>
-        <TouchableOpacity style={styles.backRow} onPress={() => navigation.goBack()}>
-          <Feather name="arrow-left" size={18} color="#f59e0b" />
+        <View style={styles.headerRow}>
+          <TouchableOpacity
+            style={styles.backButton}
+            onPress={() => navigation.goBack()}
+          >
+            <Feather name="chevron-left" size={18} color="#f59e0b" />
+          </TouchableOpacity>
           <Text style={styles.backText}>{backLabel}</Text>
-        </TouchableOpacity>
+        </View>
 
         <Text style={styles.title}>{title}</Text>
         {subtitle ? <Text style={styles.subtitle}>{subtitle}</Text> : null}
@@ -119,17 +124,23 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#050816",
     padding: 24,
+    paddingTop: 28,
   },
-  backRow: {
+  headerRow: {
     flexDirection: "row",
     alignItems: "center",
+    gap: 10,
     marginBottom: 12,
   },
+  backButton: {
+    padding: 10,
+    borderRadius: 999,
+    backgroundColor: "rgba(245,158,11,0.12)",
+  },
   backText: {
-    color: "#f59e0b",
-    fontSize: 14,
+    color: "#f3f4f6",
+    fontSize: 16,
     fontWeight: "700",
-    marginLeft: 6,
   },
   title: {
     color: "#f3f4f6",

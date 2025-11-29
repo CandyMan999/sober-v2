@@ -59,15 +59,27 @@ const ProfileScreen = ({ navigation }) => {
       0
     );
 
+    const quoteLikesTotal = quotes.reduce(
+      (sum, quote) => sum + (quote?.likesCount || 0),
+      0
+    );
+
     return {
       following:
         profileData?.followingCount ?? (following?.length || 0),
       followers: profileData?.followersCount ?? (followers?.length || 0),
       buddies: profileData?.buddiesCount ?? (buddies?.length || 0),
-      likes: likesTotal,
+      likes: likesTotal + quoteLikesTotal,
       notifications: 0,
     };
-  }, [buddies?.length, followers?.length, following?.length, posts, profileData]);
+  }, [
+    buddies?.length,
+    followers?.length,
+    following?.length,
+    posts,
+    profileData,
+    quotes,
+  ]);
 
   const hasWhy = Boolean(profileData?.whyStatement?.trim());
 

@@ -11,16 +11,49 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { Feather, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 
+const parseDate = (timestamp) => {
+  if (!timestamp) return null;
+
+  if (typeof timestamp === "number") {
+    const ms = timestamp < 1e12 ? timestamp * 1000 : timestamp;
+    return new Date(ms);
+  }
+
+  const numericValue = Number(timestamp);
+  if (!Number.isNaN(numericValue)) {
+    const ms = numericValue < 1e12 ? numericValue * 1000 : numericValue;
+    return new Date(ms);
+  }
+
+  const dateFromString = new Date(timestamp);
+  if (!Number.isNaN(dateFromString.getTime())) {
+    return dateFromString;
+  }
+
+  return null;
+};
+
 const formatDate = (timestamp) => {
-  if (!timestamp) return "Moments ago";
-  const date = new Date(timestamp);
-  return date.toLocaleDateString(undefined, { month: "short", day: "numeric" });
+  const parsed = parseDate(timestamp);
+  if (!parsed) return "Moments ago";
+
+  return parsed.toLocaleDateString(undefined, { month: "short", day: "numeric" });
 };
 
 const LikesScreen = () => {
   const navigation = useNavigation();
   const route = useRoute();
   const { likesTotal = 0, posts = [], quotes = [], username } = route.params || {};
+
+  const computedLikesTotal = useMemo(() => {
+    const postLikes = posts.reduce((sum, post) => sum + (post?.likesCount || 0), 0);
+    const quoteLikes = quotes.reduce(
+      (sum, quote) => sum + (quote?.likesCount || 0),
+      0
+    );
+
+    return postLikes + quoteLikes;
+  }, [posts, quotes]);
 
   const likedItems = useMemo(() => {
     const postItems = (posts || []).map((post) => ({
@@ -84,16 +117,21 @@ const LikesScreen = () => {
   return (
     <SafeAreaView style={styles.safeArea} edges={["top", "left", "right"]}>
       <View style={styles.container}>
-        <TouchableOpacity style={styles.backRow} onPress={() => navigation.goBack()}>
-          <Feather name="arrow-left" size={18} color="#f59e0b" />
+        <View style={styles.headerRow}>
+          <TouchableOpacity
+            style={styles.backButton}
+            onPress={() => navigation.goBack()}
+          >
+            <Feather name="chevron-left" size={18} color="#f59e0b" />
+          </TouchableOpacity>
           <Text style={styles.backText}>Profile</Text>
-        </TouchableOpacity>
+        </View>
 
         <Text style={styles.title}>Likes</Text>
         <Text style={styles.subtitle}>
           {username
-            ? `${username}'s content has ${likesTotal} likes so far.`
-            : `You've earned ${likesTotal} likes across your posts and quotes.`}
+            ? `${username}'s content has ${computedLikesTotal || likesTotal} likes so far.`
+            : `You've earned ${computedLikesTotal || likesTotal} likes across your posts and quotes.`}
         </Text>
 
         {likedItems.length === 0 ? (
@@ -129,17 +167,23 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#050816",
     padding: 24,
+    paddingTop: 28,
   },
-  backRow: {
+  headerRow: {
     flexDirection: "row",
     alignItems: "center",
+    gap: 10,
     marginBottom: 12,
   },
+  backButton: {
+    padding: 10,
+    borderRadius: 999,
+    backgroundColor: "rgba(245,158,11,0.12)",
+  },
   backText: {
-    color: "#f59e0b",
-    fontSize: 14,
+    color: "#f3f4f6",
+    fontSize: 16,
     fontWeight: "700",
-    marginLeft: 6,
   },
   title: {
     color: "#f3f4f6",

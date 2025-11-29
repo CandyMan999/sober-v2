@@ -93,10 +93,19 @@ const UserProfileScreen = ({ route, navigation }) => {
     [followers?.length, following?.length, buddies?.length, profileData]
   );
 
-  const likesTotal = useMemo(
-    () => posts.reduce((sum, post) => sum + (post?.likesCount || 0), 0),
-    [posts]
-  );
+  const likesTotal = useMemo(() => {
+    const postLikes = posts.reduce(
+      (sum, post) => sum + (post?.likesCount || 0),
+      0
+    );
+
+    const quoteLikes = quotes.reduce(
+      (sum, quote) => sum + (quote?.likesCount || 0),
+      0
+    );
+
+    return postLikes + quoteLikes;
+  }, [posts, quotes]);
 
   const tabConfig = useMemo(
     () => [
