@@ -1,134 +1,672 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import {
   View,
   Text,
   StyleSheet,
   ScrollView,
   TouchableOpacity,
-  Switch,
+  Image,
+  TextInput,
+  ActivityIndicator,
+  KeyboardAvoidingView,
+  Platform,
+  Keyboard,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Feather, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
+import * as ImagePicker from "expo-image-picker";
+import * as ImageManipulator from "expo-image-manipulator";
+import { EXPO_CF_ACCOUNT_HASH, EXPO_CF_VARIANT } from "@env";
 
-const RowItem = ({ label, value, onPress, icon }) => (
-  <TouchableOpacity style={styles.rowItem} onPress={onPress} activeOpacity={0.8}>
-    <View style={styles.rowLeft}>
-      {icon}
-      <View style={styles.rowTextBlock}>
-        <Text style={styles.rowLabel}>{label}</Text>
-        {value ? <Text style={styles.rowValue}>{value}</Text> : null}
-      </View>
-    </View>
-    <Feather name="chevron-right" size={18} color="#9ca3af" />
+import { AlertModal, ToggleSwitch } from "../../components";
+import Context from "../../context";
+import { useClient } from "../../client";
+import {
+  DIRECT_UPLOAD_MUTATION,
+  ADD_PICTURE_MUTATION,
+  DELETE_PHOTO_MUTATION,
+  UPDATE_USER_PROFILE_MUTATION,
+} from "../../GraphQL/mutations";
+import { FETCH_ME_QUERY } from "../../GraphQL/queries";
+import { getToken } from "../../utils/helpers";
+import { COLORS } from "../../constants/colors";
+
+const {
+  primaryBackground,
+  cardBackground,
+  accent,
+  textPrimary,
+  textSecondary,
+  border,
+  oceanBlue,
+  nightBlue,
+} = COLORS;
+
+const MIN_USERNAME_LENGTH = 3;
+const MAX_USERNAME_LENGTH = 13;
+
+const PhotoTileBase = ({ children, label, onPress, style }) => (
+  <TouchableOpacity
+    activeOpacity={0.85}
+    onPress={onPress}
+    style={[styles.photoTile, style]}
+  >
+    {children}
+    <Text style={styles.photoLabel}>{label}</Text>
   </TouchableOpacity>
 );
 
+const ProfilePhotoTile = ({ label, uri, isUploading, onPick, onDelete }) => (
+  <PhotoTileBase label={label} onPress={onPick}>
+    <LinearGradient colors={[accent, accent]} style={styles.profileHalo}>
+      <View style={styles.profilePreview}>
+        {uri ? (
+          <Image source={{ uri }} style={styles.profileImage} resizeMode="cover" />
+        ) : (
+          <View style={[styles.profileImage, styles.photoPlaceholder]}>
+            <Feather name="camera" color={textSecondary} size={24} />
+            <Text style={styles.placeholderText}>Tap to upload</Text>
+          </View>
+        )}
+
+        {isUploading ? (
+          <View style={styles.loadingOverlay}>
+            <ActivityIndicator color={primaryBackground} />
+          </View>
+        ) : null}
+
+        {uri && !isUploading ? (
+          <TouchableOpacity
+            onPress={onDelete}
+            style={styles.deleteButton}
+            hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+          >
+            <Feather name="trash-2" size={16} color="#fff" />
+          </TouchableOpacity>
+        ) : null}
+      </View>
+    </LinearGradient>
+  </PhotoTileBase>
+);
+
+const DrunkPhotoTile = ({ label, uri, isUploading, onPick, onDelete }) => (
+  <PhotoTileBase label={label} onPress={onPick} style={styles.drunkTile}>
+    <LinearGradient colors={[oceanBlue, oceanBlue]} style={styles.drunkHalo}>
+      <View style={styles.drunkPreview}>
+        {uri ? (
+          <Image source={{ uri }} style={styles.drunkImage} resizeMode="cover" />
+        ) : (
+          <View style={[styles.drunkImage, styles.photoPlaceholder]}>
+            <Feather name="image" color={textSecondary} size={24} />
+            <Text style={styles.placeholderText}>Tap to add</Text>
+          </View>
+        )}
+
+        {isUploading ? (
+          <View style={styles.loadingOverlay}>
+            <ActivityIndicator color={primaryBackground} />
+          </View>
+        ) : null}
+
+        {uri && !isUploading ? (
+          <TouchableOpacity
+            onPress={onDelete}
+            style={styles.deleteButton}
+            hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+          >
+            <Feather name="trash-2" size={16} color="#fff" />
+          </TouchableOpacity>
+        ) : null}
+      </View>
+    </LinearGradient>
+  </PhotoTileBase>
+);
+
+const ToggleRow = ({ icon, label, value, onValueChange, activeColor }) => (
+  <View style={styles.toggleRow}>
+    <View style={styles.rowLeft}>
+      {icon}
+      <Text style={styles.rowLabelWithIcon}>{label}</Text>
+    </View>
+    <ToggleSwitch value={value} onValueChange={onValueChange} activeColor={activeColor} />
+  </View>
+);
+
 const EditProfileScreen = ({ navigation }) => {
+  const client = useClient();
+  const { state, dispatch } = useContext(Context);
+
+  const [token, setToken] = useState(null);
+  const [user, setUser] = useState(state?.user || null);
+  const [loading, setLoading] = useState(!state?.user);
+
+  const [profileUri, setProfileUri] = useState(user?.profilePicUrl || null);
+  const [drunkUri, setDrunkUri] = useState(user?.drunkPicUrl || null);
+  const [profileId, setProfileId] = useState(user?.profilePic?.id || null);
+  const [drunkId, setDrunkId] = useState(user?.drunkPic?.id || null);
+
+  const [uploadingSlot, setUploadingSlot] = useState(null);
+  const [deletingSlot, setDeletingSlot] = useState(null);
+
+  const [usernameOpen, setUsernameOpen] = useState(false);
+  const [usernameInput, setUsernameInput] = useState(user?.username || "");
+  const [savingUsername, setSavingUsername] = useState(false);
+
   const [pushEnabled, setPushEnabled] = useState(true);
   const [locationEnabled, setLocationEnabled] = useState(false);
+  const [notificationsOpen, setNotificationsOpen] = useState(false);
+  const [notificationPrefs, setNotificationPrefs] = useState({
+    milestones: true,
+    comments: true,
+    friendsPosts: true,
+    buddiesNear: false,
+    liquorBars: false,
+  });
+
+  const [alertState, setAlertState] = useState({
+    visible: false,
+    title: "",
+    message: "",
+    type: "info",
+    onConfirm: null,
+    onCancel: null,
+  });
+
+  const closeAlert = () =>
+    setAlertState({
+      visible: false,
+      title: "",
+      message: "",
+      type: "info",
+      onConfirm: null,
+      onCancel: null,
+    });
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        setLoading(true);
+        const storedToken = await getToken();
+        if (!storedToken) {
+          setLoading(false);
+          return;
+        }
+        setToken(storedToken);
+
+        const data = await client.request(FETCH_ME_QUERY, { token: storedToken });
+        const fetchedUser = data?.fetchMe;
+        if (fetchedUser) {
+          setUser(fetchedUser);
+          setProfileUri(fetchedUser.profilePicUrl || null);
+          setDrunkUri(fetchedUser.drunkPicUrl || null);
+          setProfileId(fetchedUser.profilePic?.id || null);
+          setDrunkId(fetchedUser.drunkPic?.id || null);
+          setUsernameInput(fetchedUser.username || "");
+          setPushEnabled(Boolean(fetchedUser.notificationsEnabled));
+          dispatch({ type: "SET_USER", payload: fetchedUser });
+        }
+      } catch (err) {
+        console.log("Failed to fetch profile", err);
+        showError("We couldn't load your profile right now. Please try again.", "Profile error");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUser();
+  }, []);
+
+  useEffect(() => {
+    if (!user) return;
+    setProfileUri(user.profilePicUrl || null);
+    setDrunkUri(user.drunkPicUrl || null);
+    setProfileId(user.profilePic?.id || null);
+    setDrunkId(user.drunkPic?.id || null);
+    setUsernameInput(user.username || "");
+  }, [user]);
+
+  const showError = (message, title = "Heads up") => {
+    setAlertState({
+      visible: true,
+      title,
+      message,
+      type: "error",
+      onConfirm: closeAlert,
+      onCancel: closeAlert,
+    });
+  };
+
+  const requestMediaPermission = async () => {
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (status !== "granted") {
+      showError("We need access to your library to update your photos.");
+      return false;
+    }
+    return true;
+  };
+
+  const handleDeleteProfile = () => {
+    setAlertState({
+      visible: true,
+      type: "confirm",
+      title: "Delete profile",
+      message: "This will remove your profile and history. Continue?",
+      onCancel: closeAlert,
+      onConfirm: () =>
+        setAlertState({
+          visible: true,
+          type: "info",
+          title: "We're here to help",
+          message:
+            "Profile deletion requires a quick confirmation with support. Email support@sober.com to finish up.",
+          onConfirm: closeAlert,
+          onCancel: closeAlert,
+        }),
+    });
+  };
+
+  const uploadToCloudflare = async (localUri, slot) => {
+    try {
+      const { directUpload } = await client.request(DIRECT_UPLOAD_MUTATION);
+      if (!directUpload?.uploadURL) throw new Error("Upload URL missing");
+
+      const formData = new FormData();
+      formData.append("file", {
+        uri: localUri,
+        type: "image/jpeg",
+        name: "upload.jpg",
+      });
+
+      const uploadRes = await fetch(directUpload.uploadURL, {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!uploadRes.ok) throw new Error("Failed to upload image");
+
+      const deliveryUrl = `https://imagedelivery.net/${EXPO_CF_ACCOUNT_HASH}/${directUpload.id}/${EXPO_CF_VARIANT}`;
+
+      const { addPicture } = await client.request(ADD_PICTURE_MUTATION, {
+        token,
+        url: deliveryUrl,
+        publicId: directUpload.id,
+        slot,
+      });
+
+      return { url: deliveryUrl, id: addPicture?.id };
+    } catch (err) {
+      console.log("Upload error", err);
+      showError("We couldn't upload that photo. Please try again.");
+      return null;
+    }
+  };
+
+  const pickImage = async (slot) => {
+    const isProfile = slot === "PROFILE";
+    if (!token) {
+      showError("We need your device ID to update photos. Please restart the app.");
+      return;
+    }
+
+    if (uploadingSlot || !(await requestMediaPermission())) return;
+
+    setUploadingSlot(slot);
+
+    const pickerResult = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: isProfile,
+      aspect: isProfile ? [3, 4] : undefined,
+      quality: 1,
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+    });
+
+    if (pickerResult.canceled) {
+      setUploadingSlot(null);
+      return;
+    }
+
+    const resized = await ImageManipulator.manipulateAsync(
+      pickerResult.assets[0].uri,
+      [{ resize: { width: 900 } }],
+      { compress: 0.75, format: ImageManipulator.SaveFormat.JPEG }
+    );
+
+    if (isProfile) setProfileUri(resized.uri);
+    else setDrunkUri(resized.uri);
+
+    const uploaded = await uploadToCloudflare(resized.uri, slot);
+    if (uploaded) {
+      if (isProfile) {
+        setProfileUri(uploaded.url);
+        setProfileId(uploaded.id);
+      } else {
+        setDrunkUri(uploaded.url);
+        setDrunkId(uploaded.id);
+      }
+    }
+
+    setUploadingSlot(null);
+  };
+
+  const deletePhoto = async (slot) => {
+    const isProfile = slot === "PROFILE";
+    const photoId = isProfile ? profileId : drunkId;
+    if (!photoId || deletingSlot) return;
+    if (!token) {
+      showError("We need your device ID to delete photos. Please restart the app.");
+      return;
+    }
+
+    setDeletingSlot(slot);
+    try {
+      const { deletePhoto } = await client.request(DELETE_PHOTO_MUTATION, {
+        token,
+        photoId,
+        slot,
+      });
+
+      setUser(deletePhoto);
+      dispatch({ type: "SET_USER", payload: deletePhoto });
+      if (isProfile) {
+        setProfileUri(null);
+        setProfileId(null);
+      } else {
+        setDrunkUri(null);
+        setDrunkId(null);
+      }
+    } catch (err) {
+      console.log("Delete error", err);
+      showError("We couldn't delete that photo. Please try again.");
+    }
+
+    setDeletingSlot(null);
+  };
+
+  const usernameDisplay = useMemo(
+    () => usernameInput?.trim() || "Add a handle",
+    [usernameInput]
+  );
+
+  const trimmedUsername = useMemo(() => usernameInput.trim(), [usernameInput]);
+  const isUsernameValid =
+    trimmedUsername.length >= MIN_USERNAME_LENGTH &&
+    trimmedUsername.length <= MAX_USERNAME_LENGTH;
+  const usernameValidationText = useMemo(() => {
+    if (usernameInput.length === 0) return "You can change this later.";
+    if (trimmedUsername.length < MIN_USERNAME_LENGTH) return "At least 3 characters.";
+    if (trimmedUsername.length > MAX_USERNAME_LENGTH) return "Max 13 characters.";
+    return "Looks good.";
+  }, [trimmedUsername.length, usernameInput]);
+
+  const handleSaveUsername = async () => {
+    if (!token || savingUsername || !isUsernameValid) return;
+    const trimmed = trimmedUsername;
+    if (!trimmed) {
+      showError("Please enter a username to continue.");
+      return;
+    }
+
+    try {
+      setSavingUsername(true);
+      const { updateUserProfile } = await client.request(
+        UPDATE_USER_PROFILE_MUTATION,
+        { token, username: trimmed }
+      );
+
+      setUser(updateUserProfile);
+      dispatch({ type: "SET_USER", payload: updateUserProfile });
+      setUsernameOpen(false);
+    } catch (err) {
+      const message =
+        err?.response?.errors?.[0]?.message ||
+        "We couldn't update your username right now.";
+      showError(message, "Username error");
+    } finally {
+      setSavingUsername(false);
+    }
+  };
 
   return (
     <SafeAreaView style={styles.safeArea} edges={["top", "left", "right"]}>
-      <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 32 }}>
-        <View style={styles.header}>
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === "ios" ? "padding" : undefined}
+        keyboardVerticalOffset={12}
+      >
+        <View style={styles.topBar}>
           <TouchableOpacity
             style={styles.backButton}
             onPress={() => navigation?.goBack?.()}
             accessibilityLabel="Go back"
+            activeOpacity={0.85}
           >
-            <Feather name="arrow-left" size={20} color="#e5e7eb" />
-            <Text style={styles.backLabel}>Profile</Text>
+            <Feather name="chevron-left" size={20} color="#f59e0b" />
           </TouchableOpacity>
-          <Text style={styles.headerTitle}>Edit profile</Text>
+          <Text style={styles.screenTitle}>Edit profile</Text>
         </View>
 
-        <View style={styles.avatarCard}>
-          <LinearGradient
-            colors={["#6b21a8", "#9333ea"]}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }}
-            style={styles.avatarButton}
-          >
-            <MaterialCommunityIcons name="account-edit" size={20} color="#fef3c7" />
-            <Text style={styles.avatarButtonText}>Create your avatar</Text>
-          </LinearGradient>
-
-          <View style={styles.avatarCircle}>
-            <Feather name="camera" size={26} color="#9ca3af" />
+        <ScrollView
+          style={styles.container}
+          contentContainerStyle={{ paddingBottom: 32 }}
+          showsVerticalScrollIndicator={false}
+          keyboardShouldPersistTaps="handled"
+          keyboardDismissMode="on-drag"
+        >
+        <View style={styles.sectionCard}>
+          <Text style={styles.sectionLabel}>Photos</Text>
+          <View style={styles.photoRow}>
+            <ProfilePhotoTile
+              label="Profile Photo"
+              uri={profileUri}
+              isUploading={uploadingSlot === "PROFILE"}
+              onPick={() => pickImage("PROFILE")}
+              onDelete={() => deletePhoto("PROFILE")}
+            />
+            <DrunkPhotoTile
+              label="Drunk Photo"
+              uri={drunkUri}
+              isUploading={uploadingSlot === "DRUNK"}
+              onPick={() => pickImage("DRUNK")}
+              onDelete={() => deletePhoto("DRUNK")}
+            />
           </View>
-          <TouchableOpacity style={styles.editPhotoLink}>
-            <Text style={styles.editPhotoText}>Edit photo or avatar</Text>
+        </View>
+
+        <View style={styles.sectionCard}>
+          <TouchableOpacity
+            style={styles.dropdownHeader}
+            onPress={() => setUsernameOpen((prev) => !prev)}
+            activeOpacity={0.8}
+          >
+            <View style={styles.rowLeft}>
+              <Feather name="at-sign" size={18} color={accent} />
+              <View style={styles.rowTextBlock}>
+                <Text style={styles.rowLabel}>Username</Text>
+                <Text style={styles.rowValue}>{usernameDisplay}</Text>
+              </View>
+            </View>
+            <Feather
+              name={usernameOpen ? "chevron-up" : "chevron-down"}
+              size={18}
+              color={textSecondary}
+            />
           </TouchableOpacity>
+          {usernameOpen ? (
+            <View style={styles.dropdownBody}>
+              <Text style={styles.helperText}>
+                This is how friends find you. Usernames must be unique.
+              </Text>
+              <TextInput
+                style={styles.input}
+                placeholder="Enter username"
+                placeholderTextColor={textSecondary}
+                value={usernameInput}
+                onChangeText={setUsernameInput}
+                autoCapitalize="none"
+                autoCorrect={false}
+                maxLength={MAX_USERNAME_LENGTH}
+                returnKeyType="done"
+                onSubmitEditing={() => {
+                  Keyboard.dismiss();
+                  if (isUsernameValid) handleSaveUsername();
+                }}
+              />
+              <Text
+                style={[
+                  styles.validationText,
+                  !isUsernameValid && trimmedUsername.length > 0 && styles.validationError,
+                ]}
+              >
+                {usernameValidationText}
+              </Text>
+              <TouchableOpacity
+                style={styles.saveButton}
+                onPress={handleSaveUsername}
+                disabled={!isUsernameValid || savingUsername}
+                activeOpacity={0.9}
+              >
+                <LinearGradient
+                  colors={
+                    !isUsernameValid || savingUsername
+                      ? [border, border]
+                      : [accent, accent]
+                  }
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 1 }}
+                  style={[styles.saveButtonInner, (!isUsernameValid || savingUsername) && styles.saveButtonDisabled]}
+                >
+                  {savingUsername ? (
+                    <ActivityIndicator color={nightBlue} />
+                  ) : (
+                    <Text style={styles.saveButtonText}>Save username</Text>
+                  )}
+                </LinearGradient>
+              </TouchableOpacity>
+            </View>
+          ) : null}
         </View>
 
-        <View style={styles.section}>
-          <Text style={styles.sectionLabel}>Profile</Text>
-          <RowItem
-            label="Name"
-            value="Add name"
-            icon={<Feather name="user" size={18} color="#9ca3af" />}
-            onPress={() => {}}
-          />
-          <RowItem
-            label="Username"
-            value="Update username"
-            icon={<Feather name="at-sign" size={18} color="#9ca3af" />}
-            onPress={() => {}}
-          />
-          <RowItem
-            label="Bio"
-            value="Add a short bio"
-            icon={<Feather name="info" size={18} color="#9ca3af" />}
-            onPress={() => {}}
-          />
+        <View style={styles.sectionCard}>
+          <TouchableOpacity
+            style={styles.dropdownHeader}
+            onPress={() => setNotificationsOpen((prev) => !prev)}
+            activeOpacity={0.8}
+          >
+            <View style={styles.rowLeft}>
+              <Ionicons name="notifications" size={18} color={oceanBlue} />
+              <Text style={styles.rowLabelWithIcon}>Notification settings</Text>
+            </View>
+            <Feather
+              name={notificationsOpen ? "chevron-up" : "chevron-down"}
+              size={18}
+              color={textSecondary}
+            />
+          </TouchableOpacity>
+          {notificationsOpen ? (
+            <View style={styles.dropdownBody}>
+              <ToggleRow
+                icon={<Feather name="award" size={18} color={accent} />}
+                label="Milestones"
+                value={notificationPrefs.milestones}
+                onValueChange={(value) =>
+                  setNotificationPrefs((prev) => ({ ...prev, milestones: value }))
+                }
+                activeColor={accent}
+              />
+              <ToggleRow
+                icon={<Feather name="message-circle" size={18} color={oceanBlue} />}
+                label="Comments"
+                value={notificationPrefs.comments}
+                onValueChange={(value) =>
+                  setNotificationPrefs((prev) => ({ ...prev, comments: value }))
+                }
+                activeColor={oceanBlue}
+              />
+              <ToggleRow
+                icon={<Feather name="users" size={18} color={accent} />}
+                label="Friends posts"
+                value={notificationPrefs.friendsPosts}
+                onValueChange={(value) =>
+                  setNotificationPrefs((prev) => ({ ...prev, friendsPosts: value }))
+                }
+                activeColor={accent}
+              />
+              <ToggleRow
+                icon={<MaterialCommunityIcons name="beer" size={18} color={oceanBlue} />}
+                label="Buddies near bars"
+                value={notificationPrefs.buddiesNear}
+                onValueChange={(value) =>
+                  setNotificationPrefs((prev) => ({ ...prev, buddiesNear: value }))
+                }
+                activeColor={oceanBlue}
+              />
+              <ToggleRow
+                icon={<MaterialCommunityIcons name="glass-cocktail" size={18} color={accent} />}
+                label="Liquor & bars"
+                value={notificationPrefs.liquorBars}
+                onValueChange={(value) =>
+                  setNotificationPrefs((prev) => ({ ...prev, liquorBars: value }))
+                }
+                activeColor={accent}
+              />
+            </View>
+          ) : null}
         </View>
 
-        <View style={styles.section}>
-          <Text style={styles.sectionLabel}>Preferences</Text>
-          <RowItem
-            label="Change profile pic"
-            icon={<Feather name="image" size={18} color="#9ca3af" />}
-            onPress={() => {}}
-          />
-          <RowItem
-            label="Change drunk pic"
-            icon={<MaterialCommunityIcons name="glass-mug-variant" size={18} color="#9ca3af" />}
-            onPress={() => {}}
-          />
-          <RowItem
-            label="Notification settings"
-            icon={<Ionicons name="notifications-outline" size={18} color="#9ca3af" />}
-            onPress={() => {}}
-          />
-        </View>
-
-        <View style={styles.section}>
+        <View style={styles.sectionCard}>
           <Text style={styles.sectionLabel}>Privacy</Text>
-          <View style={styles.toggleRow}>
-            <View style={styles.rowLeft}>
-              <Ionicons name="notifications" size={18} color="#9ca3af" />
-              <Text style={styles.rowLabel}>Push notifications</Text>
-            </View>
-            <Switch
-              value={pushEnabled}
-              onValueChange={setPushEnabled}
-              trackColor={{ true: "#f59e0b" }}
-            />
-          </View>
-          <View style={styles.toggleRow}>
-            <View style={styles.rowLeft}>
-              <Feather name="map-pin" size={18} color="#9ca3af" />
-              <Text style={styles.rowLabel}>Location access</Text>
-            </View>
-            <Switch
-              value={locationEnabled}
-              onValueChange={setLocationEnabled}
-              trackColor={{ true: "#f59e0b" }}
-            />
-          </View>
+          <ToggleRow
+            icon={<Ionicons name="notifications" size={18} color={accent} />}
+            label="All push notifications"
+            value={pushEnabled}
+            onValueChange={setPushEnabled}
+            activeColor={accent}
+          />
+          <ToggleRow
+            icon={<Feather name="map-pin" size={18} color={oceanBlue} />}
+            label="Location tracking"
+            value={locationEnabled}
+            onValueChange={setLocationEnabled}
+            activeColor={oceanBlue}
+          />
+          <Text style={styles.helperText}>
+            We only use your location to catch when you might be hanging at a bar
+            or liquor store so we can ping your sober buddies before you make any
+            dumb decisions.
+          </Text>
+          <TouchableOpacity
+            style={styles.deleteProfileButton}
+            activeOpacity={0.9}
+            onPress={handleDeleteProfile}
+          >
+            <LinearGradient
+              colors={["#991b1b", "#f97316"]}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={styles.deleteProfileInner}
+            >
+              <Feather name="trash-2" size={16} color="#fff" />
+              <Text style={styles.deleteProfileText}>Delete profile</Text>
+            </LinearGradient>
+          </TouchableOpacity>
         </View>
-      </ScrollView>
+        </ScrollView>
+
+        {loading ? (
+          <View style={styles.loadingScreen}>
+            <ActivityIndicator color={accent} size="large" />
+          </View>
+        ) : null}
+      </KeyboardAvoidingView>
+
+      <AlertModal
+        visible={alertState.visible}
+        type={alertState.type || "info"}
+        title={alertState.title}
+        message={alertState.message}
+        onConfirm={alertState.onConfirm || closeAlert}
+        onCancel={alertState.onCancel || closeAlert}
+      />
     </SafeAreaView>
   );
 };
@@ -136,99 +674,144 @@ const EditProfileScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: "#050816",
+    backgroundColor: primaryBackground,
   },
   container: {
     flex: 1,
-    backgroundColor: "#050816",
+    backgroundColor: primaryBackground,
     paddingHorizontal: 16,
-    paddingTop: 22,
   },
-  header: {
-    marginBottom: 18,
+  topBar: {
     flexDirection: "row",
     alignItems: "center",
+    paddingHorizontal: 16,
+    paddingTop: 6,
+    paddingBottom: 10,
+    gap: 12,
   },
   backButton: {
-    marginRight: 12,
-    padding: 4,
-    flexDirection: "row",
-    alignItems: "center",
+    padding: 10,
+    borderRadius: 999,
+    backgroundColor: "rgba(245,158,11,0.12)",
   },
-  backLabel: {
-    color: "#e5e7eb",
-    marginLeft: 6,
-    fontWeight: "700",
-  },
-  headerTitle: {
-    color: "#f9fafb",
+  screenTitle: {
+    color: textPrimary,
     fontSize: 20,
-    fontWeight: "700",
+    fontWeight: "800",
   },
-  avatarCard: {
-    alignItems: "center",
-    backgroundColor: "#0b1220",
-    padding: 16,
+  sectionCard: {
+    backgroundColor: cardBackground,
     borderRadius: 16,
     borderWidth: 1,
-    borderColor: "#111827",
-    marginBottom: 18,
-  },
-  avatarButton: {
-    flexDirection: "row",
-    alignItems: "center",
-    paddingVertical: 10,
-    paddingHorizontal: 16,
-    borderRadius: 12,
-    alignSelf: "stretch",
-    justifyContent: "center",
-  },
-  avatarButtonText: {
-    color: "#fef3c7",
-    fontWeight: "700",
-    marginLeft: 10,
-  },
-  avatarCircle: {
-    width: 96,
-    height: 96,
-    borderRadius: 48,
-    borderWidth: 3,
-    borderColor: "#f59e0b",
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#0b1220",
-    marginTop: 14,
-  },
-  editPhotoLink: {
-    marginTop: 10,
-  },
-  editPhotoText: {
-    color: "#60a5fa",
-    fontWeight: "600",
-  },
-  section: {
-    backgroundColor: "#0b1220",
-    borderRadius: 16,
-    borderWidth: 1,
-    borderColor: "#111827",
-    marginBottom: 18,
+    borderColor: border,
+    padding: 14,
+    marginTop: 16,
   },
   sectionLabel: {
-    color: "#9ca3af",
+    color: textSecondary,
     fontSize: 12,
     letterSpacing: 0.6,
-    paddingHorizontal: 16,
-    paddingTop: 12,
-    paddingBottom: 6,
+    marginBottom: 12,
   },
-  rowItem: {
+  photoRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    gap: 16,
+  },
+  photoTile: {
+    flex: 1,
+    alignItems: "center",
+  },
+  profileHalo: {
+    width: "100%",
+    aspectRatio: 3 / 4,
+    borderRadius: 18,
+    padding: 4,
+    shadowColor: accent,
+    shadowOpacity: 0.28,
+    shadowRadius: 12,
+    shadowOffset: { width: 0, height: 8 },
+    elevation: 6,
+  },
+  profilePreview: {
+    flex: 1,
+    borderRadius: 14,
+    overflow: "hidden",
+    backgroundColor: nightBlue,
+    position: "relative",
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 1,
+    borderColor: "rgba(255,255,255,0.08)",
+  },
+  profileImage: {
+    width: "100%",
+    height: "100%",
+    borderRadius: 14,
+  },
+  drunkTile: {
+    justifyContent: "flex-start",
+  },
+  drunkHalo: {
+    width: "100%",
+    aspectRatio: 3 / 4,
+    borderRadius: 18,
+    padding: 4,
+    shadowColor: oceanBlue,
+    shadowOpacity: 0.28,
+    shadowRadius: 12,
+    shadowOffset: { width: 0, height: 8 },
+    elevation: 6,
+  },
+  drunkPreview: {
+    flex: 1,
+    borderRadius: 14,
+    overflow: "hidden",
+    backgroundColor: nightBlue,
+    position: "relative",
+    borderWidth: 1,
+    borderColor: "rgba(255,255,255,0.08)",
+  },
+  drunkImage: {
+    width: "100%",
+    height: "100%",
+    borderRadius: 14,
+  },
+  photoPlaceholder: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 12,
+  },
+  placeholderText: {
+    color: textSecondary,
+    fontSize: 12,
+    marginTop: 6,
+  },
+  photoLabel: {
+    color: textPrimary,
+    fontWeight: "700",
+    fontSize: 14,
+    marginTop: 10,
+  },
+  deleteButton: {
+    position: "absolute",
+    top: 10,
+    right: 10,
+    backgroundColor: "rgba(0,0,0,0.55)",
+    borderRadius: 999,
+    padding: 8,
+  },
+  loadingOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "rgba(0,0,0,0.45)",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  dropdownHeader: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    paddingHorizontal: 16,
-    paddingVertical: 14,
-    borderTopWidth: 1,
-    borderTopColor: "#111827",
   },
   rowLeft: {
     flexDirection: "row",
@@ -238,22 +821,98 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   rowLabel: {
-    color: "#e5e7eb",
-    fontWeight: "600",
+    color: textPrimary,
+    fontWeight: "700",
+  },
+  rowLabelWithIcon: {
+    color: textPrimary,
+    fontWeight: "700",
+    marginLeft: 12,
   },
   rowValue: {
-    color: "#9ca3af",
-    marginTop: 2,
+    color: textSecondary,
     fontSize: 12,
+    marginTop: 2,
+  },
+  dropdownBody: {
+    marginTop: 12,
+    borderTopWidth: 1,
+    borderTopColor: border,
+    paddingTop: 12,
+    paddingBottom: 4,
+  },
+  helperText: {
+    color: textSecondary,
+    fontSize: 12,
+    lineHeight: 18,
+    marginBottom: 8,
+  },
+  input: {
+    backgroundColor: nightBlue,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: border,
+    paddingVertical: 12,
+    paddingHorizontal: 14,
+    color: textPrimary,
+    marginTop: 10,
+    marginBottom: 10,
+  },
+  validationText: {
+    color: textSecondary,
+    fontSize: 12,
+    marginBottom: 10,
+  },
+  validationError: {
+    color: accent,
+  },
+  saveButton: {
+    borderRadius: 12,
+    overflow: "hidden",
+  },
+  saveButtonInner: {
+    alignItems: "center",
+    paddingVertical: 12,
+    borderRadius: 12,
+  },
+  saveButtonDisabled: {
+    opacity: 0.6,
+  },
+  saveButtonText: {
+    color: nightBlue,
+    fontWeight: "800",
   },
   toggleRow: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    paddingHorizontal: 16,
-    paddingVertical: 14,
-    borderTopWidth: 1,
-    borderTopColor: "#111827",
+    paddingVertical: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: border,
+  },
+  deleteProfileButton: {
+    marginTop: 18,
+    borderRadius: 14,
+    overflow: "hidden",
+  },
+  deleteProfileInner: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 10,
+    paddingVertical: 12,
+    borderRadius: 14,
+  },
+  deleteProfileText: {
+    color: "#fff",
+    fontWeight: "800",
+    fontSize: 14,
+  },
+  loadingScreen: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "rgba(5,8,22,0.75)",
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
 

@@ -7,3 +7,4 @@ export { default as ContentPreviewModal } from "./ContentPreviewModal";
 export { default as FilterSheet } from "./FilterSheet";
 export { default as RecordButton } from "./RecordButton";
 export { default as LogoLoader } from "./LogoLoader";
+export { default as ToggleSwitch } from "./ToggleSwitch";
