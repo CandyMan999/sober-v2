@@ -28,6 +28,8 @@ import BuddiesScreen from "./screens/Profile/BuddiesScreen";
 import LikesScreen from "./screens/Profile/LikesScreen";
 import NotificationsScreen from "./screens/Profile/NotificationsScreen";
 import NotificationSettingsScreen from "./screens/Profile/NotificationSettingsScreen";
+import DirectMessageScreen from "./screens/Chat/DirectMessageScreen";
+import MessageListScreen from "./screens/Chat/MessageListScreen";
 
 import Context from "./context";
 import reducer from "./reducer";
@@ -164,6 +166,16 @@ export default function App() {
                 <Stack.Screen
                   name="NotificationSettings"
                   component={NotificationSettingsScreen}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="Messages"
+                  component={MessageListScreen}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="DirectMessage"
+                  component={DirectMessageScreen}
                   options={{ headerShown: false }}
                 />
               </Stack.Navigator>

@@ -246,6 +246,18 @@ const UserProfileScreen = ({ route, navigation }) => {
     }
   };
 
+  const handleOpenDirectMessage = useCallback(() => {
+    if (!profileData?.id || !isBuddy) return;
+
+    navigation.navigate("DirectMessage", {
+      user: {
+        id: profileData.id,
+        username: profileData.username,
+        profilePicUrl: profileData.profilePicUrl,
+      },
+    });
+  }, [isBuddy, navigation, profileData]);
+
   const openPreview = (item, type = "POST") => {
     const authorFallback = profileData
       ? {
@@ -806,6 +818,21 @@ const UserProfileScreen = ({ route, navigation }) => {
                 </View>
               </TouchableOpacity>
             ) : null}
+            {profileData?.id !== state?.user?.id && isBuddy ? (
+              <TouchableOpacity
+                style={styles.messageButton}
+                onPress={handleOpenDirectMessage}
+                activeOpacity={0.85}
+              >
+                <Ionicons
+                  name="chatbubbles"
+                  size={18}
+                  color="#0b1222"
+                  style={styles.messageIcon}
+                />
+                <Text style={styles.messageText}>Message</Text>
+              </TouchableOpacity>
+            ) : null}
           </View>
         </View>
 
@@ -1208,6 +1235,26 @@ const styles = StyleSheet.create({
     marginRight: 6,
   },
   followButtonText: {
+    color: "#0b1222",
+    fontWeight: "800",
+    fontSize: 14,
+  },
+  messageButton: {
+    marginTop: 10,
+    backgroundColor: "#fde68a",
+    borderColor: "#f59e0b",
+    borderWidth: 1,
+    paddingHorizontal: 14,
+    paddingVertical: 9,
+    borderRadius: 12,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  messageIcon: {
+    marginRight: 6,
+  },
+  messageText: {
     color: "#0b1222",
     fontWeight: "800",
     fontSize: 14,
