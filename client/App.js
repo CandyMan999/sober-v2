@@ -7,12 +7,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import Toast from "react-native-toast-message";
 
-import {
-  ApolloClient,
-  InMemoryCache,
-  HttpLink,
-  split,
-} from "@apollo/client";
+import { ApolloClient, InMemoryCache, HttpLink, split } from "@apollo/client";
 import { ApolloProvider } from "@apollo/client/react";
 import { WebSocketLink } from "@apollo/client/link/ws";
 import { setContext } from "@apollo/client/link/context";
@@ -109,8 +104,6 @@ export default function App() {
     // Fired whenever a notification is received while the app is foregrounded
     notificationListener.current =
       Notifications.addNotificationReceivedListener((notification) => {
-        console.log("Notification received (foreground):", notification);
-
         // Optional: if you want to update global state when a notification arrives:
         // dispatch({ type: "NOTIFICATION_RECEIVED", payload: notification });
       });
@@ -118,8 +111,6 @@ export default function App() {
     // Fired whenever a user taps on a notification (foreground, background, or killed)
     responseListener.current =
       Notifications.addNotificationResponseReceivedListener((response) => {
-        console.log("Notification interaction:", response);
-
         // Later: you can navigate or update state here.
         // Example shape:
         // const data = response.notification.request.content.data;

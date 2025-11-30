@@ -44,8 +44,7 @@ const TypingIndicator = ({
             duration: 280,
             useNativeDriver: true,
           }),
-        ]),
-        { resetBeforeIteration: true }
+        ])
       );
 
     const dot1Anim = makeDotLoop(dot1, 0);
@@ -98,7 +97,10 @@ const TypingIndicator = ({
       ]}
     >
       <View style={styles.headerRow}>
-        <Text style={[styles.username, { color: accentColor }]} numberOfLines={1}>
+        <Text
+          style={[styles.username, { color: accentColor }]}
+          numberOfLines={1}
+        >
           {username}
         </Text>
         <Text style={styles.label}>is typing</Text>
@@ -110,7 +112,9 @@ const TypingIndicator = ({
         {renderDot(dot3)}
       </View>
 
-      <View style={[styles.tail, { backgroundColor: bubbleColor, borderColor }]} />
+      <View
+        style={[styles.tail, { backgroundColor: bubbleColor, borderColor }]}
+      />
     </Animated.View>
   );
 };

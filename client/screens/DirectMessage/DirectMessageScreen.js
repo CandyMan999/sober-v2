@@ -1,3 +1,4 @@
+// screens/Direct/DirectMessageScreen.js
 import React, {
   useCallback,
   useContext,
@@ -17,13 +18,12 @@ import {
   KeyboardAvoidingView,
   Platform,
   Keyboard,
+  AppState,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useFocusEffect } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import { formatDistanceToNow } from "date-fns";
-
-// 🔑 use the raw ws client instead of Apollo's useSubscription
 import { SubscriptionClient } from "subscriptions-transport-ws";
 
 import Avatar from "../../components/Avatar";
@@ -58,7 +58,6 @@ const formatTime = (timestamp) => {
   return `${formatDistanceToNow(parsed)} ago`;
 };
 
-// Helper to build WS URL (http -> ws, https -> wss)
 const buildWsUrl = () => GRAPHQL_URI.replace(/^http/, "ws");
 
 const DirectMessageScreen = ({ route, navigation }) => {
@@ -74,13 +73,16 @@ const DirectMessageScreen = ({ route, navigation }) => {
   const [roomId, setRoomId] = useState(null);
   const [loading, setLoading] = useState(false);
   const [sending, setSending] = useState(false);
-  const [typingIndicator, setTypingIndicator] = useState(null);
+
+  // LOCAL typing (this user)
+  const [isTypingLocal, setIsTypingLocal] = useState(false);
+  // REMOTE typing (other user)
+  const [isTypingRemote, setIsTypingRemote] = useState(false);
+
   const listRef = useRef(null);
   const previousCount = useRef(0);
   const wsClientRef = useRef(null);
-  const typingStatusRef = useRef(false);
-  const indicatorTimeoutRef = useRef(null);
-
+  const appState = useRef(AppState.currentState);
 
   const syncMessagesFromRoom = useCallback((roomData) => {
     if (!roomData?.comments) return;
@@ -99,17 +101,7 @@ const DirectMessageScreen = ({ route, navigation }) => {
     });
   }, []);
 
-  const scheduleIndicatorClear = useCallback((delayMs = 3500) => {
-    if (indicatorTimeoutRef.current) {
-      clearTimeout(indicatorTimeoutRef.current);
-    }
-
-    indicatorTimeoutRef.current = setTimeout(() => {
-      setTypingIndicator(null);
-    }, delayMs);
-  }, []);
-
-  // 1) Load the room + initial messages
+  // 1) Load room + initial messages
   useEffect(() => {
     if (!targetUserId || !currentUserId) return;
 
@@ -123,7 +115,6 @@ const DirectMessageScreen = ({ route, navigation }) => {
         });
 
         const room = result?.directRoomWithUser;
-        console.log("[DM] Room result:", room);
 
         if (!isMounted || !room) return;
 
@@ -149,19 +140,14 @@ const DirectMessageScreen = ({ route, navigation }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // 2) Manual WebSocket subscription using SubscriptionClient
+  // 2) Manual WebSocket subscriptions (messages + typing)
   useEffect(() => {
     if (!roomId) return;
 
-    console.log("[DM] Setting up WS subscription for room:", roomId);
-
     const wsUrl = buildWsUrl();
-
     let wsClient;
 
     try {
-      // NOTE: no auth checks on the server for this subscription right now,
-      // so we don't have to send tokens here.
       wsClient = new SubscriptionClient(wsUrl, {
         reconnect: true,
       });
@@ -171,6 +157,7 @@ const DirectMessageScreen = ({ route, navigation }) => {
       return undefined;
     }
 
+    // --- message subscription ---
     const messageObservable = wsClient.request({
       query: DIRECT_MESSAGE_SUBSCRIPTION,
       variables: { roomId },
@@ -180,7 +167,6 @@ const DirectMessageScreen = ({ route, navigation }) => {
       next: ({ data }) => {
         try {
           const incoming = data?.directMessageReceived;
-          console.log("[DM] WS incoming:", incoming);
 
           if (!incoming) return;
 
@@ -193,17 +179,18 @@ const DirectMessageScreen = ({ route, navigation }) => {
             );
           });
         } catch (err) {
-          console.error("[DM] WS subscription handler failed:", err);
+          console.error("[DM] WS message handler failed:", err);
         }
       },
       error: (err) => {
-        console.error("[DM] WS subscription error:", err);
+        console.error("[DM] WS message subscription error:", err);
       },
       complete: () => {
-        console.log("[DM] WS subscription completed");
+        console.log("[DM] WS message subscription completed");
       },
     });
 
+    // --- typing subscription ---
     const typingObservable = wsClient.request({
       query: DIRECT_TYPING_SUBSCRIPTION,
       variables: { roomId },
@@ -213,19 +200,13 @@ const DirectMessageScreen = ({ route, navigation }) => {
       next: ({ data }) => {
         try {
           const typing = data?.directTyping;
-          if (!typing || String(typing.userId) === String(currentUserId)) return;
+          if (!typing) return;
 
-          const now = Date.now();
-          const holdTime = typing.isTyping ? 4200 : 1200;
+          // do NOT show indicator for our own typing events
+          if (String(typing.userId) === String(currentUserId)) return;
 
-          setTypingIndicator((prev) => {
-            if (!typing.isTyping && !prev) return null;
-            return typing.isTyping
-              ? { ...typing, lastSeenAt: now }
-              : { ...prev, ...typing, lastSeenAt: now };
-          });
-
-          scheduleIndicatorClear(holdTime);
+          const incomingIsTyping = !!typing.isTyping;
+          setIsTypingRemote(incomingIsTyping);
         } catch (err) {
           console.error("[DM] Typing subscription handler failed:", err);
         }
@@ -236,14 +217,15 @@ const DirectMessageScreen = ({ route, navigation }) => {
     });
 
     return () => {
-      console.log("[DM] Cleaning up WS subscription");
       messageSubscription.unsubscribe();
       typingSubscription.unsubscribe();
       wsClientRef.current?.close?.(false);
       wsClientRef.current = null;
+      setIsTypingRemote(false);
     };
-  }, [currentUserId, roomId, scheduleIndicatorClear]);
+  }, [currentUserId, roomId]);
 
+  // 3) Sorted messages + auto-scroll
   const sortedMessages = useMemo(
     () =>
       [...messages].sort(
@@ -265,67 +247,69 @@ const DirectMessageScreen = ({ route, navigation }) => {
     }
   }, [sortedMessages.length]);
 
-  const sendTypingStatus = useCallback(
-    async (isTyping) => {
-      if (!roomId) return;
+  // 4) Derive LOCAL typing from messageText
+  useEffect(() => {
+    const next = messageText.trim().length > 0;
+    setIsTypingLocal(next);
+  }, [messageText]);
 
+  // 5) Whenever local typing changes, send it to backend
+  useEffect(() => {
+    if (!roomId) return;
+
+    const send = async () => {
       try {
-        typingStatusRef.current = isTyping;
-        await client.request(SET_DIRECT_TYPING, { roomId, isTyping });
+        await client.request(SET_DIRECT_TYPING, {
+          roomId,
+          isTyping: isTypingLocal,
+        });
       } catch (err) {
-        console.error("Failed to publish typing status", err);
+        console.error("[DM] Failed to publish typing state", err);
       }
-    },
-    [client, roomId]
-  );
+    };
 
-  const handleTextChange = useCallback(
-    (value) => {
-      setMessageText(value);
-      if (!roomId) return;
+    send();
+  }, [client, roomId, isTypingLocal]);
 
-      const trimmed = value.trim();
-
-      if (trimmed && !typingStatusRef.current) {
-        sendTypingStatus(true);
+  // 6) App goes background → clear local typing & text (will send false)
+  useEffect(() => {
+    const handleAppStateChange = (nextState) => {
+      if (nextState.match(/inactive|background/i)) {
+        appState.current = nextState;
+        setMessageText("");
+        setIsTypingLocal(false);
+      } else {
+        appState.current = nextState;
       }
+    };
 
-      if (!trimmed && typingStatusRef.current) {
-        sendTypingStatus(false);
-      }
-    },
-    [roomId, sendTypingStatus]
-  );
+    const subscription = AppState.addEventListener(
+      "change",
+      handleAppStateChange
+    );
 
-  useEffect(
-    () => () => {
-      if (indicatorTimeoutRef.current) {
-        clearTimeout(indicatorTimeoutRef.current);
-      }
+    return () => {
+      subscription.remove();
+    };
+  }, []);
 
-      if (typingStatusRef.current && roomId) {
-        sendTypingStatus(false);
-      }
-    },
-    [roomId, sendTypingStatus]
-  );
-
+  // 7) When navigating away, clear typing & text (will send false)
   useFocusEffect(
     useCallback(() => {
       return () => {
-        if (indicatorTimeoutRef.current) {
-          clearTimeout(indicatorTimeoutRef.current);
-        }
-
-        setTypingIndicator(null);
-
-        if (typingStatusRef.current && roomId) {
-          sendTypingStatus(false);
-        }
+        setMessageText("");
+        setIsTypingLocal(false);
+        setIsTypingRemote(false);
       };
-    }, [roomId, sendTypingStatus])
+    }, [])
   );
 
+  // 8) Input change
+  const handleTextChange = useCallback((value) => {
+    setMessageText(value);
+  }, []);
+
+  // 9) Send message
   const handleSend = useCallback(async () => {
     const text = messageText.trim();
     if (!text || !targetUserId || !currentUserId) return;
@@ -350,17 +334,16 @@ const DirectMessageScreen = ({ route, navigation }) => {
         });
       }
 
+      // clear input; local typing effect will send isTyping=false
       setMessageText("");
-      if (typingStatusRef.current) {
-        await sendTypingStatus(false);
-      }
     } catch (err) {
       console.error("Failed to send direct message", err);
     } finally {
       setSending(false);
     }
-  }, [client, currentUserId, messageText, sendTypingStatus, targetUserId]);
+  }, [client, currentUserId, messageText, targetUserId]);
 
+  // 10) Renderers
   const renderMessage = ({ item }) => {
     const isMine = String(item.author?.id) === String(currentUserId);
 
@@ -408,17 +391,13 @@ const DirectMessageScreen = ({ route, navigation }) => {
   };
 
   const renderTypingIndicator = () => {
-    if (!typingIndicator) return null;
+    if (!isTypingRemote) return null;
 
     return (
       <View style={styles.typingRow}>
-        <Avatar
-          uri={typingIndicator.profilePicUrl || user.profilePicUrl}
-          size={30}
-          disableNavigation
-        />
+        <Avatar uri={user.profilePicUrl} size={30} disableNavigation />
         <TypingIndicator
-          username={typingIndicator.username || username}
+          username={user.username}
           accentColor="#f59e0b"
           bubbleColor="rgba(11,18,32,0.95)"
           borderColor="rgba(148,163,184,0.35)"
@@ -428,6 +407,7 @@ const DirectMessageScreen = ({ route, navigation }) => {
     );
   };
 
+  // 11) JSX
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}
@@ -451,6 +431,7 @@ const DirectMessageScreen = ({ route, navigation }) => {
             </View>
           </View>
         </View>
+
         <View style={styles.body}>
           {loading && !sortedMessages.length ? (
             <View style={styles.loaderContainer}>
@@ -481,6 +462,7 @@ const DirectMessageScreen = ({ route, navigation }) => {
             />
           )}
         </View>
+
         <View style={styles.inputBar}>
           <Avatar
             uri={state?.user?.profilePicUrl}
@@ -601,7 +583,7 @@ const styles = StyleSheet.create({
   },
   bubble: {
     maxWidth: "100%",
-    borderRadius: 12,
+    borderRadius: 17,
     paddingHorizontal: 14,
     paddingVertical: 10,
     borderWidth: 1,
@@ -623,6 +605,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: 8,
     paddingLeft: 4,
+    paddingTop: 4,
   },
   messageText: {
     fontSize: 15,
