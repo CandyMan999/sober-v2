@@ -15,6 +15,7 @@ const {
   populateDirectRoom,
   ensureSingleDirectRoom,
 } = require("../utils/directMessage");
+const { sendPushNotifications } = require("../../utils/pushNotifications");
 
 const sendDirectMessageResolver = async (
   _,
@@ -68,6 +69,29 @@ const sendDirectMessageResolver = async (
   const hydratedRoom = await populateDirectRoom(room);
   if (hydratedRoom) {
     publishDirectRoomUpdate(hydratedRoom);
+  }
+
+  if (recipient?.token && recipient?.notificationsEnabled !== false) {
+    const trimmedBody = text.trim();
+    const preview =
+      trimmedBody.length > 140
+        ? `${trimmedBody.slice(0, 137)}...`
+        : trimmedBody;
+
+    await sendPushNotifications([
+      {
+        pushToken: recipient.token,
+        title: `${me.username || "Someone"} sent you a message`,
+        body: preview,
+        data: {
+          type: "direct_message",
+          roomId: String(room._id),
+          senderId: String(me._id),
+          senderUsername: me.username || "Someone",
+          senderProfilePicUrl: me.profilePicUrl || null,
+        },
+      },
+    ]);
   }
 
   return normalized;

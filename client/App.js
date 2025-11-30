@@ -1,7 +1,10 @@
 // App.js
 import React, { useReducer, useContext, useEffect, useRef } from "react";
 
-import { NavigationContainer } from "@react-navigation/native";
+import {
+  NavigationContainer,
+  createNavigationContainerRef,
+} from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
@@ -39,6 +42,7 @@ import Context from "./context";
 import reducer from "./reducer";
 
 const Stack = createStackNavigator();
+const navigationRef = createNavigationContainerRef();
 
 // --- Apollo Client instance with subscriptions ---
 const httpLink = new HttpLink({ uri: GRAPHQL_URI });
@@ -111,12 +115,29 @@ export default function App() {
     // Fired whenever a user taps on a notification (foreground, background, or killed)
     responseListener.current =
       Notifications.addNotificationResponseReceivedListener((response) => {
-        // Later: you can navigate or update state here.
-        // Example shape:
-        // const data = response.notification.request.content.data;
-        // if (data?.screen === "SomeScreen") {
-        //   // Use a navigation ref to jump to a screen if you want
-        // }
+        const data = response?.notification?.request?.content?.data || {};
+
+        if (data?.type === "direct_message" && data.senderId) {
+          const userParam = {
+            id: data.senderId,
+            username: data.senderUsername || "Buddy",
+            profilePicUrl: data.senderProfilePicUrl || null,
+          };
+
+          const navigateToDirectMessage = () => {
+            navigationRef.navigate("DirectMessage", { user: userParam });
+          };
+
+          if (navigationRef.isReady()) {
+            navigateToDirectMessage();
+          } else {
+            setTimeout(() => {
+              if (navigationRef.isReady()) {
+                navigateToDirectMessage();
+              }
+            }, 300);
+          }
+        }
       });
 
     // Cleanup on unmount
@@ -135,7 +156,7 @@ export default function App() {
       <GestureHandlerRootView style={{ flex: 1 }}>
         <SafeAreaProvider>
           <Context.Provider value={{ state, dispatch }}>
-            <NavigationContainer>
+            <NavigationContainer ref={navigationRef}>
               <Stack.Navigator
                 screenOptions={{
                   headerShown: true,
