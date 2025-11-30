@@ -17,7 +17,6 @@ import {
   KeyboardAvoidingView,
   Platform,
   Keyboard,
-  Animated,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useFocusEffect } from "@react-navigation/native";
@@ -38,6 +37,7 @@ import {
 } from "../../GraphQL/directMessages";
 import { useClient } from "../../client";
 import { GRAPHQL_URI } from "../../config/endpoint";
+import TypingIndicator from "../../components/TypingIndicator";
 
 const parseDateValue = (value) => {
   if (!value) return null;
@@ -81,37 +81,7 @@ const DirectMessageScreen = ({ route, navigation }) => {
   const typingStatusRef = useRef(false);
   const typingTimeoutRef = useRef(null);
   const indicatorTimeoutRef = useRef(null);
-  const typingDots = useRef([0, 1, 2].map(() => new Animated.Value(0))).current;
-  const typingLoop = useRef(null);
 
-  useEffect(() => {
-    const wave = (value) =>
-      Animated.sequence([
-        Animated.timing(value, {
-          toValue: 1,
-          duration: 260,
-          useNativeDriver: true,
-        }),
-        Animated.timing(value, {
-          toValue: 0.2,
-          duration: 260,
-          useNativeDriver: true,
-        }),
-      ]);
-
-    typingLoop.current?.stop();
-    typingDots.forEach((value) => value.setValue(0));
-
-    typingLoop.current = Animated.loop(
-      Animated.stagger(140, typingDots.map((value) => wave(value))),
-      { resetBeforeIteration: true }
-    );
-
-    return () => {
-      typingLoop.current?.stop();
-      typingDots.forEach((value) => value.setValue(0));
-    };
-  }, [typingDots]);
 
   const syncMessagesFromRoom = useCallback((roomData) => {
     if (!roomData?.comments) return;
@@ -130,17 +100,15 @@ const DirectMessageScreen = ({ route, navigation }) => {
     });
   }, []);
 
-  useEffect(() => {
-    if (typingIndicator?.isTyping) {
-      typingLoop.current?.stop();
-      typingDots.forEach((value) => value.setValue(0));
-      typingLoop.current?.reset?.();
-      typingLoop.current?.start();
-    } else {
-      typingLoop.current?.stop();
-      typingDots.forEach((value) => value.setValue(0));
+  const scheduleIndicatorClear = useCallback((delayMs = 3500) => {
+    if (indicatorTimeoutRef.current) {
+      clearTimeout(indicatorTimeoutRef.current);
     }
-  }, [typingIndicator, typingDots]);
+
+    indicatorTimeoutRef.current = setTimeout(() => {
+      setTypingIndicator(null);
+    }, delayMs);
+  }, []);
 
   // 1) Load the room + initial messages
   useEffect(() => {
@@ -248,19 +216,17 @@ const DirectMessageScreen = ({ route, navigation }) => {
           const typing = data?.directTyping;
           if (!typing || String(typing.userId) === String(currentUserId)) return;
 
-          setTypingIndicator(typing.isTyping ? typing : null);
+          const now = Date.now();
+          const holdTime = typing.isTyping ? 4200 : 1200;
 
-          if (indicatorTimeoutRef.current) {
-            clearTimeout(indicatorTimeoutRef.current);
-          }
+          setTypingIndicator((prev) => {
+            if (!typing.isTyping && !prev) return null;
+            return typing.isTyping
+              ? { ...typing, lastSeenAt: now }
+              : { ...prev, ...typing, lastSeenAt: now };
+          });
 
-          if (typing.isTyping) {
-            indicatorTimeoutRef.current = setTimeout(() => {
-              setTypingIndicator(null);
-            }, 4000);
-          } else {
-            indicatorTimeoutRef.current = null;
-          }
+          scheduleIndicatorClear(holdTime);
         } catch (err) {
           console.error("[DM] Typing subscription handler failed:", err);
         }
@@ -277,7 +243,7 @@ const DirectMessageScreen = ({ route, navigation }) => {
       wsClientRef.current?.close?.(false);
       wsClientRef.current = null;
     };
-  }, [currentUserId, roomId]);
+  }, [currentUserId, roomId, scheduleIndicatorClear]);
 
   const sortedMessages = useMemo(
     () =>
@@ -362,15 +328,17 @@ const DirectMessageScreen = ({ route, navigation }) => {
   useFocusEffect(
     useCallback(() => {
       return () => {
-        typingLoop.current?.stop();
-        typingDots.forEach((value) => value.setValue(0));
+        if (indicatorTimeoutRef.current) {
+          clearTimeout(indicatorTimeoutRef.current);
+        }
+
         setTypingIndicator(null);
 
         if (typingStatusRef.current && roomId) {
           sendTypingStatus(false);
         }
       };
-    }, [roomId, sendTypingStatus, typingDots])
+    }, [roomId, sendTypingStatus])
   );
 
   const handleSend = useCallback(async () => {
@@ -455,7 +423,7 @@ const DirectMessageScreen = ({ route, navigation }) => {
   };
 
   const renderTypingIndicator = () => {
-    if (!typingIndicator?.isTyping) return null;
+    if (!typingIndicator) return null;
 
     return (
       <View style={styles.typingRow}>
@@ -464,37 +432,13 @@ const DirectMessageScreen = ({ route, navigation }) => {
           size={30}
           disableNavigation
         />
-        <View style={[styles.typingBubble, styles.bubbleTheirs]}>
-          <View style={styles.typingContent}>
-            <View style={styles.typingDots}>
-              {typingDots.map((value, index) => (
-                <Animated.View
-                  key={index}
-                  style={[
-                    styles.typingDot,
-                    {
-                      opacity: value.interpolate({
-                        inputRange: [0, 1],
-                        outputRange: [0.3, 1],
-                      }),
-                      transform: [
-                        {
-                          translateY: value.interpolate({
-                            inputRange: [0, 1],
-                            outputRange: [0, -3],
-                          }),
-                        },
-                      ],
-                    },
-                  ]}
-                />
-              ))}
-            </View>
-            <Text style={styles.typingText}>
-              {typingIndicator.username || username} is typing...
-            </Text>
-          </View>
-        </View>
+        <TypingIndicator
+          username={typingIndicator.username || username}
+          accentColor="#f59e0b"
+          bubbleColor="rgba(11,18,32,0.95)"
+          borderColor="rgba(148,163,184,0.35)"
+          dotColor="#f59e0b"
+        />
       </View>
     );
   };
@@ -686,30 +630,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: 8,
     paddingLeft: 4,
-  },
-  typingBubble: {
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-  },
-  typingContent: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 8,
-  },
-  typingDots: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 6,
-  },
-  typingDot: {
-    width: 8,
-    height: 8,
-    borderRadius: 10,
-    backgroundColor: "#f59e0b",
-  },
-  typingText: {
-    color: "#fef3c7",
-    fontSize: 12,
   },
   messageText: {
     fontSize: 15,
