@@ -19,6 +19,21 @@ export const MY_DIRECT_ROOMS = `
         username
         profilePicUrl
       }
+        comments {
+        id
+        text
+        createdAt
+        targetId
+        targetType
+        replyTo {
+          id
+        }
+        author {
+          id
+          username
+          profilePicUrl
+        }
+      }
     }
   }
 `;

@@ -1,4 +1,3 @@
-// server.js
 const express = require("express");
 const http = require("http");
 const { ApolloServer } = require("apollo-server-express");
@@ -11,6 +10,9 @@ const { typeDefs, resolvers } = require("./graphQL");
 const { User } = require("./models");
 const { cronJob } = require("./utils/cronJob");
 require("dotenv").config();
+
+// 👇 classic GraphQL Playground middleware
+const playground = require("graphql-playground-middleware-express").default;
 
 const PORT = process.env.PORT || 4000;
 
@@ -38,14 +40,14 @@ async function start() {
 
     const app = express();
     const httpServer = http.createServer(app);
+
     const schema = makeExecutableSchema({ typeDefs, resolvers });
 
     const server = new ApolloServer({
       schema,
       introspection: true,
-      playground: true,
-
-      // 👇 attach logged-in user via Expo token
+      // we won't rely on Apollo's own landing page anymore
+      playground: false,
       context: async ({ req }) => {
         const token = req.headers["x-push-token"] || null;
         return buildContext(token);
@@ -54,6 +56,7 @@ async function start() {
 
     await server.start();
 
+    // 👇 keep file uploads enabled (no changes here)
     app.use(
       graphqlUploadExpress({
         maxFileSize: 200 * 1024 * 1024, // 200MB
@@ -61,8 +64,18 @@ async function start() {
       })
     );
 
+    // 👇 mount classic GraphQL Playground at /playground
+    app.get(
+      "/playground",
+      playground({
+        endpoint: "/graphql",
+      })
+    );
+
+    // Apollo GraphQL endpoint
     server.applyMiddleware({ app, path: "/graphql" });
 
+    // Subscriptions server (ws://)
     SubscriptionServer.create(
       {
         schema,
@@ -86,7 +99,13 @@ async function start() {
     await new Promise((resolve) => httpServer.listen({ port: PORT }, resolve));
 
     cronJob();
-    console.log(`🚀 Server ready at http://localhost:${PORT}${server.graphqlPath}`);
+
+    console.log(
+      `🚀 HTTP GraphQL ready at   http://localhost:${PORT}${server.graphqlPath}`
+    );
+    console.log(
+      `🧪 Playground available at http://localhost:${PORT}/playground`
+    );
   } catch (err) {
     console.error("❌ Error starting server:", err);
   }

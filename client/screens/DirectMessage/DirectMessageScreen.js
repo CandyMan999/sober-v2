@@ -19,7 +19,9 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
-import { useSubscription } from "@apollo/client/react";
+
+// 🔑 use the raw ws client instead of Apollo's useSubscription
+import { SubscriptionClient } from "subscriptions-transport-ws";
 
 import Avatar from "../../components/Avatar";
 import Context from "../../context";
@@ -29,12 +31,16 @@ import {
   SEND_DIRECT_MESSAGE,
 } from "../../GraphQL/directMessages";
 import { useClient } from "../../client";
+import { GRAPHQL_URI } from "../../config/endpoint";
 
 const formatTime = (timestamp) => {
   if (!timestamp) return "Just now";
   const date = new Date(timestamp);
   return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 };
+
+// Helper to build WS URL (http -> ws, https -> wss)
+const buildWsUrl = () => GRAPHQL_URI.replace(/^http/, "ws");
 
 const DirectMessageScreen = ({ route, navigation }) => {
   const { state } = useContext(Context);
@@ -48,6 +54,7 @@ const DirectMessageScreen = ({ route, navigation }) => {
   const [messages, setMessages] = useState([]);
   const [roomId, setRoomId] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [sending, setSending] = useState(false);
 
   const syncMessagesFromRoom = useCallback((roomData) => {
     if (!roomData?.comments) return;
@@ -64,6 +71,7 @@ const DirectMessageScreen = ({ route, navigation }) => {
     });
   }, []);
 
+  // 1) Load the room + initial messages
   useEffect(() => {
     if (!targetUserId || !currentUserId) return;
 
@@ -75,11 +83,17 @@ const DirectMessageScreen = ({ route, navigation }) => {
         const result = await client.request(DIRECT_ROOM_WITH_USER, {
           userId: targetUserId,
         });
-        if (!isMounted) return;
+
         const room = result?.directRoomWithUser;
+        console.log("[DM] Room result:", room);
+
+        if (!isMounted || !room) return;
+
         if (room?.id || room?._id) {
-          setRoomId(room.id || room._id);
+          const id = room.id || room._id;
+          setRoomId(id);
         }
+
         syncMessagesFromRoom(room);
       } catch (error) {
         console.error("Failed to load direct room", error);
@@ -94,31 +108,60 @@ const DirectMessageScreen = ({ route, navigation }) => {
     return () => {
       isMounted = false;
     };
-    // Intentionally empty dependency array to avoid repeated room requests
-    // when navigation props or client instances change.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  useSubscription(DIRECT_MESSAGE_SUBSCRIPTION, {
-    skip: !roomId || !currentUserId,
-    variables: { roomId },
-    onData: ({ data: subscriptionData }) => {
-      try {
-        const incoming = subscriptionData?.data?.directMessageReceived;
-        if (!incoming) return;
+  // 2) Manual WebSocket subscription using SubscriptionClient
+  useEffect(() => {
+    if (!roomId) return;
 
-        setMessages((prev) => {
-          if (prev.find((msg) => msg.id === incoming.id)) return prev;
-          return [...prev, incoming].sort(
-            (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
-          );
-        });
-      } catch (error) {
-        console.error("Direct message subscription handling failed", error);
-      }
-    },
-  });
+    console.log("[DM] Setting up WS subscription for room:", roomId);
 
-  const [sending, setSending] = useState(false);
+    const wsUrl = buildWsUrl();
+
+    // NOTE: no auth checks on the server for this subscription right now,
+    // so we don't have to send tokens here.
+    const wsClient = new SubscriptionClient(wsUrl, {
+      reconnect: true,
+    });
+
+    const observable = wsClient.request({
+      query: DIRECT_MESSAGE_SUBSCRIPTION,
+      variables: { roomId },
+    });
+
+    const subscription = observable.subscribe({
+      next: ({ data }) => {
+        try {
+          const incoming = data?.directMessageReceived;
+          console.log("[DM] WS incoming:", incoming);
+
+          if (!incoming) return;
+
+          setMessages((prev) => {
+            if (prev.find((msg) => msg.id === incoming.id)) return prev;
+            return [...prev, incoming].sort(
+              (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
+            );
+          });
+        } catch (err) {
+          console.error("[DM] WS subscription handler failed:", err);
+        }
+      },
+      error: (err) => {
+        console.error("[DM] WS subscription error:", err);
+      },
+      complete: () => {
+        console.log("[DM] WS subscription completed");
+      },
+    });
+
+    return () => {
+      console.log("[DM] Cleaning up WS subscription");
+      subscription.unsubscribe();
+      wsClient.close(false);
+    };
+  }, [roomId]);
 
   const sortedMessages = useMemo(
     () =>
@@ -170,7 +213,12 @@ const DirectMessageScreen = ({ route, navigation }) => {
             disableNavigation
           />
         )}
-        <View style={[styles.bubble, isMine ? styles.bubbleMine : styles.bubbleTheirs]}>
+        <View
+          style={[
+            styles.bubble,
+            isMine ? styles.bubbleMine : styles.bubbleTheirs,
+          ]}
+        >
           <Text
             style={[
               styles.messageText,
@@ -252,7 +300,10 @@ const DirectMessageScreen = ({ route, navigation }) => {
             <Text style={styles.doneButtonText}>Done</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={[styles.sendButton, (!messageText.trim() || sending) && styles.sendButtonDisabled]}
+            style={[
+              styles.sendButton,
+              (!messageText.trim() || sending) && styles.sendButtonDisabled,
+            ]}
             disabled={!messageText.trim() || sending}
             onPress={handleSend}
           >

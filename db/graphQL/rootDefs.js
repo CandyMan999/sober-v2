@@ -355,11 +355,7 @@ const typeDefs = gql`
       targetType: LikeTarget!
       targetId: ID!
     ): LikePayload!
-    sendDirectMessage(
-      recipientId: ID!
-      text: String!
-      replyTo: ID
-    ): Comment!
+    sendDirectMessage(recipientId: ID!, text: String!, replyTo: ID): Comment!
     followUser(token: String!, userId: ID!): Connection!
     unfollowUser(token: String!, userId: ID!): Boolean!
   }

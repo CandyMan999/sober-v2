@@ -1,3 +1,4 @@
+// resolvers/mutations/directMessages.js
 const {
   AuthenticationError,
   UserInputError,
@@ -7,10 +8,18 @@ const { Room, User, Comment } = require("../../models");
 const {
   publishDirectMessage,
   publishDirectRoomUpdate,
+  normalizeCommentForGraphQL,
 } = require("../subscription/subscription");
-const { populateDirectRoom, ensureSingleDirectRoom } = require("../utils/directMessage");
+const {
+  populateDirectRoom,
+  ensureSingleDirectRoom,
+} = require("../utils/directMessage");
 
-const sendDirectMessageResolver = async (_, { recipientId, text, replyTo }, ctx) => {
+const sendDirectMessageResolver = async (
+  _,
+  { recipientId, text, replyTo },
+  ctx
+) => {
   const me = ctx.currentUser;
   if (!me) throw new AuthenticationError("Not authenticated");
 
@@ -49,14 +58,18 @@ const sendDirectMessageResolver = async (_, { recipientId, text, replyTo }, ctx)
     .populate({ path: "author", populate: "profilePic" })
     .exec();
 
-  publishDirectMessage(populatedComment);
+  const normalized = normalizeCommentForGraphQL(populatedComment);
+
+  console.log("Comment to sub (normalized): ", normalized);
+
+  publishDirectMessage(normalized);
 
   const hydratedRoom = await populateDirectRoom(room);
   if (hydratedRoom) {
     publishDirectRoomUpdate(hydratedRoom);
   }
 
-  return populatedComment;
+  return normalized;
 };
 
 module.exports = { sendDirectMessageResolver };
