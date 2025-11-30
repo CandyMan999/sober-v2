@@ -16,6 +16,7 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useSubscription } from "@apollo/client/react";
+import { formatDistanceToNow } from "date-fns";
 
 import Avatar from "../../components/Avatar";
 import Context from "../../context";
@@ -39,21 +40,9 @@ const parseDateValue = (value) => {
 };
 
 const timeAgo = (timestamp) => {
-  const timeValue = parseDateValue(timestamp)?.getTime();
-  if (!timeValue) return "Just now";
-
-  const diffMs = Date.now() - timeValue;
-  if (Number.isNaN(diffMs) || diffMs < 0) return "Just now";
-
-  const minutes = Math.floor(diffMs / (1000 * 60));
-  if (minutes < 1) return "Just now";
-  if (minutes < 60) return `${minutes}m ago`;
-
-  const hours = Math.floor(minutes / 60);
-  if (hours < 24) return `${hours}h ago`;
-
-  const days = Math.floor(hours / 24);
-  return `${days}d ago`;
+  const parsed = parseDateValue(timestamp);
+  if (!parsed) return "Just now";
+  return `${formatDistanceToNow(parsed)} ago`;
 };
 
 const MessageListScreen = ({ route, navigation }) => {

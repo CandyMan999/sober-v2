@@ -20,6 +20,7 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
+import { formatDistanceToNow } from "date-fns";
 
 // 🔑 use the raw ws client instead of Apollo's useSubscription
 import { SubscriptionClient } from "subscriptions-transport-ws";
@@ -50,7 +51,7 @@ const parseDateValue = (value) => {
 const formatTime = (timestamp) => {
   const parsed = parseDateValue(timestamp);
   if (!parsed) return "Just now";
-  return parsed.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+  return `${formatDistanceToNow(parsed)} ago`;
 };
 
 // Helper to build WS URL (http -> ws, https -> wss)
@@ -246,26 +247,38 @@ const DirectMessageScreen = ({ route, navigation }) => {
             uri={item.author?.profilePicUrl}
             size={34}
             disableNavigation
+            style={styles.messageAvatar}
           />
         )}
-        <View
-          style={[
-            styles.bubble,
-            isMine ? styles.bubbleMine : styles.bubbleTheirs,
-          ]}
-        >
-          <Text
+        <View style={[styles.bubbleStack, isMine && styles.bubbleStackMine]}>
+          <View
             style={[
-              styles.messageText,
-              isMine ? styles.messageTextMine : styles.messageTextTheirs,
+              styles.bubble,
+              isMine ? styles.bubbleMine : styles.bubbleTheirs,
             ]}
           >
-            {item.text}
-          </Text>
-          <Text style={[styles.timestamp, isMine && styles.timestampMine]}>
-            {formatTime(item.createdAt)}
-          </Text>
+            <Text
+              style={[
+                styles.messageText,
+                isMine ? styles.messageTextMine : styles.messageTextTheirs,
+              ]}
+            >
+              {item.text}
+            </Text>
+            <Text style={[styles.timestamp, isMine && styles.timestampMine]}>
+              {formatTime(item.createdAt)}
+            </Text>
+          </View>
         </View>
+        {isMine && (
+          <Avatar
+            uri={state?.user?.profilePicUrl}
+            haloColor="blue"
+            size={34}
+            disableNavigation
+            style={styles.messageAvatar}
+          />
+        )}
       </View>
     );
   };
@@ -274,7 +287,7 @@ const DirectMessageScreen = ({ route, navigation }) => {
     <KeyboardAvoidingView
       style={{ flex: 1 }}
       behavior={Platform.OS === "ios" ? "padding" : undefined}
-      keyboardVerticalOffset={Platform.OS === "ios" ? 84 : 0}
+      keyboardVerticalOffset={0}
     >
       <SafeAreaView style={styles.container} edges={["top", "left", "right"]}>
         <View style={styles.header}>
@@ -407,10 +420,11 @@ const styles = StyleSheet.create({
   body: {
     flex: 1,
     paddingHorizontal: 16,
-    paddingVertical: 10,
+    paddingTop: 0,
+    paddingBottom: 12,
   },
   listContent: {
-    paddingBottom: 12,
+    paddingBottom: 8,
     gap: 12,
   },
   messageRow: {
@@ -421,40 +435,50 @@ const styles = StyleSheet.create({
   messageRowMine: {
     justifyContent: "flex-end",
   },
+  messageAvatar: {
+    marginBottom: 2,
+  },
+  bubbleStack: {
+    flexShrink: 1,
+  },
+  bubbleStackMine: {
+    alignItems: "flex-end",
+  },
   bubble: {
-    maxWidth: "78%",
-    borderRadius: 14,
-    paddingHorizontal: 12,
+    maxWidth: "80%",
+    borderRadius: 16,
+    paddingHorizontal: 14,
     paddingVertical: 10,
+    borderWidth: 1,
   },
   bubbleMine: {
-    backgroundColor: "#f59e0b",
-    borderTopRightRadius: 4,
+    backgroundColor: "rgba(56,189,248,0.14)",
+    borderColor: "#38bdf8",
+    borderTopRightRadius: 6,
   },
   bubbleTheirs: {
-    backgroundColor: "#0b1220",
-    borderTopLeftRadius: 4,
-    borderWidth: 1,
-    borderColor: "#1f2937",
+    backgroundColor: "rgba(245,158,11,0.08)",
+    borderTopLeftRadius: 6,
+    borderColor: "#f59e0b",
   },
   messageText: {
     fontSize: 15,
   },
   messageTextMine: {
-    color: "#0b1220",
+    color: "#e0f2fe",
     fontWeight: "600",
   },
   messageTextTheirs: {
-    color: "#e5e7eb",
+    color: "#fef3c7",
   },
   timestamp: {
-    color: "#9ca3af",
+    color: "#94a3b8",
     fontSize: 11,
     marginTop: 6,
   },
   timestampMine: {
-    color: "#0b1220",
-    opacity: 0.75,
+    color: "#bae6fd",
+    opacity: 0.9,
   },
   inputBar: {
     flexDirection: "row",
