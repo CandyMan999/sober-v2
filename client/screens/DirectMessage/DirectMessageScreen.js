@@ -917,7 +917,6 @@ const styles = StyleSheet.create({
   likeBadge: {
     position: "absolute",
     top: -10,
-    right: -10,
     backgroundColor: "rgba(15,23,42,0.9)",
     borderRadius: 12,
     paddingHorizontal: 6,
@@ -931,7 +930,7 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   likeBadgeMine: {
-    right: -6,
+    left: -6,
   },
   likeBadgeTheirs: {
     right: -12,
