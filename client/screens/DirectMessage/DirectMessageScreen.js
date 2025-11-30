@@ -79,7 +79,6 @@ const DirectMessageScreen = ({ route, navigation }) => {
   const previousCount = useRef(0);
   const wsClientRef = useRef(null);
   const typingStatusRef = useRef(false);
-  const typingTimeoutRef = useRef(null);
   const indicatorTimeoutRef = useRef(null);
 
 
@@ -294,26 +293,12 @@ const DirectMessageScreen = ({ route, navigation }) => {
       if (!trimmed && typingStatusRef.current) {
         sendTypingStatus(false);
       }
-
-      if (typingTimeoutRef.current) {
-        clearTimeout(typingTimeoutRef.current);
-      }
-
-      if (trimmed) {
-        typingTimeoutRef.current = setTimeout(() => {
-          sendTypingStatus(false);
-        }, 2500);
-      }
     },
     [roomId, sendTypingStatus]
   );
 
   useEffect(
     () => () => {
-      if (typingTimeoutRef.current) {
-        clearTimeout(typingTimeoutRef.current);
-      }
-
       if (indicatorTimeoutRef.current) {
         clearTimeout(indicatorTimeoutRef.current);
       }
@@ -468,7 +453,9 @@ const DirectMessageScreen = ({ route, navigation }) => {
         </View>
         <View style={styles.body}>
           {loading && !sortedMessages.length ? (
-            <ActivityIndicator size="small" color="#f59e0b" />
+            <View style={styles.loaderContainer}>
+              <ActivityIndicator size="large" color="#f59e0b" />
+            </View>
           ) : (
             <FlatList
               ref={listRef}
@@ -583,6 +570,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingTop: 0,
     paddingBottom: 12,
+  },
+  loaderContainer: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    paddingBottom: 40,
   },
   listContent: {
     paddingBottom: 8,
