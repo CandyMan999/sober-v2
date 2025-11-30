@@ -9,7 +9,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { useQuery, useSubscription } from "@apollo/client";
+import { useSubscription } from "@apollo/client";
 
 import Avatar from "../../components/Avatar";
 import Context from "../../context";
@@ -17,6 +17,7 @@ import {
   DIRECT_ROOM_UPDATED,
   MY_DIRECT_ROOMS,
 } from "../../GraphQL/directMessages";
+import { useClient } from "../../client";
 
 const timeAgo = (timestamp) => {
   if (!timestamp) return "Just now";
@@ -39,19 +40,35 @@ const MessageListScreen = ({ route, navigation }) => {
   const { state } = useContext(Context);
   const currentUserId = state?.user?.id;
   const conversations = route?.params?.conversations || [];
+  const client = useClient();
 
   const [rooms, setRooms] = useState([]);
-
-  const { data, loading } = useQuery(MY_DIRECT_ROOMS, {
-    fetchPolicy: "cache-and-network",
-    skip: !currentUserId,
-  });
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (data?.myDirectRooms) {
-      setRooms(data.myDirectRooms);
-    }
-  }, [data]);
+    if (!currentUserId) return;
+
+    let isMounted = true;
+    setLoading(true);
+
+    client
+      .request(MY_DIRECT_ROOMS)
+      .then((result) => {
+        if (!isMounted) return;
+        setRooms(result?.myDirectRooms || []);
+      })
+      .catch((error) => {
+        console.log("Failed to load direct rooms", error);
+      })
+      .finally(() => {
+        if (!isMounted) return;
+        setLoading(false);
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, [client, currentUserId]);
 
   useSubscription(DIRECT_ROOM_UPDATED, {
     skip: !currentUserId,

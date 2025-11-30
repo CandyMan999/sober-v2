@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client";
 
-export const MY_DIRECT_ROOMS = gql`
+export const MY_DIRECT_ROOMS = `
   query MyDirectRooms {
     myDirectRooms {
       id
@@ -23,7 +23,7 @@ export const MY_DIRECT_ROOMS = gql`
   }
 `;
 
-export const DIRECT_ROOM_WITH_USER = gql`
+export const DIRECT_ROOM_WITH_USER = `
   query DirectRoomWithUser($userId: ID!) {
     directRoomWithUser(userId: $userId) {
       id
@@ -52,7 +52,7 @@ export const DIRECT_ROOM_WITH_USER = gql`
   }
 `;
 
-export const SEND_DIRECT_MESSAGE = gql`
+export const SEND_DIRECT_MESSAGE = `
   mutation SendDirectMessage($recipientId: ID!, $text: String!, $replyTo: ID) {
     sendDirectMessage(recipientId: $recipientId, text: $text, replyTo: $replyTo) {
       id

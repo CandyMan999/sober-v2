@@ -16,7 +16,7 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
-import { useMutation, useQuery, useSubscription } from "@apollo/client";
+import { useSubscription } from "@apollo/client";
 
 import Avatar from "../../components/Avatar";
 import Context from "../../context";
@@ -25,6 +25,7 @@ import {
   DIRECT_ROOM_WITH_USER,
   SEND_DIRECT_MESSAGE,
 } from "../../GraphQL/directMessages";
+import { useClient } from "../../client";
 
 const formatTime = (timestamp) => {
   if (!timestamp) return "Just now";
@@ -34,27 +35,62 @@ const formatTime = (timestamp) => {
 
 const DirectMessageScreen = ({ route, navigation }) => {
   const { state } = useContext(Context);
+  const client = useClient();
   const currentUserId = state?.user?.id;
   const user = route?.params?.user || {};
+  const targetUserId = user?.id;
   const username = user.username || "Buddy";
 
   const [messageText, setMessageText] = useState("");
   const [messages, setMessages] = useState([]);
   const [sendError, setSendError] = useState("");
+  const [roomId, setRoomId] = useState(null);
+  const [loading, setLoading] = useState(false);
 
-  const { data, loading } = useQuery(DIRECT_ROOM_WITH_USER, {
-    variables: { userId: user.id },
-    fetchPolicy: "cache-and-network",
-    skip: !user?.id || !currentUserId,
-  });
+  const syncMessagesFromRoom = useCallback((roomData) => {
+    if (!roomData?.comments) return;
 
-  const roomId = data?.directRoomWithUser?.id;
+    setMessages((prev) => {
+      const incomingById = new Map(prev.map((msg) => [msg.id, msg]));
+      roomData.comments.forEach((msg) => {
+        incomingById.set(msg.id, msg);
+      });
+
+      return [...incomingById.values()].sort(
+        (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
+      );
+    });
+  }, []);
 
   useEffect(() => {
-    if (data?.directRoomWithUser?.comments) {
-      setMessages(data.directRoomWithUser.comments);
-    }
-  }, [data]);
+    if (!targetUserId || !currentUserId) return;
+
+    let isMounted = true;
+    setLoading(true);
+
+    client
+      .request(DIRECT_ROOM_WITH_USER, { userId: targetUserId })
+      .then((result) => {
+        if (!isMounted) return;
+        const room = result?.directRoomWithUser;
+        if (room?.id) {
+          setRoomId(room.id);
+        }
+        syncMessagesFromRoom(room);
+      })
+      .catch((error) => {
+        if (!isMounted) return;
+        setSendError(error?.message || "Unable to load messages right now.");
+      })
+      .finally(() => {
+        if (!isMounted) return;
+        setLoading(false);
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, [client, currentUserId, syncMessagesFromRoom, targetUserId]);
 
   useSubscription(DIRECT_MESSAGE_SUBSCRIPTION, {
     skip: !roomId || !currentUserId,
@@ -72,9 +108,7 @@ const DirectMessageScreen = ({ route, navigation }) => {
     },
   });
 
-  const [sendDirectMessage, { loading: sending }] = useMutation(
-    SEND_DIRECT_MESSAGE
-  );
+  const [sending, setSending] = useState(false);
 
   const sortedMessages = useMemo(
     () =>
@@ -86,16 +120,19 @@ const DirectMessageScreen = ({ route, navigation }) => {
 
   const handleSend = useCallback(async () => {
     const text = messageText.trim();
-    if (!text || !user?.id || !currentUserId) return;
+    if (!text || !targetUserId || !currentUserId) return;
 
     setSendError("");
 
     try {
-      const response = await sendDirectMessage({
-        variables: { recipientId: user.id, text },
+      setSending(true);
+
+      const response = await client.request(SEND_DIRECT_MESSAGE, {
+        recipientId: targetUserId,
+        text,
       });
 
-      const newMessage = response?.data?.sendDirectMessage;
+      const newMessage = response?.sendDirectMessage;
       if (newMessage) {
         setMessages((prev) => {
           if (prev.find((msg) => msg.id === newMessage.id)) return prev;
@@ -108,8 +145,10 @@ const DirectMessageScreen = ({ route, navigation }) => {
       setMessageText("");
     } catch (err) {
       setSendError(err?.message || "Unable to send message right now.");
+    } finally {
+      setSending(false);
     }
-  }, [messageText, sendDirectMessage, user?.id]);
+  }, [client, currentUserId, messageText, targetUserId]);
 
   const renderMessage = ({ item }) => {
     const isMine = String(item.author?.id) === String(currentUserId);

@@ -4,20 +4,8 @@ const {
   UserInputError,
 } = require("apollo-server-express");
 
-const { Room, User, Comment } = require("../../models");
-const {
-  publishDirectMessage,
-  publishDirectRoomUpdate,
-} = require("../subscriptions");
-
-const populateRoom = async (room) =>
-  room
-    .populate(["users", { path: "lastMessage", populate: "author" }])
-    .populate({
-      path: "comments",
-      populate: "author",
-      options: { sort: { createdAt: 1 } },
-    });
+const { Room } = require("../../models");
+const { populateDirectRoom } = require("../utils/directMessage");
 
 module.exports = {
   // QUERY: list all DM rooms for the current user
@@ -62,7 +50,7 @@ module.exports = {
       });
     }
 
-    const populatedRoom = await populateRoom(room);
+    const populatedRoom = await populateDirectRoom(room);
     const sortedComments = [...(populatedRoom.comments || [])].sort(
       (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
     );
@@ -71,65 +59,5 @@ module.exports = {
       ...populatedRoom.toObject(),
       comments: sortedComments,
     };
-  },
-
-  // MUTATION: send a DM to a specific user (creates the room if needed)
-  sendDirectMessageResolver: async (_, { recipientId, text, replyTo }, ctx) => {
-    const me = ctx.currentUser;
-    if (!me) throw new AuthenticationError("Not authenticated");
-
-    if (!text || !text.trim()) {
-      throw new UserInputError("Message text is required.");
-    }
-
-    if (String(me._id) === String(recipientId)) {
-      throw new UserInputError("Cannot send a DM to yourself.");
-    }
-
-    const recipient = await User.findById(recipientId);
-    if (!recipient) {
-      throw new UserInputError("Recipient not found.");
-    }
-
-    // 1. Find or create DM room between me + recipient
-    let room = await Room.findOne({
-      isDirect: true,
-      users: { $all: [me._id, recipient._id], $size: 2 },
-    });
-
-    if (!room) {
-      room = await Room.create({
-        isDirect: true,
-        users: [me._id, recipient._id],
-        lastMessageAt: new Date(),
-      });
-    }
-
-    // 2. Create the Comment as the DM message
-    const comment = await Comment.create({
-      text: text.trim(),
-      author: me._id,
-      targetType: "ROOM",
-      targetId: room._id,
-      replyTo: replyTo || null,
-    });
-
-    // 3. Update room metadata for inbox previews
-    room.lastMessageAt = new Date();
-    room.lastMessage = comment._id;
-    room.comments.push(comment._id);
-    await room.save();
-
-    // 4. Return populated comment
-    const populatedComment = await Comment.findById(comment._id)
-      .populate("author")
-      .exec();
-
-    publishDirectMessage(populatedComment);
-
-    const hydratedRoom = await populateRoom(room);
-    publishDirectRoomUpdate(hydratedRoom);
-
-    return populatedComment;
   },
 };

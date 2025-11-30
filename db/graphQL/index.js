@@ -35,7 +35,7 @@ const {
   directRoomWithUserResolver,
 } = require("./queries/index.js");
 const { pubsub, withFilter, DIRECT_MESSAGE_SENT, DIRECT_ROOM_UPDATED } = require(
-  "./subscriptions"
+  "./pubsub"
 );
 
 // Import models
