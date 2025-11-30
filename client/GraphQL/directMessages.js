@@ -19,7 +19,7 @@ export const MY_DIRECT_ROOMS = `
         username
         profilePicUrl
       }
-        comments {
+      comments {
         id
         text
         createdAt
@@ -87,6 +87,19 @@ export const SEND_DIRECT_MESSAGE = `
   }
 `;
 
+export const SET_DIRECT_TYPING = `
+  mutation SetDirectTyping($roomId: ID!, $isTyping: Boolean!) {
+    setDirectTyping(roomId: $roomId, isTyping: $isTyping) {
+      roomId
+      userId
+      username
+      profilePicUrl
+      isTyping
+      lastTypedAt
+    }
+  }
+`;
+
 export const DIRECT_MESSAGE_SUBSCRIPTION = gql`
   subscription DirectMessageReceived($roomId: ID!) {
     directMessageReceived(roomId: $roomId) {
@@ -103,6 +116,19 @@ export const DIRECT_MESSAGE_SUBSCRIPTION = gql`
         username
         profilePicUrl
       }
+    }
+  }
+`;
+
+export const DIRECT_TYPING_SUBSCRIPTION = gql`
+  subscription DirectTyping($roomId: ID!) {
+    directTyping(roomId: $roomId) {
+      roomId
+      userId
+      username
+      profilePicUrl
+      isTyping
+      lastTypedAt
     }
   }
 `;

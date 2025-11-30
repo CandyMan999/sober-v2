@@ -1,8 +1,10 @@
+// screens/Direct/DirectMessageScreen.js
 import React, {
   useCallback,
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from "react";
 import {
@@ -16,11 +18,12 @@ import {
   KeyboardAvoidingView,
   Platform,
   Keyboard,
+  AppState,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useFocusEffect } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
-
-// 🔑 use the raw ws client instead of Apollo's useSubscription
+import { formatDistanceToNow } from "date-fns";
 import { SubscriptionClient } from "subscriptions-transport-ws";
 
 import Avatar from "../../components/Avatar";
@@ -29,17 +32,32 @@ import {
   DIRECT_MESSAGE_SUBSCRIPTION,
   DIRECT_ROOM_WITH_USER,
   SEND_DIRECT_MESSAGE,
+  SET_DIRECT_TYPING,
+  DIRECT_TYPING_SUBSCRIPTION,
 } from "../../GraphQL/directMessages";
 import { useClient } from "../../client";
 import { GRAPHQL_URI } from "../../config/endpoint";
+import TypingIndicator from "../../components/TypingIndicator";
 
-const formatTime = (timestamp) => {
-  if (!timestamp) return "Just now";
-  const date = new Date(timestamp);
-  return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+const parseDateValue = (value) => {
+  if (!value) return null;
+
+  const numeric = Number(value);
+  if (!Number.isNaN(numeric)) {
+    const fromNumeric = new Date(numeric);
+    if (!Number.isNaN(fromNumeric.getTime())) return fromNumeric;
+  }
+
+  const fromString = new Date(value);
+  return Number.isNaN(fromString.getTime()) ? null : fromString;
 };
 
-// Helper to build WS URL (http -> ws, https -> wss)
+const formatTime = (timestamp) => {
+  const parsed = parseDateValue(timestamp);
+  if (!parsed) return "Just now";
+  return `${formatDistanceToNow(parsed)} ago`;
+};
+
 const buildWsUrl = () => GRAPHQL_URI.replace(/^http/, "ws");
 
 const DirectMessageScreen = ({ route, navigation }) => {
@@ -56,6 +74,16 @@ const DirectMessageScreen = ({ route, navigation }) => {
   const [loading, setLoading] = useState(false);
   const [sending, setSending] = useState(false);
 
+  // LOCAL typing (this user)
+  const [isTypingLocal, setIsTypingLocal] = useState(false);
+  // REMOTE typing (other user)
+  const [isTypingRemote, setIsTypingRemote] = useState(false);
+
+  const listRef = useRef(null);
+  const previousCount = useRef(0);
+  const wsClientRef = useRef(null);
+  const appState = useRef(AppState.currentState);
+
   const syncMessagesFromRoom = useCallback((roomData) => {
     if (!roomData?.comments) return;
 
@@ -66,12 +94,14 @@ const DirectMessageScreen = ({ route, navigation }) => {
       });
 
       return [...incomingById.values()].sort(
-        (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
+        (a, b) =>
+          (parseDateValue(a.createdAt)?.getTime() || 0) -
+          (parseDateValue(b.createdAt)?.getTime() || 0)
       );
     });
   }, []);
 
-  // 1) Load the room + initial messages
+  // 1) Load room + initial messages
   useEffect(() => {
     if (!targetUserId || !currentUserId) return;
 
@@ -85,7 +115,6 @@ const DirectMessageScreen = ({ route, navigation }) => {
         });
 
         const room = result?.directRoomWithUser;
-        console.log("[DM] Room result:", room);
 
         if (!isMounted || !room) return;
 
@@ -111,66 +140,176 @@ const DirectMessageScreen = ({ route, navigation }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // 2) Manual WebSocket subscription using SubscriptionClient
+  // 2) Manual WebSocket subscriptions (messages + typing)
   useEffect(() => {
     if (!roomId) return;
 
-    console.log("[DM] Setting up WS subscription for room:", roomId);
-
     const wsUrl = buildWsUrl();
+    let wsClient;
 
-    // NOTE: no auth checks on the server for this subscription right now,
-    // so we don't have to send tokens here.
-    const wsClient = new SubscriptionClient(wsUrl, {
-      reconnect: true,
-    });
+    try {
+      wsClient = new SubscriptionClient(wsUrl, {
+        reconnect: true,
+      });
+      wsClientRef.current = wsClient;
+    } catch (err) {
+      console.error("[DM] Failed to init WS client", err);
+      return undefined;
+    }
 
-    const observable = wsClient.request({
+    // --- message subscription ---
+    const messageObservable = wsClient.request({
       query: DIRECT_MESSAGE_SUBSCRIPTION,
       variables: { roomId },
     });
 
-    const subscription = observable.subscribe({
+    const messageSubscription = messageObservable.subscribe({
       next: ({ data }) => {
         try {
           const incoming = data?.directMessageReceived;
-          console.log("[DM] WS incoming:", incoming);
 
           if (!incoming) return;
 
           setMessages((prev) => {
             if (prev.find((msg) => msg.id === incoming.id)) return prev;
             return [...prev, incoming].sort(
-              (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
+              (a, b) =>
+                (parseDateValue(a.createdAt)?.getTime() || 0) -
+                (parseDateValue(b.createdAt)?.getTime() || 0)
             );
           });
         } catch (err) {
-          console.error("[DM] WS subscription handler failed:", err);
+          console.error("[DM] WS message handler failed:", err);
         }
       },
       error: (err) => {
-        console.error("[DM] WS subscription error:", err);
+        console.error("[DM] WS message subscription error:", err);
       },
       complete: () => {
-        console.log("[DM] WS subscription completed");
+        console.log("[DM] WS message subscription completed");
+      },
+    });
+
+    // --- typing subscription ---
+    const typingObservable = wsClient.request({
+      query: DIRECT_TYPING_SUBSCRIPTION,
+      variables: { roomId },
+    });
+
+    const typingSubscription = typingObservable.subscribe({
+      next: ({ data }) => {
+        try {
+          const typing = data?.directTyping;
+          if (!typing) return;
+
+          // do NOT show indicator for our own typing events
+          if (String(typing.userId) === String(currentUserId)) return;
+
+          const incomingIsTyping = !!typing.isTyping;
+          setIsTypingRemote(incomingIsTyping);
+        } catch (err) {
+          console.error("[DM] Typing subscription handler failed:", err);
+        }
+      },
+      error: (err) => {
+        console.error("[DM] Typing subscription error:", err);
       },
     });
 
     return () => {
-      console.log("[DM] Cleaning up WS subscription");
-      subscription.unsubscribe();
-      wsClient.close(false);
+      messageSubscription.unsubscribe();
+      typingSubscription.unsubscribe();
+      wsClientRef.current?.close?.(false);
+      wsClientRef.current = null;
+      setIsTypingRemote(false);
     };
-  }, [roomId]);
+  }, [currentUserId, roomId]);
 
+  // 3) Sorted messages + auto-scroll
   const sortedMessages = useMemo(
     () =>
       [...messages].sort(
-        (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
+        (a, b) =>
+          (parseDateValue(a.createdAt)?.getTime() || 0) -
+          (parseDateValue(b.createdAt)?.getTime() || 0)
       ),
     [messages]
   );
 
+  useEffect(() => {
+    const shouldScroll = sortedMessages.length > previousCount.current;
+    previousCount.current = sortedMessages.length;
+
+    if (shouldScroll) {
+      requestAnimationFrame(() => {
+        listRef.current?.scrollToEnd({ animated: true });
+      });
+    }
+  }, [sortedMessages.length]);
+
+  // 4) Derive LOCAL typing from messageText
+  useEffect(() => {
+    const next = messageText.trim().length > 0;
+    setIsTypingLocal(next);
+  }, [messageText]);
+
+  // 5) Whenever local typing changes, send it to backend
+  useEffect(() => {
+    if (!roomId) return;
+
+    const send = async () => {
+      try {
+        await client.request(SET_DIRECT_TYPING, {
+          roomId,
+          isTyping: isTypingLocal,
+        });
+      } catch (err) {
+        console.error("[DM] Failed to publish typing state", err);
+      }
+    };
+
+    send();
+  }, [client, roomId, isTypingLocal]);
+
+  // 6) App goes background → clear local typing & text (will send false)
+  useEffect(() => {
+    const handleAppStateChange = (nextState) => {
+      if (nextState.match(/inactive|background/i)) {
+        appState.current = nextState;
+        setMessageText("");
+        setIsTypingLocal(false);
+      } else {
+        appState.current = nextState;
+      }
+    };
+
+    const subscription = AppState.addEventListener(
+      "change",
+      handleAppStateChange
+    );
+
+    return () => {
+      subscription.remove();
+    };
+  }, []);
+
+  // 7) When navigating away, clear typing & text (will send false)
+  useFocusEffect(
+    useCallback(() => {
+      return () => {
+        setMessageText("");
+        setIsTypingLocal(false);
+        setIsTypingRemote(false);
+      };
+    }, [])
+  );
+
+  // 8) Input change
+  const handleTextChange = useCallback((value) => {
+    setMessageText(value);
+  }, []);
+
+  // 9) Send message
   const handleSend = useCallback(async () => {
     const text = messageText.trim();
     if (!text || !targetUserId || !currentUserId) return;
@@ -188,11 +327,14 @@ const DirectMessageScreen = ({ route, navigation }) => {
         setMessages((prev) => {
           if (prev.find((msg) => msg.id === newMessage.id)) return prev;
           return [...prev, newMessage].sort(
-            (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
+            (a, b) =>
+              (parseDateValue(a.createdAt)?.getTime() || 0) -
+              (parseDateValue(b.createdAt)?.getTime() || 0)
           );
         });
       }
 
+      // clear input; local typing effect will send isTyping=false
       setMessageText("");
     } catch (err) {
       console.error("Failed to send direct message", err);
@@ -201,6 +343,7 @@ const DirectMessageScreen = ({ route, navigation }) => {
     }
   }, [client, currentUserId, messageText, targetUserId]);
 
+  // 10) Renderers
   const renderMessage = ({ item }) => {
     const isMine = String(item.author?.id) === String(currentUserId);
 
@@ -211,35 +354,65 @@ const DirectMessageScreen = ({ route, navigation }) => {
             uri={item.author?.profilePicUrl}
             size={34}
             disableNavigation
+            style={styles.messageAvatar}
           />
         )}
-        <View
-          style={[
-            styles.bubble,
-            isMine ? styles.bubbleMine : styles.bubbleTheirs,
-          ]}
-        >
-          <Text
+        <View style={[styles.bubbleStack, isMine && styles.bubbleStackMine]}>
+          <View
             style={[
-              styles.messageText,
-              isMine ? styles.messageTextMine : styles.messageTextTheirs,
+              styles.bubble,
+              isMine ? styles.bubbleMine : styles.bubbleTheirs,
             ]}
           >
-            {item.text}
-          </Text>
-          <Text style={[styles.timestamp, isMine && styles.timestampMine]}>
-            {formatTime(item.createdAt)}
-          </Text>
+            <Text
+              style={[
+                styles.messageText,
+                isMine ? styles.messageTextMine : styles.messageTextTheirs,
+              ]}
+            >
+              {item.text}
+            </Text>
+            <Text style={[styles.timestamp, isMine && styles.timestampMine]}>
+              {formatTime(item.createdAt)}
+            </Text>
+          </View>
         </View>
+        {isMine && (
+          <Avatar
+            uri={state?.user?.profilePicUrl}
+            haloColor="blue"
+            size={34}
+            disableNavigation
+            style={styles.messageAvatar}
+          />
+        )}
       </View>
     );
   };
 
+  const renderTypingIndicator = () => {
+    if (!isTypingRemote) return null;
+
+    return (
+      <View style={styles.typingRow}>
+        <Avatar uri={user.profilePicUrl} size={30} disableNavigation />
+        <TypingIndicator
+          username={user.username}
+          accentColor="#f59e0b"
+          bubbleColor="rgba(11,18,32,0.95)"
+          borderColor="rgba(148,163,184,0.35)"
+          dotColor="#f59e0b"
+        />
+      </View>
+    );
+  };
+
+  // 11) JSX
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}
       behavior={Platform.OS === "ios" ? "padding" : undefined}
-      keyboardVerticalOffset={Platform.OS === "ios" ? 84 : 0}
+      keyboardVerticalOffset={0}
     >
       <SafeAreaView style={styles.container} edges={["top", "left", "right"]}>
         <View style={styles.header}>
@@ -258,17 +431,27 @@ const DirectMessageScreen = ({ route, navigation }) => {
             </View>
           </View>
         </View>
+
         <View style={styles.body}>
           {loading && !sortedMessages.length ? (
-            <ActivityIndicator size="small" color="#f59e0b" />
+            <View style={styles.loaderContainer}>
+              <ActivityIndicator size="large" color="#f59e0b" />
+            </View>
           ) : (
             <FlatList
+              ref={listRef}
               data={sortedMessages}
               keyExtractor={(item) => item.id}
               renderItem={renderMessage}
               contentContainerStyle={styles.listContent}
               showsVerticalScrollIndicator={false}
               keyboardShouldPersistTaps="handled"
+              ListFooterComponent={renderTypingIndicator}
+              onContentSizeChange={() =>
+                requestAnimationFrame(() =>
+                  listRef.current?.scrollToEnd({ animated: true })
+                )
+              }
               ListEmptyComponent={() => (
                 <View style={styles.emptyState}>
                   <Text style={styles.emptyText}>
@@ -281,38 +464,48 @@ const DirectMessageScreen = ({ route, navigation }) => {
         </View>
 
         <View style={styles.inputBar}>
-          <TextInput
-            value={messageText}
-            onChangeText={setMessageText}
-            placeholder={`Message ${username}`}
-            placeholderTextColor="#6b7280"
-            style={styles.input}
-            multiline
-            returnKeyType="done"
-            blurOnSubmit
-            onSubmitEditing={Keyboard.dismiss}
+          <Avatar
+            uri={state?.user?.profilePicUrl}
+            haloColor="blue"
+            size={32}
+            disableNavigation
+            style={styles.inputAvatar}
           />
-          <TouchableOpacity
-            style={styles.doneButton}
-            onPress={Keyboard.dismiss}
-            accessibilityLabel="Dismiss keyboard"
-          >
-            <Text style={styles.doneButtonText}>Done</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[
-              styles.sendButton,
-              (!messageText.trim() || sending) && styles.sendButtonDisabled,
-            ]}
-            disabled={!messageText.trim() || sending}
-            onPress={handleSend}
-          >
-            {sending ? (
-              <ActivityIndicator size="small" color="#0b1220" />
-            ) : (
-              <Ionicons name="send" size={18} color="#0b1220" />
-            )}
-          </TouchableOpacity>
+
+          <View style={styles.inputWrapper}>
+            <TextInput
+              value={messageText}
+              onChangeText={handleTextChange}
+              placeholder={`Message ${username}`}
+              placeholderTextColor="#94a3b8"
+              style={styles.input}
+              multiline
+              returnKeyType="done"
+              blurOnSubmit
+              onSubmitEditing={Keyboard.dismiss}
+            />
+
+            <TouchableOpacity
+              style={[
+                styles.inlineSendButton,
+                (!messageText.trim() || sending) &&
+                  styles.inlineSendButtonDisabled,
+              ]}
+              disabled={!messageText.trim() || sending}
+              onPress={handleSend}
+              accessibilityLabel={`Send direct message to ${username}`}
+            >
+              {sending ? (
+                <ActivityIndicator size="small" color="#38bdf8" />
+              ) : (
+                <Ionicons
+                  name="send"
+                  size={17}
+                  color={messageText.trim() ? "#38bdf8" : "#64748b"}
+                />
+              )}
+            </TouchableOpacity>
+          </View>
         </View>
       </SafeAreaView>
     </KeyboardAvoidingView>
@@ -357,96 +550,120 @@ const styles = StyleSheet.create({
   body: {
     flex: 1,
     paddingHorizontal: 16,
-    paddingVertical: 10,
+    paddingTop: 0,
+    paddingBottom: 12,
+  },
+  loaderContainer: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    paddingBottom: 40,
   },
   listContent: {
-    paddingBottom: 12,
+    paddingBottom: 8,
     gap: 12,
   },
   messageRow: {
     flexDirection: "row",
-    alignItems: "flex-end",
+    alignItems: "flex-start",
     gap: 10,
   },
   messageRowMine: {
     justifyContent: "flex-end",
   },
+  messageAvatar: {
+    alignSelf: "flex-start",
+  },
+  bubbleStack: {
+    flex: 1,
+    alignItems: "flex-start",
+  },
+  bubbleStackMine: {
+    alignItems: "flex-end",
+  },
   bubble: {
-    maxWidth: "78%",
-    borderRadius: 14,
-    paddingHorizontal: 12,
+    maxWidth: "100%",
+    borderRadius: 17,
+    paddingHorizontal: 14,
     paddingVertical: 10,
+    borderWidth: 1,
   },
   bubbleMine: {
-    backgroundColor: "#f59e0b",
-    borderTopRightRadius: 4,
+    backgroundColor: "rgba(56,189,248,0.14)",
+    borderColor: "#38bdf8",
+    borderTopRightRadius: 6,
+    alignSelf: "flex-end",
   },
   bubbleTheirs: {
-    backgroundColor: "#0b1220",
-    borderTopLeftRadius: 4,
-    borderWidth: 1,
-    borderColor: "#1f2937",
+    backgroundColor: "rgba(245,158,11,0.08)",
+    borderColor: "#f59e0b",
+    borderTopLeftRadius: 6,
+    alignSelf: "flex-start",
+  },
+  typingRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+    paddingLeft: 4,
+    paddingTop: 4,
   },
   messageText: {
     fontSize: 15,
   },
   messageTextMine: {
-    color: "#0b1220",
+    color: "#e0f2fe",
     fontWeight: "600",
   },
   messageTextTheirs: {
-    color: "#e5e7eb",
+    color: "#fef3c7",
   },
   timestamp: {
-    color: "#9ca3af",
-    fontSize: 11,
+    color: "#94a3b8",
+    fontSize: 10,
     marginTop: 6,
   },
   timestampMine: {
-    color: "#0b1220",
-    opacity: 0.75,
+    color: "#bae6fd",
+    opacity: 0.9,
   },
   inputBar: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 10,
-    paddingHorizontal: 14,
+    gap: 12,
+    paddingHorizontal: 16,
     paddingVertical: 12,
     borderTopWidth: 1,
     borderTopColor: "#1f2937",
     backgroundColor: "#0b1220",
   },
+  inputAvatar: {
+    marginBottom: 4,
+  },
+  inputWrapper: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "rgba(15,23,42,0.96)",
+    borderRadius: 999,
+    borderWidth: 1,
+    borderColor: "rgba(148,163,184,0.4)",
+    paddingHorizontal: 14,
+    paddingVertical: 8,
+  },
   input: {
     flex: 1,
-    color: "#f9fafb",
-    backgroundColor: "#0f172a",
-    borderRadius: 12,
-    paddingHorizontal: 12,
-    paddingVertical: 10,
-    minHeight: 44,
-    maxHeight: 120,
+    color: "#fef3c7",
+    fontSize: 14,
+    maxHeight: 100,
+    paddingRight: 8,
   },
-  doneButton: {
-    paddingHorizontal: 10,
-    paddingVertical: 8,
-    borderRadius: 10,
-    backgroundColor: "#1f2937",
+  inlineSendButton: {
+    paddingHorizontal: 8,
+    paddingVertical: 6,
+    borderRadius: 999,
   },
-  doneButtonText: {
-    color: "#f9fafb",
-    fontSize: 13,
-    fontWeight: "600",
-  },
-  sendButton: {
-    width: 42,
-    height: 42,
-    borderRadius: 21,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "#f59e0b",
-  },
-  sendButtonDisabled: {
-    backgroundColor: "#9ca3af",
+  inlineSendButtonDisabled: {
+    opacity: 0.4,
   },
   emptyState: {
     alignItems: "center",

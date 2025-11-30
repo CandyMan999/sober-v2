@@ -18,6 +18,7 @@ const {
   unfollowUserResolver,
   updateSocialResolver,
   sendDirectMessageResolver,
+  setDirectTypingResolver,
 } = require("./mutations/index.js");
 
 const {
@@ -37,6 +38,7 @@ const {
 const {
   directMessageReceivedSubscription,
   directRoomUpdatedSubscription,
+  directTypingSubscription,
 } = require("./subscription/subscription");
 
 // Import models
@@ -96,6 +98,7 @@ const resolvers = {
     unfollowUser: unfollowUserResolver,
     updateSocial: updateSocialResolver,
     sendDirectMessage: sendDirectMessageResolver,
+    setDirectTyping: setDirectTypingResolver,
   },
 
   Upload: require("graphql-upload-minimal").GraphQLUpload,
@@ -103,6 +106,7 @@ const resolvers = {
   Subscription: {
     directMessageReceived: directMessageReceivedSubscription,
     directRoomUpdated: directRoomUpdatedSubscription,
+    directTyping: directTypingSubscription,
   },
 
   // ---- Type-level resolvers ----

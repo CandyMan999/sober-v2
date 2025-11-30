@@ -8,6 +8,7 @@ const { Room, User, Comment } = require("../../models");
 const {
   publishDirectMessage,
   publishDirectRoomUpdate,
+  publishDirectTyping,
   normalizeCommentForGraphQL,
 } = require("../subscription/subscription");
 const {
@@ -72,4 +73,32 @@ const sendDirectMessageResolver = async (
   return normalized;
 };
 
-module.exports = { sendDirectMessageResolver };
+const setDirectTypingResolver = async (_, { roomId, isTyping }, ctx) => {
+  const me = ctx.currentUser;
+  if (!me) throw new AuthenticationError("Not authenticated");
+
+  if (!roomId) throw new UserInputError("Room ID is required.");
+
+  const room = await Room.findById(roomId).populate("users");
+  if (!room) throw new UserInputError("Room not found.");
+
+  const isParticipant = room.users?.some(
+    (user) => String(user._id || user.id) === String(me._id)
+  );
+  if (!isParticipant) throw new AuthenticationError("Not a participant");
+
+  const typingPayload = {
+    roomId: room._id.toString(),
+    userId: me._id.toString(),
+    username: me.username,
+    profilePicUrl: me.profilePicUrl,
+    isTyping: Boolean(isTyping),
+    lastTypedAt: new Date().toISOString(),
+  };
+
+  publishDirectTyping(typingPayload);
+
+  return typingPayload;
+};
+
+module.exports = { sendDirectMessageResolver, setDirectTypingResolver };
