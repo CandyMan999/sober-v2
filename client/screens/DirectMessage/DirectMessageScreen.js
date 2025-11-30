@@ -13,6 +13,9 @@ import {
   TextInput,
   FlatList,
   ActivityIndicator,
+  KeyboardAvoidingView,
+  Platform,
+  Keyboard,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
@@ -43,7 +46,6 @@ const DirectMessageScreen = ({ route, navigation }) => {
 
   const [messageText, setMessageText] = useState("");
   const [messages, setMessages] = useState([]);
-  const [sendError, setSendError] = useState("");
   const [roomId, setRoomId] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -68,24 +70,26 @@ const DirectMessageScreen = ({ route, navigation }) => {
     let isMounted = true;
     setLoading(true);
 
-    client
-      .request(DIRECT_ROOM_WITH_USER, { userId: targetUserId })
-      .then((result) => {
+    const loadRoom = async () => {
+      try {
+        const result = await client.request(DIRECT_ROOM_WITH_USER, {
+          userId: targetUserId,
+        });
         if (!isMounted) return;
         const room = result?.directRoomWithUser;
-        if (room?.id) {
-          setRoomId(room.id);
+        if (room?.id || room?._id) {
+          setRoomId(room.id || room._id);
         }
         syncMessagesFromRoom(room);
-      })
-      .catch((error) => {
-        if (!isMounted) return;
-        setSendError(error?.message || "Unable to load messages right now.");
-      })
-      .finally(() => {
+      } catch (error) {
+        console.error("Failed to load direct room", error);
+      } finally {
         if (!isMounted) return;
         setLoading(false);
-      });
+      }
+    };
+
+    loadRoom();
 
     return () => {
       isMounted = false;
@@ -96,15 +100,19 @@ const DirectMessageScreen = ({ route, navigation }) => {
     skip: !roomId || !currentUserId,
     variables: { roomId },
     onData: ({ data: subscriptionData }) => {
-      const incoming = subscriptionData?.data?.directMessageReceived;
-      if (!incoming) return;
+      try {
+        const incoming = subscriptionData?.data?.directMessageReceived;
+        if (!incoming) return;
 
-      setMessages((prev) => {
-        if (prev.find((msg) => msg.id === incoming.id)) return prev;
-        return [...prev, incoming].sort(
-          (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
-        );
-      });
+        setMessages((prev) => {
+          if (prev.find((msg) => msg.id === incoming.id)) return prev;
+          return [...prev, incoming].sort(
+            (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
+          );
+        });
+      } catch (error) {
+        console.error("Direct message subscription handling failed", error);
+      }
     },
   });
 
@@ -121,8 +129,6 @@ const DirectMessageScreen = ({ route, navigation }) => {
   const handleSend = useCallback(async () => {
     const text = messageText.trim();
     if (!text || !targetUserId || !currentUserId) return;
-
-    setSendError("");
 
     try {
       setSending(true);
@@ -144,7 +150,7 @@ const DirectMessageScreen = ({ route, navigation }) => {
 
       setMessageText("");
     } catch (err) {
-      setSendError(err?.message || "Unable to send message right now.");
+      console.error("Failed to send direct message", err);
     } finally {
       setSending(false);
     }
@@ -180,73 +186,83 @@ const DirectMessageScreen = ({ route, navigation }) => {
   };
 
   return (
-    <SafeAreaView style={styles.container} edges={["top", "left", "right"]}>
-      <View style={styles.header}>
-        <TouchableOpacity
-          style={styles.backButton}
-          onPress={() => navigation.goBack()}
-          accessibilityLabel="Go back"
-        >
-          <Ionicons name="chevron-back" size={22} color="#f59e0b" />
-        </TouchableOpacity>
-        <View style={styles.headerUser}>
-          <Avatar uri={user.profilePicUrl} size={40} disableNavigation />
-          <View>
-            <Text style={styles.headerTitle}>Direct Message</Text>
-            <Text style={styles.headerSubtitle}>{username}</Text>
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === "ios" ? "padding" : undefined}
+      keyboardVerticalOffset={Platform.OS === "ios" ? 84 : 0}
+    >
+      <SafeAreaView style={styles.container} edges={["top", "left", "right"]}>
+        <View style={styles.header}>
+          <TouchableOpacity
+            style={styles.backButton}
+            onPress={() => navigation.goBack()}
+            accessibilityLabel="Go back"
+          >
+            <Ionicons name="chevron-back" size={22} color="#f59e0b" />
+          </TouchableOpacity>
+          <View style={styles.headerUser}>
+            <Avatar uri={user.profilePicUrl} size={40} disableNavigation />
+            <View>
+              <Text style={styles.headerTitle}>Direct Message</Text>
+              <Text style={styles.headerSubtitle}>{username}</Text>
+            </View>
           </View>
         </View>
-      </View>
-
-      {sendError ? (
-        <View style={styles.errorBanner}>
-          <Text style={styles.errorText}>{sendError}</Text>
-        </View>
-      ) : null}
-
-      <View style={styles.body}>
-        {loading && !sortedMessages.length ? (
-          <ActivityIndicator size="small" color="#f59e0b" />
-        ) : (
-          <FlatList
-            data={sortedMessages}
-            keyExtractor={(item) => item.id}
-            renderItem={renderMessage}
-            contentContainerStyle={styles.listContent}
-            showsVerticalScrollIndicator={false}
-            ListEmptyComponent={() => (
-              <View style={styles.emptyState}>
-                <Text style={styles.emptyText}>
-                  Start the accountability chat with {username}.
-                </Text>
-              </View>
-            )}
-          />
-        )}
-      </View>
-
-      <View style={styles.inputBar}>
-        <TextInput
-          value={messageText}
-          onChangeText={setMessageText}
-          placeholder={`Message ${username}`}
-          placeholderTextColor="#6b7280"
-          style={styles.input}
-          multiline
-        />
-        <TouchableOpacity
-          style={[styles.sendButton, (!messageText.trim() || sending) && styles.sendButtonDisabled]}
-          disabled={!messageText.trim() || sending}
-          onPress={handleSend}
-        >
-          {sending ? (
-            <ActivityIndicator size="small" color="#0b1220" />
+        <View style={styles.body}>
+          {loading && !sortedMessages.length ? (
+            <ActivityIndicator size="small" color="#f59e0b" />
           ) : (
-            <Ionicons name="send" size={18} color="#0b1220" />
+            <FlatList
+              data={sortedMessages}
+              keyExtractor={(item) => item.id}
+              renderItem={renderMessage}
+              contentContainerStyle={styles.listContent}
+              showsVerticalScrollIndicator={false}
+              keyboardShouldPersistTaps="handled"
+              ListEmptyComponent={() => (
+                <View style={styles.emptyState}>
+                  <Text style={styles.emptyText}>
+                    Start the accountability chat with {username}.
+                  </Text>
+                </View>
+              )}
+            />
           )}
-        </TouchableOpacity>
-      </View>
-    </SafeAreaView>
+        </View>
+
+        <View style={styles.inputBar}>
+          <TextInput
+            value={messageText}
+            onChangeText={setMessageText}
+            placeholder={`Message ${username}`}
+            placeholderTextColor="#6b7280"
+            style={styles.input}
+            multiline
+            returnKeyType="done"
+            blurOnSubmit
+            onSubmitEditing={Keyboard.dismiss}
+          />
+          <TouchableOpacity
+            style={styles.doneButton}
+            onPress={Keyboard.dismiss}
+            accessibilityLabel="Dismiss keyboard"
+          >
+            <Text style={styles.doneButtonText}>Done</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.sendButton, (!messageText.trim() || sending) && styles.sendButtonDisabled]}
+            disabled={!messageText.trim() || sending}
+            onPress={handleSend}
+          >
+            {sending ? (
+              <ActivityIndicator size="small" color="#0b1220" />
+            ) : (
+              <Ionicons name="send" size={18} color="#0b1220" />
+            )}
+          </TouchableOpacity>
+        </View>
+      </SafeAreaView>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -284,17 +300,6 @@ const styles = StyleSheet.create({
     color: "#cbd5e1",
     fontSize: 12,
     marginTop: 2,
-  },
-  errorBanner: {
-    backgroundColor: "rgba(248, 113, 113, 0.12)",
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderBottomColor: "rgba(248, 113, 113, 0.35)",
-    borderBottomWidth: 1,
-  },
-  errorText: {
-    color: "#fecdd3",
-    fontSize: 12,
   },
   body: {
     flex: 1,
@@ -367,6 +372,17 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     minHeight: 44,
     maxHeight: 120,
+  },
+  doneButton: {
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+    borderRadius: 10,
+    backgroundColor: "#1f2937",
+  },
+  doneButtonText: {
+    color: "#f9fafb",
+    fontSize: 13,
+    fontWeight: "600",
   },
   sendButton: {
     width: 42,
