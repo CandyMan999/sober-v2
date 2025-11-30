@@ -4,7 +4,7 @@ const {
   UserInputError,
 } = require("apollo-server-express");
 
-const { Room } = require("../../models");
+const { Room, User } = require("../../models");
 const { populateDirectRoom } = require("../utils/directMessage");
 
 module.exports = {
@@ -42,13 +42,18 @@ module.exports = {
         throw new UserInputError("Cannot start a DM with yourself.");
       }
 
+      const targetUser = await User.findById(userId).populate("profilePic");
+      if (!targetUser) {
+        throw new UserInputError("User not found");
+      }
+
       let room = await Room.findOne({
         isDirect: true,
         users: { $all: [me._id, userId], $size: 2 },
       });
 
       if (!room) {
-        const participantIds = [me._id, userId];
+        const participantIds = [me._id, targetUser._id];
         room = await Room.create({
           isDirect: true,
           users: participantIds,
@@ -56,14 +61,29 @@ module.exports = {
         });
       }
 
-      const populatedRoom = await populateDirectRoom(room);
+      let populatedRoom = await populateDirectRoom(room);
 
       if (!populatedRoom) {
         console.error("Unable to populate direct room", { roomId: room?._id });
         throw new Error("Unable to load direct room");
       }
 
-      const roomObject = populatedRoom.toObject ? populatedRoom.toObject() : populatedRoom;
+      let roomObject = populatedRoom.toObject ? populatedRoom.toObject() : populatedRoom;
+      const validUsers = (roomObject.users || []).filter((u) => u && (u.id || u._id));
+
+      if (validUsers.length < 2) {
+        console.warn("Healing direct room users", {
+          roomId: roomObject._id,
+          expected: [me._id, targetUser._id],
+          received: roomObject.users,
+        });
+
+        await Room.updateOne({ _id: room._id }, { users: [me._id, targetUser._id] });
+
+        populatedRoom = await populateDirectRoom(await Room.findById(room._id));
+        roomObject = populatedRoom.toObject ? populatedRoom.toObject() : populatedRoom;
+      }
+
       const sortedComments = [...(roomObject.comments || [])].sort(
         (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
       );
@@ -71,6 +91,7 @@ module.exports = {
       return {
         ...roomObject,
         id: roomObject.id || roomObject._id?.toString?.(),
+        users: (roomObject.users || []).filter((u) => u && (u.id || u._id)),
         comments: sortedComments,
       };
     } catch (error) {
