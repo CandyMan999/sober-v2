@@ -210,6 +210,15 @@ const typeDefs = gql`
     post: Post
   }
 
+  type TypingStatus {
+    roomId: ID!
+    userId: ID!
+    username: String
+    profilePicUrl: String
+    isTyping: Boolean!
+    lastTypedAt: String
+  }
+
   enum Place {
     Bar
     Liquor
@@ -350,6 +359,7 @@ const typeDefs = gql`
       text: String!
       replyTo: ID
     ): Comment!
+    setDirectTyping(roomId: ID!, isTyping: Boolean!): TypingStatus!
     toggleLike(
       token: String!
       targetType: LikeTarget!
@@ -371,6 +381,7 @@ const typeDefs = gql`
   type Subscription {
     directMessageReceived(roomId: ID!): Comment!
     directRoomUpdated: Room!
+    directTyping(roomId: ID!): TypingStatus!
   }
 `;
 

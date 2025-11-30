@@ -31,6 +31,8 @@ import {
   DIRECT_MESSAGE_SUBSCRIPTION,
   DIRECT_ROOM_WITH_USER,
   SEND_DIRECT_MESSAGE,
+  SET_DIRECT_TYPING,
+  DIRECT_TYPING_SUBSCRIPTION,
 } from "../../GraphQL/directMessages";
 import { useClient } from "../../client";
 import { GRAPHQL_URI } from "../../config/endpoint";
@@ -70,8 +72,12 @@ const DirectMessageScreen = ({ route, navigation }) => {
   const [roomId, setRoomId] = useState(null);
   const [loading, setLoading] = useState(false);
   const [sending, setSending] = useState(false);
+  const [typingIndicator, setTypingIndicator] = useState(null);
   const listRef = useRef(null);
   const previousCount = useRef(0);
+  const typingStatusRef = useRef(false);
+  const typingTimeoutRef = useRef(null);
+  const indicatorTimeoutRef = useRef(null);
 
   const syncMessagesFromRoom = useCallback((roomData) => {
     if (!roomData?.comments) return;
@@ -144,12 +150,12 @@ const DirectMessageScreen = ({ route, navigation }) => {
       reconnect: true,
     });
 
-    const observable = wsClient.request({
+    const messageObservable = wsClient.request({
       query: DIRECT_MESSAGE_SUBSCRIPTION,
       variables: { roomId },
     });
 
-    const subscription = observable.subscribe({
+    const messageSubscription = messageObservable.subscribe({
       next: ({ data }) => {
         try {
           const incoming = data?.directMessageReceived;
@@ -177,12 +183,46 @@ const DirectMessageScreen = ({ route, navigation }) => {
       },
     });
 
+    const typingObservable = wsClient.request({
+      query: DIRECT_TYPING_SUBSCRIPTION,
+      variables: { roomId },
+    });
+
+    const typingSubscription = typingObservable.subscribe({
+      next: ({ data }) => {
+        try {
+          const typing = data?.directTyping;
+          if (!typing || String(typing.userId) === String(currentUserId)) return;
+
+          setTypingIndicator(typing.isTyping ? typing : null);
+
+          if (indicatorTimeoutRef.current) {
+            clearTimeout(indicatorTimeoutRef.current);
+          }
+
+          if (typing.isTyping) {
+            indicatorTimeoutRef.current = setTimeout(() => {
+              setTypingIndicator(null);
+            }, 4000);
+          } else {
+            indicatorTimeoutRef.current = null;
+          }
+        } catch (err) {
+          console.error("[DM] Typing subscription handler failed:", err);
+        }
+      },
+      error: (err) => {
+        console.error("[DM] Typing subscription error:", err);
+      },
+    });
+
     return () => {
       console.log("[DM] Cleaning up WS subscription");
-      subscription.unsubscribe();
+      messageSubscription.unsubscribe();
+      typingSubscription.unsubscribe();
       wsClient.close(false);
     };
-  }, [roomId]);
+  }, [currentUserId, roomId]);
 
   const sortedMessages = useMemo(
     () =>
@@ -204,6 +244,65 @@ const DirectMessageScreen = ({ route, navigation }) => {
       });
     }
   }, [sortedMessages.length]);
+
+  const sendTypingStatus = useCallback(
+    async (isTyping) => {
+      if (!roomId) return;
+
+      try {
+        typingStatusRef.current = isTyping;
+        await client.request(SET_DIRECT_TYPING, { roomId, isTyping });
+      } catch (err) {
+        console.error("Failed to publish typing status", err);
+      }
+    },
+    [client, roomId]
+  );
+
+  const handleTextChange = useCallback(
+    (value) => {
+      setMessageText(value);
+      if (!roomId) return;
+
+      const trimmed = value.trim();
+
+      if (trimmed && !typingStatusRef.current) {
+        sendTypingStatus(true);
+      }
+
+      if (!trimmed && typingStatusRef.current) {
+        sendTypingStatus(false);
+      }
+
+      if (typingTimeoutRef.current) {
+        clearTimeout(typingTimeoutRef.current);
+      }
+
+      if (trimmed) {
+        typingTimeoutRef.current = setTimeout(() => {
+          sendTypingStatus(false);
+        }, 2500);
+      }
+    },
+    [roomId, sendTypingStatus]
+  );
+
+  useEffect(
+    () => () => {
+      if (typingTimeoutRef.current) {
+        clearTimeout(typingTimeoutRef.current);
+      }
+
+      if (indicatorTimeoutRef.current) {
+        clearTimeout(indicatorTimeoutRef.current);
+      }
+
+      if (typingStatusRef.current && roomId) {
+        sendTypingStatus(false);
+      }
+    },
+    [roomId, sendTypingStatus]
+  );
 
   const handleSend = useCallback(async () => {
     const text = messageText.trim();
@@ -230,12 +329,15 @@ const DirectMessageScreen = ({ route, navigation }) => {
       }
 
       setMessageText("");
+      if (typingStatusRef.current) {
+        await sendTypingStatus(false);
+      }
     } catch (err) {
       console.error("Failed to send direct message", err);
     } finally {
       setSending(false);
     }
-  }, [client, currentUserId, messageText, targetUserId]);
+  }, [client, currentUserId, messageText, sendTypingStatus, targetUserId]);
 
   const renderMessage = ({ item }) => {
     const isMine = String(item.author?.id) === String(currentUserId);
@@ -283,6 +385,28 @@ const DirectMessageScreen = ({ route, navigation }) => {
     );
   };
 
+  const renderTypingIndicator = () => {
+    if (!typingIndicator?.isTyping) return null;
+
+    return (
+      <View style={styles.typingRow}>
+        <Avatar
+          uri={typingIndicator.profilePicUrl || user.profilePicUrl}
+          size={30}
+          disableNavigation
+        />
+        <View style={[styles.typingBubble, styles.bubbleTheirs]}>
+          <View style={styles.typingContent}>
+            <ActivityIndicator size="small" color="#f59e0b" />
+            <Text style={styles.typingText}>
+              {typingIndicator.username || username} is typing...
+            </Text>
+          </View>
+        </View>
+      </View>
+    );
+  };
+
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}
@@ -318,6 +442,7 @@ const DirectMessageScreen = ({ route, navigation }) => {
               contentContainerStyle={styles.listContent}
               showsVerticalScrollIndicator={false}
               keyboardShouldPersistTaps="handled"
+              ListFooterComponent={renderTypingIndicator}
               onContentSizeChange={() =>
                 requestAnimationFrame(() =>
                   listRef.current?.scrollToEnd({ animated: true })
@@ -345,7 +470,7 @@ const DirectMessageScreen = ({ route, navigation }) => {
           <View style={styles.inputWrapper}>
             <TextInput
               value={messageText}
-              onChangeText={setMessageText}
+              onChangeText={handleTextChange}
               placeholder={`Message ${username}`}
               placeholderTextColor="#94a3b8"
               style={styles.input}
@@ -463,6 +588,25 @@ const styles = StyleSheet.create({
     borderColor: "#f59e0b",
     borderTopLeftRadius: 6,
     alignSelf: "flex-start",
+  },
+  typingRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+    paddingLeft: 4,
+  },
+  typingBubble: {
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+  },
+  typingContent: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+  },
+  typingText: {
+    color: "#fef3c7",
+    fontSize: 12,
   },
   messageText: {
     fontSize: 15,

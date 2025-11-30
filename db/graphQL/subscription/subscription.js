@@ -5,6 +5,7 @@ const pubsub = new PubSub();
 
 const DIRECT_MESSAGE_SENT = "DIRECT_MESSAGE_SENT";
 const DIRECT_ROOM_UPDATED = "DIRECT_ROOM_UPDATED";
+const DIRECT_TYPING = "DIRECT_TYPING";
 
 /**
  * Normalize a comment for GraphQL.
@@ -55,6 +56,17 @@ const publishDirectRoomUpdate = (roomObject) => {
 };
 
 /**
+ * Trigger subscription event when a user is typing in a room.
+ */
+const publishDirectTyping = (typingPayload) => {
+  if (!typingPayload?.roomId) return;
+
+  pubsub.publish(DIRECT_TYPING, {
+    directTyping: typingPayload,
+  });
+};
+
+/**
  * Broadcast messages to anyone subscribed to that roomId.
  */
 const directMessageReceivedSubscription = {
@@ -89,14 +101,34 @@ const directRoomUpdatedSubscription = {
   ),
 };
 
+/**
+ * Broadcast typing indicators to anyone subscribed to the room.
+ */
+const directTypingSubscription = {
+  subscribe: withFilter(
+    () => pubsub.asyncIterator(DIRECT_TYPING),
+    (payload, variables) => {
+      const typing = payload?.directTyping;
+      const roomId = variables?.roomId;
+
+      if (!typing || !roomId) return false;
+
+      return String(typing.roomId) === String(roomId);
+    }
+  ),
+};
+
 module.exports = {
   pubsub,
   withFilter,
   DIRECT_MESSAGE_SENT,
   DIRECT_ROOM_UPDATED,
+  DIRECT_TYPING,
   publishDirectMessage,
   publishDirectRoomUpdate,
+  publishDirectTyping,
   directMessageReceivedSubscription,
   directRoomUpdatedSubscription,
+  directTypingSubscription,
   normalizeCommentForGraphQL,
 };
