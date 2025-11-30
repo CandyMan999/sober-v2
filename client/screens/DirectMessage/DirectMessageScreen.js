@@ -439,17 +439,18 @@ const styles = StyleSheet.create({
     marginBottom: 2,
   },
   bubbleStack: {
-    flexShrink: 1,
+    flex: 1,
   },
   bubbleStackMine: {
     alignItems: "flex-end",
   },
   bubble: {
-    maxWidth: "80%",
+    maxWidth: "100%",
     borderRadius: 16,
     paddingHorizontal: 14,
     paddingVertical: 10,
     borderWidth: 1,
+    alignSelf: "flex-start",
   },
   bubbleMine: {
     backgroundColor: "rgba(56,189,248,0.14)",
@@ -473,7 +474,7 @@ const styles = StyleSheet.create({
   },
   timestamp: {
     color: "#94a3b8",
-    fontSize: 11,
+    fontSize: 10,
     marginTop: 6,
   },
   timestampMine: {
