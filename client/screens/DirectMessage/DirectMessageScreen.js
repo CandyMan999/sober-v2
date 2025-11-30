@@ -11,6 +11,7 @@ import {
   View,
   Text,
   StyleSheet,
+  Animated,
   TouchableOpacity,
   TextInput,
   FlatList,
@@ -19,6 +20,7 @@ import {
   Platform,
   Keyboard,
   AppState,
+  Easing,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useFocusEffect } from "@react-navigation/native";
@@ -35,9 +37,11 @@ import {
   SET_DIRECT_TYPING,
   DIRECT_TYPING_SUBSCRIPTION,
 } from "../../GraphQL/directMessages";
+import { TOGGLE_LIKE_MUTATION } from "../../GraphQL/mutations";
 import { useClient } from "../../client";
 import { GRAPHQL_URI } from "../../config/endpoint";
 import TypingIndicator from "../../components/TypingIndicator";
+import { getToken } from "../../utils/helpers";
 
 const parseDateValue = (value) => {
   if (!value) return null;
@@ -83,23 +87,43 @@ const DirectMessageScreen = ({ route, navigation }) => {
   const previousCount = useRef(0);
   const wsClientRef = useRef(null);
   const appState = useRef(AppState.currentState);
+  const likeScales = useRef({});
+  const likeOpacities = useRef({});
+  const tapTimestamps = useRef({});
 
-  const syncMessagesFromRoom = useCallback((roomData) => {
-    if (!roomData?.comments) return;
+  const syncMessagesFromRoom = useCallback(
+    (roomData) => {
+      if (!roomData?.comments) return;
 
-    setMessages((prev) => {
-      const incomingById = new Map(prev.map((msg) => [msg.id, msg]));
-      roomData.comments.forEach((msg) => {
-        incomingById.set(msg.id, msg);
+      setMessages((prev) => {
+        const incomingById = new Map(prev.map((msg) => [msg.id, msg]));
+        roomData.comments.forEach((msg) => {
+          const previous = incomingById.get(msg.id);
+          const likesCount = msg?.likesCount ?? previous?.likesCount ?? 0;
+          const liked =
+            typeof msg?.liked === "boolean"
+              ? msg.liked
+              : typeof previous?.liked === "boolean"
+              ? previous.liked
+              : likesCount > 0;
+          syncLikeVisualState(msg.id, liked);
+          incomingById.set(msg.id, {
+            ...previous,
+            ...msg,
+            likesCount,
+            liked,
+          });
+        });
+
+        return [...incomingById.values()].sort(
+          (a, b) =>
+            (parseDateValue(a.createdAt)?.getTime() || 0) -
+            (parseDateValue(b.createdAt)?.getTime() || 0)
+        );
       });
-
-      return [...incomingById.values()].sort(
-        (a, b) =>
-          (parseDateValue(a.createdAt)?.getTime() || 0) -
-          (parseDateValue(b.createdAt)?.getTime() || 0)
-      );
-    });
-  }, []);
+    },
+    [syncLikeVisualState]
+  );
 
   // 1) Load room + initial messages
   useEffect(() => {
@@ -171,8 +195,50 @@ const DirectMessageScreen = ({ route, navigation }) => {
           if (!incoming) return;
 
           setMessages((prev) => {
-            if (prev.find((msg) => msg.id === incoming.id)) return prev;
-            return [...prev, incoming].sort(
+            const incomingLiked =
+              (incoming?.liked ?? false) || (incoming?.likesCount || 0) > 0;
+
+            const existingIndex = prev.findIndex((msg) => msg.id === incoming.id);
+
+            if (existingIndex !== -1) {
+              const existing = prev[existingIndex];
+              const nextLiked = incomingLiked;
+              const nextLikesCount = incoming?.likesCount ?? existing.likesCount ?? 0;
+
+              const updated = {
+                ...existing,
+                ...incoming,
+                liked: nextLiked,
+                likesCount: nextLikesCount,
+              };
+
+              if (!existing.liked && nextLiked) runLikeAnimation(incoming.id, true);
+              if (existing.liked && !nextLiked) runLikeAnimation(incoming.id, false);
+              syncLikeVisualState(incoming.id, nextLiked);
+
+              const nextList = [...prev];
+              nextList[existingIndex] = updated;
+              return nextList.sort(
+                (a, b) =>
+                  (parseDateValue(a.createdAt)?.getTime() || 0) -
+                  (parseDateValue(b.createdAt)?.getTime() || 0)
+              );
+            }
+
+            if (incomingLiked) {
+              runLikeAnimation(incoming.id, true);
+            }
+
+            syncLikeVisualState(incoming.id, incomingLiked);
+
+            return [
+              ...prev,
+              {
+                ...incoming,
+                liked: incomingLiked,
+                likesCount: incoming?.likesCount ?? 0,
+              },
+            ].sort(
               (a, b) =>
                 (parseDateValue(a.createdAt)?.getTime() || 0) -
                 (parseDateValue(b.createdAt)?.getTime() || 0)
@@ -326,7 +392,14 @@ const DirectMessageScreen = ({ route, navigation }) => {
       if (newMessage) {
         setMessages((prev) => {
           if (prev.find((msg) => msg.id === newMessage.id)) return prev;
-          return [...prev, newMessage].sort(
+          return [
+            ...prev,
+            {
+              ...newMessage,
+              liked: newMessage?.liked ?? (newMessage?.likesCount || 0) > 0,
+              likesCount: newMessage?.likesCount ?? 0,
+            },
+          ].sort(
             (a, b) =>
               (parseDateValue(a.createdAt)?.getTime() || 0) -
               (parseDateValue(b.createdAt)?.getTime() || 0)
@@ -344,8 +417,158 @@ const DirectMessageScreen = ({ route, navigation }) => {
   }, [client, currentUserId, messageText, targetUserId]);
 
   // 10) Renderers
+  const ensureAnimValue = (store, key, initialValue) => {
+    if (!store.current[key]) {
+      store.current[key] = new Animated.Value(initialValue);
+    }
+    return store.current[key];
+  };
+
+  const getLikeScale = (messageId) => ensureAnimValue(likeScales, messageId, 0);
+  const getLikeOpacity = (messageId) => ensureAnimValue(likeOpacities, messageId, 0);
+
+  const syncLikeVisualState = useCallback((messageId, liked) => {
+    const scale = getLikeScale(messageId);
+    const opacity = getLikeOpacity(messageId);
+
+    scale.setValue(liked ? 1 : 0);
+    opacity.setValue(liked ? 1 : 0);
+  }, []);
+
+  const runLikeAnimation = useCallback((messageId, activating) => {
+    const scale = getLikeScale(messageId);
+    const opacity = getLikeOpacity(messageId);
+
+    if (activating) {
+      scale.setValue(0.4);
+      opacity.setValue(0);
+
+      Animated.parallel([
+        Animated.spring(scale, {
+          toValue: 1,
+          friction: 5,
+          tension: 120,
+          useNativeDriver: true,
+        }),
+        Animated.sequence([
+          Animated.timing(opacity, {
+            toValue: 1,
+            duration: 80,
+            easing: Easing.out(Easing.quad),
+            useNativeDriver: true,
+          }),
+          Animated.timing(opacity, {
+            toValue: 1,
+            duration: 180,
+            useNativeDriver: true,
+          }),
+        ]),
+      ]).start();
+    } else {
+      Animated.parallel([
+        Animated.timing(scale, {
+          toValue: 0,
+          duration: 160,
+          easing: Easing.out(Easing.quad),
+          useNativeDriver: true,
+        }),
+        Animated.timing(opacity, {
+          toValue: 0,
+          duration: 120,
+          useNativeDriver: true,
+        }),
+      ]).start();
+    }
+  }, []);
+
+  const toggleMessageLike = useCallback(
+    async (messageId) => {
+      let previousLiked = false;
+      let previousLikesCount = 0;
+
+      setMessages((prev) =>
+        prev.map((message) => {
+          if (message.id !== messageId) return message;
+          previousLiked = message.liked;
+          previousLikesCount = message.likesCount || 0;
+          const nextLiked = !message.liked;
+          const likesCount = Math.max(
+            0,
+            (message.likesCount || 0) + (nextLiked ? 1 : -1)
+          );
+
+          runLikeAnimation(messageId, nextLiked);
+
+          return { ...message, liked: nextLiked, likesCount };
+        })
+      );
+
+      try {
+        const token = await getToken();
+        const response = await client.request(TOGGLE_LIKE_MUTATION, {
+          token,
+          targetType: "COMMENT",
+          targetId: messageId,
+        });
+
+        const payload = response?.toggleLike;
+        if (payload) {
+          setMessages((prev) =>
+            prev.map((message) => {
+              if (message.id !== messageId) return message;
+
+              const nextLiked = payload.likesCount > 0;
+              const likesCount = payload.likesCount ?? message.likesCount ?? 0;
+
+              if (!message.liked && nextLiked) {
+                runLikeAnimation(messageId, true);
+              }
+              if (message.liked && !nextLiked) {
+                runLikeAnimation(messageId, false);
+              }
+
+              syncLikeVisualState(messageId, nextLiked);
+
+              return { ...message, liked: nextLiked, likesCount };
+            })
+          );
+        }
+      } catch (err) {
+        console.error("Failed to toggle message like", err);
+        setMessages((prev) =>
+          prev.map((message) => {
+            if (message.id !== messageId) return message;
+            // revert optimistic toggle
+            syncLikeVisualState(messageId, previousLiked);
+            return {
+              ...message,
+              liked: previousLiked,
+              likesCount: previousLikesCount,
+            };
+          })
+        );
+      }
+    },
+    [client, runLikeAnimation, syncLikeVisualState]
+  );
+
+  const handleBubblePress = useCallback(
+    (messageId) => {
+      const now = Date.now();
+      const lastTap = tapTimestamps.current[messageId] || 0;
+
+      tapTimestamps.current[messageId] = now;
+      if (now - lastTap < 280) {
+        toggleMessageLike(messageId);
+      }
+    },
+    [toggleMessageLike]
+  );
+
   const renderMessage = ({ item }) => {
     const isMine = String(item.author?.id) === String(currentUserId);
+    const likeScale = getLikeScale(item.id);
+    const likeOpacity = getLikeOpacity(item.id);
 
     return (
       <View style={[styles.messageRow, isMine && styles.messageRowMine]}>
@@ -358,24 +581,42 @@ const DirectMessageScreen = ({ route, navigation }) => {
           />
         )}
         <View style={[styles.bubbleStack, isMine && styles.bubbleStackMine]}>
-          <View
-            style={[
-              styles.bubble,
-              isMine ? styles.bubbleMine : styles.bubbleTheirs,
-            ]}
+          <TouchableOpacity
+            activeOpacity={0.9}
+            onPress={() => handleBubblePress(item.id)}
           >
-            <Text
+            <View
               style={[
-                styles.messageText,
-                isMine ? styles.messageTextMine : styles.messageTextTheirs,
+                styles.bubble,
+                isMine ? styles.bubbleMine : styles.bubbleTheirs,
               ]}
             >
-              {item.text}
-            </Text>
-            <Text style={[styles.timestamp, isMine && styles.timestampMine]}>
-              {formatTime(item.createdAt)}
-            </Text>
-          </View>
+              <Animated.View
+                pointerEvents="none"
+                style={[
+                  styles.likeBadge,
+                  isMine ? styles.likeBadgeMine : styles.likeBadgeTheirs,
+                  {
+                    opacity: likeOpacity,
+                    transform: [{ scale: likeScale }],
+                  },
+                ]}
+              >
+                <Text style={styles.likeBadgeText}>👍</Text>
+              </Animated.View>
+              <Text
+                style={[
+                  styles.messageText,
+                  isMine ? styles.messageTextMine : styles.messageTextTheirs,
+                ]}
+              >
+                {item.text}
+              </Text>
+              <Text style={[styles.timestamp, isMine && styles.timestampMine]}>
+                {formatTime(item.createdAt)}
+              </Text>
+            </View>
+          </TouchableOpacity>
         </View>
         {isMine && (
           <Avatar
@@ -672,6 +913,31 @@ const styles = StyleSheet.create({
   emptyText: {
     color: "#94a3b8",
     textAlign: "center",
+  },
+  likeBadge: {
+    position: "absolute",
+    top: -10,
+    right: -10,
+    backgroundColor: "rgba(15,23,42,0.9)",
+    borderRadius: 12,
+    paddingHorizontal: 6,
+    paddingVertical: 3,
+    borderWidth: 1,
+    borderColor: "rgba(255,255,255,0.15)",
+    shadowColor: "#000",
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    shadowOffset: { width: 0, height: 2 },
+    elevation: 3,
+  },
+  likeBadgeMine: {
+    right: -6,
+  },
+  likeBadgeTheirs: {
+    right: -12,
+  },
+  likeBadgeText: {
+    fontSize: 14,
   },
 });
 
