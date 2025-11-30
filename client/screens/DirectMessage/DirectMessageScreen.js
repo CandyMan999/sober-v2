@@ -429,38 +429,40 @@ const styles = StyleSheet.create({
   },
   messageRow: {
     flexDirection: "row",
-    alignItems: "flex-end",
+    alignItems: "flex-start",
     gap: 10,
   },
   messageRowMine: {
     justifyContent: "flex-end",
   },
   messageAvatar: {
-    marginBottom: 2,
+    alignSelf: "flex-start",
   },
   bubbleStack: {
     flex: 1,
+    alignItems: "flex-start",
   },
   bubbleStackMine: {
     alignItems: "flex-end",
   },
   bubble: {
     maxWidth: "100%",
-    borderRadius: 16,
+    borderRadius: 12,
     paddingHorizontal: 14,
     paddingVertical: 10,
     borderWidth: 1,
-    alignSelf: "flex-start",
   },
   bubbleMine: {
     backgroundColor: "rgba(56,189,248,0.14)",
     borderColor: "#38bdf8",
     borderTopRightRadius: 6,
+    alignSelf: "flex-end",
   },
   bubbleTheirs: {
     backgroundColor: "rgba(245,158,11,0.08)",
-    borderTopLeftRadius: 6,
     borderColor: "#f59e0b",
+    borderTopLeftRadius: 6,
+    alignSelf: "flex-start",
   },
   messageText: {
     fontSize: 15,
