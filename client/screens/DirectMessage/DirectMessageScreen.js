@@ -13,10 +13,15 @@ import {
   TextInput,
   FlatList,
   ActivityIndicator,
+  KeyboardAvoidingView,
+  Platform,
+  Keyboard,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
-import { useMutation, useQuery, useSubscription } from "@apollo/client";
+
+// 🔑 use the raw ws client instead of Apollo's useSubscription
+import { SubscriptionClient } from "subscriptions-transport-ws";
 
 import Avatar from "../../components/Avatar";
 import Context from "../../context";
@@ -25,6 +30,8 @@ import {
   DIRECT_ROOM_WITH_USER,
   SEND_DIRECT_MESSAGE,
 } from "../../GraphQL/directMessages";
+import { useClient } from "../../client";
+import { GRAPHQL_URI } from "../../config/endpoint";
 
 const formatTime = (timestamp) => {
   if (!timestamp) return "Just now";
@@ -32,49 +39,129 @@ const formatTime = (timestamp) => {
   return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 };
 
+// Helper to build WS URL (http -> ws, https -> wss)
+const buildWsUrl = () => GRAPHQL_URI.replace(/^http/, "ws");
+
 const DirectMessageScreen = ({ route, navigation }) => {
   const { state } = useContext(Context);
+  const client = useClient();
   const currentUserId = state?.user?.id;
   const user = route?.params?.user || {};
+  const targetUserId = user?.id;
   const username = user.username || "Buddy";
 
   const [messageText, setMessageText] = useState("");
   const [messages, setMessages] = useState([]);
-  const [sendError, setSendError] = useState("");
+  const [roomId, setRoomId] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [sending, setSending] = useState(false);
 
-  const { data, loading } = useQuery(DIRECT_ROOM_WITH_USER, {
-    variables: { userId: user.id },
-    fetchPolicy: "cache-and-network",
-    skip: !user?.id || !currentUserId,
-  });
+  const syncMessagesFromRoom = useCallback((roomData) => {
+    if (!roomData?.comments) return;
 
-  const roomId = data?.directRoomWithUser?.id;
-
-  useEffect(() => {
-    if (data?.directRoomWithUser?.comments) {
-      setMessages(data.directRoomWithUser.comments);
-    }
-  }, [data]);
-
-  useSubscription(DIRECT_MESSAGE_SUBSCRIPTION, {
-    skip: !roomId || !currentUserId,
-    variables: { roomId },
-    onData: ({ data: subscriptionData }) => {
-      const incoming = subscriptionData?.data?.directMessageReceived;
-      if (!incoming) return;
-
-      setMessages((prev) => {
-        if (prev.find((msg) => msg.id === incoming.id)) return prev;
-        return [...prev, incoming].sort(
-          (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
-        );
+    setMessages((prev) => {
+      const incomingById = new Map(prev.map((msg) => [msg.id, msg]));
+      roomData.comments.forEach((msg) => {
+        incomingById.set(msg.id, msg);
       });
-    },
-  });
 
-  const [sendDirectMessage, { loading: sending }] = useMutation(
-    SEND_DIRECT_MESSAGE
-  );
+      return [...incomingById.values()].sort(
+        (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
+      );
+    });
+  }, []);
+
+  // 1) Load the room + initial messages
+  useEffect(() => {
+    if (!targetUserId || !currentUserId) return;
+
+    let isMounted = true;
+    setLoading(true);
+
+    const loadRoom = async () => {
+      try {
+        const result = await client.request(DIRECT_ROOM_WITH_USER, {
+          userId: targetUserId,
+        });
+
+        const room = result?.directRoomWithUser;
+        console.log("[DM] Room result:", room);
+
+        if (!isMounted || !room) return;
+
+        if (room?.id || room?._id) {
+          const id = room.id || room._id;
+          setRoomId(id);
+        }
+
+        syncMessagesFromRoom(room);
+      } catch (error) {
+        console.error("Failed to load direct room", error);
+      } finally {
+        if (!isMounted) return;
+        setLoading(false);
+      }
+    };
+
+    loadRoom();
+
+    return () => {
+      isMounted = false;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // 2) Manual WebSocket subscription using SubscriptionClient
+  useEffect(() => {
+    if (!roomId) return;
+
+    console.log("[DM] Setting up WS subscription for room:", roomId);
+
+    const wsUrl = buildWsUrl();
+
+    // NOTE: no auth checks on the server for this subscription right now,
+    // so we don't have to send tokens here.
+    const wsClient = new SubscriptionClient(wsUrl, {
+      reconnect: true,
+    });
+
+    const observable = wsClient.request({
+      query: DIRECT_MESSAGE_SUBSCRIPTION,
+      variables: { roomId },
+    });
+
+    const subscription = observable.subscribe({
+      next: ({ data }) => {
+        try {
+          const incoming = data?.directMessageReceived;
+          console.log("[DM] WS incoming:", incoming);
+
+          if (!incoming) return;
+
+          setMessages((prev) => {
+            if (prev.find((msg) => msg.id === incoming.id)) return prev;
+            return [...prev, incoming].sort(
+              (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
+            );
+          });
+        } catch (err) {
+          console.error("[DM] WS subscription handler failed:", err);
+        }
+      },
+      error: (err) => {
+        console.error("[DM] WS subscription error:", err);
+      },
+      complete: () => {
+        console.log("[DM] WS subscription completed");
+      },
+    });
+
+    return () => {
+      console.log("[DM] Cleaning up WS subscription");
+      subscription.unsubscribe();
+      wsClient.close(false);
+    };
+  }, [roomId]);
 
   const sortedMessages = useMemo(
     () =>
@@ -86,16 +173,17 @@ const DirectMessageScreen = ({ route, navigation }) => {
 
   const handleSend = useCallback(async () => {
     const text = messageText.trim();
-    if (!text || !user?.id || !currentUserId) return;
-
-    setSendError("");
+    if (!text || !targetUserId || !currentUserId) return;
 
     try {
-      const response = await sendDirectMessage({
-        variables: { recipientId: user.id, text },
+      setSending(true);
+
+      const response = await client.request(SEND_DIRECT_MESSAGE, {
+        recipientId: targetUserId,
+        text,
       });
 
-      const newMessage = response?.data?.sendDirectMessage;
+      const newMessage = response?.sendDirectMessage;
       if (newMessage) {
         setMessages((prev) => {
           if (prev.find((msg) => msg.id === newMessage.id)) return prev;
@@ -107,9 +195,11 @@ const DirectMessageScreen = ({ route, navigation }) => {
 
       setMessageText("");
     } catch (err) {
-      setSendError(err?.message || "Unable to send message right now.");
+      console.error("Failed to send direct message", err);
+    } finally {
+      setSending(false);
     }
-  }, [messageText, sendDirectMessage, user?.id]);
+  }, [client, currentUserId, messageText, targetUserId]);
 
   const renderMessage = ({ item }) => {
     const isMine = String(item.author?.id) === String(currentUserId);
@@ -123,7 +213,12 @@ const DirectMessageScreen = ({ route, navigation }) => {
             disableNavigation
           />
         )}
-        <View style={[styles.bubble, isMine ? styles.bubbleMine : styles.bubbleTheirs]}>
+        <View
+          style={[
+            styles.bubble,
+            isMine ? styles.bubbleMine : styles.bubbleTheirs,
+          ]}
+        >
           <Text
             style={[
               styles.messageText,
@@ -141,73 +236,86 @@ const DirectMessageScreen = ({ route, navigation }) => {
   };
 
   return (
-    <SafeAreaView style={styles.container} edges={["top", "left", "right"]}>
-      <View style={styles.header}>
-        <TouchableOpacity
-          style={styles.backButton}
-          onPress={() => navigation.goBack()}
-          accessibilityLabel="Go back"
-        >
-          <Ionicons name="chevron-back" size={22} color="#f59e0b" />
-        </TouchableOpacity>
-        <View style={styles.headerUser}>
-          <Avatar uri={user.profilePicUrl} size={40} disableNavigation />
-          <View>
-            <Text style={styles.headerTitle}>Direct Message</Text>
-            <Text style={styles.headerSubtitle}>{username}</Text>
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === "ios" ? "padding" : undefined}
+      keyboardVerticalOffset={Platform.OS === "ios" ? 84 : 0}
+    >
+      <SafeAreaView style={styles.container} edges={["top", "left", "right"]}>
+        <View style={styles.header}>
+          <TouchableOpacity
+            style={styles.backButton}
+            onPress={() => navigation.goBack()}
+            accessibilityLabel="Go back"
+          >
+            <Ionicons name="chevron-back" size={22} color="#f59e0b" />
+          </TouchableOpacity>
+          <View style={styles.headerUser}>
+            <Avatar uri={user.profilePicUrl} size={40} disableNavigation />
+            <View>
+              <Text style={styles.headerTitle}>Direct Message</Text>
+              <Text style={styles.headerSubtitle}>{username}</Text>
+            </View>
           </View>
         </View>
-      </View>
-
-      {sendError ? (
-        <View style={styles.errorBanner}>
-          <Text style={styles.errorText}>{sendError}</Text>
-        </View>
-      ) : null}
-
-      <View style={styles.body}>
-        {loading && !sortedMessages.length ? (
-          <ActivityIndicator size="small" color="#f59e0b" />
-        ) : (
-          <FlatList
-            data={sortedMessages}
-            keyExtractor={(item) => item.id}
-            renderItem={renderMessage}
-            contentContainerStyle={styles.listContent}
-            showsVerticalScrollIndicator={false}
-            ListEmptyComponent={() => (
-              <View style={styles.emptyState}>
-                <Text style={styles.emptyText}>
-                  Start the accountability chat with {username}.
-                </Text>
-              </View>
-            )}
-          />
-        )}
-      </View>
-
-      <View style={styles.inputBar}>
-        <TextInput
-          value={messageText}
-          onChangeText={setMessageText}
-          placeholder={`Message ${username}`}
-          placeholderTextColor="#6b7280"
-          style={styles.input}
-          multiline
-        />
-        <TouchableOpacity
-          style={[styles.sendButton, (!messageText.trim() || sending) && styles.sendButtonDisabled]}
-          disabled={!messageText.trim() || sending}
-          onPress={handleSend}
-        >
-          {sending ? (
-            <ActivityIndicator size="small" color="#0b1220" />
+        <View style={styles.body}>
+          {loading && !sortedMessages.length ? (
+            <ActivityIndicator size="small" color="#f59e0b" />
           ) : (
-            <Ionicons name="send" size={18} color="#0b1220" />
+            <FlatList
+              data={sortedMessages}
+              keyExtractor={(item) => item.id}
+              renderItem={renderMessage}
+              contentContainerStyle={styles.listContent}
+              showsVerticalScrollIndicator={false}
+              keyboardShouldPersistTaps="handled"
+              ListEmptyComponent={() => (
+                <View style={styles.emptyState}>
+                  <Text style={styles.emptyText}>
+                    Start the accountability chat with {username}.
+                  </Text>
+                </View>
+              )}
+            />
           )}
-        </TouchableOpacity>
-      </View>
-    </SafeAreaView>
+        </View>
+
+        <View style={styles.inputBar}>
+          <TextInput
+            value={messageText}
+            onChangeText={setMessageText}
+            placeholder={`Message ${username}`}
+            placeholderTextColor="#6b7280"
+            style={styles.input}
+            multiline
+            returnKeyType="done"
+            blurOnSubmit
+            onSubmitEditing={Keyboard.dismiss}
+          />
+          <TouchableOpacity
+            style={styles.doneButton}
+            onPress={Keyboard.dismiss}
+            accessibilityLabel="Dismiss keyboard"
+          >
+            <Text style={styles.doneButtonText}>Done</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[
+              styles.sendButton,
+              (!messageText.trim() || sending) && styles.sendButtonDisabled,
+            ]}
+            disabled={!messageText.trim() || sending}
+            onPress={handleSend}
+          >
+            {sending ? (
+              <ActivityIndicator size="small" color="#0b1220" />
+            ) : (
+              <Ionicons name="send" size={18} color="#0b1220" />
+            )}
+          </TouchableOpacity>
+        </View>
+      </SafeAreaView>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -245,17 +353,6 @@ const styles = StyleSheet.create({
     color: "#cbd5e1",
     fontSize: 12,
     marginTop: 2,
-  },
-  errorBanner: {
-    backgroundColor: "rgba(248, 113, 113, 0.12)",
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderBottomColor: "rgba(248, 113, 113, 0.35)",
-    borderBottomWidth: 1,
-  },
-  errorText: {
-    color: "#fecdd3",
-    fontSize: 12,
   },
   body: {
     flex: 1,
@@ -328,6 +425,17 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     minHeight: 44,
     maxHeight: 120,
+  },
+  doneButton: {
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+    borderRadius: 10,
+    backgroundColor: "#1f2937",
+  },
+  doneButtonText: {
+    color: "#f9fafb",
+    fontSize: 13,
+    fontWeight: "600",
   },
   sendButton: {
     width: 42,

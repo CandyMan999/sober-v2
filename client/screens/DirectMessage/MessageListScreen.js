@@ -9,7 +9,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { useQuery, useSubscription } from "@apollo/client";
+import { useSubscription } from "@apollo/client/react";
 
 import Avatar from "../../components/Avatar";
 import Context from "../../context";
@@ -17,6 +17,7 @@ import {
   DIRECT_ROOM_UPDATED,
   MY_DIRECT_ROOMS,
 } from "../../GraphQL/directMessages";
+import { useClient } from "../../client";
 
 const timeAgo = (timestamp) => {
   if (!timestamp) return "Just now";
@@ -39,19 +40,37 @@ const MessageListScreen = ({ route, navigation }) => {
   const { state } = useContext(Context);
   const currentUserId = state?.user?.id;
   const conversations = route?.params?.conversations || [];
+  const client = useClient();
 
   const [rooms, setRooms] = useState([]);
-
-  const { data, loading } = useQuery(MY_DIRECT_ROOMS, {
-    fetchPolicy: "cache-and-network",
-    skip: !currentUserId,
-  });
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (data?.myDirectRooms) {
-      setRooms(data.myDirectRooms);
-    }
-  }, [data]);
+    if (!currentUserId) return;
+
+    let isMounted = true;
+    setLoading(true);
+
+    client
+      .request(MY_DIRECT_ROOMS)
+      .then((result) => {
+        if (!isMounted) return;
+        setRooms(result?.myDirectRooms || []);
+      })
+      .catch((error) => {
+        console.log("Failed to load direct rooms", error);
+      })
+      .finally(() => {
+        if (!isMounted) return;
+        setLoading(false);
+      });
+
+    return () => {
+      isMounted = false;
+    };
+    // Intentionally empty dependency array to avoid duplicate room loads
+    // when navigation props or the client reference changes.
+  }, []);
 
   useSubscription(DIRECT_ROOM_UPDATED, {
     skip: !currentUserId,
@@ -73,7 +92,38 @@ const MessageListScreen = ({ route, navigation }) => {
   const listData = useMemo(() => {
     const sourceRooms = rooms.length ? rooms : conversations;
 
-    if (!sourceRooms.length) {
+    const normalized = sourceRooms
+      .map((room, index) => {
+        const participants = room.users || [];
+        const otherUserRaw =
+          participants.find(
+            (participant) =>
+              participant && String(participant.id || participant._id) !== String(currentUserId)
+          ) ||
+          participants.find(Boolean) ||
+          room.user;
+
+        const otherUser = otherUserRaw
+          ? { ...otherUserRaw, id: otherUserRaw.id || otherUserRaw._id }
+          : null;
+
+        if (!otherUser?.id) return null;
+
+        const lastMessageText = room.lastMessage?.text || room.lastMessage || "New chat";
+        const lastActivity =
+          room.lastMessageAt || room.lastMessage?.createdAt || Date.now() - index * 1000;
+
+        return {
+          id: room.id || room._id || `room-${index}`,
+          user: otherUser,
+          lastMessage: lastMessageText,
+          lastActivity,
+          unread: room.unread || false,
+        };
+      })
+      .filter(Boolean);
+
+    if (!normalized.length) {
       return [
         {
           id: "welcome",
@@ -89,24 +139,7 @@ const MessageListScreen = ({ route, navigation }) => {
       ];
     }
 
-    return sourceRooms.map((room, index) => {
-      const participants = room.users || [];
-      const otherUser =
-        participants.find((participant) => participant.id !== currentUserId) ||
-        participants[0] ||
-        room.user;
-      const lastMessageText = room.lastMessage?.text || room.lastMessage || "New chat";
-      const lastActivity =
-        room.lastMessageAt || room.lastMessage?.createdAt || Date.now() - index * 1000;
-
-      return {
-        id: room.id || room._id || `room-${index}`,
-        user: otherUser,
-        lastMessage: lastMessageText,
-        lastActivity,
-        unread: room.unread || false,
-      };
-    });
+    return normalized;
   }, [rooms, conversations, currentUserId]);
 
   const renderConversation = ({ item }) => {

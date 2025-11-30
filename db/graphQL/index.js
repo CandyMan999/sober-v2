@@ -34,12 +34,13 @@ const {
   myDirectRoomsResolver,
   directRoomWithUserResolver,
 } = require("./queries/index.js");
-const { pubsub, withFilter, DIRECT_MESSAGE_SENT, DIRECT_ROOM_UPDATED } = require(
-  "./subscriptions"
-);
+const {
+  directMessageReceivedSubscription,
+  directRoomUpdatedSubscription,
+} = require("./subscription/subscription");
 
 // Import models
-const { Like, Comment, Connection, City, Room } = require("../models"); // ensure Like is exported from ../models/index.js
+const { Like, Comment, Connection, City } = require("../models");
 const { findClosestCity } = require("../utils/location");
 
 const typeDefs = [rootDefs];
@@ -100,39 +101,8 @@ const resolvers = {
   Upload: require("graphql-upload-minimal").GraphQLUpload,
 
   Subscription: {
-    directMessageReceived: {
-      subscribe: withFilter(
-        () => pubsub.asyncIterator(DIRECT_MESSAGE_SENT),
-        async (payload, variables, { currentUser }) => {
-          const message = payload?.directMessageReceived;
-          if (!message || !currentUser?._id) return false;
-
-          const roomId = variables.roomId || message.targetId;
-          if (String(message.targetId) !== String(roomId)) return false;
-
-          const isMember = await Room.exists({
-            _id: roomId,
-            users: currentUser._id,
-          });
-
-          return Boolean(isMember);
-        }
-      ),
-    },
-    directRoomUpdated: {
-      subscribe: withFilter(
-        () => pubsub.asyncIterator(DIRECT_ROOM_UPDATED),
-        (payload, _variables, { currentUser }) => {
-          const room = payload?.directRoomUpdated;
-          if (!room || !currentUser?._id) return false;
-
-          return (room.users || []).some(
-            (user) =>
-              String(user?._id || user?.id) === String(currentUser._id)
-          );
-        }
-      ),
-    },
+    directMessageReceived: directMessageReceivedSubscription,
+    directRoomUpdated: directRoomUpdatedSubscription,
   },
 
   // ---- Type-level resolvers ----

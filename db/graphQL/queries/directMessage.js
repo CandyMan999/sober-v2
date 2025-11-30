@@ -1,135 +1,185 @@
-// resolvers/directMessages.js
+// resolvers/queries/directMessages.js
 const {
   AuthenticationError,
   UserInputError,
 } = require("apollo-server-express");
 
-const { Room, User, Comment } = require("../../models");
-const {
-  publishDirectMessage,
-  publishDirectRoomUpdate,
-} = require("../subscriptions");
+const { Room } = require("../../models");
 
-const populateRoom = async (room) =>
-  room
-    .populate(["users", { path: "lastMessage", populate: "author" }])
-    .populate({
-      path: "comments",
-      populate: "author",
-      options: { sort: { createdAt: 1 } },
-    });
+/**
+ * Normalize a User mongoose doc to plain JS with string id.
+ */
+const normalizeUser = (userDoc) => {
+  if (!userDoc) return null;
+  const raw = userDoc.toObject ? userDoc.toObject() : userDoc;
+  return {
+    ...raw,
+    id: raw.id || raw._id?.toString?.(),
+  };
+};
+
+/**
+ * Normalize a Comment mongoose doc to plain JS with string id and normalized author/replyTo.
+ */
+const normalizeComment = (commentDoc) => {
+  if (!commentDoc) return null;
+  const raw = commentDoc.toObject ? commentDoc.toObject() : commentDoc;
+
+  const authorRaw = raw.author;
+  const author =
+    authorRaw && authorRaw.toObject ? authorRaw.toObject() : authorRaw;
+
+  const replyToRaw = raw.replyTo;
+  const replyTo =
+    replyToRaw && replyToRaw.toObject ? replyToRaw.toObject() : replyToRaw;
+
+  return {
+    ...raw,
+    id: raw.id || raw._id?.toString?.(),
+    author: author
+      ? {
+          ...author,
+          id: author.id || author._id?.toString?.(),
+        }
+      : null,
+    replyTo: replyTo
+      ? {
+          ...replyTo,
+          id: replyTo.id || replyTo._id?.toString?.(),
+        }
+      : null,
+  };
+};
+
+/**
+ * Normalize a Room mongoose doc for GraphQL:
+ * - room.id as string
+ * - users[].id as string
+ * - comments[].id as string
+ * - lastMessage.id as string
+ */
+const normalizeRoomForGraphQL = (roomDoc) => {
+  if (!roomDoc) return null;
+
+  const raw = roomDoc.toObject ? roomDoc.toObject() : roomDoc;
+
+  const users = (raw.users || [])
+    .filter(Boolean)
+    .map(normalizeUser)
+    .filter((u) => !!u.id);
+
+  const comments = (raw.comments || [])
+    .filter(Boolean)
+    .map(normalizeComment)
+    // make sure we never return a comment without an id
+    .filter((c) => !!c.id);
+
+  let lastMessage = null;
+  if (raw.lastMessage) {
+    const lmRaw = raw.lastMessage.toObject
+      ? raw.lastMessage.toObject()
+      : raw.lastMessage;
+
+    const lmAuthorRaw = lmRaw.author;
+    const lmAuthor =
+      lmAuthorRaw && lmAuthorRaw.toObject
+        ? lmAuthorRaw.toObject()
+        : lmAuthorRaw;
+
+    lastMessage = {
+      ...lmRaw,
+      id: lmRaw.id || lmRaw._id?.toString?.(),
+      author: lmAuthor
+        ? {
+            ...lmAuthor,
+            id: lmAuthor.id || lmAuthor._id?.toString?.(),
+          }
+        : null,
+    };
+  }
+
+  return {
+    ...raw,
+    id: raw.id || raw._id?.toString?.(),
+    users,
+    comments,
+    lastMessage,
+  };
+};
 
 module.exports = {
-  // QUERY: list all DM rooms for the current user
   myDirectRoomsResolver: async (_, __, ctx) => {
     const me = ctx.currentUser;
     if (!me) throw new AuthenticationError("Not authenticated");
 
-    const rooms = await Room.find({
-      isDirect: true,
-      users: me._id,
-    })
+    const rooms = await Room.find({ isDirect: true, users: me._id })
       .sort({ lastMessageAt: -1 })
       .populate([
-        { path: "users", populate: "profilePic" },
-        { path: "lastMessage", populate: "author" },
+        {
+          path: "users",
+          populate: "profilePic",
+        },
+        {
+          path: "lastMessage",
+          populate: { path: "author", populate: "profilePic" },
+        },
       ])
+      .populate({
+        path: "comments",
+        options: { sort: { createdAt: 1 } }, // oldest → newest
+        populate: [
+          { path: "author", populate: "profilePic" },
+          { path: "replyTo", populate: { path: "author", model: "User" } },
+        ],
+      })
       .exec();
 
-    return rooms;
+    // Normalize everything so GraphQL sees string IDs, not Buffers/Objects
+    return rooms.map((room) => normalizeRoomForGraphQL(room));
   },
 
-  // QUERY: get (or inspect) the DM room between current user and a specific user
   directRoomWithUserResolver: async (_, { userId }, ctx) => {
-    const me = ctx.currentUser;
-    if (!me) throw new AuthenticationError("Not authenticated");
+    try {
+      const me = ctx.currentUser;
+      if (!me) throw new AuthenticationError("Not authenticated");
 
-    if (String(me._id) === String(userId)) {
-      throw new UserInputError("Cannot start a DM with yourself.");
-    }
+      if (String(me._id) === String(userId)) {
+        throw new UserInputError("Cannot start a DM with yourself.");
+      }
 
-    let room = await Room.findOne({
-      isDirect: true,
-      users: { $all: [me._id, userId], $size: 2 },
-    });
-
-    if (!room) {
-      const participantIds = [me._id, userId];
-      room = await Room.create({
+      const room = await Room.findOne({
         isDirect: true,
-        users: participantIds,
-        lastMessageAt: new Date(),
-      });
+        users: { $all: [me._id, userId] },
+        $expr: { $eq: [{ $size: "$users" }, 2] },
+      })
+        .populate([
+          {
+            path: "users",
+            populate: "profilePic",
+          },
+          {
+            path: "lastMessage",
+            populate: { path: "author", populate: "profilePic" },
+          },
+        ])
+        .populate({
+          path: "comments",
+          options: { sort: { createdAt: 1 } },
+          populate: [
+            { path: "author", populate: "profilePic" },
+            { path: "replyTo", populate: { path: "author", model: "User" } },
+          ],
+        });
+
+      if (!room) {
+        throw new AuthenticationError("Cannot find a room");
+      }
+
+      const normalized = normalizeRoomForGraphQL(room);
+
+      return normalized;
+    } catch (err) {
+      throw new AuthenticationError("Error getting DM room: " + err.message);
     }
-
-    const populatedRoom = await populateRoom(room);
-    const sortedComments = [...(populatedRoom.comments || [])].sort(
-      (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
-    );
-
-    return {
-      ...populatedRoom.toObject(),
-      comments: sortedComments,
-    };
-  },
-
-  // MUTATION: send a DM to a specific user (creates the room if needed)
-  sendDirectMessageResolver: async (_, { recipientId, text, replyTo }, ctx) => {
-    const me = ctx.currentUser;
-    if (!me) throw new AuthenticationError("Not authenticated");
-
-    if (!text || !text.trim()) {
-      throw new UserInputError("Message text is required.");
-    }
-
-    if (String(me._id) === String(recipientId)) {
-      throw new UserInputError("Cannot send a DM to yourself.");
-    }
-
-    const recipient = await User.findById(recipientId);
-    if (!recipient) {
-      throw new UserInputError("Recipient not found.");
-    }
-
-    // 1. Find or create DM room between me + recipient
-    let room = await Room.findOne({
-      isDirect: true,
-      users: { $all: [me._id, recipient._id], $size: 2 },
-    });
-
-    if (!room) {
-      room = await Room.create({
-        isDirect: true,
-        users: [me._id, recipient._id],
-        lastMessageAt: new Date(),
-      });
-    }
-
-    // 2. Create the Comment as the DM message
-    const comment = await Comment.create({
-      text: text.trim(),
-      author: me._id,
-      targetType: "ROOM",
-      targetId: room._id,
-      replyTo: replyTo || null,
-    });
-
-    // 3. Update room metadata for inbox previews
-    room.lastMessageAt = new Date();
-    room.lastMessage = comment._id;
-    room.comments.push(comment._id);
-    await room.save();
-
-    // 4. Return populated comment
-    const populatedComment = await Comment.findById(comment._id)
-      .populate("author")
-      .exec();
-
-    publishDirectMessage(populatedComment);
-
-    const hydratedRoom = await populateRoom(room);
-    publishDirectRoomUpdate(hydratedRoom);
-
-    return populatedComment;
   },
 };
