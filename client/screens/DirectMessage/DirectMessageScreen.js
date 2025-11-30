@@ -483,23 +483,29 @@ const DirectMessageScreen = ({ route, navigation }) => {
 
   const toggleMessageLike = useCallback(
     async (messageId) => {
+      const message = messages.find((msg) => msg.id === messageId);
+      if (!message) return;
+
+      const isMine = String(message.author?.id) === String(currentUserId);
+      if (isMine) return;
+
       let previousLiked = false;
       let previousLikesCount = 0;
 
       setMessages((prev) =>
-        prev.map((message) => {
-          if (message.id !== messageId) return message;
-          previousLiked = message.liked;
-          previousLikesCount = message.likesCount || 0;
-          const nextLiked = !message.liked;
+        prev.map((current) => {
+          if (current.id !== messageId) return current;
+          previousLiked = current.liked;
+          previousLikesCount = current.likesCount || 0;
+          const nextLiked = !current.liked;
           const likesCount = Math.max(
             0,
-            (message.likesCount || 0) + (nextLiked ? 1 : -1)
+            (current.likesCount || 0) + (nextLiked ? 1 : -1)
           );
 
           runLikeAnimation(messageId, nextLiked);
 
-          return { ...message, liked: nextLiked, likesCount };
+          return { ...current, liked: nextLiked, likesCount };
         })
       );
 
@@ -549,11 +555,13 @@ const DirectMessageScreen = ({ route, navigation }) => {
         );
       }
     },
-    [client, runLikeAnimation, syncLikeVisualState]
+    [client, currentUserId, messages, runLikeAnimation, syncLikeVisualState]
   );
 
   const handleBubblePress = useCallback(
-    (messageId) => {
+    (messageId, authorId) => {
+      if (String(authorId) === String(currentUserId)) return;
+
       const now = Date.now();
       const lastTap = tapTimestamps.current[messageId] || 0;
 
@@ -562,7 +570,7 @@ const DirectMessageScreen = ({ route, navigation }) => {
         toggleMessageLike(messageId);
       }
     },
-    [toggleMessageLike]
+    [currentUserId, toggleMessageLike]
   );
 
   const renderMessage = ({ item }) => {
@@ -583,7 +591,7 @@ const DirectMessageScreen = ({ route, navigation }) => {
         <View style={[styles.bubbleStack, isMine && styles.bubbleStackMine]}>
           <TouchableOpacity
             activeOpacity={0.9}
-            onPress={() => handleBubblePress(item.id)}
+            onPress={() => handleBubblePress(item.id, item.author?.id)}
           >
             <View
               style={[
