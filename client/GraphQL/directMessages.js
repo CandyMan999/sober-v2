@@ -5,6 +5,8 @@ export const MY_DIRECT_ROOMS = `
     myDirectRooms {
       id
       lastMessageAt
+      lastOpenedAt
+      unread
       lastMessage {
         id
         text
@@ -19,7 +21,7 @@ export const MY_DIRECT_ROOMS = `
         username
         profilePicUrl
       }
-        comments {
+      comments {
         id
         text
         createdAt
@@ -43,6 +45,8 @@ export const DIRECT_ROOM_WITH_USER = `
     directRoomWithUser(userId: $userId) {
       id
       lastMessageAt
+      lastOpenedAt
+      unread
       users {
         id
         username
@@ -112,6 +116,8 @@ export const DIRECT_ROOM_UPDATED = gql`
     directRoomUpdated {
       id
       lastMessageAt
+      lastOpenedAt
+      unread
       lastMessage {
         id
         text

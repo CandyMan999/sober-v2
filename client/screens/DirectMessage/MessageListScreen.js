@@ -1,4 +1,10 @@
-import React, { useContext, useEffect, useMemo, useState } from "react";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import {
   View,
@@ -19,10 +25,24 @@ import {
 } from "../../GraphQL/directMessages";
 import { useClient } from "../../client";
 
+const parseDateValue = (value) => {
+  if (!value) return null;
+
+  const numeric = Number(value);
+  if (!Number.isNaN(numeric)) {
+    const fromNumeric = new Date(numeric);
+    if (!Number.isNaN(fromNumeric.getTime())) return fromNumeric;
+  }
+
+  const fromString = new Date(value);
+  return Number.isNaN(fromString.getTime()) ? null : fromString;
+};
+
 const timeAgo = (timestamp) => {
-  if (!timestamp) return "Just now";
-  const date = typeof timestamp === "number" ? new Date(timestamp) : new Date(timestamp);
-  const diffMs = Date.now() - date.getTime();
+  const timeValue = parseDateValue(timestamp)?.getTime();
+  if (!timeValue) return "Just now";
+
+  const diffMs = Date.now() - timeValue;
   if (Number.isNaN(diffMs) || diffMs < 0) return "Just now";
 
   const minutes = Math.floor(diffMs / (1000 * 60));
@@ -44,6 +64,25 @@ const MessageListScreen = ({ route, navigation }) => {
 
   const [rooms, setRooms] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  const deriveLastActivity = useCallback((room, fallbackIndex = 0) => {
+    const latestDate =
+      parseDateValue(room?.lastMessageAt) ||
+      parseDateValue(room?.lastMessage?.createdAt) ||
+      parseDateValue(room?.comments?.[room.comments.length - 1]?.createdAt);
+
+    if (latestDate) return latestDate.getTime();
+    return Date.now() - fallbackIndex * 1000;
+  }, []);
+
+  const deriveUnread = useCallback((room, lastActivityMs) => {
+    if (room?.unread) return true;
+
+    const lastOpened = parseDateValue(room?.lastOpenedAt)?.getTime();
+    if (lastOpened) return lastActivityMs > lastOpened;
+
+    return false;
+  }, []);
 
   useEffect(() => {
     if (!currentUserId) return;
@@ -80,11 +119,7 @@ const MessageListScreen = ({ route, navigation }) => {
 
       setRooms((prev) => {
         const filtered = prev.filter((room) => room.id !== updatedRoom.id);
-        return [updatedRoom, ...filtered].sort(
-          (a, b) =>
-            new Date(b.lastMessageAt || b.lastMessage?.createdAt || 0) -
-            new Date(a.lastMessageAt || a.lastMessage?.createdAt || 0)
-        );
+        return [updatedRoom, ...filtered];
       });
     },
   });
@@ -110,18 +145,22 @@ const MessageListScreen = ({ route, navigation }) => {
         if (!otherUser?.id) return null;
 
         const lastMessageText = room.lastMessage?.text || room.lastMessage || "New chat";
-        const lastActivity =
-          room.lastMessageAt || room.lastMessage?.createdAt || Date.now() - index * 1000;
+        const lastActivity = deriveLastActivity(room, index);
+        const unread = deriveUnread(room, lastActivity);
 
         return {
           id: room.id || room._id || `room-${index}`,
           user: otherUser,
           lastMessage: lastMessageText,
           lastActivity,
-          unread: room.unread || false,
+          unread,
         };
       })
-      .filter(Boolean);
+      .filter(Boolean)
+      .sort((a, b) => {
+        if (a.unread !== b.unread) return a.unread ? -1 : 1;
+        return (b.lastActivity || 0) - (a.lastActivity || 0);
+      });
 
     if (!normalized.length) {
       return [
@@ -140,7 +179,7 @@ const MessageListScreen = ({ route, navigation }) => {
     }
 
     return normalized;
-  }, [rooms, conversations, currentUserId]);
+  }, [rooms, conversations, currentUserId, deriveLastActivity, deriveUnread]);
 
   const renderConversation = ({ item }) => {
     const username = item.user?.username || "Buddy";

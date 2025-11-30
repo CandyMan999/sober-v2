@@ -3,6 +3,7 @@ import React, {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from "react";
 import {
@@ -33,10 +34,23 @@ import {
 import { useClient } from "../../client";
 import { GRAPHQL_URI } from "../../config/endpoint";
 
+const parseDateValue = (value) => {
+  if (!value) return null;
+
+  const numeric = Number(value);
+  if (!Number.isNaN(numeric)) {
+    const fromNumeric = new Date(numeric);
+    if (!Number.isNaN(fromNumeric.getTime())) return fromNumeric;
+  }
+
+  const fromString = new Date(value);
+  return Number.isNaN(fromString.getTime()) ? null : fromString;
+};
+
 const formatTime = (timestamp) => {
-  if (!timestamp) return "Just now";
-  const date = new Date(timestamp);
-  return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+  const parsed = parseDateValue(timestamp);
+  if (!parsed) return "Just now";
+  return parsed.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 };
 
 // Helper to build WS URL (http -> ws, https -> wss)
@@ -55,6 +69,8 @@ const DirectMessageScreen = ({ route, navigation }) => {
   const [roomId, setRoomId] = useState(null);
   const [loading, setLoading] = useState(false);
   const [sending, setSending] = useState(false);
+  const listRef = useRef(null);
+  const previousCount = useRef(0);
 
   const syncMessagesFromRoom = useCallback((roomData) => {
     if (!roomData?.comments) return;
@@ -66,7 +82,9 @@ const DirectMessageScreen = ({ route, navigation }) => {
       });
 
       return [...incomingById.values()].sort(
-        (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
+        (a, b) =>
+          (parseDateValue(a.createdAt)?.getTime() || 0) -
+          (parseDateValue(b.createdAt)?.getTime() || 0)
       );
     });
   }, []);
@@ -141,7 +159,9 @@ const DirectMessageScreen = ({ route, navigation }) => {
           setMessages((prev) => {
             if (prev.find((msg) => msg.id === incoming.id)) return prev;
             return [...prev, incoming].sort(
-              (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
+              (a, b) =>
+                (parseDateValue(a.createdAt)?.getTime() || 0) -
+                (parseDateValue(b.createdAt)?.getTime() || 0)
             );
           });
         } catch (err) {
@@ -166,10 +186,23 @@ const DirectMessageScreen = ({ route, navigation }) => {
   const sortedMessages = useMemo(
     () =>
       [...messages].sort(
-        (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
+        (a, b) =>
+          (parseDateValue(a.createdAt)?.getTime() || 0) -
+          (parseDateValue(b.createdAt)?.getTime() || 0)
       ),
     [messages]
   );
+
+  useEffect(() => {
+    const shouldScroll = sortedMessages.length > previousCount.current;
+    previousCount.current = sortedMessages.length;
+
+    if (shouldScroll) {
+      requestAnimationFrame(() => {
+        listRef.current?.scrollToEnd({ animated: true });
+      });
+    }
+  }, [sortedMessages.length]);
 
   const handleSend = useCallback(async () => {
     const text = messageText.trim();
@@ -188,7 +221,9 @@ const DirectMessageScreen = ({ route, navigation }) => {
         setMessages((prev) => {
           if (prev.find((msg) => msg.id === newMessage.id)) return prev;
           return [...prev, newMessage].sort(
-            (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
+            (a, b) =>
+              (parseDateValue(a.createdAt)?.getTime() || 0) -
+              (parseDateValue(b.createdAt)?.getTime() || 0)
           );
         });
       }
@@ -263,12 +298,18 @@ const DirectMessageScreen = ({ route, navigation }) => {
             <ActivityIndicator size="small" color="#f59e0b" />
           ) : (
             <FlatList
+              ref={listRef}
               data={sortedMessages}
               keyExtractor={(item) => item.id}
               renderItem={renderMessage}
               contentContainerStyle={styles.listContent}
               showsVerticalScrollIndicator={false}
               keyboardShouldPersistTaps="handled"
+              onContentSizeChange={() =>
+                requestAnimationFrame(() =>
+                  listRef.current?.scrollToEnd({ animated: true })
+                )
+              }
               ListEmptyComponent={() => (
                 <View style={styles.emptyState}>
                   <Text style={styles.emptyText}>
@@ -279,40 +320,49 @@ const DirectMessageScreen = ({ route, navigation }) => {
             />
           )}
         </View>
-
         <View style={styles.inputBar}>
-          <TextInput
-            value={messageText}
-            onChangeText={setMessageText}
-            placeholder={`Message ${username}`}
-            placeholderTextColor="#6b7280"
-            style={styles.input}
-            multiline
-            returnKeyType="done"
-            blurOnSubmit
-            onSubmitEditing={Keyboard.dismiss}
+          <Avatar
+            uri={state?.user?.profilePicUrl}
+            haloColor="blue"
+            size={32}
+            disableNavigation
+            style={styles.inputAvatar}
           />
-          <TouchableOpacity
-            style={styles.doneButton}
-            onPress={Keyboard.dismiss}
-            accessibilityLabel="Dismiss keyboard"
-          >
-            <Text style={styles.doneButtonText}>Done</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[
-              styles.sendButton,
-              (!messageText.trim() || sending) && styles.sendButtonDisabled,
-            ]}
-            disabled={!messageText.trim() || sending}
-            onPress={handleSend}
-          >
-            {sending ? (
-              <ActivityIndicator size="small" color="#0b1220" />
-            ) : (
-              <Ionicons name="send" size={18} color="#0b1220" />
-            )}
-          </TouchableOpacity>
+
+          <View style={styles.inputWrapper}>
+            <TextInput
+              value={messageText}
+              onChangeText={setMessageText}
+              placeholder={`Message ${username}`}
+              placeholderTextColor="#94a3b8"
+              style={styles.input}
+              multiline
+              returnKeyType="done"
+              blurOnSubmit
+              onSubmitEditing={Keyboard.dismiss}
+            />
+
+            <TouchableOpacity
+              style={[
+                styles.inlineSendButton,
+                (!messageText.trim() || sending) &&
+                  styles.inlineSendButtonDisabled,
+              ]}
+              disabled={!messageText.trim() || sending}
+              onPress={handleSend}
+              accessibilityLabel={`Send direct message to ${username}`}
+            >
+              {sending ? (
+                <ActivityIndicator size="small" color="#38bdf8" />
+              ) : (
+                <Ionicons
+                  name="send"
+                  size={17}
+                  color={messageText.trim() ? "#38bdf8" : "#64748b"}
+                />
+              )}
+            </TouchableOpacity>
+          </View>
         </View>
       </SafeAreaView>
     </KeyboardAvoidingView>
@@ -409,44 +459,41 @@ const styles = StyleSheet.create({
   inputBar: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 10,
-    paddingHorizontal: 14,
+    gap: 12,
+    paddingHorizontal: 16,
     paddingVertical: 12,
     borderTopWidth: 1,
     borderTopColor: "#1f2937",
     backgroundColor: "#0b1220",
   },
+  inputAvatar: {
+    marginBottom: 4,
+  },
+  inputWrapper: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "rgba(15,23,42,0.96)",
+    borderRadius: 999,
+    borderWidth: 1,
+    borderColor: "rgba(148,163,184,0.4)",
+    paddingHorizontal: 14,
+    paddingVertical: 8,
+  },
   input: {
     flex: 1,
-    color: "#f9fafb",
-    backgroundColor: "#0f172a",
-    borderRadius: 12,
-    paddingHorizontal: 12,
-    paddingVertical: 10,
-    minHeight: 44,
-    maxHeight: 120,
+    color: "#fef3c7",
+    fontSize: 14,
+    maxHeight: 100,
+    paddingRight: 8,
   },
-  doneButton: {
-    paddingHorizontal: 10,
-    paddingVertical: 8,
-    borderRadius: 10,
-    backgroundColor: "#1f2937",
+  inlineSendButton: {
+    paddingHorizontal: 8,
+    paddingVertical: 6,
+    borderRadius: 999,
   },
-  doneButtonText: {
-    color: "#f9fafb",
-    fontSize: 13,
-    fontWeight: "600",
-  },
-  sendButton: {
-    width: 42,
-    height: 42,
-    borderRadius: 21,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "#f59e0b",
-  },
-  sendButtonDisabled: {
-    backgroundColor: "#9ca3af",
+  inlineSendButtonDisabled: {
+    opacity: 0.4,
   },
   emptyState: {
     alignItems: "center",
