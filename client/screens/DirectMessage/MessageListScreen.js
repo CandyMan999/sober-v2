@@ -75,15 +75,6 @@ const MessageListScreen = ({ route, navigation }) => {
     return Date.now() - fallbackIndex * 1000;
   }, []);
 
-  const deriveUnread = useCallback((room, lastActivityMs) => {
-    if (room?.unread) return true;
-
-    const lastOpened = parseDateValue(room?.lastOpenedAt)?.getTime();
-    if (lastOpened) return lastActivityMs > lastOpened;
-
-    return false;
-  }, []);
-
   useEffect(() => {
     if (!currentUserId) return;
 
@@ -146,19 +137,16 @@ const MessageListScreen = ({ route, navigation }) => {
 
         const lastMessageText = room.lastMessage?.text || room.lastMessage || "New chat";
         const lastActivity = deriveLastActivity(room, index);
-        const unread = deriveUnread(room, lastActivity);
-
         return {
           id: room.id || room._id || `room-${index}`,
           user: otherUser,
           lastMessage: lastMessageText,
           lastActivity,
-          unread,
+          unread: false,
         };
       })
       .filter(Boolean)
       .sort((a, b) => {
-        if (a.unread !== b.unread) return a.unread ? -1 : 1;
         return (b.lastActivity || 0) - (a.lastActivity || 0);
       });
 
@@ -179,7 +167,7 @@ const MessageListScreen = ({ route, navigation }) => {
     }
 
     return normalized;
-  }, [rooms, conversations, currentUserId, deriveLastActivity, deriveUnread]);
+  }, [rooms, conversations, currentUserId, deriveLastActivity]);
 
   const renderConversation = ({ item }) => {
     const username = item.user?.username || "Buddy";
