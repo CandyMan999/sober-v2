@@ -9,7 +9,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { useApolloClient } from "@apollo/client";
+import { useSubscription } from "@apollo/client/react";
 
 import Avatar from "../../components/Avatar";
 import Context from "../../context";
@@ -41,7 +41,6 @@ const MessageListScreen = ({ route, navigation }) => {
   const currentUserId = state?.user?.id;
   const conversations = route?.params?.conversations || [];
   const client = useClient();
-  const apolloClient = useApolloClient();
 
   const [rooms, setRooms] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -71,36 +70,22 @@ const MessageListScreen = ({ route, navigation }) => {
     };
   }, [client, currentUserId]);
 
-  useEffect(() => {
-    if (!apolloClient || !currentUserId) return undefined;
+  useSubscription(DIRECT_ROOM_UPDATED, {
+    skip: !currentUserId,
+    onData: ({ data: subscriptionData }) => {
+      const updatedRoom = subscriptionData?.data?.directRoomUpdated;
+      if (!updatedRoom) return;
 
-    const subscription = apolloClient
-      .subscribe({
-        query: DIRECT_ROOM_UPDATED,
-      })
-      .subscribe({
-        next: ({ data: subscriptionData }) => {
-          const updatedRoom = subscriptionData?.directRoomUpdated;
-          if (!updatedRoom) return;
-
-          setRooms((prev) => {
-            const filtered = prev.filter((room) => room.id !== updatedRoom.id);
-            return [updatedRoom, ...filtered].sort(
-              (a, b) =>
-                new Date(b.lastMessageAt || b.lastMessage?.createdAt || 0) -
-                new Date(a.lastMessageAt || a.lastMessage?.createdAt || 0)
-            );
-          });
-        },
-        error: (err) => {
-          console.log("Direct rooms subscription error", err);
-        },
+      setRooms((prev) => {
+        const filtered = prev.filter((room) => room.id !== updatedRoom.id);
+        return [updatedRoom, ...filtered].sort(
+          (a, b) =>
+            new Date(b.lastMessageAt || b.lastMessage?.createdAt || 0) -
+            new Date(a.lastMessageAt || a.lastMessage?.createdAt || 0)
+        );
       });
-
-    return () => {
-      subscription?.unsubscribe?.();
-    };
-  }, [apolloClient, currentUserId]);
+    },
+  });
 
   const listData = useMemo(() => {
     const sourceRooms = rooms.length ? rooms : conversations;
