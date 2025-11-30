@@ -4,135 +4,103 @@ const { Room } = require("../../models");
 const normalizeIds = (ids = []) =>
   [...new Set(ids.map((value) => value?.toString()).filter(Boolean))];
 
-const timestampValue = (room) => {
-  if (!room) return 0;
-  const candidates = [room.lastMessageAt, room.updatedAt, room.createdAt]
-    .filter(Boolean)
-    .map((value) => new Date(value).getTime())
-    .filter((time) => !Number.isNaN(time));
-
-  return candidates.length ? Math.max(...candidates) : 0;
-};
-
-const populateDirectRoom = async (room) => {
-  if (!room) return null;
-
-  return Room.findById(room._id)
-    .populate([
-      { path: "users", populate: "profilePic" },
-      { path: "lastMessage", populate: "author" },
-    ])
-    .populate({
-      path: "comments",
-      populate: "author",
-      options: { sort: { createdAt: 1 } },
-    })
-    .exec();
-};
-
-// Ensure there is exactly one DM room for the two users and normalize its membership
+// Ensure we only keep one direct room per participant pair
 const ensureSingleDirectRoom = async (userAId, userBId) => {
-  if (!userAId || !userBId) return null;
+  const participants = normalizeIds([userAId, userBId]);
+  if (participants.length < 2) return null;
 
-  const participants = normalizeIds([userAId, userBId]).map((id) =>
-    mongoose.Types.ObjectId(id)
-  );
-
-  const candidates = await Room.find({
+  const rooms = await Room.find({
     isDirect: true,
     users: { $all: participants },
   })
     .sort({ updatedAt: -1 })
     .exec();
 
-  // Clean up partial DM rooms that only contain one of the participants
-  const partialRooms = await Room.find({
-    isDirect: true,
-    users: { $in: participants },
-  }).exec();
-
-  const orphanRoomIds = partialRooms
-    .filter((room) => {
-      const members = normalizeIds(room.users);
-      return !participants.every((id) => members.includes(id.toString()));
-    })
-    .map((room) => room._id);
-
-  if (orphanRoomIds.length) {
-    await Room.deleteMany({ _id: { $in: orphanRoomIds } });
-  }
-
-  const userA = userAId.toString();
-  const userB = userBId.toString();
-
-  let primary = null;
-  let duplicates = [];
-
-  candidates.forEach((room) => {
-    const ids = normalizeIds(room.users);
-    const hasBoth = ids.includes(userA) && ids.includes(userB);
-
-    if (!primary && hasBoth) {
-      primary = room;
-      return;
-    }
-
-    if (hasBoth) {
-      duplicates.push(room);
-    }
-  });
-
-  if (!primary && candidates.length) {
-    primary = candidates[0];
-  }
+  let primary = rooms[0];
+  const duplicates = rooms.slice(1).map((room) => room._id);
 
   if (!primary) {
     primary = await Room.create({
       isDirect: true,
-      users: [userAId, userBId],
+      users: participants,
+      comments: [],
       lastMessageAt: new Date(),
     });
-  }
+  } else {
+    const memberStrings = normalizeIds(primary.users);
+    const missing = participants.filter((id) => !memberStrings.includes(id));
 
-  // Treat the remaining candidates as duplicates to merge and delete
-  duplicates = candidates.filter((room) => String(room._id) !== String(primary._id));
-
-  // Normalize membership on the kept room
-  primary.users = participants;
-
-  // Merge duplicate room data into the primary room
-  if (duplicates.length) {
-    const mergedComments = normalizeIds([
-      ...(primary.comments || []),
-      ...duplicates.flatMap((room) => room.comments || []),
-    ]);
-
-    let latestRoom = primary;
-    duplicates.forEach((room) => {
-      if (timestampValue(room) > timestampValue(latestRoom)) {
-        latestRoom = room;
+    if (missing.length || !primary.isDirect) {
+      primary.users = participants.map((id) => mongoose.Types.ObjectId(id));
+      primary.isDirect = true;
+      if (!primary.lastMessageAt) {
+        primary.lastMessageAt = primary.updatedAt || new Date();
       }
-    });
-
-    primary.comments = mergedComments;
-
-    if (timestampValue(latestRoom) > timestampValue(primary)) {
-      primary.lastMessageAt = latestRoom.lastMessageAt || latestRoom.updatedAt || latestRoom.createdAt;
-      if (latestRoom.lastMessage) {
-        primary.lastMessage = latestRoom.lastMessage;
-      }
+      await primary.save();
     }
-
-    await Room.deleteMany({ _id: { $in: duplicates.map((room) => room._id) } });
   }
 
-  if (!primary.lastMessageAt) {
-    primary.lastMessageAt = primary.updatedAt || new Date();
+  if (duplicates.length) {
+    await Room.deleteMany({ _id: { $in: duplicates } });
   }
-
-  await primary.save();
 
   return primary;
+};
+
+const populateDirectRoom = async (room) => {
+  if (!room) return null;
+
+  const populated = await Room.findById(room._id)
+    .populate([{ path: "users", populate: "profilePic" }, { path: "lastMessage", populate: "author" }])
+    .populate({
+      path: "comments",
+      populate: [
+        { path: "author", model: "User", populate: "profilePic" },
+        { path: "replyTo", populate: { path: "author", model: "User" } },
+      ],
+    })
+    .exec();
+
+  if (!populated) return null;
+
+  const roomObject = populated.toObject ? populated.toObject() : populated;
+
+  const safeUsers = (roomObject.users || [])
+    .filter(Boolean)
+    .map((user) => {
+      const userObj = user.toObject ? user.toObject() : user;
+      return { ...userObj, id: userObj.id || userObj._id?.toString?.() };
+    })
+    .filter((user) => Boolean(user.id));
+
+  if (safeUsers.length < 2) {
+    return null;
+  }
+
+  const safeComments = (roomObject.comments || [])
+    .filter((comment) => comment && comment.author)
+    .map((comment) => {
+      const commentObj = comment.toObject ? comment.toObject() : comment;
+      const author = commentObj.author?.toObject
+        ? commentObj.author.toObject()
+        : commentObj.author;
+
+      return {
+        ...commentObj,
+        id: commentObj.id || commentObj._id?.toString?.(),
+        author: author
+          ? { ...author, id: author.id || author._id?.toString?.() }
+          : null,
+      };
+    })
+    .filter((comment) => comment.author && comment.author.id);
+
+  return {
+    ...roomObject,
+    id: roomObject.id || roomObject._id?.toString?.(),
+    users: safeUsers,
+    comments: safeComments,
+  };
 };
 
 module.exports = { populateDirectRoom, ensureSingleDirectRoom };

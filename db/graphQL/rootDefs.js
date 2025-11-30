@@ -1,5 +1,5 @@
 // schema/typeDefs.js
-const { gql } = require("apollo-server-express");
+const { gql } = require("apollo-server");
 
 const typeDefs = gql`
   """
@@ -286,7 +286,7 @@ const typeDefs = gql`
     profileOverview(token: String!): ProfileOverview!
     userProfile(token: String!, userId: ID!): ProfileOverview!
     myDirectRooms: [Room!]!
-    directRoomWithUser(userId: ID!): Room
+    directRoomWithUser(userId: ID!): Room!
   }
 
   enum SocialPlatform {
