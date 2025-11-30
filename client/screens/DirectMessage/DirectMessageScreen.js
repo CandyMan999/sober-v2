@@ -94,7 +94,9 @@ const DirectMessageScreen = ({ route, navigation }) => {
     return () => {
       isMounted = false;
     };
-  }, [client, currentUserId, syncMessagesFromRoom, targetUserId]);
+    // Intentionally empty dependency array to avoid repeated room requests
+    // when navigation props or client instances change.
+  }, []);
 
   useSubscription(DIRECT_MESSAGE_SUBSCRIPTION, {
     skip: !roomId || !currentUserId,

@@ -68,7 +68,9 @@ const MessageListScreen = ({ route, navigation }) => {
     return () => {
       isMounted = false;
     };
-  }, [client, currentUserId]);
+    // Intentionally empty dependency array to avoid duplicate room loads
+    // when navigation props or the client reference changes.
+  }, []);
 
   useSubscription(DIRECT_ROOM_UPDATED, {
     skip: !currentUserId,

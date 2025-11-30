@@ -61,15 +61,38 @@ module.exports = {
 
       const roomObject = populatedRoom.toObject ? populatedRoom.toObject() : populatedRoom;
 
-      const sortedComments = [...(roomObject.comments || [])].sort(
-        (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
-      );
+      const safeUsers = (roomObject.users || [])
+        .filter(Boolean)
+        .map((user) => {
+          const userObj = user.toObject ? user.toObject() : user;
+          return { ...userObj, id: userObj.id || userObj._id?.toString?.() };
+        })
+        .filter((user) => Boolean(user.id));
+
+      const safeComments = (roomObject.comments || [])
+        .map((comment) => {
+          const commentObj = comment.toObject ? comment.toObject() : comment;
+          const author = commentObj.author?.toObject
+            ? commentObj.author.toObject()
+            : commentObj.author;
+
+          const normalizedAuthor = author
+            ? { ...author, id: author.id || author._id?.toString?.() }
+            : null;
+
+          return {
+            ...commentObj,
+            id: commentObj.id || commentObj._id?.toString?.(),
+            author: normalizedAuthor,
+          };
+        })
+        .filter((comment) => comment.author && comment.author.id);
 
       return {
         ...roomObject,
         id: roomObject.id || roomObject._id?.toString?.(),
-        users: (roomObject.users || []).filter((u) => u && (u.id || u._id)),
-        comments: sortedComments,
+        users: safeUsers,
+        comments: safeComments,
       };
     } catch (error) {
       console.error("directRoomWithUserResolver failed", error);

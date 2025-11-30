@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const { Room } = require("../../models");
 
 const normalizeIds = (ids = []) =>
@@ -33,12 +34,33 @@ const populateDirectRoom = async (room) => {
 const ensureSingleDirectRoom = async (userAId, userBId) => {
   if (!userAId || !userBId) return null;
 
+  const participants = normalizeIds([userAId, userBId]).map((id) =>
+    mongoose.Types.ObjectId(id)
+  );
+
   const candidates = await Room.find({
     isDirect: true,
-    users: { $in: [userAId, userBId] },
+    users: { $all: participants },
   })
     .sort({ updatedAt: -1 })
     .exec();
+
+  // Clean up partial DM rooms that only contain one of the participants
+  const partialRooms = await Room.find({
+    isDirect: true,
+    users: { $in: participants },
+  }).exec();
+
+  const orphanRoomIds = partialRooms
+    .filter((room) => {
+      const members = normalizeIds(room.users);
+      return !participants.every((id) => members.includes(id.toString()));
+    })
+    .map((room) => room._id);
+
+  if (orphanRoomIds.length) {
+    await Room.deleteMany({ _id: { $in: orphanRoomIds } });
+  }
 
   const userA = userAId.toString();
   const userB = userBId.toString();
@@ -76,7 +98,7 @@ const ensureSingleDirectRoom = async (userAId, userBId) => {
   duplicates = candidates.filter((room) => String(room._id) !== String(primary._id));
 
   // Normalize membership on the kept room
-  primary.users = [userAId, userBId];
+  primary.users = participants;
 
   // Merge duplicate room data into the primary room
   if (duplicates.length) {
