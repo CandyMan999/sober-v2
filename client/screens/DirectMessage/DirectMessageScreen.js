@@ -77,6 +77,7 @@ const DirectMessageScreen = ({ route, navigation }) => {
   const [typingIndicator, setTypingIndicator] = useState(null);
   const listRef = useRef(null);
   const previousCount = useRef(0);
+  const wsClientRef = useRef(null);
   const typingStatusRef = useRef(false);
   const typingTimeoutRef = useRef(null);
   const indicatorTimeoutRef = useRef(null);
@@ -189,11 +190,19 @@ const DirectMessageScreen = ({ route, navigation }) => {
 
     const wsUrl = buildWsUrl();
 
-    // NOTE: no auth checks on the server for this subscription right now,
-    // so we don't have to send tokens here.
-    const wsClient = new SubscriptionClient(wsUrl, {
-      reconnect: true,
-    });
+    let wsClient;
+
+    try {
+      // NOTE: no auth checks on the server for this subscription right now,
+      // so we don't have to send tokens here.
+      wsClient = new SubscriptionClient(wsUrl, {
+        reconnect: true,
+      });
+      wsClientRef.current = wsClient;
+    } catch (err) {
+      console.error("[DM] Failed to init WS client", err);
+      return undefined;
+    }
 
     const messageObservable = wsClient.request({
       query: DIRECT_MESSAGE_SUBSCRIPTION,
@@ -265,7 +274,8 @@ const DirectMessageScreen = ({ route, navigation }) => {
       console.log("[DM] Cleaning up WS subscription");
       messageSubscription.unsubscribe();
       typingSubscription.unsubscribe();
-      wsClient.close(false);
+      wsClientRef.current?.close?.(false);
+      wsClientRef.current = null;
     };
   }, [currentUserId, roomId]);
 
