@@ -16,7 +16,7 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
-import { useSubscription } from "@apollo/client";
+import { useApolloClient } from "@apollo/client";
 
 import Avatar from "../../components/Avatar";
 import Context from "../../context";
@@ -35,6 +35,7 @@ const formatTime = (timestamp) => {
 
 const DirectMessageScreen = ({ route, navigation }) => {
   const { state } = useContext(Context);
+  const apolloClient = useApolloClient();
   const client = useClient();
   const currentUserId = state?.user?.id;
   const user = route?.params?.user || {};
@@ -92,21 +93,35 @@ const DirectMessageScreen = ({ route, navigation }) => {
     };
   }, [client, currentUserId, syncMessagesFromRoom, targetUserId]);
 
-  useSubscription(DIRECT_MESSAGE_SUBSCRIPTION, {
-    skip: !roomId || !currentUserId,
-    variables: { roomId },
-    onData: ({ data: subscriptionData }) => {
-      const incoming = subscriptionData?.data?.directMessageReceived;
-      if (!incoming) return;
+  useEffect(() => {
+    if (!apolloClient || !roomId || !currentUserId) return undefined;
 
-      setMessages((prev) => {
-        if (prev.find((msg) => msg.id === incoming.id)) return prev;
-        return [...prev, incoming].sort(
-          (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
-        );
+    const subscription = apolloClient
+      .subscribe({
+        query: DIRECT_MESSAGE_SUBSCRIPTION,
+        variables: { roomId },
+      })
+      .subscribe({
+        next: ({ data: subscriptionData }) => {
+          const incoming = subscriptionData?.directMessageReceived;
+          if (!incoming) return;
+
+          setMessages((prev) => {
+            if (prev.find((msg) => msg.id === incoming.id)) return prev;
+            return [...prev, incoming].sort(
+              (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
+            );
+          });
+        },
+        error: (err) => {
+          console.log("Direct message subscription error", err);
+        },
       });
-    },
-  });
+
+    return () => {
+      subscription?.unsubscribe?.();
+    };
+  }, [apolloClient, currentUserId, roomId]);
 
   const [sending, setSending] = useState(false);
 
