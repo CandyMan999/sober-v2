@@ -20,6 +20,7 @@ import {
   Animated,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useFocusEffect } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import { formatDistanceToNow } from "date-fns";
 
@@ -87,18 +88,22 @@ const DirectMessageScreen = ({ route, navigation }) => {
       Animated.sequence([
         Animated.timing(value, {
           toValue: 1,
-          duration: 280,
+          duration: 260,
           useNativeDriver: true,
         }),
         Animated.timing(value, {
-          toValue: 0.25,
-          duration: 280,
+          toValue: 0.2,
+          duration: 260,
           useNativeDriver: true,
         }),
       ]);
 
+    typingLoop.current?.stop();
+    typingDots.forEach((value) => value.setValue(0));
+
     typingLoop.current = Animated.loop(
-      Animated.stagger(140, typingDots.map((value) => wave(value)))
+      Animated.stagger(140, typingDots.map((value) => wave(value))),
+      { resetBeforeIteration: true }
     );
 
     return () => {
@@ -126,6 +131,9 @@ const DirectMessageScreen = ({ route, navigation }) => {
 
   useEffect(() => {
     if (typingIndicator?.isTyping) {
+      typingLoop.current?.stop();
+      typingDots.forEach((value) => value.setValue(0));
+      typingLoop.current?.reset?.();
       typingLoop.current?.start();
     } else {
       typingLoop.current?.stop();
@@ -339,6 +347,20 @@ const DirectMessageScreen = ({ route, navigation }) => {
       }
     },
     [roomId, sendTypingStatus]
+  );
+
+  useFocusEffect(
+    useCallback(() => {
+      return () => {
+        typingLoop.current?.stop();
+        typingDots.forEach((value) => value.setValue(0));
+        setTypingIndicator(null);
+
+        if (typingStatusRef.current && roomId) {
+          sendTypingStatus(false);
+        }
+      };
+    }, [roomId, sendTypingStatus, typingDots])
   );
 
   const handleSend = useCallback(async () => {
