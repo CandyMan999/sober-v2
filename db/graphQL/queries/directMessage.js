@@ -5,7 +5,7 @@ const {
 } = require("apollo-server-express");
 
 const { Room, User } = require("../../models");
-const { populateDirectRoom } = require("../utils/directMessage");
+const { populateDirectRoom, ensureSingleDirectRoom } = require("../utils/directMessage");
 
 module.exports = {
   // QUERY: list all DM rooms for the current user
@@ -47,42 +47,19 @@ module.exports = {
         throw new UserInputError("User not found");
       }
 
-      let room = await Room.findOne({
-        isDirect: true,
-        users: { $all: [me._id, userId], $size: 2 },
-      });
-
+      const room = await ensureSingleDirectRoom(me._id, targetUser._id);
       if (!room) {
-        const participantIds = [me._id, targetUser._id];
-        room = await Room.create({
-          isDirect: true,
-          users: participantIds,
-          lastMessageAt: new Date(),
-        });
+        throw new Error("Unable to locate direct room for participants");
       }
 
-      let populatedRoom = await populateDirectRoom(room);
+      const populatedRoom = await populateDirectRoom(room);
 
       if (!populatedRoom) {
         console.error("Unable to populate direct room", { roomId: room?._id });
         throw new Error("Unable to load direct room");
       }
 
-      let roomObject = populatedRoom.toObject ? populatedRoom.toObject() : populatedRoom;
-      const validUsers = (roomObject.users || []).filter((u) => u && (u.id || u._id));
-
-      if (validUsers.length < 2) {
-        console.warn("Healing direct room users", {
-          roomId: roomObject._id,
-          expected: [me._id, targetUser._id],
-          received: roomObject.users,
-        });
-
-        await Room.updateOne({ _id: room._id }, { users: [me._id, targetUser._id] });
-
-        populatedRoom = await populateDirectRoom(await Room.findById(room._id));
-        roomObject = populatedRoom.toObject ? populatedRoom.toObject() : populatedRoom;
-      }
+      const roomObject = populatedRoom.toObject ? populatedRoom.toObject() : populatedRoom;
 
       const sortedComments = [...(roomObject.comments || [])].sort(
         (a, b) => new Date(a.createdAt) - new Date(b.createdAt)

@@ -90,7 +90,38 @@ const MessageListScreen = ({ route, navigation }) => {
   const listData = useMemo(() => {
     const sourceRooms = rooms.length ? rooms : conversations;
 
-    if (!sourceRooms.length) {
+    const normalized = sourceRooms
+      .map((room, index) => {
+        const participants = room.users || [];
+        const otherUserRaw =
+          participants.find(
+            (participant) =>
+              participant && String(participant.id || participant._id) !== String(currentUserId)
+          ) ||
+          participants.find(Boolean) ||
+          room.user;
+
+        const otherUser = otherUserRaw
+          ? { ...otherUserRaw, id: otherUserRaw.id || otherUserRaw._id }
+          : null;
+
+        if (!otherUser?.id) return null;
+
+        const lastMessageText = room.lastMessage?.text || room.lastMessage || "New chat";
+        const lastActivity =
+          room.lastMessageAt || room.lastMessage?.createdAt || Date.now() - index * 1000;
+
+        return {
+          id: room.id || room._id || `room-${index}`,
+          user: otherUser,
+          lastMessage: lastMessageText,
+          lastActivity,
+          unread: room.unread || false,
+        };
+      })
+      .filter(Boolean);
+
+    if (!normalized.length) {
       return [
         {
           id: "welcome",
@@ -106,24 +137,7 @@ const MessageListScreen = ({ route, navigation }) => {
       ];
     }
 
-    return sourceRooms.map((room, index) => {
-      const participants = room.users || [];
-      const otherUser =
-        participants.find((participant) => participant.id !== currentUserId) ||
-        participants[0] ||
-        room.user;
-      const lastMessageText = room.lastMessage?.text || room.lastMessage || "New chat";
-      const lastActivity =
-        room.lastMessageAt || room.lastMessage?.createdAt || Date.now() - index * 1000;
-
-      return {
-        id: room.id || room._id || `room-${index}`,
-        user: otherUser,
-        lastMessage: lastMessageText,
-        lastActivity,
-        unread: room.unread || false,
-      };
-    });
+    return normalized;
   }, [rooms, conversations, currentUserId]);
 
   const renderConversation = ({ item }) => {

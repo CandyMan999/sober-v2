@@ -8,7 +8,7 @@ const {
   publishDirectMessage,
   publishDirectRoomUpdate,
 } = require("../pubsub");
-const { populateDirectRoom } = require("../utils/directMessage");
+const { populateDirectRoom, ensureSingleDirectRoom } = require("../utils/directMessage");
 
 // MUTATION: send a DM to a specific user (creates the room if needed)
 const sendDirectMessageResolver = async (_, { recipientId, text, replyTo }, ctx) => {
@@ -29,18 +29,10 @@ const sendDirectMessageResolver = async (_, { recipientId, text, replyTo }, ctx)
       throw new UserInputError("Recipient not found.");
     }
 
-    // 1. Find or create DM room between me + recipient
-    let room = await Room.findOne({
-      isDirect: true,
-      users: { $all: [me._id, recipient._id], $size: 2 },
-    });
-
+    // 1. Find or create (and dedupe) DM room between me + recipient
+    const room = await ensureSingleDirectRoom(me._id, recipient._id);
     if (!room) {
-      room = await Room.create({
-        isDirect: true,
-        users: [me._id, recipient._id],
-        lastMessageAt: new Date(),
-      });
+      throw new Error("Unable to locate or create direct message room.");
     }
 
     // 2. Create the Comment as the DM message
@@ -55,7 +47,7 @@ const sendDirectMessageResolver = async (_, { recipientId, text, replyTo }, ctx)
     // 3. Update room metadata for inbox previews
     room.lastMessageAt = new Date();
     room.lastMessage = comment._id;
-    room.comments.push(comment._id);
+    room.comments = [...new Set([...(room.comments || []), comment._id])];
     await room.save();
 
     // 4. Return populated comment
