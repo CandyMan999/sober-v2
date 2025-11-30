@@ -1,4 +1,4 @@
-const { PubSub, withFilter } = require("apollo-server-express");
+const { PubSub, withFilter } = require("graphql-subscriptions");
 const { Room } = require("../../models");
 
 const pubsub = new PubSub();
