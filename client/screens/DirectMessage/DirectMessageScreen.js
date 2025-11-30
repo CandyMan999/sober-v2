@@ -17,6 +17,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   Keyboard,
+  Animated,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
@@ -78,6 +79,33 @@ const DirectMessageScreen = ({ route, navigation }) => {
   const typingStatusRef = useRef(false);
   const typingTimeoutRef = useRef(null);
   const indicatorTimeoutRef = useRef(null);
+  const typingDots = useRef([0, 1, 2].map(() => new Animated.Value(0))).current;
+  const typingLoop = useRef(null);
+
+  useEffect(() => {
+    const wave = (value) =>
+      Animated.sequence([
+        Animated.timing(value, {
+          toValue: 1,
+          duration: 280,
+          useNativeDriver: true,
+        }),
+        Animated.timing(value, {
+          toValue: 0.25,
+          duration: 280,
+          useNativeDriver: true,
+        }),
+      ]);
+
+    typingLoop.current = Animated.loop(
+      Animated.stagger(140, typingDots.map((value) => wave(value)))
+    );
+
+    return () => {
+      typingLoop.current?.stop();
+      typingDots.forEach((value) => value.setValue(0));
+    };
+  }, [typingDots]);
 
   const syncMessagesFromRoom = useCallback((roomData) => {
     if (!roomData?.comments) return;
@@ -95,6 +123,15 @@ const DirectMessageScreen = ({ route, navigation }) => {
       );
     });
   }, []);
+
+  useEffect(() => {
+    if (typingIndicator?.isTyping) {
+      typingLoop.current?.start();
+    } else {
+      typingLoop.current?.stop();
+      typingDots.forEach((value) => value.setValue(0));
+    }
+  }, [typingIndicator, typingDots]);
 
   // 1) Load the room + initial messages
   useEffect(() => {
@@ -397,7 +434,30 @@ const DirectMessageScreen = ({ route, navigation }) => {
         />
         <View style={[styles.typingBubble, styles.bubbleTheirs]}>
           <View style={styles.typingContent}>
-            <ActivityIndicator size="small" color="#f59e0b" />
+            <View style={styles.typingDots}>
+              {typingDots.map((value, index) => (
+                <Animated.View
+                  key={index}
+                  style={[
+                    styles.typingDot,
+                    {
+                      opacity: value.interpolate({
+                        inputRange: [0, 1],
+                        outputRange: [0.3, 1],
+                      }),
+                      transform: [
+                        {
+                          translateY: value.interpolate({
+                            inputRange: [0, 1],
+                            outputRange: [0, -3],
+                          }),
+                        },
+                      ],
+                    },
+                  ]}
+                />
+              ))}
+            </View>
             <Text style={styles.typingText}>
               {typingIndicator.username || username} is typing...
             </Text>
@@ -603,6 +663,17 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 8,
+  },
+  typingDots: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
+  },
+  typingDot: {
+    width: 8,
+    height: 8,
+    borderRadius: 10,
+    backgroundColor: "#f59e0b",
   },
   typingText: {
     color: "#fef3c7",
