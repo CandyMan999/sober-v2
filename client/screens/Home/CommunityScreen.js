@@ -519,19 +519,22 @@ const CommunityScreen = () => {
   const handleToggleSavePost = async (post) => {
     if (!post?.id) return;
 
+    const syncProfileOverview = (savedState) =>
+      applySavedStateToContext({
+        state,
+        dispatch,
+        targetType: "POST",
+        item: post,
+        saved: savedState,
+      });
+
     const token = await getToken();
     if (!token) return;
 
     const alreadySaved = isItemSaved(state?.user?.savedPosts, post.id);
     const optimisticSaved = !alreadySaved;
     setSavingPostId(post.id);
-    applySavedStateToContext({
-      state,
-      dispatch,
-      targetType: "POST",
-      item: post,
-      saved: optimisticSaved,
-    });
+    syncProfileOverview(optimisticSaved);
 
     try {
       const data = await client.request(TOGGLE_SAVE_MUTATION, {
@@ -542,23 +545,11 @@ const CommunityScreen = () => {
 
       const confirmed = data?.toggleSave?.saved;
       if (typeof confirmed === "boolean" && confirmed !== optimisticSaved) {
-        applySavedStateToContext({
-          state,
-          dispatch,
-          targetType: "POST",
-          item: post,
-          saved: confirmed,
-        });
+        syncProfileOverview(confirmed);
       }
     } catch (err) {
       console.error("Error toggling post save", err);
-      applySavedStateToContext({
-        state,
-        dispatch,
-        targetType: "POST",
-        item: post,
-        saved: alreadySaved,
-      });
+      syncProfileOverview(alreadySaved);
     } finally {
       setSavingPostId(null);
       closeMoreSheet();

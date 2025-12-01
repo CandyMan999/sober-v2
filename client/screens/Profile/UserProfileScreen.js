@@ -420,10 +420,23 @@ const UserProfileScreen = ({ route, navigation }) => {
 
   const isPreviewSaved = useMemo(() => {
     if (!previewItem?.id) return false;
-    return previewType === "POST"
-      ? isItemSaved(savedPosts, previewItem.id)
-      : isItemSaved(savedQuotes, previewItem.id);
-  }, [previewItem?.id, previewType, savedPosts, savedQuotes]);
+
+    const savedList =
+      previewType === "POST"
+        ? state?.user?.savedPosts
+        : state?.user?.savedQuotes;
+
+    const fallbackList = previewType === "POST" ? savedPosts : savedQuotes;
+
+    return isItemSaved(savedList?.length ? savedList : fallbackList, previewItem.id);
+  }, [
+    previewItem?.id,
+    previewType,
+    savedPosts,
+    savedQuotes,
+    state?.user?.savedPosts,
+    state?.user?.savedQuotes,
+  ]);
 
   const handlePreviewCommentAdded = (newComment) => {
     if (!previewItem) return;
