@@ -1,4 +1,11 @@
-import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import {
   View,
   Text,
@@ -8,6 +15,8 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   useWindowDimensions,
+  Animated,
+  Easing,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Feather, Ionicons, MaterialCommunityIcons, AntDesign } from "@expo/vector-icons";
@@ -228,6 +237,34 @@ const UserProfileScreen = ({ route, navigation }) => {
       includeSeconds: false,
     });
   }, [sobrietyStartDate]);
+
+  const gradientSpin = useRef(new Animated.Value(0)).current;
+
+  const streakRotation = useMemo(
+    () =>
+      gradientSpin.interpolate({
+        inputRange: [0, 1],
+        outputRange: ["0deg", "360deg"],
+      }),
+    [gradientSpin]
+  );
+
+  useEffect(() => {
+    const spin = Animated.loop(
+      Animated.timing(gradientSpin, {
+        toValue: 1,
+        duration: 9000,
+        easing: Easing.linear,
+        useNativeDriver: true,
+      })
+    );
+
+    spin.start();
+    return () => {
+      spin.stop();
+      gradientSpin.setValue(0);
+    };
+  }, [gradientSpin]);
 
   const handleToggleFollow = useCallback(async () => {
     if (!profileData?.id || profileData?.id === state?.user?.id || followPending)
@@ -1023,27 +1060,28 @@ const UserProfileScreen = ({ route, navigation }) => {
         </View>
 
         {sobrietyDuration ? (
-          <LinearGradient
-            colors={["#38bdf8", "#a855f7", "#f59e0b"]}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }}
-            style={styles.sobrietyCard}
-          >
+          <View style={styles.sobrietyCard}>
+            <Animated.View
+              pointerEvents="none"
+              style={[styles.sobrietyBorder, { transform: [{ rotate: streakRotation }] }]}
+            >
+              <LinearGradient
+                colors={["#38bdf8", "#a855f7", "#f59e0b"]}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+                style={styles.sobrietyBorderFill}
+              />
+            </Animated.View>
             <View style={styles.sobrietyContent}>
-              <View style={styles.sobrietyEmblem}>
-                <MaterialCommunityIcons
-                  name="white-balance-sunny"
-                  size={18}
-                  color="#0b1222"
-                />
-              </View>
               <View style={styles.sobrietyTextBlock}>
                 <Text style={styles.sobrietyLabel}>Sober streak</Text>
                 <Text style={styles.sobrietyValue}>{sobrietyDuration} strong</Text>
               </View>
-              <View style={styles.sobrietyGlow} />
+              <View style={styles.sobrietyBadge}>
+                <Text style={styles.sobrietyBadgeText}>Keeping on</Text>
+              </View>
             </View>
-          </LinearGradient>
+          </View>
         ) : null}
 
         <View style={styles.whyWrapper}>
@@ -1208,57 +1246,58 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
   sobrietyCard: {
-    marginTop: 14,
-    borderRadius: 18,
-    padding: 1,
+    marginTop: 12,
+    borderRadius: 16,
     overflow: "hidden",
+    position: "relative",
+  },
+  sobrietyBorder: {
+    ...StyleSheet.absoluteFillObject,
+  },
+  sobrietyBorderFill: {
+    ...StyleSheet.absoluteFillObject,
   },
   sobrietyContent: {
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: "space-between",
     gap: 12,
-    backgroundColor: "rgba(5,8,22,0.9)",
-    paddingHorizontal: 16,
-    paddingVertical: 14,
-    borderRadius: 18,
-  },
-  sobrietyEmblem: {
-    height: 46,
-    width: 46,
+    backgroundColor: "rgba(5,8,22,0.94)",
+    paddingHorizontal: 14,
+    paddingVertical: 12,
     borderRadius: 14,
-    backgroundColor: "#fbbf24",
-    alignItems: "center",
-    justifyContent: "center",
-    shadowColor: "#f59e0b",
-    shadowOpacity: 0.35,
-    shadowOffset: { width: 0, height: 6 },
-    shadowRadius: 12,
-    elevation: 6,
+    margin: 2,
   },
   sobrietyTextBlock: {
     flex: 1,
-    gap: 2,
+    gap: 1,
   },
   sobrietyLabel: {
     color: "#e5e7eb",
-    fontSize: 12,
+    fontSize: 11,
     fontWeight: "800",
-    letterSpacing: 0.5,
+    letterSpacing: 0.6,
     textTransform: "uppercase",
   },
   sobrietyValue: {
     color: "#f8fafc",
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: "900",
-    letterSpacing: 0.2,
+    letterSpacing: 0.3,
   },
-  sobrietyGlow: {
-    width: 12,
-    height: 12,
+  sobrietyBadge: {
+    paddingHorizontal: 10,
+    paddingVertical: 6,
     borderRadius: 999,
-    backgroundColor: "rgba(255,255,255,0.3)",
     borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.5)",
+    borderColor: "rgba(255,255,255,0.24)",
+    backgroundColor: "rgba(255,255,255,0.06)",
+  },
+  sobrietyBadgeText: {
+    color: "#e0f2fe",
+    fontWeight: "700",
+    fontSize: 12,
+    letterSpacing: 0.4,
   },
   whyWrapper: {
     alignItems: "center",
