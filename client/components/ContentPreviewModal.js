@@ -180,6 +180,7 @@ const ContentPreviewModal = ({
       setFlagging(false);
       setDeleting(false);
       setSaving(false);
+      setLoadingComments(false);
     }
   }, [visible]);
 
@@ -223,6 +224,7 @@ const ContentPreviewModal = ({
 
     return () => {
       isActive = false;
+      setLoadingComments(false);
     };
   }, [client, isPost, loadingComments, localItem, visible]);
 
