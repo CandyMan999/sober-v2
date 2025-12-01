@@ -99,6 +99,7 @@ const UserProfileScreen = ({ route, navigation }) => {
   const [previewItem, setPreviewItem] = useState(null);
   const [previewType, setPreviewType] = useState("POST");
   const [previewMuted, setPreviewMuted] = useState(true);
+  const [previewFromSaved, setPreviewFromSaved] = useState(false);
   const currentUser = state?.user;
   const currentUserId = currentUser?.id;
   const { openSocial } = useOpenSocial();
@@ -387,7 +388,7 @@ const UserProfileScreen = ({ route, navigation }) => {
     });
   }, [isBuddy, navigation, profileData]);
 
-  const openPreview = (item, type = "POST") => {
+  const openPreview = (item, type = "POST", fromSaved = false) => {
     const authorFallback = profileData
       ? {
           id: profileData.id,
@@ -408,10 +409,14 @@ const UserProfileScreen = ({ route, navigation }) => {
 
     setPreviewItem(hydratedItem);
     setPreviewType(type);
+    setPreviewFromSaved(fromSaved);
     setPreviewVisible(true);
   };
 
-  const closePreview = () => setPreviewVisible(false);
+  const closePreview = () => {
+    setPreviewVisible(false);
+    setPreviewFromSaved(false);
+  };
 
   const isPreviewSaved = useMemo(() => {
     if (!previewItem?.id) return false;
@@ -473,6 +478,20 @@ const UserProfileScreen = ({ route, navigation }) => {
   const applyQuotePatch = (quoteId, updater) => {
     setQuotes((prev) => prev.map((quote) => (quote.id === quoteId ? updater(quote) : quote)));
     setPreviewItem((prev) => (prev && prev.id === quoteId ? updater(prev) : prev));
+  };
+
+  const syncProfileOverview = (nextSavedPosts, nextSavedQuotes) => {
+    const currentOverview = state?.profileOverview || {};
+    const payload = {
+      ...currentOverview,
+      user: currentOverview.user || state?.user,
+      posts: currentOverview.posts || [],
+      quotes: currentOverview.quotes || [],
+      savedPosts: nextSavedPosts,
+      savedQuotes: nextSavedQuotes,
+    };
+
+    dispatch({ type: "SET_PROFILE_OVERVIEW", payload });
   };
 
   const handleDeleteContent = (contentId, contentType) => {
@@ -628,17 +647,30 @@ const UserProfileScreen = ({ route, navigation }) => {
     const optimisticSaved = !alreadySaved;
 
     const applyLocalSave = (nextSaved) => {
+      const baseSavedPosts = isViewingSelf
+        ? savedPosts
+        : state?.user?.savedPosts || [];
+      const baseSavedQuotes = isViewingSelf
+        ? savedQuotes
+        : state?.user?.savedQuotes || [];
+
+      const nextSavedPosts = isPost
+        ? nextSaved
+          ? mergeSavedList(baseSavedPosts, content)
+          : removeSavedItem(baseSavedPosts, content.id)
+        : baseSavedPosts;
+      const nextSavedQuotes = !isPost
+        ? nextSaved
+          ? mergeSavedList(baseSavedQuotes, content)
+          : removeSavedItem(baseSavedQuotes, content.id)
+        : baseSavedQuotes;
+
       if (isViewingSelf) {
-        if (isPost) {
-          setSavedPosts((prev) =>
-            nextSaved ? mergeSavedList(prev, content) : removeSavedItem(prev, content.id)
-          );
-        } else {
-          setSavedQuotes((prev) =>
-            nextSaved ? mergeSavedList(prev, content) : removeSavedItem(prev, content.id)
-          );
-        }
+        setSavedPosts(nextSavedPosts);
+        setSavedQuotes(nextSavedQuotes);
       }
+
+      syncProfileOverview(nextSavedPosts, nextSavedQuotes);
 
       applySavedStateToContext({
         state,
@@ -744,7 +776,7 @@ const UserProfileScreen = ({ route, navigation }) => {
     };
   }, [initialUser, userId]);
 
-  const renderPostTile = ({ item, saved = false }) => {
+  const renderPostTile = ({ item, saved = false, fromSaved = false }) => {
     const isVideo = item.mediaType === "VIDEO";
     const thumbnail = isVideo
       ? item.video?.thumbnailUrl || item.previewUrl || item.imageUrl
@@ -759,7 +791,7 @@ const UserProfileScreen = ({ route, navigation }) => {
         style={styles.tileWrapper}
         key={key}
         activeOpacity={0.85}
-        onPress={() => openPreview(item, "POST")}
+        onPress={() => openPreview(item, "POST", fromSaved)}
       >
         <View style={styles.tile}>
           {imageSource ? (
@@ -794,7 +826,7 @@ const UserProfileScreen = ({ route, navigation }) => {
     );
   };
 
-  const renderQuoteTile = ({ item, saved = false }) => {
+  const renderQuoteTile = ({ item, saved = false, fromSaved = false }) => {
     const status = item.isDenied
       ? { label: "Denied", color: "#ef4444", icon: "close-circle" }
       : item.isApproved
@@ -807,7 +839,7 @@ const UserProfileScreen = ({ route, navigation }) => {
         style={styles.tileWrapper}
         key={key}
         activeOpacity={0.85}
-        onPress={() => openPreview(item, "QUOTE")}
+        onPress={() => openPreview(item, "QUOTE", fromSaved)}
       >
         <View style={[styles.tile, styles.quoteTile]}>
           <View style={styles.quoteHeader}>
@@ -851,10 +883,10 @@ const UserProfileScreen = ({ route, navigation }) => {
 
   const renderSavedTile = ({ item }) => {
     if (item.__savedType === "QUOTE") {
-      return renderQuoteTile({ item, saved: true });
+      return renderQuoteTile({ item, saved: true, fromSaved: true });
     }
 
-    return renderPostTile({ item, saved: true });
+    return renderPostTile({ item, saved: true, fromSaved: true });
   };
 
   const renderDrunkContent = () => {
@@ -1196,6 +1228,7 @@ const UserProfileScreen = ({ route, navigation }) => {
         onFlagForReview={handleFlagForReview}
         onDelete={handleDeleteContent}
         isSaved={isPreviewSaved}
+        disableDelete={previewFromSaved}
       />
     </>
   );

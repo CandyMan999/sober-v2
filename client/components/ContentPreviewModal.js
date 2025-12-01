@@ -44,6 +44,7 @@ const ContentPreviewModal = ({
   onDelete,
   onToggleSave,
   isSaved = false,
+  disableDelete = false,
 }) => {
   const [mounted, setMounted] = useState(visible);
   const [localItem, setLocalItem] = useState(item);
@@ -292,17 +293,17 @@ const ContentPreviewModal = ({
     : null;
 
   const canDelete = useMemo(() => {
-    if (!viewerId || !content) return false;
+    if (disableDelete || !viewerId || !item) return false;
 
     const ownerIds = [
-      content.author?.id,
-      content.user?.id,
-      content.createdBy?.id,
-      content.postAuthor?.id,
+      item.author?.id,
+      item.user?.id,
+      item.createdBy?.id,
+      item.postAuthor?.id,
     ].filter(Boolean);
 
     return ownerIds.some((id) => id === viewerId);
-  }, [content, viewerId]);
+  }, [disableDelete, item, viewerId]);
 
   const isLiked = useMemo(() => {
     if (!content || !viewerId) return false;
