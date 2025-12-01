@@ -800,7 +800,7 @@ const ProfileScreen = ({ navigation }) => {
         <Animated.View
           style={[StyleSheet.absoluteFill, { opacity: backdropOpacity }]}
         >
-          <BlurView intensity={50} tint="dark" style={StyleSheet.absoluteFill} />
+          <BlurView intensity={80} tint="dark" style={StyleSheet.absoluteFill} />
         </Animated.View>
 
         <Animated.View
