@@ -17,6 +17,7 @@ import {
   TouchableOpacity,
   Pressable,
   Animated,
+  Dimensions,
 } from "react-native";
 import { useIsFocused } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
@@ -32,6 +33,9 @@ import { getToken } from "../../utils/helpers";
 
 // 👇 module-level flag: survives navigation, resets when app reloads
 let hasShownQuotesAlertThisSession = false;
+
+const { height: WINDOW_HEIGHT } = Dimensions.get("window");
+const SHEET_HEIGHT = Math.round(WINDOW_HEIGHT * 0.26);
 
 const QuotesScreen = () => {
   const client = useClient();
@@ -200,6 +204,11 @@ const QuotesScreen = () => {
     });
   };
 
+  const translateY = saveAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: [SHEET_HEIGHT + 60, 0],
+  });
+
   const handleToggleSaveQuote = async () => {
     if (!selectedQuote?.id) return;
 
@@ -257,24 +266,22 @@ const QuotesScreen = () => {
       visible={showSaveSheet}
       onRequestClose={closeSaveSheet}
     >
-      <Pressable style={styles.sheetBackdrop} onPress={closeSaveSheet} />
-      <View style={styles.sheetContainer}>
+      <View style={styles.modalContainer}>
+        <Pressable style={styles.sheetBackdrop} onPress={closeSaveSheet} />
         <Animated.View
-          style={[
-            styles.sheet,
-            {
-              transform: [
-                {
-                  translateY: saveAnim.interpolate({
-                    inputRange: [0, 1],
-                    outputRange: [140, 0],
-                  }),
-                },
-              ],
-            },
-          ]}
+          style={[styles.bottomSheet, { transform: [{ translateY }] }]}
         >
-          <Text style={styles.sheetTitle}>Quote options</Text>
+          <View style={styles.sheetHeader}>
+            <Text style={styles.sheetTitle}>More options</Text>
+            <TouchableOpacity
+              onPress={closeSaveSheet}
+              accessibilityRole="button"
+              accessibilityLabel="Close options"
+              style={styles.sheetCloseButton}
+            >
+              <Ionicons name="close-circle" size={32} color="#e5e7eb" />
+            </TouchableOpacity>
+          </View>
 
           <TouchableOpacity
             style={styles.sheetAction}
@@ -445,28 +452,43 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
     backgroundColor: "rgba(0,0,0,0.45)",
   },
-  sheetContainer: {
+  modalContainer: {
     flex: 1,
+    ...StyleSheet.absoluteFillObject,
     justifyContent: "flex-end",
   },
-  sheet: {
-    marginHorizontal: 16,
-    marginBottom: 18,
-    paddingHorizontal: 18,
-    paddingVertical: 18,
+  bottomSheet: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    bottom: 0,
+    height: SHEET_HEIGHT,
+    paddingHorizontal: 20,
+    paddingTop: 20,
+    paddingBottom: 28,
     backgroundColor: "#0f172a",
-    borderRadius: 16,
+    borderTopLeftRadius: 16,
+    borderTopRightRadius: 16,
     borderWidth: 1,
     borderColor: "rgba(245,158,11,0.35)",
+  },
+  sheetHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginBottom: 8,
   },
   sheetTitle: {
     color: "#e5e7eb",
     fontSize: 16,
     fontWeight: "700",
-    marginBottom: 14,
+  },
+  sheetCloseButton: {
+    padding: 2,
+    marginLeft: 8,
   },
   sheetAction: {
-    paddingVertical: 12,
+    paddingVertical: 14,
     paddingHorizontal: 12,
     flexDirection: "row",
     alignItems: "center",
@@ -487,8 +509,12 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     marginLeft: 12,
   },
+  sheetSpinner: {
+    marginLeft: 8,
+  },
   sheetCancel: {
-    paddingVertical: 10,
+    marginTop: 4,
+    paddingVertical: 12,
   },
   sheetCancelText: {
     color: "#93c5fd",

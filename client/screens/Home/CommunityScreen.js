@@ -822,7 +822,17 @@ const CommunityScreen = () => {
             <Animated.View
               style={[styles.bottomSheet, { transform: [{ translateY }] }]}
             >
-              <Text style={styles.sheetTitle}>Post options</Text>
+              <View style={styles.sheetHeader}>
+                <Text style={styles.sheetTitle}>Post options</Text>
+                <TouchableOpacity
+                  onPress={closeMoreSheet}
+                  accessibilityRole="button"
+                  accessibilityLabel="Close options"
+                  style={styles.sheetCloseButton}
+                >
+                  <Ionicons name="close-circle" size={32} color="#e5e7eb" />
+                </TouchableOpacity>
+              </View>
               <TouchableOpacity
                 style={styles.sheetAction}
                 onPress={() => handleToggleSavePost(selectedPost)}
@@ -1101,6 +1111,16 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "700",
     marginBottom: 16,
+  },
+  sheetHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginBottom: 8,
+  },
+  sheetCloseButton: {
+    padding: 2,
+    marginLeft: 8,
   },
   sheetAction: {
     paddingVertical: 14,

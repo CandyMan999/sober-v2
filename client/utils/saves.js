@@ -38,18 +38,18 @@ export const applySavedStateToContext = ({
   const targetId = extractId(item);
   if (!targetId) return;
 
-  const overview = state?.profileOverview;
+  const overview = state?.profileOverview || {};
   const listKey = targetType === "POST" ? "savedPosts" : "savedQuotes";
 
-  if (overview) {
-    const nextOverview = { ...overview };
-    const existing = overview[listKey] || [];
-    nextOverview[listKey] = saved
-      ? mergeSavedList(existing, item)
-      : removeSavedItem(existing, targetId);
+  const existingOverviewList =
+    overview[listKey] || state?.user?.[listKey] || [];
 
-    dispatch({ type: "SET_PROFILE_OVERVIEW", payload: nextOverview });
-  }
+  const nextOverview = { ...overview };
+  nextOverview[listKey] = saved
+    ? mergeSavedList(existingOverviewList, item)
+    : removeSavedItem(existingOverviewList, targetId);
+
+  dispatch({ type: "SET_PROFILE_OVERVIEW", payload: nextOverview });
 
   const user = state?.user;
   if (user) {
