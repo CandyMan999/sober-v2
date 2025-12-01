@@ -22,6 +22,7 @@ const Avatar = ({
   onPress,
   style,
   disableNavigation = false,
+  contentRef,
 }) => {
   const navigation = useNavigation();
   const { state } = useContext(Context);
@@ -58,6 +59,7 @@ const Avatar = ({
       style={[styles.avatarHalo, { width: haloSize, height: haloSize, borderRadius: haloSize / 2, padding: 2 }]}
     >
       <View
+        ref={contentRef}
         style={[
           styles.avatarInner,
           {
@@ -91,13 +93,15 @@ const Avatar = ({
     </LinearGradient>
   );
 
+  const shouldDisable = !onPress && (disableNavigation || isCurrentUser);
+
   if (onPress || (userId && !isCurrentUser && !disableNavigation)) {
     return (
       <TouchableOpacity
         activeOpacity={0.85}
         onPress={handlePress}
         style={style}
-        disabled={disableNavigation || isCurrentUser}
+        disabled={shouldDisable}
       >
         {content}
       </TouchableOpacity>
