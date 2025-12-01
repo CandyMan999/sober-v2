@@ -155,7 +155,17 @@ module.exports = {
         })
         .map((post) => {
           const viewed = viewer?._id
-            ? post.video?.viewers?.some((id) => id.equals(viewer._id)) || false
+            ? post.viewers?.some((id) =>
+                typeof id?.equals === "function"
+                  ? id.equals(viewer._id)
+                  : String(id) === String(viewer._id)
+              ) ||
+              post.video?.viewers?.some((id) =>
+                typeof id?.equals === "function"
+                  ? id.equals(viewer._id)
+                  : String(id) === String(viewer._id)
+              ) ||
+              false
             : false;
           return { post, viewed };
         });

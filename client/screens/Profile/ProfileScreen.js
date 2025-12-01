@@ -52,7 +52,6 @@ const ProfileScreen = ({ navigation }) => {
   const [previewMuted, setPreviewMuted] = useState(true);
   const currentUser = state?.user;
   const currentUserId = currentUser?.id;
-
   const conversations = useMemo(() => {
     const buddyList = Array.isArray(buddies) ? buddies : [];
     const prompts = [
@@ -870,6 +869,7 @@ const ProfileScreen = ({ navigation }) => {
             </Text>
           </TouchableOpacity>
         </View>
+
       </View>
 
       {renderTabBar()}

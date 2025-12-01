@@ -1,6 +1,7 @@
 // components/FeedLayout.js
 import React, { useState } from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
 import Avatar from "./Avatar";
 import FloatingActionIcons from "./FloatingActionIcons";
@@ -179,6 +180,13 @@ const FeedLayout = ({
         )}
       </View>
 
+      <LinearGradient
+        pointerEvents="none"
+        colors={["transparent", "rgba(0,0,0,0.65)"]}
+        locations={[0, 1]}
+        style={styles.bottomGradient}
+      />
+
       {/* Bottom-left: avatar + caption + meta */}
       <View style={styles.captionArea}>
         <View style={styles.captionCard}>
@@ -274,6 +282,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     paddingHorizontal: 24,
+  },
+  bottomGradient: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    bottom: 0,
+    height: "15%",
   },
   title: {
     color: "#fff",

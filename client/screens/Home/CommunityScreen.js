@@ -340,13 +340,11 @@ const CommunityScreen = () => {
     const currentPost = posts[activeIndex];
     if (!currentPost) return;
 
-    const type = currentPost.mediaType || "VIDEO";
-    const isVideoPost = type === "VIDEO";
     const isUnderReview = currentPost.review && !reviewBypass[currentPost.id];
 
-    if (isVideoPost && !isUnderReview) {
-      recordViewForPost(currentPost);
-    }
+    if (isUnderReview) return;
+
+    recordViewForPost(currentPost);
   }, [activeIndex, posts, recordViewForPost, reviewBypass]);
 
   useEffect(() => {

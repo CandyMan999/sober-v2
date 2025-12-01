@@ -1053,6 +1053,7 @@ const UserProfileScreen = ({ route, navigation }) => {
             ”
           </Text>
         </View>
+
       </View>
 
       {renderTabBar()}

@@ -23,24 +23,26 @@ const recordPostViewResolver = async (root, args) => {
     throw new Error("Post not found");
   }
 
-  if (post.mediaType !== "VIDEO" || !post.video) {
-    return post;
+  // Record the view on the video (if present)
+  if (post.mediaType === "VIDEO" && post.video?._id) {
+    await Video.updateOne(
+      { _id: post.video._id, viewers: { $ne: viewer._id } },
+      { $addToSet: { viewers: viewer._id }, $inc: { viewsCount: 1 } }
+    );
+
+    const updatedVideo = await Video.findById(post.video._id);
+    post.video = updatedVideo;
   }
 
-  const videoId = post.video._id;
-  if (!videoId) {
-    return post;
-  }
-
-  await Video.updateOne(
-    { _id: videoId, viewers: { $ne: viewer._id } },
+  // Always record the view on the post itself (covers non-video posts)
+  await Post.updateOne(
+    { _id: postId, viewers: { $ne: viewer._id } },
     { $addToSet: { viewers: viewer._id }, $inc: { viewsCount: 1 } }
   );
 
-  const updatedVideo = await Video.findById(videoId);
-  post.video = updatedVideo;
+  const updatedPost = await Post.findById(postId).populate("video");
 
-  return post;
+  return updatedPost;
 };
 
 module.exports = { recordPostViewResolver };
