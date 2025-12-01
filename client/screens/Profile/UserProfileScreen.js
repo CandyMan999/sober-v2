@@ -235,7 +235,7 @@ const UserProfileScreen = ({ route, navigation }) => {
     });
   }, [sobrietyStartDate]);
 
-  const streakColors = useMemo(() => ["#4c6fff", "#0ea5e9"], []);
+  const streakColors = useMemo(() => ["#22d3ee", "#0ea5e9"], []);
 
   const handleToggleFollow = useCallback(async () => {
     if (!profileData?.id || profileData?.id === state?.user?.id || followPending)
@@ -1032,20 +1032,19 @@ const UserProfileScreen = ({ route, navigation }) => {
 
         {sobrietyDuration ? (
           <View style={styles.sobrietyCard}>
-            <View pointerEvents="none" style={styles.sobrietyBorder}>
-              <LinearGradient
-                colors={streakColors}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 1 }}
-                style={styles.sobrietyBorderFill}
-              />
-            </View>
-            <View style={styles.sobrietyContent}>
-              <View style={styles.sobrietyTextBlock}>
-                <Text style={styles.sobrietyLabel}>Sober streak</Text>
-                <Text style={styles.sobrietyValue}>{sobrietyDuration} strong</Text>
+            <LinearGradient
+              colors={streakColors}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={styles.sobrietyBorder}
+            >
+              <View style={styles.sobrietyContent}>
+                <View style={styles.sobrietyTextBlock}>
+                  <Text style={styles.sobrietyLabel}>Sober streak</Text>
+                  <Text style={styles.sobrietyValue}>{sobrietyDuration} strong</Text>
+                </View>
               </View>
-            </View>
+            </LinearGradient>
           </View>
         ) : null}
 
@@ -1212,16 +1211,15 @@ const styles = StyleSheet.create({
   },
   sobrietyCard: {
     marginTop: 10,
-    borderRadius: 13,
-    overflow: "hidden",
-    position: "relative",
     alignSelf: "center",
+    alignItems: "center",
+    flexShrink: 1,
   },
   sobrietyBorder: {
-    ...StyleSheet.absoluteFillObject,
-  },
-  sobrietyBorderFill: {
-    ...StyleSheet.absoluteFillObject,
+    borderRadius: 13,
+    padding: 2,
+    alignItems: "center",
+    justifyContent: "center",
   },
   sobrietyContent: {
     flexDirection: "column",
@@ -1230,9 +1228,8 @@ const styles = StyleSheet.create({
     gap: 6,
     backgroundColor: "rgba(5,8,22,0.94)",
     paddingHorizontal: 11,
-    paddingVertical: 10,
-    borderRadius: 12,
-    margin: 2,
+    paddingVertical: 9,
+    borderRadius: 11,
   },
   sobrietyTextBlock: {
     flex: 1,
