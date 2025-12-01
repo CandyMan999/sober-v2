@@ -69,7 +69,7 @@ module.exports = {
       isMilestone,
     } = args || {};
 
-    const limit = Math.min(limitArg || 10, 50);
+    const limit = Math.min(limitArg || 20, 50);
     const cursor = cursorArg ? new Date(cursorArg) : null;
 
     let refLat = lat ?? null;
@@ -94,40 +94,50 @@ module.exports = {
       ];
     }
 
-    const maxDistanceMiles = 50;
     const earthRadiusMeters = 6_378_137;
-    const maxDistanceMeters = maxDistanceMiles * 1609.34;
-    const maxDistanceRadians = maxDistanceMeters / earthRadiusMeters;
+    const defaultDistanceMiles = 50;
+    const circumferenceRadians = Math.PI;
+    const milesToRadians = (miles) => (miles * 1609.34) / earthRadiusMeters;
 
-    const geoFilter =
+    const computeGeoFilter = (radiusRadians) =>
       sortByClosest && refLat != null && refLong != null
         ? {
             location: {
               $geoWithin: {
-                $centerSphere: [[refLong, refLat], maxDistanceRadians],
+                $centerSphere: [[refLong, refLat], radiusRadians],
               },
             },
           }
         : {};
 
-    const query = { ...baseQuery, ...geoFilter };
+    const isNearbyQuery = sortByClosest && refLat != null && refLong != null;
+    let searchRadius = milesToRadians(defaultDistanceMiles);
 
     try {
-      const posts = await Post.find(query)
-        .sort({ createdAt: -1 })
-        .limit(limit + 1)
-        .populate("author")
-        .populate({
-          path: "video",
-          match: { flagged: false },
-          select: "url flagged viewsCount viewers thumbnailUrl",
-        })
-        .populate("closestCity")
-        .populate({
-          path: "comments",
-          match: { $or: [{ replyTo: null }, { replyTo: { $exists: false } }] },
-          populate: buildRepliesPopulate(2),
-        });
+      const runQueryWithRadius = async (radiusRadians) =>
+        Post.find({ ...baseQuery, ...computeGeoFilter(radiusRadians) })
+          .sort({ createdAt: -1 })
+          .limit(limit + 1)
+          .populate("author")
+          .populate({
+            path: "video",
+            match: { flagged: false },
+            select: "url flagged viewsCount viewers thumbnailUrl",
+          })
+          .populate("closestCity")
+          .populate({
+            path: "comments",
+            match: { $or: [{ replyTo: null }, { replyTo: { $exists: false } }] },
+            populate: buildRepliesPopulate(2),
+          });
+
+      let posts = await runQueryWithRadius(searchRadius);
+
+      while (isNearbyQuery && posts.length < limit + 1 && searchRadius < circumferenceRadians) {
+        const nextRadius = Math.min(searchRadius * 2, circumferenceRadians);
+        searchRadius = nextRadius;
+        posts = await runQueryWithRadius(searchRadius);
+      }
 
       const sanitized = posts
         .map((post) => {
@@ -191,8 +201,10 @@ module.exports = {
 
       const orderedPosts = postsWithDistance.map((entry) => entry.post);
 
-      const hasMore = orderedPosts.length > limit;
-      const trimmed = hasMore ? orderedPosts.slice(0, limit) : orderedPosts;
+      const hasMoreFromCount = orderedPosts.length > limit;
+      const hasMoreFromRadius = isNearbyQuery && searchRadius < circumferenceRadians;
+      const hasMore = hasMoreFromCount || hasMoreFromRadius;
+      const trimmed = hasMoreFromCount ? orderedPosts.slice(0, limit) : orderedPosts;
 
       const nextCursor = hasMore
         ? trimmed[trimmed.length - 1].createdAt.toISOString()

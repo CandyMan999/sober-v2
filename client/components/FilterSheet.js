@@ -16,9 +16,9 @@ const SHEET_HEIGHT = 320;
 
 const FILTER_OPTIONS = [
   { label: "Nearby", icon: "location-outline", badge: "Live" },
-  { label: "Friends", icon: "people-outline" },
   { label: "Milestones", icon: "ribbon-outline" },
-  { label: "Images", icon: "image-outline" },
+  { label: "Buddies", icon: "people-outline" },
+  { label: "Following", icon: "person-add-outline" },
 ];
 
 const FilterSheet = ({ visible, onClose, activeFilter, onFilterChange }) => {
@@ -105,7 +105,6 @@ const FilterSheet = ({ visible, onClose, activeFilter, onFilterChange }) => {
   }, [flashAnim, localFilter]);
 
   const handleFilterPress = (option) => {
-    if (option.label === "Friends") return; // not yet supported
     const nextValue = localFilter === option.label ? null : option.label;
     setLocalFilter(nextValue);
     onFilterChange?.(nextValue);

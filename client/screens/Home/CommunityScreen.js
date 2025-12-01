@@ -39,7 +39,7 @@ const TUTORIAL_SEEN_KEY = "community_tutorial_seen";
 const tutorialImage = require("../../assets/swipe1.png");
 
 const { height: WINDOW_HEIGHT } = Dimensions.get("window");
-const PAGE_SIZE = 5;
+const PAGE_SIZE = 20;
 const SHEET_HEIGHT = Math.round(WINDOW_HEIGHT * 0.33);
 
 const dedupeById = (list = []) => {
@@ -156,6 +156,8 @@ const CommunityScreen = () => {
             excludeViewed: true,
             sortByClosest: true,
           };
+        case "Buddies":
+        case "Following":
         case "All":
         default:
           return {
@@ -164,6 +166,20 @@ const CommunityScreen = () => {
             excludeViewed: true,
             sortByClosest: false,
           };
+      }
+    },
+    [activeFilter]
+  );
+
+  const filterPostsForView = useCallback(
+    (postsToFilter = [], filterLabel = activeFilter) => {
+      switch (filterLabel) {
+        case "Buddies":
+          return postsToFilter.filter((post) => post?.author?.isBuddyWithViewer);
+        case "Following":
+          return postsToFilter.filter((post) => post?.author?.isFollowedByViewer);
+        default:
+          return postsToFilter;
       }
     },
     [activeFilter]
@@ -214,10 +230,12 @@ const CommunityScreen = () => {
           return;
         }
 
+        const filteredPosts = filterPostsForView(payload.posts || [], filterOverride);
+
         setPosts((prev) =>
           append
-            ? dedupeById([...prev, ...(payload.posts || [])])
-            : dedupeById(payload.posts || [])
+            ? dedupeById([...prev, ...filteredPosts])
+            : dedupeById(filteredPosts)
         );
         const nextCursorValue = payload.cursor || null;
         setCursor(nextCursorValue);
@@ -509,7 +527,6 @@ const CommunityScreen = () => {
 
   const handleFilterChange = useCallback(
     (nextFilter) => {
-      if (nextFilter === "Friends") return;
       setActiveFilter(nextFilter || null);
       closeFilterSheet();
     },
