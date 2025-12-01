@@ -398,7 +398,15 @@ const UserProfileScreen = ({ route, navigation }) => {
   const handleAvatarLayout = () => {
     if (avatarRef.current?.measureInWindow) {
       avatarRef.current.measureInWindow((x, y, width, height) => {
-        setAvatarLayout({ x, y, width, height });
+        const innerOffset = Math.max(0, (width - AVATAR_SIZE) / 2);
+        const innerYOffset = Math.max(0, (height - AVATAR_SIZE) / 2);
+
+        setAvatarLayout({
+          x: x + innerOffset,
+          y: y + innerYOffset,
+          width: AVATAR_SIZE,
+          height: AVATAR_SIZE,
+        });
       });
     }
   };
