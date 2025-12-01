@@ -235,7 +235,7 @@ const UserProfileScreen = ({ route, navigation }) => {
     });
   }, [sobrietyStartDate]);
 
-  const streakColors = useMemo(() => ["#22d3ee", "#0ea5e9"], []);
+  const streakColors = useMemo(() => ["#fcd34d", "#f97316"], []);
 
   const handleToggleFollow = useCallback(async () => {
     if (!profileData?.id || profileData?.id === state?.user?.id || followPending)
@@ -1030,6 +1030,15 @@ const UserProfileScreen = ({ route, navigation }) => {
           </TouchableOpacity>
         </View>
 
+        <View style={styles.whyWrapper}>
+          <Text style={styles.whyQuoted}>
+            “
+            {profileData?.whyStatement ||
+              "This user hasn't shared their why yet."}
+            ”
+          </Text>
+        </View>
+
         {sobrietyDuration ? (
           <View style={styles.sobrietyCard}>
             <LinearGradient
@@ -1039,23 +1048,22 @@ const UserProfileScreen = ({ route, navigation }) => {
               style={styles.sobrietyBorder}
             >
               <View style={styles.sobrietyContent}>
-                <View style={styles.sobrietyTextBlock}>
-                  <Text style={styles.sobrietyLabel}>Sober streak</Text>
-                  <Text style={styles.sobrietyValue}>{sobrietyDuration} strong</Text>
+                <View style={styles.sobrietyRow}>
+                  <MaterialCommunityIcons
+                    name="progress-clock"
+                    size={16}
+                    color="#fbbf24"
+                    style={styles.sobrietyIcon}
+                  />
+                  <View style={styles.sobrietyTextBlock}>
+                    <Text style={styles.sobrietyLabel}>Sober streak</Text>
+                    <Text style={styles.sobrietyValue}>{sobrietyDuration} strong</Text>
+                  </View>
                 </View>
               </View>
             </LinearGradient>
           </View>
         ) : null}
-
-        <View style={styles.whyWrapper}>
-          <Text style={styles.whyQuoted}>
-            “
-            {profileData?.whyStatement ||
-              "This user hasn't shared their why yet."}
-            ”
-          </Text>
-        </View>
       </View>
 
       {renderTabBar()}
@@ -1234,6 +1242,14 @@ const styles = StyleSheet.create({
     borderRadius: 11,
     alignSelf: "center",
     flexShrink: 1,
+  },
+  sobrietyRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+  },
+  sobrietyIcon: {
+    marginTop: 1,
   },
   sobrietyTextBlock: {
     gap: 2,
