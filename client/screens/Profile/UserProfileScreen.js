@@ -3,7 +3,6 @@ import React, {
   useContext,
   useEffect,
   useMemo,
-  useRef,
   useState,
 } from "react";
 import {
@@ -15,8 +14,6 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   useWindowDimensions,
-  Animated,
-  Easing,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Feather, Ionicons, MaterialCommunityIcons, AntDesign } from "@expo/vector-icons";
@@ -238,54 +235,7 @@ const UserProfileScreen = ({ route, navigation }) => {
     });
   }, [sobrietyStartDate]);
 
-  const streakPalettes = useMemo(
-    () => [
-      ["#38bdf8", "#a855f7", "#f59e0b"],
-      ["#22d3ee", "#6366f1", "#f472b6"],
-      ["#34d399", "#22d3ee", "#f59e0b"],
-      ["#f59e0b", "#f97316", "#60a5fa"],
-    ],
-    []
-  );
-
-  const [streakColors, setStreakColors] = useState(streakPalettes[0]);
-  const [nextStreakColors, setNextStreakColors] = useState(
-    streakPalettes[1 % streakPalettes.length]
-  );
-  const streakFade = useRef(new Animated.Value(0)).current;
-  const paletteIndexRef = useRef(1 % streakPalettes.length);
-
-  useEffect(() => {
-    let mounted = true;
-
-    const cycleColors = () => {
-      if (!mounted) return;
-
-      streakFade.setValue(0);
-      Animated.timing(streakFade, {
-        toValue: 1,
-        duration: 3200,
-        easing: Easing.inOut(Easing.linear),
-        useNativeDriver: true,
-      }).start(({ finished }) => {
-        if (!finished || !mounted) return;
-
-        const nextIndex = (paletteIndexRef.current + 1) % streakPalettes.length;
-        paletteIndexRef.current = nextIndex;
-        const incoming = streakPalettes[nextIndex];
-
-        setStreakColors(nextStreakColors);
-        setNextStreakColors(incoming);
-        cycleColors();
-      });
-    };
-
-    cycleColors();
-    return () => {
-      mounted = false;
-      streakFade.stopAnimation();
-    };
-  }, [nextStreakColors, streakFade, streakPalettes]);
+  const streakColors = useMemo(() => ["#4c6fff", "#0ea5e9"], []);
 
   const handleToggleFollow = useCallback(async () => {
     if (!profileData?.id || profileData?.id === state?.user?.id || followPending)
@@ -1089,16 +1039,6 @@ const UserProfileScreen = ({ route, navigation }) => {
                 end={{ x: 1, y: 1 }}
                 style={styles.sobrietyBorderFill}
               />
-              <Animated.View
-                style={[styles.sobrietyBorderFill, { opacity: streakFade }]}
-              >
-                <LinearGradient
-                  colors={nextStreakColors}
-                  start={{ x: 0, y: 0 }}
-                  end={{ x: 1, y: 1 }}
-                  style={styles.sobrietyBorderFill}
-                />
-              </Animated.View>
             </View>
             <View style={styles.sobrietyContent}>
               <View style={styles.sobrietyTextBlock}>
@@ -1275,6 +1215,7 @@ const styles = StyleSheet.create({
     borderRadius: 13,
     overflow: "hidden",
     position: "relative",
+    alignSelf: "center",
   },
   sobrietyBorder: {
     ...StyleSheet.absoluteFillObject,
