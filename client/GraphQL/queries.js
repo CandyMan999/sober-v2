@@ -78,7 +78,6 @@ export const PROFILE_OVERVIEW_QUERY = `
         username
         profilePicUrl
         drunkPicUrl
-        sobrietyStartAt
         profilePic {
           id
           url
@@ -210,7 +209,6 @@ export const USER_PROFILE_QUERY = `
         username
         profilePicUrl
         drunkPicUrl
-        sobrietyStartAt
         whyStatement
         followersCount
         followingCount

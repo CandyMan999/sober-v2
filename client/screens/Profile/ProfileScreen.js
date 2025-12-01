@@ -52,25 +52,6 @@ const ProfileScreen = ({ navigation }) => {
   const [previewMuted, setPreviewMuted] = useState(true);
   const currentUser = state?.user;
   const currentUserId = currentUser?.id;
-  const sobrietyStartAt =
-    profileData?.sobrietyStartAt || currentUser?.sobrietyStartAt;
-
-  const sobrietyLabel = useMemo(() => {
-    if (!sobrietyStartAt) return null;
-
-    const start = new Date(sobrietyStartAt);
-    if (Number.isNaN(start.getTime())) return null;
-
-    const now = new Date();
-    const diffInDays = Math.max(
-      0,
-      Math.floor((now.getTime() - start.getTime()) / (1000 * 60 * 60 * 24))
-    );
-
-    const dayLabel = diffInDays === 1 ? "1 day" : `${diffInDays} days`;
-    return `${dayLabel} sober`;
-  }, [sobrietyStartAt]);
-
   const conversations = useMemo(() => {
     const buddyList = Array.isArray(buddies) ? buddies : [];
     const prompts = [
@@ -889,22 +870,6 @@ const ProfileScreen = ({ navigation }) => {
           </TouchableOpacity>
         </View>
 
-        {sobrietyLabel ? (
-          <LinearGradient
-            colors={["#fcd34d", "#f97316"]}
-            style={styles.sobrietyChipHalo}
-          >
-            <View style={styles.sobrietyChip}>
-              <MaterialCommunityIcons
-                name="progress-clock"
-                size={16}
-                color="#fbbf24"
-                style={styles.sobrietyChipIcon}
-              />
-              <Text style={styles.sobrietyChipText}>{sobrietyLabel}</Text>
-            </View>
-          </LinearGradient>
-        ) : null}
       </View>
 
       {renderTabBar()}
@@ -1075,28 +1040,6 @@ const styles = StyleSheet.create({
     lineHeight: 24,
     textAlign: "center",
     fontStyle: "italic",
-  },
-  sobrietyChipHalo: {
-    alignSelf: "center",
-    borderRadius: 16,
-    padding: 2,
-    marginTop: 14,
-  },
-  sobrietyChip: {
-    backgroundColor: "#050816",
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    borderRadius: 14,
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  sobrietyChipIcon: {
-    marginRight: 8,
-  },
-  sobrietyChipText: {
-    color: "#e5e7eb",
-    fontWeight: "700",
-    fontSize: 13,
   },
   addWhyButton: {
     marginTop: 10,
