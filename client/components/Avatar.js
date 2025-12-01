@@ -21,6 +21,7 @@ const Avatar = ({
   haloColors,
   onPress,
   style,
+  contentRef,
   disableNavigation = false,
 }) => {
   const navigation = useNavigation();
@@ -71,11 +72,13 @@ const Avatar = ({
           <Image
             source={{ uri }}
             style={{ width: size, height: size, borderRadius: size / 2 }}
+            ref={contentRef}
           />
         ) : fallbackSource ? (
           <Image
             source={fallbackSource}
             style={{ width: size, height: size, borderRadius: size / 2 }}
+            ref={contentRef}
           />
         ) : (
           <View
@@ -83,6 +86,7 @@ const Avatar = ({
               styles.avatarFallback,
               { width: size, height: size, borderRadius: size / 2 },
             ]}
+            ref={contentRef}
           >
             <Ionicons name="person" size={Math.max(14, size / 3)} color="#0b1222" />
           </View>

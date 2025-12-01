@@ -64,6 +64,7 @@ const ProfileScreen = ({ navigation }) => {
   const [avatarLayout, setAvatarLayout] = useState(null);
   const avatarAnimation = useRef(new Animated.Value(0)).current;
   const avatarRef = useRef(null);
+  const avatarImageRef = useRef(null);
   const currentUser = state?.user;
   const currentUserId = currentUser?.id;
   const conversations = useMemo(() => {
@@ -673,6 +674,7 @@ const ProfileScreen = ({ navigation }) => {
               <Image
                 source={{ uri }}
                 style={[styles.avatarImageBase, styles.avatarImage]}
+                ref={avatarImageRef}
               />
             ) : (
               <View
@@ -681,6 +683,7 @@ const ProfileScreen = ({ navigation }) => {
                   styles.avatarPlaceholder,
                   styles.avatarImage,
                 ]}
+                ref={avatarImageRef}
               >
                 <Feather name="user" size={32} color="#9ca3af" />
               </View>
@@ -692,6 +695,13 @@ const ProfileScreen = ({ navigation }) => {
   };
 
   const handleAvatarLayout = () => {
+    if (avatarImageRef.current?.measureInWindow) {
+      avatarImageRef.current.measureInWindow((x, y, width, height) => {
+        setAvatarLayout({ x, y, width, height });
+      });
+      return;
+    }
+
     if (avatarRef.current?.measureInWindow) {
       avatarRef.current.measureInWindow((x, y, width, height) => {
         const innerOffset = Math.max(0, (width - AVATAR_SIZE) / 2);
