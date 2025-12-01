@@ -238,33 +238,54 @@ const UserProfileScreen = ({ route, navigation }) => {
     });
   }, [sobrietyStartDate]);
 
-  const gradientSpin = useRef(new Animated.Value(0)).current;
-
-  const streakRotation = useMemo(
-    () =>
-      gradientSpin.interpolate({
-        inputRange: [0, 1],
-        outputRange: ["0deg", "360deg"],
-      }),
-    [gradientSpin]
+  const streakPalettes = useMemo(
+    () => [
+      ["#38bdf8", "#a855f7", "#f59e0b"],
+      ["#22d3ee", "#6366f1", "#f472b6"],
+      ["#34d399", "#22d3ee", "#f59e0b"],
+      ["#f59e0b", "#f97316", "#60a5fa"],
+    ],
+    []
   );
 
-  useEffect(() => {
-    const spin = Animated.loop(
-      Animated.timing(gradientSpin, {
-        toValue: 1,
-        duration: 9000,
-        easing: Easing.linear,
-        useNativeDriver: true,
-      })
-    );
+  const [streakColors, setStreakColors] = useState(streakPalettes[0]);
+  const [nextStreakColors, setNextStreakColors] = useState(
+    streakPalettes[1 % streakPalettes.length]
+  );
+  const streakFade = useRef(new Animated.Value(0)).current;
+  const paletteIndexRef = useRef(1 % streakPalettes.length);
 
-    spin.start();
-    return () => {
-      spin.stop();
-      gradientSpin.setValue(0);
+  useEffect(() => {
+    let mounted = true;
+
+    const cycleColors = () => {
+      if (!mounted) return;
+
+      streakFade.setValue(0);
+      Animated.timing(streakFade, {
+        toValue: 1,
+        duration: 3200,
+        easing: Easing.inOut(Easing.linear),
+        useNativeDriver: true,
+      }).start(({ finished }) => {
+        if (!finished || !mounted) return;
+
+        const nextIndex = (paletteIndexRef.current + 1) % streakPalettes.length;
+        paletteIndexRef.current = nextIndex;
+        const incoming = streakPalettes[nextIndex];
+
+        setStreakColors(nextStreakColors);
+        setNextStreakColors(incoming);
+        cycleColors();
+      });
     };
-  }, [gradientSpin]);
+
+    cycleColors();
+    return () => {
+      mounted = false;
+      streakFade.stopAnimation();
+    };
+  }, [nextStreakColors, streakFade, streakPalettes]);
 
   const handleToggleFollow = useCallback(async () => {
     if (!profileData?.id || profileData?.id === state?.user?.id || followPending)
@@ -1061,17 +1082,24 @@ const UserProfileScreen = ({ route, navigation }) => {
 
         {sobrietyDuration ? (
           <View style={styles.sobrietyCard}>
-            <Animated.View
-              pointerEvents="none"
-              style={[styles.sobrietyBorder, { transform: [{ rotate: streakRotation }] }]}
-            >
+            <View pointerEvents="none" style={styles.sobrietyBorder}>
               <LinearGradient
-                colors={["#38bdf8", "#a855f7", "#f59e0b"]}
+                colors={streakColors}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 1 }}
                 style={styles.sobrietyBorderFill}
               />
-            </Animated.View>
+              <Animated.View
+                style={[styles.sobrietyBorderFill, { opacity: streakFade }]}
+              >
+                <LinearGradient
+                  colors={nextStreakColors}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 1 }}
+                  style={styles.sobrietyBorderFill}
+                />
+              </Animated.View>
+            </View>
             <View style={styles.sobrietyContent}>
               <View style={styles.sobrietyTextBlock}>
                 <Text style={styles.sobrietyLabel}>Sober streak</Text>
