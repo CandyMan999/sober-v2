@@ -218,6 +218,13 @@ const UserProfileScreen = ({ route, navigation }) => {
   const isFollowed = Boolean(profileData?.isFollowedByViewer);
   const isBuddy = Boolean(profileData?.isBuddyWithViewer);
 
+  useEffect(() => {
+    if (!isViewingSelf || !state?.savedState) return;
+
+    setSavedPosts(state.savedState.savedPosts || []);
+    setSavedQuotes(state.savedState.savedQuotes || []);
+  }, [isViewingSelf, state?.savedState]);
+
   const socialLinks = useMemo(() => {
     const social = profileData?.social;
     if (!social) return [];

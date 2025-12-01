@@ -7,6 +7,7 @@ const Context = createContext({
   },
   user: null,
   profileOverview: null,
+  savedState: null,
 });
 
 export default Context;

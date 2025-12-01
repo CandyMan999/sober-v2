@@ -139,7 +139,14 @@ const ProfileScreen = ({ navigation }) => {
     setFollowing(cachedOverview.user?.following || []);
     setBuddies(cachedOverview.user?.buddies || []);
     setLoading(false);
-  }, []);
+  }, [cachedOverview]);
+
+  useEffect(() => {
+    if (!state?.savedState) return;
+
+    setSavedPosts(state.savedState.savedPosts || []);
+    setSavedQuotes(state.savedState.savedQuotes || []);
+  }, [state?.savedState]);
 
   useEffect(() => {
     const fetchProfile = async () => {

@@ -18,6 +18,12 @@ export default function reducer(state, { type, payload }) {
         profileOverview: payload,
       };
 
+    case "SET_SAVED_STATE":
+      return {
+        ...state,
+        savedState: payload,
+      };
+
     case "CURRENT_POSITION":
       return {
         ...state,

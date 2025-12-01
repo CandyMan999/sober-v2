@@ -33,39 +33,80 @@ export const applySavedStateToContext = ({
   item,
   saved,
 }) => {
-  if (!dispatch || !targetType || !item) return;
+  if (!dispatch || !targetType || !item) return { savedPosts: [], savedQuotes: [] };
 
   const targetId = extractId(item);
-  if (!targetId) return;
+  if (!targetId) return { savedPosts: [], savedQuotes: [] };
 
-  const overview = state?.profileOverview || {};
   const listKey = targetType === "POST" ? "savedPosts" : "savedQuotes";
 
-  const existingOverviewList = overview[listKey] || state?.user?.[listKey] || [];
+  const baseSavedPosts =
+    state?.savedState?.savedPosts ||
+    state?.profileOverview?.savedPosts ||
+    state?.user?.savedPosts ||
+    [];
+  const baseSavedQuotes =
+    state?.savedState?.savedQuotes ||
+    state?.profileOverview?.savedQuotes ||
+    state?.user?.savedQuotes ||
+    [];
 
-  const nextOverview = {
-    ...overview,
-    user: overview.user || state?.user || null,
-    posts: overview.posts || [],
-    quotes: overview.quotes || [],
+  const nextSavedPosts =
+    targetType === "POST"
+      ? saved
+        ? mergeSavedList(baseSavedPosts, item)
+        : removeSavedItem(baseSavedPosts, targetId)
+      : baseSavedPosts;
+  const nextSavedQuotes =
+    targetType === "QUOTE"
+      ? saved
+        ? mergeSavedList(baseSavedQuotes, item)
+        : removeSavedItem(baseSavedQuotes, targetId)
+      : baseSavedQuotes;
+
+  const nextSavedState = {
+    savedPosts: nextSavedPosts,
+    savedQuotes: nextSavedQuotes,
   };
-  nextOverview[listKey] = saved
-    ? mergeSavedList(existingOverviewList, item)
-    : removeSavedItem(existingOverviewList, targetId);
 
-  dispatch({ type: "SET_PROFILE_OVERVIEW", payload: nextOverview });
+  dispatch({ type: "SET_SAVED_STATE", payload: nextSavedState });
+
+  const overview = state?.profileOverview;
+  if (overview) {
+    dispatch({
+      type: "SET_PROFILE_OVERVIEW",
+      payload: {
+        ...overview,
+        savedPosts: nextSavedPosts,
+        savedQuotes: nextSavedQuotes,
+      },
+    });
+  } else if (state?.user) {
+    dispatch({
+      type: "SET_PROFILE_OVERVIEW",
+      payload: {
+        user: state.user,
+        posts: [],
+        quotes: [],
+        savedPosts: nextSavedPosts,
+        savedQuotes: nextSavedQuotes,
+      },
+    });
+  }
 
   const user = state?.user;
   if (user) {
-    const existing = user[listKey] || [];
-    const normalizedExisting = existing.map((entry) =>
-      entry?.id || entry?._id ? { id: extractId(entry) } : entry
-    );
-
-    const updatedList = saved
-      ? mergeSavedList(normalizedExisting, { id: targetId })
-      : removeSavedItem(normalizedExisting, targetId);
-
-    dispatch({ type: "SET_USER", payload: { ...user, [listKey]: updatedList } });
+    dispatch({
+      type: "SET_USER",
+      payload: {
+        ...user,
+        [listKey]: (saved
+          ? mergeSavedList(user[listKey] || [], { id: targetId })
+          : removeSavedItem(user[listKey] || [], targetId)
+        ).map((entry) => ({ id: extractId(entry) })),
+      },
+    });
   }
+
+  return nextSavedState;
 };
