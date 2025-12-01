@@ -531,11 +531,14 @@ module.exports = {
           title: `${senderName} shared a new post`,
           body: preview,
           data: notificationData,
+          ...(notificationImageUrl
+            ? {
+                image: notificationImageUrl,
+                icon: notificationImageUrl,
+                mutableContent: true, // allow rich content/attachments on iOS
+              }
+            : {}),
         };
-
-        if (notificationImageUrl) {
-          notificationPayload.image = notificationImageUrl;
-        }
 
         notifications.push(notificationPayload);
       }
