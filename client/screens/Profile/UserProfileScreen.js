@@ -857,53 +857,55 @@ const UserProfileScreen = ({ route, navigation }) => {
         style={styles.container}
         contentContainerStyle={styles.containerContent}
       >
-      <View style={styles.topActionsRow}>
-        <View style={styles.editIconWrapper}>
-          <TouchableOpacity
-            style={styles.editIconButton}
-            onPress={() => navigation.goBack()}
-          >
-            <Feather name="chevron-left" size={20} color="#f59e0b" />
-          </TouchableOpacity>
+        <View style={styles.topActionsRow}>
+          <View style={styles.editIconWrapper}>
+            <TouchableOpacity
+              style={styles.editIconButton}
+              onPress={() => navigation.goBack()}
+            >
+              <Feather name="chevron-left" size={20} color="#f59e0b" />
+            </TouchableOpacity>
+          </View>
+          {socialLinks.length ? (
+            <View style={styles.socialIconsRow}>
+              {socialLinks.map(({ platform, data }) => {
+                const icon = SOCIAL_ICON_PROPS[platform];
+                const IconComponent = icon?.Component || Ionicons;
+                return (
+                  <TouchableOpacity
+                    key={platform}
+                    style={styles.socialIconButton}
+                    onPress={() => openSocial(platform, data)}
+                    activeOpacity={0.85}
+                  >
+                    <IconComponent
+                      name={icon?.name || "share-social"}
+                      size={icon?.size || 18}
+                      color={icon?.color || "#e5e7eb"}
+                    />
+                  </TouchableOpacity>
+                );
+              })}
+            </View>
+          ) : null}
         </View>
-        {socialLinks.length ? (
-          <View style={styles.socialIconsRow}>
-            {socialLinks.map(({ platform, data }) => {
-              const icon = SOCIAL_ICON_PROPS[platform];
-              const IconComponent = icon?.Component || Ionicons;
-              return (
-                <TouchableOpacity
-                  key={platform}
-                  style={styles.socialIconButton}
-                  onPress={() => openSocial(platform, data)}
-                  activeOpacity={0.85}
-                >
-                  <IconComponent
-                    name={icon?.name || "share-social"}
-                    size={icon?.size || 18}
-                    color={icon?.color || "#e5e7eb"}
-                  />
-                </TouchableOpacity>
-              );
-            })}
+        {sobrietyDuration ? (
+          <View style={[styles.bodyPadding, styles.sobrietyRow]}>
+            <Text style={styles.sobrietyText}>
+              <MaterialCommunityIcons
+                name="progress-clock"
+                size={16}
+                color="#f97316"
+              />
+              {` ${sobrietyDuration} sober`}
+            </Text>
           </View>
         ) : null}
-      </View>
-      <View style={styles.bodyPadding}>
-        {sobrietyDuration ? (
-          <Text>
-            <MaterialCommunityIcons
-              name="progress-clock"
-              size={16}
-              color="#f97316"
-            />
-            {` ${sobrietyDuration} sober`}
-          </Text>
-        ) : null}
-        <View style={styles.headerRow}>
-          <View style={styles.avatarColumn}>
-            <Avatar
-              uri={profileData?.profilePicUrl}
+        <View style={styles.bodyPadding}>
+          <View style={styles.headerRow}>
+            <View style={styles.avatarColumn}>
+              <Avatar
+                uri={profileData?.profilePicUrl}
               size={AVATAR_SIZE}
               haloColors={["#fcd34d", "#f97316"]}
               disableNavigation
@@ -1130,6 +1132,12 @@ const styles = StyleSheet.create({
     padding: 9,
     borderRadius: 999,
     backgroundColor: "rgba(255,255,255,0.06)",
+  },
+  sobrietyRow: {
+    marginBottom: 8,
+  },
+  sobrietyText: {
+    color: SOCIAL_ICON_COLOR,
   },
   avatarLabel: {
     color: "#e5e7eb",
