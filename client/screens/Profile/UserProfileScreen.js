@@ -71,6 +71,7 @@ const UserProfileScreen = ({ route, navigation }) => {
   const [previewItem, setPreviewItem] = useState(null);
   const [previewType, setPreviewType] = useState("POST");
   const [previewMuted, setPreviewMuted] = useState(true);
+  const sobrietyStartAt = profileData?.sobrietyStartAt;
   const currentUser = state?.user;
   const currentUserId = currentUser?.id;
   const { openSocial } = useOpenSocial();
@@ -103,6 +104,22 @@ const UserProfileScreen = ({ route, navigation }) => {
     );
     return formatDistance(miles);
   }, [viewerCoords, profileData?.lat, profileData?.long]);
+
+  const sobrietyLabel = useMemo(() => {
+    if (!sobrietyStartAt) return null;
+
+    const start = new Date(sobrietyStartAt);
+    if (Number.isNaN(start.getTime())) return null;
+
+    const now = new Date();
+    const diffInDays = Math.max(
+      0,
+      Math.floor((now.getTime() - start.getTime()) / (1000 * 60 * 60 * 24))
+    );
+
+    const dayLabel = diffInDays === 1 ? "1 day" : `${diffInDays} days`;
+    return `${dayLabel} sober`;
+  }, [sobrietyStartAt]);
 
   const counts = useMemo(
     () => ({
@@ -1002,6 +1019,23 @@ const UserProfileScreen = ({ route, navigation }) => {
             ”
           </Text>
         </View>
+
+        {sobrietyLabel ? (
+          <LinearGradient
+            colors={["#fcd34d", "#f97316"]}
+            style={styles.sobrietyChipHalo}
+          >
+            <View style={styles.sobrietyChip}>
+              <MaterialCommunityIcons
+                name="progress-clock"
+                size={16}
+                color="#fbbf24"
+                style={styles.sobrietyChipIcon}
+              />
+              <Text style={styles.sobrietyChipText}>{sobrietyLabel}</Text>
+            </View>
+          </LinearGradient>
+        ) : null}
       </View>
 
       {renderTabBar()}
@@ -1167,6 +1201,28 @@ const styles = StyleSheet.create({
     lineHeight: 24,
     textAlign: "center",
     fontStyle: "italic",
+  },
+  sobrietyChipHalo: {
+    alignSelf: "center",
+    borderRadius: 16,
+    padding: 2,
+    marginTop: 14,
+  },
+  sobrietyChip: {
+    backgroundColor: "#050816",
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 14,
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  sobrietyChipIcon: {
+    marginRight: 8,
+  },
+  sobrietyChipText: {
+    color: "#e5e7eb",
+    fontWeight: "700",
+    fontSize: 13,
   },
   tabBar: {
     flexDirection: "row",
