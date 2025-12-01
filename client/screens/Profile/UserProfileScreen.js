@@ -421,15 +421,14 @@ const UserProfileScreen = ({ route, navigation }) => {
   const isPreviewSaved = useMemo(() => {
     if (!previewItem?.id) return false;
 
-    const savedList =
+    const lists =
       previewType === "POST"
-        ? state?.user?.savedPosts
-        : state?.user?.savedQuotes;
+        ? [state?.user?.savedPosts || [], isViewingSelf ? savedPosts : []]
+        : [state?.user?.savedQuotes || [], isViewingSelf ? savedQuotes : []];
 
-    const fallbackList = previewType === "POST" ? savedPosts : savedQuotes;
-
-    return isItemSaved(savedList?.length ? savedList : fallbackList, previewItem.id);
+    return lists.some((list) => isItemSaved(list, previewItem.id));
   }, [
+    isViewingSelf,
     previewItem?.id,
     previewType,
     savedPosts,

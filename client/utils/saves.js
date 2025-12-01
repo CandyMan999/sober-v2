@@ -41,10 +41,14 @@ export const applySavedStateToContext = ({
   const overview = state?.profileOverview || {};
   const listKey = targetType === "POST" ? "savedPosts" : "savedQuotes";
 
-  const existingOverviewList =
-    overview[listKey] || state?.user?.[listKey] || [];
+  const existingOverviewList = overview[listKey] || state?.user?.[listKey] || [];
 
-  const nextOverview = { ...overview };
+  const nextOverview = {
+    ...overview,
+    user: overview.user || state?.user || null,
+    posts: overview.posts || [],
+    quotes: overview.quotes || [],
+  };
   nextOverview[listKey] = saved
     ? mergeSavedList(existingOverviewList, item)
     : removeSavedItem(existingOverviewList, targetId);
