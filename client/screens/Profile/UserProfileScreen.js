@@ -1220,6 +1220,8 @@ const styles = StyleSheet.create({
     padding: 2,
     alignItems: "center",
     justifyContent: "center",
+    alignSelf: "center",
+    flexShrink: 1,
   },
   sobrietyContent: {
     flexDirection: "column",
@@ -1230,11 +1232,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 11,
     paddingVertical: 9,
     borderRadius: 11,
+    alignSelf: "center",
+    flexShrink: 1,
   },
   sobrietyTextBlock: {
-    flex: 1,
     gap: 2,
     alignItems: "center",
+    flexShrink: 1,
   },
   sobrietyLabel: {
     color: "#e5e7eb",
