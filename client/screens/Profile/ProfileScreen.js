@@ -34,6 +34,7 @@ import { TOGGLE_LIKE_MUTATION, SET_POST_REVIEW_MUTATION } from "../../GraphQL/mu
 import { ContentPreviewModal } from "../../components";
 
 const AVATAR_SIZE = 110;
+const AnimatedBlurView = Animated.createAnimatedComponent(BlurView);
 
 const ProfileScreen = ({ navigation }) => {
   const { state, dispatch } = useContext(Context);
@@ -815,11 +816,13 @@ const ProfileScreen = ({ navigation }) => {
         pointerEvents="box-none"
         {...avatarPanResponder.panHandlers}
       >
-        <Animated.View
+        <AnimatedBlurView
+          intensity={140}
+          tint="dark"
           style={[StyleSheet.absoluteFill, { opacity: backdropOpacity }]}
-        >
-          <BlurView intensity={80} tint="dark" style={StyleSheet.absoluteFill} />
-        </Animated.View>
+          experimentalBlurMethod="dimezisBlurView"
+          reducedTransparencyFallbackColor="rgba(0,0,0,0.6)"
+        />
 
         <Animated.View
           style={[

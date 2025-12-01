@@ -43,6 +43,7 @@ import Toast from "react-native-toast-message";
 import { formatDistance, getDistanceFromCoords } from "../../utils/distance";
 
 const AVATAR_SIZE = 110;
+const AnimatedBlurView = Animated.createAnimatedComponent(BlurView);
 const soberLogo = require("../../assets/icon.png");
 const SOCIAL_ICON_SIZE = 22;
 const SOCIAL_ICON_COLOR = "#e5e7eb";
@@ -519,11 +520,13 @@ const UserProfileScreen = ({ route, navigation }) => {
         pointerEvents="box-none"
         {...avatarPanResponder.panHandlers}
       >
-        <Animated.View
+        <AnimatedBlurView
+          intensity={140}
+          tint="dark"
           style={[StyleSheet.absoluteFill, { opacity: backdropOpacity }]}
-        >
-          <BlurView intensity={80} tint="dark" style={StyleSheet.absoluteFill} />
-        </Animated.View>
+          experimentalBlurMethod="dimezisBlurView"
+          reducedTransparencyFallbackColor="rgba(0,0,0,0.6)"
+        />
 
         <Animated.View
           style={[
