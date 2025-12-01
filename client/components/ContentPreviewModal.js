@@ -184,6 +184,15 @@ const ContentPreviewModal = ({
     }
   }, [visible]);
 
+  const commentsLoadedForId = useRef(null);
+
+  useEffect(() => {
+    if (!visible) {
+      setLoadingComments(false);
+      commentsLoadedForId.current = null;
+    }
+  }, [visible]);
+
   useEffect(() => {
     if (!visible || !localItem?.id) return undefined;
 
@@ -191,9 +200,11 @@ const ContentPreviewModal = ({
       ? localItem.comments.length > 0
       : false;
 
-    if (hasComments || loadingComments) return undefined;
+    const alreadyLoaded = commentsLoadedForId.current === localItem.id;
+    if (hasComments || alreadyLoaded) return undefined;
 
     let isActive = true;
+    commentsLoadedForId.current = localItem.id;
 
     const loadComments = async () => {
       try {
@@ -208,11 +219,14 @@ const ContentPreviewModal = ({
         if (!isActive) return;
 
         const fetchedContent = isPost ? result?.post : result?.quote;
-        if (fetchedContent) {
-          setLocalItem((prev) => ({ ...(prev || {}), ...fetchedContent }));
+        if (fetchedContent && fetchedContent.id === localItem.id) {
+          setLocalItem((prev) =>
+            prev?.id === fetchedContent.id ? { ...prev, ...fetchedContent } : prev
+          );
         }
       } catch (err) {
         console.error("Error loading preview comments", err);
+        commentsLoadedForId.current = null;
       } finally {
         if (isActive) {
           setLoadingComments(false);
@@ -225,7 +239,7 @@ const ContentPreviewModal = ({
     return () => {
       isActive = false;
     };
-  }, [client, isPost, localItem?.id, loadingComments, visible]);
+  }, [client, isPost, localItem?.id, visible]);
 
   const handleClose = () => {
     dragY.setValue(0);
