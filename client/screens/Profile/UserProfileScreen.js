@@ -3,6 +3,7 @@ import React, {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from "react";
 import {
@@ -14,8 +15,11 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   useWindowDimensions,
+  Animated,
+  PanResponder,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
+import { BlurView } from "expo-blur";
 import { Feather, Ionicons, MaterialCommunityIcons, AntDesign } from "@expo/vector-icons";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
@@ -91,6 +95,10 @@ const UserProfileScreen = ({ route, navigation }) => {
   const [previewItem, setPreviewItem] = useState(null);
   const [previewType, setPreviewType] = useState("POST");
   const [previewMuted, setPreviewMuted] = useState(true);
+  const [isAvatarExpanded, setIsAvatarExpanded] = useState(false);
+  const [avatarLayout, setAvatarLayout] = useState(null);
+  const avatarAnimation = useRef(new Animated.Value(0)).current;
+  const avatarRef = useRef(null);
   const currentUser = state?.user;
   const currentUserId = currentUser?.id;
   const { openSocial } = useOpenSocial();
@@ -386,6 +394,156 @@ const UserProfileScreen = ({ route, navigation }) => {
   };
 
   const closePreview = () => setPreviewVisible(false);
+
+  const handleAvatarLayout = () => {
+    if (avatarRef.current?.measureInWindow) {
+      avatarRef.current.measureInWindow((x, y, width, height) => {
+        setAvatarLayout({ x, y, width, height });
+      });
+    }
+  };
+
+  const handleOpenAvatar = useCallback(() => {
+    if (isAvatarExpanded) return;
+    avatarAnimation.setValue(0);
+    setIsAvatarExpanded(true);
+    requestAnimationFrame(() => {
+      Animated.spring(avatarAnimation, {
+        toValue: 1,
+        useNativeDriver: false,
+        tension: 120,
+        friction: 12,
+      }).start();
+    });
+  }, [avatarAnimation, isAvatarExpanded]);
+
+  const handleCloseAvatar = useCallback(() => {
+    Animated.spring(avatarAnimation, {
+      toValue: 0,
+      useNativeDriver: false,
+      tension: 120,
+      friction: 12,
+    }).start(() => setIsAvatarExpanded(false));
+  }, [avatarAnimation]);
+
+  const avatarPanResponder = useMemo(
+    () =>
+      PanResponder.create({
+        onStartShouldSetPanResponder: () => isAvatarExpanded,
+        onMoveShouldSetPanResponder: (_, gestureState) =>
+          isAvatarExpanded && Math.abs(gestureState.dy) > 10,
+        onPanResponderMove: (_, gestureState) => {
+          if (!isAvatarExpanded) return;
+          const progress = Math.max(
+            0,
+            Math.min(1, 1 - gestureState.dy / 200)
+          );
+          avatarAnimation.setValue(progress);
+        },
+        onPanResponderRelease: (_, gestureState) => {
+          if (gestureState.dy > 80) {
+            handleCloseAvatar();
+            return;
+          }
+
+          Animated.spring(avatarAnimation, {
+            toValue: 1,
+            useNativeDriver: false,
+            tension: 120,
+            friction: 12,
+          }).start();
+        },
+      }),
+    [avatarAnimation, handleCloseAvatar, isAvatarExpanded]
+  );
+
+  const renderAvatarOverlay = () => {
+    if (!isAvatarExpanded) return null;
+
+    const origin =
+      avatarLayout || {
+        x: layout.width / 2 - AVATAR_SIZE / 2,
+        y: layout.height * 0.16,
+        width: AVATAR_SIZE,
+        height: AVATAR_SIZE,
+      };
+
+    const expandedSize = Math.min(layout.width, layout.height) * 0.72;
+    const targetTop = Math.max(24, (layout.height - expandedSize) / 2);
+    const targetLeft = (layout.width - expandedSize) / 2;
+
+    const animatedTop = avatarAnimation.interpolate({
+      inputRange: [0, 1],
+      outputRange: [origin.y, targetTop],
+    });
+    const animatedLeft = avatarAnimation.interpolate({
+      inputRange: [0, 1],
+      outputRange: [origin.x, targetLeft],
+    });
+    const animatedSize = avatarAnimation.interpolate({
+      inputRange: [0, 1],
+      outputRange: [origin.width, expandedSize],
+    });
+    const animatedRadius = avatarAnimation.interpolate({
+      inputRange: [0, 1],
+      outputRange: [origin.width / 2, expandedSize / 2],
+    });
+    const backdropOpacity = avatarAnimation.interpolate({
+      inputRange: [0, 1],
+      outputRange: [0, 0.7],
+    });
+
+    const avatarSource = profileData?.profilePicUrl
+      ? { uri: profileData.profilePicUrl }
+      : soberLogo;
+
+    return (
+      <Animated.View
+        style={StyleSheet.absoluteFill}
+        pointerEvents="box-none"
+        {...avatarPanResponder.panHandlers}
+      >
+        <Animated.View
+          style={[StyleSheet.absoluteFill, { opacity: backdropOpacity }]}
+        >
+          <BlurView intensity={50} tint="dark" style={StyleSheet.absoluteFill} />
+        </Animated.View>
+
+        <Animated.View
+          style={[
+            styles.avatarOverlay,
+            {
+              top: animatedTop,
+              left: animatedLeft,
+              width: animatedSize,
+              height: animatedSize,
+              borderRadius: animatedRadius,
+            },
+          ]}
+        >
+          {profileData?.profilePicUrl ? (
+            <Image source={avatarSource} style={styles.avatarOverlayImage} />
+          ) : (
+            <View style={styles.avatarOverlayPlaceholder}>
+              <Feather name="user" size={48} color="#e5e7eb" />
+            </View>
+          )}
+        </Animated.View>
+
+        <Animated.View
+          style={[styles.avatarCloseButton, { opacity: avatarAnimation }]}
+        >
+          <TouchableOpacity
+            onPress={handleCloseAvatar}
+            style={styles.avatarCloseTouchable}
+            activeOpacity={0.8}
+          >
+            <Feather name="x" size={26} color="#e5e7eb" />
+          </TouchableOpacity>
+        </Animated.View>
+      </Animated.View>
+    );
+  };
 
   const handlePreviewCommentAdded = (newComment) => {
     if (!previewItem) return;
@@ -897,88 +1055,91 @@ const UserProfileScreen = ({ route, navigation }) => {
         <View style={styles.bodyPadding}>
           <View style={styles.headerRow}>
             <View style={styles.avatarColumn}>
-              <Avatar
-                uri={profileData?.profilePicUrl}
-              size={AVATAR_SIZE}
-              haloColors={["#fcd34d", "#f97316"]}
-              disableNavigation
-            />
-            <View style={styles.usernameRow}>
-              <Text style={styles.avatarLabel}>
-                {profileData?.username || "User"}
-              </Text>
-            </View>
-            {profileData?.id !== state?.user?.id ? (
-              <View style={styles.profileActionsRow}>
-                {isBuddy ? (
-                  <TouchableOpacity
-                    style={styles.messageButton}
-                    onPress={handleOpenDirectMessage}
-                    activeOpacity={0.85}
-                  >
-                    <Ionicons
-                      name="chatbubbles"
-                      size={18}
-                      color="#0b1222"
-                      style={styles.messageIcon}
-                    />
-                    <Text style={styles.messageText}>Message</Text>
-                  </TouchableOpacity>
-                ) : null}
-                <TouchableOpacity
-                  style={[
-                    styles.followButton,
-                    isBuddy
-                      ? styles.buddyButton
-                      : isFollowed
-                      ? styles.followingButton
-                      : null,
-                  ]}
-                  onPress={handleToggleFollow}
-                  disabled={followPending}
-                >
-                  <View style={styles.followButtonContent}>
-                    <Ionicons
-                      name={
-                        isBuddy
-                          ? "people"
-                          : isFollowed
-                          ? "checkmark-circle-outline"
-                          : "person-add-outline"
-                      }
-                      size={18}
-                      color={
-                        isBuddy
-                          ? "#0b1222"
-                          : isFollowed
-                          ? "#e2e8f0"
-                          : "#0b1222"
-                      }
-                      style={styles.followButtonIcon}
-                    />
-                    <Text
-                      style={[
-                        styles.followButtonText,
-                        isBuddy
-                          ? styles.buddyButtonText
-                          : isFollowed
-                          ? styles.followingButtonText
-                          : null,
-                      ]}
-                    >
-                      {followPending
-                        ? "..."
-                        : isBuddy
-                        ? "Buddies"
-                        : isFollowed
-                        ? "Following"
-                        : "Follow"}
-                    </Text>
-                  </View>
-                </TouchableOpacity>
+              <View ref={avatarRef} onLayout={handleAvatarLayout}>
+                <Avatar
+                  uri={profileData?.profilePicUrl}
+                  size={AVATAR_SIZE}
+                  haloColors={["#fcd34d", "#f97316"]}
+                  disableNavigation
+                  onPress={handleOpenAvatar}
+                />
               </View>
-            ) : null}
-          </View>
+              <View style={styles.usernameRow}>
+                <Text style={styles.avatarLabel}>
+                  {profileData?.username || "User"}
+                </Text>
+              </View>
+              {profileData?.id !== state?.user?.id ? (
+                <View style={styles.profileActionsRow}>
+                  {isBuddy ? (
+                    <TouchableOpacity
+                      style={styles.messageButton}
+                      onPress={handleOpenDirectMessage}
+                      activeOpacity={0.85}
+                    >
+                      <Ionicons
+                        name="chatbubbles"
+                        size={18}
+                        color="#0b1222"
+                        style={styles.messageIcon}
+                      />
+                      <Text style={styles.messageText}>Message</Text>
+                    </TouchableOpacity>
+                  ) : null}
+                  <TouchableOpacity
+                    style={[
+                      styles.followButton,
+                      isBuddy
+                        ? styles.buddyButton
+                        : isFollowed
+                        ? styles.followingButton
+                        : null,
+                    ]}
+                    onPress={handleToggleFollow}
+                    disabled={followPending}
+                  >
+                    <View style={styles.followButtonContent}>
+                      <Ionicons
+                        name={
+                          isBuddy
+                            ? "people"
+                            : isFollowed
+                            ? "checkmark-circle-outline"
+                            : "person-add-outline"
+                        }
+                        size={18}
+                        color={
+                          isBuddy
+                            ? "#0b1222"
+                            : isFollowed
+                            ? "#e2e8f0"
+                            : "#0b1222"
+                        }
+                        style={styles.followButtonIcon}
+                      />
+                      <Text
+                        style={[
+                          styles.followButtonText,
+                          isBuddy
+                            ? styles.buddyButtonText
+                            : isFollowed
+                            ? styles.followingButtonText
+                            : null,
+                        ]}
+                      >
+                        {followPending
+                          ? "..."
+                          : isBuddy
+                          ? "Buddies"
+                          : isFollowed
+                          ? "Following"
+                          : "Follow"}
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
+                </View>
+              ) : null}
+            </View>
         </View>
 
         {(distanceLabel || profileData?.closestCity?.name || sobrietyDuration) && (
@@ -1086,6 +1247,8 @@ const UserProfileScreen = ({ route, navigation }) => {
         onFlagForReview={handleFlagForReview}
         onDelete={handleDeleteContent}
       />
+
+      {renderAvatarOverlay()}
     </>
   );
 };
@@ -1111,6 +1274,34 @@ const styles = StyleSheet.create({
   avatarColumn: {
     alignItems: "center",
     flex: 1,
+  },
+  avatarOverlay: {
+    position: "absolute",
+    backgroundColor: "#0b1220",
+    overflow: "hidden",
+  },
+  avatarOverlayImage: {
+    width: "100%",
+    height: "100%",
+  },
+  avatarOverlayPlaceholder: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#111827",
+  },
+  avatarCloseButton: {
+    position: "absolute",
+    top: 38,
+    right: 24,
+    backgroundColor: "rgba(0,0,0,0.55)",
+    borderRadius: 24,
+  },
+  avatarCloseTouchable: {
+    width: 44,
+    height: 44,
+    alignItems: "center",
+    justifyContent: "center",
   },
   topActionsRow: {
     paddingHorizontal: 16,
