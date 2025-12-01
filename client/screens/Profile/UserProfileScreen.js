@@ -1,4 +1,10 @@
-import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import {
   View,
   Text,
@@ -14,6 +20,7 @@ import { Feather, Ionicons, MaterialCommunityIcons, AntDesign } from "@expo/vect
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import { TabView } from "react-native-tab-view";
+import { differenceInCalendarDays } from "date-fns";
 
 import Avatar from "../../components/Avatar";
 import { ContentPreviewModal } from "../../components";
@@ -50,6 +57,19 @@ const SOCIAL_ICON_PROPS = {
     size: SOCIAL_ICON_SIZE,
   },
   x: { Component: AntDesign, name: "x", color: SOCIAL_ICON_COLOR, size: SOCIAL_ICON_SIZE },
+};
+
+const parseDateValue = (value) => {
+  if (!value) return null;
+
+  const numeric = Number(value);
+  if (!Number.isNaN(numeric)) {
+    const asDate = new Date(numeric);
+    if (!Number.isNaN(asDate.getTime())) return asDate;
+  }
+
+  const fromString = new Date(value);
+  return Number.isNaN(fromString.getTime()) ? null : fromString;
 };
 
 const UserProfileScreen = ({ route, navigation }) => {
@@ -200,6 +220,26 @@ const UserProfileScreen = ({ route, navigation }) => {
       })
       .filter(Boolean);
   }, [profileData?.social]);
+
+  const sobrietyStartDate = useMemo(
+    () => parseDateValue(profileData?.sobrietyStartAt),
+    [profileData?.sobrietyStartAt]
+  );
+
+  const sobrietyDays = useMemo(() => {
+    if (!sobrietyStartDate) return null;
+
+    const days = differenceInCalendarDays(new Date(), sobrietyStartDate);
+    return days < 0 ? null : days;
+  }, [sobrietyStartDate]);
+
+  const sobrietyDuration = useMemo(() => {
+    if (sobrietyDays === null) return null;
+
+    const label = sobrietyDays === 1 ? "day" : "days";
+    return `${sobrietyDays} ${label}`;
+  }, [sobrietyDays]);
+
 
   const handleToggleFollow = useCallback(async () => {
     if (!profileData?.id || profileData?.id === state?.user?.id || followPending)
@@ -822,43 +862,43 @@ const UserProfileScreen = ({ route, navigation }) => {
         style={styles.container}
         contentContainerStyle={styles.containerContent}
       >
-      <View style={styles.topActionsRow}>
-        <View style={styles.editIconWrapper}>
-          <TouchableOpacity
-            style={styles.editIconButton}
-            onPress={() => navigation.goBack()}
-          >
-            <Feather name="chevron-left" size={20} color="#f59e0b" />
-          </TouchableOpacity>
-        </View>
-        {socialLinks.length ? (
-          <View style={styles.socialIconsRow}>
-            {socialLinks.map(({ platform, data }) => {
-              const icon = SOCIAL_ICON_PROPS[platform];
-              const IconComponent = icon?.Component || Ionicons;
-              return (
-                <TouchableOpacity
-                  key={platform}
-                  style={styles.socialIconButton}
-                  onPress={() => openSocial(platform, data)}
-                  activeOpacity={0.85}
-                >
-                  <IconComponent
-                    name={icon?.name || "share-social"}
-                    size={icon?.size || 18}
-                    color={icon?.color || "#e5e7eb"}
-                  />
-                </TouchableOpacity>
-              );
-            })}
+        <View style={styles.topActionsRow}>
+          <View style={styles.editIconWrapper}>
+            <TouchableOpacity
+              style={styles.editIconButton}
+              onPress={() => navigation.goBack()}
+            >
+              <Feather name="chevron-left" size={20} color="#f59e0b" />
+            </TouchableOpacity>
           </View>
-        ) : null}
-      </View>
-      <View style={styles.bodyPadding}>
-        <View style={styles.headerRow}>
-          <View style={styles.avatarColumn}>
-            <Avatar
-              uri={profileData?.profilePicUrl}
+          {socialLinks.length ? (
+            <View style={styles.socialIconsRow}>
+              {socialLinks.map(({ platform, data }) => {
+                const icon = SOCIAL_ICON_PROPS[platform];
+                const IconComponent = icon?.Component || Ionicons;
+                return (
+                  <TouchableOpacity
+                    key={platform}
+                    style={styles.socialIconButton}
+                    onPress={() => openSocial(platform, data)}
+                    activeOpacity={0.85}
+                  >
+                    <IconComponent
+                      name={icon?.name || "share-social"}
+                      size={icon?.size || 18}
+                      color={icon?.color || "#e5e7eb"}
+                    />
+                  </TouchableOpacity>
+                );
+              })}
+            </View>
+          ) : null}
+        </View>
+        <View style={styles.bodyPadding}>
+          <View style={styles.headerRow}>
+            <View style={styles.avatarColumn}>
+              <Avatar
+                uri={profileData?.profilePicUrl}
               size={AVATAR_SIZE}
               haloColors={["#fcd34d", "#f97316"]}
               disableNavigation
@@ -941,7 +981,7 @@ const UserProfileScreen = ({ route, navigation }) => {
           </View>
         </View>
 
-        {(distanceLabel || profileData?.closestCity?.name) && (
+        {(distanceLabel || profileData?.closestCity?.name || sobrietyDuration) && (
           <View style={styles.metaRow}>
             {distanceLabel ? (
               <View style={styles.distancePill}>
@@ -958,6 +998,17 @@ const UserProfileScreen = ({ route, navigation }) => {
               <View style={styles.cityPill}>
                 <Ionicons name="location" size={14} color="#e5e7eb" />
                 <Text style={styles.cityText}>{profileData.closestCity.name}</Text>
+              </View>
+            ) : null}
+            {sobrietyDuration ? (
+              <View style={styles.sobrietyPill}>
+                <MaterialCommunityIcons
+                  name="progress-clock"
+                  size={16}
+                  color="#f59e0b"
+                  style={styles.sobrietyIcon}
+                />
+                <Text style={styles.sobrietyText}>{`${sobrietyDuration} sober`}</Text>
               </View>
             ) : null}
           </View>
@@ -1085,6 +1136,23 @@ const styles = StyleSheet.create({
     padding: 9,
     borderRadius: 999,
     backgroundColor: "rgba(255,255,255,0.06)",
+  },
+  sobrietyPill: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "rgba(245,158,11,0.12)",
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 999,
+    gap: 6,
+  },
+  sobrietyIcon: {
+    marginTop: 1,
+  },
+  sobrietyText: {
+    color: "#e5e7eb",
+    fontWeight: "700",
+    fontSize: 12,
   },
   avatarLabel: {
     color: "#e5e7eb",
