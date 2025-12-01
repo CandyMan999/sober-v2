@@ -2,6 +2,7 @@
 const cron = require("node-cron");
 const { Expo } = require("expo-server-sdk");
 const { User, Quote, Post } = require("../models");
+const { findClosestCity } = require("./location");
 const { DateTime } = require("luxon");
 
 require("dotenv").config();
@@ -87,14 +88,31 @@ const buildMilestoneMessage = (user, milestoneDays) => {
   };
 };
 
-const getMilestoneImageUrlForUser = (user) => {
+const getMilestoneImageForUser = (user) => {
   if (!user) return null;
 
+  const pickPicture = (picKey, urlKey) => {
+    const populatedPic = user?.[picKey];
+    const hasPopulatedData = populatedPic && typeof populatedPic === "object";
+
+    if (hasPopulatedData && populatedPic.url) {
+      return { url: populatedPic.url, publicId: populatedPic.publicId || null };
+    }
+
+    if (user?.[urlKey]) {
+      return { url: user[urlKey], publicId: hasPopulatedData ? populatedPic.publicId : null };
+    }
+
+    return null;
+  };
+
   // 1) Prefer drunk pic
-  if (user.drunkPicUrl) return user.drunkPicUrl;
+  const drunkPic = pickPicture("drunkPic", "drunkPicUrl");
+  if (drunkPic) return drunkPic;
 
   // 2) Fallback to profile pic
-  if (user.profilePicUrl) return user.profilePicUrl;
+  const profilePic = pickPicture("profilePic", "profilePicUrl");
+  if (profilePic) return profilePic;
 
   // 3) No image → no post
   return null;
@@ -112,15 +130,36 @@ const ensureMilestonePost = async (user, milestoneDays) => {
     return null; // only create posts for milestones day 7+
   }
 
-  const imageUrl = getMilestoneImageUrlForUser(user);
+  const imageMeta = getMilestoneImageForUser(user);
 
-  if (!imageUrl) {
+  if (!imageMeta?.url) {
     console.log(
       `⚠️  Skipping milestone post for ${
         user?.username || user?._id
       } — no drunkPic or profilePic`
     );
     return null;
+  }
+
+  const postLocation = {
+    lat: user?.lat ?? null,
+    long: user?.long ?? null,
+    closestCity: null,
+  };
+
+  const geoLocation =
+    postLocation.lat !== null && postLocation.long !== null
+      ? {
+          type: "Point",
+          coordinates: [postLocation.long, postLocation.lat],
+        }
+      : null;
+
+  if (postLocation.lat !== null && postLocation.long !== null) {
+    const nearestCity = await findClosestCity(postLocation.lat, postLocation.long);
+    if (nearestCity?._id) {
+      postLocation.closestCity = nearestCity._id;
+    }
   }
 
   const existing = await Post.findOne({
@@ -133,27 +172,19 @@ const ensureMilestonePost = async (user, milestoneDays) => {
 
   const milestoneTag = `[${milestoneDays}]`;
 
-  const geoLocation =
-    user?.lat != null && user?.long != null
-      ? {
-          type: "Point",
-          coordinates: [user.long, user.lat],
-        }
-      : null;
-
   const created = await Post.create({
     author: user._id,
     text: buildMilestoneCaptionText(user, milestoneDays),
     mediaType: "IMAGE",
-    imageUrl, // <-- now uses drunkPic first, then profilePic
+    imageUrl: imageMeta.url, // <-- now uses drunkPic first, then profilePic
+    imagePublicId: imageMeta.publicId || null,
     flagged: false,
     likesCount: 0,
     commentsCount: 0,
     isMilestone: true,
     milestoneDays,
     milestoneTag,
-    lat: user?.lat ?? null,
-    long: user?.long ?? null,
+    ...postLocation,
     ...(geoLocation ? { location: geoLocation } : {}),
   });
 
@@ -161,11 +192,12 @@ const ensureMilestonePost = async (user, milestoneDays) => {
 
   return Post.findById(created._id)
     .populate("author")
+    .populate("closestCity")
     .populate({
       path: "comments",
       populate: { path: "author" },
     });
-};
+  };
 
 const buildTestMessage = () => ({
   title: "Sober Motivation (Test)",
@@ -220,7 +252,7 @@ const cronJob = () => {
         const users = await User.find({
           notificationsEnabled: true,
           sobrietyStartAt: { $ne: null },
-        });
+        }).populate(["drunkPic", "profilePic"]);
 
         if (!users.length) {
           console.log("No users with notifications enabled / sobrietyStartAt.");

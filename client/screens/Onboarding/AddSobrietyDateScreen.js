@@ -18,6 +18,7 @@ import Context from "../../context";
 
 import LogoIcon from "../../assets/icon.png";
 import { COLORS } from "../../constants/colors";
+const MILESTONES = [1, 2, 3, 5, 7, 10, 14, 30, 60, 90, 180, 365];
 const {
   primaryBackground,
   cardBackground,
@@ -109,7 +110,28 @@ const AddSobrietyDateScreen = ({ navigation, route }) => {
         resetSobrietyDate
       );
 
-      await dispatch({ type: "SET_USER", payload: resetSobrietyDate });
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const normalizedStart = new Date(selectedDate);
+      normalizedStart.setHours(0, 0, 0, 0);
+      const daysBetween = Math.max(
+        0,
+        Math.floor((today.getTime() - normalizedStart.getTime()) / (1000 * 60 * 60 * 24))
+      );
+
+      const milestonesAlreadyHit = MILESTONES.filter(
+        (milestone) => daysBetween >= milestone
+      );
+
+      const updatedUser = {
+        ...resetSobrietyDate,
+        milestonesNotified:
+          resetSobrietyDate?.milestonesNotified?.length > 0
+            ? resetSobrietyDate.milestonesNotified
+            : milestonesAlreadyHit,
+      };
+
+      await dispatch({ type: "SET_USER", payload: updatedUser });
 
       // Navigate to Location Permission screen
       navigation.navigate("LocationPermission");

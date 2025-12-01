@@ -2,6 +2,8 @@
 const { AuthenticationError } = require("apollo-server-express");
 const { User } = require("../../models");
 
+const MILESTONES = [1, 2, 3, 5, 7, 10, 14, 30, 60, 90, 180, 365];
+
 module.exports = {
   resetSobrietyDateResolver: async (_, { token, newStartAt }) => {
     try {
@@ -98,8 +100,17 @@ module.exports = {
       // 👇 picked date is also the start of the new streak
       user.sobrietyStartAt = newStart;
 
-      // Reset milestones so notifications can fire again for this new streak
-      user.milestonesNotified = [];
+      const daysBetween = Math.max(
+        0,
+        Math.floor((today.getTime() - newStartDay.getTime()) / (1000 * 60 * 60 * 24))
+      );
+
+      // Pre-mark milestones already passed to prevent backfilled notifications
+      const milestonesAlreadyReached = MILESTONES.filter(
+        (milestone) => daysBetween >= milestone
+      );
+
+      user.milestonesNotified = milestonesAlreadyReached;
 
       await user.save();
       return user;
