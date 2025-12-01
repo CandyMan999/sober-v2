@@ -31,6 +31,7 @@ module.exports = {
         "profilePic",
         "drunkPic",
         "savedPosts",
+        "savedQuotes",
       ]);
       if (!user) {
         throw new AuthenticationError("User not found");
@@ -239,6 +240,7 @@ module.exports = {
       "profilePic",
       "drunkPic",
       "savedPosts",
+      "savedQuotes",
     ]);
 
     if (!user) {
@@ -261,6 +263,10 @@ module.exports = {
         select: "url flagged viewsCount viewers thumbnailUrl",
       });
 
+    const savedQuotes = await Quote.find({ _id: { $in: user.savedQuotes || [] } })
+      .sort({ createdAt: -1 })
+      .populate("user");
+
     const quotes = await Quote.find({ user: user._id })
       .sort({ createdAt: -1 })
       .populate("user");
@@ -270,6 +276,7 @@ module.exports = {
       posts,
       quotes,
       savedPosts,
+      savedQuotes,
     };
   },
 
@@ -293,6 +300,7 @@ module.exports = {
       "profilePic",
       "drunkPic",
       "savedPosts",
+      "savedQuotes",
     ]);
 
     if (!user) {
@@ -316,6 +324,10 @@ module.exports = {
         path: "video",
         select: "url flagged viewsCount viewers thumbnailUrl",
       });
+
+    const savedQuotes = await Quote.find({ _id: { $in: user.savedQuotes || [] } })
+      .sort({ createdAt: -1 })
+      .populate("user");
 
     const quotes = await Quote.find({ user: user._id })
       .sort({ createdAt: -1 })
@@ -351,6 +363,7 @@ module.exports = {
       posts,
       quotes,
       savedPosts,
+      savedQuotes,
     };
   },
 };

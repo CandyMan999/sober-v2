@@ -140,6 +140,14 @@ const UserSchema = new mongoose.Schema(
       },
     ],
 
+    // Saved quotes for future inspiration
+    savedQuotes: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Quote",
+      },
+    ],
+
     // For timing pushes at correct local day.
     timezone: {
       type: String,

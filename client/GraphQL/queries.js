@@ -46,6 +46,9 @@ export const FETCH_ME_QUERY = `
       savedPosts {
         id
       }
+      savedQuotes {
+        id
+      }
       milestonesNotified
       notificationsEnabled
       streaks{
@@ -122,6 +125,9 @@ export const PROFILE_OVERVIEW_QUERY = `
         savedPosts {
           id
         }
+        savedQuotes {
+          id
+        }
         followers {
           id
           username
@@ -195,6 +201,18 @@ export const PROFILE_OVERVIEW_QUERY = `
           flagged
           viewsCount
           thumbnailUrl
+        }
+      }
+      savedQuotes {
+        id
+        text
+        isApproved
+        isDenied
+        createdAt
+        user {
+          id
+          username
+          profilePicUrl
         }
       }
     }
@@ -331,6 +349,18 @@ export const USER_PROFILE_QUERY = `
           flagged
           viewsCount
           thumbnailUrl
+        }
+      }
+      savedQuotes {
+        id
+        text
+        isApproved
+        isDenied
+        createdAt
+        user {
+          id
+          username
+          profilePicUrl
         }
       }
     }

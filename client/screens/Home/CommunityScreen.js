@@ -30,10 +30,12 @@ import { useClient } from "../../client";
 import {
   RECORD_POST_VIEW_MUTATION,
   SET_POST_REVIEW_MUTATION,
+  TOGGLE_SAVE_MUTATION,
 } from "../../GraphQL/mutations";
 import { getToken } from "../../utils/helpers";
 import Context from "../../context";
 import FeedInteractionModel from "../../utils/feed/FeedInteractionModel";
+import { applySavedStateToContext, isItemSaved } from "../../utils/saves";
 
 const TUTORIAL_SEEN_KEY = "community_tutorial_seen";
 const tutorialImage = require("../../assets/swipe1.png");
@@ -55,7 +57,7 @@ const dedupeById = (list = []) => {
 const CommunityScreen = () => {
   const client = useClient();
   const isFocused = useIsFocused();
-  const { state } = useContext(Context);
+  const { state, dispatch } = useContext(Context);
   const currentUserId = state?.user?.id;
   const currentUser = state?.user;
   const [posts, setPosts] = useState([]);
@@ -71,6 +73,7 @@ const CommunityScreen = () => {
   const [isMuted, setIsMuted] = useState(false);
   const [reviewingPostId, setReviewingPostId] = useState(null);
   const [selectedPost, setSelectedPost] = useState(null);
+  const [savingPostId, setSavingPostId] = useState(null);
   const [showTutorial, setShowTutorial] = useState(false);
   const [reviewBypass, setReviewBypass] = useState({});
   const [showFilterSheet, setShowFilterSheet] = useState(false);
@@ -513,6 +516,46 @@ const CommunityScreen = () => {
     }
   };
 
+  const handleToggleSavePost = async (post) => {
+    if (!post?.id) return;
+
+    const syncProfileOverview = (savedState) =>
+      applySavedStateToContext({
+        state,
+        dispatch,
+        targetType: "POST",
+        item: post,
+        saved: savedState,
+      });
+
+    const token = await getToken();
+    if (!token) return;
+
+    const alreadySaved = isItemSaved(state?.user?.savedPosts, post.id);
+    const optimisticSaved = !alreadySaved;
+    setSavingPostId(post.id);
+    syncProfileOverview(optimisticSaved);
+
+    try {
+      const data = await client.request(TOGGLE_SAVE_MUTATION, {
+        token,
+        targetType: "POST",
+        targetId: post.id,
+      });
+
+      const confirmed = data?.toggleSave?.saved;
+      if (typeof confirmed === "boolean" && confirmed !== optimisticSaved) {
+        syncProfileOverview(confirmed);
+      }
+    } catch (err) {
+      console.error("Error toggling post save", err);
+      syncProfileOverview(alreadySaved);
+    } finally {
+      setSavingPostId(null);
+      closeMoreSheet();
+    }
+  };
+
   const handleMorePress = (post) => {
     setSelectedPost(post);
   };
@@ -770,13 +813,35 @@ const CommunityScreen = () => {
             <Animated.View
               style={[styles.bottomSheet, { transform: [{ translateY }] }]}
             >
-              <Text style={styles.sheetTitle}>Post options</Text>
-              <TouchableOpacity style={styles.sheetAction} onPress={() => {}}>
+              <View style={styles.sheetHeader}>
+                <Text style={styles.sheetTitle}>Post options</Text>
+                <TouchableOpacity
+                  onPress={closeMoreSheet}
+                  accessibilityRole="button"
+                  accessibilityLabel="Close options"
+                  style={styles.sheetCloseButton}
+                >
+                  <Ionicons name="close-circle" size={32} color="#e5e7eb" />
+                </TouchableOpacity>
+              </View>
+              <TouchableOpacity
+                style={styles.sheetAction}
+                onPress={() => handleToggleSavePost(selectedPost)}
+                disabled={savingPostId === selectedPost?.id}
+              >
                 <View style={styles.sheetActionLeft}>
                   <Ionicons name="bookmark-outline" size={20} color="#fef3c7" />
-                  <Text style={styles.sheetActionText}>Save</Text>
+                  <Text style={styles.sheetActionText}>
+                    {isItemSaved(state?.user?.savedPosts, selectedPost.id)
+                      ? "Unsave"
+                      : "Save"}
+                  </Text>
                 </View>
-                <Ionicons name="chevron-forward" size={18} color="#9ca3af" />
+                {savingPostId === selectedPost?.id ? (
+                  <ActivityIndicator color="#f59e0b" style={styles.sheetSpinner} />
+                ) : (
+                  <Ionicons name="chevron-forward" size={18} color="#9ca3af" />
+                )}
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.sheetAction}
@@ -807,12 +872,6 @@ const CommunityScreen = () => {
                 ) : (
                   <Ionicons name="chevron-forward" size={18} color="#9ca3af" />
                 )}
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.sheetCancel}
-                onPress={closeMoreSheet}
-              >
-                <Text style={styles.sheetCancelText}>Close</Text>
               </TouchableOpacity>
             </Animated.View>
           </View>
@@ -1040,7 +1099,17 @@ const styles = StyleSheet.create({
     color: "#e5e7eb",
     fontSize: 16,
     fontWeight: "700",
-    marginBottom: 16,
+  },
+  sheetHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginBottom: 8,
+  },
+  sheetCloseButton: {
+    padding: 0,
+    marginLeft: 8,
+    marginTop: -10,
   },
   sheetAction: {
     paddingVertical: 14,
@@ -1071,15 +1140,6 @@ const styles = StyleSheet.create({
   },
   sheetSpinner: {
     marginLeft: 8,
-  },
-  sheetCancel: {
-    marginTop: 4,
-    paddingVertical: 12,
-  },
-  sheetCancelText: {
-    color: "#93c5fd",
-    textAlign: "center",
-    fontWeight: "600",
   },
   tutorialOverlay: {
     flex: 1,

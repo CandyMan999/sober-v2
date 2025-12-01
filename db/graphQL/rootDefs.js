@@ -29,6 +29,7 @@ const typeDefs = gql`
     followingCount: Int!
     buddiesCount: Int!
     savedPosts: [Post!]!
+    savedQuotes: [Quote!]!
     isFollowedByViewer: Boolean!
     isBuddyWithViewer: Boolean!
     followers: [User!]!
@@ -70,6 +71,11 @@ const typeDefs = gql`
     QUOTE
     POST
     COMMENT
+  }
+
+  enum SaveTarget {
+    POST
+    QUOTE
   }
 
   enum PictureSlot {
@@ -181,6 +187,7 @@ const typeDefs = gql`
     posts: [Post!]!
     quotes: [Quote!]!
     savedPosts: [Post!]!
+    savedQuotes: [Quote!]!
   }
 
   type Room {
@@ -367,6 +374,11 @@ const typeDefs = gql`
       targetType: LikeTarget!
       targetId: ID!
     ): LikePayload!
+    toggleSave(
+      token: String!
+      targetType: SaveTarget!
+      targetId: ID!
+    ): SavePayload!
     sendDirectMessage(recipientId: ID!, text: String!, replyTo: ID): Comment!
     followUser(token: String!, userId: ID!): Connection!
     unfollowUser(token: String!, userId: ID!): Boolean!
@@ -378,6 +390,12 @@ const typeDefs = gql`
     targetType: LikeTarget!
     targetId: ID!
     like: Like
+  }
+
+  type SavePayload {
+    saved: Boolean!
+    targetType: SaveTarget!
+    targetId: ID!
   }
 
   type Subscription {

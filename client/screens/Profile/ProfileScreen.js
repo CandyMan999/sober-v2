@@ -20,8 +20,18 @@ import Context from "../../context";
 import { useClient } from "../../client";
 import { getToken } from "../../utils/helpers";
 import { PROFILE_OVERVIEW_QUERY, FETCH_ME_QUERY } from "../../GraphQL/queries";
-import { TOGGLE_LIKE_MUTATION, SET_POST_REVIEW_MUTATION } from "../../GraphQL/mutations";
+import {
+  TOGGLE_LIKE_MUTATION,
+  SET_POST_REVIEW_MUTATION,
+  TOGGLE_SAVE_MUTATION,
+} from "../../GraphQL/mutations";
 import { ContentPreviewModal } from "../../components";
+import {
+  applySavedStateToContext,
+  isItemSaved,
+  mergeSavedList,
+  removeSavedItem,
+} from "../../utils/saves";
 
 const AVATAR_SIZE = 110;
 
@@ -38,6 +48,9 @@ const ProfileScreen = ({ navigation }) => {
   const [savedPosts, setSavedPosts] = useState(
     cachedOverview?.savedPosts || []
   );
+  const [savedQuotes, setSavedQuotes] = useState(
+    cachedOverview?.savedQuotes || []
+  );
   const [following, setFollowing] = useState(
     cachedOverview?.user?.following || []
   );
@@ -50,6 +63,7 @@ const ProfileScreen = ({ navigation }) => {
   const [previewItem, setPreviewItem] = useState(null);
   const [previewType, setPreviewType] = useState("POST");
   const [previewMuted, setPreviewMuted] = useState(true);
+  const [previewFromSaved, setPreviewFromSaved] = useState(false);
   const currentUser = state?.user;
   const currentUserId = currentUser?.id;
   const conversations = useMemo(() => {
@@ -120,11 +134,19 @@ const ProfileScreen = ({ navigation }) => {
     setPosts(cachedOverview.posts || []);
     setQuotes(cachedOverview.quotes || []);
     setSavedPosts(cachedOverview.savedPosts || []);
+    setSavedQuotes(cachedOverview.savedQuotes || []);
     setFollowers(cachedOverview.user?.followers || []);
     setFollowing(cachedOverview.user?.following || []);
     setBuddies(cachedOverview.user?.buddies || []);
     setLoading(false);
-  }, []);
+  }, [cachedOverview]);
+
+  useEffect(() => {
+    if (!state?.savedState) return;
+
+    setSavedPosts(state.savedState.savedPosts || []);
+    setSavedQuotes(state.savedState.savedQuotes || []);
+  }, [state?.savedState]);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -141,6 +163,7 @@ const ProfileScreen = ({ navigation }) => {
         setPosts(overview?.posts || []);
         setQuotes(overview?.quotes || []);
         setSavedPosts(overview?.savedPosts || []);
+        setSavedQuotes(overview?.savedQuotes || []);
         setFollowers(overview?.user?.followers || []);
         setFollowing(overview?.user?.following || []);
         setBuddies(overview?.user?.buddies || []);
@@ -218,7 +241,7 @@ const ProfileScreen = ({ navigation }) => {
     }
   };
 
-  const openPreview = (item, type = "POST") => {
+  const openPreview = (item, type = "POST", fromSaved = false) => {
     const authorFallback = profileData
       ? {
           id: profileData.id,
@@ -239,12 +262,21 @@ const ProfileScreen = ({ navigation }) => {
 
     setPreviewItem(hydratedItem);
     setPreviewType(type);
+    setPreviewFromSaved(fromSaved);
     setPreviewVisible(true);
   };
 
   const closePreview = () => {
     setPreviewVisible(false);
+    setPreviewFromSaved(false);
   };
+
+  const isPreviewSaved = useMemo(() => {
+    if (!previewItem?.id) return false;
+    return previewType === "POST"
+      ? isItemSaved(savedPosts, previewItem.id)
+      : isItemSaved(savedQuotes, previewItem.id);
+  }, [previewItem?.id, previewType, savedPosts, savedQuotes]);
 
   const handlePreviewCommentAdded = (newComment) => {
     if (!previewItem) return;
@@ -301,18 +333,33 @@ const ProfileScreen = ({ navigation }) => {
     setPreviewItem((prev) => (prev && prev.id === quoteId ? updater(prev) : prev));
   };
 
+  const syncProfileOverview = (nextSavedPosts, nextSavedQuotes) => {
+    const currentOverview = state?.profileOverview || {};
+    const payload = {
+      ...currentOverview,
+      user: profileData || currentOverview.user || state?.user,
+      posts,
+      quotes,
+      savedPosts: nextSavedPosts,
+      savedQuotes: nextSavedQuotes,
+    };
+
+    dispatch({ type: "SET_PROFILE_OVERVIEW", payload });
+  };
+
   const handleDeleteContent = (contentId, contentType) => {
     if (!contentId) return;
 
     if (contentType === "QUOTE") {
-      setQuotes((prev) => prev.filter((quote) => quote.id !== contentId));
-      setPreviewItem((prev) => (prev?.id === contentId ? null : prev));
-      setPreviewVisible(false);
-      return;
-    }
+    setQuotes((prev) => prev.filter((quote) => quote.id !== contentId));
+    setSavedQuotes((prev) => prev.filter((quote) => quote.id !== contentId));
+    setPreviewItem((prev) => (prev?.id === contentId ? null : prev));
+    setPreviewVisible(false);
+    return;
+  }
 
-    setPosts((prev) => prev.filter((post) => post.id !== contentId));
-    setSavedPosts((prev) => prev.filter((post) => post.id !== contentId));
+  setPosts((prev) => prev.filter((post) => post.id !== contentId));
+  setSavedPosts((prev) => prev.filter((post) => post.id !== contentId));
     setPreviewItem((prev) => (prev?.id === contentId ? null : prev));
     setPreviewVisible(false);
   };
@@ -435,6 +482,62 @@ const ProfileScreen = ({ navigation }) => {
     }
   };
 
+  const handleToggleSave = async (content, contentType = "POST") => {
+    if (!content?.id) return;
+
+    const token = await getToken();
+    if (!token) return;
+
+    const isPost = contentType === "POST";
+    const collection = isPost ? savedPosts : savedQuotes;
+    const alreadySaved = isItemSaved(collection, content.id);
+    const optimisticSaved = !alreadySaved;
+
+    const applyLocalSave = (nextSaved) => {
+      const nextSavedPosts = isPost
+        ? nextSaved
+          ? mergeSavedList(savedPosts, content)
+          : removeSavedItem(savedPosts, content.id)
+        : savedPosts;
+      const nextSavedQuotes = !isPost
+        ? nextSaved
+          ? mergeSavedList(savedQuotes, content)
+          : removeSavedItem(savedQuotes, content.id)
+        : savedQuotes;
+
+      setSavedPosts(nextSavedPosts);
+      setSavedQuotes(nextSavedQuotes);
+
+      syncProfileOverview(nextSavedPosts, nextSavedQuotes);
+
+      applySavedStateToContext({
+        state,
+        dispatch,
+        targetType: contentType,
+        item: content,
+        saved: nextSaved,
+      });
+    };
+
+    applyLocalSave(optimisticSaved);
+
+    try {
+      const data = await client.request(TOGGLE_SAVE_MUTATION, {
+        token,
+        targetType: contentType,
+        targetId: content.id,
+      });
+
+      const confirmed = data?.toggleSave?.saved;
+      if (typeof confirmed === "boolean" && confirmed !== optimisticSaved) {
+        applyLocalSave(confirmed);
+      }
+    } catch (err) {
+      console.error("Error toggling save", err);
+      applyLocalSave(alreadySaved);
+    }
+  };
+
   const handleFlagForReview = async (postId, alreadyFlagged) => {
     if (!postId) return;
     if (alreadyFlagged) {
@@ -474,7 +577,7 @@ const ProfileScreen = ({ navigation }) => {
     }
   };
 
-  const renderPostTile = ({ item, saved = false }) => {
+  const renderPostTile = ({ item, saved = false, fromSaved = false }) => {
     const isVideo = item.mediaType === "VIDEO";
     const thumbnail = isVideo
       ? item.video?.thumbnailUrl || item.previewUrl || item.imageUrl
@@ -487,7 +590,7 @@ const ProfileScreen = ({ navigation }) => {
       <TouchableOpacity
         style={styles.tileWrapper}
         activeOpacity={0.85}
-        onPress={() => openPreview(item, "POST")}
+        onPress={() => openPreview(item, "POST", fromSaved)}
       >
         <View style={styles.tile}>
           {imageSource ? (
@@ -522,7 +625,7 @@ const ProfileScreen = ({ navigation }) => {
     );
   };
 
-  const renderQuoteTile = ({ item }) => {
+  const renderQuoteTile = ({ item, saved = false, fromSaved = false }) => {
     const status = item.isDenied
       ? { label: "Denied", color: "#ef4444", icon: "close-circle" }
       : item.isApproved
@@ -533,7 +636,7 @@ const ProfileScreen = ({ navigation }) => {
       <TouchableOpacity
         style={styles.tileWrapper}
         activeOpacity={0.85}
-        onPress={() => openPreview(item, "QUOTE")}
+        onPress={() => openPreview(item, "QUOTE", fromSaved)}
       >
         <View style={[styles.tile, styles.quoteTile]}>
           <View style={styles.quoteHeader}>
@@ -543,6 +646,14 @@ const ProfileScreen = ({ navigation }) => {
               color="#f59e0b"
             />
             <Text style={styles.quoteBadge}>Quote</Text>
+            {saved && (
+              <Feather
+                name="bookmark"
+                size={14}
+                color="#fef3c7"
+                style={styles.savedQuoteIcon}
+              />
+            )}
           </View>
           <Text style={styles.quoteText} numberOfLines={3}>
             {item.text}
@@ -565,6 +676,14 @@ const ProfileScreen = ({ navigation }) => {
         </View>
       </TouchableOpacity>
     );
+  };
+
+  const renderSavedTile = ({ item }) => {
+    if (item.__savedType === "QUOTE") {
+      return renderQuoteTile({ item, saved: true, fromSaved: true });
+    }
+
+    return renderPostTile({ item, saved: true, fromSaved: true });
   };
 
   const renderDrunkContent = () => {
@@ -606,13 +725,30 @@ const ProfileScreen = ({ navigation }) => {
     );
   };
 
+  const savedItems = useMemo(() => {
+    const combined = [
+      ...(savedPosts || []).map((post) => ({ ...post, __savedType: "POST" })),
+      ...(savedQuotes || []).map((quote) => ({ ...quote, __savedType: "QUOTE" })),
+    ];
+
+    return combined.sort((a, b) => {
+      const aDate = new Date(a.createdAt || 0).getTime();
+      const bDate = new Date(b.createdAt || 0).getTime();
+      return bDate - aDate;
+    });
+  }, [savedPosts, savedQuotes]);
+
   const renderContent = (tabType) => {
     if (tabType === "DRUNK") {
       return renderDrunkContent();
     }
 
     const data =
-      tabType === "POSTS" ? posts : tabType === "QUOTES" ? quotes : savedPosts;
+      tabType === "POSTS"
+        ? posts
+        : tabType === "QUOTES"
+        ? quotes
+        : savedItems;
 
     if (!data?.length) {
       const emptyCopy =
@@ -620,7 +756,7 @@ const ProfileScreen = ({ navigation }) => {
           ? "No posts yet"
           : tabType === "QUOTES"
           ? "No quotes yet"
-          : "No saved posts yet";
+          : "No saved posts or quotes yet";
       return (
         <View style={styles.emptyState}>
           <Text style={styles.emptyText}>{emptyCopy}</Text>
@@ -631,6 +767,8 @@ const ProfileScreen = ({ navigation }) => {
     const renderer =
       tabType === "QUOTES"
         ? renderQuoteTile
+        : tabType === "SAVED"
+        ? renderSavedTile
         : ({ item }) => renderPostTile({ item, saved: tabType === "SAVED" });
 
     return (
@@ -705,7 +843,7 @@ const ProfileScreen = ({ navigation }) => {
 
     const postRows = Math.max(1, Math.ceil(posts.length / 3));
     const quoteRows = Math.max(1, Math.ceil(quotes.length / 3));
-    const savedRows = Math.max(1, Math.ceil(savedPosts.length / 3));
+    const savedRows = Math.max(1, Math.ceil(savedItems.length / 3));
 
     const maxRows = Math.max(postRows, quoteRows, savedRows);
     return maxRows * 180;
@@ -714,7 +852,7 @@ const ProfileScreen = ({ navigation }) => {
     layout.width,
     posts.length,
     quotes.length,
-    savedPosts.length,
+    savedItems.length,
     profileData?.drunkPicUrl,
   ]);
 
@@ -899,8 +1037,11 @@ const ProfileScreen = ({ navigation }) => {
         onCommentAdded={handlePreviewCommentAdded}
         onTogglePostLike={handleTogglePostLike}
         onToggleQuoteLike={handleToggleQuoteLike}
+        onToggleSave={handleToggleSave}
         onFlagForReview={handleFlagForReview}
         onDelete={handleDeleteContent}
+        isSaved={isPreviewSaved}
+        disableDelete={previewFromSaved}
       />
     </>
   );
@@ -1168,6 +1309,9 @@ const styles = StyleSheet.create({
     textTransform: "uppercase",
     letterSpacing: 0.6,
     fontSize: 10,
+  },
+  savedQuoteIcon: {
+    marginLeft: 6,
   },
   quoteText: {
     color: "#e5e7eb",

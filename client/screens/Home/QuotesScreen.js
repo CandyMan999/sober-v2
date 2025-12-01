@@ -17,6 +17,7 @@ import {
   TouchableOpacity,
   Pressable,
   Animated,
+  Dimensions,
 } from "react-native";
 import { useIsFocused } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
@@ -26,14 +27,20 @@ import { useClient } from "../../client";
 import AlertModal from "../../components/AlertModal";
 import Context from "../../context";
 import FeedInteractionModel from "../../utils/feed/FeedInteractionModel";
+import { TOGGLE_SAVE_MUTATION } from "../../GraphQL/mutations";
+import { applySavedStateToContext, isItemSaved } from "../../utils/saves";
+import { getToken } from "../../utils/helpers";
 
 // 👇 module-level flag: survives navigation, resets when app reloads
 let hasShownQuotesAlertThisSession = false;
 
+const { height: WINDOW_HEIGHT } = Dimensions.get("window");
+const SHEET_HEIGHT = Math.round(WINDOW_HEIGHT * 0.26);
+
 const QuotesScreen = () => {
   const client = useClient();
   const isFocused = useIsFocused();
-  const { state } = useContext(Context);
+  const { state, dispatch } = useContext(Context);
   const currentUserId = state?.user?.id;
   const currentUser = state?.user;
 
@@ -42,6 +49,8 @@ const QuotesScreen = () => {
   const [error, setError] = useState("");
   const [containerHeight, setContainerHeight] = useState(null);
   const [showSaveSheet, setShowSaveSheet] = useState(false);
+  const [selectedQuote, setSelectedQuote] = useState(null);
+  const [savingQuoteId, setSavingQuoteId] = useState(null);
   const [saveAnim] = useState(() => new Animated.Value(0));
 
   // “Add your own quote” hint
@@ -168,7 +177,8 @@ const QuotesScreen = () => {
     setContainerHeight(height);
   };
 
-  const openSaveSheet = () => {
+  const openSaveSheet = (quote) => {
+    setSelectedQuote(quote || null);
     setShowSaveSheet(true);
     Animated.spring(saveAnim, {
       toValue: 1,
@@ -189,51 +199,122 @@ const QuotesScreen = () => {
     }).start(({ finished }) => {
       if (finished) {
         setShowSaveSheet(false);
+        setSelectedQuote(null);
       }
     });
   };
 
-  const renderSaveSheet = () => (
-    <Modal
-      transparent
-      animationType="none"
-      visible={showSaveSheet}
-      onRequestClose={closeSaveSheet}
-    >
-      <Pressable style={styles.sheetBackdrop} onPress={closeSaveSheet} />
-      <View style={styles.sheetContainer}>
-        <Animated.View
-          style={[
-            styles.sheet,
-            {
-              transform: [
-                {
-                  translateY: saveAnim.interpolate({
-                    inputRange: [0, 1],
-                    outputRange: [140, 0],
-                  }),
-                },
-              ],
-            },
-          ]}
-        >
-          <Text style={styles.sheetTitle}>Quote options</Text>
+  const translateY = saveAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: [SHEET_HEIGHT + 60, 0],
+  });
 
-          <TouchableOpacity style={styles.sheetAction} onPress={closeSaveSheet}>
-            <View style={styles.sheetActionLeft}>
-              <Ionicons name="bookmark-outline" size={20} color="#fef3c7" />
-              <Text style={styles.sheetActionText}>Save</Text>
+  const handleToggleSaveQuote = async () => {
+    if (!selectedQuote?.id) return;
+
+    const token = await getToken();
+    if (!token) return;
+
+    const alreadySaved = isItemSaved(state?.user?.savedQuotes, selectedQuote.id);
+    const optimisticSaved = !alreadySaved;
+    setSavingQuoteId(selectedQuote.id);
+
+    applySavedStateToContext({
+      state,
+      dispatch,
+      targetType: "QUOTE",
+      item: selectedQuote,
+      saved: optimisticSaved,
+    });
+
+    try {
+      const data = await client.request(TOGGLE_SAVE_MUTATION, {
+        token,
+        targetType: "QUOTE",
+        targetId: selectedQuote.id,
+      });
+
+      const confirmed = data?.toggleSave?.saved;
+      if (typeof confirmed === "boolean" && confirmed !== optimisticSaved) {
+        applySavedStateToContext({
+          state,
+          dispatch,
+          targetType: "QUOTE",
+          item: selectedQuote,
+          saved: confirmed,
+        });
+      }
+    } catch (err) {
+      console.error("Error toggling quote save", err);
+      applySavedStateToContext({
+        state,
+        dispatch,
+        targetType: "QUOTE",
+        item: selectedQuote,
+        saved: alreadySaved,
+      });
+    } finally {
+      setSavingQuoteId(null);
+      closeSaveSheet();
+    }
+  };
+
+  const renderSaveSheet = () => {
+    const selectedQuoteId = selectedQuote?.id;
+
+    return (
+      <Modal
+        transparent
+        animationType="none"
+        visible={showSaveSheet}
+        onRequestClose={closeSaveSheet}
+      >
+        <View style={styles.modalContainer}>
+          <Pressable style={styles.sheetBackdrop} onPress={closeSaveSheet} />
+          <Animated.View
+            style={[styles.bottomSheet, { transform: [{ translateY }] }]}
+          >
+            <View style={styles.sheetHeader}>
+              <Text style={styles.sheetTitle}>More options</Text>
+              <TouchableOpacity
+                onPress={closeSaveSheet}
+                accessibilityRole="button"
+                accessibilityLabel="Close options"
+                style={styles.sheetCloseButton}
+              >
+                <Ionicons name="close-circle" size={32} color="#e5e7eb" />
+              </TouchableOpacity>
             </View>
-            <Ionicons name="chevron-forward" size={18} color="#9ca3af" />
-          </TouchableOpacity>
 
-          <TouchableOpacity style={styles.sheetCancel} onPress={closeSaveSheet}>
-            <Text style={styles.sheetCancelText}>Close</Text>
-          </TouchableOpacity>
-        </Animated.View>
-      </View>
-    </Modal>
-  );
+            <TouchableOpacity
+              style={styles.sheetAction}
+              onPress={handleToggleSaveQuote}
+              disabled={!selectedQuoteId || savingQuoteId === selectedQuoteId}
+            >
+              <View style={styles.sheetActionLeft}>
+                <Ionicons name="bookmark-outline" size={20} color="#fef3c7" />
+                <Text style={styles.sheetActionText}>
+                  {selectedQuoteId &&
+                  isItemSaved(state?.user?.savedQuotes, selectedQuoteId)
+                    ? "Unsave"
+                    : "Save"}
+                </Text>
+              </View>
+              {savingQuoteId === selectedQuoteId ? (
+                <ActivityIndicator
+                  color="#f59e0b"
+                  size="small"
+                  style={styles.sheetSpinner}
+                />
+              ) : (
+                <Ionicons name="chevron-forward" size={18} color="#9ca3af" />
+              )}
+            </TouchableOpacity>
+          </Animated.View>
+        </View>
+      </Modal>
+    );
+  };
 
   const renderAlert = () => (
     <AlertModal
@@ -304,7 +385,7 @@ const QuotesScreen = () => {
             item.user?.id ? () => handleToggleFollowUser(item.user) : undefined
           }
           viewerUserId={currentUserId}
-          onMorePress={openSaveSheet}
+          onMorePress={() => openSaveSheet(item)}
         />
         {renderSaveSheet()}
       </View>
@@ -322,7 +403,7 @@ const QuotesScreen = () => {
           item.user?.id ? () => handleToggleFollowUser(item.user) : undefined
         }
         viewerUserId={currentUserId}
-        onMorePress={openSaveSheet}
+        onMorePress={() => openSaveSheet(item)}
       />
     </View>
   );
@@ -376,28 +457,44 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
     backgroundColor: "rgba(0,0,0,0.45)",
   },
-  sheetContainer: {
+  modalContainer: {
     flex: 1,
+    ...StyleSheet.absoluteFillObject,
     justifyContent: "flex-end",
   },
-  sheet: {
-    marginHorizontal: 16,
-    marginBottom: 18,
-    paddingHorizontal: 18,
-    paddingVertical: 18,
+  bottomSheet: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    bottom: 0,
+    height: SHEET_HEIGHT,
+    paddingHorizontal: 20,
+    paddingTop: 20,
+    paddingBottom: 28,
     backgroundColor: "#0f172a",
-    borderRadius: 16,
+    borderTopLeftRadius: 16,
+    borderTopRightRadius: 16,
     borderWidth: 1,
     borderColor: "rgba(245,158,11,0.35)",
+  },
+  sheetHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginBottom: 8,
   },
   sheetTitle: {
     color: "#e5e7eb",
     fontSize: 16,
     fontWeight: "700",
-    marginBottom: 14,
+  },
+  sheetCloseButton: {
+    padding: 0,
+    marginLeft: 8,
+    marginTop: -10,
   },
   sheetAction: {
-    paddingVertical: 12,
+    paddingVertical: 14,
     paddingHorizontal: 12,
     flexDirection: "row",
     alignItems: "center",
@@ -418,13 +515,8 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     marginLeft: 12,
   },
-  sheetCancel: {
-    paddingVertical: 10,
-  },
-  sheetCancelText: {
-    color: "#93c5fd",
-    textAlign: "center",
-    fontWeight: "600",
+  sheetSpinner: {
+    marginLeft: 8,
   },
 });
 
