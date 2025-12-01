@@ -185,13 +185,13 @@ const ContentPreviewModal = ({
   }, [visible]);
 
   useEffect(() => {
-    if (!visible || !localItem?.id || loadingComments) return undefined;
+    if (!visible || !localItem?.id) return undefined;
 
     const hasComments = Array.isArray(localItem.comments)
       ? localItem.comments.length > 0
       : false;
 
-    if (hasComments) return undefined;
+    if (hasComments || loadingComments) return undefined;
 
     let isActive = true;
 
@@ -224,9 +224,8 @@ const ContentPreviewModal = ({
 
     return () => {
       isActive = false;
-      setLoadingComments(false);
     };
-  }, [client, isPost, loadingComments, localItem, visible]);
+  }, [client, isPost, localItem?.id, loadingComments, visible]);
 
   const handleClose = () => {
     dragY.setValue(0);
