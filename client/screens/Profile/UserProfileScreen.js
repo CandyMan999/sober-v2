@@ -1054,17 +1054,16 @@ const UserProfileScreen = ({ route, navigation }) => {
         </View>
         <View style={styles.bodyPadding}>
           <View style={styles.headerRow}>
-            <View style={styles.avatarColumn}>
-              <View ref={avatarRef} onLayout={handleAvatarLayout}>
-                <Avatar
-                  uri={profileData?.profilePicUrl}
-                  size={AVATAR_SIZE}
-                  haloColors={["#fcd34d", "#f97316"]}
-                  disableNavigation
-                  onPress={handleOpenAvatar}
-                />
-              </View>
-              <View style={styles.usernameRow}>
+              <View style={styles.avatarColumn}>
+                <View ref={avatarRef} onLayout={handleAvatarLayout}>
+                  <Avatar
+                    uri={profileData?.profilePicUrl}
+                    size={AVATAR_SIZE}
+                    haloColors={["#fcd34d", "#f97316"]}
+                    onPress={handleOpenAvatar}
+                  />
+                </View>
+                <View style={styles.usernameRow}>
                 <Text style={styles.avatarLabel}>
                   {profileData?.username || "User"}
                 </Text>
