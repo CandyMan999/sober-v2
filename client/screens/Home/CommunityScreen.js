@@ -40,7 +40,7 @@ const tutorialImage = require("../../assets/swipe1.png");
 
 const { height: WINDOW_HEIGHT } = Dimensions.get("window");
 const PAGE_SIZE = 20;
-const SHEET_HEIGHT = Math.round(WINDOW_HEIGHT * 0.33);
+const SHEET_HEIGHT = Math.round(WINDOW_HEIGHT * 0.26);
 
 const dedupeById = (list = []) => {
   const seen = new Set();
@@ -175,9 +175,13 @@ const CommunityScreen = () => {
     (postsToFilter = [], filterLabel = activeFilter) => {
       switch (filterLabel) {
         case "Buddies":
-          return postsToFilter.filter((post) => post?.author?.isBuddyWithViewer);
+          return postsToFilter.filter(
+            (post) => post?.author?.isBuddyWithViewer
+          );
         case "Following":
-          return postsToFilter.filter((post) => post?.author?.isFollowedByViewer);
+          return postsToFilter.filter(
+            (post) => post?.author?.isFollowedByViewer
+          );
         default:
           return postsToFilter;
       }
@@ -230,7 +234,10 @@ const CommunityScreen = () => {
           return;
         }
 
-        const filteredPosts = filterPostsForView(payload.posts || [], filterOverride);
+        const filteredPosts = filterPostsForView(
+          payload.posts || [],
+          filterOverride
+        );
 
         setPosts((prev) =>
           append

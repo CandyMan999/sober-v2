@@ -345,6 +345,8 @@ const typeDefs = gql`
     addQuote(text: String!): Quote
     sendPost(file: Upload!, senderID: ID!, text: String): Post
     sendImagePost(file: Upload!, senderID: ID!, text: String): Post
+    deletePost(token: String!, postId: ID!): Boolean!
+    deleteQuote(token: String!, quoteId: ID!): Boolean!
     setPostReview(postId: ID!, review: Boolean!): Post!
     recordPostView(postId: ID!, token: String!): Post!
     createPostComment(

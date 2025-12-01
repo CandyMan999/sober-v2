@@ -15,11 +15,17 @@ import {
 import { PanGestureHandler, State } from "react-native-gesture-handler";
 import { Ionicons } from "@expo/vector-icons";
 import { ResizeMode, Video } from "expo-av";
+import { useClient } from "../client";
+import {
+  DELETE_POST_MUTATION,
+  DELETE_QUOTE_MUTATION,
+} from "../GraphQL/mutations";
+import { getToken } from "../utils/helpers";
 import CommunityFeedLayout from "./CommunityFeedLayout";
 import QuoteFeedLayout from "./QuoteFeedLayout";
 
 const { height: WINDOW_HEIGHT } = Dimensions.get("window");
-const ACTION_SHEET_HEIGHT = Math.round(WINDOW_HEIGHT * 0.33);
+const ACTION_SHEET_HEIGHT = Math.round(WINDOW_HEIGHT * 0.26);
 const ANIMATION_DURATION = 240;
 
 const ContentPreviewModal = ({
@@ -35,16 +41,21 @@ const ContentPreviewModal = ({
   onTogglePostLike,
   onToggleQuoteLike,
   onFlagForReview,
+  onDelete,
 }) => {
   const [mounted, setMounted] = useState(visible);
   const [localItem, setLocalItem] = useState(item);
   const [showActions, setShowActions] = useState(false);
   const [actionsVisible, setActionsVisible] = useState(false);
   const [flagging, setFlagging] = useState(false);
+  const [deleting, setDeleting] = useState(false);
   const backdropOpacity = useRef(new Animated.Value(0)).current;
   const translateY = useRef(new Animated.Value(WINDOW_HEIGHT)).current;
   const dragY = useRef(new Animated.Value(0)).current;
-  const actionsTranslateY = useRef(new Animated.Value(ACTION_SHEET_HEIGHT + 60)).current;
+  const actionsTranslateY = useRef(
+    new Animated.Value(ACTION_SHEET_HEIGHT + 60)
+  ).current;
+  const client = useClient();
   const backdropFalloffOpacity = useMemo(
     () =>
       dragY.interpolate({
@@ -117,7 +128,10 @@ const ContentPreviewModal = ({
     if (!videoRef.current) return;
 
     if (visible) {
-      videoRef.current.setStatusAsync?.({ shouldPlay: true, positionMillis: 0 });
+      videoRef.current.setStatusAsync?.({
+        shouldPlay: true,
+        positionMillis: 0,
+      });
     } else {
       videoRef.current.pauseAsync?.();
     }
@@ -127,7 +141,10 @@ const ContentPreviewModal = ({
     if (!videoRef.current || !visible) return;
     const isVideo = (localItem?.mediaType || "VIDEO") === "VIDEO";
     if (isVideo) {
-      videoRef.current.setStatusAsync?.({ shouldPlay: true, positionMillis: 0 });
+      videoRef.current.setStatusAsync?.({
+        shouldPlay: true,
+        positionMillis: 0,
+      });
     }
   }, [localItem, visible]);
 
@@ -155,6 +172,7 @@ const ContentPreviewModal = ({
     if (!visible) {
       setShowActions(false);
       setFlagging(false);
+      setDeleting(false);
     }
   }, [visible]);
 
@@ -269,6 +287,19 @@ const ContentPreviewModal = ({
       }
     : null;
 
+  const canDelete = useMemo(() => {
+    if (!viewerId || !content) return false;
+
+    const ownerIds = [
+      content.author?.id,
+      content.user?.id,
+      content.createdBy?.id,
+      content.postAuthor?.id,
+    ].filter(Boolean);
+
+    return ownerIds.some((id) => id === viewerId);
+  }, [content, viewerId]);
+
   const isLiked = useMemo(() => {
     if (!content || !viewerId) return false;
     const likes = content.likes || [];
@@ -295,6 +326,29 @@ const ContentPreviewModal = ({
       await onFlagForReview?.(content.id, content.review);
     } finally {
       setFlagging(false);
+      closeActionsSheet();
+    }
+  };
+
+  const handleDeletePress = async () => {
+    if (!content?.id || deleting || !canDelete) return;
+    const token = await getToken();
+    if (!token) return;
+
+    setDeleting(true);
+    try {
+      const variables = isPost
+        ? { token, postId: content.id }
+        : { token, quoteId: content.id };
+      const mutation = isPost ? DELETE_POST_MUTATION : DELETE_QUOTE_MUTATION;
+
+      await client.request(mutation, variables);
+      onDelete?.(content.id, type);
+      handleClose();
+    } catch (err) {
+      console.error("Error deleting content", err);
+    } finally {
+      setDeleting(false);
       closeActionsSheet();
     }
   };
@@ -356,12 +410,18 @@ const ContentPreviewModal = ({
         onToggleFollow={onToggleFollow}
         isLiked={isLiked}
         onLikePress={handleLikePress}
+        onMorePress={canDelete ? () => setShowActions(true) : undefined}
       />
     );
   };
 
   return (
-    <Modal transparent animationType="none" visible={mounted} onRequestClose={handleClose}>
+    <Modal
+      transparent
+      animationType="none"
+      visible={mounted}
+      onRequestClose={handleClose}
+    >
       <Animated.View
         style={[styles.backdrop, { opacity: combinedBackdropOpacity }]}
         pointerEvents={visible ? "auto" : "none"}
@@ -375,7 +435,12 @@ const ContentPreviewModal = ({
         activeOffsetY={[-6, 6]}
         failOffsetX={[-16, 16]}
       >
-        <Animated.View style={[styles.card, { transform: [{ translateY: combinedTranslateY }] }]}>
+        <Animated.View
+          style={[
+            styles.card,
+            { transform: [{ translateY: combinedTranslateY }] },
+          ]}
+        >
           <TouchableOpacity style={styles.closeButton} onPress={handleClose}>
             <Ionicons name="close" size={24} color="#fef3c7" />
           </TouchableOpacity>
@@ -383,43 +448,102 @@ const ContentPreviewModal = ({
         </Animated.View>
       </PanGestureHandler>
 
-      {isPost && actionsVisible ? (
-        <Modal visible animationType="fade" transparent onRequestClose={closeActionsSheet}>
+      {actionsVisible ? (
+        <Modal
+          visible
+          animationType="fade"
+          transparent
+          onRequestClose={closeActionsSheet}
+        >
           <View style={styles.modalContainer}>
-            <Pressable style={styles.sheetBackdrop} onPress={closeActionsSheet} />
+            <Pressable
+              style={styles.sheetBackdrop}
+              onPress={closeActionsSheet}
+            />
             <Animated.View
-              style={[styles.bottomSheet, { transform: [{ translateY: actionsTranslateY }] }]}
+              style={[
+                styles.bottomSheet,
+                { transform: [{ translateY: actionsTranslateY }] },
+              ]}
             >
-              <Text style={styles.sheetTitle}>Post options</Text>
-              <TouchableOpacity style={styles.sheetAction} onPress={() => {}}>
-                <View style={styles.sheetActionLeft}>
-                  <Ionicons name="bookmark-outline" size={20} color="#fef3c7" />
-                  <Text style={styles.sheetActionText}>Save</Text>
-                </View>
-                <Ionicons name="chevron-forward" size={18} color="#9ca3af" />
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.sheetAction}
-                onPress={handleFlagPress}
-                disabled={flagging || content?.review}
-              >
-                <View style={styles.sheetActionLeft}>
-                  <Ionicons
-                    name={content?.review ? "flag" : "flag-outline"}
-                    size={20}
-                    color="#fef3c7"
-                  />
-                  <Text style={styles.sheetActionText}>
-                    {content?.review ? "Already flagged for review" : "Flag for review"}
-                  </Text>
-                </View>
-                {flagging ? (
-                  <ActivityIndicator color="#f59e0b" style={styles.sheetSpinner} />
-                ) : (
+              <Text style={styles.sheetTitle}>
+                {isPost ? "Post options" : "Quote options"}
+              </Text>
+              {isPost && !canDelete ? (
+                <TouchableOpacity style={styles.sheetAction} onPress={() => {}}>
+                  <View style={styles.sheetActionLeft}>
+                    <Ionicons
+                      name="bookmark-outline"
+                      size={20}
+                      color="#fef3c7"
+                    />
+                    <Text style={styles.sheetActionText}>Save</Text>
+                  </View>
                   <Ionicons name="chevron-forward" size={18} color="#9ca3af" />
-                )}
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.sheetCancel} onPress={closeActionsSheet}>
+                </TouchableOpacity>
+              ) : null}
+              {isPost && !canDelete ? (
+                <TouchableOpacity
+                  style={styles.sheetAction}
+                  onPress={handleFlagPress}
+                  disabled={flagging || content?.review}
+                >
+                  <View style={styles.sheetActionLeft}>
+                    <Ionicons
+                      name={content?.review ? "flag" : "flag-outline"}
+                      size={20}
+                      color="#fef3c7"
+                    />
+                    <Text style={styles.sheetActionText}>
+                      {content?.review
+                        ? "Already flagged for review"
+                        : "Flag for review"}
+                    </Text>
+                  </View>
+                  {flagging ? (
+                    <ActivityIndicator
+                      color="#f59e0b"
+                      style={styles.sheetSpinner}
+                    />
+                  ) : (
+                    <Ionicons
+                      name="chevron-forward"
+                      size={18}
+                      color="#9ca3af"
+                    />
+                  )}
+                </TouchableOpacity>
+              ) : null}
+              {canDelete ? (
+                <TouchableOpacity
+                  style={styles.sheetAction}
+                  onPress={handleDeletePress}
+                  disabled={deleting}
+                >
+                  <View style={styles.sheetActionLeft}>
+                    <Ionicons name="trash-outline" size={20} color="#fef3c7" />
+                    <Text style={styles.sheetActionText}>
+                      {`Delete ${isPost ? "post" : "quote"}`}
+                    </Text>
+                  </View>
+                  {deleting ? (
+                    <ActivityIndicator
+                      color="#f59e0b"
+                      style={styles.sheetSpinner}
+                    />
+                  ) : (
+                    <Ionicons
+                      name="chevron-forward"
+                      size={18}
+                      color="#9ca3af"
+                    />
+                  )}
+                </TouchableOpacity>
+              ) : null}
+              <TouchableOpacity
+                style={styles.sheetCancel}
+                onPress={closeActionsSheet}
+              >
                 <Text style={styles.sheetCancelText}>Close</Text>
               </TouchableOpacity>
             </Animated.View>

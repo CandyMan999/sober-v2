@@ -402,6 +402,22 @@ const UserProfileScreen = ({ route, navigation }) => {
     setPreviewItem((prev) => (prev && prev.id === quoteId ? updater(prev) : prev));
   };
 
+  const handleDeleteContent = (contentId, contentType) => {
+    if (!contentId) return;
+
+    if (contentType === "QUOTE") {
+      setQuotes((prev) => prev.filter((quote) => quote.id !== contentId));
+      setPreviewItem((prev) => (prev?.id === contentId ? null : prev));
+      setPreviewVisible(false);
+      return;
+    }
+
+    setPosts((prev) => prev.filter((post) => post.id !== contentId));
+    setSavedPosts((prev) => prev.filter((post) => post.id !== contentId));
+    setPreviewItem((prev) => (prev?.id === contentId ? null : prev));
+    setPreviewVisible(false);
+  };
+
   const handleTogglePostLike = async (postId) => {
     if (!postId || !currentUserId) return;
 
@@ -1016,6 +1032,7 @@ const UserProfileScreen = ({ route, navigation }) => {
         onTogglePostLike={handleTogglePostLike}
         onToggleQuoteLike={handleToggleQuoteLike}
         onFlagForReview={handleFlagForReview}
+        onDelete={handleDeleteContent}
       />
     </>
   );

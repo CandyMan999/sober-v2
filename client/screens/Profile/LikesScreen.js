@@ -59,19 +59,21 @@ const LikesScreen = () => {
   const [previewItem, setPreviewItem] = useState(null);
   const [previewType, setPreviewType] = useState("POST");
   const [previewMuted, setPreviewMuted] = useState(true);
+  const [postItems, setPostItems] = useState(posts);
+  const [quoteItems, setQuoteItems] = useState(quotes);
 
   const computedLikesTotal = useMemo(() => {
-    const postLikes = posts.reduce((sum, post) => sum + (post?.likesCount || 0), 0);
-    const quoteLikes = quotes.reduce(
+    const postLikes = postItems.reduce((sum, post) => sum + (post?.likesCount || 0), 0);
+    const quoteLikes = quoteItems.reduce(
       (sum, quote) => sum + (quote?.likesCount || 0),
       0
     );
 
     return postLikes + quoteLikes;
-  }, [posts, quotes]);
+  }, [postItems, quoteItems]);
 
   const likedItems = useMemo(() => {
-    const postItems = (posts || []).map((post) => ({
+    const postEntries = (postItems || []).map((post) => ({
       id: `post-${post.id}`,
       type: "Post",
       contentType: "POST",
@@ -83,7 +85,7 @@ const LikesScreen = () => {
       raw: post,
     }));
 
-    const quoteItems = (quotes || []).map((quote) => ({
+    const quoteEntries = (quoteItems || []).map((quote) => ({
       id: `quote-${quote.id}`,
       type: "Quote",
       contentType: "QUOTE",
@@ -95,8 +97,21 @@ const LikesScreen = () => {
       raw: quote,
     }));
 
-    return [...postItems, ...quoteItems].sort((a, b) => (b.likes || 0) - (a.likes || 0));
-  }, [posts, quotes]);
+    return [...postEntries, ...quoteEntries].sort((a, b) => (b.likes || 0) - (a.likes || 0));
+  }, [postItems, quoteItems]);
+
+  const handleDeleteContent = (contentId, contentType) => {
+    if (!contentId) return;
+
+    if (contentType === "QUOTE") {
+      setQuoteItems((prev) => prev.filter((quote) => quote.id !== contentId));
+    } else {
+      setPostItems((prev) => prev.filter((post) => post.id !== contentId));
+    }
+
+    setPreviewItem((prev) => (prev?.id === contentId ? null : prev));
+    setPreviewVisible(false);
+  };
 
   const handleOpenPreview = (item) => {
     if (!item?.raw) return;
@@ -247,6 +262,7 @@ const LikesScreen = () => {
         onClose={handleClosePreview}
         isMuted={previewMuted}
         onToggleSound={() => setPreviewMuted((prev) => !prev)}
+        onDelete={handleDeleteContent}
       />
     </SafeAreaView>
   );
