@@ -891,14 +891,15 @@ const UserProfileScreen = ({ route, navigation }) => {
         </View>
         {sobrietyDuration ? (
           <View style={[styles.bodyPadding, styles.sobrietyRow]}>
-            <Text style={styles.sobrietyText}>
+            <View style={styles.sobrietyContent}>
               <MaterialCommunityIcons
                 name="progress-clock"
                 size={16}
-                color="#f97316"
+                color="#f59e0b"
+                style={styles.sobrietyIcon}
               />
-              {` ${sobrietyDuration} sober`}
-            </Text>
+              <Text style={styles.sobrietyText}>{`${sobrietyDuration} sober`}</Text>
+            </View>
           </View>
         ) : null}
         <View style={styles.bodyPadding}>
@@ -1135,9 +1136,20 @@ const styles = StyleSheet.create({
   },
   sobrietyRow: {
     marginBottom: 8,
+    alignItems: "center",
+  },
+  sobrietyContent: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 8,
+  },
+  sobrietyIcon: {
+    marginTop: 1,
   },
   sobrietyText: {
     color: SOCIAL_ICON_COLOR,
+    fontWeight: "700",
   },
   avatarLabel: {
     color: "#e5e7eb",
