@@ -22,7 +22,7 @@ import CommunityFeedLayout from "./CommunityFeedLayout";
 import QuoteFeedLayout from "./QuoteFeedLayout";
 
 const { height: WINDOW_HEIGHT } = Dimensions.get("window");
-const ACTION_SHEET_HEIGHT = Math.round(WINDOW_HEIGHT * 0.33);
+const ACTION_SHEET_HEIGHT = Math.round(WINDOW_HEIGHT * 0.26);
 const ANIMATION_DURATION = 240;
 
 const ContentPreviewModal = ({
@@ -435,7 +435,7 @@ const ContentPreviewModal = ({
               style={[styles.bottomSheet, { transform: [{ translateY: actionsTranslateY }] }]}
             >
               <Text style={styles.sheetTitle}>{isPost ? "Post options" : "Quote options"}</Text>
-              {isPost ? (
+              {isPost && !canDelete ? (
                 <TouchableOpacity style={styles.sheetAction} onPress={() => {}}>
                   <View style={styles.sheetActionLeft}>
                     <Ionicons name="bookmark-outline" size={20} color="#fef3c7" />
@@ -444,7 +444,7 @@ const ContentPreviewModal = ({
                   <Ionicons name="chevron-forward" size={18} color="#9ca3af" />
                 </TouchableOpacity>
               ) : null}
-              {isPost ? (
+              {isPost && !canDelete ? (
                 <TouchableOpacity
                   style={styles.sheetAction}
                   onPress={handleFlagPress}
