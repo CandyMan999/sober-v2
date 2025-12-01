@@ -13,12 +13,14 @@ const deleteCloudflareStream = async (publicId) => {
   if (!publicId) return;
 
   if (!CF_ACCOUNT_ID || !CF_STREAM_TOKEN) {
-    console.warn("Missing Cloudflare Stream credentials; skipping stream delete");
+    console.warn(
+      "Missing Cloudflare Stream credentials; skipping stream delete"
+    );
     return;
   }
 
   try {
-    await axios.delete(
+    const data = await axios.delete(
       `https://api.cloudflare.com/client/v4/accounts/${CF_ACCOUNT_ID}/stream/${publicId}`,
       { headers: { Authorization: `Bearer ${CF_STREAM_TOKEN}` } }
     );
@@ -34,7 +36,9 @@ const deleteCloudflareImage = async (publicId) => {
   if (!publicId) return;
 
   if (!CF_ACCOUNT_ID || !CF_API_TOKEN) {
-    console.warn("Missing Cloudflare Images credentials; skipping image delete");
+    console.warn(
+      "Missing Cloudflare Images credentials; skipping image delete"
+    );
     return;
   }
 
@@ -56,11 +60,15 @@ const deleteCommentsAndLikes = async (targetType, targetId) => {
   const commentIds = comments.map((comment) => comment._id);
 
   if (commentIds.length > 0) {
-    await Like.deleteMany({ targetType: "COMMENT", targetId: { $in: commentIds } });
-    await Comment.deleteMany({ _id: { $in: commentIds } });
+    const likes = await Like.deleteMany({
+      targetType: "COMMENT",
+      targetId: { $in: commentIds },
+    });
+
+    const data = await Comment.deleteMany({ _id: { $in: commentIds } });
   }
 
-  await Like.deleteMany({ targetType, targetId });
+  const likes = await Like.deleteMany({ targetType, targetId });
 };
 
 module.exports = {
