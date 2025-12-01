@@ -259,57 +259,62 @@ const QuotesScreen = () => {
     }
   };
 
-  const renderSaveSheet = () => (
-    <Modal
-      transparent
-      animationType="none"
-      visible={showSaveSheet}
-      onRequestClose={closeSaveSheet}
-    >
-      <View style={styles.modalContainer}>
-        <Pressable style={styles.sheetBackdrop} onPress={closeSaveSheet} />
-        <Animated.View
-          style={[styles.bottomSheet, { transform: [{ translateY }] }]}
-        >
-          <View style={styles.sheetHeader}>
-            <Text style={styles.sheetTitle}>More options</Text>
-            <TouchableOpacity
-              onPress={closeSaveSheet}
-              accessibilityRole="button"
-              accessibilityLabel="Close options"
-              style={styles.sheetCloseButton}
-            >
-              <Ionicons name="close-circle" size={32} color="#e5e7eb" />
-            </TouchableOpacity>
-          </View>
+  const renderSaveSheet = () => {
+    const selectedQuoteId = selectedQuote?.id;
 
-          <TouchableOpacity
-            style={styles.sheetAction}
-            onPress={handleToggleSaveQuote}
-            disabled={savingQuoteId === selectedQuote?.id}
+    return (
+      <Modal
+        transparent
+        animationType="none"
+        visible={showSaveSheet}
+        onRequestClose={closeSaveSheet}
+      >
+        <View style={styles.modalContainer}>
+          <Pressable style={styles.sheetBackdrop} onPress={closeSaveSheet} />
+          <Animated.View
+            style={[styles.bottomSheet, { transform: [{ translateY }] }]}
           >
-            <View style={styles.sheetActionLeft}>
-              <Ionicons name="bookmark-outline" size={20} color="#fef3c7" />
-              <Text style={styles.sheetActionText}>
-                {isItemSaved(state?.user?.savedQuotes, selectedQuote.id)
-                  ? "Unsave"
-                  : "Save"}
-              </Text>
+            <View style={styles.sheetHeader}>
+              <Text style={styles.sheetTitle}>More options</Text>
+              <TouchableOpacity
+                onPress={closeSaveSheet}
+                accessibilityRole="button"
+                accessibilityLabel="Close options"
+                style={styles.sheetCloseButton}
+              >
+                <Ionicons name="close-circle" size={32} color="#e5e7eb" />
+              </TouchableOpacity>
             </View>
-            {savingQuoteId === selectedQuote?.id ? (
-              <ActivityIndicator
-                color="#f59e0b"
-                size="small"
-                style={styles.sheetSpinner}
-              />
-            ) : (
-              <Ionicons name="chevron-forward" size={18} color="#9ca3af" />
-            )}
-          </TouchableOpacity>
-        </Animated.View>
-      </View>
-    </Modal>
-  );
+
+            <TouchableOpacity
+              style={styles.sheetAction}
+              onPress={handleToggleSaveQuote}
+              disabled={!selectedQuoteId || savingQuoteId === selectedQuoteId}
+            >
+              <View style={styles.sheetActionLeft}>
+                <Ionicons name="bookmark-outline" size={20} color="#fef3c7" />
+                <Text style={styles.sheetActionText}>
+                  {selectedQuoteId &&
+                  isItemSaved(state?.user?.savedQuotes, selectedQuoteId)
+                    ? "Unsave"
+                    : "Save"}
+                </Text>
+              </View>
+              {savingQuoteId === selectedQuoteId ? (
+                <ActivityIndicator
+                  color="#f59e0b"
+                  size="small"
+                  style={styles.sheetSpinner}
+                />
+              ) : (
+                <Ionicons name="chevron-forward" size={18} color="#9ca3af" />
+              )}
+            </TouchableOpacity>
+          </Animated.View>
+        </View>
+      </Modal>
+    );
+  };
 
   const renderAlert = () => (
     <AlertModal
