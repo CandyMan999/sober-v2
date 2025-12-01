@@ -840,7 +840,11 @@ const CommunityScreen = () => {
               >
                 <View style={styles.sheetActionLeft}>
                   <Ionicons name="bookmark-outline" size={20} color="#fef3c7" />
-                  <Text style={styles.sheetActionText}>Save</Text>
+                  <Text style={styles.sheetActionText}>
+                    {isItemSaved(state?.user?.savedPosts, selectedPost.id)
+                      ? "Unsave"
+                      : "Save"}
+                  </Text>
                 </View>
                 {savingPostId === selectedPost?.id ? (
                   <ActivityIndicator color="#f59e0b" style={styles.sheetSpinner} />
@@ -877,12 +881,6 @@ const CommunityScreen = () => {
                 ) : (
                   <Ionicons name="chevron-forward" size={18} color="#9ca3af" />
                 )}
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.sheetCancel}
-                onPress={closeMoreSheet}
-              >
-                <Text style={styles.sheetCancelText}>Close</Text>
               </TouchableOpacity>
             </Animated.View>
           </View>
@@ -1110,7 +1108,6 @@ const styles = StyleSheet.create({
     color: "#e5e7eb",
     fontSize: 16,
     fontWeight: "700",
-    marginBottom: 16,
   },
   sheetHeader: {
     flexDirection: "row",
@@ -1119,8 +1116,9 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   sheetCloseButton: {
-    padding: 2,
+    padding: 0,
     marginLeft: 8,
+    marginTop: -10,
   },
   sheetAction: {
     paddingVertical: 14,
@@ -1151,15 +1149,6 @@ const styles = StyleSheet.create({
   },
   sheetSpinner: {
     marginLeft: 8,
-  },
-  sheetCancel: {
-    marginTop: 4,
-    paddingVertical: 12,
-  },
-  sheetCancelText: {
-    color: "#93c5fd",
-    textAlign: "center",
-    fontWeight: "600",
   },
   tutorialOverlay: {
     flex: 1,

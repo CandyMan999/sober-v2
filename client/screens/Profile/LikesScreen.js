@@ -180,6 +180,13 @@ const LikesScreen = () => {
     setPreviewVisible(false);
   };
 
+  const isPreviewSaved = useMemo(() => {
+    if (!previewItem?.id) return false;
+    return previewType === "POST"
+      ? isItemSaved(state?.user?.savedPosts, previewItem.id)
+      : isItemSaved(state?.user?.savedQuotes, previewItem.id);
+  }, [previewItem?.id, previewType, state?.user?.savedPosts, state?.user?.savedQuotes]);
+
   const handleToggleSave = async (content, contentType = "POST") => {
     if (!content?.id) return;
 
@@ -319,6 +326,7 @@ const LikesScreen = () => {
         onToggleSound={() => setPreviewMuted((prev) => !prev)}
         onToggleSave={handleToggleSave}
         onDelete={handleDeleteContent}
+        isSaved={isPreviewSaved}
       />
     </SafeAreaView>
   );

@@ -290,7 +290,11 @@ const QuotesScreen = () => {
           >
             <View style={styles.sheetActionLeft}>
               <Ionicons name="bookmark-outline" size={20} color="#fef3c7" />
-              <Text style={styles.sheetActionText}>Save</Text>
+              <Text style={styles.sheetActionText}>
+                {isItemSaved(state?.user?.savedQuotes, selectedQuote.id)
+                  ? "Unsave"
+                  : "Save"}
+              </Text>
             </View>
             {savingQuoteId === selectedQuote?.id ? (
               <ActivityIndicator
@@ -301,10 +305,6 @@ const QuotesScreen = () => {
             ) : (
               <Ionicons name="chevron-forward" size={18} color="#9ca3af" />
             )}
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.sheetCancel} onPress={closeSaveSheet}>
-            <Text style={styles.sheetCancelText}>Close</Text>
           </TouchableOpacity>
         </Animated.View>
       </View>
@@ -484,8 +484,9 @@ const styles = StyleSheet.create({
     fontWeight: "700",
   },
   sheetCloseButton: {
-    padding: 2,
+    padding: 0,
     marginLeft: 8,
+    marginTop: -10,
   },
   sheetAction: {
     paddingVertical: 14,
@@ -511,15 +512,6 @@ const styles = StyleSheet.create({
   },
   sheetSpinner: {
     marginLeft: 8,
-  },
-  sheetCancel: {
-    marginTop: 4,
-    paddingVertical: 12,
-  },
-  sheetCancelText: {
-    color: "#93c5fd",
-    textAlign: "center",
-    fontWeight: "600",
   },
 });
 

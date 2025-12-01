@@ -43,6 +43,7 @@ const ContentPreviewModal = ({
   onFlagForReview,
   onDelete,
   onToggleSave,
+  isSaved = false,
 }) => {
   const [mounted, setMounted] = useState(visible);
   const [localItem, setLocalItem] = useState(item);
@@ -312,6 +313,8 @@ const ContentPreviewModal = ({
   if (!mounted) return null;
 
   const closeActionsSheet = () => setShowActions(false);
+  const sheetTitle = isPost ? "Post options" : "More options";
+  const saveActionLabel = isSaved ? "Unsave" : "Save";
 
   const handleLikePress = () => {
     if (!content?.id) return;
@@ -426,7 +429,7 @@ const ContentPreviewModal = ({
         onToggleFollow={onToggleFollow}
         isLiked={isLiked}
         onLikePress={handleLikePress}
-        onMorePress={canDelete ? () => setShowActions(true) : undefined}
+        onMorePress={() => setShowActions(true)}
       />
     );
   };
@@ -482,30 +485,32 @@ const ContentPreviewModal = ({
                 { transform: [{ translateY: actionsTranslateY }] },
               ]}
             >
-              <Text style={styles.sheetTitle}>
-                {isPost ? "Post options" : "Quote options"}
-              </Text>
-              {!canDelete ? (
+              <View style={styles.sheetHeader}>
+                <Text style={styles.sheetTitle}>{sheetTitle}</Text>
                 <TouchableOpacity
-                  style={styles.sheetAction}
-                  onPress={handleSavePress}
-                  disabled={saving}
+                  onPress={closeActionsSheet}
+                  accessibilityRole="button"
+                  accessibilityLabel="Close options"
+                  style={styles.sheetCloseButton}
                 >
-                  <View style={styles.sheetActionLeft}>
-                    <Ionicons
-                      name="bookmark-outline"
-                      size={20}
-                      color="#fef3c7"
-                    />
-                    <Text style={styles.sheetActionText}>Save</Text>
-                  </View>
-                  {saving ? (
-                    <ActivityIndicator color="#f59e0b" style={styles.sheetSpinner} />
-                  ) : (
-                    <Ionicons name="chevron-forward" size={18} color="#9ca3af" />
-                  )}
+                  <Ionicons name="close-circle" size={30} color="#e5e7eb" />
                 </TouchableOpacity>
-              ) : null}
+              </View>
+              <TouchableOpacity
+                style={styles.sheetAction}
+                onPress={handleSavePress}
+                disabled={saving}
+              >
+                <View style={styles.sheetActionLeft}>
+                  <Ionicons name="bookmark-outline" size={20} color="#fef3c7" />
+                  <Text style={styles.sheetActionText}>{saveActionLabel}</Text>
+                </View>
+                {saving ? (
+                  <ActivityIndicator color="#f59e0b" style={styles.sheetSpinner} />
+                ) : (
+                  <Ionicons name="chevron-forward" size={18} color="#9ca3af" />
+                )}
+              </TouchableOpacity>
               {isPost && !canDelete ? (
                 <TouchableOpacity
                   style={styles.sheetAction}
@@ -564,12 +569,6 @@ const ContentPreviewModal = ({
                   )}
                 </TouchableOpacity>
               ) : null}
-              <TouchableOpacity
-                style={styles.sheetCancel}
-                onPress={closeActionsSheet}
-              >
-                <Text style={styles.sheetCancelText}>Close</Text>
-              </TouchableOpacity>
             </Animated.View>
           </View>
         </Modal>
@@ -637,19 +636,29 @@ const styles = StyleSheet.create({
     bottom: 0,
     height: ACTION_SHEET_HEIGHT,
     paddingHorizontal: 20,
-    paddingTop: 20,
-    paddingBottom: 28,
+    paddingTop: 16,
+    paddingBottom: 24,
     backgroundColor: "#0f172a",
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
     borderWidth: 1,
     borderColor: "rgba(245,158,11,0.3)",
   },
+  sheetHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginBottom: 12,
+  },
   sheetTitle: {
     color: "#e5e7eb",
     fontSize: 16,
     fontWeight: "700",
-    marginBottom: 16,
+  },
+  sheetCloseButton: {
+    padding: 0,
+    marginLeft: 8,
+    marginTop: -8,
   },
   sheetAction: {
     paddingVertical: 14,
@@ -680,15 +689,6 @@ const styles = StyleSheet.create({
   },
   sheetSpinner: {
     marginLeft: 8,
-  },
-  sheetCancel: {
-    marginTop: 4,
-    paddingVertical: 12,
-  },
-  sheetCancelText: {
-    color: "#93c5fd",
-    textAlign: "center",
-    fontWeight: "600",
   },
 });
 

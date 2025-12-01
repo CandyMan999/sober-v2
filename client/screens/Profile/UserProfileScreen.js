@@ -413,6 +413,13 @@ const UserProfileScreen = ({ route, navigation }) => {
 
   const closePreview = () => setPreviewVisible(false);
 
+  const isPreviewSaved = useMemo(() => {
+    if (!previewItem?.id) return false;
+    return previewType === "POST"
+      ? isItemSaved(savedPosts, previewItem.id)
+      : isItemSaved(savedQuotes, previewItem.id);
+  }, [previewItem?.id, previewType, savedPosts, savedQuotes]);
+
   const handlePreviewCommentAdded = (newComment) => {
     if (!previewItem) return;
     const targetId = previewItem.id;
@@ -1188,6 +1195,7 @@ const UserProfileScreen = ({ route, navigation }) => {
         onToggleSave={handleToggleSave}
         onFlagForReview={handleFlagForReview}
         onDelete={handleDeleteContent}
+        isSaved={isPreviewSaved}
       />
     </>
   );
