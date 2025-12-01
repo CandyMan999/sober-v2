@@ -120,7 +120,12 @@ const resolvers = {
 
   Post: {
     likes: resolveLikes("POST"),
-    viewsCount: (parent) => parent?.video?.viewsCount ?? 0,
+    viewsCount: (parent) => {
+      const postViews = typeof parent?.viewsCount === "number" ? parent.viewsCount : 0;
+      const videoViews = parent?.video?.viewsCount ?? 0;
+
+      return postViews || videoViews || 0;
+    },
   },
 
   Comment: {

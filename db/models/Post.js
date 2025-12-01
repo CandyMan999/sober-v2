@@ -107,6 +107,20 @@ const PostSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+
+    // Track unique viewers for non-video posts
+    viewers: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
+
+    // Fast counter for how many unique viewers
+    viewsCount: {
+      type: Number,
+      default: 0,
+    },
   },
   {
     timestamps: true, // createdAt + updatedAt
