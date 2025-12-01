@@ -1,5 +1,12 @@
 // App.js
-import React, { useReducer, useContext, useEffect, useRef } from "react";
+import React, {
+  useReducer,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+  useCallback,
+} from "react";
 
 import {
   NavigationContainer,
@@ -37,6 +44,9 @@ import NotificationsScreen from "./screens/Profile/NotificationsScreen";
 import NotificationSettingsScreen from "./screens/Profile/NotificationSettingsScreen";
 import DirectMessageScreen from "./screens/DirectMessage/DirectMessageScreen";
 import MessageListScreen from "./screens/DirectMessage/MessageListScreen";
+import { ContentPreviewModal } from "./components";
+import { POST_BY_ID_QUERY, QUOTE_BY_ID_QUERY } from "./GraphQL/queries";
+import { useClient } from "./client";
 
 import Context from "./context";
 import reducer from "./reducer";
@@ -99,10 +109,59 @@ export default function App() {
   // use your context default as initial state
   const initialState = useContext(Context);
   const [state, dispatch] = useReducer(reducer, initialState);
+  const graphClient = useClient();
+  const [previewRequest, setPreviewRequest] = useState(null);
+  const [previewContent, setPreviewContent] = useState(null);
+  const [previewType, setPreviewType] = useState("POST");
+  const [previewVisible, setPreviewVisible] = useState(false);
 
   // Notification listeners
   const notificationListener = useRef();
   const responseListener = useRef();
+
+  const closePreview = useCallback(() => {
+    setPreviewVisible(false);
+    setPreviewContent(null);
+  }, []);
+
+  const handleNotificationNavigation = useCallback(
+    (data) => {
+      if (data?.type === "direct_message" && data.senderId) {
+        const userParam = {
+          id: data.senderId,
+          username: data.senderUsername || "Buddy",
+          profilePicUrl: data.senderProfilePicUrl || null,
+        };
+
+        const navigateToDirectMessage = () => {
+          navigationRef.navigate("DirectMessage", { user: userParam });
+        };
+
+        if (navigationRef.isReady()) {
+          navigateToDirectMessage();
+        } else {
+          setTimeout(() => {
+            if (navigationRef.isReady()) {
+              navigateToDirectMessage();
+            }
+          }, 300);
+        }
+        return;
+      }
+
+      if (data?.type === "new_post" && data.postId) {
+        setPreviewType("POST");
+        setPreviewRequest({ id: data.postId, type: "POST" });
+        return;
+      }
+
+      if (data?.type === "new_quote" && data.quoteId) {
+        setPreviewType("QUOTE");
+        setPreviewRequest({ id: data.quoteId, type: "QUOTE" });
+      }
+    },
+    []
+  );
 
   useEffect(() => {
     // Fired whenever a notification is received while the app is foregrounded
@@ -116,28 +175,7 @@ export default function App() {
     responseListener.current =
       Notifications.addNotificationResponseReceivedListener((response) => {
         const data = response?.notification?.request?.content?.data || {};
-
-        if (data?.type === "direct_message" && data.senderId) {
-          const userParam = {
-            id: data.senderId,
-            username: data.senderUsername || "Buddy",
-            profilePicUrl: data.senderProfilePicUrl || null,
-          };
-
-          const navigateToDirectMessage = () => {
-            navigationRef.navigate("DirectMessage", { user: userParam });
-          };
-
-          if (navigationRef.isReady()) {
-            navigateToDirectMessage();
-          } else {
-            setTimeout(() => {
-              if (navigationRef.isReady()) {
-                navigateToDirectMessage();
-              }
-            }, 300);
-          }
-        }
+        handleNotificationNavigation(data);
       });
 
     // Cleanup on unmount
@@ -149,7 +187,55 @@ export default function App() {
         responseListener.current.remove();
       }
     };
-  }, []);
+  }, [handleNotificationNavigation]);
+
+  useEffect(() => {
+    if (!previewRequest?.id) return undefined;
+
+    let isActive = true;
+
+    const loadPreview = async () => {
+      try {
+        const token = await getToken();
+        const variables =
+          previewRequest.type === "POST"
+            ? { postId: previewRequest.id, token }
+            : { quoteId: previewRequest.id, token };
+        const query =
+          previewRequest.type === "POST"
+            ? POST_BY_ID_QUERY
+            : QUOTE_BY_ID_QUERY;
+
+        const result = await graphClient.request(query, variables);
+        if (!isActive) return;
+
+        const content =
+          previewRequest.type === "POST" ? result?.post : result?.quote;
+
+        if (content) {
+          setPreviewContent(content);
+          setPreviewVisible(true);
+        } else {
+          closePreview();
+        }
+      } catch (err) {
+        console.log("Failed to open content from notification", err);
+        if (isActive) {
+          closePreview();
+        }
+      } finally {
+        if (isActive) {
+          setPreviewRequest(null);
+        }
+      }
+    };
+
+    loadPreview();
+
+    return () => {
+      isActive = false;
+    };
+  }, [closePreview, graphClient, previewRequest]);
 
   return (
     <ApolloProvider client={client}>
@@ -235,6 +321,21 @@ export default function App() {
                 />
               </Stack.Navigator>
             </NavigationContainer>
+            <ContentPreviewModal
+              visible={previewVisible && Boolean(previewContent)}
+              item={previewContent}
+              type={previewType}
+              onClose={closePreview}
+              viewerUser={state?.user}
+              onToggleSound={() => {}}
+              onTogglePostLike={() => {}}
+              onToggleQuoteLike={() => {}}
+              onToggleFollow={() => {}}
+              onFlagForReview={() => {}}
+              onToggleSave={() => {}}
+              onDelete={() => {}}
+              isMuted
+            />
             <Toast />
           </Context.Provider>
         </SafeAreaProvider>

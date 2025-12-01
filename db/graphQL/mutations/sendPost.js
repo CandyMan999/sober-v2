@@ -34,10 +34,6 @@ const NUDE_DETECTOR_URL =
 
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-const buildNotificationArtwork = (profilePicUrl) => ({
-  imageUrl: profilePicUrl || null,
-});
-
 // -----------------------------
 // Upload helpers (server → Cloudflare)
 // -----------------------------
@@ -491,13 +487,6 @@ module.exports = {
         .populate("closestCity")
         .exec();
 
-      const profilePicUrl =
-        sender.profilePicUrl ||
-        (sender.profilePic && sender.profilePic.url) ||
-        null;
-      const { imageUrl: notificationImageUrl } =
-        buildNotificationArtwork(profilePicUrl);
-
       const followerConnections = await Connection.find({
         followee: senderID,
       }).populate("follower");
@@ -522,8 +511,6 @@ module.exports = {
           postId: String(newPost._id),
           senderId: String(sender._id),
           senderUsername: senderName,
-          senderProfilePicUrl: profilePicUrl,
-          notificationImageUrl,
         };
 
         const notificationPayload = {
@@ -531,13 +518,6 @@ module.exports = {
           title: `${senderName} shared a new post`,
           body: preview,
           data: notificationData,
-          ...(notificationImageUrl
-            ? {
-                image: notificationImageUrl,
-                icon: notificationImageUrl,
-                mutableContent: true, // allow rich content/attachments on iOS
-              }
-            : {}),
         };
 
         notifications.push(notificationPayload);

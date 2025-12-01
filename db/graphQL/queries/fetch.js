@@ -231,6 +231,56 @@ module.exports = {
     }
   },
 
+  postResolver: async (_, { postId }) => {
+    if (!postId) {
+      throw new Error("postId is required");
+    }
+
+    try {
+      const post = await Post.findOne({ _id: postId, flagged: false })
+        .populate("author")
+        .populate({
+          path: "video",
+          match: { flagged: false },
+          select: "url flagged viewsCount viewers thumbnailUrl",
+        })
+        .populate("closestCity")
+        .populate({
+          path: "comments",
+          match: { $or: [{ replyTo: null }, { replyTo: { $exists: false } }] },
+          populate: buildRepliesPopulate(2),
+        });
+
+      if (!post) {
+        return null;
+      }
+
+      return post;
+    } catch (err) {
+      throw new Error(err.message);
+    }
+  },
+
+  quoteResolver: async (_, { quoteId }) => {
+    if (!quoteId) {
+      throw new Error("quoteId is required");
+    }
+
+    try {
+      const quote = await Quote.findById(quoteId)
+        .populate("user")
+        .populate({
+          path: "comments",
+          match: { $or: [{ replyTo: null }, { replyTo: { $exists: false } }] },
+          populate: buildRepliesPopulate(2),
+        });
+
+      return quote;
+    } catch (err) {
+      throw new Error(err.message);
+    }
+  },
+
   profileOverviewResolver: async (_, { token }) => {
     if (!token) {
       throw new AuthenticationError("Token is required");

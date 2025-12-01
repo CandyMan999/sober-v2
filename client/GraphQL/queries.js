@@ -640,3 +640,185 @@ export const GET_ALL_POSTS = `
     }
   }
 `;
+
+export const POST_BY_ID_QUERY = `
+  query PostById($postId: ID!, $token: String) {
+    post(postId: $postId, token: $token) {
+      id
+      text
+      mediaType
+      imageUrl
+      flagged
+      review
+      likesCount
+      commentsCount
+      createdAt
+      lat
+      long
+      closestCity {
+        name
+      }
+      author {
+        id
+        username
+        profilePicUrl
+        isFollowedByViewer
+        isBuddyWithViewer
+      }
+      video {
+        id
+        url
+        flagged
+        viewsCount
+        thumbnailUrl
+      }
+      likes {
+        id
+        user {
+          id
+          username
+          profilePicUrl
+        }
+        createdAt
+      }
+      comments {
+        id
+        text
+        createdAt
+        likesCount
+        likes {
+          id
+          user {
+            id
+            username
+            profilePicUrl
+          }
+        }
+        author {
+          id
+          username
+          profilePicUrl
+        }
+        replyTo {
+          id
+          author {
+            id
+            username
+            profilePicUrl
+          }
+        }
+        replies {
+          id
+          text
+          createdAt
+          likesCount
+          likes {
+            id
+            user {
+              id
+              username
+              profilePicUrl
+            }
+          }
+          author {
+            id
+            username
+            profilePicUrl
+          }
+          replyTo {
+            id
+            author {
+              id
+              username
+              profilePicUrl
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const QUOTE_BY_ID_QUERY = `
+  query QuoteById($quoteId: ID!, $token: String) {
+    quote(quoteId: $quoteId, token: $token) {
+      id
+      text
+      isApproved
+      isUsed
+      likesCount
+      commentsCount
+      createdAt
+      user {
+        id
+        username
+        profilePicUrl
+        isFollowedByViewer
+        isBuddyWithViewer
+      }
+      likes {
+        id
+        user {
+          id
+          username
+          profilePicUrl
+        }
+        createdAt
+      }
+      comments {
+        id
+        text
+        createdAt
+        likesCount
+        likes {
+          id
+          user {
+            id
+            username
+            profilePicUrl
+          }
+        }
+        author {
+          id
+          username
+          profilePicUrl
+        }
+        replyTo {
+          id
+          author {
+            id
+            username
+            profilePicUrl
+          }
+        }
+        replies {
+          id
+          text
+          createdAt
+          likesCount
+          likes {
+            id
+            user {
+              id
+              username
+              profilePicUrl
+            }
+          }
+          author {
+            id
+            username
+            profilePicUrl
+          }
+          replyTo {
+            id
+            author {
+              id
+              username
+              profilePicUrl
+            }
+          }
+        }
+      }
+    }
+  }
+`;
