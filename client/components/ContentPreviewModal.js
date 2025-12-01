@@ -20,6 +20,7 @@ import {
   DELETE_POST_MUTATION,
   DELETE_QUOTE_MUTATION,
 } from "../GraphQL/mutations";
+import { POST_BY_ID_QUERY, QUOTE_BY_ID_QUERY } from "../GraphQL/queries";
 import { getToken } from "../utils/helpers";
 import CommunityFeedLayout from "./CommunityFeedLayout";
 import QuoteFeedLayout from "./QuoteFeedLayout";
@@ -53,6 +54,7 @@ const ContentPreviewModal = ({
   const [flagging, setFlagging] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [loadingComments, setLoadingComments] = useState(false);
   const backdropOpacity = useRef(new Animated.Value(0)).current;
   const translateY = useRef(new Animated.Value(WINDOW_HEIGHT)).current;
   const dragY = useRef(new Animated.Value(0)).current;
@@ -180,6 +182,49 @@ const ContentPreviewModal = ({
       setSaving(false);
     }
   }, [visible]);
+
+  useEffect(() => {
+    if (!visible || !localItem?.id || loadingComments) return undefined;
+
+    const hasComments = Array.isArray(localItem.comments)
+      ? localItem.comments.length > 0
+      : false;
+
+    if (hasComments) return undefined;
+
+    let isActive = true;
+
+    const loadComments = async () => {
+      try {
+        setLoadingComments(true);
+        const token = await getToken();
+        const query = isPost ? POST_BY_ID_QUERY : QUOTE_BY_ID_QUERY;
+        const variables = isPost
+          ? { postId: localItem.id, token }
+          : { quoteId: localItem.id, token };
+
+        const result = await client.request(query, variables);
+        if (!isActive) return;
+
+        const fetchedContent = isPost ? result?.post : result?.quote;
+        if (fetchedContent) {
+          setLocalItem((prev) => ({ ...(prev || {}), ...fetchedContent }));
+        }
+      } catch (err) {
+        console.error("Error loading preview comments", err);
+      } finally {
+        if (isActive) {
+          setLoadingComments(false);
+        }
+      }
+    };
+
+    loadComments();
+
+    return () => {
+      isActive = false;
+    };
+  }, [client, isPost, loadingComments, localItem, visible]);
 
   const handleClose = () => {
     dragY.setValue(0);

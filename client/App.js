@@ -114,6 +114,7 @@ export default function App() {
   const [previewContent, setPreviewContent] = useState(null);
   const [previewType, setPreviewType] = useState("POST");
   const [previewVisible, setPreviewVisible] = useState(false);
+  const [previewMuted, setPreviewMuted] = useState(true);
 
   // Notification listeners
   const notificationListener = useRef();
@@ -122,6 +123,7 @@ export default function App() {
   const closePreview = useCallback(() => {
     setPreviewVisible(false);
     setPreviewContent(null);
+    setPreviewMuted(true);
   }, []);
 
   const handleNotificationNavigation = useCallback(
@@ -327,14 +329,14 @@ export default function App() {
                   type={previewType}
                   onClose={closePreview}
                   viewerUser={state?.user}
-                  onToggleSound={() => {}}
+                  isMuted={previewMuted}
+                  onToggleSound={() => setPreviewMuted((prev) => !prev)}
                   onTogglePostLike={() => {}}
                   onToggleQuoteLike={() => {}}
                   onToggleFollow={() => {}}
                   onFlagForReview={() => {}}
                   onToggleSave={() => {}}
                   onDelete={() => {}}
-                  isMuted
                 />
               </>
             </NavigationContainer>
