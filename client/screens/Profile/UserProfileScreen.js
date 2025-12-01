@@ -1077,9 +1077,6 @@ const UserProfileScreen = ({ route, navigation }) => {
                 <Text style={styles.sobrietyLabel}>Sober streak</Text>
                 <Text style={styles.sobrietyValue}>{sobrietyDuration} strong</Text>
               </View>
-              <View style={styles.sobrietyBadge}>
-                <Text style={styles.sobrietyBadgeText}>Keeping on</Text>
-              </View>
             </View>
           </View>
         ) : null}
@@ -1246,8 +1243,8 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
   sobrietyCard: {
-    marginTop: 12,
-    borderRadius: 16,
+    marginTop: 10,
+    borderRadius: 13,
     overflow: "hidden",
     position: "relative",
   },
@@ -1258,46 +1255,34 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
   },
   sobrietyContent: {
-    flexDirection: "row",
+    flexDirection: "column",
     alignItems: "center",
-    justifyContent: "space-between",
-    gap: 12,
+    justifyContent: "center",
+    gap: 6,
     backgroundColor: "rgba(5,8,22,0.94)",
-    paddingHorizontal: 14,
-    paddingVertical: 12,
-    borderRadius: 14,
+    paddingHorizontal: 11,
+    paddingVertical: 10,
+    borderRadius: 12,
     margin: 2,
   },
   sobrietyTextBlock: {
     flex: 1,
-    gap: 1,
+    gap: 2,
+    alignItems: "center",
   },
   sobrietyLabel: {
     color: "#e5e7eb",
-    fontSize: 11,
+    fontSize: 9,
     fontWeight: "800",
     letterSpacing: 0.6,
     textTransform: "uppercase",
   },
   sobrietyValue: {
     color: "#f8fafc",
-    fontSize: 16,
+    fontSize: 13,
     fontWeight: "900",
     letterSpacing: 0.3,
-  },
-  sobrietyBadge: {
-    paddingHorizontal: 10,
-    paddingVertical: 6,
-    borderRadius: 999,
-    borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.24)",
-    backgroundColor: "rgba(255,255,255,0.06)",
-  },
-  sobrietyBadgeText: {
-    color: "#e0f2fe",
-    fontWeight: "700",
-    fontSize: 12,
-    letterSpacing: 0.4,
+    textAlign: "center",
   },
   whyWrapper: {
     alignItems: "center",
