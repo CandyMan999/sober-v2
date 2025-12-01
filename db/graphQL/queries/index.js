@@ -2,6 +2,8 @@ const {
   fetchMeResolver,
   getQuotesResolver,
   getAllPostsResolver,
+  postResolver,
+  quoteResolver,
   profileOverviewResolver,
   userProfileResolver,
 } = require("./fetch");
@@ -26,6 +28,8 @@ module.exports = {
   runPushResolver,
   getQuotesResolver,
   getAllPostsResolver,
+  postResolver,
+  quoteResolver,
   profileOverviewResolver,
   userProfileResolver,
   myDirectRoomsResolver,

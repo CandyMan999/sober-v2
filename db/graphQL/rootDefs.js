@@ -299,6 +299,8 @@ const typeDefs = gql`
       mediaType: PostMediaType
       isMilestone: Boolean
     ): PostConnection!
+    post(postId: ID!, token: String): Post
+    quote(quoteId: ID!, token: String): Quote
     profileOverview(token: String!): ProfileOverview!
     userProfile(token: String!, userId: ID!): ProfileOverview!
     myDirectRooms: [Room!]!
