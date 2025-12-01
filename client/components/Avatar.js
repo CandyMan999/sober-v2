@@ -22,6 +22,7 @@ const Avatar = ({
   onPress,
   style,
   disableNavigation = false,
+  contentRef,
 }) => {
   const navigation = useNavigation();
   const { state } = useContext(Context);
@@ -58,6 +59,7 @@ const Avatar = ({
       style={[styles.avatarHalo, { width: haloSize, height: haloSize, borderRadius: haloSize / 2, padding: 2 }]}
     >
       <View
+        ref={contentRef}
         style={[
           styles.avatarInner,
           {

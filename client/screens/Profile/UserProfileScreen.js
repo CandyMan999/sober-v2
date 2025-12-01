@@ -3,6 +3,7 @@ import React, {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from "react";
 import {
@@ -14,8 +15,11 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   useWindowDimensions,
+  Animated,
+  PanResponder,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
+import { BlurView } from "expo-blur";
 import { Feather, Ionicons, MaterialCommunityIcons, AntDesign } from "@expo/vector-icons";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
@@ -46,6 +50,7 @@ import {
 } from "../../utils/saves";
 
 const AVATAR_SIZE = 110;
+const AnimatedBlurView = Animated.createAnimatedComponent(BlurView);
 const soberLogo = require("../../assets/icon.png");
 const SOCIAL_ICON_SIZE = 22;
 const SOCIAL_ICON_COLOR = "#e5e7eb";
@@ -100,6 +105,11 @@ const UserProfileScreen = ({ route, navigation }) => {
   const [previewType, setPreviewType] = useState("POST");
   const [previewMuted, setPreviewMuted] = useState(true);
   const [previewFromSaved, setPreviewFromSaved] = useState(false);
+  const [isAvatarExpanded, setIsAvatarExpanded] = useState(false);
+  const [avatarLayout, setAvatarLayout] = useState(null);
+  const avatarAnimation = useRef(new Animated.Value(0)).current;
+  const avatarRef = useRef(null);
+  const avatarImageRef = useRef(null);
   const currentUser = state?.user;
   const currentUserId = currentUser?.id;
   const { openSocial } = useOpenSocial();
@@ -795,6 +805,170 @@ const UserProfileScreen = ({ route, navigation }) => {
     };
   }, [initialUser, userId]);
 
+  const handleAvatarLayout = () => {
+    if (avatarImageRef.current?.measureInWindow) {
+      avatarImageRef.current.measureInWindow((x, y, width, height) => {
+        setAvatarLayout({ x, y, width, height });
+      });
+      return;
+    }
+
+    if (avatarRef.current?.measureInWindow) {
+      avatarRef.current.measureInWindow((x, y, width, height) => {
+        const innerOffset = Math.max(0, (width - AVATAR_SIZE) / 2);
+        const innerYOffset = Math.max(0, (height - AVATAR_SIZE) / 2);
+
+        setAvatarLayout({
+          x: x + innerOffset,
+          y: y + innerYOffset,
+          width: AVATAR_SIZE,
+          height: AVATAR_SIZE,
+        });
+      });
+    }
+  };
+
+  const handleOpenAvatar = useCallback(() => {
+    if (isAvatarExpanded) return;
+    avatarAnimation.setValue(0);
+    setIsAvatarExpanded(true);
+    requestAnimationFrame(() => {
+      Animated.spring(avatarAnimation, {
+        toValue: 1,
+        useNativeDriver: false,
+        tension: 120,
+        friction: 12,
+      }).start();
+    });
+  }, [avatarAnimation, isAvatarExpanded]);
+
+  const handleCloseAvatar = useCallback(() => {
+    Animated.spring(avatarAnimation, {
+      toValue: 0,
+      useNativeDriver: false,
+      tension: 120,
+      friction: 12,
+    }).start(() => setIsAvatarExpanded(false));
+  }, [avatarAnimation]);
+
+  const avatarPanResponder = useMemo(
+    () =>
+      PanResponder.create({
+        onStartShouldSetPanResponder: () => isAvatarExpanded,
+        onMoveShouldSetPanResponder: (_, gestureState) =>
+          isAvatarExpanded && Math.abs(gestureState.dy) > 10,
+        onPanResponderMove: (_, gestureState) => {
+          if (!isAvatarExpanded) return;
+          const progress = Math.max(0, Math.min(1, 1 - gestureState.dy / 200));
+          avatarAnimation.setValue(progress);
+        },
+        onPanResponderRelease: (_, gestureState) => {
+          if (gestureState.dy > 80) {
+            handleCloseAvatar();
+            return;
+          }
+
+          Animated.spring(avatarAnimation, {
+            toValue: 1,
+            useNativeDriver: false,
+            tension: 120,
+            friction: 12,
+          }).start();
+        },
+      }),
+    [avatarAnimation, handleCloseAvatar, isAvatarExpanded]
+  );
+
+  const renderAvatarOverlay = () => {
+    if (!isAvatarExpanded) return null;
+
+    const origin =
+      avatarLayout || {
+        x: layout.width / 2 - AVATAR_SIZE / 2,
+        y: layout.height * 0.16,
+        width: AVATAR_SIZE,
+        height: AVATAR_SIZE,
+      };
+
+    const expandedSize = Math.min(layout.width, layout.height) * 0.72;
+    const targetTop = Math.max(24, (layout.height - expandedSize) / 2);
+    const targetLeft = (layout.width - expandedSize) / 2;
+
+    const animatedTop = avatarAnimation.interpolate({
+      inputRange: [0, 1],
+      outputRange: [origin.y, targetTop],
+    });
+    const animatedLeft = avatarAnimation.interpolate({
+      inputRange: [0, 1],
+      outputRange: [origin.x, targetLeft],
+    });
+    const animatedSize = avatarAnimation.interpolate({
+      inputRange: [0, 1],
+      outputRange: [origin.width, expandedSize],
+    });
+    const animatedRadius = avatarAnimation.interpolate({
+      inputRange: [0, 1],
+      outputRange: [origin.width / 2, expandedSize / 2],
+    });
+    const backdropOpacity = avatarAnimation.interpolate({
+      inputRange: [0, 1],
+      outputRange: [0, 0.7],
+    });
+
+    const avatarSource = profileData?.profilePicUrl
+      ? { uri: profileData.profilePicUrl }
+      : soberLogo;
+
+    return (
+      <Animated.View
+        style={StyleSheet.absoluteFill}
+        pointerEvents="box-none"
+        {...avatarPanResponder.panHandlers}
+      >
+        <AnimatedBlurView
+          intensity={140}
+          tint="dark"
+          style={[StyleSheet.absoluteFill, { opacity: backdropOpacity }]}
+          experimentalBlurMethod="dimezisBlurView"
+          reducedTransparencyFallbackColor="rgba(0,0,0,0.6)"
+        />
+
+        <Animated.View
+          style={[
+            styles.avatarOverlay,
+            {
+              top: animatedTop,
+              left: animatedLeft,
+              width: animatedSize,
+              height: animatedSize,
+              borderRadius: animatedRadius,
+            },
+          ]}
+        >
+          {profileData?.profilePicUrl ? (
+            <Image source={avatarSource} style={styles.avatarOverlayImage} />
+          ) : (
+            <View style={styles.avatarOverlayPlaceholder}>
+              <Feather name="user" size={48} color="#e5e7eb" />
+            </View>
+          )}
+        </Animated.View>
+
+        <Animated.View
+          style={[styles.avatarCloseButton, { opacity: avatarAnimation }]}
+        >
+          <TouchableOpacity
+            onPress={handleCloseAvatar}
+            style={styles.avatarCloseTouchable}
+            activeOpacity={0.8}
+          >
+            <Feather name="x" size={26} color="#e5e7eb" />
+          </TouchableOpacity>
+        </Animated.View>
+      </Animated.View>
+    );
+  };
+
   const renderPostTile = ({ item, saved = false, fromSaved = false }) => {
     const isVideo = item.mediaType === "VIDEO";
     const thumbnail = isVideo
@@ -1057,17 +1231,21 @@ const UserProfileScreen = ({ route, navigation }) => {
         <View style={styles.bodyPadding}>
           <View style={styles.headerRow}>
             <View style={styles.avatarColumn}>
-              <Avatar
-                uri={profileData?.profilePicUrl}
-              size={AVATAR_SIZE}
-              haloColors={["#fcd34d", "#f97316"]}
-              disableNavigation
-            />
-            <View style={styles.usernameRow}>
-              <Text style={styles.avatarLabel}>
-                {profileData?.username || "User"}
-              </Text>
-            </View>
+              <View ref={avatarRef} onLayout={handleAvatarLayout}>
+                <Avatar
+                  uri={profileData?.profilePicUrl}
+                  size={AVATAR_SIZE}
+                  haloColors={["#fcd34d", "#f97316"]}
+                  disableNavigation
+                  onPress={handleOpenAvatar}
+                  contentRef={avatarImageRef}
+                />
+              </View>
+              <View style={styles.usernameRow}>
+                <Text style={styles.avatarLabel}>
+                  {profileData?.username || "User"}
+                </Text>
+              </View>
             {profileData?.id !== state?.user?.id ? (
               <View style={styles.profileActionsRow}>
                 {isBuddy ? (
@@ -1249,6 +1427,8 @@ const UserProfileScreen = ({ route, navigation }) => {
         isSaved={isPreviewSaved}
         disableDelete={previewFromSaved}
       />
+
+      {renderAvatarOverlay()}
     </>
   );
 };
@@ -1317,6 +1497,34 @@ const styles = StyleSheet.create({
     color: "#e5e7eb",
     fontWeight: "700",
     fontSize: 12,
+  },
+  avatarOverlay: {
+    position: "absolute",
+    backgroundColor: "#0b1220",
+    overflow: "hidden",
+  },
+  avatarOverlayImage: {
+    width: "100%",
+    height: "100%",
+  },
+  avatarOverlayPlaceholder: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#111827",
+  },
+  avatarCloseButton: {
+    position: "absolute",
+    top: 38,
+    right: 24,
+    backgroundColor: "rgba(0,0,0,0.55)",
+    borderRadius: 24,
+  },
+  avatarCloseTouchable: {
+    width: 44,
+    height: 44,
+    alignItems: "center",
+    justifyContent: "center",
   },
   avatarLabel: {
     color: "#e5e7eb",
