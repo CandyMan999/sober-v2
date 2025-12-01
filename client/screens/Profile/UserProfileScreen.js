@@ -889,19 +889,6 @@ const UserProfileScreen = ({ route, navigation }) => {
             </View>
           ) : null}
         </View>
-        {sobrietyDuration ? (
-          <View style={[styles.bodyPadding, styles.sobrietyRow]}>
-            <View style={styles.sobrietyContent}>
-              <MaterialCommunityIcons
-                name="progress-clock"
-                size={16}
-                color="#f59e0b"
-                style={styles.sobrietyIcon}
-              />
-              <Text style={styles.sobrietyText}>{`${sobrietyDuration} sober`}</Text>
-            </View>
-          </View>
-        ) : null}
         <View style={styles.bodyPadding}>
           <View style={styles.headerRow}>
             <View style={styles.avatarColumn}>
@@ -989,7 +976,7 @@ const UserProfileScreen = ({ route, navigation }) => {
           </View>
         </View>
 
-        {(distanceLabel || profileData?.closestCity?.name) && (
+        {(distanceLabel || profileData?.closestCity?.name || sobrietyDuration) && (
           <View style={styles.metaRow}>
             {distanceLabel ? (
               <View style={styles.distancePill}>
@@ -1006,6 +993,17 @@ const UserProfileScreen = ({ route, navigation }) => {
               <View style={styles.cityPill}>
                 <Ionicons name="location" size={14} color="#e5e7eb" />
                 <Text style={styles.cityText}>{profileData.closestCity.name}</Text>
+              </View>
+            ) : null}
+            {sobrietyDuration ? (
+              <View style={styles.sobrietyPill}>
+                <MaterialCommunityIcons
+                  name="progress-clock"
+                  size={16}
+                  color="#f59e0b"
+                  style={styles.sobrietyIcon}
+                />
+                <Text style={styles.sobrietyText}>{`${sobrietyDuration} sober`}</Text>
               </View>
             ) : null}
           </View>
@@ -1134,22 +1132,22 @@ const styles = StyleSheet.create({
     borderRadius: 999,
     backgroundColor: "rgba(255,255,255,0.06)",
   },
-  sobrietyRow: {
-    marginBottom: 8,
-    alignItems: "center",
-  },
-  sobrietyContent: {
+  sobrietyPill: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "center",
-    gap: 8,
+    backgroundColor: "rgba(245,158,11,0.12)",
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 999,
+    gap: 6,
   },
   sobrietyIcon: {
     marginTop: 1,
   },
   sobrietyText: {
-    color: SOCIAL_ICON_COLOR,
+    color: "#e5e7eb",
     fontWeight: "700",
+    fontSize: 12,
   },
   avatarLabel: {
     color: "#e5e7eb",
