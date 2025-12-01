@@ -1,10 +1,27 @@
 const { AuthenticationError, UserInputError } = require("apollo-server-express");
-const { Like, Post, Quote, Comment, User } = require("../../models");
+const { Like, Post, Quote, Comment, Room, User } = require("../../models");
+const { publishDirectMessage } = require("../subscription/subscription");
 
 const TARGET_MODELS = {
   POST: Post,
   QUOTE: Quote,
   COMMENT: Comment,
+};
+
+const publishDirectMessageLikeUpdate = async (targetType, targetId) => {
+  if (targetType !== "COMMENT") return;
+
+  const comment = await Comment.findById(targetId);
+  if (!comment || comment.targetType !== "ROOM") return;
+
+  const room = await Room.findById(comment.targetId);
+  if (!room?.isDirect) return;
+
+  const hydratedComment = await Comment.findById(targetId)
+    .populate({ path: "author", populate: "profilePic" })
+    .exec();
+
+  publishDirectMessage(hydratedComment);
 };
 
 const findTarget = async (targetType, targetId) => {
@@ -49,6 +66,8 @@ const toggleLikeResolver = async (_, { token, targetType, targetId }) => {
     await existingLike.deleteOne();
     await updateLikesCount(target, targetType, -1);
 
+    await publishDirectMessageLikeUpdate(targetType, targetId);
+
     return {
       liked: false,
       likesCount: target.likesCount || 0,
@@ -67,13 +86,17 @@ const toggleLikeResolver = async (_, { token, targetType, targetId }) => {
   await newLike.populate("user");
   await updateLikesCount(target, targetType, 1);
 
-  return {
+  const payload = {
     liked: true,
     likesCount: target.likesCount || 0,
     targetType,
     targetId,
     like: newLike,
   };
+
+  await publishDirectMessageLikeUpdate(targetType, targetId);
+
+  return payload;
 };
 
 module.exports = {

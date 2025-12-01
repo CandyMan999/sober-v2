@@ -23,6 +23,7 @@ export const MY_DIRECT_ROOMS = `
         id
         text
         createdAt
+        likesCount
         targetId
         targetType
         replyTo {
@@ -52,6 +53,7 @@ export const DIRECT_ROOM_WITH_USER = `
         id
         text
         createdAt
+        likesCount
         targetId
         targetType
         replyTo {
@@ -73,6 +75,7 @@ export const SEND_DIRECT_MESSAGE = `
       id
       text
       createdAt
+      likesCount
       targetId
       targetType
       replyTo {
@@ -106,6 +109,7 @@ export const DIRECT_MESSAGE_SUBSCRIPTION = gql`
       id
       text
       createdAt
+      likesCount
       targetId
       targetType
       replyTo {
