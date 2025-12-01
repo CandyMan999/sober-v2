@@ -93,13 +93,15 @@ const Avatar = ({
     </LinearGradient>
   );
 
+  const shouldDisable = !onPress && (disableNavigation || isCurrentUser);
+
   if (onPress || (userId && !isCurrentUser && !disableNavigation)) {
     return (
       <TouchableOpacity
         activeOpacity={0.85}
         onPress={handlePress}
         style={style}
-        disabled={disableNavigation || isCurrentUser}
+        disabled={shouldDisable}
       >
         {content}
       </TouchableOpacity>
