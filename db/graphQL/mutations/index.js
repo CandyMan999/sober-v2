@@ -8,6 +8,7 @@ const { resetSobrietyDateResolver } = require("./resetSobrietyDate");
 const { addQuoteResolver } = require("./quote");
 const { sendPostResolver } = require("./sendPost");
 const { sendImagePostResolver } = require("./sendImagePost");
+const { deletePostResolver, deleteQuoteResolver } = require("./deleteContent");
 const { setPostReviewResolver } = require("./review");
 const {
   creatingPostCommentResolver,
@@ -28,6 +29,8 @@ module.exports = {
   addQuoteResolver,
   sendPostResolver,
   sendImagePostResolver,
+  deletePostResolver,
+  deleteQuoteResolver,
   setPostReviewResolver,
   creatingPostCommentResolver,
   createQuoteCommentResolver,

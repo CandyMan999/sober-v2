@@ -320,6 +320,18 @@ export const SEND_IMAGE_POST_MUTATION = gql`
   }
 `;
 
+export const DELETE_POST_MUTATION = gql`
+  mutation DeletePost($token: String!, $postId: ID!) {
+    deletePost(token: $token, postId: $postId)
+  }
+`;
+
+export const DELETE_QUOTE_MUTATION = gql`
+  mutation DeleteQuote($token: String!, $quoteId: ID!) {
+    deleteQuote(token: $token, quoteId: $quoteId)
+  }
+`;
+
 export const SET_POST_REVIEW_MUTATION = gql`
   mutation SetPostReview($postId: ID!, $review: Boolean!) {
     setPostReview(postId: $postId, review: $review) {
