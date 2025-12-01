@@ -20,7 +20,7 @@ import { Feather, Ionicons, MaterialCommunityIcons, AntDesign } from "@expo/vect
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import { TabView } from "react-native-tab-view";
-import { formatDistanceToNow } from "date-fns";
+import { differenceInCalendarDays } from "date-fns";
 
 import Avatar from "../../components/Avatar";
 import { ContentPreviewModal } from "../../components";
@@ -226,14 +226,19 @@ const UserProfileScreen = ({ route, navigation }) => {
     [profileData?.sobrietyStartAt]
   );
 
-  const sobrietyDuration = useMemo(() => {
+  const sobrietyDays = useMemo(() => {
     if (!sobrietyStartDate) return null;
 
-    return formatDistanceToNow(sobrietyStartDate, {
-      addSuffix: false,
-      includeSeconds: false,
-    });
+    const days = differenceInCalendarDays(new Date(), sobrietyStartDate);
+    return days < 0 ? null : days;
   }, [sobrietyStartDate]);
+
+  const sobrietyDuration = useMemo(() => {
+    if (sobrietyDays === null) return null;
+
+    const label = sobrietyDays === 1 ? "day" : "days";
+    return `${sobrietyDays} ${label}`;
+  }, [sobrietyDays]);
 
 
   const handleToggleFollow = useCallback(async () => {
