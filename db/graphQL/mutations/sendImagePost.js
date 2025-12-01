@@ -5,7 +5,8 @@ const os = require("os");
 const path = require("path");
 const { pipeline } = require("stream/promises");
 const FormData = require("form-data");
-const { User, Post } = require("../../models");
+const { User, Post, Connection } = require("../../models");
+const { sendPushNotifications } = require("../../utils/pushNotifications");
 const { findClosestCity } = require("../../utils/location");
 
 require("dotenv").config();
@@ -161,6 +162,44 @@ module.exports = {
           populate: { path: "author" },
         })
         .exec();
+
+      const followerConnections = await Connection.find({
+        followee: senderID,
+      }).populate("follower");
+
+      const notifications = [];
+      const senderName = sender.username || "Someone";
+      const trimmedBody = (text || "").trim();
+      const preview = trimmedBody
+        ? trimmedBody.length > 140
+          ? `${trimmedBody.slice(0, 137)}...`
+          : trimmedBody
+        : "Shared a new post";
+
+      for (const connection of followerConnections) {
+        const follower = connection?.follower;
+        if (!follower?.token || follower?.notificationsEnabled === false) {
+          continue;
+        }
+
+        const notificationData = {
+          type: "new_post",
+          postId: String(newPost._id),
+          senderId: String(sender._id),
+          senderUsername: senderName,
+        };
+
+        notifications.push({
+          pushToken: follower.token,
+          title: `${senderName} shared a new post`,
+          body: preview,
+          data: notificationData,
+        });
+      }
+
+      if (notifications.length) {
+        await sendPushNotifications(notifications);
+      }
 
       return populatedPost;
     } catch (err) {

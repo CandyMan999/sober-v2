@@ -243,99 +243,101 @@ export default function App() {
         <SafeAreaProvider>
           <Context.Provider value={{ state, dispatch }}>
             <NavigationContainer ref={navigationRef}>
-              <Stack.Navigator
-                screenOptions={{
-                  headerShown: true,
-                }}
-              >
-                <Stack.Screen
-                  name="AddUserName"
-                  component={AddUserNameScreen}
-                  options={{ title: "Choose a Username" }}
+              <>
+                <Stack.Navigator
+                  screenOptions={{
+                    headerShown: true,
+                  }}
+                >
+                  <Stack.Screen
+                    name="AddUserName"
+                    component={AddUserNameScreen}
+                    options={{ title: "Choose a Username" }}
+                  />
+                  <Stack.Screen
+                    name="AddPhoto"
+                    component={AddPhotoScreen}
+                    options={{ title: "Add Profile Photo" }}
+                  />
+                  <Stack.Screen
+                    name="AddSobrietyDate"
+                    component={AddSobrietyDateScreen}
+                    options={{ title: "Set Sobriety Date" }}
+                  />
+                  <Stack.Screen
+                    name="LocationPermission"
+                    component={LocationPermissionScreen}
+                    options={{ title: "Location Permission" }}
+                  />
+                  {/* Main app shell */}
+                  <Stack.Screen
+                    name="MainTabs"
+                    component={TabNavigator}
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen
+                    name="UserProfile"
+                    component={UserProfileScreen}
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen
+                    name="Followers"
+                    component={FollowersScreen}
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen
+                    name="Following"
+                    component={FollowingScreen}
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen
+                    name="Buddies"
+                    component={BuddiesScreen}
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen
+                    name="Likes"
+                    component={LikesScreen}
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen
+                    name="Notifications"
+                    component={NotificationsScreen}
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen
+                    name="NotificationSettings"
+                    component={NotificationSettingsScreen}
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen
+                    name="Messages"
+                    component={MessageListScreen}
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen
+                    name="DirectMessage"
+                    component={DirectMessageScreen}
+                    options={{ headerShown: false }}
+                  />
+                </Stack.Navigator>
+                <ContentPreviewModal
+                  visible={previewVisible && Boolean(previewContent)}
+                  item={previewContent}
+                  type={previewType}
+                  onClose={closePreview}
+                  viewerUser={state?.user}
+                  onToggleSound={() => {}}
+                  onTogglePostLike={() => {}}
+                  onToggleQuoteLike={() => {}}
+                  onToggleFollow={() => {}}
+                  onFlagForReview={() => {}}
+                  onToggleSave={() => {}}
+                  onDelete={() => {}}
+                  isMuted
                 />
-                <Stack.Screen
-                  name="AddPhoto"
-                  component={AddPhotoScreen}
-                  options={{ title: "Add Profile Photo" }}
-                />
-                <Stack.Screen
-                  name="AddSobrietyDate"
-                  component={AddSobrietyDateScreen}
-                  options={{ title: "Set Sobriety Date" }}
-                />
-                <Stack.Screen
-                  name="LocationPermission"
-                  component={LocationPermissionScreen}
-                  options={{ title: "Location Permission" }}
-                />
-                {/* Main app shell */}
-                <Stack.Screen
-                  name="MainTabs"
-                  component={TabNavigator}
-                  options={{ headerShown: false }}
-                />
-                <Stack.Screen
-                  name="UserProfile"
-                  component={UserProfileScreen}
-                  options={{ headerShown: false }}
-                />
-                <Stack.Screen
-                  name="Followers"
-                  component={FollowersScreen}
-                  options={{ headerShown: false }}
-                />
-                <Stack.Screen
-                  name="Following"
-                  component={FollowingScreen}
-                  options={{ headerShown: false }}
-                />
-                <Stack.Screen
-                  name="Buddies"
-                  component={BuddiesScreen}
-                  options={{ headerShown: false }}
-                />
-                <Stack.Screen
-                  name="Likes"
-                  component={LikesScreen}
-                  options={{ headerShown: false }}
-                />
-                <Stack.Screen
-                  name="Notifications"
-                  component={NotificationsScreen}
-                  options={{ headerShown: false }}
-                />
-                <Stack.Screen
-                  name="NotificationSettings"
-                  component={NotificationSettingsScreen}
-                  options={{ headerShown: false }}
-                />
-                <Stack.Screen
-                  name="Messages"
-                  component={MessageListScreen}
-                  options={{ headerShown: false }}
-                />
-                <Stack.Screen
-                  name="DirectMessage"
-                  component={DirectMessageScreen}
-                  options={{ headerShown: false }}
-                />
-              </Stack.Navigator>
+              </>
             </NavigationContainer>
-            <ContentPreviewModal
-              visible={previewVisible && Boolean(previewContent)}
-              item={previewContent}
-              type={previewType}
-              onClose={closePreview}
-              viewerUser={state?.user}
-              onToggleSound={() => {}}
-              onTogglePostLike={() => {}}
-              onToggleQuoteLike={() => {}}
-              onToggleFollow={() => {}}
-              onFlagForReview={() => {}}
-              onToggleSave={() => {}}
-              onDelete={() => {}}
-              isMuted
-            />
             <Toast />
           </Context.Provider>
         </SafeAreaProvider>
