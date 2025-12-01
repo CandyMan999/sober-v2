@@ -61,7 +61,8 @@ const ContentPreviewModal = ({
   const actionsTranslateY = useRef(
     new Animated.Value(ACTION_SHEET_HEIGHT + 60)
   ).current;
-  const client = useClient();
+  const client = useMemo(() => useClient(), []);
+  const isPost = type === "POST";
   const backdropFalloffOpacity = useMemo(
     () =>
       dragY.interpolate({
@@ -310,7 +311,6 @@ const ContentPreviewModal = ({
     [backdropOpacity, dragY, handleClose]
   );
 
-  const isPost = type === "POST";
   const viewerId = viewerUser?.id;
   const content = localItem
     ? {
