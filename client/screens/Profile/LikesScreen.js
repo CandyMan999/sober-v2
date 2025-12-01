@@ -14,6 +14,10 @@ import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 
 import Context from "../../context";
 import { ContentPreviewModal } from "../../components";
+import { useClient } from "../../client";
+import { TOGGLE_SAVE_MUTATION } from "../../GraphQL/mutations";
+import { applySavedStateToContext, isItemSaved } from "../../utils/saves";
+import { getToken } from "../../utils/helpers";
 
 const parseDate = (timestamp) => {
   if (!timestamp) return null;
@@ -47,7 +51,8 @@ const formatDate = (timestamp) => {
 const LikesScreen = () => {
   const navigation = useNavigation();
   const route = useRoute();
-  const { state } = useContext(Context);
+  const { state, dispatch } = useContext(Context);
+  const client = useClient();
   const {
     likesTotal = 0,
     posts = [],
@@ -175,6 +180,56 @@ const LikesScreen = () => {
     setPreviewVisible(false);
   };
 
+  const handleToggleSave = async (content, contentType = "POST") => {
+    if (!content?.id) return;
+
+    const token = await getToken();
+    if (!token) return;
+
+    const collection =
+      contentType === "POST"
+        ? state?.user?.savedPosts
+        : state?.user?.savedQuotes;
+    const alreadySaved = isItemSaved(collection, content.id);
+    const optimisticSaved = !alreadySaved;
+
+    applySavedStateToContext({
+      state,
+      dispatch,
+      targetType: contentType,
+      item: content,
+      saved: optimisticSaved,
+    });
+
+    try {
+      const data = await client.request(TOGGLE_SAVE_MUTATION, {
+        token,
+        targetType: contentType,
+        targetId: content.id,
+      });
+
+      const confirmed = data?.toggleSave?.saved;
+      if (typeof confirmed === "boolean" && confirmed !== optimisticSaved) {
+        applySavedStateToContext({
+          state,
+          dispatch,
+          targetType: contentType,
+          item: content,
+          saved: confirmed,
+        });
+      }
+    } catch (err) {
+      console.error("Error toggling save from likes", err);
+      applySavedStateToContext({
+        state,
+        dispatch,
+        targetType: contentType,
+        item: content,
+        saved: alreadySaved,
+      });
+    }
+  };
+
   const renderItem = ({ item }) => (
     <TouchableOpacity
       style={styles.card}
@@ -262,6 +317,7 @@ const LikesScreen = () => {
         onClose={handleClosePreview}
         isMuted={previewMuted}
         onToggleSound={() => setPreviewMuted((prev) => !prev)}
+        onToggleSave={handleToggleSave}
         onDelete={handleDeleteContent}
       />
     </SafeAreaView>

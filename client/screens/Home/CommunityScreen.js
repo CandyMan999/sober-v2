@@ -30,10 +30,12 @@ import { useClient } from "../../client";
 import {
   RECORD_POST_VIEW_MUTATION,
   SET_POST_REVIEW_MUTATION,
+  TOGGLE_SAVE_MUTATION,
 } from "../../GraphQL/mutations";
 import { getToken } from "../../utils/helpers";
 import Context from "../../context";
 import FeedInteractionModel from "../../utils/feed/FeedInteractionModel";
+import { applySavedStateToContext, isItemSaved } from "../../utils/saves";
 
 const TUTORIAL_SEEN_KEY = "community_tutorial_seen";
 const tutorialImage = require("../../assets/swipe1.png");
@@ -55,7 +57,7 @@ const dedupeById = (list = []) => {
 const CommunityScreen = () => {
   const client = useClient();
   const isFocused = useIsFocused();
-  const { state } = useContext(Context);
+  const { state, dispatch } = useContext(Context);
   const currentUserId = state?.user?.id;
   const currentUser = state?.user;
   const [posts, setPosts] = useState([]);
@@ -71,6 +73,7 @@ const CommunityScreen = () => {
   const [isMuted, setIsMuted] = useState(false);
   const [reviewingPostId, setReviewingPostId] = useState(null);
   const [selectedPost, setSelectedPost] = useState(null);
+  const [savingPostId, setSavingPostId] = useState(null);
   const [showTutorial, setShowTutorial] = useState(false);
   const [reviewBypass, setReviewBypass] = useState({});
   const [showFilterSheet, setShowFilterSheet] = useState(false);
@@ -513,6 +516,55 @@ const CommunityScreen = () => {
     }
   };
 
+  const handleToggleSavePost = async (post) => {
+    if (!post?.id) return;
+
+    const token = await getToken();
+    if (!token) return;
+
+    const alreadySaved = isItemSaved(state?.user?.savedPosts, post.id);
+    const optimisticSaved = !alreadySaved;
+    setSavingPostId(post.id);
+    applySavedStateToContext({
+      state,
+      dispatch,
+      targetType: "POST",
+      item: post,
+      saved: optimisticSaved,
+    });
+
+    try {
+      const data = await client.request(TOGGLE_SAVE_MUTATION, {
+        token,
+        targetType: "POST",
+        targetId: post.id,
+      });
+
+      const confirmed = data?.toggleSave?.saved;
+      if (typeof confirmed === "boolean" && confirmed !== optimisticSaved) {
+        applySavedStateToContext({
+          state,
+          dispatch,
+          targetType: "POST",
+          item: post,
+          saved: confirmed,
+        });
+      }
+    } catch (err) {
+      console.error("Error toggling post save", err);
+      applySavedStateToContext({
+        state,
+        dispatch,
+        targetType: "POST",
+        item: post,
+        saved: alreadySaved,
+      });
+    } finally {
+      setSavingPostId(null);
+      closeMoreSheet();
+    }
+  };
+
   const handleMorePress = (post) => {
     setSelectedPost(post);
   };
@@ -771,12 +823,20 @@ const CommunityScreen = () => {
               style={[styles.bottomSheet, { transform: [{ translateY }] }]}
             >
               <Text style={styles.sheetTitle}>Post options</Text>
-              <TouchableOpacity style={styles.sheetAction} onPress={() => {}}>
+              <TouchableOpacity
+                style={styles.sheetAction}
+                onPress={() => handleToggleSavePost(selectedPost)}
+                disabled={savingPostId === selectedPost?.id}
+              >
                 <View style={styles.sheetActionLeft}>
                   <Ionicons name="bookmark-outline" size={20} color="#fef3c7" />
                   <Text style={styles.sheetActionText}>Save</Text>
                 </View>
-                <Ionicons name="chevron-forward" size={18} color="#9ca3af" />
+                {savingPostId === selectedPost?.id ? (
+                  <ActivityIndicator color="#f59e0b" style={styles.sheetSpinner} />
+                ) : (
+                  <Ionicons name="chevron-forward" size={18} color="#9ca3af" />
+                )}
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.sheetAction}

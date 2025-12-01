@@ -26,6 +26,9 @@ import { useClient } from "../../client";
 import AlertModal from "../../components/AlertModal";
 import Context from "../../context";
 import FeedInteractionModel from "../../utils/feed/FeedInteractionModel";
+import { TOGGLE_SAVE_MUTATION } from "../../GraphQL/mutations";
+import { applySavedStateToContext, isItemSaved } from "../../utils/saves";
+import { getToken } from "../../utils/helpers";
 
 // 👇 module-level flag: survives navigation, resets when app reloads
 let hasShownQuotesAlertThisSession = false;
@@ -33,7 +36,7 @@ let hasShownQuotesAlertThisSession = false;
 const QuotesScreen = () => {
   const client = useClient();
   const isFocused = useIsFocused();
-  const { state } = useContext(Context);
+  const { state, dispatch } = useContext(Context);
   const currentUserId = state?.user?.id;
   const currentUser = state?.user;
 
@@ -42,6 +45,8 @@ const QuotesScreen = () => {
   const [error, setError] = useState("");
   const [containerHeight, setContainerHeight] = useState(null);
   const [showSaveSheet, setShowSaveSheet] = useState(false);
+  const [selectedQuote, setSelectedQuote] = useState(null);
+  const [savingQuoteId, setSavingQuoteId] = useState(null);
   const [saveAnim] = useState(() => new Animated.Value(0));
 
   // “Add your own quote” hint
@@ -168,7 +173,8 @@ const QuotesScreen = () => {
     setContainerHeight(height);
   };
 
-  const openSaveSheet = () => {
+  const openSaveSheet = (quote) => {
+    setSelectedQuote(quote || null);
     setShowSaveSheet(true);
     Animated.spring(saveAnim, {
       toValue: 1,
@@ -189,8 +195,59 @@ const QuotesScreen = () => {
     }).start(({ finished }) => {
       if (finished) {
         setShowSaveSheet(false);
+        setSelectedQuote(null);
       }
     });
+  };
+
+  const handleToggleSaveQuote = async () => {
+    if (!selectedQuote?.id) return;
+
+    const token = await getToken();
+    if (!token) return;
+
+    const alreadySaved = isItemSaved(state?.user?.savedQuotes, selectedQuote.id);
+    const optimisticSaved = !alreadySaved;
+    setSavingQuoteId(selectedQuote.id);
+
+    applySavedStateToContext({
+      state,
+      dispatch,
+      targetType: "QUOTE",
+      item: selectedQuote,
+      saved: optimisticSaved,
+    });
+
+    try {
+      const data = await client.request(TOGGLE_SAVE_MUTATION, {
+        token,
+        targetType: "QUOTE",
+        targetId: selectedQuote.id,
+      });
+
+      const confirmed = data?.toggleSave?.saved;
+      if (typeof confirmed === "boolean" && confirmed !== optimisticSaved) {
+        applySavedStateToContext({
+          state,
+          dispatch,
+          targetType: "QUOTE",
+          item: selectedQuote,
+          saved: confirmed,
+        });
+      }
+    } catch (err) {
+      console.error("Error toggling quote save", err);
+      applySavedStateToContext({
+        state,
+        dispatch,
+        targetType: "QUOTE",
+        item: selectedQuote,
+        saved: alreadySaved,
+      });
+    } finally {
+      setSavingQuoteId(null);
+      closeSaveSheet();
+    }
   };
 
   const renderSaveSheet = () => (
@@ -219,12 +276,24 @@ const QuotesScreen = () => {
         >
           <Text style={styles.sheetTitle}>Quote options</Text>
 
-          <TouchableOpacity style={styles.sheetAction} onPress={closeSaveSheet}>
+          <TouchableOpacity
+            style={styles.sheetAction}
+            onPress={handleToggleSaveQuote}
+            disabled={savingQuoteId === selectedQuote?.id}
+          >
             <View style={styles.sheetActionLeft}>
               <Ionicons name="bookmark-outline" size={20} color="#fef3c7" />
               <Text style={styles.sheetActionText}>Save</Text>
             </View>
-            <Ionicons name="chevron-forward" size={18} color="#9ca3af" />
+            {savingQuoteId === selectedQuote?.id ? (
+              <ActivityIndicator
+                color="#f59e0b"
+                size="small"
+                style={styles.sheetSpinner}
+              />
+            ) : (
+              <Ionicons name="chevron-forward" size={18} color="#9ca3af" />
+            )}
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.sheetCancel} onPress={closeSaveSheet}>
@@ -304,7 +373,7 @@ const QuotesScreen = () => {
             item.user?.id ? () => handleToggleFollowUser(item.user) : undefined
           }
           viewerUserId={currentUserId}
-          onMorePress={openSaveSheet}
+          onMorePress={() => openSaveSheet(item)}
         />
         {renderSaveSheet()}
       </View>
@@ -322,7 +391,7 @@ const QuotesScreen = () => {
           item.user?.id ? () => handleToggleFollowUser(item.user) : undefined
         }
         viewerUserId={currentUserId}
-        onMorePress={openSaveSheet}
+        onMorePress={() => openSaveSheet(item)}
       />
     </View>
   );

@@ -20,8 +20,18 @@ import Context from "../../context";
 import { useClient } from "../../client";
 import { getToken } from "../../utils/helpers";
 import { PROFILE_OVERVIEW_QUERY, FETCH_ME_QUERY } from "../../GraphQL/queries";
-import { TOGGLE_LIKE_MUTATION, SET_POST_REVIEW_MUTATION } from "../../GraphQL/mutations";
+import {
+  TOGGLE_LIKE_MUTATION,
+  SET_POST_REVIEW_MUTATION,
+  TOGGLE_SAVE_MUTATION,
+} from "../../GraphQL/mutations";
 import { ContentPreviewModal } from "../../components";
+import {
+  applySavedStateToContext,
+  isItemSaved,
+  mergeSavedList,
+  removeSavedItem,
+} from "../../utils/saves";
 
 const AVATAR_SIZE = 110;
 
@@ -37,6 +47,9 @@ const ProfileScreen = ({ navigation }) => {
   const [quotes, setQuotes] = useState(cachedOverview?.quotes || []);
   const [savedPosts, setSavedPosts] = useState(
     cachedOverview?.savedPosts || []
+  );
+  const [savedQuotes, setSavedQuotes] = useState(
+    cachedOverview?.savedQuotes || []
   );
   const [following, setFollowing] = useState(
     cachedOverview?.user?.following || []
@@ -120,6 +133,7 @@ const ProfileScreen = ({ navigation }) => {
     setPosts(cachedOverview.posts || []);
     setQuotes(cachedOverview.quotes || []);
     setSavedPosts(cachedOverview.savedPosts || []);
+    setSavedQuotes(cachedOverview.savedQuotes || []);
     setFollowers(cachedOverview.user?.followers || []);
     setFollowing(cachedOverview.user?.following || []);
     setBuddies(cachedOverview.user?.buddies || []);
@@ -141,6 +155,7 @@ const ProfileScreen = ({ navigation }) => {
         setPosts(overview?.posts || []);
         setQuotes(overview?.quotes || []);
         setSavedPosts(overview?.savedPosts || []);
+        setSavedQuotes(overview?.savedQuotes || []);
         setFollowers(overview?.user?.followers || []);
         setFollowing(overview?.user?.following || []);
         setBuddies(overview?.user?.buddies || []);
@@ -305,14 +320,15 @@ const ProfileScreen = ({ navigation }) => {
     if (!contentId) return;
 
     if (contentType === "QUOTE") {
-      setQuotes((prev) => prev.filter((quote) => quote.id !== contentId));
-      setPreviewItem((prev) => (prev?.id === contentId ? null : prev));
-      setPreviewVisible(false);
-      return;
-    }
+    setQuotes((prev) => prev.filter((quote) => quote.id !== contentId));
+    setSavedQuotes((prev) => prev.filter((quote) => quote.id !== contentId));
+    setPreviewItem((prev) => (prev?.id === contentId ? null : prev));
+    setPreviewVisible(false);
+    return;
+  }
 
-    setPosts((prev) => prev.filter((post) => post.id !== contentId));
-    setSavedPosts((prev) => prev.filter((post) => post.id !== contentId));
+  setPosts((prev) => prev.filter((post) => post.id !== contentId));
+  setSavedPosts((prev) => prev.filter((post) => post.id !== contentId));
     setPreviewItem((prev) => (prev?.id === contentId ? null : prev));
     setPreviewVisible(false);
   };
@@ -435,6 +451,56 @@ const ProfileScreen = ({ navigation }) => {
     }
   };
 
+  const handleToggleSave = async (content, contentType = "POST") => {
+    if (!content?.id) return;
+
+    const token = await getToken();
+    if (!token) return;
+
+    const isPost = contentType === "POST";
+    const collection = isPost ? savedPosts : savedQuotes;
+    const alreadySaved = isItemSaved(collection, content.id);
+    const optimisticSaved = !alreadySaved;
+
+    const applyLocalSave = (nextSaved) => {
+      if (isPost) {
+        setSavedPosts((prev) =>
+          nextSaved ? mergeSavedList(prev, content) : removeSavedItem(prev, content.id)
+        );
+      } else {
+        setSavedQuotes((prev) =>
+          nextSaved ? mergeSavedList(prev, content) : removeSavedItem(prev, content.id)
+        );
+      }
+
+      applySavedStateToContext({
+        state,
+        dispatch,
+        targetType: contentType,
+        item: content,
+        saved: nextSaved,
+      });
+    };
+
+    applyLocalSave(optimisticSaved);
+
+    try {
+      const data = await client.request(TOGGLE_SAVE_MUTATION, {
+        token,
+        targetType: contentType,
+        targetId: content.id,
+      });
+
+      const confirmed = data?.toggleSave?.saved;
+      if (typeof confirmed === "boolean" && confirmed !== optimisticSaved) {
+        applyLocalSave(confirmed);
+      }
+    } catch (err) {
+      console.error("Error toggling save", err);
+      applyLocalSave(alreadySaved);
+    }
+  };
+
   const handleFlagForReview = async (postId, alreadyFlagged) => {
     if (!postId) return;
     if (alreadyFlagged) {
@@ -522,7 +588,7 @@ const ProfileScreen = ({ navigation }) => {
     );
   };
 
-  const renderQuoteTile = ({ item }) => {
+  const renderQuoteTile = ({ item, saved = false }) => {
     const status = item.isDenied
       ? { label: "Denied", color: "#ef4444", icon: "close-circle" }
       : item.isApproved
@@ -543,6 +609,14 @@ const ProfileScreen = ({ navigation }) => {
               color="#f59e0b"
             />
             <Text style={styles.quoteBadge}>Quote</Text>
+            {saved && (
+              <Feather
+                name="bookmark"
+                size={14}
+                color="#fef3c7"
+                style={styles.savedQuoteIcon}
+              />
+            )}
           </View>
           <Text style={styles.quoteText} numberOfLines={3}>
             {item.text}
@@ -565,6 +639,14 @@ const ProfileScreen = ({ navigation }) => {
         </View>
       </TouchableOpacity>
     );
+  };
+
+  const renderSavedTile = ({ item }) => {
+    if (item.__savedType === "QUOTE") {
+      return renderQuoteTile({ item, saved: true });
+    }
+
+    return renderPostTile({ item, saved: true });
   };
 
   const renderDrunkContent = () => {
@@ -606,13 +688,30 @@ const ProfileScreen = ({ navigation }) => {
     );
   };
 
+  const savedItems = useMemo(() => {
+    const combined = [
+      ...(savedPosts || []).map((post) => ({ ...post, __savedType: "POST" })),
+      ...(savedQuotes || []).map((quote) => ({ ...quote, __savedType: "QUOTE" })),
+    ];
+
+    return combined.sort((a, b) => {
+      const aDate = new Date(a.createdAt || 0).getTime();
+      const bDate = new Date(b.createdAt || 0).getTime();
+      return bDate - aDate;
+    });
+  }, [savedPosts, savedQuotes]);
+
   const renderContent = (tabType) => {
     if (tabType === "DRUNK") {
       return renderDrunkContent();
     }
 
     const data =
-      tabType === "POSTS" ? posts : tabType === "QUOTES" ? quotes : savedPosts;
+      tabType === "POSTS"
+        ? posts
+        : tabType === "QUOTES"
+        ? quotes
+        : savedItems;
 
     if (!data?.length) {
       const emptyCopy =
@@ -620,7 +719,7 @@ const ProfileScreen = ({ navigation }) => {
           ? "No posts yet"
           : tabType === "QUOTES"
           ? "No quotes yet"
-          : "No saved posts yet";
+          : "No saved posts or quotes yet";
       return (
         <View style={styles.emptyState}>
           <Text style={styles.emptyText}>{emptyCopy}</Text>
@@ -631,6 +730,8 @@ const ProfileScreen = ({ navigation }) => {
     const renderer =
       tabType === "QUOTES"
         ? renderQuoteTile
+        : tabType === "SAVED"
+        ? renderSavedTile
         : ({ item }) => renderPostTile({ item, saved: tabType === "SAVED" });
 
     return (
@@ -705,7 +806,7 @@ const ProfileScreen = ({ navigation }) => {
 
     const postRows = Math.max(1, Math.ceil(posts.length / 3));
     const quoteRows = Math.max(1, Math.ceil(quotes.length / 3));
-    const savedRows = Math.max(1, Math.ceil(savedPosts.length / 3));
+    const savedRows = Math.max(1, Math.ceil(savedItems.length / 3));
 
     const maxRows = Math.max(postRows, quoteRows, savedRows);
     return maxRows * 180;
@@ -714,7 +815,7 @@ const ProfileScreen = ({ navigation }) => {
     layout.width,
     posts.length,
     quotes.length,
-    savedPosts.length,
+    savedItems.length,
     profileData?.drunkPicUrl,
   ]);
 
@@ -899,6 +1000,7 @@ const ProfileScreen = ({ navigation }) => {
         onCommentAdded={handlePreviewCommentAdded}
         onTogglePostLike={handleTogglePostLike}
         onToggleQuoteLike={handleToggleQuoteLike}
+        onToggleSave={handleToggleSave}
         onFlagForReview={handleFlagForReview}
         onDelete={handleDeleteContent}
       />
@@ -1168,6 +1270,9 @@ const styles = StyleSheet.create({
     textTransform: "uppercase",
     letterSpacing: 0.6,
     fontSize: 10,
+  },
+  savedQuoteIcon: {
+    marginLeft: 6,
   },
   quoteText: {
     color: "#e5e7eb",

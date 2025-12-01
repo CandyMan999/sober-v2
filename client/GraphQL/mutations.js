@@ -40,6 +40,12 @@ export const UPDATE_USER_PROFILE_MUTATION = gql`
       savedPosts {
         id
       }
+      savedQuotes {
+        id
+      }
+      savedQuotes {
+        id
+      }
       milestonesNotified
       notificationsEnabled
       social {
@@ -385,6 +391,16 @@ export const TOGGLE_LIKE_MUTATION = gql`
           profilePicUrl
         }
       }
+    }
+  }
+`;
+
+export const TOGGLE_SAVE_MUTATION = gql`
+  mutation ToggleSave($token: String!, $targetType: SaveTarget!, $targetId: ID!) {
+    toggleSave(token: $token, targetType: $targetType, targetId: $targetId) {
+      saved
+      targetType
+      targetId
     }
   }
 `;

@@ -42,6 +42,7 @@ const ContentPreviewModal = ({
   onToggleQuoteLike,
   onFlagForReview,
   onDelete,
+  onToggleSave,
 }) => {
   const [mounted, setMounted] = useState(visible);
   const [localItem, setLocalItem] = useState(item);
@@ -49,6 +50,7 @@ const ContentPreviewModal = ({
   const [actionsVisible, setActionsVisible] = useState(false);
   const [flagging, setFlagging] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const [saving, setSaving] = useState(false);
   const backdropOpacity = useRef(new Animated.Value(0)).current;
   const translateY = useRef(new Animated.Value(WINDOW_HEIGHT)).current;
   const dragY = useRef(new Animated.Value(0)).current;
@@ -173,6 +175,7 @@ const ContentPreviewModal = ({
       setShowActions(false);
       setFlagging(false);
       setDeleting(false);
+      setSaving(false);
     }
   }, [visible]);
 
@@ -330,6 +333,19 @@ const ContentPreviewModal = ({
     }
   };
 
+  const handleSavePress = async () => {
+    if (!content?.id || saving) return;
+    setSaving(true);
+    try {
+      await onToggleSave?.(content, type);
+    } catch (err) {
+      console.error("Error toggling save", err);
+    } finally {
+      setSaving(false);
+      closeActionsSheet();
+    }
+  };
+
   const handleDeletePress = async () => {
     if (!content?.id || deleting || !canDelete) return;
     const token = await getToken();
@@ -469,8 +485,12 @@ const ContentPreviewModal = ({
               <Text style={styles.sheetTitle}>
                 {isPost ? "Post options" : "Quote options"}
               </Text>
-              {isPost && !canDelete ? (
-                <TouchableOpacity style={styles.sheetAction} onPress={() => {}}>
+              {!canDelete ? (
+                <TouchableOpacity
+                  style={styles.sheetAction}
+                  onPress={handleSavePress}
+                  disabled={saving}
+                >
                   <View style={styles.sheetActionLeft}>
                     <Ionicons
                       name="bookmark-outline"
@@ -479,7 +499,11 @@ const ContentPreviewModal = ({
                     />
                     <Text style={styles.sheetActionText}>Save</Text>
                   </View>
-                  <Ionicons name="chevron-forward" size={18} color="#9ca3af" />
+                  {saving ? (
+                    <ActivityIndicator color="#f59e0b" style={styles.sheetSpinner} />
+                  ) : (
+                    <Ionicons name="chevron-forward" size={18} color="#9ca3af" />
+                  )}
                 </TouchableOpacity>
               ) : null}
               {isPost && !canDelete ? (
