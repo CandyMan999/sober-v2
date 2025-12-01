@@ -235,7 +235,6 @@ const UserProfileScreen = ({ route, navigation }) => {
     });
   }, [sobrietyStartDate]);
 
-  const streakColors = useMemo(() => ["#fcd34d", "#f97316"], []);
 
   const handleToggleFollow = useCallback(async () => {
     if (!profileData?.id || profileData?.id === state?.user?.id || followPending)
@@ -891,6 +890,16 @@ const UserProfileScreen = ({ route, navigation }) => {
         ) : null}
       </View>
       <View style={styles.bodyPadding}>
+        {sobrietyDuration ? (
+          <Text>
+            <MaterialCommunityIcons
+              name="progress-clock"
+              size={16}
+              color="#f97316"
+            />
+            {` ${sobrietyDuration} sober`}
+          </Text>
+        ) : null}
         <View style={styles.headerRow}>
           <View style={styles.avatarColumn}>
             <Avatar
@@ -1038,32 +1047,6 @@ const UserProfileScreen = ({ route, navigation }) => {
             ”
           </Text>
         </View>
-
-        {sobrietyDuration ? (
-          <View style={styles.sobrietyCard}>
-            <LinearGradient
-              colors={streakColors}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 1 }}
-              style={styles.sobrietyBorder}
-            >
-              <View style={styles.sobrietyContent}>
-                <View style={styles.sobrietyRow}>
-                  <MaterialCommunityIcons
-                    name="progress-clock"
-                    size={16}
-                    color="#fbbf24"
-                    style={styles.sobrietyIcon}
-                  />
-                  <View style={styles.sobrietyTextBlock}>
-                    <Text style={styles.sobrietyLabel}>Sober streak</Text>
-                    <Text style={styles.sobrietyValue}>{sobrietyDuration} strong</Text>
-                  </View>
-                </View>
-              </View>
-            </LinearGradient>
-          </View>
-        ) : null}
       </View>
 
       {renderTabBar()}
@@ -1216,59 +1199,6 @@ const styles = StyleSheet.create({
     color: "#9ca3af",
     marginTop: 4,
     fontSize: 12,
-  },
-  sobrietyCard: {
-    marginTop: 10,
-    alignSelf: "center",
-    alignItems: "center",
-    flexShrink: 1,
-  },
-  sobrietyBorder: {
-    borderRadius: 13,
-    padding: 2,
-    alignItems: "center",
-    justifyContent: "center",
-    alignSelf: "center",
-    flexShrink: 1,
-  },
-  sobrietyContent: {
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: 6,
-    backgroundColor: "rgba(5,8,22,0.94)",
-    paddingHorizontal: 11,
-    paddingVertical: 9,
-    borderRadius: 11,
-    alignSelf: "center",
-    flexShrink: 1,
-  },
-  sobrietyRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 8,
-  },
-  sobrietyIcon: {
-    marginTop: 1,
-  },
-  sobrietyTextBlock: {
-    gap: 2,
-    alignItems: "center",
-    flexShrink: 1,
-  },
-  sobrietyLabel: {
-    color: "#e5e7eb",
-    fontSize: 9,
-    fontWeight: "800",
-    letterSpacing: 0.6,
-    textTransform: "uppercase",
-  },
-  sobrietyValue: {
-    color: "#f8fafc",
-    fontSize: 13,
-    fontWeight: "900",
-    letterSpacing: 0.3,
-    textAlign: "center",
   },
   whyWrapper: {
     alignItems: "center",
