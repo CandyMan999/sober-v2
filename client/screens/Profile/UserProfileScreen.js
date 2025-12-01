@@ -14,6 +14,7 @@ import { Feather, Ionicons, MaterialCommunityIcons, AntDesign } from "@expo/vect
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import { TabView } from "react-native-tab-view";
+import { formatDistanceToNow } from "date-fns";
 
 import Avatar from "../../components/Avatar";
 import { ContentPreviewModal } from "../../components";
@@ -50,6 +51,19 @@ const SOCIAL_ICON_PROPS = {
     size: SOCIAL_ICON_SIZE,
   },
   x: { Component: AntDesign, name: "x", color: SOCIAL_ICON_COLOR, size: SOCIAL_ICON_SIZE },
+};
+
+const parseDateValue = (value) => {
+  if (!value) return null;
+
+  const numeric = Number(value);
+  if (!Number.isNaN(numeric)) {
+    const asDate = new Date(numeric);
+    if (!Number.isNaN(asDate.getTime())) return asDate;
+  }
+
+  const fromString = new Date(value);
+  return Number.isNaN(fromString.getTime()) ? null : fromString;
 };
 
 const UserProfileScreen = ({ route, navigation }) => {
@@ -200,6 +214,20 @@ const UserProfileScreen = ({ route, navigation }) => {
       })
       .filter(Boolean);
   }, [profileData?.social]);
+
+  const sobrietyStartDate = useMemo(
+    () => parseDateValue(profileData?.sobrietyStartAt),
+    [profileData?.sobrietyStartAt]
+  );
+
+  const sobrietyDuration = useMemo(() => {
+    if (!sobrietyStartDate) return null;
+
+    return formatDistanceToNow(sobrietyStartDate, {
+      addSuffix: false,
+      includeSeconds: false,
+    });
+  }, [sobrietyStartDate]);
 
   const handleToggleFollow = useCallback(async () => {
     if (!profileData?.id || profileData?.id === state?.user?.id || followPending)
@@ -994,6 +1022,30 @@ const UserProfileScreen = ({ route, navigation }) => {
           </TouchableOpacity>
         </View>
 
+        {sobrietyDuration ? (
+          <LinearGradient
+            colors={["#38bdf8", "#a855f7", "#f59e0b"]}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={styles.sobrietyCard}
+          >
+            <View style={styles.sobrietyContent}>
+              <View style={styles.sobrietyEmblem}>
+                <MaterialCommunityIcons
+                  name="white-balance-sunny"
+                  size={18}
+                  color="#0b1222"
+                />
+              </View>
+              <View style={styles.sobrietyTextBlock}>
+                <Text style={styles.sobrietyLabel}>Sober streak</Text>
+                <Text style={styles.sobrietyValue}>{sobrietyDuration} strong</Text>
+              </View>
+              <View style={styles.sobrietyGlow} />
+            </View>
+          </LinearGradient>
+        ) : null}
+
         <View style={styles.whyWrapper}>
           <Text style={styles.whyQuoted}>
             “
@@ -1154,6 +1206,59 @@ const styles = StyleSheet.create({
     color: "#9ca3af",
     marginTop: 4,
     fontSize: 12,
+  },
+  sobrietyCard: {
+    marginTop: 14,
+    borderRadius: 18,
+    padding: 1,
+    overflow: "hidden",
+  },
+  sobrietyContent: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 12,
+    backgroundColor: "rgba(5,8,22,0.9)",
+    paddingHorizontal: 16,
+    paddingVertical: 14,
+    borderRadius: 18,
+  },
+  sobrietyEmblem: {
+    height: 46,
+    width: 46,
+    borderRadius: 14,
+    backgroundColor: "#fbbf24",
+    alignItems: "center",
+    justifyContent: "center",
+    shadowColor: "#f59e0b",
+    shadowOpacity: 0.35,
+    shadowOffset: { width: 0, height: 6 },
+    shadowRadius: 12,
+    elevation: 6,
+  },
+  sobrietyTextBlock: {
+    flex: 1,
+    gap: 2,
+  },
+  sobrietyLabel: {
+    color: "#e5e7eb",
+    fontSize: 12,
+    fontWeight: "800",
+    letterSpacing: 0.5,
+    textTransform: "uppercase",
+  },
+  sobrietyValue: {
+    color: "#f8fafc",
+    fontSize: 18,
+    fontWeight: "900",
+    letterSpacing: 0.2,
+  },
+  sobrietyGlow: {
+    width: 12,
+    height: 12,
+    borderRadius: 999,
+    backgroundColor: "rgba(255,255,255,0.3)",
+    borderWidth: 1,
+    borderColor: "rgba(255,255,255,0.5)",
   },
   whyWrapper: {
     alignItems: "center",

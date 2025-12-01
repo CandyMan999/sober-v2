@@ -209,6 +209,7 @@ export const USER_PROFILE_QUERY = `
         username
         profilePicUrl
         drunkPicUrl
+        sobrietyStartAt
         whyStatement
         followersCount
         followingCount
