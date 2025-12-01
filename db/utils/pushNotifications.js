@@ -8,7 +8,7 @@ const sendPushNotifications = async (notifications = []) => {
   const messages = [];
 
   for (const notification of notifications) {
-    const { pushToken, title, body, data } = notification;
+    const { pushToken, title, body, data, icon, image, badge } = notification;
 
     if (!pushToken || !Expo.isExpoPushToken(pushToken)) {
       console.warn(`Skipping invalid Expo push token: ${pushToken}`);
@@ -21,6 +21,9 @@ const sendPushNotifications = async (notifications = []) => {
       title,
       body,
       data: data || {},
+      ...(icon ? { icon } : {}),
+      ...(image ? { image } : {}),
+      ...(badge ? { badge } : {}),
     });
   }
 

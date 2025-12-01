@@ -6,8 +6,9 @@ const os = require("os");
 const path = require("path");
 const { pipeline } = require("stream/promises");
 const FormData = require("form-data");
-const { User, Video, Post } = require("../../models");
+const { User, Video, Post, Connection } = require("../../models");
 const { findClosestCity } = require("../../utils/location");
+const { sendPushNotifications } = require("../../utils/pushNotifications");
 // const {
 //   sendPushNotification,
 //   pushNotificationUserFlagged,
@@ -32,6 +33,15 @@ const NUDE_DETECTOR_URL =
   "https://auto-detect-1fcde9e6d000.herokuapp.com/nudity/detect";
 
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+const APP_LOGO_URL =
+  process.env.APP_LOGO_URL ||
+  "https://raw.githubusercontent.com/sober-motivation/sober-v2/main/client/assets/icon.png";
+
+const buildNotificationArtwork = (profilePicUrl) => ({
+  badgeUrl: APP_LOGO_URL,
+  imageUrl: profilePicUrl || null,
+});
 
 // -----------------------------
 // Upload helpers (server → Cloudflare)
@@ -402,7 +412,7 @@ module.exports = {
         throw new Error("senderID is required");
       }
 
-      const sender = await User.findById(senderID);
+      const sender = await User.findById(senderID).populate("profilePic");
       if (!sender) {
         throw new Error("Sender not found");
       }
@@ -485,6 +495,60 @@ module.exports = {
         .populate("video")
         .populate("closestCity")
         .exec();
+
+      const profilePicUrl =
+        sender.profilePicUrl ||
+        (sender.profilePic && sender.profilePic.url) ||
+        null;
+      const { imageUrl: notificationImageUrl, badgeUrl } =
+        buildNotificationArtwork(profilePicUrl);
+
+      const followerConnections = await Connection.find({
+        followee: senderID,
+      }).populate("follower");
+
+      const notifications = [];
+      const senderName = sender.username || "Someone";
+      const trimmedBody = (text || "").trim();
+      const preview = trimmedBody
+        ? trimmedBody.length > 140
+          ? `${trimmedBody.slice(0, 137)}...`
+          : trimmedBody
+        : "Shared a new post";
+
+      for (const connection of followerConnections) {
+        const follower = connection?.follower;
+        if (!follower?.token || follower?.notificationsEnabled === false) {
+          continue;
+        }
+
+        const notificationData = {
+          type: "new_post",
+          postId: String(newPost._id),
+          senderId: String(sender._id),
+          senderUsername: senderName,
+          senderProfilePicUrl: profilePicUrl,
+          appLogoUrl: badgeUrl,
+        };
+
+        const notificationPayload = {
+          pushToken: follower.token,
+          title: `${senderName} shared a new post`,
+          body: preview,
+          data: notificationData,
+        };
+
+        if (notificationImageUrl) {
+          notificationPayload.icon = notificationImageUrl;
+          notificationPayload.image = notificationImageUrl;
+        }
+
+        notifications.push(notificationPayload);
+      }
+
+      if (notifications.length) {
+        await sendPushNotifications(notifications);
+      }
 
       return populatedPost;
     } catch (err) {
