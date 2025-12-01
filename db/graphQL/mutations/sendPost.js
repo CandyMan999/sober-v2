@@ -34,12 +34,7 @@ const NUDE_DETECTOR_URL =
 
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-const APP_LOGO_URL =
-  process.env.APP_LOGO_URL ||
-  "https://raw.githubusercontent.com/sober-motivation/sober-v2/main/client/assets/icon.png";
-
 const buildNotificationArtwork = (profilePicUrl) => ({
-  badgeUrl: APP_LOGO_URL,
   imageUrl: profilePicUrl || null,
 });
 
@@ -500,7 +495,7 @@ module.exports = {
         sender.profilePicUrl ||
         (sender.profilePic && sender.profilePic.url) ||
         null;
-      const { imageUrl: notificationImageUrl, badgeUrl } =
+      const { imageUrl: notificationImageUrl } =
         buildNotificationArtwork(profilePicUrl);
 
       const followerConnections = await Connection.find({
@@ -528,7 +523,7 @@ module.exports = {
           senderId: String(sender._id),
           senderUsername: senderName,
           senderProfilePicUrl: profilePicUrl,
-          appLogoUrl: badgeUrl,
+          notificationImageUrl,
         };
 
         const notificationPayload = {
@@ -539,7 +534,6 @@ module.exports = {
         };
 
         if (notificationImageUrl) {
-          notificationPayload.icon = notificationImageUrl;
           notificationPayload.image = notificationImageUrl;
         }
 
