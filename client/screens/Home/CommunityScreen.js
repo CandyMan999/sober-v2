@@ -798,7 +798,6 @@ const CommunityScreen = () => {
       {/* Pull-to-refresh loader overlay */}
       {refreshing && (
         <View style={styles.refreshOverlay} pointerEvents="none">
-          <BlurView intensity={40} tint="dark" style={styles.refreshBlur} />
           <View style={styles.refreshContent}>
             <ActivityIndicator size="large" color="white" />
           </View>
@@ -842,7 +841,10 @@ const CommunityScreen = () => {
                   </Text>
                 </View>
                 {savingPostId === selectedPost?.id ? (
-                  <ActivityIndicator color="#f59e0b" style={styles.sheetSpinner} />
+                  <ActivityIndicator
+                    color="#f59e0b"
+                    style={styles.sheetSpinner}
+                  />
                 ) : (
                   <Ionicons name="chevron-forward" size={18} color="#9ca3af" />
                 )}
