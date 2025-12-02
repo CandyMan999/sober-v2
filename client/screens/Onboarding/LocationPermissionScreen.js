@@ -35,15 +35,25 @@ const LocationPermissionScreen = ({ navigation }) => {
 
   const { accent, accentSoft } = COLORS;
 
+  const hasAlwaysPermission = async () => {
+    const fg = await Location.getForegroundPermissionsAsync();
+    const bg = await Location.getBackgroundPermissionsAsync();
+
+    return (
+      bg.status === "granted" ||
+      (fg.status === "granted" && fg.scope === "always")
+    );
+  };
+
   const updateLocationIfPermitted = async () => {
     try {
       const token = await getToken();
 
       if (!token) return;
 
-      const { status } = await Location.getForegroundPermissionsAsync();
+      const fg = await Location.getForegroundPermissionsAsync();
 
-      if (status !== "granted") {
+      if (fg.status !== "granted") {
         return;
       }
 
@@ -73,15 +83,7 @@ const LocationPermissionScreen = ({ navigation }) => {
 
   const checkPermissions = async () => {
     try {
-      const fg = await Location.getForegroundPermissionsAsync();
-      const bg = await Location.getBackgroundPermissionsAsync();
-
-      const hasAlways =
-        fg.status === "granted" &&
-        fg.scope === "always" &&
-        bg.status === "granted";
-
-      if (hasAlways) {
+      if (await hasAlwaysPermission()) {
         await routeToApp();
         return;
       }
@@ -118,12 +120,7 @@ const LocationPermissionScreen = ({ navigation }) => {
 
       const bg = await Location.requestBackgroundPermissionsAsync();
 
-      const hasAlways =
-        fg.status === "granted" &&
-        fg.scope === "always" &&
-        bg.status === "granted";
-
-      if (hasAlways) {
+      if (bg.status === "granted" || (await hasAlwaysPermission())) {
         await routeToApp();
         return;
       }
