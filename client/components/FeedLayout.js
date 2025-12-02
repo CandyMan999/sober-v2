@@ -27,7 +27,9 @@ const FeedLayout = ({
   avatarUrl,
   fallbackAvatarSource,
   authorLabel,
+  avatarSize = 38,
   cityName,
+  metaCityName,
   onCommentAdded,
   captionStyle,
   children,
@@ -96,8 +98,8 @@ const FeedLayout = ({
     metaItems.push({ key: "meta", type: "text", value: meta });
   }
 
-  if (cityName) {
-    metaItems.push({ key: "city", type: "city", value: cityName });
+  if (metaCityName ?? cityName) {
+    metaItems.push({ key: "city", type: "city", value: metaCityName ?? cityName });
   }
 
   if (hasViews) {
@@ -195,7 +197,7 @@ const FeedLayout = ({
               uri={resolvedAvatarUrl}
               fallbackSource={fallbackAvatarSource}
               haloColor={resolvedAvatarUrl ? "orange" : "blue"}
-              size={38}
+              size={avatarSize}
               userId={postAuthor?.id}
               username={postAuthor?.username || postAuthor?.name}
               style={styles.avatarWrapper}
