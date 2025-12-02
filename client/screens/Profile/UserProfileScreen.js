@@ -1437,6 +1437,7 @@ const UserProfileScreen = ({ route, navigation }) => {
         onDelete={handleDeleteContent}
         isSaved={isPreviewSaved}
         disableDelete={previewFromSaved}
+        deleteActionOffset={10}
       />
 
       {renderAvatarOverlay()}

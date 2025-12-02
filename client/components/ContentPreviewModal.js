@@ -49,6 +49,7 @@ const ContentPreviewModal = ({
   isSaved = false,
   disableDelete = false,
   hideSaveAction = false,
+  deleteActionOffset = 0,
 }) => {
   const [mounted, setMounted] = useState(visible);
   const [localItem, setLocalItem] = useState(item);
@@ -716,7 +717,10 @@ const ContentPreviewModal = ({
               ) : null}
               {canDelete ? (
                 <TouchableOpacity
-                  style={styles.sheetAction}
+                  style={[
+                    styles.sheetAction,
+                    deleteActionOffset ? { marginTop: deleteActionOffset } : null,
+                  ]}
                   onPress={handleDeletePress}
                   disabled={deleting}
                 >

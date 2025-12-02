@@ -485,8 +485,12 @@ const CommunityScreen = () => {
     );
   };
 
-  const handleReviewPress = async (postId, currentReviewState) => {
-    if (reviewingPostId || currentReviewState) {
+  const handleReviewPress = async (
+    postId,
+    currentReviewState,
+    adminApproved = false
+  ) => {
+    if (reviewingPostId || currentReviewState || adminApproved) {
       closeMoreSheet();
       return;
     }
@@ -843,36 +847,63 @@ const CommunityScreen = () => {
                   <Ionicons name="chevron-forward" size={18} color="#9ca3af" />
                 )}
               </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.sheetAction}
-                onPress={() =>
-                  handleReviewPress(selectedPost.id, selectedPost.review)
-                }
-                disabled={
-                  reviewingPostId === selectedPost.id || selectedPost.review
-                }
-              >
-                <View style={styles.sheetActionLeft}>
-                  <Ionicons
-                    name={selectedPost.review ? "flag" : "flag-outline"}
-                    size={20}
-                    color="#fef3c7"
-                  />
-                  <Text style={styles.sheetActionText}>
-                    {selectedPost.review
-                      ? "Already flagged for review"
-                      : "Flag for review"}
-                  </Text>
+              {selectedPost?.adminApproved ? (
+                <View style={[styles.sheetAction, styles.sheetActionDisabled]}>
+                  <View style={styles.sheetActionLeft}>
+                    <Ionicons
+                      name="shield-checkmark"
+                      size={20}
+                      color="#34d399"
+                    />
+                    <View>
+                      <Text style={styles.sheetActionText}>Admin approved</Text>
+                      <Text style={styles.sheetActionSubtext}>
+                        This post has already been reviewed.
+                      </Text>
+                    </View>
+                  </View>
+                  <Ionicons name="checkmark-done" size={18} color="#9ca3af" />
                 </View>
-                {reviewingPostId === selectedPost.id ? (
-                  <ActivityIndicator
-                    color="#f59e0b"
-                    style={styles.sheetSpinner}
-                  />
-                ) : (
-                  <Ionicons name="chevron-forward" size={18} color="#9ca3af" />
-                )}
-              </TouchableOpacity>
+              ) : (
+                <TouchableOpacity
+                  style={styles.sheetAction}
+                  onPress={() =>
+                    handleReviewPress(
+                      selectedPost.id,
+                      selectedPost.review,
+                      selectedPost.adminApproved
+                    )
+                  }
+                  disabled={
+                    reviewingPostId === selectedPost.id || selectedPost.review
+                  }
+                >
+                  <View style={styles.sheetActionLeft}>
+                    <Ionicons
+                      name={selectedPost.review ? "flag" : "flag-outline"}
+                      size={20}
+                      color="#fef3c7"
+                    />
+                    <Text style={styles.sheetActionText}>
+                      {selectedPost.review
+                        ? "Already flagged for review"
+                        : "Flag for review"}
+                    </Text>
+                  </View>
+                  {reviewingPostId === selectedPost.id ? (
+                    <ActivityIndicator
+                      color="#f59e0b"
+                      style={styles.sheetSpinner}
+                    />
+                  ) : (
+                    <Ionicons
+                      name="chevron-forward"
+                      size={18}
+                      color="#9ca3af"
+                    />
+                  )}
+                </TouchableOpacity>
+              )}
             </Animated.View>
           </View>
         </Modal>
@@ -1128,6 +1159,9 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 6 },
     elevation: 3,
   },
+  sheetActionDisabled: {
+    opacity: 0.8,
+  },
   sheetActionLeft: {
     flexDirection: "row",
     alignItems: "center",
@@ -1137,6 +1171,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "700",
     marginLeft: 12,
+  },
+  sheetActionSubtext: {
+    color: "#cbd5e1",
+    fontSize: 12,
+    marginLeft: 12,
+    marginTop: 2,
   },
   sheetSpinner: {
     marginLeft: 8,

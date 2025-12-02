@@ -157,6 +157,7 @@ export const PROFILE_OVERVIEW_QUERY = `
         imageUrl
         flagged
         review
+        adminApproved
         likesCount
         commentsCount
         viewsCount
@@ -188,6 +189,7 @@ export const PROFILE_OVERVIEW_QUERY = `
         imageUrl
         flagged
         review
+        adminApproved
         likesCount
         commentsCount
         viewsCount
@@ -354,6 +356,7 @@ export const USER_PROFILE_QUERY = `
         imageUrl
         flagged
         review
+        adminApproved
         likesCount
         commentsCount
         viewsCount
@@ -385,6 +388,7 @@ export const USER_PROFILE_QUERY = `
         imageUrl
         flagged
         review
+        adminApproved
         likesCount
         commentsCount
         viewsCount
@@ -569,6 +573,7 @@ export const GET_ALL_POSTS = `
         imagePublicId
         flagged
         review
+        adminApproved
         isMilestone
         milestoneDays
         milestoneTag
@@ -702,6 +707,7 @@ export const POST_BY_ID_QUERY = `
       imageUrl
       flagged
       review
+      adminApproved
       likesCount
       commentsCount
       createdAt
