@@ -369,7 +369,10 @@ const customNudityAPI = async (videoId, uid) => {
 
     // ---- NEW: if video flagged, flag related post ----
     if (flagged && updated?.post?._id) {
-      await Post.findByIdAndUpdate(updated.post._id, { flagged: true });
+      await Post.findByIdAndUpdate(updated.post._id, {
+        flagged: true,
+        review: true,
+      });
       console.log(`[nudity] Post ${updated.post._id} flagged due to video.`);
     }
 

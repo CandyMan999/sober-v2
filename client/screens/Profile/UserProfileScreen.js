@@ -984,13 +984,15 @@ const UserProfileScreen = ({ route, navigation }) => {
     const isFlagged = item.flagged;
     const views = getViewsCount(item);
     const key = item?.id || `${thumbnail || "media"}-${saved ? "saved" : "post"}`;
+    const isDisabled = Boolean(isFlagged);
 
     return (
       <TouchableOpacity
         style={styles.tileWrapper}
         key={key}
-        activeOpacity={0.85}
-        onPress={() => openPreview(item, "POST", fromSaved)}
+        activeOpacity={isDisabled ? 1 : 0.85}
+        onPress={isDisabled ? undefined : () => openPreview(item, "POST", fromSaved)}
+        disabled={isDisabled}
       >
         <View style={styles.tile}>
           {imageSource ? (
@@ -1011,6 +1013,9 @@ const UserProfileScreen = ({ route, navigation }) => {
             </View>
             {saved && <Feather name="bookmark" size={16} color="#fef3c7" />}
           </View>
+          {isFlagged && (
+            <BlurView tint="dark" intensity={55} style={styles.flaggedBlur} />
+          )}
           {isFlagged && (
             <View style={styles.flaggedBadge}>
               <MaterialCommunityIcons
@@ -1432,6 +1437,7 @@ const UserProfileScreen = ({ route, navigation }) => {
         onDelete={handleDeleteContent}
         isSaved={isPreviewSaved}
         disableDelete={previewFromSaved}
+        deleteActionOffset={10}
       />
 
       {renderAvatarOverlay()}
@@ -1699,6 +1705,10 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(248,113,113,0.15)",
     borderRadius: 10,
     padding: 4,
+  },
+  flaggedBlur: {
+    ...StyleSheet.absoluteFillObject,
+    borderRadius: 12,
   },
   quoteTile: {
     padding: 12,

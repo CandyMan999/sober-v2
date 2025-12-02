@@ -6,6 +6,8 @@ const { findClosestCity } = require("../../utils/location");
 
 require("dotenv").config();
 
+const ADMIN_USERNAME = "CandyMan🍭";
+
 const buildRepliesPopulate = (depth = 1) => {
   const basePopulate = [
     { path: "author" },
@@ -52,6 +54,57 @@ module.exports = {
           populate: buildRepliesPopulate(2),
         });
       // Don't throw if none; just return empty array
+      return quotes;
+    } catch (err) {
+      throw new Error(err.message);
+    }
+  },
+  adminFlaggedPostsResolver: async (_, { token }) => {
+    if (!token) {
+      throw new AuthenticationError("Token is required");
+    }
+
+    const user = await User.findOne({ token });
+    if (!user || user.username !== ADMIN_USERNAME) {
+      throw new AuthenticationError("Unauthorized");
+    }
+
+    try {
+      const posts = await Post.find({
+        adminApproved: false,
+        review: true,
+      })
+        .sort({ createdAt: -1 })
+        .populate("author")
+        .populate({
+          path: "video",
+          select: "url flagged viewsCount viewers thumbnailUrl",
+        })
+        .populate("closestCity");
+
+      return posts;
+    } catch (err) {
+      throw new Error(err.message);
+    }
+  },
+  adminPendingQuotesResolver: async (_, { token }) => {
+    if (!token) {
+      throw new AuthenticationError("Token is required");
+    }
+
+    const user = await User.findOne({ token });
+    if (!user || user.username !== ADMIN_USERNAME) {
+      throw new AuthenticationError("Unauthorized");
+    }
+
+    try {
+      const quotes = await Quote.find({
+        isApproved: false,
+        isDenied: false,
+      })
+        .sort({ createdAt: -1 })
+        .populate("user");
+
       return quotes;
     } catch (err) {
       throw new Error(err.message);
@@ -128,13 +181,19 @@ module.exports = {
           .populate("closestCity")
           .populate({
             path: "comments",
-            match: { $or: [{ replyTo: null }, { replyTo: { $exists: false } }] },
+            match: {
+              $or: [{ replyTo: null }, { replyTo: { $exists: false } }],
+            },
             populate: buildRepliesPopulate(2),
           });
 
       let posts = await runQueryWithRadius(searchRadius);
 
-      while (isNearbyQuery && posts.length < limit + 1 && searchRadius < circumferenceRadians) {
+      while (
+        isNearbyQuery &&
+        posts.length < limit + 1 &&
+        searchRadius < circumferenceRadians
+      ) {
         const nextRadius = Math.min(searchRadius * 2, circumferenceRadians);
         searchRadius = nextRadius;
         posts = await runQueryWithRadius(searchRadius);
@@ -213,9 +272,12 @@ module.exports = {
       const orderedPosts = postsWithDistance.map((entry) => entry.post);
 
       const hasMoreFromCount = orderedPosts.length > limit;
-      const hasMoreFromRadius = isNearbyQuery && searchRadius < circumferenceRadians;
+      const hasMoreFromRadius =
+        isNearbyQuery && searchRadius < circumferenceRadians;
       const hasMore = hasMoreFromCount || hasMoreFromRadius;
-      const trimmed = hasMoreFromCount ? orderedPosts.slice(0, limit) : orderedPosts;
+      const trimmed = hasMoreFromCount
+        ? orderedPosts.slice(0, limit)
+        : orderedPosts;
 
       const nextCursor = hasMore
         ? trimmed[trimmed.length - 1].createdAt.toISOString()
@@ -313,7 +375,9 @@ module.exports = {
         select: "url flagged viewsCount viewers thumbnailUrl",
       });
 
-    const savedQuotes = await Quote.find({ _id: { $in: user.savedQuotes || [] } })
+    const savedQuotes = await Quote.find({
+      _id: { $in: user.savedQuotes || [] },
+    })
       .sort({ createdAt: -1 })
       .populate("user");
 
@@ -375,7 +439,9 @@ module.exports = {
         select: "url flagged viewsCount viewers thumbnailUrl",
       });
 
-    const savedQuotes = await Quote.find({ _id: { $in: user.savedQuotes || [] } })
+    const savedQuotes = await Quote.find({
+      _id: { $in: user.savedQuotes || [] },
+    })
       .sort({ createdAt: -1 })
       .populate("user");
 

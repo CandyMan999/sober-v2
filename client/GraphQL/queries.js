@@ -157,6 +157,7 @@ export const PROFILE_OVERVIEW_QUERY = `
         imageUrl
         flagged
         review
+        adminApproved
         likesCount
         commentsCount
         viewsCount
@@ -188,6 +189,7 @@ export const PROFILE_OVERVIEW_QUERY = `
         imageUrl
         flagged
         review
+        adminApproved
         likesCount
         commentsCount
         viewsCount
@@ -216,6 +218,53 @@ export const PROFILE_OVERVIEW_QUERY = `
           username
           profilePicUrl
         }
+      }
+    }
+  }
+`;
+
+export const ADMIN_REVIEW_ITEMS_QUERY = `
+  query AdminReviewItems($token: String!) {
+    adminFlaggedPosts(token: $token) {
+      id
+      text
+      mediaType
+      imageUrl
+      flagged
+      review
+      adminApproved
+      likesCount
+      commentsCount
+      viewsCount
+      createdAt
+      lat
+      long
+      closestCity {
+        name
+      }
+      author {
+        id
+        username
+        profilePicUrl
+      }
+      video {
+        id
+        url
+        flagged
+        viewsCount
+        thumbnailUrl
+      }
+    }
+    adminPendingQuotes(token: $token) {
+      id
+      text
+      isApproved
+      isDenied
+      createdAt
+      user {
+        id
+        username
+        profilePicUrl
       }
     }
   }
@@ -307,6 +356,7 @@ export const USER_PROFILE_QUERY = `
         imageUrl
         flagged
         review
+        adminApproved
         likesCount
         commentsCount
         viewsCount
@@ -338,6 +388,7 @@ export const USER_PROFILE_QUERY = `
         imageUrl
         flagged
         review
+        adminApproved
         likesCount
         commentsCount
         viewsCount
@@ -522,6 +573,7 @@ export const GET_ALL_POSTS = `
         imagePublicId
         flagged
         review
+        adminApproved
         isMilestone
         milestoneDays
         milestoneTag
@@ -655,6 +707,7 @@ export const POST_BY_ID_QUERY = `
       imageUrl
       flagged
       review
+      adminApproved
       likesCount
       commentsCount
       createdAt

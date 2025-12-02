@@ -301,6 +301,8 @@ const typeDefs = gql`
     getBarLocation(lat: Float!, long: Float!, token: String, bar: String): [Bar]
     getVenues: [Venue]
     getQuotes: [Quote!]!
+    adminFlaggedPosts(token: String!): [Post!]!
+    adminPendingQuotes(token: String!): [Quote!]!
     getAllPosts(
       limit: Int
       cursor: String
@@ -370,6 +372,8 @@ const typeDefs = gql`
     deletePost(token: String!, postId: ID!): Boolean!
     deleteQuote(token: String!, quoteId: ID!): Boolean!
     setPostReview(postId: ID!, review: Boolean!): Post!
+    moderatePost(token: String!, postId: ID!, approve: Boolean!): Post!
+    moderateQuote(token: String!, quoteId: ID!, approve: Boolean!): Quote!
     recordPostView(postId: ID!, token: String!): Post!
     createPostComment(
       token: String!

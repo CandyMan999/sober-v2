@@ -44,8 +44,12 @@ const ContentPreviewModal = ({
   onFlagForReview,
   onDelete,
   onToggleSave,
+  onAdminModeratePost,
+  onAdminModerateQuote,
   isSaved = false,
   disableDelete = false,
+  hideSaveAction = false,
+  deleteActionOffset = "5%",
 }) => {
   const [mounted, setMounted] = useState(visible);
   const [localItem, setLocalItem] = useState(item);
@@ -54,6 +58,7 @@ const ContentPreviewModal = ({
   const [flagging, setFlagging] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [moderating, setModerating] = useState(false);
   const [loadingComments, setLoadingComments] = useState(false);
   const backdropOpacity = useRef(new Animated.Value(0)).current;
   const translateY = useRef(new Animated.Value(WINDOW_HEIGHT)).current;
@@ -63,6 +68,7 @@ const ContentPreviewModal = ({
   ).current;
   const client = useMemo(() => useClient(), []);
   const isPost = type === "POST";
+  const isAdminViewer = viewerUser?.username === "CandyMan🍭";
   const backdropFalloffOpacity = useMemo(
     () =>
       dragY.interpolate({
@@ -181,6 +187,7 @@ const ContentPreviewModal = ({
       setFlagging(false);
       setDeleting(false);
       setSaving(false);
+      setModerating(false);
       setLoadingComments(false);
     }
   }, [visible]);
@@ -222,7 +229,9 @@ const ContentPreviewModal = ({
         const fetchedContent = isPost ? result?.post : result?.quote;
         if (fetchedContent && fetchedContent.id === localItem.id) {
           setLocalItem((prev) =>
-            prev?.id === fetchedContent.id ? { ...prev, ...fetchedContent } : prev
+            prev?.id === fetchedContent.id
+              ? { ...prev, ...fetchedContent }
+              : prev
           );
         }
       } catch (err) {
@@ -365,6 +374,11 @@ const ContentPreviewModal = ({
     return ownerIds.some((id) => id === viewerId);
   }, [disableDelete, item, viewerId]);
 
+  const isAdminReviewItem = useMemo(
+    () => isAdminViewer && (content?.__adminItem ?? false),
+    [content?.__adminItem, isAdminViewer]
+  );
+
   const isLiked = useMemo(() => {
     if (!content || !viewerId) return false;
     const likes = content.likes || [];
@@ -374,7 +388,11 @@ const ContentPreviewModal = ({
   if (!mounted) return null;
 
   const closeActionsSheet = () => setShowActions(false);
-  const sheetTitle = isPost ? "Post options" : "More options";
+  const sheetTitle = isAdminReviewItem
+    ? "Admin options"
+    : isPost
+    ? "Post options"
+    : "More options";
   const saveActionLabel = isSaved ? "Unsave" : "Save";
 
   const handleLikePress = () => {
@@ -429,6 +447,28 @@ const ContentPreviewModal = ({
       console.error("Error deleting content", err);
     } finally {
       setDeleting(false);
+      closeActionsSheet();
+    }
+  };
+
+  const handleAdminPostDecision = async (approve) => {
+    if (!content?.id || moderating || !isAdminReviewItem || !isPost) return;
+    setModerating(true);
+    try {
+      await onAdminModeratePost?.(content.id, approve);
+    } finally {
+      setModerating(false);
+      closeActionsSheet();
+    }
+  };
+
+  const handleAdminQuoteDecision = async (approve) => {
+    if (!content?.id || moderating || !isAdminReviewItem || isPost) return;
+    setModerating(true);
+    try {
+      await onAdminModerateQuote?.(content.id, approve);
+    } finally {
+      setModerating(false);
       closeActionsSheet();
     }
   };
@@ -557,21 +597,140 @@ const ContentPreviewModal = ({
                   <Ionicons name="close-circle" size={30} color="#e5e7eb" />
                 </TouchableOpacity>
               </View>
-              <TouchableOpacity
-                style={styles.sheetAction}
-                onPress={handleSavePress}
-                disabled={saving}
-              >
-                <View style={styles.sheetActionLeft}>
-                  <Ionicons name="bookmark-outline" size={20} color="#fef3c7" />
-                  <Text style={styles.sheetActionText}>{saveActionLabel}</Text>
-                </View>
-                {saving ? (
-                  <ActivityIndicator color="#f59e0b" style={styles.sheetSpinner} />
-                ) : (
-                  <Ionicons name="chevron-forward" size={18} color="#9ca3af" />
-                )}
-              </TouchableOpacity>
+              {isAdminReviewItem && isPost ? (
+                <>
+                  <TouchableOpacity
+                    style={styles.sheetAction}
+                    onPress={() => handleAdminPostDecision(true)}
+                    disabled={moderating}
+                  >
+                    <View style={styles.sheetActionLeft}>
+                      <Ionicons
+                        name="checkmark-circle"
+                        size={20}
+                        color="#34d399"
+                      />
+                      <Text style={styles.sheetActionText}>Approve post</Text>
+                    </View>
+                    {moderating ? (
+                      <ActivityIndicator
+                        color="#34d399"
+                        style={styles.sheetSpinner}
+                      />
+                    ) : (
+                      <Ionicons
+                        name="chevron-forward"
+                        size={18}
+                        color="#9ca3af"
+                      />
+                    )}
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={styles.sheetAction}
+                    onPress={() => handleAdminPostDecision(false)}
+                    disabled={moderating}
+                  >
+                    <View style={styles.sheetActionLeft}>
+                      <Ionicons name="close-circle" size={20} color="#f87171" />
+                      <Text style={styles.sheetActionText}>Deny post</Text>
+                    </View>
+                    {moderating ? (
+                      <ActivityIndicator
+                        color="#f87171"
+                        style={styles.sheetSpinner}
+                      />
+                    ) : (
+                      <Ionicons
+                        name="chevron-forward"
+                        size={18}
+                        color="#9ca3af"
+                      />
+                    )}
+                  </TouchableOpacity>
+                </>
+              ) : null}
+              {isAdminReviewItem && !isPost ? (
+                <>
+                  <TouchableOpacity
+                    style={styles.sheetAction}
+                    onPress={() => handleAdminQuoteDecision(true)}
+                    disabled={moderating}
+                  >
+                    <View style={styles.sheetActionLeft}>
+                      <Ionicons
+                        name="checkmark-circle"
+                        size={20}
+                        color="#34d399"
+                      />
+                      <Text style={styles.sheetActionText}>Approve quote</Text>
+                    </View>
+                    {moderating ? (
+                      <ActivityIndicator
+                        color="#34d399"
+                        style={styles.sheetSpinner}
+                      />
+                    ) : (
+                      <Ionicons
+                        name="chevron-forward"
+                        size={18}
+                        color="#9ca3af"
+                      />
+                    )}
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={styles.sheetAction}
+                    onPress={() => handleAdminQuoteDecision(false)}
+                    disabled={moderating}
+                  >
+                    <View style={styles.sheetActionLeft}>
+                      <Ionicons name="close-circle" size={20} color="#f87171" />
+                      <Text style={styles.sheetActionText}>Deny quote</Text>
+                    </View>
+                    {moderating ? (
+                      <ActivityIndicator
+                        color="#f87171"
+                        style={styles.sheetSpinner}
+                      />
+                    ) : (
+                      <Ionicons
+                        name="chevron-forward"
+                        size={18}
+                        color="#9ca3af"
+                      />
+                    )}
+                  </TouchableOpacity>
+                </>
+              ) : null}
+              {hideSaveAction ? null : (
+                <TouchableOpacity
+                  style={styles.sheetAction}
+                  onPress={handleSavePress}
+                  disabled={saving}
+                >
+                  <View style={styles.sheetActionLeft}>
+                    <Ionicons
+                      name="bookmark-outline"
+                      size={20}
+                      color="#fef3c7"
+                    />
+                    <Text style={styles.sheetActionText}>
+                      {saveActionLabel}
+                    </Text>
+                  </View>
+                  {saving ? (
+                    <ActivityIndicator
+                      color="#f59e0b"
+                      style={styles.sheetSpinner}
+                    />
+                  ) : (
+                    <Ionicons
+                      name="chevron-forward"
+                      size={18}
+                      color="#9ca3af"
+                    />
+                  )}
+                </TouchableOpacity>
+              )}
               {isPost && !canDelete ? (
                 <TouchableOpacity
                   style={styles.sheetAction}
@@ -606,7 +765,12 @@ const ContentPreviewModal = ({
               ) : null}
               {canDelete ? (
                 <TouchableOpacity
-                  style={styles.sheetAction}
+                  style={[
+                    styles.sheetAction,
+                    deleteActionOffset
+                      ? { marginTop: deleteActionOffset }
+                      : null,
+                  ]}
                   onPress={handleDeletePress}
                   disabled={deleting}
                 >
