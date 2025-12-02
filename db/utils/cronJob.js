@@ -26,22 +26,103 @@ const isWithinUserDaytime = (user) => {
 
 const isValidDate = (d) => d instanceof Date && !Number.isNaN(d.getTime());
 
-const getDaysBetween = (start, now = new Date()) => {
+const getDaysBetween = (start, now = new Date(), tz = "UTC") => {
   if (!start) return 0;
-  const s = new Date(start);
-  if (!isValidDate(s)) return 0;
 
-  // compare by days (truncate time)
-  const startMid = new Date(s);
-  startMid.setHours(0, 0, 0, 0);
+  const startDt = DateTime.fromJSDate(new Date(start)).setZone(tz);
+  const nowDt = DateTime.fromJSDate(new Date(now)).setZone(tz);
 
-  const nowMid = new Date(now);
-  nowMid.setHours(0, 0, 0, 0);
+  if (!startDt.isValid || !nowDt.isValid) return 0;
 
-  const diffMs = nowMid - startMid;
-  if (diffMs <= 0) return 0;
+  const diffDays = nowDt.diff(startDt, "days").days;
+  if (diffDays <= 0) return 0;
 
-  return Math.floor(diffMs / (1000 * 60 * 60 * 24));
+  return Math.round(diffDays);
+};
+
+const calculateAverageRelapseDay = (streaks = []) => {
+  if (!Array.isArray(streaks) || !streaks.length) return null;
+
+  const durations = streaks
+    .map((streak) => {
+      if (!streak?.startAt || !streak?.endAt) return null;
+      const start = new Date(streak.startAt);
+      const end = new Date(streak.endAt);
+
+      if (!isValidDate(start) || !isValidDate(end)) return null;
+
+      const diffMs = end.getTime() - start.getTime();
+      if (diffMs <= 0) return null;
+
+      return Math.round(diffMs / (1000 * 60 * 60 * 24));
+    })
+    .filter((d) => d > 0);
+
+  if (!durations.length) return null;
+
+  const average =
+    durations.reduce((sum, days) => sum + days, 0) / durations.length;
+
+  return Math.round(average);
+};
+
+const clearRelapseReminderState = (user) => {
+  user.averageRelapseDay = null;
+  user.relapseReminderLastSentAt = null;
+  user.relapseReminderStartAt = null;
+};
+
+const refreshAverageRelapseDays = async () => {
+  console.log("📊 Refreshing average relapse days", new Date().toISOString());
+
+  const users = await User.find({});
+  if (!users.length) {
+    console.log("No users found while refreshing relapse averages.");
+    return;
+  }
+
+  let updatedCount = 0;
+
+  for (const user of users) {
+    const average = calculateAverageRelapseDay(user.streaks || []);
+    const existing =
+      user.averageRelapseDay != null && Number.isFinite(user.averageRelapseDay)
+        ? Number(user.averageRelapseDay)
+        : null;
+
+    if (average == null) {
+      if (existing != null || user.relapseReminderLastSentAt) {
+        clearRelapseReminderState(user);
+        await user.save();
+        updatedCount += 1;
+      }
+      continue;
+    }
+
+    if (existing !== average) {
+      user.averageRelapseDay = average;
+      user.relapseReminderLastSentAt = null;
+      user.relapseReminderStartAt = null;
+      await user.save();
+      updatedCount += 1;
+    }
+  }
+
+  console.log(
+    `✅ Average relapse days refreshed for ${updatedCount} user(s).`
+  );
+};
+
+const hasSentRelapseReminderToday = (user, nowInTz) => {
+  if (!user?.relapseReminderLastSentAt) return false;
+
+  const last = DateTime.fromJSDate(user.relapseReminderLastSentAt).setZone(
+    user?.timezone || "UTC"
+  );
+
+  if (!last.isValid) return false;
+
+  return last.hasSame(nowInTz, "day");
 };
 
 const buildMilestoneMessage = (user, milestoneDays) => {
@@ -292,6 +373,98 @@ const pickRandomMilestoneImage = async (milestoneDays) => {
 
 const cronJob = () => {
   try {
+    // ----- 0) Refresh average relapse day once daily -----
+    cron.schedule(
+      "0 15 3 * * *", // daily at 03:15 UTC
+      async () => {
+        try {
+          await refreshAverageRelapseDays();
+        } catch (err) {
+          console.error("Failed to refresh relapse averages", err);
+        }
+      },
+      {
+        scheduled: true,
+        timezone: "UTC",
+      }
+    );
+
+    // ----- 0b) Relapse prevention reminders at 7pm local time -----
+    cron.schedule(
+      "0 0 * * * *", // hourly to catch 7pm in each timezone
+      async () => {
+        console.log("🛡️  Relapse reminder cron tick", new Date().toISOString());
+
+        const users = await User.find({
+          notificationsEnabled: true,
+          token: { $ne: null },
+          sobrietyStartAt: { $ne: null },
+          averageRelapseDay: { $gt: 0 },
+        });
+
+        if (!users.length) {
+          console.log("No users eligible for relapse reminders right now.");
+          return;
+        }
+
+        const notifications = [];
+
+        for (const user of users) {
+          const tz = user.timezone || "UTC";
+          const userTime = DateTime.now().setZone(tz);
+
+          if (!userTime.isValid) continue;
+          if (userTime.hour !== 19) continue; // only at 7pm local time
+          if (hasSentRelapseReminderToday(user, userTime)) continue;
+
+          const daysSober = getDaysBetween(
+            user.sobrietyStartAt,
+            userTime.toJSDate(),
+            tz
+          );
+
+          if (daysSober !== user.averageRelapseDay) continue;
+
+          const username = user.username || "buddy";
+          const message = `Based on history ${username} you usually relapse on day ${user.averageRelapseDay}, keep strong fight that addictive voice.`;
+
+          notifications.push({
+            pushToken: user.token,
+            title: "Stay strong",
+            body: message,
+            data: {
+              type: "relapse_prediction",
+              message,
+              day: user.averageRelapseDay,
+              username,
+            },
+          });
+
+          user.relapseReminderLastSentAt = userTime.toJSDate();
+          user.relapseReminderStartAt = user.sobrietyStartAt;
+          await user.save();
+        }
+
+        if (notifications.length) {
+          await sendPushNotifications(notifications);
+          console.log(
+            `📨 Sent ${notifications.length} relapse prevention notification(s).`
+          );
+        } else {
+          console.log("No relapse reminders were due this interval.");
+        }
+      },
+      {
+        scheduled: true,
+        timezone: "UTC",
+      }
+    );
+
+    // Prime averages on startup so the UI can use them immediately
+    refreshAverageRelapseDays().catch((err) =>
+      console.error("Failed to prime relapse averages", err)
+    );
+
     // ----- 1) Milestones job (still every 15 min; uses sobrietyStartAt) -----
     cron.schedule(
       "0 */15 * * * *", // every 15 minutes (for testing)
@@ -317,7 +490,8 @@ const cronJob = () => {
         });
 
         for (const user of users) {
-          const daysSober = getDaysBetween(user.sobrietyStartAt, now);
+          const tz = user.timezone || "UTC";
+          const daysSober = getDaysBetween(user.sobrietyStartAt, now, tz);
 
           console.log(
             `User ${user.username || user._id} → daysSober = ${daysSober}`

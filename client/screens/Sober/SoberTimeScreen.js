@@ -1,5 +1,11 @@
 // pages/SoberTimeScreen/SoberTimeScreen.js
-import React, { useContext, useEffect, useMemo, useState } from "react";
+import React, {
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import {
   View,
   Text,
@@ -40,6 +46,7 @@ const SoberTimeScreen = () => {
   const milestonesNotified = user?.milestonesNotified || [];
   const streaks = user?.streaks || [];
 
+  const scrollViewRef = useRef(null);
   const storedStartDate = parseStartDate(rawStart);
 
   const [selectedDate, setSelectedDate] = useState(
@@ -149,6 +156,39 @@ const SoberTimeScreen = () => {
   }, [now, effectiveStartDate]);
 
   const currentDays = diff ? diff.days : 0;
+
+  const averageRelapseDay = useMemo(() => {
+    const serverValue =
+      user?.averageRelapseDay != null
+        ? Number(user.averageRelapseDay)
+        : null;
+
+    if (serverValue != null && Number.isFinite(serverValue) && serverValue > 0)
+      return serverValue;
+
+    if (!streaks.length) return null;
+
+    const durations = streaks
+      .map((s) => {
+        if (!s.startAt || !s.endAt) return null;
+        const start = parseStartDate(s.startAt);
+        const end = parseStartDate(s.endAt);
+        if (!start || !end) return null;
+
+        const ms = end.getTime() - start.getTime();
+        if (ms <= 0) return null;
+
+        return ms / (1000 * 60 * 60 * 24);
+      })
+      .filter((value) => value != null && !Number.isNaN(value));
+
+    if (!durations.length) return null;
+
+    const avg =
+      durations.reduce((sum, days) => sum + days, 0) / durations.length;
+
+    return Math.round(avg);
+  }, [streaks, user?.averageRelapseDay]);
 
   const nextMilestone = diff
     ? MILESTONES.find((m) => m > currentDays) || null
@@ -277,6 +317,12 @@ const SoberTimeScreen = () => {
   const handlePickDatePress = async () => {
     if (savingReset) return;
 
+    const scrollToBottom = () =>
+      setTimeout(
+        () => scrollViewRef.current?.scrollToEnd({ animated: true }),
+        150
+      );
+
     if (!useToday && hasPendingCustomDate) {
       if (!selectedDate) return;
       if (!validateDate(selectedDate)) {
@@ -292,6 +338,7 @@ const SoberTimeScreen = () => {
 
     setUseToday(false);
     setShowPicker(true);
+    scrollToBottom();
   };
 
   const handleDateChange = (event, date) => {
@@ -355,6 +402,7 @@ const SoberTimeScreen = () => {
       <ScrollView
         style={styles.container}
         contentContainerStyle={styles.content}
+        ref={scrollViewRef}
       >
         <Text style={styles.title}>Sober Time</Text>
 
@@ -558,6 +606,7 @@ const SoberTimeScreen = () => {
                 styles.optionButton,
                 !useToday && styles.optionButtonActive,
                 hasPendingCustomDate && styles.optionButtonPending,
+                styles.optionButtonLast,
               ]}
             >
               <Text
@@ -620,6 +669,7 @@ const SoberTimeScreen = () => {
         onClose={() => setHistoryVisible(false)}
         streaks={streaks}
         currentStartDate={effectiveStartDate}
+        averageRelapseDay={averageRelapseDay}
         now={now}
       />
     </View>
@@ -892,6 +942,10 @@ const styles = StyleSheet.create({
     borderColor: "#1f2937",
     backgroundColor: "#020617",
     marginRight: 8,
+    alignItems: "center",
+  },
+  optionButtonLast: {
+    marginRight: 0,
   },
   optionButtonActive: {
     borderColor: "#F59E0B",

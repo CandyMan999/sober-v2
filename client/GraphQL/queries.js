@@ -43,6 +43,8 @@ export const FETCH_ME_QUERY = `
       followersCount
       followingCount
       buddiesCount
+      averageRelapseDay
+      relapseReminderLastSentAt
       savedPosts {
         id
       }

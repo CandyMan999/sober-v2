@@ -106,6 +106,19 @@ const UserSchema = new mongoose.Schema(
       },
     ],
 
+    // Average relapse day calculated from the streak history (in days)
+    averageRelapseDay: {
+      type: Number,
+    },
+
+    // Track when relapse reminders are sent to avoid duplicate pushes
+    relapseReminderLastSentAt: {
+      type: Date,
+    },
+    relapseReminderStartAt: {
+      type: Date,
+    },
+
     buddiesCount: {
       type: Number,
       default: 0,

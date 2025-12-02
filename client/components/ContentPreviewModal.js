@@ -68,6 +68,7 @@ const ContentPreviewModal = ({
   ).current;
   const client = useMemo(() => useClient(), []);
   const isPost = type === "POST";
+  const isInfo = type === "INFO";
   const isAdminViewer = viewerUser?.username === "CandyMan🍭";
   const backdropFalloffOpacity = useMemo(
     () =>
@@ -202,7 +203,7 @@ const ContentPreviewModal = ({
   }, [visible]);
 
   useEffect(() => {
-    if (!visible || !localItem?.id) return undefined;
+    if (!visible || !localItem?.id || isInfo) return undefined;
 
     const hasComments = Array.isArray(localItem.comments)
       ? localItem.comments.length > 0
@@ -249,7 +250,7 @@ const ContentPreviewModal = ({
     return () => {
       isActive = false;
     };
-  }, [client, isPost, localItem?.id, visible]);
+  }, [client, isInfo, isPost, localItem?.id, visible]);
 
   const handleClose = () => {
     dragY.setValue(0);
@@ -321,7 +322,9 @@ const ContentPreviewModal = ({
   );
 
   const viewerId = viewerUser?.id;
-  const content = localItem
+  const content = isInfo
+    ? localItem
+    : localItem
     ? {
         ...localItem,
         createdAt:
@@ -362,7 +365,7 @@ const ContentPreviewModal = ({
     : null;
 
   const canDelete = useMemo(() => {
-    if (disableDelete || !viewerId || !item) return false;
+    if (disableDelete || !viewerId || !item || isInfo) return false;
 
     const ownerIds = [
       item.author?.id,
@@ -372,7 +375,7 @@ const ContentPreviewModal = ({
     ].filter(Boolean);
 
     return ownerIds.some((id) => id === viewerId);
-  }, [disableDelete, item, viewerId]);
+  }, [disableDelete, isInfo, item, viewerId]);
 
   const isAdminReviewItem = useMemo(
     () => isAdminViewer && (content?.__adminItem ?? false),
@@ -380,10 +383,10 @@ const ContentPreviewModal = ({
   );
 
   const isLiked = useMemo(() => {
-    if (!content || !viewerId) return false;
+    if (!content || !viewerId || isInfo) return false;
     const likes = content.likes || [];
     return likes.some((like) => like?.user?.id === viewerId);
-  }, [content, viewerId]);
+  }, [content, isInfo, viewerId]);
 
   if (!mounted) return null;
 
@@ -392,11 +395,13 @@ const ContentPreviewModal = ({
     ? "Admin options"
     : isPost
     ? "Post options"
+    : isInfo
+    ? "Reminder"
     : "More options";
   const saveActionLabel = isSaved ? "Unsave" : "Save";
 
   const handleLikePress = () => {
-    if (!content?.id) return;
+    if (!content?.id || isInfo) return;
     if (isPost) {
       onTogglePostLike?.(content.id);
     } else {
@@ -405,7 +410,7 @@ const ContentPreviewModal = ({
   };
 
   const handleFlagPress = async () => {
-    if (!content?.id || flagging) return;
+    if (!content?.id || flagging || isInfo) return;
     setFlagging(true);
     try {
       await onFlagForReview?.(content.id, content.review);
@@ -416,7 +421,7 @@ const ContentPreviewModal = ({
   };
 
   const handleSavePress = async () => {
-    if (!content?.id || saving) return;
+    if (!content?.id || saving || isInfo) return;
     setSaving(true);
     try {
       await onToggleSave?.(content, type);
@@ -501,6 +506,24 @@ const ContentPreviewModal = ({
 
   const renderContent = () => {
     if (!content) return null;
+
+    if (isInfo) {
+      return (
+        <View style={styles.infoContainer}>
+          <Text style={styles.infoTitle}>
+            {content?.title || "Reminder"}
+          </Text>
+          {content?.text ? (
+            <Text style={styles.infoBody}>{content.text}</Text>
+          ) : null}
+          {content?.day ? (
+            <Text style={styles.infoFooter}>
+              Average relapse day: Day {content.day}
+            </Text>
+          ) : null}
+        </View>
+      );
+    }
 
     if (isPost) {
       return (
@@ -844,6 +867,32 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     paddingTop: 0,
     paddingHorizontal: 0,
+  },
+  infoContainer: {
+    flex: 1,
+    paddingHorizontal: 24,
+    paddingTop: 72,
+    backgroundColor: "#0b1220",
+    justifyContent: "center",
+  },
+  infoTitle: {
+    color: "#fbbf24",
+    fontSize: 22,
+    fontWeight: "800",
+    marginBottom: 10,
+    textAlign: "center",
+  },
+  infoBody: {
+    color: "#e5e7eb",
+    fontSize: 16,
+    lineHeight: 24,
+    textAlign: "center",
+  },
+  infoFooter: {
+    color: "#9ca3af",
+    fontSize: 13,
+    marginTop: 14,
+    textAlign: "center",
   },
   modalContainer: {
     flex: 1,

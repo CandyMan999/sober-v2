@@ -20,6 +20,8 @@ const typeDefs = gql`
     long: Float
     closestCity: City
     streaks: [SobrietyStreak!]
+    averageRelapseDay: Int
+    relapseReminderLastSentAt: String
     milestonesNotified: [Int!]
     notificationsEnabled: Boolean
     timezone: String

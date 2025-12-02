@@ -151,6 +151,22 @@ export default function App() {
         return;
       }
 
+      if (data?.type === "relapse_prediction") {
+        const message =
+          data?.message ||
+          "Based on your history you usually relapse around this time. Keep going, you’ve got this.";
+
+        setPreviewType("INFO");
+        setPreviewContent({
+          id: data?.id || `relapse-${Date.now()}`,
+          title: "Stay strong",
+          text: message,
+          day: data?.day,
+        });
+        setPreviewVisible(true);
+        return;
+      }
+
       if (data?.type === "new_post" && data.postId) {
         setPreviewType("POST");
         setPreviewRequest({ id: data.postId, type: "POST" });
