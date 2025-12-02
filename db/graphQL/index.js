@@ -26,6 +26,8 @@ const {
 
 const {
   fetchMeResolver,
+  adminReviewPostsResolver,
+  adminPendingQuotesResolver,
   runPushResolver,
   getBarLocationResolver,
   getLiquorLocationResolver,
@@ -79,6 +81,8 @@ const resolvers = {
     getLiquorLocation: getLiquorLocationResolver,
     runPush: runPushResolver,
     getQuotes: getQuotesResolver,
+    adminReviewPosts: adminReviewPostsResolver,
+    adminPendingQuotes: adminPendingQuotesResolver,
     getAllPosts: getAllPostsResolver,
     post: postResolver,
     quote: quoteResolver,
