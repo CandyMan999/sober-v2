@@ -22,7 +22,9 @@ const FloatingActionIcons = ({
   const burstScale = useRef(new Animated.Value(0)).current;
   const burstOpacity = useRef(new Animated.Value(0)).current;
   const likedGlow = useRef(new Animated.Value(isLiked ? 1 : 0)).current;
+  const likedBadgeBob = useRef(new Animated.Value(0)).current;
   const floatingHeartsRef = useRef(null);
+  const badgeLoopRef = useRef(null);
 
   const formatCount = (n) => {
     if (n >= 1000) return `${(n / 1000).toFixed(1)}k`;
@@ -85,11 +87,44 @@ const FloatingActionIcons = ({
     }).start();
   }, [isLiked, likedGlow]);
 
+  useEffect(() => {
+    badgeLoopRef.current?.stop();
+    likedBadgeBob.setValue(0);
+
+    if (isLiked) {
+      badgeLoopRef.current = Animated.loop(
+        Animated.sequence([
+          Animated.timing(likedBadgeBob, {
+            toValue: 1,
+            duration: 820,
+            easing: Easing.inOut(Easing.quad),
+            useNativeDriver: true,
+          }),
+          Animated.timing(likedBadgeBob, {
+            toValue: -1,
+            duration: 820,
+            easing: Easing.inOut(Easing.quad),
+            useNativeDriver: true,
+          }),
+        ])
+      );
+      badgeLoopRef.current.start();
+    }
+
+    return () => {
+      badgeLoopRef.current?.stop();
+    };
+  }, [isLiked, likedBadgeBob]);
+
   const heartIcon = isLiked ? "💖" : "❤️";
   const heartColor = isLiked ? "#fb7185" : "#fff";
   const likedGlowScale = likedGlow.interpolate({
     inputRange: [0, 1],
     outputRange: [0.9, 1.08],
+  });
+  const likedBadgeTranslate = likedBadgeBob.interpolate({
+    inputRange: [-1, 0, 1],
+    outputRange: [-3, 0, 3],
   });
 
   return (
@@ -132,9 +167,15 @@ const FloatingActionIcons = ({
             {heartIcon}
           </Animated.Text>
           {isLiked ? (
-            <View style={styles.sentBadge}>
-              <Text style={styles.sentBadgeText}>sent</Text>
-            </View>
+            <Animated.View
+              style={[
+                styles.likedEmojiBadge,
+                { transform: [{ translateY: likedBadgeTranslate }] },
+              ]}
+            >
+              <Text style={styles.likedEmojiText}>💞</Text>
+              <Text style={[styles.likedEmojiText, styles.likedEmojiAccent]}>💘</Text>
+            </Animated.View>
           ) : null}
           <HeartFloatBurst ref={floatingHeartsRef} />
         </View>
@@ -230,22 +271,24 @@ const styles = StyleSheet.create({
     shadowRadius: 10,
     shadowOffset: { width: 0, height: 2 },
   },
-  sentBadge: {
+  likedEmojiBadge: {
     position: "absolute",
-    bottom: -10,
-    paddingHorizontal: 8,
+    bottom: -12,
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: 6,
     paddingVertical: 2,
     borderRadius: 999,
-    backgroundColor: "rgba(15,23,42,0.9)",
+    backgroundColor: "rgba(15,23,42,0.85)",
     borderWidth: 1,
-    borderColor: "rgba(251, 113, 133, 0.6)",
+    borderColor: "rgba(251, 113, 133, 0.45)",
   },
-  sentBadgeText: {
-    color: "#fb7185",
-    fontSize: 10,
-    fontWeight: "700",
-    letterSpacing: 0.4,
-    textTransform: "uppercase",
+  likedEmojiText: {
+    fontSize: 12,
+    color: "#fff",
+  },
+  likedEmojiAccent: {
+    marginLeft: 2,
   },
   countText: {
     marginLeft: 8,
