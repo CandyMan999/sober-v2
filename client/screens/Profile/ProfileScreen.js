@@ -758,6 +758,12 @@ const ProfileScreen = ({ navigation }) => {
     }
   };
 
+  const getViewsCount = (post) => {
+    if (!post) return 0;
+    if (typeof post.viewsCount === "number") return post.viewsCount;
+    return post.video?.viewsCount ?? 0;
+  };
+
   const renderPostTile = ({ item, saved = false, fromSaved = false }) => {
     const isVideo = item.mediaType === "VIDEO";
     const thumbnail = isVideo
@@ -765,7 +771,7 @@ const ProfileScreen = ({ navigation }) => {
       : item.imageUrl || item.previewUrl;
     const imageSource = thumbnail ? { uri: thumbnail } : null;
     const isFlagged = item.flagged;
-    const views = item?.video?.viewsCount || 0;
+    const views = getViewsCount(item);
 
     return (
       <TouchableOpacity
