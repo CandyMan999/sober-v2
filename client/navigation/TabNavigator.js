@@ -22,7 +22,6 @@ import FollowingScreen from "../screens/Profile/FollowingScreen";
 import BuddiesScreen from "../screens/Profile/BuddiesScreen";
 import LikesScreen from "../screens/Profile/LikesScreen";
 import NotificationsScreen from "../screens/Profile/NotificationsScreen";
-import NotificationSettingsScreen from "../screens/Profile/NotificationSettingsScreen";
 import EditProfileScreen from "../screens/Profile/EditProfileScreen";
 import AddWhyScreen from "../screens/Profile/AddWhyScreen";
 import Context from "../context";
@@ -59,10 +58,6 @@ const ProfileStackScreen = () => (
     <ProfileStack.Screen name="Buddies" component={BuddiesScreen} />
     <ProfileStack.Screen name="Likes" component={LikesScreen} />
     <ProfileStack.Screen name="Notifications" component={NotificationsScreen} />
-    <ProfileStack.Screen
-      name="NotificationSettings"
-      component={NotificationSettingsScreen}
-    />
     <ProfileStack.Screen name="EditProfile" component={EditProfileScreen} />
     <ProfileStack.Screen name="AddWhy" component={AddWhyScreen} />
   </ProfileStack.Navigator>

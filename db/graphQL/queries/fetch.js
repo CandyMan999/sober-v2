@@ -1,6 +1,6 @@
 const { AuthenticationError } = require("apollo-server-express");
 
-const { User, Quote, Post } = require("../../models");
+const { User, Quote, Post, Like, Comment } = require("../../models");
 const { getDistanceFromCoords } = require("../../utils/helpers");
 const { findClosestCity } = require("../../utils/location");
 
@@ -109,6 +109,123 @@ module.exports = {
     } catch (err) {
       throw new Error(err.message);
     }
+  },
+  userNotificationsResolver: async (_, { token }) => {
+    if (!token) {
+      throw new AuthenticationError("Token is required");
+    }
+
+    const user = await User.findOne({ token });
+    if (!user) {
+      throw new AuthenticationError("User not found");
+    }
+
+    const NOTIFICATION_TYPES = {
+      COMMENT: "COMMENT_ON_POST",
+      COMMENT_LIKED: "COMMENT_LIKED",
+      FLAGGED: "FLAGGED_POST",
+      BUDDY_NEAR_BAR: "BUDDY_NEAR_BAR",
+    };
+
+    const INTENTS = {
+      OPEN_POST: "OPEN_POST_COMMENTS",
+      ACK: "ACKNOWLEDGE",
+    };
+
+    const userId = user._id;
+    const [userPosts, userComments] = await Promise.all([
+      Post.find({ author: userId }),
+      Comment.find({ author: userId }),
+    ]);
+
+    const postIds = userPosts.map((post) => post._id);
+    const commentIds = userComments.map((comment) => comment._id);
+
+    const [commentsOnPosts, likesOnComments] = await Promise.all([
+      postIds.length
+        ? Comment.find({
+            targetType: "POST",
+            targetId: { $in: postIds },
+          })
+            .sort({ createdAt: -1 })
+            .populate("author")
+        : [],
+      commentIds.length
+        ? Like.find({
+            targetType: "COMMENT",
+            targetId: { $in: commentIds },
+            user: { $ne: userId },
+          })
+            .sort({ createdAt: -1 })
+            .populate("user")
+        : [],
+    ]);
+
+    const commentsById = new Map(
+      userComments.map((comment) => [comment._id.toString(), comment])
+    );
+
+    const commentNotifications = commentsOnPosts
+      .filter((comment) => comment?.author && !comment.author._id.equals(userId))
+      .map((comment) => ({
+        id: `comment-${comment._id.toString()}`,
+        type: NOTIFICATION_TYPES.COMMENT,
+        title: `${comment.author.username || "Someone"} commented on your post`,
+        description: comment.text,
+        postId: comment.targetId.toString(),
+        commentId: comment._id.toString(),
+        createdAt: comment.createdAt,
+        intent: INTENTS.OPEN_POST,
+      }));
+
+    const commentLikeNotifications = likesOnComments
+      .map((like) => {
+        const comment = commentsById.get(like.targetId.toString());
+        if (!comment) return null;
+
+        return {
+          id: `comment-like-${like._id.toString()}`,
+          type: NOTIFICATION_TYPES.COMMENT_LIKED,
+          title: `${like.user?.username || "Someone"} liked your comment`,
+          description: comment.text,
+          postId: comment.targetId.toString(),
+          commentId: comment._id.toString(),
+          createdAt: like.createdAt,
+          intent: INTENTS.OPEN_POST,
+        };
+      })
+      .filter(Boolean);
+
+    const flaggedPostNotifications = userPosts
+      .filter((post) => post.flagged === true || post.review === true)
+      .map((post) => ({
+        id: `flagged-${post._id.toString()}`,
+        type: NOTIFICATION_TYPES.FLAGGED,
+        title: "A post needs your attention",
+        description:
+          "Your post was flagged by our team. Inappropriate content can lead to a ban.",
+        postId: post._id.toString(),
+        createdAt: post.updatedAt || post.createdAt,
+        intent: INTENTS.OPEN_POST,
+      }));
+
+    const buddyNearBarPlaceholder = {
+      id: "buddy-placeholder",
+      type: NOTIFICATION_TYPES.BUDDY_NEAR_BAR,
+      title: "Buddy check-in",
+      description: "A buddy was tracked near a bar. Placeholder until tracking is live.",
+      createdAt: new Date().toISOString(),
+      intent: INTENTS.ACK,
+    };
+
+    return [
+      ...commentNotifications,
+      ...commentLikeNotifications,
+      ...flaggedPostNotifications,
+      buddyNearBarPlaceholder,
+    ].sort(
+      (a, b) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime()
+    );
   },
   getAllPostsResolver: async (root, args) => {
     const {

@@ -1,30 +1,34 @@
 export default function reducer(state, { type, payload }) {
   switch (type) {
-    case "NEW_QUOTE":
+    case "NEW_QUOTE": {
       return {
         ...state,
         newQuote: payload,
       };
+    }
 
-    case "SET_USER":
+    case "SET_USER": {
       return {
         ...state,
         user: payload,
       };
+    }
 
-    case "SET_PROFILE_OVERVIEW":
+    case "SET_PROFILE_OVERVIEW": {
       return {
         ...state,
         profileOverview: payload,
       };
+    }
 
-    case "SET_SAVED_STATE":
+    case "SET_SAVED_STATE": {
       return {
         ...state,
         savedState: payload,
       };
+    }
 
-    case "CURRENT_POSITION":
+    case "CURRENT_POSITION": {
       return {
         ...state,
         currentPosition: {
@@ -32,18 +36,21 @@ export default function reducer(state, { type, payload }) {
           long: payload.long,
         },
       };
+    }
 
-    case "SET_DATE":
+    case "SET_DATE": {
       return {
         ...state,
         date: payload,
       };
+    }
 
-    case "LOCATION_PERMISSION":
+    case "LOCATION_PERMISSION": {
       return {
         ...state,
         locationPermission: payload,
       };
+    }
 
     default:
       return state;

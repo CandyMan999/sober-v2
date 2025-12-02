@@ -272,6 +272,21 @@ export const ADMIN_REVIEW_ITEMS_QUERY = `
   }
 `;
 
+export const USER_NOTIFICATIONS_QUERY = `
+  query UserNotifications($token: String!) {
+    userNotifications(token: $token) {
+      id
+      type
+      title
+      description
+      intent
+      postId
+      commentId
+      createdAt
+    }
+  }
+`;
+
 export const USER_PROFILE_QUERY = `
   query UserProfile($token: String!, $userId: ID!) {
     userProfile(token: $token, userId: $userId) {

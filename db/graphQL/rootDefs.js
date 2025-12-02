@@ -191,6 +191,17 @@ const typeDefs = gql`
     updatedAt: String
   }
 
+  type Notification {
+    id: ID!
+    type: String!
+    title: String!
+    description: String
+    intent: String
+    postId: ID
+    commentId: ID
+    createdAt: String
+  }
+
   type PostConnection {
     posts: [Post!]!
     hasMore: Boolean!
@@ -305,6 +316,7 @@ const typeDefs = gql`
     getQuotes: [Quote!]!
     adminFlaggedPosts(token: String!): [Post!]!
     adminPendingQuotes(token: String!): [Quote!]!
+    userNotifications(token: String!): [Notification!]!
     getAllPosts(
       limit: Int
       cursor: String

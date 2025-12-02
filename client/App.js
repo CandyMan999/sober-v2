@@ -41,12 +41,15 @@ import FollowingScreen from "./screens/Profile/FollowingScreen";
 import BuddiesScreen from "./screens/Profile/BuddiesScreen";
 import LikesScreen from "./screens/Profile/LikesScreen";
 import NotificationsScreen from "./screens/Profile/NotificationsScreen";
-import NotificationSettingsScreen from "./screens/Profile/NotificationSettingsScreen";
 import DirectMessageScreen from "./screens/DirectMessage/DirectMessageScreen";
 import MessageListScreen from "./screens/DirectMessage/MessageListScreen";
 import { ContentPreviewModal } from "./components";
 import { POST_BY_ID_QUERY, QUOTE_BY_ID_QUERY } from "./GraphQL/queries";
 import { useClient } from "./client";
+import {
+  NotificationIntents,
+  NotificationTypes,
+} from "./utils/notifications";
 
 import Context from "./context";
 import reducer from "./reducer";
@@ -176,6 +179,16 @@ export default function App() {
       if (data?.type === "new_quote" && data.quoteId) {
         setPreviewType("QUOTE");
         setPreviewRequest({ id: data.quoteId, type: "QUOTE" });
+        return;
+      }
+
+      if (
+        data?.type === NotificationTypes.COMMENT_ON_POST &&
+        data.postId &&
+        data.intent === NotificationIntents.OPEN_POST_COMMENTS
+      ) {
+        setPreviewType("POST");
+        setPreviewRequest({ id: data.postId, type: "POST" });
       }
     },
     []
@@ -321,11 +334,6 @@ export default function App() {
                   <Stack.Screen
                     name="Notifications"
                     component={NotificationsScreen}
-                    options={{ headerShown: false }}
-                  />
-                  <Stack.Screen
-                    name="NotificationSettings"
-                    component={NotificationSettingsScreen}
                     options={{ headerShown: false }}
                   />
                   <Stack.Screen
