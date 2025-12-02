@@ -69,6 +69,8 @@ const resolveLikes = (targetType) => async (parent) => {
   }
 };
 
+const resolveId = (parent) => parent?.id || parent?._id?.toString?.();
+
 const resolvers = {
   Query: {
     fetchMe: fetchMeResolver,
@@ -121,10 +123,12 @@ const resolvers = {
 
   // ---- Type-level resolvers ----
   Quote: {
+    id: resolveId,
     likes: resolveLikes("QUOTE"),
   },
 
   Post: {
+    id: resolveId,
     likes: resolveLikes("POST"),
     viewsCount: (parent) => {
       const postViews = typeof parent?.viewsCount === "number" ? parent.viewsCount : 0;
@@ -135,6 +139,7 @@ const resolvers = {
   },
 
   Comment: {
+    id: resolveId,
     likes: resolveLikes("COMMENT"),
     likesCount: (parent) => parent?.likesCount ?? 0,
     replyTo: async (parent) => {
@@ -150,6 +155,7 @@ const resolvers = {
   },
 
   User: {
+    id: resolveId,
     followers: async (parent) => {
       const targetId = parent.id || parent._id;
       if (!targetId) return [];
@@ -298,6 +304,10 @@ const resolvers = {
         return null;
       }
     },
+  },
+
+  Picture: {
+    id: resolveId,
   },
 };
 
