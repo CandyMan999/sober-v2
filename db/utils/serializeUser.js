@@ -26,6 +26,8 @@ const serializeUser = (user) => {
     id: plain.id || plain._id?.toString(),
     profilePic: serializePicture(plain.profilePic),
     drunkPic: serializePicture(plain.drunkPic),
+    profilePicUrl: plain.profilePicUrl || plain.profilePic?.url || null,
+    drunkPicUrl: plain.drunkPicUrl || plain.drunkPic?.url || null,
   };
 };
 

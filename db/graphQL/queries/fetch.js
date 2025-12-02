@@ -3,6 +3,7 @@ const { AuthenticationError } = require("apollo-server-express");
 const { User, Quote, Post } = require("../../models");
 const { getDistanceFromCoords } = require("../../utils/helpers");
 const { findClosestCity } = require("../../utils/location");
+const { serializeUser } = require("../../utils/serializeUser");
 
 require("dotenv").config();
 
@@ -119,7 +120,10 @@ module.exports = {
         Post.find({ ...baseQuery, ...computeGeoFilter(radiusRadians) })
           .sort({ createdAt: -1 })
           .limit(limit + 1)
-          .populate("author")
+          .populate({
+            path: "author",
+            populate: ["profilePic", "drunkPic"],
+          })
           .populate({
             path: "video",
             match: { flagged: false },
@@ -222,7 +226,15 @@ module.exports = {
         : null;
 
       return {
-        posts: trimmed,
+        posts: trimmed.map((post) => {
+          const plainPost = post.toObject ? post.toObject() : post;
+          const serializedAuthor = serializeUser(plainPost.author);
+
+          return {
+            ...plainPost,
+            author: serializedAuthor,
+          };
+        }),
         hasMore,
         cursor: nextCursor,
       };
