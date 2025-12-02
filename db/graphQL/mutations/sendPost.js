@@ -390,7 +390,7 @@ const customNudityAPI = async (videoId, uid) => {
           type: NotificationTypes.FLAGGED_POST,
           title: "A post needs your attention",
           description:
-            "Your post was flagged by our team. Inappropriate content can lead to a ban.",
+            "Your post was flagged by our AI for nudity and is under review by admin.",
           intent: NotificationIntents.OPEN_POST_COMMENTS,
           postId: String(flaggedPost._id),
           createdAt: flaggedPost?.updatedAt || flaggedPost?.createdAt,
@@ -485,7 +485,10 @@ module.exports = {
           : null;
 
       if (postLocation.lat !== null && postLocation.long !== null) {
-        const nearestCity = await findClosestCity(postLocation.lat, postLocation.long);
+        const nearestCity = await findClosestCity(
+          postLocation.lat,
+          postLocation.long
+        );
         if (nearestCity?._id) {
           postLocation.closestCity = nearestCity._id;
         }

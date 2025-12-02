@@ -54,8 +54,7 @@ const moderatePostResolver = async (_, { token, postId, approve }) => {
       notificationId: `flagged-${post._id.toString()}`,
       type: NotificationTypes.FLAGGED_POST,
       title: "A post needs your attention",
-      description:
-        "Your post was flagged by our team. Inappropriate content can lead to a ban.",
+      description: "Your post was flagged by a user for admin review.",
       intent: NotificationIntents.OPEN_POST_COMMENTS,
       postId: String(post._id),
       createdAt: post.updatedAt || post.createdAt,
@@ -85,7 +84,11 @@ const moderateQuoteResolver = async (_, { token, quoteId, approve }) => {
   }
 
   await quote.save();
-  if (approve && quote.user?.token && quote.user?.notificationsEnabled !== false) {
+  if (
+    approve &&
+    quote.user?.token &&
+    quote.user?.notificationsEnabled !== false
+  ) {
     try {
       await sendPushNotifications([
         {
