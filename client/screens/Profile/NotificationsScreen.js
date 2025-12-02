@@ -274,7 +274,6 @@ const NotificationsScreen = ({ navigation }) => {
                   <Ionicons name="trash" size={18} color="#fecdd3" />
                 </View>
                 <Text style={styles.swipeActionText}>Clear</Text>
-                <Text style={styles.swipeActionSubtext}>Remove from feed</Text>
               </TouchableOpacity>
             </Animated.View>
           </View>
@@ -499,7 +498,7 @@ const styles = StyleSheet.create({
   },
   swipeActionCard: {
     backgroundColor: "#111827",
-    paddingVertical: 10,
+    paddingVertical: 8,
     paddingHorizontal: 10,
     borderRadius: 14,
     borderWidth: 1,
@@ -512,12 +511,12 @@ const styles = StyleSheet.create({
   },
   swipeAction: {
     alignItems: "center",
-    gap: 4,
+    gap: 2,
   },
   swipeActionIcon: {
-    width: 34,
-    height: 34,
-    borderRadius: 17,
+    width: 32,
+    height: 32,
+    borderRadius: 16,
     backgroundColor: "rgba(239,68,68,0.1)",
     alignItems: "center",
     justifyContent: "center",
@@ -526,10 +525,6 @@ const styles = StyleSheet.create({
     color: "#fecdd3",
     fontWeight: "800",
     fontSize: 13,
-  },
-  swipeActionSubtext: {
-    color: "#fca5a5",
-    fontSize: 11,
   },
   placeholderText: {
     color: "#c084fc",
