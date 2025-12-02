@@ -1,6 +1,11 @@
 const { AuthenticationError, UserInputError } = require("apollo-server-express");
 const { Like, Post, Quote, Comment, Room, User } = require("../../models");
 const { publishDirectMessage } = require("../subscription/subscription");
+const {
+  NotificationTypes,
+  NotificationIntents,
+  createNotificationForUser,
+} = require("../../utils/notifications");
 
 const TARGET_MODELS = {
   POST: Post,
@@ -95,6 +100,24 @@ const toggleLikeResolver = async (_, { token, targetType, targetId }) => {
   };
 
   await publishDirectMessageLikeUpdate(targetType, targetId);
+
+  if (targetType === "COMMENT") {
+    const comment = await Comment.findById(targetId).populate("author");
+
+    if (comment?.author && String(comment.author._id) !== String(user._id)) {
+      await createNotificationForUser({
+        userId: comment.author._id,
+        notificationId: `comment-like-${newLike._id.toString()}`,
+        type: NotificationTypes.COMMENT_LIKED,
+        title: `${user.username || "Someone"} liked your comment`,
+        description: comment.text,
+        intent: NotificationIntents.ACKNOWLEDGE,
+        postId: String(comment.targetId),
+        commentId: String(comment._id),
+        createdAt: newLike.createdAt,
+      });
+    }
+  }
 
   return payload;
 };

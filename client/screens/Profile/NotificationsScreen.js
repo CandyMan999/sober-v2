@@ -226,10 +226,9 @@ const NotificationsScreen = ({ navigation }) => {
       if (!actionable) return;
 
       setActiveNotificationId(notification.id);
-      dismissNotification(notification);
       openPostFromNotification(notification);
     },
-    [dismissNotification, openPostFromNotification]
+    [openPostFromNotification]
   );
 
   useEffect(() => {

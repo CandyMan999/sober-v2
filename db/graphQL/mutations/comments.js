@@ -4,6 +4,11 @@ const {
   UserInputError,
 } = require("apollo-server-express");
 const { Comment, Post, Quote, User } = require("../../models");
+const {
+  NotificationTypes,
+  NotificationIntents,
+  createNotificationForUser,
+} = require("../../utils/notifications");
 const { sendPushNotifications } = require("../../utils/pushNotifications");
 
 const buildRepliesPopulate = (depth = 1) => {
@@ -89,12 +94,7 @@ const createCommentForTarget = async ({
   const trimmedBody = text.trim();
   const targetOwner = target[targetConfig.ownerPath] || null;
 
-  if (
-    !isReply &&
-    targetOwner &&
-    targetOwner.token &&
-    targetOwner.notificationsEnabled !== false
-  ) {
+  if (!isReply && targetOwner && String(targetOwner._id) !== String(user._id)) {
     const title = `${targetType === "QUOTE" ? "Quote" : "Post"} Comment`;
 
     const ownerNotificationData = {
@@ -111,23 +111,32 @@ const createCommentForTarget = async ({
       ownerNotificationData.quoteId = String(target._id);
     }
 
-    notifications.push({
-      pushToken: targetOwner.token,
-      title,
-      body: `${actorName} said ${trimmedBody}`,
-      data: ownerNotificationData,
+    if (targetOwner.token && targetOwner.notificationsEnabled !== false) {
+      notifications.push({
+        pushToken: targetOwner.token,
+        title,
+        body: `${actorName} said ${trimmedBody}`,
+        data: ownerNotificationData,
+      });
+    }
+
+    await createNotificationForUser({
+      userId: targetOwner._id,
+      notificationId: `comment-${newComment._id.toString()}`,
+      type: NotificationTypes.COMMENT_ON_POST,
+      title: `${actorName} commented on your post`,
+      description: trimmedBody,
+      intent: NotificationIntents.OPEN_POST_COMMENTS,
+      postId: String(target._id),
+      commentId: String(newComment._id),
+      createdAt: newComment.createdAt,
     });
   }
 
   if (isReply) {
     const parent = await Comment.findById(replyToId).populate("author");
 
-    if (
-      parent?.author &&
-      parent.author.token &&
-      parent.author.notificationsEnabled !== false &&
-      String(parent.author._id) !== String(user._id)
-    ) {
+    if (parent?.author && String(parent.author._id) !== String(user._id)) {
       const title = `${actorName} replied to your comment`;
 
       const replyNotificationData = {
@@ -146,11 +155,25 @@ const createCommentForTarget = async ({
         replyNotificationData.quoteId = String(target._id);
       }
 
-      notifications.push({
-        pushToken: parent.author.token,
-        title,
-        body: `${actorName} said ${trimmedBody}`,
-        data: replyNotificationData,
+      if (parent.author.token && parent.author.notificationsEnabled !== false) {
+        notifications.push({
+          pushToken: parent.author.token,
+          title,
+          body: `${actorName} said ${trimmedBody}`,
+          data: replyNotificationData,
+        });
+      }
+
+      await createNotificationForUser({
+        userId: parent.author._id,
+        notificationId: `comment-reply-${newComment._id.toString()}`,
+        type: NotificationTypes.COMMENT_REPLY,
+        title: `${actorName} replied to your comment`,
+        description: trimmedBody,
+        intent: NotificationIntents.OPEN_POST_COMMENTS,
+        postId: String(target._id),
+        commentId: String(newComment._id),
+        createdAt: newComment.createdAt,
       });
     }
   }

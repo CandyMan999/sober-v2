@@ -4,6 +4,11 @@ const NotificationSchema = new mongoose.Schema(
   {
     notificationId: { type: String, required: true },
     type: { type: String },
+    title: { type: String },
+    description: { type: String },
+    intent: { type: String },
+    postId: { type: String },
+    commentId: { type: String },
     user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
     read: { type: Boolean, default: false },
     dismissed: { type: Boolean, default: false },

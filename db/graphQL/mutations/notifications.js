@@ -17,15 +17,25 @@ const getUserFromToken = async (token) => {
 };
 
 const upsertNotificationStatus = async (userId, notificationId, updates = {}) => {
+  const { read, dismissed, ...rest } = updates;
+
+  const setPayload = {
+    ...rest,
+  };
+
+  if (typeof read === "boolean") setPayload.read = read;
+  if (typeof dismissed === "boolean") setPayload.dismissed = dismissed;
+
   return Notification.findOneAndUpdate(
     { user: userId, notificationId },
     {
-      $set: { ...updates, updatedAt: new Date() },
+      $set: setPayload,
       $setOnInsert: {
         read: false,
         dismissed: false,
         user: userId,
         notificationId,
+        createdAt: new Date(),
       },
     },
     { new: true, upsert: true }

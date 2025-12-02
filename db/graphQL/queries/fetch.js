@@ -3,6 +3,11 @@ const { AuthenticationError } = require("apollo-server-express");
 const { User, Quote, Post, Like, Comment, Notification } = require("../../models");
 const { getDistanceFromCoords } = require("../../utils/helpers");
 const { findClosestCity } = require("../../utils/location");
+const {
+  NotificationTypes,
+  NotificationIntents,
+  createNotificationForUser,
+} = require("../../utils/notifications");
 
 require("dotenv").config();
 
@@ -120,193 +125,35 @@ module.exports = {
       throw new AuthenticationError("User not found");
     }
 
-    const NOTIFICATION_TYPES = {
-      COMMENT: "COMMENT_ON_POST",
-      COMMENT_REPLY: "COMMENT_REPLY",
-      COMMENT_LIKED: "COMMENT_LIKED",
-      FLAGGED: "FLAGGED_POST",
-      BUDDY_NEAR_BAR: "BUDDY_NEAR_BAR",
-    };
-
-    const INTENTS = {
-      OPEN_POST: "OPEN_POST_COMMENTS",
-      ACK: "ACKNOWLEDGE",
-    };
-
     const userId = user._id;
-    const [userPosts, userComments] = await Promise.all([
-      Post.find({ author: userId }),
-      Comment.find({ author: userId }),
-    ]);
 
-    const postIds = userPosts.map((post) => post._id);
-    const commentIds = userComments.map((comment) => comment._id);
-    const commentIdsSet = new Set(commentIds.map((id) => id.toString()));
-
-    const [commentsOnPosts, repliesToUserComments, likesOnComments] =
-      await Promise.all([
-      postIds.length
-        ? Comment.find({
-            targetType: "POST",
-            targetId: { $in: postIds },
-          })
-            .sort({ createdAt: -1 })
-            .populate("author")
-        : [],
-      commentIds.length
-        ? Comment.find({
-            replyTo: { $in: commentIds },
-          })
-            .sort({ createdAt: -1 })
-            .populate("author")
-            .populate({ path: "replyTo", populate: "author" })
-        : [],
-      commentIds.length
-        ? Like.find({
-            targetType: "COMMENT",
-            targetId: { $in: commentIds },
-            user: { $ne: userId },
-          })
-            .sort({ createdAt: -1 })
-            .populate("user")
-        : [],
-    ]);
-
-    const commentsById = new Map(
-      userComments.map((comment) => [comment._id.toString(), comment])
-    );
-
-    const commentNotifications = commentsOnPosts
-      .filter((comment) => comment?.author && !comment.author._id.equals(userId))
-      .filter((comment) => !commentIdsSet.has(comment?.replyTo?.toString()))
-      .map((comment) => ({
-        id: `comment-${comment._id.toString()}`,
-        type: NOTIFICATION_TYPES.COMMENT,
-        title: `${comment.author.username || "Someone"} commented on your post`,
-        description: comment.text,
-        postId: comment.targetId.toString(),
-        commentId: comment._id.toString(),
-        createdAt: comment.createdAt,
-        intent: INTENTS.OPEN_POST,
-      }));
-
-    const commentReplyNotifications = repliesToUserComments
-      .filter((comment) => comment?.author && !comment.author._id.equals(userId))
-      .map((comment) => ({
-        id: `comment-reply-${comment._id.toString()}`,
-        type: NOTIFICATION_TYPES.COMMENT_REPLY,
-        title: `${comment.author.username || "Someone"} replied to your comment`,
-        description: comment.text,
-        postId: comment.targetId.toString(),
-        commentId: comment._id.toString(),
-        createdAt: comment.createdAt,
-        intent: INTENTS.OPEN_POST,
-      }));
-
-    const commentLikeNotifications = likesOnComments
-      .map((like) => {
-        const comment = commentsById.get(like.targetId.toString());
-        if (!comment) return null;
-
-        return {
-          id: `comment-like-${like._id.toString()}`,
-          type: NOTIFICATION_TYPES.COMMENT_LIKED,
-          title: `${like.user?.username || "Someone"} liked your comment`,
-          description: comment.text,
-          postId: comment.targetId.toString(),
-          commentId: comment._id.toString(),
-          createdAt: like.createdAt,
-          intent: INTENTS.ACK,
-        };
-      })
-      .filter(Boolean);
-
-    const flaggedPostNotifications = userPosts
-      .filter((post) => post.flagged === true || post.review === true)
-      .map((post) => ({
-        id: `flagged-${post._id.toString()}`,
-        type: NOTIFICATION_TYPES.FLAGGED,
-        title: "A post needs your attention",
-        description:
-          "Your post was flagged by our team. Inappropriate content can lead to a ban.",
-        postId: post._id.toString(),
-        createdAt: post.updatedAt || post.createdAt,
-        intent: INTENTS.OPEN_POST,
-      }));
-
-    const buddyNearBarPlaceholder = {
-      id: "buddy-placeholder",
-      type: NOTIFICATION_TYPES.BUDDY_NEAR_BAR,
+    await createNotificationForUser({
+      userId,
+      notificationId: "buddy-placeholder",
+      type: NotificationTypes.BUDDY_NEAR_BAR,
       title: "Buddy check-in",
-      description: "A buddy was tracked near a bar. Placeholder until tracking is live.",
-      createdAt: new Date().toISOString(),
-      intent: INTENTS.ACK,
-    };
+      description:
+        "A buddy was tracked near a bar. Placeholder until tracking is live.",
+      intent: NotificationIntents.ACKNOWLEDGE,
+    });
 
-    const baseNotifications = [
-      ...commentNotifications,
-      ...commentReplyNotifications,
-      ...commentLikeNotifications,
-      ...flaggedPostNotifications,
-      buddyNearBarPlaceholder,
-    ];
+    const notifications = await Notification.find({
+      user: userId,
+      $or: [{ dismissed: { $exists: false } }, { dismissed: { $ne: true } }],
+    }).sort({ read: 1, createdAt: -1 });
 
-    const notificationIds = baseNotifications.map((notification) => notification.id);
-    const existingStatuses = notificationIds.length
-      ? await Notification.find({
-          user: userId,
-          notificationId: { $in: notificationIds },
-        })
-      : [];
-
-    const statusMap = new Map(
-      existingStatuses.map((status) => [status.notificationId, status])
-    );
-
-    const missingStatuses = baseNotifications
-      .filter((notification) => !statusMap.has(notification.id))
-      .map((notification) => ({
-        notificationId: notification.id,
-        type: notification.type,
-        user: userId,
-        read: false,
-        dismissed: false,
-      }));
-
-    if (missingStatuses.length) {
-      try {
-        await Notification.insertMany(missingStatuses, { ordered: false });
-        missingStatuses.forEach((status) => {
-          statusMap.set(status.notificationId, status);
-        });
-      } catch (err) {
-        // ignore duplicate key errors if notifications were created in parallel
-        if (err?.code !== 11000) {
-          throw err;
-        }
-      }
-    }
-
-    return baseNotifications
-      .map((notification) => {
-        const status = statusMap.get(notification.id);
-        return {
-          ...notification,
-          read: status?.read ?? false,
-          dismissed: status?.dismissed ?? false,
-        };
-      })
-      .filter((notification) => !notification.dismissed)
-      .sort((a, b) => {
-        if ((a.read ?? false) !== (b.read ?? false)) {
-          return a.read ? 1 : -1;
-        }
-
-        return (
-          new Date(b.createdAt || 0).getTime() -
-          new Date(a.createdAt || 0).getTime()
-        );
-      });
+    return notifications.map((notification) => ({
+      id: notification.notificationId,
+      type: notification.type || NotificationTypes.COMMENT_ON_POST,
+      title: notification.title || "Notification",
+      description: notification.description,
+      intent: notification.intent,
+      postId: notification.postId,
+      commentId: notification.commentId,
+      createdAt: notification.createdAt?.toISOString?.() || notification.createdAt,
+      read: Boolean(notification.read),
+      dismissed: Boolean(notification.dismissed),
+    }));
   },
   getAllPostsResolver: async (root, args) => {
     const {
