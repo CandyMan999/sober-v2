@@ -2,6 +2,7 @@ const { AuthenticationError } = require("apollo-server-express");
 
 const { User, Quote, Post } = require("../../models");
 const { getDistanceFromCoords } = require("../../utils/helpers");
+const { serializeUser } = require("../../utils/serializeUser");
 const postAuthorPopulate = {
   path: "author",
   populate: ["profilePic", "drunkPic"],
@@ -16,6 +17,71 @@ const postVideoPopulate = {
 const postBasePopulates = [postAuthorPopulate, postVideoPopulate, "closestCity"];
 
 require("dotenv").config();
+
+const ensureId = (doc) => {
+  if (!doc) return null;
+
+  const plain = doc.toObject ? doc.toObject() : doc;
+  const id = plain.id || plain._id?.toString?.();
+
+  if (!id) return null;
+
+  return { ...plain, id };
+};
+
+const serializeComment = (comment) => {
+  const base = ensureId(comment);
+  if (!base) return null;
+
+  const author = serializeUser(base.author);
+  if (!author?.id) return null;
+
+  const replyTo = base.replyTo ? ensureId(base.replyTo) : null;
+  const replyAuthor = replyTo ? serializeUser(replyTo.author) : null;
+
+  const replies = Array.isArray(base.replies)
+    ? base.replies.map(serializeComment).filter(Boolean)
+    : [];
+
+  return {
+    ...base,
+    author,
+    replyTo: replyTo && replyAuthor ? { ...replyTo, author: replyAuthor } : null,
+    replies,
+  };
+};
+
+const serializePost = (post) => {
+  const base = ensureId(post);
+  if (!base) return null;
+
+  const author = serializeUser(base.author);
+  if (!author?.id) return null;
+
+  const video = base.video ? ensureId(base.video) : null;
+  const closestCity = base.closestCity ? ensureId(base.closestCity) : null;
+  const comments = Array.isArray(base.comments)
+    ? base.comments.map(serializeComment).filter(Boolean)
+    : undefined;
+
+  return {
+    ...base,
+    author,
+    video,
+    closestCity,
+    comments,
+  };
+};
+
+const serializeQuote = (quote) => {
+  const base = ensureId(quote);
+  if (!base) return null;
+
+  return {
+    ...base,
+    user: serializeUser(base.user),
+  };
+};
 
 const buildRepliesPopulate = (depth = 1) => {
   const basePopulate = [
@@ -47,7 +113,20 @@ module.exports = {
       if (!user) {
         throw new AuthenticationError("User not found");
       }
-      return user;
+
+      const serializedUser = serializeUser(user);
+      const serializedSavedPosts = (user.savedPosts || [])
+        .map(serializePost)
+        .filter(Boolean);
+      const serializedSavedQuotes = (user.savedQuotes || [])
+        .map(serializeQuote)
+        .filter(Boolean);
+
+      return {
+        ...serializedUser,
+        savedPosts: serializedSavedPosts,
+        savedQuotes: serializedSavedQuotes,
+      };
     } catch (err) {
       throw new AuthenticationError(err.message);
     }
@@ -226,15 +305,10 @@ module.exports = {
         ? trimmed[trimmed.length - 1].createdAt.toISOString()
         : null;
 
-      return {
-        posts: trimmed.map((post) => {
-          const plainPost = post.toObject ? post.toObject() : post;
+      const serializedPosts = trimmed.map(serializePost).filter(Boolean);
 
-          return {
-            ...plainPost,
-            id: plainPost.id || plainPost._id?.toString(),
-          };
-        }),
+      return {
+        posts: serializedPosts,
         hasMore,
         cursor: nextCursor,
       };
@@ -261,7 +335,7 @@ module.exports = {
         return null;
       }
 
-      return post;
+      return serializePost(post);
     } catch (err) {
       throw new Error(err.message);
     }
@@ -319,12 +393,18 @@ module.exports = {
       .sort({ createdAt: -1 })
       .populate("user");
 
+    const serializedQuotes = quotes.map(serializeQuote).filter(Boolean);
+    const serializedUser = serializeUser(user);
+    const serializedPosts = posts.map(serializePost).filter(Boolean);
+    const serializedSavedPosts = savedPosts.map(serializePost).filter(Boolean);
+    const serializedSavedQuotes = savedQuotes.map(serializeQuote).filter(Boolean);
+
     return {
-      user,
-      posts,
-      quotes,
-      savedPosts,
-      savedQuotes,
+      user: serializedUser,
+      posts: serializedPosts,
+      quotes: serializedQuotes,
+      savedPosts: serializedSavedPosts,
+      savedQuotes: serializedSavedQuotes,
     };
   },
 
@@ -371,12 +451,18 @@ module.exports = {
       .sort({ createdAt: -1 })
       .populate("user");
 
+    const serializedQuotes = quotes.map(serializeQuote).filter(Boolean);
+    const serializedUser = serializeUser(user);
+    const serializedPosts = posts.map(serializePost).filter(Boolean);
+    const serializedSavedPosts = savedPosts.map(serializePost).filter(Boolean);
+    const serializedSavedQuotes = savedQuotes.map(serializeQuote).filter(Boolean);
+
     return {
-      user,
-      posts,
-      quotes,
-      savedPosts,
-      savedQuotes,
+      user: serializedUser,
+      posts: serializedPosts,
+      quotes: serializedQuotes,
+      savedPosts: serializedSavedPosts,
+      savedQuotes: serializedSavedQuotes,
     };
   },
 };
