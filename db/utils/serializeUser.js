@@ -2,13 +2,17 @@ const serializePicture = (picture) => {
   if (!picture) return null;
 
   const plain = picture.toObject ? picture.toObject() : picture;
-  const pictureId = plain.id || plain._id?.toString();
+  const pictureId =
+    plain.id ||
+    plain._id?.toString?.() ||
+    plain.publicId ||
+    (typeof plain.url === "string" ? plain.url : null);
 
-  if (!pictureId) return null;
+  if (!pictureId && !plain.url) return null;
 
   return {
     ...plain,
-    id: pictureId,
+    id: pictureId || plain.url,
   };
 };
 
