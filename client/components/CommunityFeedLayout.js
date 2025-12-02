@@ -72,7 +72,7 @@ const CommunityFeedLayout = ({
   const baseAvatarSize = 38;
   const avatarSize =
     isMilestonePost && drunkAvatarUrl
-      ? Math.round(baseAvatarSize * 1.2)
+      ? Math.round(baseAvatarSize * 1.3)
       : baseAvatarSize;
   const avatarAspectRatio = isMilestonePost && drunkAvatarUrl ? 3 / 4 : 1;
   const type = post.mediaType || "VIDEO";
