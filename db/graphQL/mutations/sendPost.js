@@ -9,6 +9,11 @@ const FormData = require("form-data");
 const { User, Video, Post, Connection } = require("../../models");
 const { findClosestCity } = require("../../utils/location");
 const { sendPushNotifications } = require("../../utils/pushNotifications");
+const {
+  NotificationTypes,
+  NotificationIntents,
+  createNotificationForUser,
+} = require("../../utils/notifications");
 // const {
 //   sendPushNotification,
 //   pushNotificationUserFlagged,
@@ -369,10 +374,29 @@ const customNudityAPI = async (videoId, uid) => {
 
     // ---- NEW: if video flagged, flag related post ----
     if (flagged && updated?.post?._id) {
-      await Post.findByIdAndUpdate(updated.post._id, {
-        flagged: true,
-        review: true,
-      });
+      const flaggedPost = await Post.findByIdAndUpdate(
+        updated.post._id,
+        {
+          flagged: true,
+          review: true,
+        },
+        { new: true }
+      ).populate("author");
+
+      if (flaggedPost?.author?._id) {
+        await createNotificationForUser({
+          userId: flaggedPost.author._id,
+          notificationId: `flagged-${flaggedPost._id.toString()}`,
+          type: NotificationTypes.FLAGGED_POST,
+          title: "A post needs your attention",
+          description:
+            "Your post was flagged by our team. Inappropriate content can lead to a ban.",
+          intent: NotificationIntents.OPEN_POST_COMMENTS,
+          postId: String(flaggedPost._id),
+          createdAt: flaggedPost?.updatedAt || flaggedPost?.createdAt,
+        });
+      }
+
       console.log(`[nudity] Post ${updated.post._id} flagged due to video.`);
     }
 

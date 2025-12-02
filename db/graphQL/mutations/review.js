@@ -1,4 +1,9 @@
 const { Post } = require("../../models");
+const {
+  NotificationTypes,
+  NotificationIntents,
+  createNotificationForUser,
+} = require("../../utils/notifications");
 
 const setPostReviewResolver = async (root, args) => {
   const { postId, review } = args;
@@ -24,6 +29,20 @@ const setPostReviewResolver = async (root, args) => {
 
   post.review = true;
   const saved = await post.save();
+
+  if (post?.author) {
+    await createNotificationForUser({
+      userId: post.author,
+      notificationId: `flagged-${post._id.toString()}`,
+      type: NotificationTypes.FLAGGED_POST,
+      title: "A post needs your attention",
+      description:
+        "Your post was flagged by our team. Inappropriate content can lead to a ban.",
+      intent: NotificationIntents.OPEN_POST_COMMENTS,
+      postId: String(post._id),
+      createdAt: saved?.updatedAt || saved?.createdAt,
+    });
+  }
 
   return saved;
 };
