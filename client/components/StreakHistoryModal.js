@@ -89,6 +89,7 @@ const StreakHistoryModal = ({
   onClose,
   streaks = [],
   currentStartDate,
+  averageRelapseDay,
   now = new Date(),
 }) => {
   const { items, longestStreak, currentStreakDays, relapseCount } =
@@ -161,6 +162,28 @@ const StreakHistoryModal = ({
       ],
     };
   }, [items]);
+
+  const relapseAverage = useMemo(() => {
+    const normalizedServerAverage =
+      averageRelapseDay != null ? Number(averageRelapseDay) : null;
+    if (
+      normalizedServerAverage != null &&
+      Number.isFinite(normalizedServerAverage) &&
+      normalizedServerAverage > 0
+    )
+      return normalizedServerAverage;
+
+    const durations = (streaks || [])
+      .map((s) => Math.floor(dayDiff(s.startAt, s.endAt)))
+      .filter((d) => d > 0 && Number.isFinite(d));
+
+    if (!durations.length) return null;
+
+    const avg =
+      durations.reduce((sum, days) => sum + days, 0) / durations.length;
+
+    return Math.round(avg);
+  }, [averageRelapseDay, streaks]);
 
   if (!visible) return null;
 
@@ -272,7 +295,17 @@ const StreakHistoryModal = ({
             {/* Labels under chart */}
             {/* Labels under chart */}
             <View style={styles.labelsList}>
-              <Text style={styles.listTitle}>Streak breakdown</Text>
+              <View style={styles.breakdownHeader}>
+                <Text style={styles.listTitle}>Streak breakdown</Text>
+                {relapseAverage != null && (
+                  <View style={styles.averagePill}>
+                    <Text style={styles.averagePillLabel}>Avg relapse</Text>
+                    <Text style={styles.averagePillValue}>
+                      Day {relapseAverage}
+                    </Text>
+                  </View>
+                )}
+              </View>
 
               <ScrollView
                 showsVerticalScrollIndicator={true}
@@ -437,10 +470,38 @@ const styles = StyleSheet.create({
     flex: 1,
     minHeight: 120,
   },
+  breakdownHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginBottom: 4,
+  },
   listTitle: {
     color: "#9CA3AF",
     fontSize: 12,
     marginBottom: 4,
+  },
+  averagePill: {
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderRadius: 12,
+    backgroundColor: "rgba(245, 158, 11, 0.15)",
+    borderWidth: 1,
+    borderColor: "rgba(245, 158, 11, 0.4)",
+  },
+  averagePillLabel: {
+    color: "#fbbf24",
+    fontSize: 10,
+    fontWeight: "700",
+    textTransform: "uppercase",
+    letterSpacing: 0.5,
+  },
+  averagePillValue: {
+    color: "#fefce8",
+    fontSize: 13,
+    fontWeight: "700",
+    marginTop: 2,
+    textAlign: "center",
   },
   labelRow: {
     flexDirection: "row",

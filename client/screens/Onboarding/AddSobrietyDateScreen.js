@@ -116,7 +116,9 @@ const AddSobrietyDateScreen = ({ navigation, route }) => {
       normalizedStart.setHours(0, 0, 0, 0);
       const daysBetween = Math.max(
         0,
-        Math.floor((today.getTime() - normalizedStart.getTime()) / (1000 * 60 * 60 * 24))
+        Math.floor(
+          (today.getTime() - normalizedStart.getTime()) / (1000 * 60 * 60 * 24)
+        )
       );
 
       const milestonesAlreadyHit = MILESTONES.filter(
@@ -457,16 +459,13 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(15,23,42,0.5)",
     alignItems: "center",
     justifyContent: "center",
+    textAlignVertical: "center",
   },
   optionButtonActive: {
     backgroundColor: "rgba(245, 158, 11, 0.15)",
     borderColor: accent,
   },
-  optionButtonText: {
-    color: textSecondary,
-    fontSize: 15,
-    fontWeight: "600",
-  },
+
   optionButtonTextActive: {
     color: accent,
   },
