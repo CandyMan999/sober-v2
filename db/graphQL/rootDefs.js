@@ -111,6 +111,7 @@ const typeDefs = gql`
     lat: Float
     long: Float
     closestCity: City
+    adminApproved: Boolean
   }
 
   type Like {

@@ -47,6 +47,10 @@ const PostSchema = new mongoose.Schema(
       default: false,
     },
 
+    adminApproved: {
+      type: Boolean,
+      default: false,
+    },
     // Milestone-specific metadata
     isMilestone: {
       type: Boolean,
