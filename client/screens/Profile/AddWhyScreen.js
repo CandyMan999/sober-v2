@@ -66,18 +66,22 @@ const AddWhyScreen = ({ navigation }) => {
       });
 
       const updatedUser = data?.updateUserProfile || { ...(user || {}), whyStatement: trimmed };
+      const mergedUser = { ...(user || {}), ...updatedUser };
 
-      dispatch({ type: "SET_USER", payload: updatedUser });
+      dispatch({ type: "SET_USER", payload: mergedUser });
 
-      if (state.profileOverview) {
-        dispatch({
-          type: "SET_PROFILE_OVERVIEW",
-          payload: {
-            ...state.profileOverview,
-            user: { ...state.profileOverview.user, ...updatedUser },
-          },
-        });
-      }
+      const existingOverview = state.profileOverview;
+      const nextOverview = existingOverview
+        ? { ...existingOverview, user: { ...existingOverview.user, ...mergedUser } }
+        : {
+            user: mergedUser,
+            posts: [],
+            quotes: [],
+            savedPosts: mergedUser.savedPosts || [],
+            savedQuotes: mergedUser.savedQuotes || [],
+          };
+
+      dispatch({ type: "SET_PROFILE_OVERVIEW", payload: nextOverview });
 
       Toast.show({
         type: "success",
