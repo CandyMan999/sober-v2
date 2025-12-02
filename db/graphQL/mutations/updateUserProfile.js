@@ -133,7 +133,7 @@ module.exports = {
       }
 
       await user.save();
-      await user.populate(["profilePic", "drunkPic"]);
+      await user.populate(["profilePic", "drunkPic", "savedPosts", "savedQuotes"]);
 
       return serializeUser(user);
     } catch (err) {
