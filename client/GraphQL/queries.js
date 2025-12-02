@@ -537,12 +537,6 @@ export const GET_ALL_POSTS = `
           drunkPicUrl
           isFollowedByViewer
           isBuddyWithViewer
-          profilePic {
-            url
-          }
-          drunkPic {
-            url
-          }
         }
         video {
           id
