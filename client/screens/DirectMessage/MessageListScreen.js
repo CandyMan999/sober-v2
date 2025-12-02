@@ -191,6 +191,7 @@ const MessageListScreen = ({ route, navigation }) => {
       String(item.lastMessageAuthorId) !== String(currentUserId);
     const statusLabel = waitingForYou ? "Waiting for reply" : "Sent";
     const statusIcon = waitingForYou ? "alert-circle" : "checkmark-done";
+    const statusColor = waitingForYou ? "#fbbf24" : "#4c6fff";
 
     return (
       <TouchableOpacity
@@ -201,37 +202,23 @@ const MessageListScreen = ({ route, navigation }) => {
         <Avatar uri={item.user?.profilePicUrl} size={48} disableNavigation />
         <View style={styles.rowContent}>
           <View style={styles.rowHeader}>
-            <Text style={[styles.username, unread && styles.usernameUnread]} numberOfLines={1}>
-              {username}
-            </Text>
-            <Text style={styles.timestamp}>{timestampLabel}</Text>
-          </View>
-          <View style={styles.messageLine}>
-            <Ionicons name="chatbubble-ellipses" size={14} color="#94a3b8" />
-            <Text style={[styles.lastMessage, unread && styles.lastMessageUnread]} numberOfLines={1}>
-              {lastMessage}
-            </Text>
-          </View>
-          <View style={styles.statusRow}>
-            <View
-              style={[
-                styles.statusPill,
-                waitingForYou ? styles.statusPillWaiting : styles.statusPillSent,
-              ]}
-            >
-              <Ionicons
-                name={statusIcon}
-                size={14}
-                color={waitingForYou ? "#fbbf24" : "#34d399"}
-              />
-              <Text
-                style={[
-                  styles.statusText,
-                  waitingForYou ? styles.statusTextWaiting : styles.statusTextSent,
-                ]}
-              >
-                {statusLabel}
+            <View style={styles.rowLeft}>
+              <Text style={[styles.username, unread && styles.usernameUnread]} numberOfLines={1}>
+                {username}
               </Text>
+              <View style={styles.messageLine}>
+                <Ionicons name="chatbubble-ellipses" size={14} color="#94a3b8" />
+                <Text style={[styles.lastMessage, unread && styles.lastMessageUnread]} numberOfLines={1}>
+                  {lastMessage}
+                </Text>
+              </View>
+            </View>
+            <View style={styles.rowMeta}>
+              <Text style={styles.timestamp}>{timestampLabel}</Text>
+              <View style={[styles.statusPill, { backgroundColor: `${statusColor}22` }]}>
+                <Ionicons name={statusIcon} size={14} color={statusColor} />
+                <Text style={[styles.statusText, { color: statusColor }]}>{statusLabel}</Text>
+              </View>
             </View>
           </View>
         </View>
@@ -331,12 +318,21 @@ const styles = StyleSheet.create({
   rowContent: {
     flex: 1,
     marginLeft: 12,
-    gap: 6,
+    gap: 4,
   },
   rowHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "center",
+    alignItems: "flex-start",
+  },
+  rowLeft: {
+    flex: 1,
+    gap: 6,
+  },
+  rowMeta: {
+    marginLeft: 12,
+    alignItems: "flex-end",
+    gap: 6,
   },
   username: {
     color: "#e5e7eb",
@@ -357,39 +353,19 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: 6,
   },
-  statusRow: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
   statusPill: {
     flexDirection: "row",
     alignItems: "center",
     gap: 6,
-    alignSelf: "flex-start",
-    marginTop: 4,
+    alignSelf: "flex-end",
     paddingHorizontal: 10,
     paddingVertical: 6,
     borderRadius: 999,
-    borderWidth: 1,
-  },
-  statusPillWaiting: {
-    backgroundColor: "rgba(251,191,36,0.08)",
-    borderColor: "rgba(251,191,36,0.4)",
-  },
-  statusPillSent: {
-    backgroundColor: "rgba(52,211,153,0.12)",
-    borderColor: "rgba(52,211,153,0.45)",
   },
   statusText: {
     fontSize: 12,
     fontWeight: "700",
     letterSpacing: 0.2,
-  },
-  statusTextWaiting: {
-    color: "#fbbf24",
-  },
-  statusTextSent: {
-    color: "#34d399",
   },
   lastMessage: {
     color: "#cbd5e1",
