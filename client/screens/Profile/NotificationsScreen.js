@@ -12,6 +12,7 @@ import {
   TouchableOpacity,
   FlatList,
   ActivityIndicator,
+  Animated,
 } from "react-native";
 import { Feather, Ionicons } from "@expo/vector-icons";
 import { Swipeable } from "react-native-gesture-handler";
@@ -245,15 +246,38 @@ const NotificationsScreen = ({ navigation }) => {
 
     return (
       <Swipeable
-        renderRightActions={() => (
-          <TouchableOpacity
-            style={styles.clearAction}
-            onPress={() => dismissNotification(item)}
-            accessibilityRole="button"
-            accessibilityLabel={`Clear ${item.title}`}
-          >
-            <Text style={styles.clearActionText}>Clear</Text>
-          </TouchableOpacity>
+        renderRightActions={(progress) => (
+          <View style={styles.swipeActionsContainer}>
+            <Animated.View
+              style={[
+                styles.swipeActionCard,
+                {
+                  transform: [
+                    {
+                      scale: progress.interpolate({
+                        inputRange: [0, 1],
+                        outputRange: [0.9, 1],
+                        extrapolate: "clamp",
+                      }),
+                    },
+                  ],
+                },
+              ]}
+            >
+              <TouchableOpacity
+                style={styles.swipeAction}
+                onPress={() => dismissNotification(item)}
+                accessibilityRole="button"
+                accessibilityLabel={`Clear ${item.title}`}
+              >
+                <View style={styles.swipeActionIcon}>
+                  <Ionicons name="trash" size={18} color="#fecdd3" />
+                </View>
+                <Text style={styles.swipeActionText}>Clear</Text>
+                <Text style={styles.swipeActionSubtext}>Remove from feed</Text>
+              </TouchableOpacity>
+            </Animated.View>
+          </View>
         )}
         overshootRight={false}
       >
@@ -327,14 +351,17 @@ const NotificationsScreen = ({ navigation }) => {
               disabled={clearingAll}
               style={styles.clearAllButton}
             >
-              <Text
-                style={[
-                  styles.clearAllText,
-                  clearingAll ? styles.clearAllTextDisabled : null,
-                ]}
-              >
-                Clear all
-              </Text>
+              <View style={styles.clearAllContent}>
+                <Ionicons name="trash-outline" size={14} color="#f3f4f6" />
+                <Text
+                  style={[
+                    styles.clearAllText,
+                    clearingAll ? styles.clearAllTextDisabled : null,
+                  ]}
+                >
+                  Clear all
+                </Text>
+              </View>
             </TouchableOpacity>
           ) : null}
         </View>
@@ -464,17 +491,45 @@ const styles = StyleSheet.create({
     color: "#f59e0b",
     fontSize: 12,
   },
-  clearAction: {
-    backgroundColor: "#ef4444",
-    justifyContent: "center",
-    alignItems: "center",
-    width: 80,
-    borderRadius: 12,
+  swipeActionsContainer: {
+    width: 120,
     marginLeft: 8,
+    justifyContent: "center",
+    alignItems: "flex-end",
   },
-  clearActionText: {
-    color: "#f9fafb",
+  swipeActionCard: {
+    backgroundColor: "#111827",
+    paddingVertical: 10,
+    paddingHorizontal: 10,
+    borderRadius: 14,
+    borderWidth: 1,
+    borderColor: "rgba(239,68,68,0.35)",
+    shadowColor: "#ef4444",
+    shadowOpacity: 0.12,
+    shadowRadius: 12,
+    shadowOffset: { width: 0, height: 4 },
+    elevation: 4,
+  },
+  swipeAction: {
+    alignItems: "center",
+    gap: 4,
+  },
+  swipeActionIcon: {
+    width: 34,
+    height: 34,
+    borderRadius: 17,
+    backgroundColor: "rgba(239,68,68,0.1)",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  swipeActionText: {
+    color: "#fecdd3",
     fontWeight: "800",
+    fontSize: 13,
+  },
+  swipeActionSubtext: {
+    color: "#fca5a5",
+    fontSize: 11,
   },
   placeholderText: {
     color: "#c084fc",
@@ -536,6 +591,11 @@ const styles = StyleSheet.create({
     paddingVertical: 6,
     borderRadius: 8,
     backgroundColor: "rgba(255,255,255,0.06)",
+  },
+  clearAllContent: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
   },
   clearAllText: {
     color: "#f3f4f6",
