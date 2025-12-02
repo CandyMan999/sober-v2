@@ -31,8 +31,6 @@ const upsertNotificationStatus = async (userId, notificationId, updates = {}) =>
     {
       $set: setPayload,
       $setOnInsert: {
-        read: false,
-        dismissed: false,
         user: userId,
         notificationId,
         createdAt: new Date(),

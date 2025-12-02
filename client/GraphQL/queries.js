@@ -744,8 +744,8 @@ export const GET_ALL_POSTS = `
 `;
 
 export const POST_BY_ID_QUERY = `
-  query PostById($postId: ID!, $token: String) {
-    post(postId: $postId, token: $token) {
+  query PostById($postId: ID!, $token: String, $includeFlagged: Boolean) {
+    post(postId: $postId, token: $token, includeFlagged: $includeFlagged) {
       id
       text
       mediaType

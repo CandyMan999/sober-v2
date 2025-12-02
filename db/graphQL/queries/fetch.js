@@ -338,17 +338,22 @@ module.exports = {
     }
   },
 
-  postResolver: async (_, { postId }) => {
+  postResolver: async (_, { postId, includeFlagged = false }) => {
     if (!postId) {
       throw new Error("postId is required");
     }
 
     try {
-      const post = await Post.findOne({ _id: postId, flagged: false })
+      const match = { _id: postId };
+      if (!includeFlagged) {
+        match.flagged = false;
+      }
+
+      const post = await Post.findOne(match)
         .populate("author")
         .populate({
           path: "video",
-          match: { flagged: false },
+          match: includeFlagged ? {} : { flagged: false },
           select: "url flagged viewsCount viewers thumbnailUrl",
         })
         .populate("closestCity")

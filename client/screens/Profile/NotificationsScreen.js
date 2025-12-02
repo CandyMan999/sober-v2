@@ -200,6 +200,7 @@ const NotificationsScreen = ({ navigation }) => {
         const response = await client.request(POST_BY_ID_QUERY, {
           postId: notification.postId,
           token,
+          includeFlagged: true,
         });
         const post = response?.post;
 
