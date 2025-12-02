@@ -56,7 +56,7 @@ const FloatingActionIcons = ({
 
     Animated.parallel([
       Animated.timing(burstScale, {
-        toValue: 1.6,
+        toValue: 2.6,
         duration: 260,
         easing: Easing.out(Easing.quad),
         useNativeDriver: true,
