@@ -49,7 +49,7 @@ const ContentPreviewModal = ({
   isSaved = false,
   disableDelete = false,
   hideSaveAction = false,
-  deleteActionOffset = 0,
+  deleteActionOffset = "5%",
 }) => {
   const [mounted, setMounted] = useState(visible);
   const [localItem, setLocalItem] = useState(item);
@@ -229,7 +229,9 @@ const ContentPreviewModal = ({
         const fetchedContent = isPost ? result?.post : result?.quote;
         if (fetchedContent && fetchedContent.id === localItem.id) {
           setLocalItem((prev) =>
-            prev?.id === fetchedContent.id ? { ...prev, ...fetchedContent } : prev
+            prev?.id === fetchedContent.id
+              ? { ...prev, ...fetchedContent }
+              : prev
           );
         }
       } catch (err) {
@@ -603,13 +605,24 @@ const ContentPreviewModal = ({
                     disabled={moderating}
                   >
                     <View style={styles.sheetActionLeft}>
-                      <Ionicons name="checkmark-circle" size={20} color="#34d399" />
+                      <Ionicons
+                        name="checkmark-circle"
+                        size={20}
+                        color="#34d399"
+                      />
                       <Text style={styles.sheetActionText}>Approve post</Text>
                     </View>
                     {moderating ? (
-                      <ActivityIndicator color="#34d399" style={styles.sheetSpinner} />
+                      <ActivityIndicator
+                        color="#34d399"
+                        style={styles.sheetSpinner}
+                      />
                     ) : (
-                      <Ionicons name="chevron-forward" size={18} color="#9ca3af" />
+                      <Ionicons
+                        name="chevron-forward"
+                        size={18}
+                        color="#9ca3af"
+                      />
                     )}
                   </TouchableOpacity>
                   <TouchableOpacity
@@ -622,9 +635,16 @@ const ContentPreviewModal = ({
                       <Text style={styles.sheetActionText}>Deny post</Text>
                     </View>
                     {moderating ? (
-                      <ActivityIndicator color="#f87171" style={styles.sheetSpinner} />
+                      <ActivityIndicator
+                        color="#f87171"
+                        style={styles.sheetSpinner}
+                      />
                     ) : (
-                      <Ionicons name="chevron-forward" size={18} color="#9ca3af" />
+                      <Ionicons
+                        name="chevron-forward"
+                        size={18}
+                        color="#9ca3af"
+                      />
                     )}
                   </TouchableOpacity>
                 </>
@@ -637,13 +657,24 @@ const ContentPreviewModal = ({
                     disabled={moderating}
                   >
                     <View style={styles.sheetActionLeft}>
-                      <Ionicons name="checkmark-circle" size={20} color="#34d399" />
+                      <Ionicons
+                        name="checkmark-circle"
+                        size={20}
+                        color="#34d399"
+                      />
                       <Text style={styles.sheetActionText}>Approve quote</Text>
                     </View>
                     {moderating ? (
-                      <ActivityIndicator color="#34d399" style={styles.sheetSpinner} />
+                      <ActivityIndicator
+                        color="#34d399"
+                        style={styles.sheetSpinner}
+                      />
                     ) : (
-                      <Ionicons name="chevron-forward" size={18} color="#9ca3af" />
+                      <Ionicons
+                        name="chevron-forward"
+                        size={18}
+                        color="#9ca3af"
+                      />
                     )}
                   </TouchableOpacity>
                   <TouchableOpacity
@@ -656,9 +687,16 @@ const ContentPreviewModal = ({
                       <Text style={styles.sheetActionText}>Deny quote</Text>
                     </View>
                     {moderating ? (
-                      <ActivityIndicator color="#f87171" style={styles.sheetSpinner} />
+                      <ActivityIndicator
+                        color="#f87171"
+                        style={styles.sheetSpinner}
+                      />
                     ) : (
-                      <Ionicons name="chevron-forward" size={18} color="#9ca3af" />
+                      <Ionicons
+                        name="chevron-forward"
+                        size={18}
+                        color="#9ca3af"
+                      />
                     )}
                   </TouchableOpacity>
                 </>
@@ -670,8 +708,14 @@ const ContentPreviewModal = ({
                   disabled={saving}
                 >
                   <View style={styles.sheetActionLeft}>
-                    <Ionicons name="bookmark-outline" size={20} color="#fef3c7" />
-                    <Text style={styles.sheetActionText}>{saveActionLabel}</Text>
+                    <Ionicons
+                      name="bookmark-outline"
+                      size={20}
+                      color="#fef3c7"
+                    />
+                    <Text style={styles.sheetActionText}>
+                      {saveActionLabel}
+                    </Text>
                   </View>
                   {saving ? (
                     <ActivityIndicator
@@ -679,7 +723,11 @@ const ContentPreviewModal = ({
                       style={styles.sheetSpinner}
                     />
                   ) : (
-                    <Ionicons name="chevron-forward" size={18} color="#9ca3af" />
+                    <Ionicons
+                      name="chevron-forward"
+                      size={18}
+                      color="#9ca3af"
+                    />
                   )}
                 </TouchableOpacity>
               )}
@@ -719,7 +767,9 @@ const ContentPreviewModal = ({
                 <TouchableOpacity
                   style={[
                     styles.sheetAction,
-                    deleteActionOffset ? { marginTop: deleteActionOffset } : null,
+                    deleteActionOffset
+                      ? { marginTop: deleteActionOffset }
+                      : null,
                   ]}
                   onPress={handleDeletePress}
                   disabled={deleting}

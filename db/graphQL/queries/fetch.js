@@ -181,13 +181,19 @@ module.exports = {
           .populate("closestCity")
           .populate({
             path: "comments",
-            match: { $or: [{ replyTo: null }, { replyTo: { $exists: false } }] },
+            match: {
+              $or: [{ replyTo: null }, { replyTo: { $exists: false } }],
+            },
             populate: buildRepliesPopulate(2),
           });
 
       let posts = await runQueryWithRadius(searchRadius);
 
-      while (isNearbyQuery && posts.length < limit + 1 && searchRadius < circumferenceRadians) {
+      while (
+        isNearbyQuery &&
+        posts.length < limit + 1 &&
+        searchRadius < circumferenceRadians
+      ) {
         const nextRadius = Math.min(searchRadius * 2, circumferenceRadians);
         searchRadius = nextRadius;
         posts = await runQueryWithRadius(searchRadius);
@@ -266,9 +272,12 @@ module.exports = {
       const orderedPosts = postsWithDistance.map((entry) => entry.post);
 
       const hasMoreFromCount = orderedPosts.length > limit;
-      const hasMoreFromRadius = isNearbyQuery && searchRadius < circumferenceRadians;
+      const hasMoreFromRadius =
+        isNearbyQuery && searchRadius < circumferenceRadians;
       const hasMore = hasMoreFromCount || hasMoreFromRadius;
-      const trimmed = hasMoreFromCount ? orderedPosts.slice(0, limit) : orderedPosts;
+      const trimmed = hasMoreFromCount
+        ? orderedPosts.slice(0, limit)
+        : orderedPosts;
 
       const nextCursor = hasMore
         ? trimmed[trimmed.length - 1].createdAt.toISOString()
@@ -366,7 +375,9 @@ module.exports = {
         select: "url flagged viewsCount viewers thumbnailUrl",
       });
 
-    const savedQuotes = await Quote.find({ _id: { $in: user.savedQuotes || [] } })
+    const savedQuotes = await Quote.find({
+      _id: { $in: user.savedQuotes || [] },
+    })
       .sort({ createdAt: -1 })
       .populate("user");
 
@@ -428,7 +439,9 @@ module.exports = {
         select: "url flagged viewsCount viewers thumbnailUrl",
       });
 
-    const savedQuotes = await Quote.find({ _id: { $in: user.savedQuotes || [] } })
+    const savedQuotes = await Quote.find({
+      _id: { $in: user.savedQuotes || [] },
+    })
       .sort({ createdAt: -1 })
       .populate("user");
 
