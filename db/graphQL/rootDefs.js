@@ -301,6 +301,8 @@ const typeDefs = gql`
     getBarLocation(lat: Float!, long: Float!, token: String, bar: String): [Bar]
     getVenues: [Venue]
     getQuotes: [Quote!]!
+    adminFlaggedPosts(token: String!): [Post!]!
+    adminPendingQuotes(token: String!): [Quote!]!
     getAllPosts(
       limit: Int
       cursor: String

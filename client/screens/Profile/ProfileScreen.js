@@ -29,7 +29,11 @@ import { TabView } from "react-native-tab-view";
 import Context from "../../context";
 import { useClient } from "../../client";
 import { getToken } from "../../utils/helpers";
-import { PROFILE_OVERVIEW_QUERY, FETCH_ME_QUERY } from "../../GraphQL/queries";
+import {
+  PROFILE_OVERVIEW_QUERY,
+  FETCH_ME_QUERY,
+  ADMIN_REVIEW_ITEMS_QUERY,
+} from "../../GraphQL/queries";
 import {
   TOGGLE_LIKE_MUTATION,
   SET_POST_REVIEW_MUTATION,
@@ -63,6 +67,9 @@ const ProfileScreen = ({ navigation }) => {
   const [savedQuotes, setSavedQuotes] = useState(
     cachedOverview?.savedQuotes || []
   );
+  const [adminPosts, setAdminPosts] = useState([]);
+  const [adminQuotes, setAdminQuotes] = useState([]);
+  const [adminLoading, setAdminLoading] = useState(false);
   const [following, setFollowing] = useState(
     cachedOverview?.user?.following || []
   );
@@ -142,6 +149,8 @@ const ProfileScreen = ({ navigation }) => {
     quotes,
   ]);
 
+  const isAdminUser = profileData?.username === "CandyMan🍭";
+
   const hasWhy = Boolean(profileData?.whyStatement?.trim());
 
   useEffect(() => {
@@ -206,6 +215,32 @@ const ProfileScreen = ({ navigation }) => {
 
     fetchProfile();
   }, []);
+
+  useEffect(() => {
+    if (!isAdminUser) {
+      setAdminPosts([]);
+      setAdminQuotes([]);
+      return;
+    }
+
+    const loadAdminItems = async () => {
+      try {
+        setAdminLoading(true);
+        const token = await getToken();
+        if (!token) return;
+
+        const data = await client.request(ADMIN_REVIEW_ITEMS_QUERY, { token });
+        setAdminPosts(data?.adminFlaggedPosts || []);
+        setAdminQuotes(data?.adminPendingQuotes || []);
+      } catch (err) {
+        console.log("Admin review load failed", err);
+      } finally {
+        setAdminLoading(false);
+      }
+    };
+
+    loadAdminItems();
+  }, [client, isAdminUser]);
 
   const handleAvatarLayout = () => {
     if (avatarImageRef.current?.measureInWindow) {
@@ -925,9 +960,73 @@ const ProfileScreen = ({ navigation }) => {
     });
   }, [savedPosts, savedQuotes]);
 
+  const renderAdminSection = (title, data, renderer, emptyCopy) => {
+    if (!data?.length) {
+      return (
+        <View style={styles.adminSection}>
+          <View style={styles.adminSectionHeader}>
+            <Ionicons name="alert-circle" size={18} color="#f59e0b" />
+            <Text style={styles.adminSectionTitle}>{title}</Text>
+          </View>
+          <View style={styles.emptyState}>
+            <Text style={styles.emptyText}>{emptyCopy}</Text>
+          </View>
+        </View>
+      );
+    }
+
+    return (
+      <View style={styles.adminSection}>
+        <View style={styles.adminSectionHeader}>
+          <Ionicons name="alert-circle" size={18} color="#f59e0b" />
+          <Text style={styles.adminSectionTitle}>{title}</Text>
+        </View>
+        <FlatList
+          data={data}
+          numColumns={3}
+          keyExtractor={(item) => item.id}
+          renderItem={renderer}
+          scrollEnabled={false}
+        />
+      </View>
+    );
+  };
+
+  const renderAdminContent = () => {
+    if (adminLoading) {
+      return (
+        <View style={styles.adminLoading}>
+          <ActivityIndicator size="large" color="#f59e0b" />
+          <Text style={styles.adminLoadingText}>Refreshing reports…</Text>
+        </View>
+      );
+    }
+
+    return (
+      <View>
+        {renderAdminSection(
+          "Posts needing review",
+          adminPosts,
+          ({ item }) => renderPostTile({ item }),
+          "No flagged or review posts"
+        )}
+        {renderAdminSection(
+          "Quotes awaiting approval",
+          adminQuotes,
+          renderQuoteTile,
+          "No pending quotes"
+        )}
+      </View>
+    );
+  };
+
   const renderContent = (tabType) => {
     if (tabType === "DRUNK") {
       return renderDrunkContent();
+    }
+
+    if (tabType === "ADMIN") {
+      return renderAdminContent();
     }
 
     const data =
@@ -1012,20 +1111,22 @@ const ProfileScreen = ({ navigation }) => {
     navigation.navigate("Messages", { conversations });
   };
 
-  const tabConfig = useMemo(
-    () => [
-      { key: "0", icon: "signs-post", type: "POSTS" },
-      { key: "1", icon: "format-quote-close", type: "QUOTES" },
-      { key: "2", icon: "bookmark", type: "SAVED" },
-      { key: "3", icon: "wine-bottle", type: "DRUNK" },
-    ],
-    []
-  );
+  const tabConfig = useMemo(() => {
+    const config = [
+      { icon: "signs-post", type: "POSTS" },
+      { icon: "format-quote-close", type: "QUOTES" },
+      { icon: "bookmark", type: "SAVED" },
+      { icon: "wine-bottle", type: "DRUNK" },
+    ];
 
-  const routes = useMemo(
-    () => tabConfig.map(({ key }) => ({ key })),
-    [tabConfig]
-  );
+    if (isAdminUser) {
+      config.push({ icon: "shield-checkmark", type: "ADMIN" });
+    }
+
+    return config.map((tab, index) => ({ ...tab, key: `${index}` }));
+  }, [isAdminUser]);
+
+  const routes = useMemo(() => tabConfig.map(({ key }) => ({ key })), [tabConfig]);
   const activeTab = tabConfig[tabIndex]?.type;
 
   const gridHeight = useMemo(() => {
@@ -1040,14 +1141,25 @@ const ProfileScreen = ({ navigation }) => {
     const quoteRows = Math.max(1, Math.ceil(quotes.length / 3));
     const savedRows = Math.max(1, Math.ceil(savedItems.length / 3));
 
+    const adminPostRows = Math.max(1, Math.ceil(adminPosts.length / 3));
+    const adminQuoteRows = Math.max(1, Math.ceil(adminQuotes.length / 3));
+    const adminHeight = isAdminUser
+      ? adminPostRows * 180 + adminQuoteRows * 180 + 120
+      : 0;
+
     const maxRows = Math.max(postRows, quoteRows, savedRows);
-    return maxRows * 180;
+    const baseHeight = maxRows * 180;
+
+    return Math.max(baseHeight, adminHeight);
   }, [
     activeTab,
     layout.width,
     posts.length,
     quotes.length,
     savedItems.length,
+    adminPosts.length,
+    adminQuotes.length,
+    isAdminUser,
     profileData?.drunkPicUrl,
   ]);
 
@@ -1062,16 +1174,26 @@ const ProfileScreen = ({ navigation }) => {
       {tabConfig.map((route, i) => {
         const focused = tabIndex === i;
         const color = focused ? "#f59e0b" : "#9ca3af";
-        const icon =
-          route.type === "POSTS" ? (
-            <FontAwesome6 name={route.icon} size={22} color={color} />
-          ) : route.type === "DRUNK" ? (
-            <FontAwesome5 name={route.icon} size={22} color={color} />
-          ) : route.type === "QUOTES" ? (
-            <MaterialCommunityIcons name={route.icon} size={24} color={color} />
-          ) : (
-            <Feather name={route.icon} size={22} color={color} />
-          );
+        const icon = (() => {
+          switch (route.type) {
+            case "POSTS":
+              return <FontAwesome6 name={route.icon} size={22} color={color} />;
+            case "DRUNK":
+              return <FontAwesome5 name={route.icon} size={22} color={color} />;
+            case "QUOTES":
+              return (
+                <MaterialCommunityIcons
+                  name={route.icon}
+                  size={24}
+                  color={color}
+                />
+              );
+            case "ADMIN":
+              return <Ionicons name={route.icon} size={22} color={color} />;
+            default:
+              return <Feather name={route.icon} size={22} color={color} />;
+          }
+        })();
         return (
           <TouchableOpacity
             key={route.key}
@@ -1556,6 +1678,32 @@ const styles = StyleSheet.create({
     fontSize: 11,
     fontWeight: "700",
     marginLeft: 4,
+  },
+  adminSection: {
+    paddingHorizontal: 12,
+    paddingBottom: 12,
+    marginTop: 12,
+  },
+  adminSectionHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 8,
+  },
+  adminSectionTitle: {
+    color: "#e5e7eb",
+    fontWeight: "800",
+    fontSize: 14,
+    marginLeft: 6,
+  },
+  adminLoading: {
+    padding: 24,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  adminLoadingText: {
+    marginTop: 8,
+    color: "#e5e7eb",
+    fontWeight: "600",
   },
   emptyState: {
     padding: 24,

@@ -6,6 +6,8 @@ const { findClosestCity } = require("../../utils/location");
 
 require("dotenv").config();
 
+const ADMIN_USERNAME = "CandyMan🍭";
+
 const buildRepliesPopulate = (depth = 1) => {
   const basePopulate = [
     { path: "author" },
@@ -52,6 +54,57 @@ module.exports = {
           populate: buildRepliesPopulate(2),
         });
       // Don't throw if none; just return empty array
+      return quotes;
+    } catch (err) {
+      throw new Error(err.message);
+    }
+  },
+  adminFlaggedPostsResolver: async (_, { token }) => {
+    if (!token) {
+      throw new AuthenticationError("Token is required");
+    }
+
+    const user = await User.findOne({ token });
+    if (!user || user.username !== ADMIN_USERNAME) {
+      throw new AuthenticationError("Unauthorized");
+    }
+
+    try {
+      const posts = await Post.find({
+        adminApproved: false,
+        $or: [{ flagged: true }, { review: true }],
+      })
+        .sort({ createdAt: -1 })
+        .populate("author")
+        .populate({
+          path: "video",
+          select: "url flagged viewsCount viewers thumbnailUrl",
+        })
+        .populate("closestCity");
+
+      return posts;
+    } catch (err) {
+      throw new Error(err.message);
+    }
+  },
+  adminPendingQuotesResolver: async (_, { token }) => {
+    if (!token) {
+      throw new AuthenticationError("Token is required");
+    }
+
+    const user = await User.findOne({ token });
+    if (!user || user.username !== ADMIN_USERNAME) {
+      throw new AuthenticationError("Unauthorized");
+    }
+
+    try {
+      const quotes = await Quote.find({
+        isApproved: false,
+        isDenied: false,
+      })
+        .sort({ createdAt: -1 })
+        .populate("user");
+
       return quotes;
     } catch (err) {
       throw new Error(err.message);

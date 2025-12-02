@@ -221,6 +221,53 @@ export const PROFILE_OVERVIEW_QUERY = `
   }
 `;
 
+export const ADMIN_REVIEW_ITEMS_QUERY = `
+  query AdminReviewItems($token: String!) {
+    adminFlaggedPosts(token: $token) {
+      id
+      text
+      mediaType
+      imageUrl
+      flagged
+      review
+      adminApproved
+      likesCount
+      commentsCount
+      viewsCount
+      createdAt
+      lat
+      long
+      closestCity {
+        name
+      }
+      author {
+        id
+        username
+        profilePicUrl
+      }
+      video {
+        id
+        url
+        flagged
+        viewsCount
+        thumbnailUrl
+      }
+    }
+    adminPendingQuotes(token: $token) {
+      id
+      text
+      isApproved
+      isDenied
+      createdAt
+      user {
+        id
+        username
+        profilePicUrl
+      }
+    }
+  }
+`;
+
 export const USER_PROFILE_QUERY = `
   query UserProfile($token: String!, $userId: ID!) {
     userProfile(token: $token, userId: $userId) {

@@ -1,6 +1,8 @@
 const {
   fetchMeResolver,
   getQuotesResolver,
+  adminFlaggedPostsResolver,
+  adminPendingQuotesResolver,
   getAllPostsResolver,
   postResolver,
   quoteResolver,
@@ -27,6 +29,8 @@ module.exports = {
   addVenueResolver,
   runPushResolver,
   getQuotesResolver,
+  adminFlaggedPostsResolver,
+  adminPendingQuotesResolver,
   getAllPostsResolver,
   postResolver,
   quoteResolver,
