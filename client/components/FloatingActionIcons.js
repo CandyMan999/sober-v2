@@ -1,6 +1,7 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { View, TouchableOpacity, Text, StyleSheet, Animated, Easing } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import HeartFloatBurst from "./HeartFloatBurst";
 
 const ACCENT = "#F59E0B";
 
@@ -20,6 +21,8 @@ const FloatingActionIcons = ({
   const heartScale = useRef(new Animated.Value(1)).current;
   const burstScale = useRef(new Animated.Value(0)).current;
   const burstOpacity = useRef(new Animated.Value(0)).current;
+  const likedGlow = useRef(new Animated.Value(isLiked ? 1 : 0)).current;
+  const floatingHeartsRef = useRef(null);
 
   const formatCount = (n) => {
     if (n >= 1000) return `${(n / 1000).toFixed(1)}k`;
@@ -68,12 +71,26 @@ const FloatingActionIcons = ({
     runHeartBeat();
     if (!isLiked) {
       runBurst();
+      floatingHeartsRef.current?.burst();
     }
     onLikePress?.();
   };
 
+  useEffect(() => {
+    Animated.timing(likedGlow, {
+      toValue: isLiked ? 1 : 0,
+      duration: 220,
+      easing: Easing.out(Easing.quad),
+      useNativeDriver: true,
+    }).start();
+  }, [isLiked, likedGlow]);
+
   const heartIcon = isLiked ? "💖" : "❤️";
   const heartColor = isLiked ? "#fb7185" : "#fff";
+  const likedGlowScale = likedGlow.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0.9, 1.08],
+  });
 
   return (
     <View style={styles.container}>
@@ -86,6 +103,16 @@ const FloatingActionIcons = ({
       {/* ❤️ Like */}
       <TouchableOpacity style={styles.pill} onPress={handleLikePress}>
         <View style={styles.heartWrapper}>
+          <Animated.View
+            pointerEvents="none"
+            style={[
+              styles.likedGlow,
+              {
+                opacity: likedGlow,
+                transform: [{ scale: likedGlowScale }],
+              },
+            ]}
+          />
           <Animated.View
             pointerEvents="none"
             style={[
@@ -104,6 +131,12 @@ const FloatingActionIcons = ({
           >
             {heartIcon}
           </Animated.Text>
+          {isLiked ? (
+            <View style={styles.sentBadge}>
+              <Text style={styles.sentBadgeText}>sent</Text>
+            </View>
+          ) : null}
+          <HeartFloatBurst ref={floatingHeartsRef} />
         </View>
         <Text style={styles.countText}>{formatCount(likesCount)}</Text>
       </TouchableOpacity>
@@ -168,9 +201,23 @@ const styles = StyleSheet.create({
   },
   heartWrapper: {
     position: "relative",
-    width: 26,
+    width: 32,
+    height: 32,
     alignItems: "center",
     justifyContent: "center",
+  },
+  likedGlow: {
+    position: "absolute",
+    width: 42,
+    height: 42,
+    borderRadius: 21,
+    backgroundColor: "rgba(251, 113, 133, 0.2)",
+    borderWidth: 1,
+    borderColor: "rgba(251, 113, 133, 0.5)",
+    shadowColor: "#fb7185",
+    shadowOpacity: 0.45,
+    shadowRadius: 12,
+    shadowOffset: { width: 0, height: 4 },
   },
   heartBurst: {
     position: "absolute",
@@ -182,6 +229,23 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.45,
     shadowRadius: 10,
     shadowOffset: { width: 0, height: 2 },
+  },
+  sentBadge: {
+    position: "absolute",
+    bottom: -10,
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    borderRadius: 999,
+    backgroundColor: "rgba(15,23,42,0.9)",
+    borderWidth: 1,
+    borderColor: "rgba(251, 113, 133, 0.6)",
+  },
+  sentBadgeText: {
+    color: "#fb7185",
+    fontSize: 10,
+    fontWeight: "700",
+    letterSpacing: 0.4,
+    textTransform: "uppercase",
   },
   countText: {
     marginLeft: 8,
