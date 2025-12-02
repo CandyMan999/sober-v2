@@ -2,7 +2,6 @@ const { AuthenticationError } = require("apollo-server-express");
 
 const { User, Quote, Post } = require("../../models");
 const { getDistanceFromCoords } = require("../../utils/helpers");
-const { serializeUser } = require("../../utils/serializeUser");
 const postAuthorPopulate = {
   path: "author",
   populate: ["profilePic", "drunkPic"],
@@ -18,75 +17,112 @@ const postBasePopulates = [postAuthorPopulate, postVideoPopulate, "closestCity"]
 
 require("dotenv").config();
 
+const toPlain = (doc) => (doc?.toObject ? doc.toObject() : doc) || null;
+
 const ensureId = (doc) => {
-  if (!doc) return null;
+  const plain = toPlain(doc);
+  if (!plain) return null;
 
-  const plain = doc.toObject ? doc.toObject() : doc;
   const id = plain.id || plain._id?.toString?.();
-
   if (!id) return null;
 
   return { ...plain, id };
 };
 
-const serializeComment = (comment) => {
-  const base = ensureId(comment);
+const normalizeUser = (userDoc) => {
+  const base = ensureId(userDoc);
   if (!base) return null;
 
-  const author = serializeUser(base.author);
-  if (!author?.id) return null;
+  const profilePic = base.profilePic ? ensureId(base.profilePic) : null;
+  const drunkPic = base.drunkPic ? ensureId(base.drunkPic) : null;
 
-  const replyTo = base.replyTo ? ensureId(base.replyTo) : null;
-  const replyAuthor = replyTo ? serializeUser(replyTo.author) : null;
+  return {
+    ...base,
+    profilePic,
+    drunkPic,
+    profilePicUrl: base.profilePicUrl || profilePic?.url || null,
+    drunkPicUrl: base.drunkPicUrl || drunkPic?.url || null,
+  };
+};
+
+const normalizeComment = (commentDoc) => {
+  const base = ensureId(commentDoc);
+  if (!base) return null;
+
+  const author = normalizeUser(base.author);
+  if (!author) return null;
+
+  const replyToBase = base.replyTo ? ensureId(base.replyTo) : null;
+  const replyToAuthor = replyToBase ? normalizeUser(replyToBase.author) : null;
+  const replyTo = replyToBase && replyToAuthor
+    ? { ...replyToBase, author: replyToAuthor }
+    : null;
 
   const replies = Array.isArray(base.replies)
-    ? base.replies.map(serializeComment).filter(Boolean)
+    ? base.replies.map(normalizeComment).filter(Boolean)
     : [];
 
   return {
     ...base,
     author,
-    replyTo: replyTo && replyAuthor ? { ...replyTo, author: replyAuthor } : null,
+    replyTo,
     replies,
+    likesCount: base.likesCount ?? 0,
   };
 };
 
-const serializePost = (post) => {
-  const base = ensureId(post);
+const normalizePost = (postDoc, { includeComments = false } = {}) => {
+  const base = ensureId(postDoc);
   if (!base) return null;
 
-  const author = serializeUser(base.author);
-  if (!author?.id) return null;
+  const author = normalizeUser(base.author);
+  if (!author) return null;
 
   const video = base.video ? ensureId(base.video) : null;
   const closestCity = base.closestCity ? ensureId(base.closestCity) : null;
-  const comments = Array.isArray(base.comments)
-    ? base.comments.map(serializeComment).filter(Boolean)
-    : undefined;
+  const comments = includeComments && Array.isArray(base.comments)
+    ? base.comments.map(normalizeComment).filter(Boolean)
+    : [];
+
+  const videoViews = video?.viewsCount ?? 0;
 
   return {
     ...base,
     author,
-    video,
+    video: video ? { ...video, viewsCount: video.viewsCount ?? 0 } : null,
     closestCity,
+    likesCount: base.likesCount ?? 0,
+    commentsCount: base.commentsCount ?? comments.length,
+    viewsCount: base.viewsCount ?? videoViews ?? 0,
     comments,
   };
 };
 
-const serializeQuote = (quote) => {
-  const base = ensureId(quote);
+const normalizeQuote = (quoteDoc, { includeComments = false } = {}) => {
+  const base = ensureId(quoteDoc);
   if (!base) return null;
+
+  const user = normalizeUser(base.user);
+  const comments = includeComments && Array.isArray(base.comments)
+    ? base.comments.map(normalizeComment).filter(Boolean)
+    : [];
 
   return {
     ...base,
-    user: serializeUser(base.user),
+    user,
+    likesCount: base.likesCount ?? 0,
+    commentsCount: base.commentsCount ?? comments.length,
+    comments,
   };
 };
 
 const buildRepliesPopulate = (depth = 1) => {
   const basePopulate = [
-    { path: "author" },
-    { path: "replyTo", populate: { path: "author" } },
+    { path: "author", populate: ["profilePic", "drunkPic"] },
+    {
+      path: "replyTo",
+      populate: { path: "author", populate: ["profilePic", "drunkPic"] },
+    },
   ];
 
   if (depth > 0) {
@@ -107,42 +143,47 @@ module.exports = {
       const user = await User.findOne({ token }).populate([
         "profilePic",
         "drunkPic",
-        "savedPosts",
-        "savedQuotes",
+        { path: "savedPosts", populate: postBasePopulates },
+        {
+          path: "savedQuotes",
+          populate: [{ path: "user", populate: ["profilePic", "drunkPic"] }],
+        },
       ]);
       if (!user) {
         throw new AuthenticationError("User not found");
       }
 
-      const serializedUser = serializeUser(user);
-      const serializedSavedPosts = (user.savedPosts || [])
-        .map(serializePost)
+      const normalizedUser = normalizeUser(user);
+      const normalizedSavedPosts = (user.savedPosts || [])
+        .map((post) => normalizePost(post))
         .filter(Boolean);
-      const serializedSavedQuotes = (user.savedQuotes || [])
-        .map(serializeQuote)
+      const normalizedSavedQuotes = (user.savedQuotes || [])
+        .map((quote) => normalizeQuote(quote))
         .filter(Boolean);
 
       return {
-        ...serializedUser,
-        savedPosts: serializedSavedPosts,
-        savedQuotes: serializedSavedQuotes,
+        ...normalizedUser,
+        savedPosts: normalizedSavedPosts,
+        savedQuotes: normalizedSavedQuotes,
       };
     } catch (err) {
       throw new AuthenticationError(err.message);
     }
   },
-  getQuotesResolver: async (root, args, ctx) => {
+  getQuotesResolver: async () => {
     try {
       const quotes = await Quote.find({ isApproved: true })
         .sort({ createdAt: -1 })
-        .populate("user")
+        .populate({ path: "user", populate: ["profilePic", "drunkPic"] })
         .populate({
           path: "comments",
           match: { $or: [{ replyTo: null }, { replyTo: { $exists: false } }] },
           populate: buildRepliesPopulate(2),
         });
-      // Don't throw if none; just return empty array
-      return quotes;
+
+      return quotes
+        .map((quote) => normalizeQuote(quote, { includeComments: true }))
+        .filter(Boolean);
     } catch (err) {
       throw new Error(err.message);
     }
@@ -305,10 +346,12 @@ module.exports = {
         ? trimmed[trimmed.length - 1].createdAt.toISOString()
         : null;
 
-      const serializedPosts = trimmed.map(serializePost).filter(Boolean);
+      const normalizedPosts = trimmed
+        .map((post) => normalizePost(post, { includeComments: true }))
+        .filter(Boolean);
 
       return {
-        posts: serializedPosts,
+        posts: normalizedPosts,
         hasMore,
         cursor: nextCursor,
       };
@@ -335,7 +378,7 @@ module.exports = {
         return null;
       }
 
-      return serializePost(post);
+      return normalizePost(post, { includeComments: true });
     } catch (err) {
       throw new Error(err.message);
     }
@@ -348,14 +391,14 @@ module.exports = {
 
     try {
       const quote = await Quote.findById(quoteId)
-        .populate("user")
+        .populate({ path: "user", populate: ["profilePic", "drunkPic"] })
         .populate({
           path: "comments",
           match: { $or: [{ replyTo: null }, { replyTo: { $exists: false } }] },
           populate: buildRepliesPopulate(2),
         });
 
-      return quote;
+      return normalizeQuote(quote, { includeComments: true });
     } catch (err) {
       throw new Error(err.message);
     }
@@ -369,8 +412,11 @@ module.exports = {
     const user = await User.findOne({ token }).populate([
       "profilePic",
       "drunkPic",
-      "savedPosts",
-      "savedQuotes",
+      { path: "savedPosts", populate: postBasePopulates },
+      {
+        path: "savedQuotes",
+        populate: [{ path: "user", populate: ["profilePic", "drunkPic"] }],
+      },
     ]);
 
     if (!user) {
@@ -387,24 +433,30 @@ module.exports = {
 
     const savedQuotes = await Quote.find({ _id: { $in: user.savedQuotes || [] } })
       .sort({ createdAt: -1 })
-      .populate("user");
+      .populate({ path: "user", populate: ["profilePic", "drunkPic"] });
 
     const quotes = await Quote.find({ user: user._id })
       .sort({ createdAt: -1 })
-      .populate("user");
+      .populate({ path: "user", populate: ["profilePic", "drunkPic"] });
 
-    const serializedQuotes = quotes.map(serializeQuote).filter(Boolean);
-    const serializedUser = serializeUser(user);
-    const serializedPosts = posts.map(serializePost).filter(Boolean);
-    const serializedSavedPosts = savedPosts.map(serializePost).filter(Boolean);
-    const serializedSavedQuotes = savedQuotes.map(serializeQuote).filter(Boolean);
+    const normalizedQuotes = quotes
+      .map((quote) => normalizeQuote(quote))
+      .filter(Boolean);
+    const normalizedUser = normalizeUser(user);
+    const normalizedPosts = posts.map((post) => normalizePost(post)).filter(Boolean);
+    const normalizedSavedPosts = savedPosts
+      .map((post) => normalizePost(post))
+      .filter(Boolean);
+    const normalizedSavedQuotes = savedQuotes
+      .map((quote) => normalizeQuote(quote))
+      .filter(Boolean);
 
     return {
-      user: serializedUser,
-      posts: serializedPosts,
-      quotes: serializedQuotes,
-      savedPosts: serializedSavedPosts,
-      savedQuotes: serializedSavedQuotes,
+      user: normalizedUser,
+      posts: normalizedPosts,
+      quotes: normalizedQuotes,
+      savedPosts: normalizedSavedPosts,
+      savedQuotes: normalizedSavedQuotes,
     };
   },
 
@@ -427,8 +479,11 @@ module.exports = {
     const user = await User.findById(userId).populate([
       "profilePic",
       "drunkPic",
-      "savedPosts",
-      "savedQuotes",
+      { path: "savedPosts", populate: postBasePopulates },
+      {
+        path: "savedQuotes",
+        populate: [{ path: "user", populate: ["profilePic", "drunkPic"] }],
+      },
     ]);
 
     if (!user) {
@@ -445,24 +500,30 @@ module.exports = {
 
     const savedQuotes = await Quote.find({ _id: { $in: user.savedQuotes || [] } })
       .sort({ createdAt: -1 })
-      .populate("user");
+      .populate({ path: "user", populate: ["profilePic", "drunkPic"] });
 
     const quotes = await Quote.find({ user: user._id })
       .sort({ createdAt: -1 })
-      .populate("user");
+      .populate({ path: "user", populate: ["profilePic", "drunkPic"] });
 
-    const serializedQuotes = quotes.map(serializeQuote).filter(Boolean);
-    const serializedUser = serializeUser(user);
-    const serializedPosts = posts.map(serializePost).filter(Boolean);
-    const serializedSavedPosts = savedPosts.map(serializePost).filter(Boolean);
-    const serializedSavedQuotes = savedQuotes.map(serializeQuote).filter(Boolean);
+    const normalizedQuotes = quotes
+      .map((quote) => normalizeQuote(quote))
+      .filter(Boolean);
+    const normalizedUser = normalizeUser(user);
+    const normalizedPosts = posts.map((post) => normalizePost(post)).filter(Boolean);
+    const normalizedSavedPosts = savedPosts
+      .map((post) => normalizePost(post))
+      .filter(Boolean);
+    const normalizedSavedQuotes = savedQuotes
+      .map((quote) => normalizeQuote(quote))
+      .filter(Boolean);
 
     return {
-      user: serializedUser,
-      posts: serializedPosts,
-      quotes: serializedQuotes,
-      savedPosts: serializedSavedPosts,
-      savedQuotes: serializedSavedQuotes,
+      user: normalizedUser,
+      posts: normalizedPosts,
+      quotes: normalizedQuotes,
+      savedPosts: normalizedSavedPosts,
+      savedQuotes: normalizedSavedQuotes,
     };
   },
 };

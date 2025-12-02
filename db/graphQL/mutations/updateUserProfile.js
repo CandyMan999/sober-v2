@@ -9,6 +9,40 @@ const {
 } = require("../../utils/handleValidators");
 const { checkHandleExists } = require("../../utils/checkHandleExists");
 
+const toPlain = (doc) => (doc?.toObject ? doc.toObject() : doc) || null;
+const ensureId = (doc) => {
+  const plain = toPlain(doc);
+  if (!plain) return null;
+
+  const id = plain.id || plain._id?.toString?.();
+  if (!id) return null;
+
+  return { ...plain, id };
+};
+
+const normalizeUserForResponse = (userDoc) => {
+  const base = ensureId(userDoc);
+  if (!base) return null;
+
+  const profilePic = base.profilePic ? ensureId(base.profilePic) : null;
+  const drunkPic = base.drunkPic ? ensureId(base.drunkPic) : null;
+
+  const mapSaved = (items = []) =>
+    items
+      .map((entry) => ensureId(entry))
+      .filter(Boolean);
+
+  return {
+    ...base,
+    profilePic,
+    drunkPic,
+    profilePicUrl: base.profilePicUrl || profilePic?.url || null,
+    drunkPicUrl: base.drunkPicUrl || drunkPic?.url || null,
+    savedPosts: mapSaved(base.savedPosts),
+    savedQuotes: mapSaved(base.savedQuotes),
+  };
+};
+
 const validateAndNormalizeSocials = async (social) => {
   const socialUpdates = {};
 
@@ -139,7 +173,7 @@ module.exports = {
         { path: "savedQuotes" },
       ]);
 
-      return user;
+      return normalizeUserForResponse(user);
     } catch (err) {
       if (err instanceof AuthenticationError || err instanceof UserInputError) {
         throw err;

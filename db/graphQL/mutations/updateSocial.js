@@ -8,7 +8,33 @@ const {
   buildDeepLink,
 } = require("../../utils/handleValidators");
 const { checkHandleExists } = require("../../utils/checkHandleExists");
-const { serializeUser } = require("../../utils/serializeUser");
+
+const toPlain = (doc) => (doc?.toObject ? doc.toObject() : doc) || null;
+const ensureId = (doc) => {
+  const plain = toPlain(doc);
+  if (!plain) return null;
+
+  const id = plain.id || plain._id?.toString?.();
+  if (!id) return null;
+
+  return { ...plain, id };
+};
+
+const normalizeUser = (userDoc) => {
+  const base = ensureId(userDoc);
+  if (!base) return null;
+
+  const profilePic = base.profilePic ? ensureId(base.profilePic) : null;
+  const drunkPic = base.drunkPic ? ensureId(base.drunkPic) : null;
+
+  return {
+    ...base,
+    profilePic,
+    drunkPic,
+    profilePicUrl: base.profilePicUrl || profilePic?.url || null,
+    drunkPicUrl: base.drunkPicUrl || drunkPic?.url || null,
+  };
+};
 
 const validatePlatform = (platform) => {
   if (!platform || typeof platform !== "string") {
@@ -68,7 +94,7 @@ module.exports = {
       user.social = { ...existingSocial, [normalizedPlatform]: null };
       await user.save();
       await user.populate(["profilePic", "drunkPic"]);
-      return serializeUser(user);
+      return normalizeUser(user);
     }
 
     const socialEntry = await buildSocialEntry(normalizedPlatform, handle);
@@ -81,6 +107,6 @@ module.exports = {
     user.social = { ...existingSocial, [normalizedPlatform]: socialEntry };
     await user.save();
     await user.populate(["profilePic", "drunkPic"]);
-    return serializeUser(user);
+    return normalizeUser(user);
   },
 };
