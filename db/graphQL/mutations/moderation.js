@@ -54,7 +54,7 @@ const moderatePostResolver = async (_, { token, postId, approve }) => {
       notificationId: `flagged-${post._id.toString()}`,
       type: NotificationTypes.FLAGGED_POST,
       title: "A post needs your attention",
-      description: "Your post was flagged by a user for admin review.",
+      description: "Your post was flagged by our team.",
       intent: NotificationIntents.OPEN_POST_COMMENTS,
       postId: String(post._id),
       createdAt: post.updatedAt || post.createdAt,
