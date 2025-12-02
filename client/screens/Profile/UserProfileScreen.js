@@ -139,9 +139,11 @@ const UserProfileScreen = ({ route, navigation }) => {
     return null;
   }, [state?.currentPosition, state?.user]);
 
+  const isAdminProfile = profileData?.username === "CandyMan🍭";
+  const isAdminViewer = currentUser?.username === "CandyMan🍭";
   const isAdminView = useMemo(
-    () => profileData?.username === "CandyMan🍭",
-    [profileData?.username]
+    () => isAdminProfile && isAdminViewer,
+    [isAdminProfile, isAdminViewer]
   );
 
   const isViewingSelf = useMemo(
@@ -836,7 +838,7 @@ const UserProfileScreen = ({ route, navigation }) => {
         setFollowing(overview?.user?.following || []);
         setBuddies(overview?.user?.buddies || []);
 
-        if (overview?.user?.username === "CandyMan🍭") {
+        if (overview?.user?.username === "CandyMan🍭" && isAdminViewer) {
           await fetchAdminQueues(token);
         } else {
           setAdminPosts([]);
@@ -854,7 +856,7 @@ const UserProfileScreen = ({ route, navigation }) => {
     return () => {
       mounted = false;
     };
-  }, [fetchAdminQueues, initialUser, userId]);
+  }, [fetchAdminQueues, initialUser, isAdminViewer, userId]);
 
   useEffect(() => {
     if (!authToken || !isAdminView) {
