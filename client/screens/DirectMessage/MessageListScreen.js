@@ -191,7 +191,10 @@ const MessageListScreen = ({ route, navigation }) => {
       String(item.lastMessageAuthorId) !== String(currentUserId);
     const statusLabel = waitingForYou ? "Waiting for reply" : "Sent";
     const statusIcon = waitingForYou ? "alert-circle" : "checkmark-done";
-    const statusColor = waitingForYou ? "#fbbf24" : "#4c6fff";
+    const statusColor = waitingForYou ? "#f59e0b" : "#38bdf8";
+    const statusBackground = waitingForYou
+      ? "rgba(245,158,11,0.12)"
+      : "rgba(56,189,248,0.14)";
 
     return (
       <TouchableOpacity
@@ -215,7 +218,7 @@ const MessageListScreen = ({ route, navigation }) => {
             </View>
             <View style={styles.rowMeta}>
               <Text style={styles.timestamp}>{timestampLabel}</Text>
-              <View style={[styles.statusPill, { backgroundColor: `${statusColor}22` }]}>
+              <View style={[styles.statusPill, { backgroundColor: statusBackground }]}>
                 <Ionicons name={statusIcon} size={14} color={statusColor} />
                 <Text style={[styles.statusText, { color: statusColor }]}>{statusLabel}</Text>
               </View>
