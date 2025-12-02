@@ -159,6 +159,7 @@ export const PROFILE_OVERVIEW_QUERY = `
         review
         likesCount
         commentsCount
+        viewsCount
         createdAt
         lat
         long
@@ -189,6 +190,7 @@ export const PROFILE_OVERVIEW_QUERY = `
         review
         likesCount
         commentsCount
+        viewsCount
         createdAt
         lat
         long
@@ -307,6 +309,7 @@ export const USER_PROFILE_QUERY = `
         review
         likesCount
         commentsCount
+        viewsCount
         createdAt
         lat
         long
@@ -337,6 +340,7 @@ export const USER_PROFILE_QUERY = `
         review
         likesCount
         commentsCount
+        viewsCount
         createdAt
         lat
         long
