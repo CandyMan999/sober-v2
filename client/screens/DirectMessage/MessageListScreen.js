@@ -54,14 +54,36 @@ const MessageListScreen = ({ route, navigation }) => {
   const [rooms, setRooms] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const deriveLastActivity = useCallback((room, fallbackIndex = 0) => {
-    const latestDate =
+  const deriveLastMessageInfo = useCallback((room, fallbackIndex = 0) => {
+    const lastComment = room?.comments?.[room.comments.length - 1];
+
+    const lastMessageTimestamp =
       parseDateValue(room?.lastMessageAt) ||
       parseDateValue(room?.lastMessage?.createdAt) ||
-      parseDateValue(room?.comments?.[room.comments.length - 1]?.createdAt);
+      parseDateValue(lastComment?.createdAt);
 
-    if (latestDate) return latestDate.getTime();
-    return Date.now() - fallbackIndex * 1000;
+    const lastActivity = lastMessageTimestamp
+      ? lastMessageTimestamp.getTime()
+      : Date.now() - fallbackIndex * 1000;
+
+    const lastMessageText =
+      room?.lastMessage?.text ||
+      lastComment?.text ||
+      room?.lastMessage ||
+      "New chat";
+
+    const lastMessageAuthorId =
+      room?.lastMessage?.author?.id ||
+      room?.lastMessage?.author?._id ||
+      lastComment?.author?.id ||
+      lastComment?.author?._id ||
+      null;
+
+    return {
+      lastActivity,
+      lastMessageText,
+      lastMessageAuthorId,
+    };
   }, []);
 
   useEffect(() => {
@@ -124,13 +146,14 @@ const MessageListScreen = ({ route, navigation }) => {
 
         if (!otherUser?.id) return null;
 
-        const lastMessageText = room.lastMessage?.text || room.lastMessage || "New chat";
-        const lastActivity = deriveLastActivity(room, index);
+        const { lastActivity, lastMessageText, lastMessageAuthorId } =
+          deriveLastMessageInfo(room, index);
         return {
           id: room.id || room._id || `room-${index}`,
           user: otherUser,
           lastMessage: lastMessageText,
           lastActivity,
+          lastMessageAuthorId,
           unread: false,
         };
       })
@@ -156,13 +179,22 @@ const MessageListScreen = ({ route, navigation }) => {
     }
 
     return normalized;
-  }, [rooms, conversations, currentUserId, deriveLastActivity]);
+  }, [rooms, conversations, currentUserId, deriveLastMessageInfo]);
 
   const renderConversation = ({ item }) => {
     const username = item.user?.username || "Buddy";
     const lastMessage = item.lastMessage || "New chat";
     const unread = Boolean(item.unread);
     const timestampLabel = timeAgo(item.lastActivity);
+    const waitingForYou =
+      !item.lastMessageAuthorId ||
+      String(item.lastMessageAuthorId) !== String(currentUserId);
+    const statusLabel = waitingForYou ? "Waiting for reply" : "Sent";
+    const statusIcon = waitingForYou ? "alert-circle" : "checkmark-done";
+    const statusColor = waitingForYou ? "#f59e0b" : "#38bdf8";
+    const statusBackground = waitingForYou
+      ? "rgba(245,158,11,0.12)"
+      : "rgba(56,189,248,0.14)";
 
     return (
       <TouchableOpacity
@@ -173,16 +205,24 @@ const MessageListScreen = ({ route, navigation }) => {
         <Avatar uri={item.user?.profilePicUrl} size={48} disableNavigation />
         <View style={styles.rowContent}>
           <View style={styles.rowHeader}>
-            <Text style={[styles.username, unread && styles.usernameUnread]} numberOfLines={1}>
-              {username}
-            </Text>
-            <Text style={styles.timestamp}>{timestampLabel}</Text>
-          </View>
-          <View style={styles.messageLine}>
-            <Ionicons name="chatbubble-ellipses" size={14} color="#94a3b8" />
-            <Text style={[styles.lastMessage, unread && styles.lastMessageUnread]} numberOfLines={1}>
-              {lastMessage}
-            </Text>
+            <View style={styles.rowLeft}>
+              <Text style={[styles.username, unread && styles.usernameUnread]} numberOfLines={1}>
+                {username}
+              </Text>
+              <View style={styles.messageLine}>
+                <Ionicons name="chatbubble-ellipses" size={14} color="#94a3b8" />
+                <Text style={[styles.lastMessage, unread && styles.lastMessageUnread]} numberOfLines={1}>
+                  {lastMessage}
+                </Text>
+              </View>
+            </View>
+            <View style={styles.rowMeta}>
+              <Text style={styles.timestamp}>{timestampLabel}</Text>
+              <View style={[styles.statusPill, { backgroundColor: statusBackground }]}>
+                <Ionicons name={statusIcon} size={14} color={statusColor} />
+                <Text style={[styles.statusText, { color: statusColor }]}>{statusLabel}</Text>
+              </View>
+            </View>
           </View>
         </View>
         {unread ? <View style={styles.unreadDot} /> : null}
@@ -281,12 +321,21 @@ const styles = StyleSheet.create({
   rowContent: {
     flex: 1,
     marginLeft: 12,
-    gap: 6,
+    gap: 4,
   },
   rowHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "center",
+    alignItems: "flex-start",
+  },
+  rowLeft: {
+    flex: 1,
+    gap: 6,
+  },
+  rowMeta: {
+    marginLeft: 12,
+    alignItems: "flex-end",
+    gap: 6,
   },
   username: {
     color: "#e5e7eb",
@@ -306,6 +355,20 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 6,
+  },
+  statusPill: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
+    alignSelf: "flex-end",
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderRadius: 999,
+  },
+  statusText: {
+    fontSize: 12,
+    fontWeight: "700",
+    letterSpacing: 0.2,
   },
   lastMessage: {
     color: "#cbd5e1",
