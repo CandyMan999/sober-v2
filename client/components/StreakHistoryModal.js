@@ -299,7 +299,7 @@ const StreakHistoryModal = ({
                 <Text style={styles.listTitle}>Streak breakdown</Text>
                 {relapseAverage != null && (
                   <View style={styles.averagePill}>
-                    <Text style={styles.averagePillLabel}>Avg relapse day</Text>
+                    <Text style={styles.averagePillLabel}>Avg relapse</Text>
                     <Text style={styles.averagePillValue}>
                       Day {relapseAverage}
                     </Text>
@@ -501,6 +501,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontWeight: "700",
     marginTop: 2,
+    textAlign: "center",
   },
   labelRow: {
     flexDirection: "row",
