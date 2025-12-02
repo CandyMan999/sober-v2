@@ -1,5 +1,12 @@
 import React, { useRef } from "react";
-import { View, TouchableOpacity, Text, StyleSheet, Animated, Easing } from "react-native";
+import {
+  View,
+  TouchableOpacity,
+  Text,
+  StyleSheet,
+  Animated,
+  Easing,
+} from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
 const ACCENT = "#F59E0B";
@@ -29,7 +36,7 @@ const FloatingActionIcons = ({
   const runHeartBeat = () => {
     Animated.sequence([
       Animated.timing(heartScale, {
-        toValue: 1.15,
+        toValue: 2.15,
         duration: 140,
         easing: Easing.out(Easing.quad),
         useNativeDriver: true,
@@ -72,13 +79,16 @@ const FloatingActionIcons = ({
     onLikePress?.();
   };
 
-  const heartIcon = isLiked ? "💖" : "❤️";
+  const heartIcon = isLiked ? "🩵" : "❤️";
   const heartColor = isLiked ? "#fb7185" : "#fff";
 
   return (
     <View style={styles.container}>
       {showFilter ? (
-        <TouchableOpacity style={styles.pill} onPress={onFilterPress || (() => {})}>
+        <TouchableOpacity
+          style={styles.pill}
+          onPress={onFilterPress || (() => {})}
+        >
           <Ionicons name="options-outline" size={20} color="#fff" />
         </TouchableOpacity>
       ) : null}
