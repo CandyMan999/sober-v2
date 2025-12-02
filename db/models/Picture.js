@@ -13,9 +13,26 @@ const PictureSchema = new mongoose.Schema(
       enum: ["Cloudflare"],
       default: "Cloudflare",
     },
+
+    /** NEW — replaces all day7/day10/day14... fields */
+    milestone: {
+      type: String,
+      enum: [
+        "none",
+        "day7",
+        "day10",
+        "day14",
+        "day30",
+        "day60",
+        "day90",
+        "day180",
+        "day365",
+      ],
+      default: "none",
+    },
+
     comment: { type: mongoose.Schema.ObjectId, ref: "Comment" },
   },
-
   {
     timestamps: true,
   }

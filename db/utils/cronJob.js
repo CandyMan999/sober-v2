@@ -1,7 +1,7 @@
 // cron/notificationCron.js
 const cron = require("node-cron");
 const { Expo } = require("expo-server-sdk");
-const { User, Quote, Post } = require("../models");
+const { User, Quote, Post, Picture } = require("../models");
 const { findClosestCity } = require("./location");
 const { DateTime } = require("luxon");
 
@@ -100,7 +100,10 @@ const getMilestoneImageForUser = (user) => {
     }
 
     if (user?.[urlKey]) {
-      return { url: user[urlKey], publicId: hasPopulatedData ? populatedPic.publicId : null };
+      return {
+        url: user[urlKey],
+        publicId: hasPopulatedData ? populatedPic.publicId : null,
+      };
     }
 
     return null;
@@ -126,17 +129,35 @@ const buildMilestoneCaptionText = (user, milestoneDays) => {
 };
 
 const ensureMilestonePost = async (user, milestoneDays) => {
+  console.log(
+    `[ensureMilestonePost] user=${
+      user?.username || user?._id
+    }, milestoneDays=${milestoneDays}`
+  );
+
   if (milestoneDays < 7) {
+    console.log("[ensureMilestonePost] <7 days, skipping post creation");
     return null; // only create posts for milestones day 7+
   }
 
-  const imageMeta = getMilestoneImageForUser(user);
+  // ✅ Try to use a milestone artwork image (day7/day10/day14/day365/etc)
+  let imageMeta = await pickRandomMilestoneImage(milestoneDays);
+  console.log(`[ensureMilestonePost] pickRandomMilestoneImage ->`, imageMeta);
+
+  // 🟡 If none exist yet for this day, fall back to user drunk/profile pic
+  if (!imageMeta) {
+    imageMeta = getMilestoneImageForUser(user);
+    console.log(
+      `[ensureMilestonePost] fallback getMilestoneImageForUser ->`,
+      imageMeta
+    );
+  }
 
   if (!imageMeta?.url) {
     console.log(
       `⚠️  Skipping milestone post for ${
         user?.username || user?._id
-      } — no drunkPic or profilePic`
+      } — no milestone art and no drunk/profile image`
     );
     return null;
   }
@@ -156,19 +177,14 @@ const ensureMilestonePost = async (user, milestoneDays) => {
       : null;
 
   if (postLocation.lat !== null && postLocation.long !== null) {
-    const nearestCity = await findClosestCity(postLocation.lat, postLocation.long);
+    const nearestCity = await findClosestCity(
+      postLocation.lat,
+      postLocation.long
+    );
     if (nearestCity?._id) {
       postLocation.closestCity = nearestCity._id;
     }
   }
-
-  const existing = await Post.findOne({
-    author: user._id,
-    isMilestone: true,
-    milestoneDays,
-  });
-
-  if (existing) return existing;
 
   const milestoneTag = `[${milestoneDays}]`;
 
@@ -176,7 +192,7 @@ const ensureMilestonePost = async (user, milestoneDays) => {
     author: user._id,
     text: buildMilestoneCaptionText(user, milestoneDays),
     mediaType: "IMAGE",
-    imageUrl: imageMeta.url, // <-- now uses drunkPic first, then profilePic
+    imageUrl: imageMeta.url, // <-- prefers milestone art, then drunk/profile
     imagePublicId: imageMeta.publicId || null,
     flagged: false,
     likesCount: 0,
@@ -190,6 +206,7 @@ const ensureMilestonePost = async (user, milestoneDays) => {
 
   console.log("!!!!!!!!!!! POST CREATED: ", created);
 
+  // Return fully-populated post for the cron loop to use in push notifications
   return Post.findById(created._id)
     .populate("author")
     .populate("closestCity")
@@ -197,7 +214,7 @@ const ensureMilestonePost = async (user, milestoneDays) => {
       path: "comments",
       populate: { path: "author" },
     });
-  };
+};
 
 const buildTestMessage = () => ({
   title: "Sober Motivation (Test)",
@@ -236,6 +253,38 @@ const sendPushNotifications = async (notifications) => {
     } catch (error) {
       console.error("Error sending push chunk:", error);
     }
+  }
+};
+
+const pickRandomMilestoneImage = async (milestoneDays) => {
+  if (!milestoneDays) return null;
+
+  const milestoneKey = `day${milestoneDays}`;
+  console.log("[pickRandomMilestoneImage] milestoneKey =", milestoneKey);
+
+  try {
+    const pictures = await Picture.find({ milestone: milestoneKey }).lean();
+    console.log(
+      `[pickRandomMilestoneImage] found ${pictures.length} picture(s) for ${milestoneKey}`
+    );
+
+    if (!pictures || pictures.length === 0) {
+      return null;
+    }
+
+    const idx = Math.floor(Math.random() * pictures.length);
+    const chosen = pictures[idx];
+
+    return {
+      url: chosen.url,
+      publicId: chosen.publicId || null,
+    };
+  } catch (err) {
+    console.error(
+      `[milestone] Failed to fetch milestone art for ${milestoneKey}:`,
+      err?.message || err
+    );
+    return null;
   }
 };
 

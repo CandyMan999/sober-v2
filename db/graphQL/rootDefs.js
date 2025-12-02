@@ -150,17 +150,29 @@ const typeDefs = gql`
     x: String
   }
 
+  enum Milestone {
+    none
+    day7
+    day10
+    day14
+    day30
+    day60
+    day90
+    day180
+    day365
+  }
+
   type Picture {
     id: ID!
     url: String!
     user: User
     publicId: String
     provider: String
+    milestone: Milestone
     comment: Comment
     createdAt: String
     updatedAt: String
   }
-
   type Video {
     id: ID!
     url: String!
