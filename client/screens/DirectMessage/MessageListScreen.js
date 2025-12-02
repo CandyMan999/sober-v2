@@ -54,14 +54,36 @@ const MessageListScreen = ({ route, navigation }) => {
   const [rooms, setRooms] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const deriveLastActivity = useCallback((room, fallbackIndex = 0) => {
-    const latestDate =
+  const deriveLastMessageInfo = useCallback((room, fallbackIndex = 0) => {
+    const lastComment = room?.comments?.[room.comments.length - 1];
+
+    const lastMessageTimestamp =
       parseDateValue(room?.lastMessageAt) ||
       parseDateValue(room?.lastMessage?.createdAt) ||
-      parseDateValue(room?.comments?.[room.comments.length - 1]?.createdAt);
+      parseDateValue(lastComment?.createdAt);
 
-    if (latestDate) return latestDate.getTime();
-    return Date.now() - fallbackIndex * 1000;
+    const lastActivity = lastMessageTimestamp
+      ? lastMessageTimestamp.getTime()
+      : Date.now() - fallbackIndex * 1000;
+
+    const lastMessageText =
+      room?.lastMessage?.text ||
+      lastComment?.text ||
+      room?.lastMessage ||
+      "New chat";
+
+    const lastMessageAuthorId =
+      room?.lastMessage?.author?.id ||
+      room?.lastMessage?.author?._id ||
+      lastComment?.author?.id ||
+      lastComment?.author?._id ||
+      null;
+
+    return {
+      lastActivity,
+      lastMessageText,
+      lastMessageAuthorId,
+    };
   }, []);
 
   useEffect(() => {
@@ -124,13 +146,14 @@ const MessageListScreen = ({ route, navigation }) => {
 
         if (!otherUser?.id) return null;
 
-        const lastMessageText = room.lastMessage?.text || room.lastMessage || "New chat";
-        const lastActivity = deriveLastActivity(room, index);
+        const { lastActivity, lastMessageText, lastMessageAuthorId } =
+          deriveLastMessageInfo(room, index);
         return {
           id: room.id || room._id || `room-${index}`,
           user: otherUser,
           lastMessage: lastMessageText,
           lastActivity,
+          lastMessageAuthorId,
           unread: false,
         };
       })
@@ -156,13 +179,18 @@ const MessageListScreen = ({ route, navigation }) => {
     }
 
     return normalized;
-  }, [rooms, conversations, currentUserId, deriveLastActivity]);
+  }, [rooms, conversations, currentUserId, deriveLastMessageInfo]);
 
   const renderConversation = ({ item }) => {
     const username = item.user?.username || "Buddy";
     const lastMessage = item.lastMessage || "New chat";
     const unread = Boolean(item.unread);
     const timestampLabel = timeAgo(item.lastActivity);
+    const waitingForYou =
+      !item.lastMessageAuthorId ||
+      String(item.lastMessageAuthorId) !== String(currentUserId);
+    const statusLabel = waitingForYou ? "Waiting for reply" : "Sent";
+    const statusIcon = waitingForYou ? "alert-circle" : "checkmark-done";
 
     return (
       <TouchableOpacity
@@ -183,6 +211,28 @@ const MessageListScreen = ({ route, navigation }) => {
             <Text style={[styles.lastMessage, unread && styles.lastMessageUnread]} numberOfLines={1}>
               {lastMessage}
             </Text>
+          </View>
+          <View style={styles.statusRow}>
+            <View
+              style={[
+                styles.statusPill,
+                waitingForYou ? styles.statusPillWaiting : styles.statusPillSent,
+              ]}
+            >
+              <Ionicons
+                name={statusIcon}
+                size={14}
+                color={waitingForYou ? "#fbbf24" : "#34d399"}
+              />
+              <Text
+                style={[
+                  styles.statusText,
+                  waitingForYou ? styles.statusTextWaiting : styles.statusTextSent,
+                ]}
+              >
+                {statusLabel}
+              </Text>
+            </View>
           </View>
         </View>
         {unread ? <View style={styles.unreadDot} /> : null}
@@ -306,6 +356,40 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 6,
+  },
+  statusRow: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  statusPill: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
+    alignSelf: "flex-start",
+    marginTop: 4,
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderRadius: 999,
+    borderWidth: 1,
+  },
+  statusPillWaiting: {
+    backgroundColor: "rgba(251,191,36,0.08)",
+    borderColor: "rgba(251,191,36,0.4)",
+  },
+  statusPillSent: {
+    backgroundColor: "rgba(52,211,153,0.12)",
+    borderColor: "rgba(52,211,153,0.45)",
+  },
+  statusText: {
+    fontSize: 12,
+    fontWeight: "700",
+    letterSpacing: 0.2,
+  },
+  statusTextWaiting: {
+    color: "#fbbf24",
+  },
+  statusTextSent: {
+    color: "#34d399",
   },
   lastMessage: {
     color: "#cbd5e1",

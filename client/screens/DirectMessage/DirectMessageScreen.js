@@ -800,7 +800,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 16,
     paddingTop: 0,
-    paddingBottom: 12,
+    paddingBottom: 0,
   },
   loaderContainer: {
     flex: 1,
@@ -809,7 +809,7 @@ const styles = StyleSheet.create({
     paddingBottom: 40,
   },
   listContent: {
-    paddingBottom: 8,
+    paddingBottom: 0,
     gap: 12,
   },
   messageRow: {
