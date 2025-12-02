@@ -48,6 +48,7 @@ import Toast from "react-native-toast-message";
 import { formatDistance, getDistanceFromCoords } from "../../utils/distance";
 import {
   applySavedStateToContext,
+  extractId,
   isItemSaved,
   mergeSavedList,
   removeSavedItem,
@@ -250,12 +251,26 @@ const UserProfileScreen = ({ route, navigation }) => {
   const isFollowed = Boolean(profileData?.isFollowedByViewer);
   const isBuddy = Boolean(profileData?.isBuddyWithViewer);
 
+  const savedStateSignatureRef = useRef({ postsKey: null, quotesKey: null });
+
   useEffect(() => {
     if (!isViewingSelf || !state?.savedState) return;
 
-    setSavedPosts(state.savedState.savedPosts || []);
-    setSavedQuotes(state.savedState.savedQuotes || []);
-  }, [isViewingSelf, state?.savedState]);
+    const nextPosts = state.savedState.savedPosts || [];
+    const nextQuotes = state.savedState.savedQuotes || [];
+
+    const postsKey = nextPosts.map(extractId).join("|");
+    const quotesKey = nextQuotes.map(extractId).join("|");
+
+    const { postsKey: prevPostsKey, quotesKey: prevQuotesKey } =
+      savedStateSignatureRef.current;
+
+    if (postsKey === prevPostsKey && quotesKey === prevQuotesKey) return;
+
+    savedStateSignatureRef.current = { postsKey, quotesKey };
+    setSavedPosts(nextPosts);
+    setSavedQuotes(nextQuotes);
+  }, [isViewingSelf, state?.savedState?.savedPosts, state?.savedState?.savedQuotes]);
 
   const socialLinks = useMemo(() => {
     const social = profileData?.social;
