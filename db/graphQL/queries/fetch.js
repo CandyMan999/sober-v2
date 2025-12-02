@@ -72,7 +72,7 @@ module.exports = {
     try {
       const posts = await Post.find({
         adminApproved: false,
-        $or: [{ flagged: true }, { review: true }],
+        review: true,
       })
         .sort({ createdAt: -1 })
         .populate("author")

@@ -348,6 +348,53 @@ export const SET_POST_REVIEW_MUTATION = gql`
   }
 `;
 
+export const MODERATE_POST_MUTATION = gql`
+  mutation ModeratePost($token: String!, $postId: ID!, $approve: Boolean!) {
+    moderatePost(token: $token, postId: $postId, approve: $approve) {
+      id
+      text
+      mediaType
+      imageUrl
+      flagged
+      review
+      adminApproved
+      likesCount
+      commentsCount
+      viewsCount
+      createdAt
+      author {
+        id
+        username
+        profilePicUrl
+      }
+      video {
+        id
+        url
+        flagged
+        viewsCount
+        thumbnailUrl
+      }
+    }
+  }
+`;
+
+export const MODERATE_QUOTE_MUTATION = gql`
+  mutation ModerateQuote($token: String!, $quoteId: ID!, $approve: Boolean!) {
+    moderateQuote(token: $token, quoteId: $quoteId, approve: $approve) {
+      id
+      text
+      isApproved
+      isDenied
+      createdAt
+      user {
+        id
+        username
+        profilePicUrl
+      }
+    }
+  }
+`;
+
 export const FOLLOW_USER_MUTATION = gql`
   mutation FollowUser($token: String!, $userId: ID!) {
     followUser(token: $token, userId: $userId) {

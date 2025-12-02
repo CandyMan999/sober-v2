@@ -372,6 +372,8 @@ const typeDefs = gql`
     deletePost(token: String!, postId: ID!): Boolean!
     deleteQuote(token: String!, quoteId: ID!): Boolean!
     setPostReview(postId: ID!, review: Boolean!): Post!
+    moderatePost(token: String!, postId: ID!, approve: Boolean!): Post!
+    moderateQuote(token: String!, quoteId: ID!, approve: Boolean!): Quote!
     recordPostView(postId: ID!, token: String!): Post!
     createPostComment(
       token: String!

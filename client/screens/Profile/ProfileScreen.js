@@ -38,6 +38,8 @@ import {
   TOGGLE_LIKE_MUTATION,
   SET_POST_REVIEW_MUTATION,
   TOGGLE_SAVE_MUTATION,
+  MODERATE_POST_MUTATION,
+  MODERATE_QUOTE_MUTATION,
 } from "../../GraphQL/mutations";
 import { ContentPreviewModal } from "../../components";
 import {
@@ -230,8 +232,18 @@ const ProfileScreen = ({ navigation }) => {
         if (!token) return;
 
         const data = await client.request(ADMIN_REVIEW_ITEMS_QUERY, { token });
-        setAdminPosts(data?.adminFlaggedPosts || []);
-        setAdminQuotes(data?.adminPendingQuotes || []);
+        setAdminPosts(
+          (data?.adminFlaggedPosts || []).map((post) => ({
+            ...post,
+            __adminItem: true,
+          }))
+        );
+        setAdminQuotes(
+          (data?.adminPendingQuotes || []).map((quote) => ({
+            ...quote,
+            __adminItem: true,
+          }))
+        );
       } catch (err) {
         console.log("Admin review load failed", err);
       } finally {
@@ -790,6 +802,60 @@ const ProfileScreen = ({ navigation }) => {
       setPosts(previousPosts);
       setSavedPosts(previousSaved);
       setPreviewItem(previousPreview);
+    }
+  };
+
+  const handleAdminPostModeration = async (postId, approve) => {
+    if (!postId) return;
+
+    const token = await getToken();
+    if (!token) return;
+
+    try {
+      const data = await client.request(MODERATE_POST_MUTATION, {
+        token,
+        postId,
+        approve,
+      });
+
+      const updated = data?.moderatePost;
+      if (updated) {
+        setAdminPosts((prev) => prev.filter((post) => post.id !== postId));
+        applyPostPatch(postId, (post) => ({ ...post, ...updated }));
+        setPreviewItem((prev) =>
+          prev?.id === postId ? { ...prev, ...updated, __adminItem: prev.__adminItem } : prev
+        );
+      }
+    } catch (err) {
+      console.error("Error moderating post", err);
+    }
+  };
+
+  const handleAdminQuoteModeration = async (quoteId, approve) => {
+    if (!quoteId) return;
+
+    const token = await getToken();
+    if (!token) return;
+
+    try {
+      const data = await client.request(MODERATE_QUOTE_MUTATION, {
+        token,
+        quoteId,
+        approve,
+      });
+
+      const updated = data?.moderateQuote;
+      if (updated) {
+        setAdminQuotes((prev) => prev.filter((quote) => quote.id !== quoteId));
+        applyQuotePatch(quoteId, (quote) => ({ ...quote, ...updated }));
+        setPreviewItem((prev) =>
+          prev?.id === quoteId
+            ? { ...prev, ...updated, __adminItem: prev.__adminItem }
+            : prev
+        );
+      }
+    } catch (err) {
+      console.error("Error moderating quote", err);
     }
   };
 
@@ -1357,6 +1423,8 @@ const ProfileScreen = ({ navigation }) => {
         onToggleSave={handleToggleSave}
         onFlagForReview={handleFlagForReview}
         onDelete={handleDeleteContent}
+        onAdminModeratePost={handleAdminPostModeration}
+        onAdminModerateQuote={handleAdminQuoteModeration}
         isSaved={isPreviewSaved}
         disableDelete={previewFromSaved}
       />
