@@ -1427,6 +1427,7 @@ const ProfileScreen = ({ navigation }) => {
         onAdminModerateQuote={handleAdminQuoteModeration}
         isSaved={isPreviewSaved}
         disableDelete={previewFromSaved}
+        hideSaveAction
       />
 
       {renderAvatarOverlay()}

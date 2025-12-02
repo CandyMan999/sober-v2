@@ -48,6 +48,7 @@ const ContentPreviewModal = ({
   onAdminModerateQuote,
   isSaved = false,
   disableDelete = false,
+  hideSaveAction = false,
 }) => {
   const [mounted, setMounted] = useState(visible);
   const [localItem, setLocalItem] = useState(item);
@@ -661,21 +662,26 @@ const ContentPreviewModal = ({
                   </TouchableOpacity>
                 </>
               ) : null}
-              <TouchableOpacity
-                style={styles.sheetAction}
-                onPress={handleSavePress}
-                disabled={saving}
-              >
-                <View style={styles.sheetActionLeft}>
-                  <Ionicons name="bookmark-outline" size={20} color="#fef3c7" />
-                  <Text style={styles.sheetActionText}>{saveActionLabel}</Text>
-                </View>
-                {saving ? (
-                  <ActivityIndicator color="#f59e0b" style={styles.sheetSpinner} />
-                ) : (
-                  <Ionicons name="chevron-forward" size={18} color="#9ca3af" />
-                )}
-              </TouchableOpacity>
+              {hideSaveAction ? null : (
+                <TouchableOpacity
+                  style={styles.sheetAction}
+                  onPress={handleSavePress}
+                  disabled={saving}
+                >
+                  <View style={styles.sheetActionLeft}>
+                    <Ionicons name="bookmark-outline" size={20} color="#fef3c7" />
+                    <Text style={styles.sheetActionText}>{saveActionLabel}</Text>
+                  </View>
+                  {saving ? (
+                    <ActivityIndicator
+                      color="#f59e0b"
+                      style={styles.sheetSpinner}
+                    />
+                  ) : (
+                    <Ionicons name="chevron-forward" size={18} color="#9ca3af" />
+                  )}
+                </TouchableOpacity>
+              )}
               {isPost && !canDelete ? (
                 <TouchableOpacity
                   style={styles.sheetAction}

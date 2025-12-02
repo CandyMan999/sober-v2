@@ -1,5 +1,6 @@
 const { AuthenticationError } = require("apollo-server-express");
 const { User, Post, Quote } = require("../../models");
+const { sendPushNotifications } = require("../../utils/pushNotifications");
 
 const ADMIN_USERNAME = "CandyMan🍭";
 
@@ -65,6 +66,26 @@ const moderateQuoteResolver = async (_, { token, quoteId, approve }) => {
   }
 
   await quote.save();
+  if (approve && quote.user?.token && quote.user?.notificationsEnabled !== false) {
+    try {
+      await sendPushNotifications([
+        {
+          pushToken: quote.user.token,
+          title: "Quote approved!",
+          body: "Your quote will be shared in the daily motivation.",
+          data: {
+            type: "quote_approved",
+            quoteId: String(quote._id),
+          },
+        },
+      ]);
+    } catch (notifyErr) {
+      console.warn(
+        "Quote approval notification error",
+        notifyErr?.message || notifyErr
+      );
+    }
+  }
   return quote;
 };
 
