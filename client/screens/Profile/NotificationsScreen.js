@@ -28,6 +28,10 @@ const ICONS = {
     name: "chatbox-ellipses",
     color: "#60a5fa",
   },
+  [NotificationTypes.COMMENT_REPLY]: {
+    name: "chatbox-ellipses",
+    color: "#60a5fa",
+  },
   [NotificationTypes.COMMENT_LIKED]: {
     name: "heart",
     color: "#f472b6",
@@ -71,6 +75,7 @@ const NotificationsScreen = ({ navigation }) => {
   const [fetchError, setFetchError] = useState(null);
   const [previewVisible, setPreviewVisible] = useState(false);
   const [previewContent, setPreviewContent] = useState(null);
+  const [previewShowComments, setPreviewShowComments] = useState(false);
   const [loadingPreview, setLoadingPreview] = useState(false);
 
   useEffect(() => {
@@ -129,6 +134,10 @@ const NotificationsScreen = ({ navigation }) => {
       if (!notification?.postId) return;
 
       setLoadingPreview(true);
+      setPreviewShowComments(
+        notification.type === NotificationTypes.COMMENT_ON_POST ||
+          notification.type === NotificationTypes.COMMENT_REPLY
+      );
       try {
         const token = await getToken();
         const response = await client.request(POST_BY_ID_QUERY, {
@@ -195,6 +204,7 @@ const NotificationsScreen = ({ navigation }) => {
 
   const handleClosePreview = () => {
     setPreviewContent(null);
+    setPreviewShowComments(false);
     setPreviewVisible(false);
   };
 
@@ -248,6 +258,8 @@ const NotificationsScreen = ({ navigation }) => {
         onClose={handleClosePreview}
         onToggleSound={() => {}}
         viewerUser={state?.user}
+        initialShowComments={previewShowComments}
+        hideSaveAction
       />
 
       {loadingPreview ? (

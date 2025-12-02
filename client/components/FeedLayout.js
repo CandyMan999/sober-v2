@@ -1,5 +1,5 @@
 // components/FeedLayout.js
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
@@ -49,8 +49,9 @@ const FeedLayout = ({
   isFollowed = false,
   isBuddy = false,
   viewerUserId,
+  initialShowComments = false,
 }) => {
-  const [showComments, setShowComments] = useState(false);
+  const [showComments, setShowComments] = useState(initialShowComments);
   const [isCaptionExpanded, setIsCaptionExpanded] = useState(false);
   const [isCaptionTruncated, setIsCaptionTruncated] = useState(false);
 
@@ -76,6 +77,10 @@ const FeedLayout = ({
   const handleCommentPress = () => {
     setShowComments((prev) => !prev);
   };
+
+  useEffect(() => {
+    setShowComments(initialShowComments);
+  }, [initialShowComments]);
 
   const displayName =
     authorLabel ||

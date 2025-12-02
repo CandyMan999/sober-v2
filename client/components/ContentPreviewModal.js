@@ -50,6 +50,7 @@ const ContentPreviewModal = ({
   disableDelete = false,
   hideSaveAction = false,
   deleteActionOffset = "5%",
+  initialShowComments = false,
 }) => {
   const [mounted, setMounted] = useState(visible);
   const [localItem, setLocalItem] = useState(item);
@@ -539,6 +540,7 @@ const ContentPreviewModal = ({
           onLikePress={handleLikePress}
           onMorePress={() => setShowActions(true)}
           showFilter={false}
+          initialShowComments={initialShowComments}
         >
           <View style={styles.mediaContainer}>{renderPostMedia()}</View>
         </CommunityFeedLayout>

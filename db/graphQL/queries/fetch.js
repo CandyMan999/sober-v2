@@ -122,6 +122,7 @@ module.exports = {
 
     const NOTIFICATION_TYPES = {
       COMMENT: "COMMENT_ON_POST",
+      COMMENT_REPLY: "COMMENT_REPLY",
       COMMENT_LIKED: "COMMENT_LIKED",
       FLAGGED: "FLAGGED_POST",
       BUDDY_NEAR_BAR: "BUDDY_NEAR_BAR",
@@ -140,8 +141,10 @@ module.exports = {
 
     const postIds = userPosts.map((post) => post._id);
     const commentIds = userComments.map((comment) => comment._id);
+    const commentIdsSet = new Set(commentIds.map((id) => id.toString()));
 
-    const [commentsOnPosts, likesOnComments] = await Promise.all([
+    const [commentsOnPosts, repliesToUserComments, likesOnComments] =
+      await Promise.all([
       postIds.length
         ? Comment.find({
             targetType: "POST",
@@ -149,6 +152,14 @@ module.exports = {
           })
             .sort({ createdAt: -1 })
             .populate("author")
+        : [],
+      commentIds.length
+        ? Comment.find({
+            replyTo: { $in: commentIds },
+          })
+            .sort({ createdAt: -1 })
+            .populate("author")
+            .populate({ path: "replyTo", populate: "author" })
         : [],
       commentIds.length
         ? Like.find({
@@ -167,10 +178,24 @@ module.exports = {
 
     const commentNotifications = commentsOnPosts
       .filter((comment) => comment?.author && !comment.author._id.equals(userId))
+      .filter((comment) => !commentIdsSet.has(comment?.replyTo?.toString()))
       .map((comment) => ({
         id: `comment-${comment._id.toString()}`,
         type: NOTIFICATION_TYPES.COMMENT,
         title: `${comment.author.username || "Someone"} commented on your post`,
+        description: comment.text,
+        postId: comment.targetId.toString(),
+        commentId: comment._id.toString(),
+        createdAt: comment.createdAt,
+        intent: INTENTS.OPEN_POST,
+      }));
+
+    const commentReplyNotifications = repliesToUserComments
+      .filter((comment) => comment?.author && !comment.author._id.equals(userId))
+      .map((comment) => ({
+        id: `comment-reply-${comment._id.toString()}`,
+        type: NOTIFICATION_TYPES.COMMENT_REPLY,
+        title: `${comment.author.username || "Someone"} replied to your comment`,
         description: comment.text,
         postId: comment.targetId.toString(),
         commentId: comment._id.toString(),
@@ -191,7 +216,7 @@ module.exports = {
           postId: comment.targetId.toString(),
           commentId: comment._id.toString(),
           createdAt: like.createdAt,
-          intent: INTENTS.OPEN_POST,
+          intent: INTENTS.ACK,
         };
       })
       .filter(Boolean);
@@ -220,6 +245,7 @@ module.exports = {
 
     return [
       ...commentNotifications,
+      ...commentReplyNotifications,
       ...commentLikeNotifications,
       ...flaggedPostNotifications,
       buddyNearBarPlaceholder,

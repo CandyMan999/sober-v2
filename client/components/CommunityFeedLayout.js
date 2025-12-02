@@ -58,6 +58,7 @@ const CommunityFeedLayout = ({
   viewerUserId,
   onCommentAdded,
   contentStyle,
+  initialShowComments = false,
 }) => {
   const author = post.author;
   const { isMilestonePost, metaText } = useMemo(() => buildMeta(post), [post]);
@@ -112,6 +113,7 @@ const CommunityFeedLayout = ({
       isFollowed={author?.isFollowedByViewer}
       isBuddy={author?.isBuddyWithViewer}
       viewerUserId={viewerUserId}
+      initialShowComments={initialShowComments}
     >
       {children}
     </FeedLayout>
