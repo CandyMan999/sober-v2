@@ -31,7 +31,11 @@ import { ContentPreviewModal } from "../../components";
 import Context from "../../context";
 import { useClient } from "../../client";
 import { getToken } from "../../utils/helpers";
-import { USER_PROFILE_QUERY } from "../../GraphQL/queries";
+import {
+  ADMIN_PENDING_QUOTES_QUERY,
+  ADMIN_REVIEW_POSTS_QUERY,
+  USER_PROFILE_QUERY,
+} from "../../GraphQL/queries";
 import { useOpenSocial } from "../../hooks/useOpenSocial";
 import {
   FOLLOW_USER_MUTATION,
@@ -94,6 +98,8 @@ const UserProfileScreen = ({ route, navigation }) => {
   const [quotes, setQuotes] = useState([]);
   const [savedPosts, setSavedPosts] = useState([]);
   const [savedQuotes, setSavedQuotes] = useState([]);
+  const [adminPosts, setAdminPosts] = useState([]);
+  const [adminQuotes, setAdminQuotes] = useState([]);
   const [following, setFollowing] = useState(initialUser?.following || []);
   const [followers, setFollowers] = useState(initialUser?.followers || []);
   const [buddies, setBuddies] = useState(initialUser?.buddies || []);
@@ -107,6 +113,7 @@ const UserProfileScreen = ({ route, navigation }) => {
   const [previewFromSaved, setPreviewFromSaved] = useState(false);
   const [isAvatarExpanded, setIsAvatarExpanded] = useState(false);
   const [avatarLayout, setAvatarLayout] = useState(null);
+  const [authToken, setAuthToken] = useState(null);
   const avatarAnimation = useRef(new Animated.Value(0)).current;
   const avatarRef = useRef(null);
   const avatarImageRef = useRef(null);
@@ -131,6 +138,13 @@ const UserProfileScreen = ({ route, navigation }) => {
 
     return null;
   }, [state?.currentPosition, state?.user]);
+
+  const isAdminProfile = profileData?.username === "CandyMan🍭";
+  const isAdminViewer = currentUser?.username === "CandyMan🍭";
+  const isAdminView = useMemo(
+    () => isAdminProfile && isAdminViewer,
+    [isAdminProfile, isAdminViewer]
+  );
 
   const isViewingSelf = useMemo(
     () => (profileData?.id || profileData?._id) === currentUserId,
@@ -172,20 +186,28 @@ const UserProfileScreen = ({ route, navigation }) => {
     return postLikes + quoteLikes;
   }, [posts, quotes]);
 
-  const tabConfig = useMemo(
-    () => [
-      { key: "0", icon: "signs-post", type: "POSTS" },
-      { key: "1", icon: "format-quote-close", type: "QUOTES" },
-      { key: "2", icon: "bookmark", type: "SAVED" },
-      { key: "3", icon: "wine-bottle", type: "DRUNK" },
-    ],
-    []
-  );
+  const tabConfig = useMemo(() => {
+    const base = [
+      { key: "posts", icon: "signs-post", type: "POSTS" },
+      { key: "quotes", icon: "format-quote-close", type: "QUOTES" },
+      { key: "saved", icon: "bookmark", type: "SAVED" },
+      { key: "drunk", icon: "wine-bottle", type: "DRUNK" },
+    ];
 
-  const routes = useMemo(
-    () => tabConfig.map(({ key }) => ({ key })),
-    [tabConfig]
-  );
+    if (isAdminView) {
+      base.push({ key: "admin", icon: "shield-check", type: "ADMIN" });
+    }
+
+    return base;
+  }, [isAdminView]);
+
+  const routes = useMemo(() => tabConfig.map(({ key }) => ({ key })), [tabConfig]);
+
+  useEffect(() => {
+    if (tabIndex >= tabConfig.length) {
+      setTabIndex(0);
+    }
+  }, [tabConfig.length, tabIndex]);
 
   const activeTab = tabConfig[tabIndex]?.type;
 
@@ -227,13 +249,6 @@ const UserProfileScreen = ({ route, navigation }) => {
 
   const isFollowed = Boolean(profileData?.isFollowedByViewer);
   const isBuddy = Boolean(profileData?.isBuddyWithViewer);
-
-  useEffect(() => {
-    if (!isViewingSelf || !state?.savedState) return;
-
-    setSavedPosts(state.savedState.savedPosts || []);
-    setSavedQuotes(state.savedState.savedQuotes || []);
-  }, [isViewingSelf, state?.savedState]);
 
   const socialLinks = useMemo(() => {
     const social = profileData?.social;
@@ -768,14 +783,38 @@ const UserProfileScreen = ({ route, navigation }) => {
     }
   };
 
+  const fetchAdminQueues = useCallback(
+    async (token) => {
+      if (!token || !isAdminView) return;
+
+      try {
+        const [postsPayload, quotesPayload] = await Promise.all([
+          client.request(ADMIN_REVIEW_POSTS_QUERY, { token }),
+          client.request(ADMIN_PENDING_QUOTES_QUERY, { token }),
+        ]);
+
+        setAdminPosts(postsPayload?.adminReviewPosts || []);
+        setAdminQuotes(quotesPayload?.adminPendingQuotes || []);
+      } catch (err) {
+        console.log("Admin review load failed", err);
+      }
+    },
+    [client, isAdminView]
+  );
+
   useEffect(() => {
     let mounted = true;
 
     const fetchProfile = async () => {
       try {
         const token = await getToken();
+        if (mounted) setAuthToken(token || null);
         if (!token || !userId) {
-          if (mounted) setLoading(false);
+          if (mounted) {
+            setAdminPosts([]);
+            setAdminQuotes([]);
+            setLoading(false);
+          }
           return;
         }
 
@@ -791,6 +830,13 @@ const UserProfileScreen = ({ route, navigation }) => {
         setFollowers(overview?.user?.followers || []);
         setFollowing(overview?.user?.following || []);
         setBuddies(overview?.user?.buddies || []);
+
+        if (overview?.user?.username === "CandyMan🍭" && isAdminViewer) {
+          await fetchAdminQueues(token);
+        } else {
+          setAdminPosts([]);
+          setAdminQuotes([]);
+        }
       } catch (err) {
         console.log("User profile load failed", err);
       } finally {
@@ -803,7 +849,17 @@ const UserProfileScreen = ({ route, navigation }) => {
     return () => {
       mounted = false;
     };
-  }, [initialUser, userId]);
+  }, [fetchAdminQueues, initialUser, isAdminViewer, userId]);
+
+  useEffect(() => {
+    if (!authToken || !isAdminView) {
+      setAdminPosts([]);
+      setAdminQuotes([]);
+      return;
+    }
+
+    fetchAdminQueues(authToken);
+  }, [authToken, fetchAdminQueues, isAdminView]);
 
   const handleAvatarLayout = () => {
     if (avatarImageRef.current?.measureInWindow) {
@@ -1088,6 +1144,52 @@ const UserProfileScreen = ({ route, navigation }) => {
     return renderPostTile({ item, saved: true, fromSaved: true });
   };
 
+  const renderAdminContent = () => {
+    if (!adminPosts.length && !adminQuotes.length) {
+      return (
+        <View style={styles.emptyState}>
+          <Text style={styles.emptyText}>Nothing pending for review</Text>
+        </View>
+      );
+    }
+
+    return (
+      <View style={styles.adminSectionContainer}>
+        {Boolean(adminPosts.length) && (
+          <View style={styles.adminSection}>
+            <View style={styles.adminHeaderRow}>
+              <MaterialCommunityIcons
+                name="alert-decagram"
+                size={18}
+                color="#fbbf24"
+              />
+              <Text style={styles.adminSectionTitle}>Posts needing review</Text>
+            </View>
+            <View style={styles.grid}>
+              {adminPosts.map((item) => renderPostTile({ item }))}
+            </View>
+          </View>
+        )}
+
+        {Boolean(adminQuotes.length) && (
+          <View style={styles.adminSection}>
+            <View style={styles.adminHeaderRow}>
+              <MaterialCommunityIcons
+                name="clipboard-text-clock"
+                size={18}
+                color="#38bdf8"
+              />
+              <Text style={styles.adminSectionTitle}>Quotes pending approval</Text>
+            </View>
+            <View style={styles.grid}>
+              {adminQuotes.map((item) => renderQuoteTile({ item }))}
+            </View>
+          </View>
+        )}
+      </View>
+    );
+  };
+
   const renderDrunkContent = () => {
     if (!profileData?.drunkPicUrl) {
       return (
@@ -1133,6 +1235,7 @@ const UserProfileScreen = ({ route, navigation }) => {
       QUOTES: quotes.map((item) => renderQuoteTile({ item })),
       SAVED: savedItems.map((item) => renderSavedTile({ item })),
       DRUNK: renderDrunkContent(),
+      ADMIN: renderAdminContent(),
     };
 
     const content = renderers[type] || renderers.POSTS;
@@ -1149,8 +1252,8 @@ const UserProfileScreen = ({ route, navigation }) => {
   };
 
   const renderScene = ({ route }) => {
-    const tabIdx = Number(route.key);
-    const tabType = tabConfig[tabIdx]?.type || "POSTS";
+    const tab = tabConfig.find(({ key }) => key === route.key);
+    const tabType = tab?.type || "POSTS";
     return <View style={styles.scene}>{renderContent(tabType)}</View>;
   };
 
@@ -1754,6 +1857,24 @@ const styles = StyleSheet.create({
   emptyText: {
     color: "#9ca3af",
     fontWeight: "600",
+  },
+  adminSectionContainer: {
+    gap: 18,
+    paddingBottom: 8,
+  },
+  adminSection: {
+    gap: 12,
+  },
+  adminHeaderRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+    marginBottom: 8,
+  },
+  adminSectionTitle: {
+    color: "#e5e7eb",
+    fontWeight: "700",
+    fontSize: 14,
   },
   drunkContainer: {
     padding: 12,

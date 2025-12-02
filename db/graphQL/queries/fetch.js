@@ -22,6 +22,23 @@ const buildRepliesPopulate = (depth = 1) => {
   return basePopulate;
 };
 
+const requireCandyMan = async (token) => {
+  if (!token) {
+    throw new AuthenticationError("Token is required");
+  }
+
+  const viewer = await User.findOne({ token });
+  if (!viewer) {
+    throw new AuthenticationError("User not found");
+  }
+
+  if (viewer.username !== "CandyMan🍭") {
+    throw new AuthenticationError("Unauthorized");
+  }
+
+  return viewer;
+};
+
 module.exports = {
   fetchMeResolver: async (root, args, ctx) => {
     const { token } = args;
@@ -39,6 +56,40 @@ module.exports = {
       return user;
     } catch (err) {
       throw new AuthenticationError(err.message);
+    }
+  },
+  adminReviewPostsResolver: async (_, { token }) => {
+    await requireCandyMan(token);
+
+    try {
+      const posts = await Post.find({
+        adminApproved: false,
+        $or: [{ flagged: true }, { review: true }],
+      })
+        .sort({ createdAt: -1 })
+        .populate("author")
+        .populate({
+          path: "video",
+          select: "url flagged viewsCount viewers thumbnailUrl",
+        })
+        .populate("closestCity");
+
+      return posts;
+    } catch (err) {
+      throw new Error(err.message);
+    }
+  },
+  adminPendingQuotesResolver: async (_, { token }) => {
+    await requireCandyMan(token);
+
+    try {
+      const quotes = await Quote.find({ isApproved: false, isDenied: false })
+        .sort({ createdAt: -1 })
+        .populate("user");
+
+      return quotes;
+    } catch (err) {
+      throw new Error(err.message);
     }
   },
   getQuotesResolver: async (root, args, ctx) => {

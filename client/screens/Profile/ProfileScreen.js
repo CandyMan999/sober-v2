@@ -38,6 +38,7 @@ import {
 import { ContentPreviewModal } from "../../components";
 import {
   applySavedStateToContext,
+  extractId,
   isItemSaved,
   mergeSavedList,
   removeSavedItem,
@@ -114,6 +115,8 @@ const ProfileScreen = ({ navigation }) => {
     [conversations]
   );
 
+  const savedStateSignatureRef = useRef({ postsKey: null, quotesKey: null });
+
   const counts = useMemo(() => {
     const likesTotal = posts.reduce(
       (sum, post) => sum + (post?.likesCount || 0),
@@ -161,8 +164,20 @@ const ProfileScreen = ({ navigation }) => {
   useEffect(() => {
     if (!state?.savedState) return;
 
-    setSavedPosts(state.savedState.savedPosts || []);
-    setSavedQuotes(state.savedState.savedQuotes || []);
+    const nextPosts = state.savedState.savedPosts || [];
+    const nextQuotes = state.savedState.savedQuotes || [];
+
+    const postsKey = nextPosts.map(extractId).join("|");
+    const quotesKey = nextQuotes.map(extractId).join("|");
+
+    const { postsKey: prevPostsKey, quotesKey: prevQuotesKey } =
+      savedStateSignatureRef.current;
+
+    if (postsKey === prevPostsKey && quotesKey === prevQuotesKey) return;
+
+    savedStateSignatureRef.current = { postsKey, quotesKey };
+    setSavedPosts(nextPosts);
+    setSavedQuotes(nextQuotes);
   }, [state?.savedState]);
 
   useEffect(() => {

@@ -371,6 +371,54 @@ export const USER_PROFILE_QUERY = `
   }
 `;
 
+export const ADMIN_REVIEW_POSTS_QUERY = `
+  query AdminReviewPosts($token: String!) {
+    adminReviewPosts(token: $token) {
+      id
+      text
+      mediaType
+      imageUrl
+      imagePublicId
+      flagged
+      review
+      adminApproved
+      likesCount
+      commentsCount
+      viewsCount
+      createdAt
+      lat
+      long
+      closestCity {
+        name
+      }
+      video {
+        id
+        url
+        flagged
+        viewsCount
+        thumbnailUrl
+      }
+    }
+  }
+`;
+
+export const ADMIN_PENDING_QUOTES_QUERY = `
+  query AdminPendingQuotes($token: String!) {
+    adminPendingQuotes(token: $token) {
+      id
+      text
+      isApproved
+      isDenied
+      createdAt
+      user {
+        id
+        username
+        profilePicUrl
+      }
+    }
+  }
+`;
+
 export const GET_QUOTES_QUERY = `
   query GetQuotes {
     getQuotes {

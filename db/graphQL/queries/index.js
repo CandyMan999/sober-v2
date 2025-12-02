@@ -1,5 +1,7 @@
 const {
   fetchMeResolver,
+  adminReviewPostsResolver,
+  adminPendingQuotesResolver,
   getQuotesResolver,
   getAllPostsResolver,
   postResolver,
@@ -21,6 +23,8 @@ const {
 
 module.exports = {
   fetchMeResolver,
+  adminReviewPostsResolver,
+  adminPendingQuotesResolver,
   getBarLocationResolver,
   getLiquorLocationResolver,
   getVenuesResolver,
