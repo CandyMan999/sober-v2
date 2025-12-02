@@ -60,17 +60,31 @@ const CommunityFeedLayout = ({
   contentStyle,
 }) => {
   const author = post.author;
-  const avatarUrl = author?.profilePicUrl || null;
+  const { isMilestonePost, metaText } = useMemo(() => buildMeta(post), [post]);
+  const baseCityName = post.closestCity?.name || post.cityName || null;
+  const metaCityName = isMilestonePost ? null : baseCityName;
+
+  const drunkAvatarUrl = author?.drunkPicUrl || null;
+  const avatarUrl =
+    isMilestonePost && drunkAvatarUrl
+      ? drunkAvatarUrl
+      : author?.profilePicUrl || author?.profilePic?.url || null;
+  const baseAvatarSize = 38;
+  const avatarSize =
+    isMilestonePost && drunkAvatarUrl
+      ? Math.round(baseAvatarSize * 1.8)
+      : baseAvatarSize;
+  const avatarAspectRatio = isMilestonePost && drunkAvatarUrl ? 3 / 4 : 1;
   const type = post.mediaType || "VIDEO";
   const isVideoPost = type === "VIDEO";
-  const cityName = post.closestCity?.name || post.cityName || null;
-  const { isMilestonePost, metaText } = useMemo(() => buildMeta(post), [post]);
+  const commentCityName = baseCityName;
 
   return (
     <FeedLayout
       caption={post.text || ""}
       captionStyle={isMilestonePost ? styles.milestoneCaption : undefined}
       meta={metaText}
+      metaCityName={metaCityName}
       likesCount={post.likesCount}
       commentsCount={post.commentsCount}
       viewsCount={getViewsCount(post)}
@@ -79,7 +93,9 @@ const CommunityFeedLayout = ({
       postCreatedAt={post.createdAt}
       postAuthor={author}
       avatarUrl={avatarUrl}
-      cityName={cityName}
+      avatarSize={avatarSize}
+      avatarAspectRatio={avatarAspectRatio}
+      cityName={commentCityName}
       isMilestonePost={isMilestonePost}
       isVideoPost={isVideoPost}
       onCommentAdded={onCommentAdded}

@@ -26,8 +26,11 @@ const FeedLayout = ({
   commentTargetId,
   avatarUrl,
   fallbackAvatarSource,
+  avatarAspectRatio = 1,
   authorLabel,
+  avatarSize = 38,
   cityName,
+  metaCityName,
   onCommentAdded,
   captionStyle,
   children,
@@ -96,8 +99,10 @@ const FeedLayout = ({
     metaItems.push({ key: "meta", type: "text", value: meta });
   }
 
-  if (cityName) {
-    metaItems.push({ key: "city", type: "city", value: cityName });
+  const cityMetaValue = metaCityName ?? (!isMilestonePost ? cityName : null);
+
+  if (cityMetaValue) {
+    metaItems.push({ key: "city", type: "city", value: cityMetaValue });
   }
 
   if (hasViews) {
@@ -195,7 +200,8 @@ const FeedLayout = ({
               uri={resolvedAvatarUrl}
               fallbackSource={fallbackAvatarSource}
               haloColor={resolvedAvatarUrl ? "orange" : "blue"}
-              size={38}
+              aspectRatio={avatarAspectRatio}
+              size={avatarSize}
               userId={postAuthor?.id}
               username={postAuthor?.username || postAuthor?.name}
               style={styles.avatarWrapper}

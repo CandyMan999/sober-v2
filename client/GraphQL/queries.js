@@ -534,6 +534,7 @@ export const GET_ALL_POSTS = `
           id
           username
           profilePicUrl
+          drunkPicUrl
           isFollowedByViewer
           isBuddyWithViewer
         }

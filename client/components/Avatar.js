@@ -17,6 +17,7 @@ const Avatar = ({
   userId,
   username,
   size = 38,
+  aspectRatio = 1,
   haloColor = "orange",
   haloColors,
   onPress,
@@ -34,8 +35,15 @@ const Avatar = ({
     return HALO_MAP[haloColor] || HALO_MAP.orange;
   }, [haloColor, haloColors]);
 
-  const haloSize = size + 6;
-  const innerSize = haloSize - 4;
+  const haloWidth = size + 6;
+  const haloHeight = haloWidth / aspectRatio;
+  const innerWidth = haloWidth - 4;
+  const innerHeight = haloHeight - 4;
+  const imageWidth = size;
+  const imageHeight = size / aspectRatio;
+  const isCircle = aspectRatio === 1;
+  const radius = isCircle ? innerWidth / 2 : 10;
+  const imageRadius = isCircle ? imageWidth / 2 : 10;
 
   const handlePress = () => {
     if (onPress) {
@@ -56,34 +64,42 @@ const Avatar = ({
       colors={gradientColors}
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}
-      style={[styles.avatarHalo, { width: haloSize, height: haloSize, borderRadius: haloSize / 2, padding: 2 }]}
+      style={[
+        styles.avatarHalo,
+        {
+          width: haloWidth,
+          height: haloHeight,
+          borderRadius: isCircle ? haloWidth / 2 : radius + 4,
+          padding: 2,
+        },
+      ]}
     >
       <View
         ref={contentRef}
         style={[
           styles.avatarInner,
           {
-            width: innerSize,
-            height: innerSize,
-            borderRadius: innerSize / 2,
+            width: innerWidth,
+            height: innerHeight,
+            borderRadius: radius,
           },
         ]}
       >
         {uri ? (
           <Image
             source={{ uri }}
-            style={{ width: size, height: size, borderRadius: size / 2 }}
+            style={{ width: imageWidth, height: imageHeight, borderRadius: imageRadius }}
           />
         ) : fallbackSource ? (
           <Image
             source={fallbackSource}
-            style={{ width: size, height: size, borderRadius: size / 2 }}
+            style={{ width: imageWidth, height: imageHeight, borderRadius: imageRadius }}
           />
         ) : (
           <View
             style={[
               styles.avatarFallback,
-              { width: size, height: size, borderRadius: size / 2 },
+              { width: imageWidth, height: imageHeight, borderRadius: imageRadius },
             ]}
           >
             <Ionicons name="person" size={Math.max(14, size / 3)} color="#0b1222" />
