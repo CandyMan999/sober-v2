@@ -157,6 +157,7 @@ export const PROFILE_OVERVIEW_QUERY = `
         imageUrl
         flagged
         review
+        viewsCount
         likesCount
         commentsCount
         createdAt
@@ -187,6 +188,7 @@ export const PROFILE_OVERVIEW_QUERY = `
         imageUrl
         flagged
         review
+        viewsCount
         likesCount
         commentsCount
         createdAt
@@ -305,6 +307,7 @@ export const USER_PROFILE_QUERY = `
         imageUrl
         flagged
         review
+        viewsCount
         likesCount
         commentsCount
         createdAt
@@ -335,6 +338,7 @@ export const USER_PROFILE_QUERY = `
         imageUrl
         flagged
         review
+        viewsCount
         likesCount
         commentsCount
         createdAt
