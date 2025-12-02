@@ -1,6 +1,11 @@
 const { AuthenticationError } = require("apollo-server-express");
 const { User, Post, Quote } = require("../../models");
 const { sendPushNotifications } = require("../../utils/pushNotifications");
+const {
+  NotificationTypes,
+  NotificationIntents,
+  createNotificationForUser,
+} = require("../../utils/notifications");
 
 const ADMIN_USERNAME = "CandyMan🍭";
 
@@ -42,6 +47,19 @@ const moderatePostResolver = async (_, { token, postId, approve }) => {
   }
 
   await post.save();
+
+  if (!approve && post.author) {
+    await createNotificationForUser({
+      userId: post.author._id,
+      notificationId: `flagged-${post._id.toString()}`,
+      type: NotificationTypes.FLAGGED_POST,
+      title: "A post needs your attention",
+      description: "Your post was flagged by a user for admin review.",
+      intent: NotificationIntents.OPEN_POST_COMMENTS,
+      postId: String(post._id),
+      createdAt: post.updatedAt || post.createdAt,
+    });
+  }
   return post;
 };
 
@@ -66,7 +84,11 @@ const moderateQuoteResolver = async (_, { token, quoteId, approve }) => {
   }
 
   await quote.save();
-  if (approve && quote.user?.token && quote.user?.notificationsEnabled !== false) {
+  if (
+    approve &&
+    quote.user?.token &&
+    quote.user?.notificationsEnabled !== false
+  ) {
     try {
       await sendPushNotifications([
         {

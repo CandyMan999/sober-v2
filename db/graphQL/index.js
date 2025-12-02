@@ -24,6 +24,9 @@ const {
   updateSocialResolver,
   sendDirectMessageResolver,
   setDirectTypingResolver,
+  markNotificationReadResolver,
+  dismissNotificationResolver,
+  clearAllNotificationsResolver,
 } = require("./mutations/index.js");
 
 const {
@@ -36,6 +39,7 @@ const {
   getQuotesResolver,
   adminFlaggedPostsResolver,
   adminPendingQuotesResolver,
+  userNotificationsResolver,
   getAllPostsResolver,
   postResolver,
   quoteResolver,
@@ -85,6 +89,7 @@ const resolvers = {
     getQuotes: getQuotesResolver,
     adminFlaggedPosts: adminFlaggedPostsResolver,
     adminPendingQuotes: adminPendingQuotesResolver,
+    userNotifications: userNotificationsResolver,
     getAllPosts: getAllPostsResolver,
     post: postResolver,
     quote: quoteResolver,
@@ -119,6 +124,9 @@ const resolvers = {
     updateSocial: updateSocialResolver,
     sendDirectMessage: sendDirectMessageResolver,
     setDirectTyping: setDirectTypingResolver,
+    markNotificationRead: markNotificationReadResolver,
+    dismissNotification: dismissNotificationResolver,
+    clearAllNotifications: clearAllNotificationsResolver,
   },
 
   Upload: require("graphql-upload-minimal").GraphQLUpload,
@@ -160,6 +168,10 @@ const resolvers = {
         return null;
       }
     },
+  },
+
+  Notification: {
+    id: (parent) => parent?.notificationId || resolveId(parent),
   },
 
   User: {

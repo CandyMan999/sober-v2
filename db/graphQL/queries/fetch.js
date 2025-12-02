@@ -1,8 +1,13 @@
 const { AuthenticationError } = require("apollo-server-express");
 
-const { User, Quote, Post } = require("../../models");
+const { User, Quote, Post, Like, Comment, Notification } = require("../../models");
 const { getDistanceFromCoords } = require("../../utils/helpers");
 const { findClosestCity } = require("../../utils/location");
+const {
+  NotificationTypes,
+  NotificationIntents,
+  createNotificationForUser,
+} = require("../../utils/notifications");
 
 require("dotenv").config();
 
@@ -109,6 +114,46 @@ module.exports = {
     } catch (err) {
       throw new Error(err.message);
     }
+  },
+  userNotificationsResolver: async (_, { token }) => {
+    if (!token) {
+      throw new AuthenticationError("Token is required");
+    }
+
+    const user = await User.findOne({ token });
+    if (!user) {
+      throw new AuthenticationError("User not found");
+    }
+
+    const userId = user._id;
+
+    await createNotificationForUser({
+      userId,
+      notificationId: "buddy-placeholder",
+      type: NotificationTypes.BUDDY_NEAR_BAR,
+      title: "Buddy check-in",
+      description:
+        "A buddy was tracked near a bar. Placeholder until tracking is live.",
+      intent: NotificationIntents.ACKNOWLEDGE,
+    });
+
+    const notifications = await Notification.find({
+      user: userId,
+      $or: [{ dismissed: { $exists: false } }, { dismissed: { $ne: true } }],
+    }).sort({ read: 1, createdAt: -1 });
+
+    return notifications.map((notification) => ({
+      id: notification.notificationId,
+      type: notification.type || NotificationTypes.COMMENT_ON_POST,
+      title: notification.title || "Notification",
+      description: notification.description,
+      intent: notification.intent,
+      postId: notification.postId,
+      commentId: notification.commentId,
+      createdAt: notification.createdAt?.toISOString?.() || notification.createdAt,
+      read: Boolean(notification.read),
+      dismissed: Boolean(notification.dismissed),
+    }));
   },
   getAllPostsResolver: async (root, args) => {
     const {
@@ -293,17 +338,22 @@ module.exports = {
     }
   },
 
-  postResolver: async (_, { postId }) => {
+  postResolver: async (_, { postId, includeFlagged = false }) => {
     if (!postId) {
       throw new Error("postId is required");
     }
 
     try {
-      const post = await Post.findOne({ _id: postId, flagged: false })
+      const match = { _id: postId };
+      if (!includeFlagged) {
+        match.flagged = false;
+      }
+
+      const post = await Post.findOne(match)
         .populate("author")
         .populate({
           path: "video",
-          match: { flagged: false },
+          match: includeFlagged ? {} : { flagged: false },
           select: "url flagged viewsCount viewers thumbnailUrl",
         })
         .populate("closestCity")

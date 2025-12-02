@@ -191,6 +191,19 @@ const typeDefs = gql`
     updatedAt: String
   }
 
+  type Notification {
+    id: ID!
+    type: String!
+    title: String!
+    description: String
+    intent: String
+    postId: ID
+    commentId: ID
+    createdAt: String
+    read: Boolean!
+    dismissed: Boolean!
+  }
+
   type PostConnection {
     posts: [Post!]!
     hasMore: Boolean!
@@ -305,6 +318,7 @@ const typeDefs = gql`
     getQuotes: [Quote!]!
     adminFlaggedPosts(token: String!): [Post!]!
     adminPendingQuotes(token: String!): [Quote!]!
+    userNotifications(token: String!): [Notification!]!
     getAllPosts(
       limit: Int
       cursor: String
@@ -316,7 +330,7 @@ const typeDefs = gql`
       mediaType: PostMediaType
       isMilestone: Boolean
     ): PostConnection!
-    post(postId: ID!, token: String): Post
+    post(postId: ID!, token: String, includeFlagged: Boolean): Post
     quote(quoteId: ID!, token: String): Quote
     profileOverview(token: String!): ProfileOverview!
     userProfile(token: String!, userId: ID!): ProfileOverview!
@@ -400,6 +414,9 @@ const typeDefs = gql`
       targetType: SaveTarget!
       targetId: ID!
     ): SavePayload!
+    markNotificationRead(token: String!, id: ID!): Notification!
+    dismissNotification(token: String!, id: ID!): Notification!
+    clearAllNotifications(token: String!, ids: [ID!]!): Boolean!
     sendDirectMessage(recipientId: ID!, text: String!, replyTo: ID): Comment!
     followUser(token: String!, userId: ID!): Connection!
     unfollowUser(token: String!, userId: ID!): Boolean!

@@ -272,6 +272,49 @@ export const ADMIN_REVIEW_ITEMS_QUERY = `
   }
 `;
 
+export const USER_NOTIFICATIONS_QUERY = `
+  query UserNotifications($token: String!) {
+    userNotifications(token: $token) {
+      id
+      type
+      title
+      description
+      intent
+      postId
+      commentId
+      createdAt
+      read
+      dismissed
+    }
+  }
+`;
+
+export const MARK_NOTIFICATION_READ_MUTATION = `
+  mutation MarkNotificationRead($token: String!, $id: ID!) {
+    markNotificationRead(token: $token, id: $id) {
+      id
+      read
+      dismissed
+    }
+  }
+`;
+
+export const DISMISS_NOTIFICATION_MUTATION = `
+  mutation DismissNotification($token: String!, $id: ID!) {
+    dismissNotification(token: $token, id: $id) {
+      id
+      read
+      dismissed
+    }
+  }
+`;
+
+export const CLEAR_ALL_NOTIFICATIONS_MUTATION = `
+  mutation ClearAllNotifications($token: String!, $ids: [ID!]!) {
+    clearAllNotifications(token: $token, ids: $ids)
+  }
+`;
+
 export const USER_PROFILE_QUERY = `
   query UserProfile($token: String!, $userId: ID!) {
     userProfile(token: $token, userId: $userId) {
@@ -701,8 +744,8 @@ export const GET_ALL_POSTS = `
 `;
 
 export const POST_BY_ID_QUERY = `
-  query PostById($postId: ID!, $token: String) {
-    post(postId: $postId, token: $token) {
+  query PostById($postId: ID!, $token: String, $includeFlagged: Boolean) {
+    post(postId: $postId, token: $token, includeFlagged: $includeFlagged) {
       id
       text
       mediaType

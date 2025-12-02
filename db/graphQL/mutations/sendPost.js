@@ -9,6 +9,11 @@ const FormData = require("form-data");
 const { User, Video, Post, Connection } = require("../../models");
 const { findClosestCity } = require("../../utils/location");
 const { sendPushNotifications } = require("../../utils/pushNotifications");
+const {
+  NotificationTypes,
+  NotificationIntents,
+  createNotificationForUser,
+} = require("../../utils/notifications");
 // const {
 //   sendPushNotification,
 //   pushNotificationUserFlagged,
@@ -369,10 +374,29 @@ const customNudityAPI = async (videoId, uid) => {
 
     // ---- NEW: if video flagged, flag related post ----
     if (flagged && updated?.post?._id) {
-      await Post.findByIdAndUpdate(updated.post._id, {
-        flagged: true,
-        review: true,
-      });
+      const flaggedPost = await Post.findByIdAndUpdate(
+        updated.post._id,
+        {
+          flagged: true,
+          review: true,
+        },
+        { new: true }
+      ).populate("author");
+
+      if (flaggedPost?.author?._id) {
+        await createNotificationForUser({
+          userId: flaggedPost.author._id,
+          notificationId: `flagged-${flaggedPost._id.toString()}`,
+          type: NotificationTypes.FLAGGED_POST,
+          title: "A post needs your attention",
+          description:
+            "Your post was flagged by our AI for nudity and is under review by admin.",
+          intent: NotificationIntents.OPEN_POST_COMMENTS,
+          postId: String(flaggedPost._id),
+          createdAt: flaggedPost?.updatedAt || flaggedPost?.createdAt,
+        });
+      }
+
       console.log(`[nudity] Post ${updated.post._id} flagged due to video.`);
     }
 
@@ -461,7 +485,10 @@ module.exports = {
           : null;
 
       if (postLocation.lat !== null && postLocation.long !== null) {
-        const nearestCity = await findClosestCity(postLocation.lat, postLocation.long);
+        const nearestCity = await findClosestCity(
+          postLocation.lat,
+          postLocation.long
+        );
         if (nearestCity?._id) {
           postLocation.closestCity = nearestCity._id;
         }

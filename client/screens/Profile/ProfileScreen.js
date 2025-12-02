@@ -33,6 +33,7 @@ import {
   PROFILE_OVERVIEW_QUERY,
   FETCH_ME_QUERY,
   ADMIN_REVIEW_ITEMS_QUERY,
+  USER_NOTIFICATIONS_QUERY,
 } from "../../GraphQL/queries";
 import {
   TOGGLE_LIKE_MUTATION,
@@ -87,6 +88,7 @@ const ProfileScreen = ({ navigation }) => {
   const [previewFromSaved, setPreviewFromSaved] = useState(false);
   const [isAvatarExpanded, setIsAvatarExpanded] = useState(false);
   const [avatarLayout, setAvatarLayout] = useState(null);
+  const [notificationCount, setNotificationCount] = useState(0);
   const avatarAnimation = useRef(new Animated.Value(0)).current;
   const avatarRef = useRef(null);
   const avatarImageRef = useRef(null);
@@ -140,12 +142,13 @@ const ProfileScreen = ({ navigation }) => {
       followers: profileData?.followersCount ?? (followers?.length || 0),
       buddies: profileData?.buddiesCount ?? (buddies?.length || 0),
       likes: likesTotal + quoteLikesTotal,
-      notifications: state?.notifications?.length || 0,
+      notifications: notificationCount,
     };
   }, [
     buddies?.length,
     followers?.length,
     following?.length,
+    notificationCount,
     posts,
     profileData,
     quotes,
@@ -175,6 +178,22 @@ const ProfileScreen = ({ navigation }) => {
     setSavedPosts(state.savedState.savedPosts || []);
     setSavedQuotes(state.savedState.savedQuotes || []);
   }, [state?.savedState]);
+
+  useEffect(() => {
+    const fetchNotifications = async () => {
+      try {
+        const token = await getToken();
+        if (!token) return;
+
+        const data = await client.request(USER_NOTIFICATIONS_QUERY, { token });
+        setNotificationCount((data?.userNotifications || []).length || 0);
+      } catch (err) {
+        console.log("Error fetching notifications", err);
+      }
+    };
+
+    fetchNotifications();
+  }, [client]);
 
   useEffect(() => {
     const fetchProfile = async () => {
