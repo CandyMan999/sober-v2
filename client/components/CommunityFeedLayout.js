@@ -64,7 +64,7 @@ const CommunityFeedLayout = ({
   const baseCityName = post.closestCity?.name || post.cityName || null;
   const metaCityName = isMilestonePost ? null : baseCityName;
 
-  const drunkAvatarUrl = author?.drunkPicUrl || author?.drunkPic?.url || null;
+  const drunkAvatarUrl = author?.drunkPicUrl || null;
   const avatarUrl =
     isMilestonePost && drunkAvatarUrl
       ? drunkAvatarUrl
