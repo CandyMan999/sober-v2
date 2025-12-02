@@ -976,7 +976,10 @@ const UserProfileScreen = ({ route, navigation }) => {
       : item.imageUrl || item.previewUrl;
     const imageSource = thumbnail ? { uri: thumbnail } : null;
     const isFlagged = item.flagged;
-    const views = item?.video?.viewsCount || 0;
+    const views =
+      typeof item?.viewsCount === "number"
+        ? item.viewsCount
+        : item?.video?.viewsCount || 0;
     const key = item?.id || `${thumbnail || "media"}-${saved ? "saved" : "post"}`;
 
     return (
