@@ -69,7 +69,8 @@ const CommunityFeedLayout = ({
     isMilestonePost && drunkAvatarUrl
       ? drunkAvatarUrl
       : author?.profilePicUrl || author?.profilePic?.url || null;
-  const avatarSize = isMilestonePost && drunkAvatarUrl ? 44 : 38;
+  const avatarSize = isMilestonePost && drunkAvatarUrl ? 46 : 38;
+  const avatarAspectRatio = isMilestonePost && drunkAvatarUrl ? 3 / 4 : 1;
   const type = post.mediaType || "VIDEO";
   const isVideoPost = type === "VIDEO";
   const commentCityName = baseCityName;
@@ -89,6 +90,7 @@ const CommunityFeedLayout = ({
       postAuthor={author}
       avatarUrl={avatarUrl}
       avatarSize={avatarSize}
+      avatarAspectRatio={avatarAspectRatio}
       cityName={commentCityName}
       isMilestonePost={isMilestonePost}
       isVideoPost={isVideoPost}
