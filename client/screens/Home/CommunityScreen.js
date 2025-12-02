@@ -365,6 +365,10 @@ const CommunityScreen = () => {
   const onViewableItemsChanged = useRef(({ viewableItems }) => {
     if (!viewableItems?.length) return;
     const index = viewableItems[0].index ?? 0;
+    const nextRef = videoRefs.current[index];
+    if (nextRef?.replayAsync) {
+      nextRef.replayAsync();
+    }
     setActiveIndex(index);
     setFinishedMap((prev) => ({ ...prev, [index]: false }));
   });
