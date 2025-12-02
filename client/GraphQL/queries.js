@@ -283,7 +283,35 @@ export const USER_NOTIFICATIONS_QUERY = `
       postId
       commentId
       createdAt
+      read
+      dismissed
     }
+  }
+`;
+
+export const MARK_NOTIFICATION_READ_MUTATION = `
+  mutation MarkNotificationRead($token: String!, $id: ID!) {
+    markNotificationRead(token: $token, id: $id) {
+      id
+      read
+      dismissed
+    }
+  }
+`;
+
+export const DISMISS_NOTIFICATION_MUTATION = `
+  mutation DismissNotification($token: String!, $id: ID!) {
+    dismissNotification(token: $token, id: $id) {
+      id
+      read
+      dismissed
+    }
+  }
+`;
+
+export const CLEAR_ALL_NOTIFICATIONS_MUTATION = `
+  mutation ClearAllNotifications($token: String!, $ids: [ID!]!) {
+    clearAllNotifications(token: $token, ids: $ids)
   }
 `;
 

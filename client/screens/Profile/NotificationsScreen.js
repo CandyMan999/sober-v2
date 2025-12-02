@@ -14,12 +14,19 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { Feather, Ionicons } from "@expo/vector-icons";
+import { Swipeable } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import Context from "../../context";
 import { useClient } from "../../client";
 import { ContentPreviewModal } from "../../components";
-import { POST_BY_ID_QUERY, USER_NOTIFICATIONS_QUERY } from "../../GraphQL/queries";
+import {
+  CLEAR_ALL_NOTIFICATIONS_MUTATION,
+  DISMISS_NOTIFICATION_MUTATION,
+  MARK_NOTIFICATION_READ_MUTATION,
+  POST_BY_ID_QUERY,
+  USER_NOTIFICATIONS_QUERY,
+} from "../../GraphQL/queries";
 import { getToken } from "../../utils/helpers";
 import { NotificationIntents, NotificationTypes } from "../../utils/notifications";
 
@@ -77,6 +84,8 @@ const NotificationsScreen = ({ navigation }) => {
   const [previewContent, setPreviewContent] = useState(null);
   const [previewShowComments, setPreviewShowComments] = useState(false);
   const [loadingPreview, setLoadingPreview] = useState(false);
+  const [activeNotificationId, setActiveNotificationId] = useState(null);
+  const [clearingAll, setClearingAll] = useState(false);
 
   useEffect(() => {
     let isMounted = true;
@@ -93,7 +102,13 @@ const NotificationsScreen = ({ navigation }) => {
 
         const data = await client.request(USER_NOTIFICATIONS_QUERY, { token });
         if (isMounted) {
-          setNotifications(data?.userNotifications || []);
+          setNotifications(
+            (data?.userNotifications || []).map((notification) => ({
+              ...notification,
+              read: Boolean(notification.read),
+              dismissed: Boolean(notification.dismissed),
+            }))
+          );
         }
       } catch (error) {
         console.log("Unable to load notifications", error);
@@ -112,22 +127,64 @@ const NotificationsScreen = ({ navigation }) => {
 
   const sortedNotifications = useMemo(
     () =>
-      [...notifications].sort(
-        (a, b) =>
-          new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime()
-      ),
+      [...notifications]
+        .filter((notification) => !notification.dismissed)
+        .sort((a, b) => {
+          if ((a.read ?? false) !== (b.read ?? false)) {
+            return a.read ? 1 : -1;
+          }
+
+          return (
+            new Date(b.createdAt || 0).getTime() -
+            new Date(a.createdAt || 0).getTime()
+          );
+        }),
     [notifications]
   );
 
-  const handleMarkOpened = useCallback((id) => {
-    setNotifications((prev) =>
-      prev.map((notification) =>
-        notification.id === id
-          ? { ...notification, read: true, opened: true }
-          : notification
-      )
-    );
-  }, []);
+  const markNotificationRead = useCallback(
+    async (id) => {
+      if (!id) return;
+      setNotifications((prev) =>
+        prev.map((notification) =>
+          notification.id === id ? { ...notification, read: true } : notification
+        )
+      );
+
+      try {
+        const token = await getToken();
+        if (token) {
+          await client.request(MARK_NOTIFICATION_READ_MUTATION, { token, id });
+        }
+      } catch (error) {
+        console.log("Unable to mark notification as read", error);
+      }
+    },
+    [client]
+  );
+
+  const dismissNotification = useCallback(
+    async (notification) => {
+      if (!notification?.id) return;
+
+      setNotifications((prev) =>
+        prev.filter((item) => item.id !== notification.id && !item.dismissed)
+      );
+
+      try {
+        const token = await getToken();
+        if (token) {
+          await client.request(DISMISS_NOTIFICATION_MUTATION, {
+            token,
+            id: notification.id,
+          });
+        }
+      } catch (error) {
+        console.log("Unable to dismiss notification", error);
+      }
+    },
+    [client]
+  );
 
   const openPostFromNotification = useCallback(
     async (notification) => {
@@ -162,17 +219,24 @@ const NotificationsScreen = ({ navigation }) => {
   const handleNotificationPress = useCallback(
     (notification) => {
       if (!notification) return;
-      handleMarkOpened(notification.id);
-
-      if (
+      const actionable =
         notification.intent === NotificationIntents.OPEN_POST_COMMENTS &&
-        notification.postId
-      ) {
-        openPostFromNotification(notification);
-      }
+        notification.postId;
+
+      if (!actionable) return;
+
+      setActiveNotificationId(notification.id);
+      dismissNotification(notification);
+      openPostFromNotification(notification);
     },
-    [handleMarkOpened, openPostFromNotification]
+    [dismissNotification, openPostFromNotification]
   );
+
+  useEffect(() => {
+    if (previewVisible && activeNotificationId) {
+      markNotificationRead(activeNotificationId);
+    }
+  }, [activeNotificationId, markNotificationRead, previewVisible]);
 
   const renderNotification = ({ item }) => {
     const icon = ICONS[item.type] || ICONS[NotificationTypes.COMMENT_ON_POST];
@@ -180,32 +244,66 @@ const NotificationsScreen = ({ navigation }) => {
       item.intent === NotificationIntents.OPEN_POST_COMMENTS && item.postId;
 
     return (
-      <TouchableOpacity
-        style={[styles.alertRow, item.read ? null : styles.alertRowUnread]}
-        onPress={() => (actionable ? handleNotificationPress(item) : null)}
-        accessibilityRole={actionable ? "button" : "text"}
-        accessibilityLabel={`${item.title}. ${item.description}`}
-        activeOpacity={actionable ? 0.85 : 1}
+      <Swipeable
+        renderRightActions={() => (
+          <TouchableOpacity
+            style={styles.clearAction}
+            onPress={() => dismissNotification(item)}
+            accessibilityRole="button"
+            accessibilityLabel={`Clear ${item.title}`}
+          >
+            <Text style={styles.clearActionText}>Clear</Text>
+          </TouchableOpacity>
+        )}
+        overshootRight={false}
       >
-        <View style={styles.iconBadge}>
-          <Ionicons name={icon.name} size={18} color={icon.color} />
-        </View>
-        <View style={styles.alertCopy}>
-          <Text style={styles.alertTitle}>{item.title}</Text>
-          <Text style={styles.alertDescription}>{item.description}</Text>
-          {formatSubtitle(item)}
-        </View>
-        {actionable ? (
-          <Ionicons name="chevron-forward" size={16} color="#9ca3af" />
-        ) : null}
-      </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.alertRow, item.read ? null : styles.alertRowUnread]}
+          onPress={() => (actionable ? handleNotificationPress(item) : null)}
+          accessibilityRole={actionable ? "button" : "text"}
+          accessibilityLabel={`${item.title}. ${item.description}`}
+          activeOpacity={actionable ? 0.85 : 1}
+        >
+          <View style={styles.iconBadge}>
+            <Ionicons name={icon.name} size={18} color={icon.color} />
+          </View>
+          <View style={styles.alertCopy}>
+            <Text style={styles.alertTitle}>{item.title}</Text>
+            <Text style={styles.alertDescription}>{item.description}</Text>
+            {formatSubtitle(item)}
+          </View>
+          {actionable ? (
+            <Ionicons name="chevron-forward" size={16} color="#9ca3af" />
+          ) : null}
+        </TouchableOpacity>
+      </Swipeable>
     );
   };
+
+  const handleClearAll = useCallback(async () => {
+    const ids = notifications.map((notification) => notification.id);
+    if (!ids.length) return;
+
+    setClearingAll(true);
+    setNotifications([]);
+
+    try {
+      const token = await getToken();
+      if (token) {
+        await client.request(CLEAR_ALL_NOTIFICATIONS_MUTATION, { token, ids });
+      }
+    } catch (error) {
+      console.log("Unable to clear all notifications", error);
+    } finally {
+      setClearingAll(false);
+    }
+  }, [client, notifications]);
 
   const handleClosePreview = () => {
     setPreviewContent(null);
     setPreviewShowComments(false);
     setPreviewVisible(false);
+    setActiveNotificationId(null);
   };
 
   return (
@@ -221,7 +319,25 @@ const NotificationsScreen = ({ navigation }) => {
           </TouchableOpacity>
           <Text style={styles.backLabel}>Profile</Text>
         </View>
-        <Text style={styles.title}>Notifications</Text>
+        <View style={styles.titleRow}>
+          <Text style={styles.title}>Notifications</Text>
+          {sortedNotifications.length ? (
+            <TouchableOpacity
+              onPress={handleClearAll}
+              disabled={clearingAll}
+              style={styles.clearAllButton}
+            >
+              <Text
+                style={[
+                  styles.clearAllText,
+                  clearingAll ? styles.clearAllTextDisabled : null,
+                ]}
+              >
+                Clear all
+              </Text>
+            </TouchableOpacity>
+          ) : null}
+        </View>
 
         {loadingNotifications ? (
           <View style={styles.loadingState}>
@@ -348,6 +464,18 @@ const styles = StyleSheet.create({
     color: "#f59e0b",
     fontSize: 12,
   },
+  clearAction: {
+    backgroundColor: "#ef4444",
+    justifyContent: "center",
+    alignItems: "center",
+    width: 80,
+    borderRadius: 12,
+    marginLeft: 8,
+  },
+  clearActionText: {
+    color: "#f9fafb",
+    fontWeight: "800",
+  },
   placeholderText: {
     color: "#c084fc",
     fontSize: 12,
@@ -395,6 +523,27 @@ const styles = StyleSheet.create({
     color: "#f87171",
     marginTop: 8,
     textAlign: "center",
+  },
+  titleRow: {
+    marginTop: 6,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    gap: 12,
+  },
+  clearAllButton: {
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderRadius: 8,
+    backgroundColor: "rgba(255,255,255,0.06)",
+  },
+  clearAllText: {
+    color: "#f3f4f6",
+    fontWeight: "700",
+    fontSize: 12,
+  },
+  clearAllTextDisabled: {
+    color: "#9ca3af",
   },
   previewOverlay: {
     position: "absolute",

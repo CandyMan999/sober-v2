@@ -200,6 +200,8 @@ const typeDefs = gql`
     postId: ID
     commentId: ID
     createdAt: String
+    read: Boolean!
+    dismissed: Boolean!
   }
 
   type PostConnection {
@@ -412,6 +414,9 @@ const typeDefs = gql`
       targetType: SaveTarget!
       targetId: ID!
     ): SavePayload!
+    markNotificationRead(token: String!, id: ID!): Notification!
+    dismissNotification(token: String!, id: ID!): Notification!
+    clearAllNotifications(token: String!, ids: [ID!]!): Boolean!
     sendDirectMessage(recipientId: ID!, text: String!, replyTo: ID): Comment!
     followUser(token: String!, userId: ID!): Connection!
     unfollowUser(token: String!, userId: ID!): Boolean!

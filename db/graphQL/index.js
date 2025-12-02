@@ -24,6 +24,9 @@ const {
   updateSocialResolver,
   sendDirectMessageResolver,
   setDirectTypingResolver,
+  markNotificationReadResolver,
+  dismissNotificationResolver,
+  clearAllNotificationsResolver,
 } = require("./mutations/index.js");
 
 const {
@@ -121,6 +124,9 @@ const resolvers = {
     updateSocial: updateSocialResolver,
     sendDirectMessage: sendDirectMessageResolver,
     setDirectTyping: setDirectTypingResolver,
+    markNotificationRead: markNotificationReadResolver,
+    dismissNotification: dismissNotificationResolver,
+    clearAllNotifications: clearAllNotificationsResolver,
   },
 
   Upload: require("graphql-upload-minimal").GraphQLUpload,
@@ -162,6 +168,10 @@ const resolvers = {
         return null;
       }
     },
+  },
+
+  Notification: {
+    id: (parent) => parent?.notificationId || resolveId(parent),
   },
 
   User: {

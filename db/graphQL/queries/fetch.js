@@ -1,6 +1,6 @@
 const { AuthenticationError } = require("apollo-server-express");
 
-const { User, Quote, Post, Like, Comment } = require("../../models");
+const { User, Quote, Post, Like, Comment, Notification } = require("../../models");
 const { getDistanceFromCoords } = require("../../utils/helpers");
 const { findClosestCity } = require("../../utils/location");
 
@@ -243,15 +243,70 @@ module.exports = {
       intent: INTENTS.ACK,
     };
 
-    return [
+    const baseNotifications = [
       ...commentNotifications,
       ...commentReplyNotifications,
       ...commentLikeNotifications,
       ...flaggedPostNotifications,
       buddyNearBarPlaceholder,
-    ].sort(
-      (a, b) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime()
+    ];
+
+    const notificationIds = baseNotifications.map((notification) => notification.id);
+    const existingStatuses = notificationIds.length
+      ? await Notification.find({
+          user: userId,
+          notificationId: { $in: notificationIds },
+        })
+      : [];
+
+    const statusMap = new Map(
+      existingStatuses.map((status) => [status.notificationId, status])
     );
+
+    const missingStatuses = baseNotifications
+      .filter((notification) => !statusMap.has(notification.id))
+      .map((notification) => ({
+        notificationId: notification.id,
+        type: notification.type,
+        user: userId,
+        read: false,
+        dismissed: false,
+      }));
+
+    if (missingStatuses.length) {
+      try {
+        await Notification.insertMany(missingStatuses, { ordered: false });
+        missingStatuses.forEach((status) => {
+          statusMap.set(status.notificationId, status);
+        });
+      } catch (err) {
+        // ignore duplicate key errors if notifications were created in parallel
+        if (err?.code !== 11000) {
+          throw err;
+        }
+      }
+    }
+
+    return baseNotifications
+      .map((notification) => {
+        const status = statusMap.get(notification.id);
+        return {
+          ...notification,
+          read: status?.read ?? false,
+          dismissed: status?.dismissed ?? false,
+        };
+      })
+      .filter((notification) => !notification.dismissed)
+      .sort((a, b) => {
+        if ((a.read ?? false) !== (b.read ?? false)) {
+          return a.read ? 1 : -1;
+        }
+
+        return (
+          new Date(b.createdAt || 0).getTime() -
+          new Date(a.createdAt || 0).getTime()
+        );
+      });
   },
   getAllPostsResolver: async (root, args) => {
     const {
