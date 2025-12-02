@@ -2,8 +2,18 @@ const { AuthenticationError } = require("apollo-server-express");
 
 const { User, Quote, Post } = require("../../models");
 const { getDistanceFromCoords } = require("../../utils/helpers");
-const { findClosestCity } = require("../../utils/location");
-const { serializeUser } = require("../../utils/serializeUser");
+const postAuthorPopulate = {
+  path: "author",
+  populate: ["profilePic", "drunkPic"],
+};
+
+const postVideoPopulate = {
+  path: "video",
+  match: { flagged: false },
+  select: "url flagged viewsCount viewers thumbnailUrl",
+};
+
+const postBasePopulates = [postAuthorPopulate, postVideoPopulate, "closestCity"];
 
 require("dotenv").config();
 
@@ -120,16 +130,7 @@ module.exports = {
         Post.find({ ...baseQuery, ...computeGeoFilter(radiusRadians) })
           .sort({ createdAt: -1 })
           .limit(limit + 1)
-          .populate({
-            path: "author",
-            populate: ["profilePic", "drunkPic"],
-          })
-          .populate({
-            path: "video",
-            match: { flagged: false },
-            select: "url flagged viewsCount viewers thumbnailUrl",
-          })
-          .populate("closestCity")
+          .populate(postBasePopulates)
           .populate({
             path: "comments",
             match: { $or: [{ replyTo: null }, { replyTo: { $exists: false } }] },
@@ -228,11 +229,10 @@ module.exports = {
       return {
         posts: trimmed.map((post) => {
           const plainPost = post.toObject ? post.toObject() : post;
-          const serializedAuthor = serializeUser(plainPost.author);
 
           return {
             ...plainPost,
-            author: serializedAuthor,
+            id: plainPost.id || plainPost._id?.toString(),
           };
         }),
         hasMore,
@@ -250,13 +250,7 @@ module.exports = {
 
     try {
       const post = await Post.findOne({ _id: postId, flagged: false })
-        .populate("author")
-        .populate({
-          path: "video",
-          match: { flagged: false },
-          select: "url flagged viewsCount viewers thumbnailUrl",
-        })
-        .populate("closestCity")
+        .populate(postBasePopulates)
         .populate({
           path: "comments",
           match: { $or: [{ replyTo: null }, { replyTo: { $exists: false } }] },
@@ -311,19 +305,11 @@ module.exports = {
 
     const posts = await Post.find({ author: user._id })
       .sort({ createdAt: -1 })
-      .populate("author")
-      .populate({
-        path: "video",
-        select: "url flagged viewsCount viewers thumbnailUrl",
-      });
+      .populate(postBasePopulates);
 
     const savedPosts = await Post.find({ _id: { $in: user.savedPosts || [] } })
       .sort({ createdAt: -1 })
-      .populate("author")
-      .populate({
-        path: "video",
-        select: "url flagged viewsCount viewers thumbnailUrl",
-      });
+      .populate(postBasePopulates);
 
     const savedQuotes = await Quote.find({ _id: { $in: user.savedQuotes || [] } })
       .sort({ createdAt: -1 })
@@ -371,21 +357,11 @@ module.exports = {
 
     const posts = await Post.find({ author: user._id })
       .sort({ createdAt: -1 })
-      .populate("author")
-      .populate("closestCity")
-      .populate({
-        path: "video",
-        select: "url flagged viewsCount viewers thumbnailUrl",
-      });
+      .populate(postBasePopulates);
 
     const savedPosts = await Post.find({ _id: { $in: user.savedPosts || [] } })
       .sort({ createdAt: -1 })
-      .populate("author")
-      .populate("closestCity")
-      .populate({
-        path: "video",
-        select: "url flagged viewsCount viewers thumbnailUrl",
-      });
+      .populate(postBasePopulates);
 
     const savedQuotes = await Quote.find({ _id: { $in: user.savedQuotes || [] } })
       .sort({ createdAt: -1 })
@@ -395,37 +371,8 @@ module.exports = {
       .sort({ createdAt: -1 })
       .populate("user");
 
-    const city = await findClosestCity(user.lat ?? null, user.long ?? null);
-    const serializePicture = (picture) => {
-      if (!picture) return null;
-
-      const plain = picture.toObject ? picture.toObject() : picture;
-      const pictureId =
-        plain.id ||
-        plain._id?.toString?.() ||
-        plain.publicId ||
-        (typeof plain.url === "string" ? plain.url : null);
-
-      if (!pictureId && !plain.url) return null;
-
-      return {
-        ...plain,
-        id: pictureId || plain.url,
-      };
-    };
-
-    const serializedUser = user.toObject ? user.toObject() : user;
-    const profilePic = serializePicture(serializedUser.profilePic);
-    const drunkPic = serializePicture(serializedUser.drunkPic);
-
     return {
-      user: {
-        ...serializedUser,
-        id: serializedUser.id || serializedUser._id?.toString(),
-        profilePic,
-        drunkPic,
-        closestCity: city,
-      },
+      user,
       posts,
       quotes,
       savedPosts,

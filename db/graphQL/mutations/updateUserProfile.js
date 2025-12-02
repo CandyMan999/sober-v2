@@ -8,7 +8,6 @@ const {
   buildDeepLink,
 } = require("../../utils/handleValidators");
 const { checkHandleExists } = require("../../utils/checkHandleExists");
-const { serializeUser } = require("../../utils/serializeUser");
 
 const validateAndNormalizeSocials = async (social) => {
   const socialUpdates = {};
@@ -133,9 +132,14 @@ module.exports = {
       }
 
       await user.save();
-      await user.populate(["profilePic", "drunkPic"]);
+      await user.populate([
+        "profilePic",
+        "drunkPic",
+        { path: "savedPosts" },
+        { path: "savedQuotes" },
+      ]);
 
-      return serializeUser(user);
+      return user;
     } catch (err) {
       if (err instanceof AuthenticationError || err instanceof UserInputError) {
         throw err;

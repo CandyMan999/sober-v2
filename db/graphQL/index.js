@@ -150,6 +150,9 @@ const resolvers = {
   },
 
   User: {
+    profilePicUrl: (parent) => parent?.profilePicUrl || parent?.profilePic?.url || null,
+    drunkPicUrl: (parent) => parent?.drunkPicUrl || parent?.drunkPic?.url || null,
+
     followers: async (parent) => {
       const targetId = parent.id || parent._id;
       if (!targetId) return [];
