@@ -49,6 +49,10 @@ const ICONS = {
     name: "alert-circle",
     color: "#f59e0b",
   },
+  [NotificationTypes.FOLLOWING_NEW_POST]: {
+    name: "play-circle",
+    color: "#f59e0b",
+  },
   [NotificationTypes.BUDDY_NEAR_BAR]: {
     name: "location",
     color: "#c084fc",

@@ -7,6 +7,7 @@ const NotificationTypes = {
   FLAGGED_POST: "FLAGGED_POST",
   BUDDY_NEAR_BAR: "BUDDY_NEAR_BAR",
   MILESTONE: "MILESTONE",
+  FOLLOWING_NEW_POST: "FOLLOWING_NEW_POST",
 };
 
 const NotificationIntents = {
