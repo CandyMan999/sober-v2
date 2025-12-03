@@ -472,6 +472,7 @@ const CommentSheet = ({
 
       setDraftComment("");
       setReplyTarget(null);
+      inputRef.current?.focus();
     } catch (err) {
       console.error("Failed to send comment", err);
     } finally {
@@ -681,9 +682,9 @@ const CommentSheet = ({
       <View style={styles.modalContainer}>
         <Pressable style={styles.backdrop} onPress={onClose} />
         <KeyboardAvoidingView
-          behavior={"padding"}
+          behavior={Platform.OS === "ios" ? "padding" : undefined}
           style={styles.avoider}
-          keyboardVerticalOffset={Platform.OS === "ios" ? 36 : 12}
+          keyboardVerticalOffset={0}
         >
           <Animated.View
             style={[
@@ -794,7 +795,8 @@ const CommentSheet = ({
               style={styles.commentsList}
               contentContainerStyle={{ paddingBottom: 12 + keyboardHeight }}
               showsVerticalScrollIndicator={false}
-              keyboardShouldPersistTaps="always"
+              keyboardShouldPersistTaps="handled"
+              keyboardDismissMode="none"
             >
               <Text style={styles.commentsCountLabel}>
                 {`${effectiveCount} Comment${effectiveCount === 1 ? "" : "s"}`}
@@ -867,7 +869,11 @@ const CommentSheet = ({
                         styles.inlineSendButtonDisabled,
                     ]}
                     disabled={!draftComment.trim() || submitting}
-                    onPress={handleSend}
+                    onPress={(event) => {
+                      event?.stopPropagation?.();
+                      inputRef.current?.focus();
+                      handleSend();
+                    }}
                     accessibilityLabel={`Send comment on post ${postId || ""}`}
                   >
                     <Ionicons
