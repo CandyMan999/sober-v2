@@ -673,8 +673,10 @@ const CommentSheet = ({
 
   const effectiveCount = commentCount || commentList.length;
   const canSend = draftComment.trim().length > 0 && !submitting;
-  const bottomOffset = Math.max(insets.bottom, keyboardHeight);
-  const sheetPaddingBottom = bottomOffset + 12;
+  const baseBottomInset = insets.bottom || 0;
+  const keyboardLift = Math.max(0, keyboardHeight - baseBottomInset);
+  const sheetBottomOffset = baseBottomInset + keyboardLift;
+  const sheetPaddingBottom = baseBottomInset + 12;
 
   return (
     <Modal
@@ -694,6 +696,7 @@ const CommentSheet = ({
             style={[
               styles.sheet,
               {
+                bottom: sheetBottomOffset,
                 transform: [{ translateY }],
                 paddingBottom: sheetPaddingBottom,
               },
@@ -818,13 +821,7 @@ const CommentSheet = ({
             {/* Full-width top divider for emoji row, no extra padding/margin */}
             <View style={styles.emojiDivider} />
 
-            <ScrollView
-              style={styles.emojiScroller}
-              contentContainerStyle={styles.emojiRow}
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              keyboardShouldPersistTaps="always"
-            >
+            <View style={styles.emojiRow}>
               {EMOJI_ROW.map((emoji) => (
                 <TouchableOpacity
                   key={emoji}
@@ -834,7 +831,7 @@ const CommentSheet = ({
                   <Text style={styles.emojiText}>{emoji}</Text>
                 </TouchableOpacity>
               ))}
-            </ScrollView>
+            </View>
 
             {replyTarget ? (
               <View style={styles.replyingToBar}>
@@ -1219,18 +1216,13 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(148,163,184,0.5)",
     marginHorizontal: -10,
   },
-  emojiScroller: {
-    height: 32,
-    marginBottom: 0,
-    paddingHorizontal: 0,
-  },
   emojiRow: {
     flexDirection: "row",
     alignItems: "center",
-    paddingVertical: 0,
-    paddingHorizontal: 0,
-    marginBottom: 0,
-    minHeight: 32,
+    justifyContent: "space-between",
+    paddingVertical: 6,
+    paddingHorizontal: 6,
+    marginBottom: 4,
   },
   emojiButton: {
     paddingHorizontal: 4,
