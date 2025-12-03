@@ -818,7 +818,13 @@ const CommentSheet = ({
             {/* Full-width top divider for emoji row, no extra padding/margin */}
             <View style={styles.emojiDivider} />
 
-            <View style={styles.emojiRow}>
+            <ScrollView
+              style={styles.emojiScroller}
+              contentContainerStyle={styles.emojiRow}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              keyboardShouldPersistTaps="always"
+            >
               {EMOJI_ROW.map((emoji) => (
                 <TouchableOpacity
                   key={emoji}
@@ -828,7 +834,7 @@ const CommentSheet = ({
                   <Text style={styles.emojiText}>{emoji}</Text>
                 </TouchableOpacity>
               ))}
-            </View>
+            </ScrollView>
 
             {replyTarget ? (
               <View style={styles.replyingToBar}>
@@ -1213,13 +1219,18 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(148,163,184,0.5)",
     marginHorizontal: -10,
   },
+  emojiScroller: {
+    height: 32,
+    marginBottom: 0,
+    paddingHorizontal: 0,
+  },
   emojiRow: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-between",
-    paddingVertical: 6,
-    paddingHorizontal: 6,
-    marginBottom: 4,
+    paddingVertical: 0,
+    paddingHorizontal: 0,
+    marginBottom: 0,
+    minHeight: 32,
   },
   emojiButton: {
     paddingHorizontal: 4,
