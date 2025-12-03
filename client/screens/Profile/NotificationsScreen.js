@@ -3,7 +3,6 @@ import React, {
   useContext,
   useEffect,
   useMemo,
-  useRef,
   useState,
 } from "react";
 import {
@@ -86,7 +85,7 @@ const formatSubtitle = (notification) => {
 };
 
 const NotificationsScreen = ({ navigation }) => {
-  const { state, dispatch } = useContext(Context);
+  const { state } = useContext(Context);
   const client = useClient();
 
   const [notifications, setNotifications] = useState([]);
@@ -99,48 +98,12 @@ const NotificationsScreen = ({ navigation }) => {
   const [loadingPreview, setLoadingPreview] = useState(false);
   const [activeNotificationId, setActiveNotificationId] = useState(null);
   const [clearingAll, setClearingAll] = useState(false);
-  const pendingSyncRef = useRef(null);
 
-  const syncProfileOverview = useCallback(
-    (nextNotifications) => {
-      const currentOverview = state?.profileOverview || {};
-      const activeNotifications = (nextNotifications || []).filter(
-        (notification) => !notification?.dismissed
-      );
-
-      dispatch({
-        type: "SET_PROFILE_OVERVIEW",
-        payload: {
-          ...currentOverview,
-          notifications: activeNotifications,
-          notificationsCount: activeNotifications.length,
-        },
-      });
-    },
-    [dispatch, state?.profileOverview]
-  );
-
-  const updateNotifications = useCallback(
-    (updater, { syncProfile = false } = {}) => {
-      setNotifications((prev) => {
-        const next = typeof updater === "function" ? updater(prev) : updater;
-
-        if (syncProfile) {
-          pendingSyncRef.current = next || [];
-        }
-
-        return next;
-      });
-    },
-    []
-  );
-
-  useEffect(() => {
-    if (pendingSyncRef.current) {
-      syncProfileOverview(pendingSyncRef.current);
-      pendingSyncRef.current = null;
-    }
-  }, [notifications, syncProfileOverview]);
+  const updateNotifications = useCallback((updater) => {
+    setNotifications((prev) =>
+      typeof updater === "function" ? updater(prev) : updater
+    );
+  }, []);
 
   useEffect(() => {
     let isMounted = true;
@@ -222,10 +185,8 @@ const NotificationsScreen = ({ navigation }) => {
     async (notification) => {
       if (!notification?.id) return;
 
-      updateNotifications(
-        (prev) =>
-          prev.filter((item) => item.id !== notification.id && !item.dismissed),
-        { syncProfile: true }
+      updateNotifications((prev) =>
+        prev.filter((item) => item.id !== notification.id && !item.dismissed)
       );
 
       try {
@@ -392,7 +353,7 @@ const NotificationsScreen = ({ navigation }) => {
     if (!ids.length) return;
 
     setClearingAll(true);
-    updateNotifications([], { syncProfile: true });
+    updateNotifications([]);
 
     try {
       const token = await getToken();
