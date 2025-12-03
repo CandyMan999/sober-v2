@@ -8,6 +8,7 @@ const {
   Video,
   Picture,
   Quote,
+  Room,
 } = require("../models");
 
 require("dotenv").config();
@@ -92,6 +93,7 @@ const deleteUserAndRecalculate = async (userId) => {
     userConnections,
     userPictures,
     userQuotes,
+    roomsWithUser,
   ] = await Promise.all([
     Post.find({ author: userId }).populate("video"),
     Comment.find({ author: userId }).select("_id targetType targetId"),
@@ -99,7 +101,21 @@ const deleteUserAndRecalculate = async (userId) => {
     Connection.find({ $or: [{ follower: userId }, { followee: userId }] }),
     Picture.find({ user: userId }),
     Quote.find({ user: userId }).select("_id isApproved"),
+    Room.find({ users: userId }).select("_id isDirect comments lastMessage"),
   ]);
+
+  const directRoomIds = roomsWithUser
+    .filter((room) => room.isDirect)
+    .map((room) => room._id);
+  const groupRoomIds = roomsWithUser
+    .filter((room) => !room.isDirect)
+    .map((room) => room._id);
+
+  const directRoomCommentDocs = directRoomIds.length
+    ? await Comment.find({ targetType: "ROOM", targetId: { $in: directRoomIds } }).select(
+        "_id"
+      )
+    : [];
 
   const postIds = userPosts.map((post) => post._id);
   const postIdStrings = postIds.map((id) => id.toString());
@@ -128,6 +144,7 @@ const deleteUserAndRecalculate = async (userId) => {
     ...userCommentIds,
     ...postComments.map((comment) => comment._id),
     ...quoteComments.map((comment) => comment._id),
+    ...directRoomCommentDocs.map((comment) => comment._id),
   ]);
 
   if (commentIdsToDelete.length) {
@@ -186,6 +203,25 @@ const deleteUserAndRecalculate = async (userId) => {
     Connection.deleteMany({ $or: [{ follower: userId }, { followee: userId }] }),
   ]);
 
+  if (directRoomIds.length) {
+    await Room.deleteMany({ _id: { $in: directRoomIds } });
+  }
+
+  if (commentIdsToDelete.length) {
+    await Room.updateMany(
+      { comments: { $in: commentIdsToDelete } },
+      { $pull: { comments: { $in: commentIdsToDelete } } }
+    );
+    await Room.updateMany(
+      { lastMessage: { $in: commentIdsToDelete } },
+      { $unset: { lastMessage: "" } }
+    );
+  }
+
+  if (groupRoomIds.length) {
+    await Room.updateMany({ _id: { $in: groupRoomIds } }, { $pull: { users: userId } });
+  }
+
   const impactedUserIds = Array.from(
     new Set(
       userConnections
@@ -210,6 +246,7 @@ const deleteUserAndRecalculate = async (userId) => {
         ...userComments
           .filter((comment) => comment.targetType === "POST")
           .map((comment) => comment.targetId.toString()),
+        ...postComments.map((comment) => comment.targetId.toString()),
       ].filter((id) => !postIdStrings.includes(id))
     )
   );
@@ -227,6 +264,7 @@ const deleteUserAndRecalculate = async (userId) => {
         ...userComments
           .filter((comment) => comment.targetType === "QUOTE")
           .map((comment) => comment.targetId.toString()),
+        ...approvedQuoteIds.map((id) => id.toString()),
       ].filter((id) => !unapprovedQuoteIdStrings.includes(id))
     )
   );
