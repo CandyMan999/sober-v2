@@ -529,6 +529,7 @@ module.exports = {
           ? `${trimmedBody.slice(0, 137)}...`
           : trimmedBody
         : "Shared a new post";
+      const followingBody = `Following - ${preview}`;
 
       for (const connection of followerConnections) {
         const follower = connection?.follower;
@@ -546,11 +547,22 @@ module.exports = {
         const notificationPayload = {
           pushToken: follower.token,
           title: `${senderName} shared a new post`,
-          body: preview,
+          body: followingBody,
           data: notificationData,
         };
 
         notifications.push(notificationPayload);
+
+        await createNotificationForUser({
+          userId: follower._id,
+          notificationId: `follow-post-${newPost._id.toString()}`,
+          type: NotificationTypes.FOLLOWING_NEW_POST,
+          title: `${senderName} shared a new post`,
+          description: followingBody,
+          intent: NotificationIntents.OPEN_POST_COMMENTS,
+          postId: String(newPost._id),
+          createdAt: newPost?.createdAt,
+        });
       }
 
       if (notifications.length) {

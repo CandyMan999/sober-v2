@@ -772,6 +772,7 @@ const CommunityScreen = () => {
         keyExtractor={(item) => item.id}
         renderItem={renderItem}
         pagingEnabled
+        keyboardShouldPersistTaps="always"
         contentInsetAdjustmentBehavior="never"
         showsVerticalScrollIndicator={false}
         snapToAlignment="start"
