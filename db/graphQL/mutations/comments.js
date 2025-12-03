@@ -98,7 +98,8 @@ const createCommentForTarget = async ({
     const title = `${targetType === "QUOTE" ? "Quote" : "Post"} Comment`;
 
     const ownerNotificationData = {
-      type: targetType === "QUOTE" ? "quote_comment" : "post_comment",
+      type: NotificationTypes.COMMENT_ON_POST,
+      intent: NotificationIntents.OPEN_POST_COMMENTS,
       targetType,
       targetId: String(target._id),
       commentId: String(newComment._id),
@@ -140,8 +141,8 @@ const createCommentForTarget = async ({
       const title = `${actorName} replied to your comment`;
 
       const replyNotificationData = {
-        type:
-          targetType === "QUOTE" ? "quote_comment_reply" : "post_comment_reply",
+        type: NotificationTypes.COMMENT_REPLY,
+        intent: NotificationIntents.OPEN_POST_COMMENTS,
         targetType,
         targetId: String(target._id),
         commentId: String(newComment._id),
