@@ -3,6 +3,7 @@ import React, {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from "react";
 import {
@@ -98,6 +99,7 @@ const NotificationsScreen = ({ navigation }) => {
   const [loadingPreview, setLoadingPreview] = useState(false);
   const [activeNotificationId, setActiveNotificationId] = useState(null);
   const [clearingAll, setClearingAll] = useState(false);
+  const pendingSyncRef = useRef(null);
 
   const syncProfileOverview = useCallback(
     (nextNotifications) => {
@@ -124,14 +126,21 @@ const NotificationsScreen = ({ navigation }) => {
         const next = typeof updater === "function" ? updater(prev) : updater;
 
         if (syncProfile) {
-          syncProfileOverview(next || []);
+          pendingSyncRef.current = next || [];
         }
 
         return next;
       });
     },
-    [syncProfileOverview]
+    []
   );
+
+  useEffect(() => {
+    if (pendingSyncRef.current) {
+      syncProfileOverview(pendingSyncRef.current);
+      pendingSyncRef.current = null;
+    }
+  }, [notifications, syncProfileOverview]);
 
   useEffect(() => {
     let isMounted = true;
