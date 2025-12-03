@@ -113,9 +113,7 @@ const refreshAverageRelapseDays = async () => {
     }
   }
 
-  console.log(
-    `✅ Average relapse days refreshed for ${updatedCount} user(s).`
-  );
+  console.log(`✅ Average relapse days refreshed for ${updatedCount} user(s).`);
 };
 
 const hasSentRelapseReminderToday = (user, nowInTz) => {
@@ -677,7 +675,7 @@ const cronJob = () => {
               pushToken: user.token,
               title: "Sober Motivation",
               body: quote.text,
-              data: { type: "quote", quoteId: String(quote._id) },
+              data: { type: "new_quote", quoteId: String(quote._id) },
             });
 
             console.log(
