@@ -21,6 +21,7 @@ const { updateSocialResolver } = require("./updateSocial");
 const { sendDirectMessageResolver, setDirectTypingResolver } = require("./directMessage");
 const { toggleSaveResolver } = require("./save");
 const { moderatePostResolver, moderateQuoteResolver } = require("./moderation");
+const { deleteAccountResolver } = require("./deleteUser");
 const {
   markNotificationReadResolver,
   dismissNotificationResolver,
@@ -54,4 +55,5 @@ module.exports = {
   markNotificationReadResolver,
   dismissNotificationResolver,
   clearAllNotificationsResolver,
+  deleteAccountResolver,
 };

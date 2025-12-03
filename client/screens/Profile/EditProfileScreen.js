@@ -12,6 +12,7 @@ import {
   Platform,
   Keyboard,
 } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { LinearGradient } from "expo-linear-gradient";
 import {
   Feather,
@@ -34,6 +35,7 @@ import {
   DELETE_PHOTO_MUTATION,
   UPDATE_USER_PROFILE_MUTATION,
   UPDATE_SOCIAL_MUTATION,
+  DELETE_ACCOUNT_MUTATION,
 } from "../../GraphQL/mutations";
 import { FETCH_ME_QUERY } from "../../GraphQL/queries";
 import { getToken } from "../../utils/helpers";
@@ -234,6 +236,7 @@ const EditProfileScreen = ({ navigation }) => {
   const [token, setToken] = useState(null);
   const [user, setUser] = useState(state?.user || null);
   const [loading, setLoading] = useState(!state?.user);
+  const [deletingAccount, setDeletingAccount] = useState(false);
 
   const [profileUri, setProfileUri] = useState(user?.profilePicUrl || null);
   const [drunkUri, setDrunkUri] = useState(user?.drunkPicUrl || null);
@@ -366,23 +369,47 @@ const EditProfileScreen = ({ navigation }) => {
     return true;
   };
 
+  const confirmDeleteProfile = async () => {
+    if (!token) {
+      showError(
+        "We need your device ID to delete your profile. Please restart the app.",
+        "Unable to delete"
+      );
+      return;
+    }
+
+    try {
+      setDeletingAccount(true);
+      await client.request(DELETE_ACCOUNT_MUTATION, { token });
+
+      await AsyncStorage.removeItem("expoPushToken");
+      dispatch({ type: "SET_USER", payload: null });
+      setUser(null);
+
+      navigation.reset({
+        index: 0,
+        routes: [{ name: "AddUserName" }],
+      });
+    } catch (err) {
+      console.log("Delete profile error", err);
+      showError("We couldn't delete your profile right now. Please try again.");
+    } finally {
+      setDeletingAccount(false);
+    }
+  };
+
   const handleDeleteProfile = () => {
     setAlertState({
       visible: true,
       type: "confirm",
       title: "Delete profile",
-      message: "This will remove your profile and history. Continue?",
+      message:
+        "This will remove your posts, photos, comments, likes, followers, and buddies. This can't be undone.",
       onCancel: closeAlert,
-      onConfirm: () =>
-        setAlertState({
-          visible: true,
-          type: "info",
-          title: "We're here to help",
-          message:
-            "Profile deletion requires a quick confirmation with support. Email support@sober.com to finish up.",
-          onConfirm: closeAlert,
-          onCancel: closeAlert,
-        }),
+      onConfirm: () => {
+        closeAlert();
+        confirmDeleteProfile();
+      },
     });
   };
 
@@ -635,6 +662,8 @@ const EditProfileScreen = ({ navigation }) => {
       setSocialOpen(false);
     }
   };
+
+  const isBusy = loading || deletingAccount;
 
   return (
     <SafeAreaView style={styles.safeArea} edges={["top", "left", "right"]}>
@@ -983,22 +1012,30 @@ const EditProfileScreen = ({ navigation }) => {
             <TouchableOpacity
               style={styles.deleteProfileButton}
               activeOpacity={0.9}
+              disabled={deletingAccount}
               onPress={handleDeleteProfile}
             >
               <LinearGradient
                 colors={["#991b1b", "#f97316"]}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 1 }}
-                style={styles.deleteProfileInner}
+                style={[
+                  styles.deleteProfileInner,
+                  deletingAccount && { opacity: 0.85 },
+                ]}
               >
                 <Feather name="trash-2" size={16} color="#fff" />
-                <Text style={styles.deleteProfileText}>Delete profile</Text>
+                {deletingAccount ? (
+                  <ActivityIndicator color="#fff" size="small" />
+                ) : (
+                  <Text style={styles.deleteProfileText}>Delete profile</Text>
+                )}
               </LinearGradient>
             </TouchableOpacity>
           </View>
         </ScrollView>
 
-        {loading ? (
+        {isBusy ? (
           <View style={styles.loadingScreen}>
             <ActivityIndicator color={accent} size="large" />
           </View>

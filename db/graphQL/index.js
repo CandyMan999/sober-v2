@@ -27,6 +27,7 @@ const {
   markNotificationReadResolver,
   dismissNotificationResolver,
   clearAllNotificationsResolver,
+  deleteAccountResolver,
 } = require("./mutations/index.js");
 
 const {
@@ -127,6 +128,7 @@ const resolvers = {
     markNotificationRead: markNotificationReadResolver,
     dismissNotification: dismissNotificationResolver,
     clearAllNotifications: clearAllNotificationsResolver,
+    deleteAccount: deleteAccountResolver,
   },
 
   Upload: require("graphql-upload-minimal").GraphQLUpload,

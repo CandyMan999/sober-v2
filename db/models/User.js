@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const Connection = require("./Connection");
 
 const UserSchema = new mongoose.Schema(
   {
@@ -171,5 +172,25 @@ const UserSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
+
+// Recalculate followers/following/buddies counts for the provided user
+UserSchema.statics.recalcSocialCounts = async function (userId) {
+  const [followersCount, followingCount, buddiesCount] = await Promise.all([
+    Connection.countDocuments({ followee: userId }),
+    Connection.countDocuments({ follower: userId }),
+    Connection.countDocuments({
+      $or: [{ follower: userId }, { followee: userId }],
+      isBuddy: true,
+    }),
+  ]);
+
+  await this.findByIdAndUpdate(userId, {
+    followersCount,
+    followingCount,
+    buddiesCount,
+  });
+
+  return { followersCount, followingCount, buddiesCount };
+};
 
 module.exports = mongoose.model("User", UserSchema);

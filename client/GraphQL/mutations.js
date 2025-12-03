@@ -338,6 +338,12 @@ export const DELETE_QUOTE_MUTATION = gql`
   }
 `;
 
+export const DELETE_ACCOUNT_MUTATION = gql`
+  mutation DeleteAccount($token: String!) {
+    deleteAccount(token: $token)
+  }
+`;
+
 export const SET_POST_REVIEW_MUTATION = gql`
   mutation SetPostReview($postId: ID!, $review: Boolean!) {
     setPostReview(postId: $postId, review: $review) {
