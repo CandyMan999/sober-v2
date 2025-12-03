@@ -118,6 +118,7 @@ export default function App() {
   const [previewType, setPreviewType] = useState("POST");
   const [previewVisible, setPreviewVisible] = useState(false);
   const [previewMuted, setPreviewMuted] = useState(true);
+  const [previewShowComments, setPreviewShowComments] = useState(false);
 
   // Notification listeners
   const notificationListener = useRef();
@@ -127,10 +128,13 @@ export default function App() {
     setPreviewVisible(false);
     setPreviewContent(null);
     setPreviewMuted(true);
+    setPreviewShowComments(false);
   }, []);
 
   const handleNotificationNavigation = useCallback(
     (data) => {
+      setPreviewShowComments(false);
+
       if (data?.type === "direct_message" && data.senderId) {
         const userParam = {
           id: data.senderId,
@@ -183,10 +187,12 @@ export default function App() {
       }
 
       if (
-        data?.type === NotificationTypes.COMMENT_ON_POST &&
+        (data?.type === NotificationTypes.COMMENT_ON_POST ||
+          data?.type === NotificationTypes.COMMENT_REPLY) &&
         data.postId &&
         data.intent === NotificationIntents.OPEN_POST_COMMENTS
       ) {
+        setPreviewShowComments(true);
         setPreviewType("POST");
         setPreviewRequest({ id: data.postId, type: "POST" });
       }
@@ -354,6 +360,7 @@ export default function App() {
                   onClose={closePreview}
                   viewerUser={state?.user}
                   isMuted={previewMuted}
+                  initialShowComments={previewShowComments}
                   onToggleSound={() => setPreviewMuted((prev) => !prev)}
                   onTogglePostLike={() => {}}
                   onToggleQuoteLike={() => {}}
