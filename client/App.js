@@ -6,6 +6,7 @@ import React, {
   useRef,
   useState,
   useCallback,
+  useMemo,
 } from "react";
 
 import {
@@ -44,6 +45,7 @@ import NotificationsScreen from "./screens/Profile/NotificationsScreen";
 import DirectMessageScreen from "./screens/DirectMessage/DirectMessageScreen";
 import MessageListScreen from "./screens/DirectMessage/MessageListScreen";
 import { ContentPreviewModal } from "./components";
+import CommentSheet from "./components/CommentSheet";
 import { POST_BY_ID_QUERY, QUOTE_BY_ID_QUERY } from "./GraphQL/queries";
 import { useClient } from "./client";
 import {
@@ -52,6 +54,7 @@ import {
 } from "./utils/notifications";
 
 import Context from "./context";
+import CommentSheetContext from "./context/CommentSheetContext";
 import reducer from "./reducer";
 
 const Stack = createStackNavigator();
@@ -119,6 +122,7 @@ export default function App() {
   const [previewVisible, setPreviewVisible] = useState(false);
   const [previewMuted, setPreviewMuted] = useState(true);
   const [previewShowComments, setPreviewShowComments] = useState(false);
+  const [commentSheetConfig, setCommentSheetConfig] = useState(null);
   const [navigationReady, setNavigationReady] = useState(false);
 
   // Notification listeners
@@ -131,6 +135,26 @@ export default function App() {
     setPreviewMuted(true);
     setPreviewShowComments(false);
   }, []);
+
+  const closeCommentSheet = useCallback(() => {
+    setCommentSheetConfig((prev) =>
+      prev ? { ...prev, visible: false } : null
+    );
+  }, []);
+
+  const openCommentSheet = useCallback((config) => {
+    setCommentSheetConfig({ ...config, visible: true });
+  }, []);
+
+  const commentSheetValue = useMemo(
+    () => ({
+      openCommentSheet,
+      closeCommentSheet,
+      isCommentSheetVisible: Boolean(commentSheetConfig?.visible),
+      commentSheetConfig,
+    }),
+    [closeCommentSheet, commentSheetConfig, openCommentSheet]
+  );
 
   const handleNotificationNavigation = useCallback(
     (data) => {
@@ -332,104 +356,111 @@ export default function App() {
     <ApolloProvider client={client}>
       <GestureHandlerRootView style={{ flex: 1 }}>
         <SafeAreaProvider>
-          <Context.Provider value={{ state, dispatch }}>
-            <NavigationContainer
-              ref={navigationRef}
-              onReady={() => setNavigationReady(true)}
-            >
-              <>
-                <Stack.Navigator
-                  screenOptions={{
-                    headerShown: true,
-                  }}
-                >
-                  <Stack.Screen
-                    name="AddUserName"
-                    component={AddUserNameScreen}
-                    options={{ title: "Choose a Username" }}
+          <CommentSheetContext.Provider value={commentSheetValue}>
+            <Context.Provider value={{ state, dispatch }}>
+              <NavigationContainer
+                ref={navigationRef}
+                onReady={() => setNavigationReady(true)}
+              >
+                <>
+                  <Stack.Navigator
+                    screenOptions={{
+                      headerShown: true,
+                    }}
+                  >
+                    <Stack.Screen
+                      name="AddUserName"
+                      component={AddUserNameScreen}
+                      options={{ title: "Choose a Username" }}
+                    />
+                    <Stack.Screen
+                      name="AddPhoto"
+                      component={AddPhotoScreen}
+                      options={{ title: "Add Profile Photo" }}
+                    />
+                    <Stack.Screen
+                      name="AddSobrietyDate"
+                      component={AddSobrietyDateScreen}
+                      options={{ title: "Set Sobriety Date" }}
+                    />
+                    <Stack.Screen
+                      name="LocationPermission"
+                      component={LocationPermissionScreen}
+                      options={{ title: "Location Permission" }}
+                    />
+                    {/* Main app shell */}
+                    <Stack.Screen
+                      name="MainTabs"
+                      component={TabNavigator}
+                      options={{ headerShown: false }}
+                    />
+                    <Stack.Screen
+                      name="UserProfile"
+                      component={UserProfileScreen}
+                      options={{ headerShown: false }}
+                    />
+                    <Stack.Screen
+                      name="Followers"
+                      component={FollowersScreen}
+                      options={{ headerShown: false }}
+                    />
+                    <Stack.Screen
+                      name="Following"
+                      component={FollowingScreen}
+                      options={{ headerShown: false }}
+                    />
+                    <Stack.Screen
+                      name="Buddies"
+                      component={BuddiesScreen}
+                      options={{ headerShown: false }}
+                    />
+                    <Stack.Screen
+                      name="Likes"
+                      component={LikesScreen}
+                      options={{ headerShown: false }}
+                    />
+                    <Stack.Screen
+                      name="Notifications"
+                      component={NotificationsScreen}
+                      options={{ headerShown: false }}
+                    />
+                    <Stack.Screen
+                      name="Messages"
+                      component={MessageListScreen}
+                      options={{ headerShown: false }}
+                    />
+                    <Stack.Screen
+                      name="DirectMessage"
+                      component={DirectMessageScreen}
+                      options={{ headerShown: false }}
+                    />
+                  </Stack.Navigator>
+                  <ContentPreviewModal
+                    visible={previewVisible && Boolean(previewContent)}
+                    item={previewContent}
+                    type={previewType}
+                    onClose={closePreview}
+                    viewerUser={state?.user}
+                    isMuted={previewMuted}
+                    initialShowComments={previewShowComments}
+                    onToggleSound={() => setPreviewMuted((prev) => !prev)}
+                    onTogglePostLike={() => {}}
+                    onToggleQuoteLike={() => {}}
+                    onToggleFollow={() => {}}
+                    onFlagForReview={() => {}}
+                    onToggleSave={() => {}}
+                    onDelete={() => {}}
                   />
-                  <Stack.Screen
-                    name="AddPhoto"
-                    component={AddPhotoScreen}
-                    options={{ title: "Add Profile Photo" }}
-                  />
-                  <Stack.Screen
-                    name="AddSobrietyDate"
-                    component={AddSobrietyDateScreen}
-                    options={{ title: "Set Sobriety Date" }}
-                  />
-                  <Stack.Screen
-                    name="LocationPermission"
-                    component={LocationPermissionScreen}
-                    options={{ title: "Location Permission" }}
-                  />
-                  {/* Main app shell */}
-                  <Stack.Screen
-                    name="MainTabs"
-                    component={TabNavigator}
-                    options={{ headerShown: false }}
-                  />
-                  <Stack.Screen
-                    name="UserProfile"
-                    component={UserProfileScreen}
-                    options={{ headerShown: false }}
-                  />
-                  <Stack.Screen
-                    name="Followers"
-                    component={FollowersScreen}
-                    options={{ headerShown: false }}
-                  />
-                  <Stack.Screen
-                    name="Following"
-                    component={FollowingScreen}
-                    options={{ headerShown: false }}
-                  />
-                  <Stack.Screen
-                    name="Buddies"
-                    component={BuddiesScreen}
-                    options={{ headerShown: false }}
-                  />
-                  <Stack.Screen
-                    name="Likes"
-                    component={LikesScreen}
-                    options={{ headerShown: false }}
-                  />
-                  <Stack.Screen
-                    name="Notifications"
-                    component={NotificationsScreen}
-                    options={{ headerShown: false }}
-                  />
-                  <Stack.Screen
-                    name="Messages"
-                    component={MessageListScreen}
-                    options={{ headerShown: false }}
-                  />
-                  <Stack.Screen
-                    name="DirectMessage"
-                    component={DirectMessageScreen}
-                    options={{ headerShown: false }}
-                  />
-                </Stack.Navigator>
-                <ContentPreviewModal
-                  visible={previewVisible && Boolean(previewContent)}
-                  item={previewContent}
-                  type={previewType}
-                  onClose={closePreview}
-                  viewerUser={state?.user}
-                  isMuted={previewMuted}
-                  initialShowComments={previewShowComments}
-                  onToggleSound={() => setPreviewMuted((prev) => !prev)}
-                  onTogglePostLike={() => {}}
-                  onToggleQuoteLike={() => {}}
-                  onToggleFollow={() => {}}
-                  onFlagForReview={() => {}}
-                  onToggleSave={() => {}}
-                  onDelete={() => {}}
-                />
-              </>
-            </NavigationContainer>
-            <Toast />
-          </Context.Provider>
+                </>
+              </NavigationContainer>
+              <CommentSheet
+                {...(commentSheetConfig || {})}
+                visible={Boolean(commentSheetConfig?.visible)}
+                onClose={closeCommentSheet}
+              />
+              <Toast />
+            </Context.Provider>
+          </CommentSheetContext.Provider>
         </SafeAreaProvider>
       </GestureHandlerRootView>
     </ApolloProvider>

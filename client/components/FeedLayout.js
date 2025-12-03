@@ -1,11 +1,11 @@
 // components/FeedLayout.js
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
 import Avatar from "./Avatar";
 import FloatingActionIcons from "./FloatingActionIcons";
-import CommentSheet from "./CommentSheet";
+import CommentSheetContext from "../context/CommentSheetContext";
 
 const ACCENT = "#F59E0B";
 
@@ -51,9 +51,15 @@ const FeedLayout = ({
   viewerUserId,
   initialShowComments = false,
 }) => {
-  const [showComments, setShowComments] = useState(initialShowComments);
+  const {
+    openCommentSheet,
+    closeCommentSheet,
+    isCommentSheetVisible,
+    commentSheetConfig,
+  } = useContext(CommentSheetContext);
   const [isCaptionExpanded, setIsCaptionExpanded] = useState(false);
   const [isCaptionTruncated, setIsCaptionTruncated] = useState(false);
+  const hasOpenedInitialComments = useRef(false);
 
   const formatCount = (n) => {
     if (typeof n !== "number") return "0";
@@ -74,13 +80,67 @@ const FeedLayout = ({
     setIsCaptionExpanded((prev) => !prev);
   };
 
-  const handleCommentPress = () => {
-    setShowComments((prev) => !prev);
-  };
+  const commentSheetPayload = useMemo(
+    () => ({
+      comments,
+      postId,
+      targetId: commentTargetId || postId,
+      targetType: commentTargetType,
+      postCaption: commentSheetCaption ?? caption,
+      postAuthor,
+      postCreatedAt,
+      postCityName: cityName,
+      totalComments: commentsCount,
+      onCommentAdded,
+      onToggleFollow,
+      isFollowed,
+      isBuddy,
+      canFollow,
+    }),
+    [
+      canFollow,
+      caption,
+      cityName,
+      commentSheetCaption,
+      commentTargetId,
+      commentTargetType,
+      comments,
+      commentsCount,
+      isBuddy,
+      isFollowed,
+      onCommentAdded,
+      onToggleFollow,
+      postAuthor,
+      postCreatedAt,
+      postId,
+    ]
+  );
+
+  const handleCommentPress = useCallback(() => {
+    const activeTargetId = commentSheetPayload.targetId;
+    if (
+      isCommentSheetVisible &&
+      commentSheetConfig?.targetId === activeTargetId
+    ) {
+      closeCommentSheet();
+      return;
+    }
+
+    openCommentSheet(commentSheetPayload);
+  }, [
+    closeCommentSheet,
+    commentSheetConfig,
+    commentSheetPayload,
+    isCommentSheetVisible,
+    openCommentSheet,
+  ]);
 
   useEffect(() => {
-    setShowComments(initialShowComments);
-  }, [initialShowComments]);
+    if (initialShowComments && !hasOpenedInitialComments.current) {
+      hasOpenedInitialComments.current = true;
+      openCommentSheet(commentSheetPayload);
+    }
+  }, [commentSheetPayload, initialShowComments, openCommentSheet]);
 
   const displayName =
     authorLabel ||
@@ -259,25 +319,6 @@ const FeedLayout = ({
         showFilter={showFilter}
       />
 
-      {/* Comment sheet (wire to actual comments later) */}
-      <CommentSheet
-        visible={showComments}
-        onClose={handleCommentPress}
-        comments={comments}
-        postId={postId}
-        targetId={commentTargetId || postId}
-        targetType={commentTargetType}
-        postCaption={commentSheetCaption ?? caption}
-        postAuthor={postAuthor}
-        postCreatedAt={postCreatedAt}
-        postCityName={cityName}
-        totalComments={commentsCount}
-        onCommentAdded={onCommentAdded}
-        onToggleFollow={onToggleFollow}
-        isFollowed={isFollowed}
-        isBuddy={isBuddy}
-        canFollow={canFollow}
-      />
     </View>
   );
 };
