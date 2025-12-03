@@ -39,6 +39,7 @@ const soberLogo = require("../assets/icon.png");
 
 const { height: WINDOW_HEIGHT } = Dimensions.get("window");
 const SHEET_HEIGHT = Math.round(WINDOW_HEIGHT * 0.8);
+const SHEET_MIN_HEIGHT = Math.round(WINDOW_HEIGHT * 0.35);
 const EMOJI_ROW = ["❤️", "😍", "🔥", "👏", "😮", "🙏", "👍", "😢", "😂", "🎉"];
 
 const parseDateValue = (value) => {
@@ -190,6 +191,12 @@ const CommentSheet = ({
   const userId = state?.user?.id;
   const composerAvatarUri =
     state?.user?.profilePicUrl || state?.user?.profilePic?.url || null;
+
+  const sheetHeight = useMemo(() => {
+    const availableHeight = WINDOW_HEIGHT - keyboardHeight;
+    const boundedHeight = Math.min(SHEET_HEIGHT, availableHeight);
+    return Math.max(boundedHeight, SHEET_MIN_HEIGHT);
+  }, [keyboardHeight]);
 
   const findCommentById = (list, id) => {
     for (const comment of list || []) {
@@ -690,8 +697,9 @@ const CommentSheet = ({
             style={[
               styles.sheet,
               {
+                height: sheetHeight,
                 transform: [{ translateY }],
-                paddingBottom: 12 + keyboardHeight,
+                paddingBottom: 12 + (keyboardHeight > 0 ? 6 : 0),
               },
             ]}
           >
@@ -793,9 +801,11 @@ const CommentSheet = ({
 
             <ScrollView
               style={styles.commentsList}
-              contentContainerStyle={{ paddingBottom: 12 + keyboardHeight }}
+              contentContainerStyle={{
+                paddingBottom: keyboardHeight > 0 ? 24 : 12,
+              }}
               showsVerticalScrollIndicator={false}
-              keyboardShouldPersistTaps="handled"
+              keyboardShouldPersistTaps="always"
               keyboardDismissMode="none"
             >
               <Text style={styles.commentsCountLabel}>
