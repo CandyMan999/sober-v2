@@ -116,11 +116,14 @@ const NotificationsScreen = ({ navigation }) => {
   );
 
   const updateNotifications = useCallback(
-    (updater) => {
+    (updater, { syncProfile = false } = {}) => {
       setNotifications((prev) => {
         const next = typeof updater === "function" ? updater(prev) : updater;
 
-        syncProfileOverview(next || []);
+        if (syncProfile) {
+          syncProfileOverview(next || []);
+        }
+
         return next;
       });
     },
@@ -207,8 +210,10 @@ const NotificationsScreen = ({ navigation }) => {
     async (notification) => {
       if (!notification?.id) return;
 
-      updateNotifications((prev) =>
-        prev.filter((item) => item.id !== notification.id && !item.dismissed)
+      updateNotifications(
+        (prev) =>
+          prev.filter((item) => item.id !== notification.id && !item.dismissed),
+        { syncProfile: true }
       );
 
       try {
@@ -375,7 +380,7 @@ const NotificationsScreen = ({ navigation }) => {
     if (!ids.length) return;
 
     setClearingAll(true);
-    updateNotifications([]);
+    updateNotifications([], { syncProfile: true });
 
     try {
       const token = await getToken();
