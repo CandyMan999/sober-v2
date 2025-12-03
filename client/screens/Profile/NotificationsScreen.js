@@ -15,6 +15,7 @@ import {
   Animated,
 } from "react-native";
 import { Feather, Ionicons } from "@expo/vector-icons";
+import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import { Swipeable } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -53,8 +54,9 @@ const ICONS = {
     color: "#c084fc",
   },
   [NotificationTypes.MILESTONE]: {
-    name: "medal",
+    name: "award",
     color: "#f59e0b",
+    IconComponent: FontAwesome5,
   },
 };
 
@@ -264,10 +266,12 @@ const NotificationsScreen = ({ navigation }) => {
 
   const renderNotification = ({ item }) => {
     const icon = ICONS[item.type] || ICONS[NotificationTypes.COMMENT_ON_POST];
+    const IconComponent = icon.IconComponent || Ionicons;
     const actionable =
       (item.intent === NotificationIntents.OPEN_POST_COMMENTS && item.postId) ||
       item.type === NotificationTypes.MILESTONE ||
       item.intent === NotificationIntents.SHOW_INFO;
+    const isMilestone = item.type === NotificationTypes.MILESTONE;
 
     return (
       <Swipeable
@@ -313,11 +317,17 @@ const NotificationsScreen = ({ navigation }) => {
           activeOpacity={actionable ? 0.85 : 1}
         >
           <View style={styles.iconBadge}>
-            <Ionicons name={icon.name} size={18} color={icon.color} />
+            <IconComponent name={icon.name} size={18} color={icon.color} />
           </View>
           <View style={styles.alertCopy}>
             <Text style={styles.alertTitle}>{item.title}</Text>
-            <Text style={styles.alertDescription}>{item.description}</Text>
+            <Text
+              style={styles.alertDescription}
+              numberOfLines={isMilestone ? 2 : undefined}
+              ellipsizeMode="tail"
+            >
+              {item.description}
+            </Text>
             {formatSubtitle(item)}
           </View>
           {actionable ? (
@@ -488,7 +498,12 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   alertRowUnread: {
-    borderColor: "#f59e0b33",
+    borderColor: "#f59e0b66",
+    shadowColor: "#f59e0b",
+    shadowOpacity: 0.35,
+    shadowRadius: 12,
+    shadowOffset: { width: 0, height: 6 },
+    elevation: 4,
   },
   iconBadge: {
     width: 34,

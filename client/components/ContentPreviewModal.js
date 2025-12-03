@@ -24,6 +24,7 @@ import { POST_BY_ID_QUERY, QUOTE_BY_ID_QUERY } from "../GraphQL/queries";
 import { getToken } from "../utils/helpers";
 import CommunityFeedLayout from "./CommunityFeedLayout";
 import QuoteFeedLayout from "./QuoteFeedLayout";
+import LogoIcon from "../assets/icon.png";
 
 const { height: WINDOW_HEIGHT } = Dimensions.get("window");
 const ACTION_SHEET_HEIGHT = Math.round(WINDOW_HEIGHT * 0.26);
@@ -511,6 +512,9 @@ const ContentPreviewModal = ({
     if (isInfo) {
       return (
         <View style={styles.infoContainer}>
+          <View style={styles.infoLogoWrapper}>
+            <Image source={LogoIcon} style={styles.infoLogo} />
+          </View>
           <Text style={styles.infoTitle}>
             {content?.title || "Reminder"}
           </Text>
@@ -877,8 +881,17 @@ const styles = StyleSheet.create({
     backgroundColor: "#0b1220",
     justifyContent: "center",
   },
+  infoLogoWrapper: {
+    alignItems: "center",
+    marginBottom: 12,
+  },
+  infoLogo: {
+    width: 68,
+    height: 68,
+    borderRadius: 16,
+  },
   infoTitle: {
-    color: "#fbbf24",
+    color: "#f59e0b",
     fontSize: 22,
     fontWeight: "800",
     marginBottom: 10,
