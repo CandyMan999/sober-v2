@@ -22,7 +22,6 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import { formatDistanceToNow } from "date-fns";
@@ -116,7 +115,6 @@ const CommentSheet = ({
   const [followPending, setFollowPending] = useState(false);
   const isQuoteSheet = targetType === "QUOTE";
   const navigation = useNavigation();
-  const insets = useSafeAreaInsets();
 
   useEffect(() => {
     if (visible) {
@@ -474,7 +472,6 @@ const CommentSheet = ({
 
       setDraftComment("");
       setReplyTarget(null);
-      Keyboard.dismiss();
     } catch (err) {
       console.error("Failed to send comment", err);
     } finally {
@@ -673,10 +670,6 @@ const CommentSheet = ({
 
   const effectiveCount = commentCount || commentList.length;
   const canSend = draftComment.trim().length > 0 && !submitting;
-  const baseBottomInset = insets.bottom || 0;
-  const keyboardLift = Math.max(0, keyboardHeight - baseBottomInset);
-  const sheetBottomOffset = baseBottomInset + keyboardLift;
-  const sheetPaddingBottom = baseBottomInset + 12;
 
   return (
     <Modal
@@ -696,9 +689,8 @@ const CommentSheet = ({
             style={[
               styles.sheet,
               {
-                bottom: sheetBottomOffset,
                 transform: [{ translateY }],
-                paddingBottom: sheetPaddingBottom,
+                paddingBottom: 12 + keyboardHeight,
               },
             ]}
           >
@@ -800,7 +792,7 @@ const CommentSheet = ({
 
             <ScrollView
               style={styles.commentsList}
-              contentContainerStyle={{ paddingBottom: sheetPaddingBottom + 60 }}
+              contentContainerStyle={{ paddingBottom: 12 + keyboardHeight }}
               showsVerticalScrollIndicator={false}
               keyboardShouldPersistTaps="always"
             >
