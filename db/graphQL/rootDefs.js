@@ -199,6 +199,8 @@ const typeDefs = gql`
     intent: String
     postId: ID
     commentId: ID
+    milestoneDays: Int
+    milestoneTag: String
     createdAt: String
     read: Boolean!
     dismissed: Boolean!

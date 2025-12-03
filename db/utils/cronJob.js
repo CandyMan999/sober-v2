@@ -2,6 +2,11 @@
 const cron = require("node-cron");
 const { Expo } = require("expo-server-sdk");
 const { User, Quote, Post, Picture } = require("../models");
+const {
+  NotificationTypes,
+  NotificationIntents,
+  createNotificationForUser,
+} = require("./notifications");
 const { findClosestCity } = require("./location");
 const { DateTime } = require("luxon");
 
@@ -152,8 +157,32 @@ const buildMilestoneMessage = (user, milestoneDays) => {
       body = `${name}, one full week sober.💪 Seven days of not giving in. That’s a real streak. Celebrate it in a sober way tonight and get ready to build week two.`;
       break;
 
+    case 10:
+      body = `You made it 10 days ${name}. This is around the time people start to forget the pain and think drinking is a good idea. That is just your addictive voice talking to you. Stop for a minute and think about the worst hangover you have ever had`;
+      break;
+
+    case 14:
+      body = `2 weeks ${name}! You got this shit, don't let that weak little addictive bitch voice get you!`;
+      break;
+
     case 30:
       body = `One Month. Fuck yeah ${name}!😱 Don't forget the pain. I want you to think of the worst hangover you have ever had in your life for a minute`;
+      break;
+
+    case 60:
+      body = `2 Months down! Now ${name} build a life you are proud of instead of one you need to escape from because of all the problems drinking has caused you. Most of your problems are somehow related to drinking!`;
+      break;
+
+    case 90:
+      body = `3 Months in ${name}, thinking you have a handle on drinking now and that you can have a few drinks because you proved you can stop is the DUMBEST FUCKING IDEA YOU CAN HAVE EVER!`;
+      break;
+
+    case 180:
+      body = `${name}, 6 months! Half a year without feeling like shit or doing something stupid. Keep up this streak and acheive all of your dreams!`;
+      break;
+
+    case 365:
+      body = `Happy aniversary ${name}, you are a whole new healthier version of yourself! Keep this sober lifestyle going and don't look back. Don't envy people for drinking a posion - you are the lucky one.`;
       break;
 
     default:
@@ -516,18 +545,34 @@ const cronJob = () => {
 
           const { title, body } = buildMilestoneMessage(user, milestone);
 
+          const milestoneTag = `[${milestone}]`;
+          const notificationId = `milestone-${milestone}`;
+
           personalNotifications.push({
             pushToken: user.token,
             title,
             body,
             data: {
-              type: "milestone",
+              id: notificationId,
+              type: NotificationTypes.MILESTONE,
               milestoneDays: milestone,
+              milestoneTag,
             },
           });
 
+          await createNotificationForUser({
+            userId: user._id,
+            notificationId,
+            type: NotificationTypes.MILESTONE,
+            title,
+            description: body,
+            intent: NotificationIntents.SHOW_INFO,
+            milestoneDays: milestone,
+            milestoneTag,
+            createdAt: now,
+          });
+
           const milestonePost = await ensureMilestonePost(user, milestone);
-          const milestoneTag = `[${milestone}]`;
 
           if (milestonePost) {
             const celebrationTitle = `${
