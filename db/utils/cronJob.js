@@ -511,10 +511,6 @@ const cronJob = () => {
         const now = new Date();
         const personalNotifications = [];
         const celebrationNotifications = [];
-        const notifiableUsers = await User.find({
-          notificationsEnabled: true,
-          token: { $ne: null },
-        });
 
         for (const user of users) {
           const tz = user.timezone || "UTC";
@@ -579,22 +575,48 @@ const cronJob = () => {
             const celebrationBody =
               "Tap to congratulate them and keep their streak going.";
 
-            for (const recipient of notifiableUsers) {
-              if (!recipient.token) continue;
-              if (String(recipient._id) === String(user._id)) continue;
+            const celebrationPushRecipients = await User.find({
+              _id: { $ne: user._id },
+              notificationsEnabled: true,
+              token: { $ne: null },
+            });
+
+            for (const recipient of celebrationPushRecipients) {
               if (!isWithinUserDaytime(recipient)) continue;
+
+              const notificationData = {
+                type: "milestone_celebration",
+                milestoneDays: milestone,
+                milestoneTag,
+                postId: String(milestonePost._id),
+                userId: String(user._id),
+                senderUsername: user.username || "A member",
+              };
 
               celebrationNotifications.push({
                 pushToken: recipient.token,
                 title: celebrationTitle,
                 body: celebrationBody,
-                data: {
-                  type: "milestone_celebration",
-                  milestoneDays: milestone,
-                  milestoneTag,
-                  postId: String(milestonePost._id),
-                  userId: String(user._id),
-                },
+                data: notificationData,
+              });
+            }
+
+            const celebrationAlertRecipients = await User.find({
+              _id: { $ne: user._id },
+            });
+
+            for (const recipient of celebrationAlertRecipients) {
+              await createNotificationForUser({
+                userId: recipient._id,
+                notificationId: `follow-milestone-${milestonePost._id.toString()}`,
+                type: NotificationTypes.MILESTONE,
+                title: celebrationTitle,
+                description: celebrationBody,
+                intent: NotificationIntents.OPEN_POST_COMMENTS,
+                postId: String(milestonePost._id),
+                milestoneDays: milestone,
+                milestoneTag,
+                createdAt: milestonePost?.createdAt,
               });
             }
           }
