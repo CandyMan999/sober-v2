@@ -22,6 +22,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import { formatDistanceToNow } from "date-fns";
@@ -115,6 +116,7 @@ const CommentSheet = ({
   const [followPending, setFollowPending] = useState(false);
   const isQuoteSheet = targetType === "QUOTE";
   const navigation = useNavigation();
+  const insets = useSafeAreaInsets();
 
   useEffect(() => {
     if (visible) {
@@ -671,6 +673,8 @@ const CommentSheet = ({
 
   const effectiveCount = commentCount || commentList.length;
   const canSend = draftComment.trim().length > 0 && !submitting;
+  const bottomOffset = Math.max(insets.bottom, keyboardHeight);
+  const sheetPaddingBottom = bottomOffset + 12;
 
   return (
     <Modal
@@ -691,7 +695,7 @@ const CommentSheet = ({
               styles.sheet,
               {
                 transform: [{ translateY }],
-                paddingBottom: 12 + keyboardHeight,
+                paddingBottom: sheetPaddingBottom,
               },
             ]}
           >
@@ -793,9 +797,9 @@ const CommentSheet = ({
 
             <ScrollView
               style={styles.commentsList}
-              contentContainerStyle={{ paddingBottom: 12 + keyboardHeight }}
+              contentContainerStyle={{ paddingBottom: sheetPaddingBottom + 60 }}
               showsVerticalScrollIndicator={false}
-              keyboardShouldPersistTaps="handled"
+              keyboardShouldPersistTaps="always"
             >
               <Text style={styles.commentsCountLabel}>
                 {`${effectiveCount} Comment${effectiveCount === 1 ? "" : "s"}`}
