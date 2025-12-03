@@ -39,7 +39,6 @@ const soberLogo = require("../assets/icon.png");
 
 const { height: WINDOW_HEIGHT } = Dimensions.get("window");
 const SHEET_HEIGHT = Math.round(WINDOW_HEIGHT * 0.8);
-const SHEET_MIN_HEIGHT = Math.round(WINDOW_HEIGHT * 0.35);
 const EMOJI_ROW = ["❤️", "😍", "🔥", "👏", "😮", "🙏", "👍", "😢", "😂", "🎉"];
 
 const parseDateValue = (value) => {
@@ -191,12 +190,6 @@ const CommentSheet = ({
   const userId = state?.user?.id;
   const composerAvatarUri =
     state?.user?.profilePicUrl || state?.user?.profilePic?.url || null;
-
-  const sheetHeight = useMemo(() => {
-    const availableHeight = WINDOW_HEIGHT - keyboardHeight;
-    const boundedHeight = Math.min(SHEET_HEIGHT, availableHeight);
-    return Math.max(boundedHeight, SHEET_MIN_HEIGHT);
-  }, [keyboardHeight]);
 
   const findCommentById = (list, id) => {
     for (const comment of list || []) {
@@ -689,17 +682,16 @@ const CommentSheet = ({
       <View style={styles.modalContainer}>
         <Pressable style={styles.backdrop} onPress={onClose} />
         <KeyboardAvoidingView
-          behavior={Platform.OS === "ios" ? "padding" : undefined}
+          behavior={"padding"}
           style={styles.avoider}
-          keyboardVerticalOffset={0}
+          keyboardVerticalOffset={Platform.OS === "ios" ? 36 : 12}
         >
           <Animated.View
             style={[
               styles.sheet,
               {
-                height: sheetHeight,
                 transform: [{ translateY }],
-                paddingBottom: 12 + (keyboardHeight > 0 ? 6 : 0),
+                paddingBottom: 12 + keyboardHeight,
               },
             ]}
           >
@@ -801,12 +793,9 @@ const CommentSheet = ({
 
             <ScrollView
               style={styles.commentsList}
-              contentContainerStyle={{
-                paddingBottom: keyboardHeight > 0 ? 24 : 12,
-              }}
+              contentContainerStyle={{ paddingBottom: 12 + keyboardHeight }}
               showsVerticalScrollIndicator={false}
-              keyboardShouldPersistTaps="always"
-              keyboardDismissMode="none"
+              keyboardShouldPersistTaps="handled"
             >
               <Text style={styles.commentsCountLabel}>
                 {`${effectiveCount} Comment${effectiveCount === 1 ? "" : "s"}`}
