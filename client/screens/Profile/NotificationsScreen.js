@@ -85,7 +85,7 @@ const formatSubtitle = (notification) => {
 };
 
 const NotificationsScreen = ({ navigation }) => {
-  const { state } = useContext(Context);
+  const { state, dispatch } = useContext(Context);
   const client = useClient();
 
   const [notifications, setNotifications] = useState([]);
@@ -159,6 +159,19 @@ const NotificationsScreen = ({ navigation }) => {
         }),
     [notifications]
   );
+
+  useEffect(() => {
+    const activeCount = notifications.filter((n) => !n.dismissed).length;
+    const overview = state?.profileOverview;
+
+    if (!overview) return;
+    if (overview.notificationsCount === activeCount) return;
+
+    dispatch({
+      type: "SET_PROFILE_OVERVIEW",
+      payload: { ...overview, notificationsCount: activeCount },
+    });
+  }, [dispatch, notifications, state?.profileOverview]);
 
   const markNotificationRead = useCallback(
     async (id) => {
