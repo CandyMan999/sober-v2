@@ -113,8 +113,11 @@ const ProfileScreen = ({ navigation }) => {
         id: buddy.id || `buddy-${index}`,
         user: buddy,
         lastMessage:
-          buddy.lastMessage?.text || buddy.lastMessageText || prompts[index % prompts.length],
-        lastActivity: buddy.lastMessage?.createdAt || Date.now() - index * 45 * 60 * 1000,
+          buddy.lastMessage?.text ||
+          buddy.lastMessageText ||
+          prompts[index % prompts.length],
+        lastActivity:
+          buddy.lastMessage?.createdAt || Date.now() - index * 45 * 60 * 1000,
         unread: unreadFlag || index === 0,
       };
     });
@@ -137,8 +140,7 @@ const ProfileScreen = ({ navigation }) => {
     );
 
     return {
-      following:
-        profileData?.followingCount ?? (following?.length || 0),
+      following: profileData?.followingCount ?? (following?.length || 0),
       followers: profileData?.followersCount ?? (followers?.length || 0),
       buddies: profileData?.buddiesCount ?? (buddies?.length || 0),
       likes: likesTotal + quoteLikesTotal,
@@ -350,13 +352,12 @@ const ProfileScreen = ({ navigation }) => {
   const renderAvatarOverlay = () => {
     if (!isAvatarExpanded) return null;
 
-    const origin =
-      avatarLayout || {
-        x: layout.width / 2 - AVATAR_SIZE / 2,
-        y: layout.height * 0.16,
-        width: AVATAR_SIZE,
-        height: AVATAR_SIZE,
-      };
+    const origin = avatarLayout || {
+      x: layout.width / 2 - AVATAR_SIZE / 2,
+      y: layout.height * 0.16,
+      width: AVATAR_SIZE,
+      height: AVATAR_SIZE,
+    };
 
     const expandedSize = Math.min(layout.width, layout.height) * 0.72;
     const targetTop = Math.max(24, (layout.height - expandedSize) / 2);
@@ -570,14 +571,24 @@ const ProfileScreen = ({ navigation }) => {
   };
 
   const applyPostPatch = (postId, updater) => {
-    setPosts((prev) => prev.map((post) => (post.id === postId ? updater(post) : post)));
-    setSavedPosts((prev) => prev.map((post) => (post.id === postId ? updater(post) : post)));
-    setPreviewItem((prev) => (prev && prev.id === postId ? updater(prev) : prev));
+    setPosts((prev) =>
+      prev.map((post) => (post.id === postId ? updater(post) : post))
+    );
+    setSavedPosts((prev) =>
+      prev.map((post) => (post.id === postId ? updater(post) : post))
+    );
+    setPreviewItem((prev) =>
+      prev && prev.id === postId ? updater(prev) : prev
+    );
   };
 
   const applyQuotePatch = (quoteId, updater) => {
-    setQuotes((prev) => prev.map((quote) => (quote.id === quoteId ? updater(quote) : quote)));
-    setPreviewItem((prev) => (prev && prev.id === quoteId ? updater(prev) : prev));
+    setQuotes((prev) =>
+      prev.map((quote) => (quote.id === quoteId ? updater(quote) : quote))
+    );
+    setPreviewItem((prev) =>
+      prev && prev.id === quoteId ? updater(prev) : prev
+    );
   };
 
   const syncProfileOverview = (nextSavedPosts, nextSavedQuotes) => {
@@ -598,15 +609,15 @@ const ProfileScreen = ({ navigation }) => {
     if (!contentId) return;
 
     if (contentType === "QUOTE") {
-    setQuotes((prev) => prev.filter((quote) => quote.id !== contentId));
-    setSavedQuotes((prev) => prev.filter((quote) => quote.id !== contentId));
-    setPreviewItem((prev) => (prev?.id === contentId ? null : prev));
-    setPreviewVisible(false);
-    return;
-  }
+      setQuotes((prev) => prev.filter((quote) => quote.id !== contentId));
+      setSavedQuotes((prev) => prev.filter((quote) => quote.id !== contentId));
+      setPreviewItem((prev) => (prev?.id === contentId ? null : prev));
+      setPreviewVisible(false);
+      return;
+    }
 
-  setPosts((prev) => prev.filter((post) => post.id !== contentId));
-  setSavedPosts((prev) => prev.filter((post) => post.id !== contentId));
+    setPosts((prev) => prev.filter((post) => post.id !== contentId));
+    setSavedPosts((prev) => prev.filter((post) => post.id !== contentId));
     setPreviewItem((prev) => (prev?.id === contentId ? null : prev));
     setPreviewVisible(false);
   };
@@ -632,14 +643,19 @@ const ProfileScreen = ({ navigation }) => {
     const previousPreview = previewItem;
 
     applyPostPatch(postId, (post) => {
-      const filtered = (post.likes || []).filter((like) => like?.user?.id !== currentUserId);
+      const filtered = (post.likes || []).filter(
+        (like) => like?.user?.id !== currentUserId
+      );
       const nextLikes = currentlyLiked
         ? filtered
         : [...filtered, { id: `temp-like-${postId}`, user: optimisticUser }];
 
       return {
         ...post,
-        likesCount: Math.max(0, (post.likesCount || 0) + (currentlyLiked ? -1 : 1)),
+        likesCount: Math.max(
+          0,
+          (post.likesCount || 0) + (currentlyLiked ? -1 : 1)
+        ),
         likes: nextLikes,
       };
     });
@@ -655,8 +671,13 @@ const ProfileScreen = ({ navigation }) => {
       if (payload) {
         applyPostPatch(postId, (post) => {
           const actorId = payload.like?.user?.id || currentUserId;
-          const filtered = (post.likes || []).filter((like) => like?.user?.id !== actorId);
-          const nextLikes = payload.liked && payload.like ? [...filtered, payload.like] : filtered;
+          const filtered = (post.likes || []).filter(
+            (like) => like?.user?.id !== actorId
+          );
+          const nextLikes =
+            payload.liked && payload.like
+              ? [...filtered, payload.like]
+              : filtered;
 
           return {
             ...post,
@@ -679,7 +700,8 @@ const ProfileScreen = ({ navigation }) => {
     const token = await getToken();
     if (!token) return;
 
-    const existing = quotes.find((quote) => quote.id === quoteId) || previewItem;
+    const existing =
+      quotes.find((quote) => quote.id === quoteId) || previewItem;
     const currentlyLiked = (existing?.likes || []).some(
       (like) => like?.user?.id === currentUserId
     );
@@ -689,14 +711,19 @@ const ProfileScreen = ({ navigation }) => {
     const previousPreview = previewItem;
 
     applyQuotePatch(quoteId, (quote) => {
-      const filtered = (quote.likes || []).filter((like) => like?.user?.id !== currentUserId);
+      const filtered = (quote.likes || []).filter(
+        (like) => like?.user?.id !== currentUserId
+      );
       const nextLikes = currentlyLiked
         ? filtered
         : [...filtered, { id: `temp-like-${quoteId}`, user: optimisticUser }];
 
       return {
         ...quote,
-        likesCount: Math.max(0, (quote.likesCount || 0) + (currentlyLiked ? -1 : 1)),
+        likesCount: Math.max(
+          0,
+          (quote.likesCount || 0) + (currentlyLiked ? -1 : 1)
+        ),
         likes: nextLikes,
       };
     });
@@ -712,8 +739,13 @@ const ProfileScreen = ({ navigation }) => {
       if (payload) {
         applyQuotePatch(quoteId, (quote) => {
           const actorId = payload.like?.user?.id || currentUserId;
-          const filtered = (quote.likes || []).filter((like) => like?.user?.id !== actorId);
-          const nextLikes = payload.liked && payload.like ? [...filtered, payload.like] : filtered;
+          const filtered = (quote.likes || []).filter(
+            (like) => like?.user?.id !== actorId
+          );
+          const nextLikes =
+            payload.liked && payload.like
+              ? [...filtered, payload.like]
+              : filtered;
 
           return {
             ...quote,
@@ -788,7 +820,9 @@ const ProfileScreen = ({ navigation }) => {
   const handleFlagForReview = async (postId, alreadyFlagged) => {
     if (!postId) return;
     if (alreadyFlagged) {
-      setPreviewItem((prev) => (prev && prev.id === postId ? { ...prev } : prev));
+      setPreviewItem((prev) =>
+        prev && prev.id === postId ? { ...prev } : prev
+      );
       return;
     }
 
@@ -799,7 +833,11 @@ const ProfileScreen = ({ navigation }) => {
     const previousSaved = savedPosts;
     const previousPreview = previewItem;
 
-    applyPostPatch(postId, (post) => ({ ...post, review: true, flagged: true }));
+    applyPostPatch(postId, (post) => ({
+      ...post,
+      review: true,
+      flagged: true,
+    }));
 
     try {
       const data = await client.request(SET_POST_REVIEW_MUTATION, {
@@ -842,7 +880,9 @@ const ProfileScreen = ({ navigation }) => {
         setAdminPosts((prev) => prev.filter((post) => post.id !== postId));
         applyPostPatch(postId, (post) => ({ ...post, ...updated }));
         setPreviewItem((prev) =>
-          prev?.id === postId ? { ...prev, ...updated, __adminItem: prev.__adminItem } : prev
+          prev?.id === postId
+            ? { ...prev, ...updated, __adminItem: prev.__adminItem }
+            : prev
         );
       }
     } catch (err) {
@@ -1035,7 +1075,10 @@ const ProfileScreen = ({ navigation }) => {
   const savedItems = useMemo(() => {
     const combined = [
       ...(savedPosts || []).map((post) => ({ ...post, __savedType: "POST" })),
-      ...(savedQuotes || []).map((quote) => ({ ...quote, __savedType: "QUOTE" })),
+      ...(savedQuotes || []).map((quote) => ({
+        ...quote,
+        __savedType: "QUOTE",
+      })),
     ];
 
     return combined.sort((a, b) => {
@@ -1115,11 +1158,7 @@ const ProfileScreen = ({ navigation }) => {
     }
 
     const data =
-      tabType === "POSTS"
-        ? posts
-        : tabType === "QUOTES"
-        ? quotes
-        : savedItems;
+      tabType === "POSTS" ? posts : tabType === "QUOTES" ? quotes : savedItems;
 
     if (!data?.length) {
       const emptyCopy =
@@ -1211,7 +1250,10 @@ const ProfileScreen = ({ navigation }) => {
     return config.map((tab, index) => ({ ...tab, key: `${index}` }));
   }, [isAdminUser]);
 
-  const routes = useMemo(() => tabConfig.map(({ key }) => ({ key })), [tabConfig]);
+  const routes = useMemo(
+    () => tabConfig.map(({ key }) => ({ key })),
+    [tabConfig]
+  );
   const activeTab = tabConfig[tabIndex]?.type;
 
   const gridHeight = useMemo(() => {
@@ -1379,7 +1421,9 @@ const ProfileScreen = ({ navigation }) => {
                   <Ionicons name="notifications" size={18} color="#f59e0b" />
                   {counts.notifications > 0 ? (
                     <View style={styles.metricBadge}>
-                      <Text style={styles.metricBadgeText}>{counts.notifications}</Text>
+                      <Text style={styles.metricBadgeText}>
+                        {counts.notifications}
+                      </Text>
                     </View>
                   ) : null}
                 </View>
@@ -1388,44 +1432,43 @@ const ProfileScreen = ({ navigation }) => {
             </>
           </View>
 
-        <View style={styles.whyWrapper}>
-          <Text style={styles.whyQuoted}>
-            “
-            {profileData?.whyStatement ||
-              "Share a quick reminder of why you chose sobriety. This helps keep you grounded."}
-            ”
-          </Text>
-          <TouchableOpacity
-            style={[styles.addWhyButton, hasWhy && styles.changeWhyButton]}
-            onPress={() => navigation.navigate("AddWhy")}
-          >
-            <Feather
-              name={hasWhy ? "refresh-cw" : "plus"}
-              size={16}
-              color={hasWhy ? "#0ea5e9" : "#0b1220"}
-            />
-            <Text style={[styles.addWhyText, hasWhy && styles.changeWhyText]}>
-              {hasWhy ? "Change" : "Add Why"}
+          <View style={styles.whyWrapper}>
+            <Text style={styles.whyQuoted}>
+              “
+              {profileData?.whyStatement ||
+                "Share a quick reminder of why you chose sobriety. This helps keep you grounded."}
+              ”
             </Text>
-          </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.addWhyButton, hasWhy && styles.changeWhyButton]}
+              onPress={() => navigation.navigate("AddWhy")}
+            >
+              <Feather
+                name={hasWhy ? "refresh-cw" : "plus"}
+                size={16}
+                color={hasWhy ? "#0ea5e9" : "#0b1220"}
+              />
+              <Text style={[styles.addWhyText, hasWhy && styles.changeWhyText]}>
+                {hasWhy ? "Change" : "Add Why"}
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
 
-      </View>
+        {renderTabBar()}
 
-      {renderTabBar()}
-
-      <View style={styles.tabWrapper}>
-        <TabView
-          navigationState={{ index: tabIndex, routes }}
-          renderScene={renderScene}
-          onIndexChange={setTabIndex}
-          initialLayout={{ width: layout.width }}
-          renderTabBar={() => null}
-          style={[styles.tabView, { height: gridHeight }]}
-          swipeEnabled
-          lazy={false}
-        />
-      </View>
+        <View style={styles.tabWrapper}>
+          <TabView
+            navigationState={{ index: tabIndex, routes }}
+            renderScene={renderScene}
+            onIndexChange={setTabIndex}
+            initialLayout={{ width: layout.width }}
+            renderTabBar={() => null}
+            style={[styles.tabView, { height: gridHeight }]}
+            swipeEnabled
+            lazy={false}
+          />
+        </View>
       </ScrollView>
 
       <ContentPreviewModal

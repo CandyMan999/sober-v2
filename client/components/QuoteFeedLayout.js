@@ -3,7 +3,8 @@ import { StyleSheet, Text, View } from "react-native";
 import FeedLayout from "./FeedLayout";
 
 const formatAuthorHandle = (author) => {
-  if (!author?.username || !author.username.trim().length) return "Sober Motivation";
+  if (!author?.username || !author.username.trim().length)
+    return "Sober Motivation";
   return `@${author.username}`;
 };
 
@@ -59,7 +60,7 @@ const QuoteFeedLayout = ({
 
 const styles = StyleSheet.create({
   quoteContainer: {
-    paddingHorizontal: 24,
+    paddingHorizontal: 10,
     paddingVertical: 12,
   },
   quoteText: {

@@ -215,7 +215,10 @@ const QuotesScreen = () => {
     const token = await getToken();
     if (!token) return;
 
-    const alreadySaved = isItemSaved(state?.user?.savedQuotes, selectedQuote.id);
+    const alreadySaved = isItemSaved(
+      state?.user?.savedQuotes,
+      selectedQuote.id
+    );
     const optimisticSaved = !alreadySaved;
     setSavingQuoteId(selectedQuote.id);
 
@@ -380,7 +383,9 @@ const QuotesScreen = () => {
           quote={item}
           isLiked={feedModel.isItemLiked(item)}
           onLikePress={() => handleToggleLike(item.id)}
-          onCommentAdded={(newComment) => handleCommentAdded(item.id, newComment)}
+          onCommentAdded={(newComment) =>
+            handleCommentAdded(item.id, newComment)
+          }
           onToggleFollow={
             item.user?.id ? () => handleToggleFollowUser(item.user) : undefined
           }
