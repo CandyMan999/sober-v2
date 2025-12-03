@@ -472,7 +472,7 @@ const CommentSheet = ({
 
       setDraftComment("");
       setReplyTarget(null);
-      Keyboard.dismiss();
+      inputRef.current?.focus();
     } catch (err) {
       console.error("Failed to send comment", err);
     } finally {
@@ -868,7 +868,11 @@ const CommentSheet = ({
                         styles.inlineSendButtonDisabled,
                     ]}
                     disabled={!draftComment.trim() || submitting}
-                    onPress={handleSend}
+                    onPress={(event) => {
+                      event?.stopPropagation?.();
+                      inputRef.current?.focus();
+                      handleSend();
+                    }}
                     accessibilityLabel={`Send comment on post ${postId || ""}`}
                   >
                     <Ionicons
