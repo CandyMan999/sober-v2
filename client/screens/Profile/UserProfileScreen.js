@@ -805,7 +805,7 @@ const UserProfileScreen = ({ route, navigation }) => {
     };
   }, [initialUser, userId]);
 
-  const handleAvatarLayout = () => {
+  const measureAvatarPosition = useCallback(() => {
     if (avatarImageRef.current?.measureInWindow) {
       avatarImageRef.current.measureInWindow((x, y, width, height) => {
         setAvatarLayout({ x, y, width, height });
@@ -826,10 +826,15 @@ const UserProfileScreen = ({ route, navigation }) => {
         });
       });
     }
-  };
+  }, []);
+
+  const handleAvatarLayout = useCallback(() => {
+    measureAvatarPosition();
+  }, [measureAvatarPosition]);
 
   const handleOpenAvatar = useCallback(() => {
     if (isAvatarExpanded) return;
+    measureAvatarPosition();
     avatarAnimation.setValue(0);
     setIsAvatarExpanded(true);
     requestAnimationFrame(() => {
@@ -840,7 +845,7 @@ const UserProfileScreen = ({ route, navigation }) => {
         friction: 12,
       }).start();
     });
-  }, [avatarAnimation, isAvatarExpanded]);
+  }, [avatarAnimation, isAvatarExpanded, measureAvatarPosition]);
 
   const handleCloseAvatar = useCallback(() => {
     Animated.spring(avatarAnimation, {
