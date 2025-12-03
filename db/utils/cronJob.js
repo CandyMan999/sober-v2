@@ -693,11 +693,24 @@ const cronJob = () => {
 
           // only send if between 08:00 and 22:00 local time
           if (hour >= 8 && hour <= 22) {
+            const notificationId = `quote-${quote._id}-${userTime.toISODate()}`;
+
+            await createNotificationForUser({
+              userId: user._id,
+              notificationId,
+              type: NotificationTypes.NEW_QUOTE,
+              title: "Sober Motivation",
+              description: quote.text,
+              intent: NotificationIntents.SHOW_INFO,
+              quoteId: String(quote._id),
+              createdAt: new Date(),
+            });
+
             notifications.push({
               pushToken: user.token,
               title: "Sober Motivation",
               body: quote.text,
-              data: { type: "new_quote", quoteId: String(quote._id) },
+              data: { type: NotificationTypes.NEW_QUOTE, quoteId: String(quote._id) },
             });
 
             console.log(

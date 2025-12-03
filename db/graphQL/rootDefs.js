@@ -198,6 +198,7 @@ const typeDefs = gql`
     description: String
     intent: String
     postId: ID
+    quoteId: ID
     commentId: ID
     milestoneDays: Int
     milestoneTag: String

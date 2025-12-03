@@ -6,6 +6,7 @@ export const NotificationTypes = {
   BUDDY_NEAR_BAR: "BUDDY_NEAR_BAR",
   MILESTONE: "MILESTONE",
   FOLLOWING_NEW_POST: "FOLLOWING_NEW_POST",
+  NEW_QUOTE: "new_quote",
 };
 
 export const NotificationIntents = {

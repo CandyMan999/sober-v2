@@ -8,6 +8,7 @@ const NotificationSchema = new mongoose.Schema(
     description: { type: String },
     intent: { type: String },
     postId: { type: String },
+    quoteId: { type: String },
     commentId: { type: String },
     milestoneDays: { type: Number },
     milestoneTag: { type: String },

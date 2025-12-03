@@ -281,6 +281,7 @@ export const USER_NOTIFICATIONS_QUERY = `
       description
       intent
       postId
+      quoteId
       commentId
       milestoneDays
       milestoneTag
