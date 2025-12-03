@@ -102,13 +102,16 @@ const NotificationsScreen = ({ navigation }) => {
   const syncProfileOverview = useCallback(
     (nextNotifications) => {
       const currentOverview = state?.profileOverview || {};
+      const activeNotifications = (nextNotifications || []).filter(
+        (notification) => !notification?.dismissed
+      );
 
       dispatch({
         type: "SET_PROFILE_OVERVIEW",
         payload: {
           ...currentOverview,
-          notifications: nextNotifications,
-          notificationsCount: nextNotifications?.length || 0,
+          notifications: activeNotifications,
+          notificationsCount: activeNotifications.length,
         },
       });
     },
