@@ -4,11 +4,13 @@ export const NotificationTypes = {
   COMMENT_LIKED: "COMMENT_LIKED",
   FLAGGED_POST: "FLAGGED_POST",
   BUDDY_NEAR_BAR: "BUDDY_NEAR_BAR",
+  MILESTONE: "MILESTONE",
 };
 
 export const NotificationIntents = {
   OPEN_POST_COMMENTS: "OPEN_POST_COMMENTS",
   ACKNOWLEDGE: "ACKNOWLEDGE",
+  SHOW_INFO: "SHOW_INFO",
 };
 
 export const buildBuddyNearBarNotification = (buddyName) => ({

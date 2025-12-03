@@ -52,6 +52,10 @@ const ICONS = {
     name: "location",
     color: "#c084fc",
   },
+  [NotificationTypes.MILESTONE]: {
+    name: "medal",
+    color: "#f59e0b",
+  },
 };
 
 const formatSubtitle = (notification) => {
@@ -83,6 +87,7 @@ const NotificationsScreen = ({ navigation }) => {
   const [fetchError, setFetchError] = useState(null);
   const [previewVisible, setPreviewVisible] = useState(false);
   const [previewContent, setPreviewContent] = useState(null);
+  const [previewType, setPreviewType] = useState("POST");
   const [previewShowComments, setPreviewShowComments] = useState(false);
   const [loadingPreview, setLoadingPreview] = useState(false);
   const [activeNotificationId, setActiveNotificationId] = useState(null);
@@ -221,14 +226,32 @@ const NotificationsScreen = ({ navigation }) => {
   const handleNotificationPress = useCallback(
     (notification) => {
       if (!notification) return;
-      const actionable =
+
+      const isPostNotification =
         notification.intent === NotificationIntents.OPEN_POST_COMMENTS &&
         notification.postId;
 
-      if (!actionable) return;
+      if (isPostNotification) {
+        setPreviewType("POST");
+        setActiveNotificationId(notification.id);
+        openPostFromNotification(notification);
+        return;
+      }
 
-      setActiveNotificationId(notification.id);
-      openPostFromNotification(notification);
+      const isMilestoneNotification =
+        notification.type === NotificationTypes.MILESTONE ||
+        notification.intent === NotificationIntents.SHOW_INFO;
+
+      if (isMilestoneNotification) {
+        setPreviewType("INFO");
+        setPreviewContent({
+          id: notification.id,
+          title: notification.title,
+          text: notification.description,
+        });
+        setPreviewVisible(true);
+        setActiveNotificationId(notification.id);
+      }
     },
     [openPostFromNotification]
   );
@@ -242,7 +265,9 @@ const NotificationsScreen = ({ navigation }) => {
   const renderNotification = ({ item }) => {
     const icon = ICONS[item.type] || ICONS[NotificationTypes.COMMENT_ON_POST];
     const actionable =
-      item.intent === NotificationIntents.OPEN_POST_COMMENTS && item.postId;
+      (item.intent === NotificationIntents.OPEN_POST_COMMENTS && item.postId) ||
+      item.type === NotificationTypes.MILESTONE ||
+      item.intent === NotificationIntents.SHOW_INFO;
 
     return (
       <Swipeable
@@ -327,6 +352,7 @@ const NotificationsScreen = ({ navigation }) => {
     setPreviewShowComments(false);
     setPreviewVisible(false);
     setActiveNotificationId(null);
+    setPreviewType("POST");
   };
 
   return (
@@ -396,7 +422,7 @@ const NotificationsScreen = ({ navigation }) => {
       <ContentPreviewModal
         visible={previewVisible && Boolean(previewContent)}
         item={previewContent}
-        type="POST"
+        type={previewType}
         onClose={handleClosePreview}
         onToggleSound={() => {}}
         viewerUser={state?.user}

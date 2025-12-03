@@ -135,6 +135,25 @@ export default function App() {
     (data) => {
       setPreviewShowComments(false);
 
+      const notificationTitle = data?.title || data?.__notificationTitle;
+      const notificationBody = data?.message || data?.body || data?.__notificationBody;
+
+      if (
+        data?.type === NotificationTypes.MILESTONE ||
+        data?.type === "milestone"
+      ) {
+        setPreviewType("INFO");
+        setPreviewContent({
+          id: data?.id || `milestone-${Date.now()}`,
+          title: notificationTitle || "Sober Motivation",
+          text: notificationBody ||
+            "Milestone unlocked. Keep going—your future self will thank you.",
+          day: data?.day || data?.milestoneDay,
+        });
+        setPreviewVisible(true);
+        return;
+      }
+
       if (data?.type === "direct_message" && data.senderId) {
         const userParam = {
           id: data.senderId,
@@ -211,8 +230,13 @@ export default function App() {
     // Fired whenever a user taps on a notification (foreground, background, or killed)
     responseListener.current =
       Notifications.addNotificationResponseReceivedListener((response) => {
-        const data = response?.notification?.request?.content?.data || {};
-        handleNotificationNavigation(data);
+        const content = response?.notification?.request?.content;
+        const data = content?.data || {};
+        handleNotificationNavigation({
+          ...data,
+          __notificationTitle: content?.title,
+          __notificationBody: content?.body,
+        });
       });
 
     // Cleanup on unmount
