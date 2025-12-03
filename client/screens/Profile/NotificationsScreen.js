@@ -499,11 +499,6 @@ const styles = StyleSheet.create({
   },
   alertRowUnread: {
     borderColor: "#f59e0b66",
-    shadowColor: "#f59e0b",
-    shadowOpacity: 0.35,
-    shadowRadius: 12,
-    shadowOffset: { width: 0, height: 6 },
-    elevation: 4,
   },
   iconBadge: {
     width: 34,
