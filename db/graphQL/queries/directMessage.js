@@ -4,7 +4,8 @@ const {
   UserInputError,
 } = require("apollo-server-express");
 
-const { Room } = require("../../models");
+const { Room, User } = require("../../models");
+const { ensureSingleDirectRoom } = require("../utils/directMessage");
 
 /**
  * Normalize a User mongoose doc to plain JS with string id.
@@ -147,11 +148,17 @@ module.exports = {
         throw new UserInputError("Cannot start a DM with yourself.");
       }
 
-      const room = await Room.findOne({
-        isDirect: true,
-        users: { $all: [me._id, userId] },
-        $expr: { $eq: [{ $size: "$users" }, 2] },
-      })
+      const otherUser = await User.findById(userId);
+      if (!otherUser) {
+        throw new UserInputError("User not found");
+      }
+
+      const ensuredRoom = await ensureSingleDirectRoom(me._id, otherUser._id);
+      if (!ensuredRoom) {
+        throw new AuthenticationError("Cannot find a room");
+      }
+
+      const room = await Room.findById(ensuredRoom._id)
         .populate([
           {
             path: "users",
@@ -170,10 +177,6 @@ module.exports = {
             { path: "replyTo", populate: { path: "author", model: "User" } },
           ],
         });
-
-      if (!room) {
-        throw new AuthenticationError("Cannot find a room");
-      }
 
       const normalized = normalizeRoomForGraphQL(room);
 
