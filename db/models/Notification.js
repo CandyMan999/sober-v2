@@ -9,6 +9,8 @@ const NotificationSchema = new mongoose.Schema(
     intent: { type: String },
     postId: { type: String },
     commentId: { type: String },
+    milestoneDays: { type: Number },
+    milestoneTag: { type: String },
     user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
     read: { type: Boolean, default: false },
     dismissed: { type: Boolean, default: false },

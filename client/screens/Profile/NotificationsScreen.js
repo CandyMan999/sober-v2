@@ -15,6 +15,7 @@ import {
   Animated,
 } from "react-native";
 import { Feather, Ionicons } from "@expo/vector-icons";
+import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import { Swipeable } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -52,6 +53,11 @@ const ICONS = {
     name: "location",
     color: "#c084fc",
   },
+  [NotificationTypes.MILESTONE]: {
+    name: "award",
+    color: "#f59e0b",
+    IconComponent: FontAwesome5,
+  },
 };
 
 const formatSubtitle = (notification) => {
@@ -83,6 +89,7 @@ const NotificationsScreen = ({ navigation }) => {
   const [fetchError, setFetchError] = useState(null);
   const [previewVisible, setPreviewVisible] = useState(false);
   const [previewContent, setPreviewContent] = useState(null);
+  const [previewType, setPreviewType] = useState("POST");
   const [previewShowComments, setPreviewShowComments] = useState(false);
   const [loadingPreview, setLoadingPreview] = useState(false);
   const [activeNotificationId, setActiveNotificationId] = useState(null);
@@ -221,14 +228,32 @@ const NotificationsScreen = ({ navigation }) => {
   const handleNotificationPress = useCallback(
     (notification) => {
       if (!notification) return;
-      const actionable =
+
+      const isPostNotification =
         notification.intent === NotificationIntents.OPEN_POST_COMMENTS &&
         notification.postId;
 
-      if (!actionable) return;
+      if (isPostNotification) {
+        setPreviewType("POST");
+        setActiveNotificationId(notification.id);
+        openPostFromNotification(notification);
+        return;
+      }
 
-      setActiveNotificationId(notification.id);
-      openPostFromNotification(notification);
+      const isMilestoneNotification =
+        notification.type === NotificationTypes.MILESTONE ||
+        notification.intent === NotificationIntents.SHOW_INFO;
+
+      if (isMilestoneNotification) {
+        setPreviewType("INFO");
+        setPreviewContent({
+          id: notification.id,
+          title: notification.title,
+          text: notification.description,
+        });
+        setPreviewVisible(true);
+        setActiveNotificationId(notification.id);
+      }
     },
     [openPostFromNotification]
   );
@@ -241,8 +266,12 @@ const NotificationsScreen = ({ navigation }) => {
 
   const renderNotification = ({ item }) => {
     const icon = ICONS[item.type] || ICONS[NotificationTypes.COMMENT_ON_POST];
+    const IconComponent = icon.IconComponent || Ionicons;
     const actionable =
-      item.intent === NotificationIntents.OPEN_POST_COMMENTS && item.postId;
+      (item.intent === NotificationIntents.OPEN_POST_COMMENTS && item.postId) ||
+      item.type === NotificationTypes.MILESTONE ||
+      item.intent === NotificationIntents.SHOW_INFO;
+    const isMilestone = item.type === NotificationTypes.MILESTONE;
 
     return (
       <Swipeable
@@ -288,11 +317,17 @@ const NotificationsScreen = ({ navigation }) => {
           activeOpacity={actionable ? 0.85 : 1}
         >
           <View style={styles.iconBadge}>
-            <Ionicons name={icon.name} size={18} color={icon.color} />
+            <IconComponent name={icon.name} size={18} color={icon.color} />
           </View>
           <View style={styles.alertCopy}>
             <Text style={styles.alertTitle}>{item.title}</Text>
-            <Text style={styles.alertDescription}>{item.description}</Text>
+            <Text
+              style={styles.alertDescription}
+              numberOfLines={isMilestone ? 2 : undefined}
+              ellipsizeMode="tail"
+            >
+              {item.description}
+            </Text>
             {formatSubtitle(item)}
           </View>
           {actionable ? (
@@ -327,6 +362,7 @@ const NotificationsScreen = ({ navigation }) => {
     setPreviewShowComments(false);
     setPreviewVisible(false);
     setActiveNotificationId(null);
+    setPreviewType("POST");
   };
 
   return (
@@ -396,7 +432,7 @@ const NotificationsScreen = ({ navigation }) => {
       <ContentPreviewModal
         visible={previewVisible && Boolean(previewContent)}
         item={previewContent}
-        type="POST"
+        type={previewType}
         onClose={handleClosePreview}
         onToggleSound={() => {}}
         viewerUser={state?.user}
@@ -462,7 +498,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   alertRowUnread: {
-    borderColor: "#f59e0b33",
+    borderColor: "#f59e0b66",
   },
   iconBadge: {
     width: 34,

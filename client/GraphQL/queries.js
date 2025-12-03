@@ -282,6 +282,8 @@ export const USER_NOTIFICATIONS_QUERY = `
       intent
       postId
       commentId
+      milestoneDays
+      milestoneTag
       createdAt
       read
       dismissed

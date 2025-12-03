@@ -119,6 +119,7 @@ export default function App() {
   const [previewVisible, setPreviewVisible] = useState(false);
   const [previewMuted, setPreviewMuted] = useState(true);
   const [previewShowComments, setPreviewShowComments] = useState(false);
+  const [navigationReady, setNavigationReady] = useState(false);
 
   // Notification listeners
   const notificationListener = useRef();
@@ -134,6 +135,25 @@ export default function App() {
   const handleNotificationNavigation = useCallback(
     (data) => {
       setPreviewShowComments(false);
+
+      const notificationTitle = data?.title || data?.__notificationTitle;
+      const notificationBody = data?.message || data?.body || data?.__notificationBody;
+
+      if (
+        data?.type === NotificationTypes.MILESTONE ||
+        data?.type === "milestone"
+      ) {
+        setPreviewType("INFO");
+        setPreviewContent({
+          id: data?.id || `milestone-${Date.now()}`,
+          title: notificationTitle || "Sober Motivation",
+          text: notificationBody ||
+            "Milestone unlocked. Keep going—your future self will thank you.",
+          day: data?.day || data?.milestoneDay,
+        });
+        setPreviewVisible(true);
+        return;
+      }
 
       if (data?.type === "direct_message" && data.senderId) {
         const userParam = {
@@ -211,8 +231,13 @@ export default function App() {
     // Fired whenever a user taps on a notification (foreground, background, or killed)
     responseListener.current =
       Notifications.addNotificationResponseReceivedListener((response) => {
-        const data = response?.notification?.request?.content?.data || {};
-        handleNotificationNavigation(data);
+        const content = response?.notification?.request?.content;
+        const data = content?.data || {};
+        handleNotificationNavigation({
+          ...data,
+          __notificationTitle: content?.title,
+          __notificationBody: content?.body,
+        });
       });
 
     // Cleanup on unmount
@@ -225,6 +250,35 @@ export default function App() {
       }
     };
   }, [handleNotificationNavigation]);
+
+  useEffect(() => {
+    if (!navigationReady) return undefined;
+
+    let isActive = true;
+
+    const loadInitialNotificationResponse = async () => {
+      try {
+        const lastResponse = await Notifications.getLastNotificationResponseAsync();
+        const content = lastResponse?.notification?.request?.content;
+        if (!isActive || !content) return;
+
+        const data = content?.data || {};
+        handleNotificationNavigation({
+          ...data,
+          __notificationTitle: content?.title,
+          __notificationBody: content?.body,
+        });
+      } catch (err) {
+        console.log("Failed to process initial notification response", err);
+      }
+    };
+
+    loadInitialNotificationResponse();
+
+    return () => {
+      isActive = false;
+    };
+  }, [handleNotificationNavigation, navigationReady]);
 
   useEffect(() => {
     if (!previewRequest?.id) return undefined;
@@ -279,7 +333,10 @@ export default function App() {
       <GestureHandlerRootView style={{ flex: 1 }}>
         <SafeAreaProvider>
           <Context.Provider value={{ state, dispatch }}>
-            <NavigationContainer ref={navigationRef}>
+            <NavigationContainer
+              ref={navigationRef}
+              onReady={() => setNavigationReady(true)}
+            >
               <>
                 <Stack.Navigator
                   screenOptions={{

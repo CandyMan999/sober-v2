@@ -150,6 +150,8 @@ module.exports = {
       intent: notification.intent,
       postId: notification.postId,
       commentId: notification.commentId,
+      milestoneDays: notification.milestoneDays,
+      milestoneTag: notification.milestoneTag,
       createdAt: notification.createdAt?.toISOString?.() || notification.createdAt,
       read: Boolean(notification.read),
       dismissed: Boolean(notification.dismissed),
