@@ -200,7 +200,7 @@ export default function App() {
         return;
       }
 
-      if (data?.type === "new_quote" && data.quoteId) {
+      if (data?.type === NotificationTypes.NEW_QUOTE && data.quoteId) {
         setPreviewType("QUOTE");
         setPreviewRequest({ id: data.quoteId, type: "QUOTE" });
         return;

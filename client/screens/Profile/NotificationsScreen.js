@@ -27,6 +27,7 @@ import {
   DISMISS_NOTIFICATION_MUTATION,
   MARK_NOTIFICATION_READ_MUTATION,
   POST_BY_ID_QUERY,
+  QUOTE_BY_ID_QUERY,
   USER_NOTIFICATIONS_QUERY,
 } from "../../GraphQL/queries";
 import { getToken } from "../../utils/helpers";
@@ -51,6 +52,10 @@ const ICONS = {
   },
   [NotificationTypes.FOLLOWING_NEW_POST]: {
     name: "play-circle",
+    color: "#f59e0b",
+  },
+  [NotificationTypes.NEW_QUOTE]: {
+    name: "sparkles",
     color: "#f59e0b",
   },
   [NotificationTypes.BUDDY_NEAR_BAR]: {
@@ -248,6 +253,34 @@ const NotificationsScreen = ({ navigation }) => {
     [client]
   );
 
+  const openQuoteFromNotification = useCallback(
+    async (notification) => {
+      if (!notification?.quoteId) return;
+
+      setLoadingPreview(true);
+      setPreviewShowComments(false);
+
+      try {
+        const token = await getToken();
+        const response = await client.request(QUOTE_BY_ID_QUERY, {
+          quoteId: notification.quoteId,
+          token,
+        });
+        const quote = response?.quote;
+
+        if (quote) {
+          setPreviewContent(quote);
+          setPreviewVisible(true);
+        }
+      } catch (error) {
+        console.log("Unable to open quote from notification", error);
+      } finally {
+        setLoadingPreview(false);
+      }
+    },
+    [client]
+  );
+
   const handleNotificationPress = useCallback(
     (notification) => {
       if (!notification) return;
@@ -260,6 +293,17 @@ const NotificationsScreen = ({ navigation }) => {
         setPreviewType("POST");
         setActiveNotificationId(notification.id);
         openPostFromNotification(notification);
+        return;
+      }
+
+      const isQuoteNotification =
+        notification.type === NotificationTypes.NEW_QUOTE &&
+        notification.quoteId;
+
+      if (isQuoteNotification) {
+        setPreviewType("QUOTE");
+        setActiveNotificationId(notification.id);
+        openQuoteFromNotification(notification);
         return;
       }
 
@@ -278,7 +322,7 @@ const NotificationsScreen = ({ navigation }) => {
         setActiveNotificationId(notification.id);
       }
     },
-    [openPostFromNotification]
+    [openPostFromNotification, openQuoteFromNotification]
   );
 
   useEffect(() => {
@@ -292,6 +336,7 @@ const NotificationsScreen = ({ navigation }) => {
     const IconComponent = icon.IconComponent || Ionicons;
     const actionable =
       (item.intent === NotificationIntents.OPEN_POST_COMMENTS && item.postId) ||
+      (item.type === NotificationTypes.NEW_QUOTE && item.quoteId) ||
       item.type === NotificationTypes.MILESTONE ||
       item.intent === NotificationIntents.SHOW_INFO;
     const isMilestone = item.type === NotificationTypes.MILESTONE;

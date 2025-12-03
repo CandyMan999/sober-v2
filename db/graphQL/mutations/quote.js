@@ -2,6 +2,11 @@ const { AuthenticationError, UserInputError } = require("apollo-server-express")
 
 const { Connection, Quote, User } = require("../../models");
 const { sendPushNotifications } = require("../../utils/pushNotifications");
+const {
+  NotificationTypes,
+  NotificationIntents,
+  createNotificationForUser,
+} = require("../../utils/notifications");
 
 module.exports = {
   addQuoteResolver: async (_, { text }, ctx) => {
@@ -56,11 +61,22 @@ module.exports = {
             title: `${senderName} shared a new quote`,
             body: preview,
             data: {
-              type: "new_quote",
+              type: NotificationTypes.NEW_QUOTE,
               quoteId: String(quote._id),
               senderId: String(currentUser._id),
               senderUsername: senderName,
             },
+          });
+
+          await createNotificationForUser({
+            userId: follower._id,
+            notificationId: `quote-${quote._id}`,
+            type: NotificationTypes.NEW_QUOTE,
+            title: `${senderName} shared a new quote`,
+            description: preview,
+            intent: NotificationIntents.SHOW_INFO,
+            quoteId: String(quote._id),
+            createdAt: new Date(),
           });
         }
 

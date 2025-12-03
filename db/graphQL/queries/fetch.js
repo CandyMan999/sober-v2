@@ -149,6 +149,7 @@ module.exports = {
       description: notification.description,
       intent: notification.intent,
       postId: notification.postId,
+      quoteId: notification.quoteId,
       commentId: notification.commentId,
       milestoneDays: notification.milestoneDays,
       milestoneTag: notification.milestoneTag,
