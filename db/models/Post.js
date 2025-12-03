@@ -1,5 +1,7 @@
 // models/Post.js
 const mongoose = require("mongoose");
+const Like = require("./Like");
+const Comment = require("./Comment");
 
 const PostSchema = new mongoose.Schema(
   {
@@ -132,5 +134,17 @@ const PostSchema = new mongoose.Schema(
 );
 
 PostSchema.index({ location: "2dsphere" });
+
+// Recalculate likes and comments for a post from Like/Comment collections
+PostSchema.statics.recalcEngagement = async function (postId) {
+  const [likesCount, commentsCount] = await Promise.all([
+    Like.countDocuments({ targetType: "POST", targetId: postId }),
+    Comment.countDocuments({ targetType: "POST", targetId: postId }),
+  ]);
+
+  await this.findByIdAndUpdate(postId, { likesCount, commentsCount });
+
+  return { likesCount, commentsCount };
+};
 
 module.exports = mongoose.model("Post", PostSchema);

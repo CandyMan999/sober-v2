@@ -389,6 +389,7 @@ const typeDefs = gql`
     sendImagePost(file: Upload!, senderID: ID!, text: String): Post
     deletePost(token: String!, postId: ID!): Boolean!
     deleteQuote(token: String!, quoteId: ID!): Boolean!
+    deleteAccount(token: String!): Boolean!
     setPostReview(postId: ID!, review: Boolean!): Post!
     moderatePost(token: String!, postId: ID!, approve: Boolean!): Post!
     moderateQuote(token: String!, quoteId: ID!, approve: Boolean!): Quote!
