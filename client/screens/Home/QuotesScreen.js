@@ -420,6 +420,7 @@ const QuotesScreen = () => {
         data={quotes}
         keyExtractor={(item) => item.id}
         renderItem={renderItem}
+        keyboardShouldPersistTaps="always"
         pagingEnabled
         showsVerticalScrollIndicator={false}
         snapToAlignment="start"
