@@ -119,6 +119,7 @@ export default function App() {
   const [previewVisible, setPreviewVisible] = useState(false);
   const [previewMuted, setPreviewMuted] = useState(true);
   const [previewShowComments, setPreviewShowComments] = useState(false);
+  const [navigationReady, setNavigationReady] = useState(false);
 
   // Notification listeners
   const notificationListener = useRef();
@@ -251,6 +252,35 @@ export default function App() {
   }, [handleNotificationNavigation]);
 
   useEffect(() => {
+    if (!navigationReady) return undefined;
+
+    let isActive = true;
+
+    const loadInitialNotificationResponse = async () => {
+      try {
+        const lastResponse = await Notifications.getLastNotificationResponseAsync();
+        const content = lastResponse?.notification?.request?.content;
+        if (!isActive || !content) return;
+
+        const data = content?.data || {};
+        handleNotificationNavigation({
+          ...data,
+          __notificationTitle: content?.title,
+          __notificationBody: content?.body,
+        });
+      } catch (err) {
+        console.log("Failed to process initial notification response", err);
+      }
+    };
+
+    loadInitialNotificationResponse();
+
+    return () => {
+      isActive = false;
+    };
+  }, [handleNotificationNavigation, navigationReady]);
+
+  useEffect(() => {
     if (!previewRequest?.id) return undefined;
 
     let isActive = true;
@@ -303,7 +333,10 @@ export default function App() {
       <GestureHandlerRootView style={{ flex: 1 }}>
         <SafeAreaProvider>
           <Context.Provider value={{ state, dispatch }}>
-            <NavigationContainer ref={navigationRef}>
+            <NavigationContainer
+              ref={navigationRef}
+              onReady={() => setNavigationReady(true)}
+            >
               <>
                 <Stack.Navigator
                   screenOptions={{
