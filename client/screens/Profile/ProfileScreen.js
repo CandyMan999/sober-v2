@@ -161,6 +161,19 @@ const ProfileScreen = ({ navigation }) => {
   const hasWhy = Boolean(profileData?.whyStatement?.trim());
 
   useEffect(() => {
+    const overviewCount =
+      state?.profileOverview?.notificationsCount ??
+      state?.profileOverview?.notifications?.length;
+
+    if (typeof overviewCount === "number") {
+      setNotificationCount(overviewCount);
+    }
+  }, [
+    state?.profileOverview?.notifications?.length,
+    state?.profileOverview?.notificationsCount,
+  ]);
+
+  useEffect(() => {
     if (!cachedOverview) return;
 
     setProfileData(cachedOverview.user || null);

@@ -85,7 +85,7 @@ const formatSubtitle = (notification) => {
 };
 
 const NotificationsScreen = ({ navigation }) => {
-  const { state } = useContext(Context);
+  const { state, dispatch } = useContext(Context);
   const client = useClient();
 
   const [notifications, setNotifications] = useState([]);
@@ -99,6 +99,12 @@ const NotificationsScreen = ({ navigation }) => {
   const [activeNotificationId, setActiveNotificationId] = useState(null);
   const [clearingAll, setClearingAll] = useState(false);
 
+  const updateNotifications = useCallback((updater) => {
+    setNotifications((prev) =>
+      typeof updater === "function" ? updater(prev) : updater
+    );
+  }, []);
+
   useEffect(() => {
     let isMounted = true;
 
@@ -108,13 +114,13 @@ const NotificationsScreen = ({ navigation }) => {
         setLoadingNotifications(true);
         const token = await getToken();
         if (!token) {
-          if (isMounted) setNotifications([]);
+          if (isMounted) updateNotifications([]);
           return;
         }
 
         const data = await client.request(USER_NOTIFICATIONS_QUERY, { token });
         if (isMounted) {
-          setNotifications(
+          updateNotifications(
             (data?.userNotifications || []).map((notification) => ({
               ...notification,
               read: Boolean(notification.read),
@@ -135,7 +141,7 @@ const NotificationsScreen = ({ navigation }) => {
     return () => {
       isMounted = false;
     };
-  }, [client]);
+  }, [client, updateNotifications]);
 
   const sortedNotifications = useMemo(
     () =>
@@ -154,10 +160,23 @@ const NotificationsScreen = ({ navigation }) => {
     [notifications]
   );
 
+  useEffect(() => {
+    const activeCount = notifications.filter((n) => !n.dismissed).length;
+    const overview = state?.profileOverview;
+
+    if (!overview) return;
+    if (overview.notificationsCount === activeCount) return;
+
+    dispatch({
+      type: "SET_PROFILE_OVERVIEW",
+      payload: { ...overview, notificationsCount: activeCount },
+    });
+  }, [dispatch, notifications, state?.profileOverview]);
+
   const markNotificationRead = useCallback(
     async (id) => {
       if (!id) return;
-      setNotifications((prev) =>
+      updateNotifications((prev) =>
         prev.map((notification) =>
           notification.id === id ? { ...notification, read: true } : notification
         )
@@ -172,14 +191,14 @@ const NotificationsScreen = ({ navigation }) => {
         console.log("Unable to mark notification as read", error);
       }
     },
-    [client]
+    [client, updateNotifications]
   );
 
   const dismissNotification = useCallback(
     async (notification) => {
       if (!notification?.id) return;
 
-      setNotifications((prev) =>
+      updateNotifications((prev) =>
         prev.filter((item) => item.id !== notification.id && !item.dismissed)
       );
 
@@ -195,7 +214,7 @@ const NotificationsScreen = ({ navigation }) => {
         console.log("Unable to dismiss notification", error);
       }
     },
-    [client]
+    [client, updateNotifications]
   );
 
   const openPostFromNotification = useCallback(
@@ -347,7 +366,7 @@ const NotificationsScreen = ({ navigation }) => {
     if (!ids.length) return;
 
     setClearingAll(true);
-    setNotifications([]);
+    updateNotifications([]);
 
     try {
       const token = await getToken();
@@ -359,7 +378,7 @@ const NotificationsScreen = ({ navigation }) => {
     } finally {
       setClearingAll(false);
     }
-  }, [client, notifications]);
+  }, [client, notifications, updateNotifications]);
 
   const handleClosePreview = () => {
     setPreviewContent(null);
