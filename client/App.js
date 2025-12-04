@@ -46,10 +46,7 @@ import MessageListScreen from "./screens/DirectMessage/MessageListScreen";
 import { ContentPreviewModal } from "./components";
 import { POST_BY_ID_QUERY, QUOTE_BY_ID_QUERY } from "./GraphQL/queries";
 import { useClient } from "./client";
-import {
-  NotificationIntents,
-  NotificationTypes,
-} from "./utils/notifications";
+import { NotificationIntents, NotificationTypes } from "./utils/notifications";
 import { ensureSoberMotionTrackingSetup } from "./utils/locationTracking";
 
 import Context from "./context";
@@ -133,93 +130,92 @@ export default function App() {
     setPreviewShowComments(false);
   }, []);
 
-  const handleNotificationNavigation = useCallback(
-    (data) => {
-      setPreviewShowComments(false);
+  const handleNotificationNavigation = useCallback((data) => {
+    setPreviewShowComments(false);
 
-      const notificationTitle = data?.title || data?.__notificationTitle;
-      const notificationBody = data?.message || data?.body || data?.__notificationBody;
+    const notificationTitle = data?.title || data?.__notificationTitle;
+    const notificationBody =
+      data?.message || data?.body || data?.__notificationBody;
 
-      if (
-        data?.type === NotificationTypes.MILESTONE ||
-        data?.type === "milestone"
-      ) {
-        setPreviewType("INFO");
-        setPreviewContent({
-          id: data?.id || `milestone-${Date.now()}`,
-          title: notificationTitle || "Sober Motivation",
-          text: notificationBody ||
-            "Milestone unlocked. Keep going—your future self will thank you.",
-          day: data?.day || data?.milestoneDay,
-        });
-        setPreviewVisible(true);
-        return;
+    if (
+      data?.type === NotificationTypes.MILESTONE ||
+      data?.type === "milestone"
+    ) {
+      setPreviewType("INFO");
+      setPreviewContent({
+        id: data?.id || `milestone-${Date.now()}`,
+        title: notificationTitle || "Sober Motivation",
+        text:
+          notificationBody ||
+          "Milestone unlocked. Keep going—your future self will thank you.",
+        day: data?.day || data?.milestoneDay,
+      });
+      setPreviewVisible(true);
+      return;
+    }
+
+    if (data?.type === "direct_message" && data.senderId) {
+      const userParam = {
+        id: data.senderId,
+        username: data.senderUsername || "Buddy",
+        profilePicUrl: data.senderProfilePicUrl || null,
+      };
+
+      const navigateToDirectMessage = () => {
+        navigationRef.navigate("DirectMessage", { user: userParam });
+      };
+
+      if (navigationRef.isReady()) {
+        navigateToDirectMessage();
+      } else {
+        setTimeout(() => {
+          if (navigationRef.isReady()) {
+            navigateToDirectMessage();
+          }
+        }, 300);
       }
+      return;
+    }
 
-      if (data?.type === "direct_message" && data.senderId) {
-        const userParam = {
-          id: data.senderId,
-          username: data.senderUsername || "Buddy",
-          profilePicUrl: data.senderProfilePicUrl || null,
-        };
+    if (data?.type === "relapse_prediction") {
+      const message =
+        data?.message ||
+        "Based on your history you usually relapse around this time. Keep going, you’ve got this.";
 
-        const navigateToDirectMessage = () => {
-          navigationRef.navigate("DirectMessage", { user: userParam });
-        };
+      setPreviewType("INFO");
+      setPreviewContent({
+        id: data?.id || `relapse-${Date.now()}`,
+        title: "Stay strong",
+        text: message,
+        day: data?.day,
+      });
+      setPreviewVisible(true);
+      return;
+    }
 
-        if (navigationRef.isReady()) {
-          navigateToDirectMessage();
-        } else {
-          setTimeout(() => {
-            if (navigationRef.isReady()) {
-              navigateToDirectMessage();
-            }
-          }, 300);
-        }
-        return;
-      }
+    if (data?.type === "new_post" && data.postId) {
+      setPreviewType("POST");
+      setPreviewRequest({ id: data.postId, type: "POST" });
+      return;
+    }
 
-      if (data?.type === "relapse_prediction") {
-        const message =
-          data?.message ||
-          "Based on your history you usually relapse around this time. Keep going, you’ve got this.";
+    if (data?.type === NotificationTypes.NEW_QUOTE && data.quoteId) {
+      setPreviewType("QUOTE");
+      setPreviewRequest({ id: data.quoteId, type: "QUOTE" });
+      return;
+    }
 
-        setPreviewType("INFO");
-        setPreviewContent({
-          id: data?.id || `relapse-${Date.now()}`,
-          title: "Stay strong",
-          text: message,
-          day: data?.day,
-        });
-        setPreviewVisible(true);
-        return;
-      }
-
-      if (data?.type === "new_post" && data.postId) {
-        setPreviewType("POST");
-        setPreviewRequest({ id: data.postId, type: "POST" });
-        return;
-      }
-
-      if (data?.type === NotificationTypes.NEW_QUOTE && data.quoteId) {
-        setPreviewType("QUOTE");
-        setPreviewRequest({ id: data.quoteId, type: "QUOTE" });
-        return;
-      }
-
-      if (
-        (data?.type === NotificationTypes.COMMENT_ON_POST ||
-          data?.type === NotificationTypes.COMMENT_REPLY) &&
-        data.postId &&
-        data.intent === NotificationIntents.OPEN_POST_COMMENTS
-      ) {
-        setPreviewShowComments(true);
-        setPreviewType("POST");
-        setPreviewRequest({ id: data.postId, type: "POST" });
-      }
-    },
-    []
-  );
+    if (
+      (data?.type === NotificationTypes.COMMENT_ON_POST ||
+        data?.type === NotificationTypes.COMMENT_REPLY) &&
+      data.postId &&
+      data.intent === NotificationIntents.OPEN_POST_COMMENTS
+    ) {
+      setPreviewShowComments(true);
+      setPreviewType("POST");
+      setPreviewRequest({ id: data.postId, type: "POST" });
+    }
+  }, []);
 
   useEffect(() => {
     // Fired whenever a notification is received while the app is foregrounded
@@ -258,7 +254,10 @@ export default function App() {
         console.log("[SoberMotion] Ensuring motion tracking setup from App.js");
         await ensureSoberMotionTrackingSetup();
       } catch (error) {
-        console.log("[SoberMotion] Failed to ensure motion tracking setup", error);
+        console.log(
+          "[SoberMotion] Failed to ensure motion tracking setup",
+          error
+        );
       }
     };
 
@@ -272,7 +271,8 @@ export default function App() {
 
     const loadInitialNotificationResponse = async () => {
       try {
-        const lastResponse = await Notifications.getLastNotificationResponseAsync();
+        const lastResponse =
+          await Notifications.getLastNotificationResponseAsync();
         const content = lastResponse?.notification?.request?.content;
         if (!isActive || !content) return;
 
@@ -307,9 +307,7 @@ export default function App() {
             ? { postId: previewRequest.id, token }
             : { quoteId: previewRequest.id, token };
         const query =
-          previewRequest.type === "POST"
-            ? POST_BY_ID_QUERY
-            : QUOTE_BY_ID_QUERY;
+          previewRequest.type === "POST" ? POST_BY_ID_QUERY : QUOTE_BY_ID_QUERY;
 
         const result = await graphClient.request(query, variables);
         if (!isActive) return;

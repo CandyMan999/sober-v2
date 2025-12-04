@@ -32,11 +32,6 @@ const {
 
 const {
   fetchMeResolver,
-  runPushResolver,
-  getBarLocationResolver,
-  getLiquorLocationResolver,
-  addVenueResolver,
-  getVenuesResolver,
   getQuotesResolver,
   adminFlaggedPostsResolver,
   adminPendingQuotesResolver,
@@ -48,6 +43,8 @@ const {
   userProfileResolver,
   myDirectRoomsResolver,
   directRoomWithUserResolver,
+  getBarLocationResolver,
+  getLiquorLocationResolver,
 } = require("./queries/index.js");
 const {
   directMessageReceivedSubscription,
@@ -83,10 +80,6 @@ const resolveId = (parent) => parent?.id || parent?._id?.toString?.();
 const resolvers = {
   Query: {
     fetchMe: fetchMeResolver,
-    getVenues: getVenuesResolver,
-    getBarLocation: getBarLocationResolver,
-    getLiquorLocation: getLiquorLocationResolver,
-    runPush: runPushResolver,
     getQuotes: getQuotesResolver,
     adminFlaggedPosts: adminFlaggedPostsResolver,
     adminPendingQuotes: adminPendingQuotesResolver,
@@ -98,6 +91,8 @@ const resolvers = {
     userProfile: userProfileResolver,
     myDirectRooms: myDirectRoomsResolver,
     directRoomWithUser: directRoomWithUserResolver,
+    getBarLocation: getBarLocationResolver,
+    getLiquorLocation: getLiquorLocationResolver,
   },
 
   Mutation: {
@@ -105,7 +100,7 @@ const resolvers = {
     addPicture: addPictureResolver,
     deletePhoto: deletePhotoResolver,
     updateUserProfile: updateUserProfileResolver,
-    addVenue: addVenueResolver,
+
     resetSobrietyDate: resetSobrietyDateResolver,
     addQuote: addQuoteResolver,
     sendPost: sendPostResolver,
@@ -149,7 +144,8 @@ const resolvers = {
     id: resolveId,
     likes: resolveLikes("POST"),
     viewsCount: (parent) => {
-      const postViews = typeof parent?.viewsCount === "number" ? parent.viewsCount : 0;
+      const postViews =
+        typeof parent?.viewsCount === "number" ? parent.viewsCount : 0;
       const videoViews = parent?.video?.viewsCount ?? 0;
 
       return postViews || videoViews || 0;
@@ -183,11 +179,13 @@ const resolvers = {
       if (!targetId) return [];
 
       try {
-        const connections = await Connection.find({ followee: targetId }).populate(
-          "follower"
-        );
+        const connections = await Connection.find({
+          followee: targetId,
+        }).populate("follower");
 
-        return connections.map((connection) => connection.follower).filter(Boolean);
+        return connections
+          .map((connection) => connection.follower)
+          .filter(Boolean);
       } catch (err) {
         console.error("Error resolving followers", err);
         return [];
@@ -199,11 +197,13 @@ const resolvers = {
       if (!targetId) return [];
 
       try {
-        const connections = await Connection.find({ follower: targetId }).populate(
-          "followee"
-        );
+        const connections = await Connection.find({
+          follower: targetId,
+        }).populate("followee");
 
-        return connections.map((connection) => connection.followee).filter(Boolean);
+        return connections
+          .map((connection) => connection.followee)
+          .filter(Boolean);
       } catch (err) {
         console.error("Error resolving following", err);
         return [];
@@ -220,7 +220,9 @@ const resolvers = {
           isBuddy: true,
         }).populate("followee");
 
-        return connections.map((connection) => connection.followee).filter(Boolean);
+        return connections
+          .map((connection) => connection.followee)
+          .filter(Boolean);
       } catch (err) {
         console.error("Error resolving buddies", err);
         return [];
@@ -256,7 +258,10 @@ const resolvers = {
       if (!targetId) return 0;
 
       try {
-        return await Connection.countDocuments({ follower: targetId, isBuddy: true });
+        return await Connection.countDocuments({
+          follower: targetId,
+          isBuddy: true,
+        });
       } catch (err) {
         console.error("Error resolving buddiesCount", err);
         return 0;

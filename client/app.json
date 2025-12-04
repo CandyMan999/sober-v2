@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "sober-motivation-v2",
+    "name": "Sober Motivation",
     "slug": "sober-motivation-v2",
     "version": "1.0.0",
     "notification": {
@@ -20,6 +20,7 @@
     "ios": {
       "bundleIdentifier": "com.sobermotivation.app",
       "icon": "./assets/icon.png",
+      "buildNumber": "2",
       "supportsTablet": true,
       "infoPlist": {
         "NSLocationUsageDescription": "Sober Motivation uses your location to send you gentle reminders when you're near a bar or liquor store, helping you make mindful choices in real-time.",
@@ -34,6 +35,7 @@
     },
     "android": {
       "package": "com.sobermotivation.app",
+      "versionCode": 2,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
@@ -42,7 +44,12 @@
       "permissions": [
         "ACCESS_FINE_LOCATION",
         "ACCESS_COARSE_LOCATION",
-        "ACCESS_BACKGROUND_LOCATION"
+        "ACCESS_BACKGROUND_LOCATION",
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO",
+        "NOTIFICATIONS",
+        "android.permission.FOREGROUND_SERVICE",
+        "android.permission.FOREGROUND_SERVICE_LOCATION"
       ]
     },
     "web": {
@@ -53,8 +60,6 @@
         "projectId": "64faf7ce-ae75-49cc-bce7-d25c7fe5483f"
       }
     },
-    "plugins": [
-      "expo-video"
-    ]
+    "plugins": ["expo-video"]
   }
 }

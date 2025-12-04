@@ -1,159 +1,202 @@
+// utils/locationTracking.js
 import * as Location from "expo-location";
 import * as TaskManager from "expo-task-manager";
+import * as Notifications from "expo-notifications";
+import { GET_LIQUOR_STORE_QUERY, GET_BAR_QUERY } from "../GraphQL/queries";
 
 const GEOFENCE_TASK = "SM_GEOFENCE_TASK";
 const MOTION_TASK = "SM_MOTION_TASK";
 
-const GEOFENCE_RADIUS_METERS = 300;
-const STILL_SPEED_M_S = 0.5;
-const STILL_EVENTS_THRESHOLD = 3;
-const MOTION_TIME_INTERVAL_MS = 60 * 1000;
+const GEOFENCE_RADIUS_METERS = 75;
 
-let stillCounter = 0;
+// Real 2-minute logical interval (we enforce manually)
+const MOTION_TIME_INTERVAL_MS = 2 * 60 * 1000;
+
+// Stopped logic
+const STOP_DISTANCE_METERS = 20;
+const STOP_PING_THRESHOLD = 3;
+
 let motionPingCount = 0;
+let lastAcceptedPingTime = 0;
+let lastStopCheckLocation = null;
+let consecutiveSmallMoves = 0;
 
+// ------------------------
+// GEOFENCE TASK
+// ------------------------
 TaskManager.defineTask(GEOFENCE_TASK, async ({ data, error }) => {
-  if (error) {
-    console.log("[SoberMotion] GEOFENCE_TASK error", error);
-    return;
-  }
+  if (error) return console.log("[SoberMotion] GEOFENCE_TASK error", error);
 
-  const { eventType, region } = data;
+  const { eventType, region } = data || {};
+  const isExit = eventType === Location.GeofencingEventType.Exit;
 
-  if (eventType === Location.GeofencingEventType.Exit) {
-    console.log("[SoberMotion] User exited geofence:", region?.identifier);
+  if (isExit) {
+    try {
+      await Notifications.scheduleNotificationAsync({
+        content: {
+          title: "EXIT geofence",
+          body: `Exited radius ${GEOFENCE_RADIUS_METERS}m`,
+          data: { type: "geo_exit" },
+        },
+        trigger: null,
+      });
+    } catch {}
+
+    motionPingCount = 0;
+    lastAcceptedPingTime = 0;
+    lastStopCheckLocation = null;
+    consecutiveSmallMoves = 0;
+
     await startMotionTracking();
   }
 });
 
+// ------------------------
+// MOTION TASK
+// ------------------------
 TaskManager.defineTask(MOTION_TASK, async ({ data, error }) => {
-  if (error) {
-    console.log("[SoberMotion] MOTION_TASK error", error);
+  if (error) return console.log("[SoberMotion] MOTION_TASK error", error);
+
+  const { locations } = data || {};
+  if (!locations?.length) return;
+
+  const loc = locations[0];
+  const { latitude, longitude } = loc.coords;
+  const now = Date.now();
+
+  // Enforce our own 2-minute gate
+  if (
+    lastAcceptedPingTime &&
+    now - lastAcceptedPingTime < MOTION_TIME_INTERVAL_MS
+  )
+    return;
+
+  // Accept this ping
+  lastAcceptedPingTime = now;
+  motionPingCount += 1;
+
+  // Distance from previous "stop check" point
+  let moveDistance = 0;
+  if (lastStopCheckLocation) {
+    moveDistance = distanceInMeters(
+      lastStopCheckLocation.latitude,
+      lastStopCheckLocation.longitude,
+      latitude,
+      longitude
+    );
+  }
+
+  const movingStatus =
+    moveDistance < STOP_DISTANCE_METERS ? "STILL-ish" : "MOVING";
+
+  // --------------------------------
+  // 🔔 Motion ping notification
+  // --------------------------------
+  try {
+    await Notifications.scheduleNotificationAsync({
+      content: {
+        title: `Ping #${motionPingCount} (${movingStatus})`,
+        body: `Moved ${moveDistance.toFixed(1)}m\nLat: ${latitude.toFixed(
+          5
+        )}, Lng: ${longitude.toFixed(5)}`,
+        data: {
+          type: "motion_ping",
+          distanceMoved: moveDistance,
+          pingNumber: motionPingCount,
+        },
+      },
+      trigger: null,
+    });
+  } catch {}
+
+  // --------------------------------
+  // STOP LOGIC
+  // --------------------------------
+  if (!lastStopCheckLocation) {
+    lastStopCheckLocation = { latitude, longitude };
     return;
   }
 
-  const { locations } = data;
-  if (!locations || !locations.length) return;
-
-  const loc = locations[0];
-  const { latitude, longitude, speed } = loc.coords;
-
-  motionPingCount += 1;
-  console.log(
-    "[SoberMotion] MOTION_TASK ping #" +
-      motionPingCount +
-      " @ " +
-      new Date(loc.timestamp).toISOString(),
-    JSON.stringify(loc)
-  );
-
-  console.log(
-    "[SoberMotion] MOTION_TASK location:",
-    latitude,
-    longitude,
-    "speed:",
-    speed
-  );
-
-  const isStill = typeof speed === "number" && speed < STILL_SPEED_M_S;
-
-  if (isStill) {
-    stillCounter += 1;
+  if (moveDistance < STOP_DISTANCE_METERS) {
+    consecutiveSmallMoves += 1;
   } else {
-    stillCounter = 0;
+    consecutiveSmallMoves = 0;
+    lastStopCheckLocation = { latitude, longitude };
   }
 
-  if (stillCounter >= STILL_EVENTS_THRESHOLD) {
-    console.log("[SoberMotion] User appears stopped. Resetting geofence.");
-    stillCounter = 0;
+  if (consecutiveSmallMoves >= STOP_PING_THRESHOLD) {
+    consecutiveSmallMoves = 0;
+    motionPingCount = 0;
+    lastStopCheckLocation = null;
+    lastAcceptedPingTime = 0;
+
+    // 🔔 stopped notification
+    try {
+      await Notifications.scheduleNotificationAsync({
+        content: {
+          title: "Stopped moving",
+          body: "Resetting geofence at new location.",
+          data: { type: "stopped_moving" },
+        },
+        trigger: null,
+      });
+    } catch {}
 
     await stopMotionTracking();
     await setGeofenceAtCurrentLocation(loc);
   }
 });
 
+// ------------------------
+// PUBLIC API
+// ------------------------
 export async function initSoberMotionTracking() {
-  const { status: fgStatus } = await Location.requestForegroundPermissionsAsync();
-  if (fgStatus !== "granted") {
-    console.log("[SoberMotion] Foreground location permission not granted");
-    return;
-  }
+  const fg = await Location.requestForegroundPermissionsAsync();
+  if (fg.status !== "granted") return;
 
-  const { status: bgStatus } = await Location.requestBackgroundPermissionsAsync();
-  if (bgStatus !== "granted") {
-    console.log("[SoberMotion] Background location permission not granted");
-    return;
-  }
+  const bg = await Location.requestBackgroundPermissionsAsync();
+  if (bg.status !== "granted") return;
 
   const loc = await Location.getCurrentPositionAsync({
-    accuracy: Location.Accuracy.Balanced,
+    accuracy: Location.Accuracy.BestForNavigation,
   });
 
   await setGeofenceAtCurrentLocation(loc);
 }
 
 export async function ensureSoberMotionTrackingSetup() {
-  try {
-    const backgroundPermission = await Location.getBackgroundPermissionsAsync();
-    if (backgroundPermission.status !== "granted") {
-      console.log(
-        "[SoberMotion] Background permission missing, skipping geofence setup"
-      );
-      return;
-    }
+  const bg = await Location.getBackgroundPermissionsAsync();
+  if (bg.status !== "granted") return;
 
-    const hasGeofence = await Location.hasStartedGeofencingAsync(GEOFENCE_TASK);
-    if (hasGeofence) {
-      console.log("[SoberMotion] Geofence already active");
-      return;
-    }
+  const loc = await Location.getCurrentPositionAsync({
+    accuracy: Location.Accuracy.BestForNavigation,
+  });
 
-    const loc = await Location.getCurrentPositionAsync({
-      accuracy: Location.Accuracy.Balanced,
-    });
-
-    await setGeofenceAtCurrentLocation(loc);
-  } catch (error) {
-    console.log("[SoberMotion] Error ensuring motion tracking setup", error);
-  }
+  await setGeofenceAtCurrentLocation(loc);
 }
 
 export async function stopAllSoberLocationTracking() {
-  try {
-    const geofencingTasks = await Location.hasStartedGeofencingAsync(GEOFENCE_TASK);
-    if (geofencingTasks) {
-      await Location.stopGeofencingAsync(GEOFENCE_TASK);
-    }
+  if (await Location.hasStartedGeofencingAsync(GEOFENCE_TASK))
+    await Location.stopGeofencingAsync(GEOFENCE_TASK);
 
-    const motionTasks = await Location.hasStartedLocationUpdatesAsync(MOTION_TASK);
-    if (motionTasks) {
-      await Location.stopLocationUpdatesAsync(MOTION_TASK);
-    }
-  } catch (error) {
-    console.log("[SoberMotion] Error stopping location tracking", error);
-  }
+  if (await Location.hasStartedLocationUpdatesAsync(MOTION_TASK))
+    await Location.stopLocationUpdatesAsync(MOTION_TASK);
 }
 
+// ------------------------
+// HELPERS
+// ------------------------
 async function setGeofenceAtCurrentLocation(loc) {
-  let location = loc;
-
-  if (!location) {
-    location = await Location.getCurrentPositionAsync({
-      accuracy: Location.Accuracy.Balanced,
+  if (!loc) {
+    loc = await Location.getCurrentPositionAsync({
+      accuracy: Location.Accuracy.BestForNavigation,
     });
   }
 
-  const { latitude, longitude } = location.coords;
+  const { latitude, longitude } = loc.coords;
 
-  console.log("[SoberMotion] Setting geofence at:", latitude, longitude);
-
-  try {
-    const already = await Location.hasStartedGeofencingAsync(GEOFENCE_TASK);
-    if (already) {
-      await Location.stopGeofencingAsync(GEOFENCE_TASK);
-    }
-  } catch (error) {
-    console.log("[SoberMotion] Error stopping previous geofence", error);
+  if (await Location.hasStartedGeofencingAsync(GEOFENCE_TASK)) {
+    await Location.stopGeofencingAsync(GEOFENCE_TASK);
   }
 
   const regions = [
@@ -168,31 +211,51 @@ async function setGeofenceAtCurrentLocation(loc) {
   ];
 
   await Location.startGeofencingAsync(GEOFENCE_TASK, regions);
+
+  // 🔔 geofence set notification
+  try {
+    await Notifications.scheduleNotificationAsync({
+      content: {
+        title: "Geofence set",
+        body: `Radius ${GEOFENCE_RADIUS_METERS}m at ${latitude.toFixed(
+          5
+        )}, ${longitude.toFixed(5)}`,
+        data: { type: "geofence_set" },
+      },
+      trigger: null,
+    });
+  } catch {}
 }
 
 async function startMotionTracking() {
-  const already = await Location.hasStartedLocationUpdatesAsync(MOTION_TASK);
-  if (already) {
-    console.log("[SoberMotion] Motion tracking already running");
-    return;
-  }
-
-  console.log("[SoberMotion] Starting motion tracking…");
+  if (await Location.hasStartedLocationUpdatesAsync(MOTION_TASK)) return;
 
   await Location.startLocationUpdatesAsync(MOTION_TASK, {
-    accuracy: Location.Accuracy.Balanced,
-    // Keep pings predictable at roughly every 60 seconds
-    distanceInterval: 0,
-    timeInterval: MOTION_TIME_INTERVAL_MS,
-    showsBackgroundLocationIndicator: false,
+    accuracy: Location.Accuracy.BestForNavigation, // highest
+    distanceInterval: 10, // <-- ⭐ NEW
+    timeInterval: MOTION_TIME_INTERVAL_MS, // android only
     pausesUpdatesAutomatically: true,
+    showsBackgroundLocationIndicator: false,
   });
 }
 
 async function stopMotionTracking() {
-  const already = await Location.hasStartedLocationUpdatesAsync(MOTION_TASK);
-  if (!already) return;
+  if (await Location.hasStartedLocationUpdatesAsync(MOTION_TASK)) {
+    await Location.stopLocationUpdatesAsync(MOTION_TASK);
+  }
+}
 
-  console.log("[SoberMotion] Stopping motion tracking…");
-  await Location.stopLocationUpdatesAsync(MOTION_TASK);
+// distance helper
+function distanceInMeters(lat1, lon1, lat2, lon2) {
+  const R = 6371000;
+  const toRad = (v) => (v * Math.PI) / 180;
+
+  const dLat = toRad(lat2 - lat1);
+  const dLon = toRad(lon2 - lon1);
+
+  const a =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLon / 2) ** 2;
+
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 }

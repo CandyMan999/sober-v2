@@ -296,6 +296,12 @@ const typeDefs = gql`
     token: String
   }
 
+  type BarOrLiquor {
+    name: String
+    lat: Float
+    long: Float
+  }
+
   type DirectUploadImage {
     uploadURL: String!
     id: String!
@@ -309,15 +315,6 @@ const typeDefs = gql`
     users: [User!]
     rooms: [Room!]
     room(id: ID!): Room
-    runPush(token: String!): Token
-    getLiquorLocation(
-      lat: Float!
-      long: Float!
-      token: String
-      store: String
-    ): [Liquor]
-    getBarLocation(lat: Float!, long: Float!, token: String, bar: String): [Bar]
-    getVenues: [Venue]
     getQuotes: [Quote!]!
     adminFlaggedPosts(token: String!): [Post!]!
     adminPendingQuotes(token: String!): [Quote!]!
@@ -339,6 +336,18 @@ const typeDefs = gql`
     userProfile(token: String!, userId: ID!): ProfileOverview!
     myDirectRooms: [Room!]!
     directRoomWithUser(userId: ID!): Room!
+    getLiquorLocation(
+      lat: Float!
+      long: Float!
+      token: String
+      store: String
+    ): [BarOrLiquor]
+    getBarLocation(
+      lat: Float!
+      long: Float!
+      token: String
+      bar: String
+    ): [BarOrLiquor]
   }
 
   enum SocialPlatform {
@@ -384,7 +393,7 @@ const typeDefs = gql`
       token: String!
       replyTo: ID
     ): Comment!
-    addVenue(name: String!, type: Place!, lat: Float!, long: Float!): Venue
+
     addQuote(text: String!): Quote
     sendPost(file: Upload!, senderID: ID!, text: String): Post
     sendImagePost(file: Upload!, senderID: ID!, text: String): Post

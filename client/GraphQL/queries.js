@@ -928,3 +928,23 @@ export const QUOTE_BY_ID_QUERY = `
     }
   }
 `;
+
+export const GET_BAR_QUERY = `
+query Query($lat: Float!, $long: Float!, $token: String, $bar: String) {
+    getBarLocation(lat: $lat, long: $long, token: $token, bar: $bar) {
+      name
+      lat
+      long
+    }
+  }
+`;
+
+export const GET_LIQUOR_STORE_QUERY = `
+query Query($lat: Float!, $long: Float!, $token: String, $store: String) {
+    getLiquorLocation(lat: $lat, long: $long, token: $token, store: $store) {
+      name
+      lat
+      long
+    }
+}
+`;

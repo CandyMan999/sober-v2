@@ -1,6 +1,7 @@
 // config/endpoint.js
 import Constants from "expo-constants";
 import { Platform } from "react-native";
+import { EXPO_PROD_URL } from "@env";
 
 /**
  * *****************************************************
@@ -15,14 +16,8 @@ import { Platform } from "react-native";
  */
 const USE_PROD = true; // <<< CHANGE THIS TO true/false ANYTIME
 
-/**
- * *****************************************************
- * 🚀 Define URLs
- * *****************************************************
- */
-
 // Your Heroku server
-const PROD_URL = "https://sober-motivation-26a1a1acd5e8.herokuapp.com/graphql";
+const PROD_URL = EXPO_PROD_URL;
 
 // Local dev URLs depending on platform
 const LOCALHOST_IOS = "http://localhost:4000/graphql";

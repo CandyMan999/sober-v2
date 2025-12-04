@@ -10,25 +10,20 @@ const {
   profileOverviewResolver,
   userProfileResolver,
 } = require("./fetch");
-const {
-  getBarLocationResolver,
-  getLiquorLocationResolver,
-  getVenuesResolver,
-  addVenueResolver,
-  runPushResolver,
-} = require("./venues");
+const {} = require("./venues");
 const {
   myDirectRoomsResolver,
   directRoomWithUserResolver,
 } = require("./directMessage");
 
-module.exports = {
-  fetchMeResolver,
+const {
   getBarLocationResolver,
   getLiquorLocationResolver,
-  getVenuesResolver,
-  addVenueResolver,
-  runPushResolver,
+} = require("./locationTracking");
+
+module.exports = {
+  fetchMeResolver,
+
   getQuotesResolver,
   adminFlaggedPostsResolver,
   adminPendingQuotesResolver,
@@ -40,4 +35,6 @@ module.exports = {
   userProfileResolver,
   myDirectRoomsResolver,
   directRoomWithUserResolver,
+  getBarLocationResolver,
+  getLiquorLocationResolver,
 };
