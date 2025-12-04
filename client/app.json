@@ -28,7 +28,8 @@
         "NSLocationAlwaysUsageDescription": "Sober Motivation needs access to your location in the background to provide important notifications and support. This helps us send you alerts when you're near a bar or liquor store, encouraging you to make mindful choices.",
         "ITSAppUsesNonExemptEncryption": false,
         "NSCameraUsageDescription": "Sober Motivation uses your camera so you can record video messages.",
-        "NSMicrophoneUsageDescription": "Sober Motivation uses your microphone for audio in your video messages."
+        "NSMicrophoneUsageDescription": "Sober Motivation uses your microphone for audio in your video messages.",
+        "UIBackgroundModes": ["location"]
       }
     },
     "android": {

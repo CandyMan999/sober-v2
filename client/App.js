@@ -50,6 +50,7 @@ import {
   NotificationIntents,
   NotificationTypes,
 } from "./utils/notifications";
+import { ensureSoberMotionTrackingSetup } from "./utils/locationTracking";
 
 import Context from "./context";
 import reducer from "./reducer";
@@ -250,6 +251,19 @@ export default function App() {
       }
     };
   }, [handleNotificationNavigation]);
+
+  useEffect(() => {
+    const ensureLocationTracking = async () => {
+      try {
+        console.log("[SoberMotion] Ensuring motion tracking setup from App.js");
+        await ensureSoberMotionTrackingSetup();
+      } catch (error) {
+        console.log("[SoberMotion] Failed to ensure motion tracking setup", error);
+      }
+    };
+
+    ensureLocationTracking();
+  }, []);
 
   useEffect(() => {
     if (!navigationReady) return undefined;
