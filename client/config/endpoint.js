@@ -14,7 +14,7 @@ import { EXPO_PROD_URL } from "@env";
  *
  * You can flip this in 2 seconds.
  */
-const USE_PROD = true; // <<< CHANGE THIS TO true/false ANYTIME
+const USE_PROD = false; // <<< CHANGE THIS TO true/false ANYTIME
 
 // Your Heroku server
 const PROD_URL = EXPO_PROD_URL;

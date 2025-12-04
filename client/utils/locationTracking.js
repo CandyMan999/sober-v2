@@ -215,8 +215,9 @@ async function checkNearbyVenues(latitude, longitude) {
 
     const liquorResults = liquorResponse?.getLiquorLocation;
 
-    if (Array.isArray(liquorResults)) {
-      lastNearbyStore = liquorResults[0]?.name || null;
+    // ✅ Only update when we actually HAVE at least one result
+    if (!!liquorResults.length) {
+      lastNearbyStore = liquorResults[0].name;
     }
   } catch (error) {
     console.log("[SoberMotion] Liquor store lookup failed", error);
@@ -230,8 +231,9 @@ async function checkNearbyVenues(latitude, longitude) {
 
     const barResults = barResponse?.getBarLocation;
 
-    if (Array.isArray(barResults)) {
-      lastNearbyBar = barResults[0]?.name || null;
+    // ✅ Only update when we actually HAVE at least one result
+    if (!!barResults.length) {
+      lastNearbyBar = barResults[0]?.name;
     }
   } catch (error) {
     console.log("[SoberMotion] Bar lookup failed", error);

@@ -21,11 +21,23 @@ module.exports = {
       ? await City.findById(closestCity._id).populate("liquor")
       : null;
 
-    const createMessage = (store, index) => {
+    const createMessage = async (store, index) => {
+      const user = await User.findOne({ token });
+      const soberTime = user?.sobrietyStartAt;
+      let days = 0;
+
+      console.log("time: ", soberTime);
+      if (soberTime) {
+        const now = moment();
+        const b = moment(soberTime);
+        days = now.diff(b, "days");
+      }
+
+      console.log("how many days; ", days);
       const MESSAGES = [
         `Why are you at ${store}?, Are you fucking insane?`,
         `Do you really want to wake up hungover?`,
-        `You are going to regret this!`,
+        `You are going to regret this! You are ${days} days sober, let's make ${(days += 1)}`,
         `Alcohol is nothing but poison, walk out of ${store} now!`,
         `DUI, CANCER, LIVER FAILURE, VIOLENCE, LOST MONEY, LOST TIME!`,
       ];
@@ -44,10 +56,22 @@ module.exports = {
     //     `Nicely packaged poison, do you want success in life? Get out of ${store} now!`,
     //     `Sell your dreams for a buzz?, Short term thinking, take a moment to think what this is really going to mean!`,
 
-    const createSecondaryMessage = (store, index) => {
+    const createSecondaryMessage = async (store, index) => {
+      const user = await User.findOne({ token });
+      const soberTime = user?.sobrietyStartAt;
+      let days = 0;
+
+      console.log("time: ", soberTime);
+      if (soberTime) {
+        const now = moment();
+        const b = moment(soberTime);
+        days = now.diff(b, "days");
+      }
+
+      console.log("how many days; ", days);
       const MESSAGES = [
         `I see you are at ${store}?, do you have a death wish?`,
-        `Do you really want to start this cycle again?`,
+        `Do you really want to start this cycle again? You are ${days} sober, do you want it to be day 1 again?`,
         `Be strong hangovers are withdrawls, which can be lethal!`,
         `Nicely packaged poison, do you want success in life? Get out of ${store} now!`,
         `Sell your dreams for a buzz?, Short term thinking, take a moment to think what this is really going to mean!`,
