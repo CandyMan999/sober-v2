@@ -47,7 +47,10 @@ import { ContentPreviewModal } from "./components";
 import { POST_BY_ID_QUERY, QUOTE_BY_ID_QUERY } from "./GraphQL/queries";
 import { useClient } from "./client";
 import { NotificationIntents, NotificationTypes } from "./utils/notifications";
-import { ensureSoberMotionTrackingSetup } from "./utils/locationTracking";
+import {
+  ensureSoberMotionTrackingSetup,
+  configureLocationTrackingClient,
+} from "./utils/locationTracking";
 
 import Context from "./context";
 import reducer from "./reducer";
@@ -216,6 +219,13 @@ export default function App() {
       setPreviewRequest({ id: data.postId, type: "POST" });
     }
   }, []);
+
+  useEffect(() => {
+    configureLocationTrackingClient({
+      requestFn: graphClient.request,
+      getPushTokenFn: getToken,
+    });
+  }, [graphClient]);
 
   useEffect(() => {
     // Fired whenever a notification is received while the app is foregrounded
