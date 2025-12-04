@@ -3,6 +3,7 @@ import * as Location from "expo-location";
 import * as TaskManager from "expo-task-manager";
 import * as Notifications from "expo-notifications";
 import { GET_LIQUOR_STORE_QUERY, GET_BAR_QUERY } from "../GraphQL/queries";
+import { getToken as getStoredPushToken } from "./helpers";
 
 const GEOFENCE_TASK = "SM_GEOFENCE_TASK";
 const MOTION_TASK = "SM_MOTION_TASK";
@@ -16,10 +17,44 @@ const MOTION_TIME_INTERVAL_MS = 2 * 60 * 1000;
 const STOP_DISTANCE_METERS = 20;
 const STOP_PING_THRESHOLD = 3;
 
+let graphQLRequestFn = null;
+let pushTokenResolver = getStoredPushToken;
+let lastNearbyBar = null;
+let lastNearbyStore = null;
+
 let motionPingCount = 0;
 let lastAcceptedPingTime = 0;
 let lastStopCheckLocation = null;
 let consecutiveSmallMoves = 0;
+
+// External dependencies for venue lookups
+export function configureLocationTrackingClient({
+  requestFn,
+  getPushTokenFn,
+  lastBar,
+  lastStore,
+} = {}) {
+  if (typeof requestFn === "function") {
+    graphQLRequestFn = requestFn;
+  }
+
+  if (typeof getPushTokenFn === "function") {
+    pushTokenResolver = getPushTokenFn;
+  }
+
+  if (lastBar !== undefined) {
+    lastNearbyBar = lastBar;
+  }
+
+  if (lastStore !== undefined) {
+    lastNearbyStore = lastStore;
+  }
+}
+
+export function resetVenueTrackingCache() {
+  lastNearbyBar = null;
+  lastNearbyStore = null;
+}
 
 // ------------------------
 // GEOFENCE TASK
@@ -109,6 +144,8 @@ TaskManager.defineTask(MOTION_TASK, async ({ data, error }) => {
     });
   } catch {}
 
+  await checkNearbyVenues(latitude, longitude);
+
   // --------------------------------
   // STOP LOGIC
   // --------------------------------
@@ -146,6 +183,60 @@ TaskManager.defineTask(MOTION_TASK, async ({ data, error }) => {
     await setGeofenceAtCurrentLocation(loc);
   }
 });
+
+async function resolvePushToken() {
+  if (typeof pushTokenResolver !== "function") return null;
+
+  try {
+    return await pushTokenResolver();
+  } catch (error) {
+    console.log("[SoberMotion] Unable to resolve push token", error);
+    return null;
+  }
+}
+
+async function checkNearbyVenues(latitude, longitude) {
+  if (!graphQLRequestFn) return;
+
+  const pushToken = await resolvePushToken();
+  if (!pushToken) return;
+
+  const baseVariables = {
+    lat: latitude,
+    long: longitude,
+    token: pushToken,
+  };
+
+  try {
+    const liquorResponse = await graphQLRequestFn(GET_LIQUOR_STORE_QUERY, {
+      ...baseVariables,
+      store: lastNearbyStore,
+    });
+
+    const liquorResults = liquorResponse?.getLiquorLocation;
+
+    if (Array.isArray(liquorResults)) {
+      lastNearbyStore = liquorResults[0]?.name || null;
+    }
+  } catch (error) {
+    console.log("[SoberMotion] Liquor store lookup failed", error);
+  }
+
+  try {
+    const barResponse = await graphQLRequestFn(GET_BAR_QUERY, {
+      ...baseVariables,
+      bar: lastNearbyBar,
+    });
+
+    const barResults = barResponse?.getBarLocation;
+
+    if (Array.isArray(barResults)) {
+      lastNearbyBar = barResults[0]?.name || null;
+    }
+  } catch (error) {
+    console.log("[SoberMotion] Bar lookup failed", error);
+  }
+}
 
 // ------------------------
 // PUBLIC API

@@ -1,22 +1,8 @@
 const { AuthenticationError } = require("apollo-server-express");
 
-const {
-  User,
-  Quote,
-  Post,
-  Like,
-  Comment,
-  Notification,
-  City,
-  Token,
-} = require("../../models");
+const { User, City } = require("../../models");
 const { getDistanceFromCoords } = require("../../utils/helpers");
 const { findClosestCity } = require("../../utils/location");
-const {
-  NotificationTypes,
-  NotificationIntents,
-  createNotificationForUser,
-} = require("../../utils/notifications");
 
 const { Expo } = require("expo-server-sdk");
 const moment = require("moment");
@@ -28,41 +14,12 @@ require("dotenv").config();
 module.exports = {
   getLiquorLocationResolver: async (root, args, ctx) => {
     const { lat, long, token, store } = args;
-
     let liquorData = [];
 
-    const findClosestCity = async () => {
-      let shortestDistance = null;
-      let currentDistance = null;
-      let cityName = null;
-      let cityId = null;
-
-      const cities = await City.find();
-
-      await cities.map(async (city) => {
-        const cityLat = city.lat;
-        const cityLng = city.long;
-
-        currentDistance = await getDistanceFromCoords(
-          lat,
-          long,
-          cityLat,
-          cityLng
-        );
-
-        if (shortestDistance === null || currentDistance < shortestDistance) {
-          shortestDistance = currentDistance;
-          cityName = city.name;
-          cityId = city._id;
-        }
-      });
-      console.log("found city: ", cityName, lat, long);
-      return { cityName, cityId };
-    };
-
-    const city = await City.findOne({
-      id: (await findClosestCity()).cityId,
-    }).populate("liquor");
+    const closestCity = await findClosestCity(lat, long);
+    const city = closestCity
+      ? await City.findById(closestCity._id).populate("liquor")
+      : null;
 
     const createMessage = (store, index) => {
       const MESSAGES = [
@@ -104,9 +61,9 @@ module.exports = {
         return;
       }
 
-      const results = city.liquor;
+      const results = city?.liquor || [];
 
-      await results.map(async (result) => {
+      for (const result of results) {
         const distance = await getDistanceFromCoords(
           lat,
           long,
@@ -124,7 +81,7 @@ module.exports = {
             },
           ];
         }
-      });
+      }
 
       if (!!liquorData.length && store === liquorData[0].name) {
         return [];
@@ -217,47 +174,20 @@ module.exports = {
   getBarLocationResolver: async (root, args, ctx) => {
     const { lat, long, token, bar } = args;
     let barData = [];
-
-    const findClosestCity = async () => {
-      let shortestDistance = null;
-      let currentDistance = null;
-      let cityName = null;
-      let cityId = null;
-
-      const cities = await City.find();
-
-      await cities.map(async (city) => {
-        const cityLat = city.lat;
-        const cityLng = city.long;
-        currentDistance = await getDistanceFromCoords(
-          lat,
-          long,
-          cityLat,
-          cityLng
-        );
-        if (shortestDistance === null || currentDistance < shortestDistance) {
-          shortestDistance = currentDistance;
-          cityName = city.name;
-          cityId = city._id;
-        }
-      });
-
-      return { cityName, cityId };
-    };
-
-    const city = await City.findOne({
-      _id: (await findClosestCity()).cityId,
-    }).populate("bars");
+    const closestCity = await findClosestCity(lat, long);
+    const city = closestCity
+      ? await City.findById(closestCity._id).populate("bars")
+      : null;
 
     const createMessage = async (bar, index) => {
       const user = await User.findOne({ token });
-      const soberTime = user.sobrietyStartAt;
-      let days;
+      const soberTime = user?.sobrietyStartAt;
+      let days = 0;
 
       console.log("time: ", soberTime);
       if (soberTime) {
         const now = moment();
-        const b = moment(soberTime.date);
+        const b = moment(soberTime);
         days = now.diff(b, "days");
       }
 
@@ -293,9 +223,9 @@ module.exports = {
         return;
       }
 
-      const results = city.bars;
+      const results = city?.bars || [];
 
-      await results.map(async (result) => {
+      for (const result of results) {
         const distance = await getDistanceFromCoords(
           lat,
           long,
@@ -313,7 +243,7 @@ module.exports = {
             },
           ];
         }
-      });
+      }
 
       if (!!barData.length && bar === barData[0].name) {
         return [];
