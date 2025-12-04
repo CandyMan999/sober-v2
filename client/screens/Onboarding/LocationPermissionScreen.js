@@ -13,6 +13,7 @@ import {
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import * as Location from "expo-location";
+import { initSoberMotionTracking } from "../../utils/locationTracking";
 
 import LogoIcon from "../../assets/icon.png";
 import { useClient } from "../../client";
@@ -43,6 +44,20 @@ const LocationPermissionScreen = ({ navigation }) => {
       bg.status === "granted" ||
       (fg.status === "granted" && fg.scope === "always")
     );
+  };
+
+  const startMotionTrackingIfPermitted = async () => {
+    try {
+      if (await hasAlwaysPermission()) {
+        console.log("[SoberMotion] Starting motion tracking from onboarding");
+        await initSoberMotionTracking();
+        return true;
+      }
+    } catch (error) {
+      console.log("[SoberMotion] Unable to start motion tracking", error);
+    }
+
+    return false;
   };
 
   const updateLocationIfPermitted = async () => {
@@ -84,6 +99,7 @@ const LocationPermissionScreen = ({ navigation }) => {
   const checkPermissions = async () => {
     try {
       if (await hasAlwaysPermission()) {
+        await startMotionTrackingIfPermitted();
         await routeToApp();
         return;
       }
@@ -121,6 +137,7 @@ const LocationPermissionScreen = ({ navigation }) => {
       const bg = await Location.requestBackgroundPermissionsAsync();
 
       if (bg.status === "granted" || (await hasAlwaysPermission())) {
+        await startMotionTrackingIfPermitted();
         await routeToApp();
         return;
       }
