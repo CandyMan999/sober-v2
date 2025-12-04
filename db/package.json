@@ -4,13 +4,13 @@
   "main": "index.js",
   "private": true,
   "scripts": {
-    "start": "yarn dev",
-    "dev": "concurrently \"yarn start:client\" \"yarn dev:server\"",
+    "start": "node server.js",
+    "dev": "yarn dev:server",
+    "dev:server": "NODE_ENV=development nodemon --exec babel-node server.js",
     "start:client": "cd client && npx expo start",
     "db:add-venues": "node ./seeders/addBarOrLiquor",
     "db:add-quotes": "node ./seeders/addQuotes",
     "db:add-milestones": "node ./seeders/addMilestoneImages",
-    "dev:server": "NODE_ENV=development nodemon --exec babel-node server.js",
     "android": "cd client && npx expo start --android",
     "ios": "cd client && npx expo start --ios",
     "web": "cd client && npx expo start --web"
@@ -36,13 +36,14 @@
     "mongoose": "^8.20.0",
     "node-cron": "^4.2.1",
     "react": "19.1.0",
+    "concurrently": "^9.2.1",
     "react-native": "0.81.5",
     "subscriptions-transport-ws": "^0.11.0"
   },
   "devDependencies": {
     "@babel/core": "^7.28.5",
     "@babel/node": "^7.28.0",
-    "concurrently": "^9.0.0",
-    "nodemon": "^3.1.0"
+    "concurrently": "^9.2.1",
+    "nodemon": "^3.1.11"
   }
 }

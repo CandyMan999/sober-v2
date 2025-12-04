@@ -2,49 +2,70 @@
 import Constants from "expo-constants";
 import { Platform } from "react-native";
 
-// --- Helper: Detect Expo server IP (your Mac's LAN IP) ---
+/**
+ * *****************************************************
+ * 🔥 MANUAL SWITCH — YOU CONTROL EVERYTHING
+ * *****************************************************
+ * Set this to TRUE when you want the app (even in development)
+ * to hit Heroku.
+ *
+ * Set to FALSE when working locally.
+ *
+ * You can flip this in 2 seconds.
+ */
+const USE_PROD = true; // <<< CHANGE THIS TO true/false ANYTIME
+
+/**
+ * *****************************************************
+ * 🚀 Define URLs
+ * *****************************************************
+ */
+
+// Your Heroku server
+const PROD_URL = "https://sober-motivation-26a1a1acd5e8.herokuapp.com/graphql";
+
+// Local dev URLs depending on platform
+const LOCALHOST_IOS = "http://localhost:4000/graphql";
+const LOCALHOST_ANDROID = "http://10.0.2.2:4000/graphql";
+
+// Try to detect LAN IP for real devices in Expo
 function getDevServerIp() {
   const host =
     Constants.expoConfig?.hostUri ||
     Constants.manifest2?.extra?.expoGo?.debuggerHost;
-  // host usually looks like "192.168.0.17:19000"
+
   if (!host) return null;
-  return host.split(":")[0]; // Extract IP
+  return host.split(":")[0]; // extract "192.168.x.x"
 }
 
-// Optional helper to more reliably detect Android emulator
-function emulatorCheck() {
-  return (
-    Constants.deviceName?.includes("emulator") ||
-    Constants.deviceName?.includes("Android SDK")
-  );
-}
+const DEV_LAN_IP = getDevServerIp()
+  ? `http://${getDevServerIp()}:4000/graphql`
+  : null;
 
-const devIp = getDevServerIp();
+/**
+ * *****************************************************
+ * 🎯 Main logic
+ * *****************************************************
+ */
 
 let GRAPHQL_URI;
 
-if (__DEV__) {
-  // --- DEVELOPMENT ---
-  // Case 1: iOS Simulator
-  if (Platform.OS === "ios" && !Constants.deviceName) {
-    GRAPHQL_URI = "http://localhost:4000/graphql";
-  }
-  // Case 2: Android Emulator
-  else if (Platform.OS === "android" && emulatorCheck()) {
-    GRAPHQL_URI = "http://10.0.2.2:4000/graphql";
-  }
-  // Case 3: Real device — use LAN IP
-  else {
-    GRAPHQL_URI = devIp
-      ? `http://${devIp}:4000/graphql`
-      : "http://192.168.0.17:4000/graphql"; // fallback
-  }
+// 🔥 Manual override always wins
+if (USE_PROD) {
+  GRAPHQL_URI = PROD_URL;
 } else {
-  // --- PRODUCTION ---
-  GRAPHQL_URI = "https://sober-motivation.herokuapp.com/graphql";
+  // DEV MODE
+  if (Platform.OS === "ios" && !Constants.deviceName) {
+    GRAPHQL_URI = LOCALHOST_IOS; // iOS simulator
+  } else if (Platform.OS === "android") {
+    GRAPHQL_URI = LOCALHOST_ANDROID; // Android emulator
+  } else if (DEV_LAN_IP) {
+    GRAPHQL_URI = DEV_LAN_IP; // physical device via LAN
+  } else {
+    GRAPHQL_URI = LOCALHOST_IOS; // fallback
+  }
 }
 
-console.log("🔥 GRAPHQL_URI (from endpoint config):", GRAPHQL_URI);
+console.log("🔌 GRAPHQL ENDPOINT:", GRAPHQL_URI);
 
 export { GRAPHQL_URI };
