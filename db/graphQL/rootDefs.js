@@ -221,6 +221,8 @@ const typeDefs = gql`
   type ProfileOverview {
     user: User!
     posts: [Post!]!
+    postCursor: String
+    hasMorePosts: Boolean!
     quotes: [Quote!]!
     savedPosts: [Post!]!
     savedQuotes: [Quote!]!
@@ -334,6 +336,12 @@ const typeDefs = gql`
       sortByClosest: Boolean
       mediaType: PostMediaType
       isMilestone: Boolean
+    ): PostConnection!
+    userPosts(
+      token: String!
+      userId: ID!
+      limit: Int
+      cursor: String
     ): PostConnection!
     post(postId: ID!, token: String, includeFlagged: Boolean): Post
     quote(quoteId: ID!, token: String): Quote
