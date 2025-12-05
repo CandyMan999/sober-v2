@@ -158,9 +158,7 @@ const MessageListScreen = ({ route, navigation }) => {
   );
 
   const listData = useMemo(() => {
-    const sourceRooms = rooms.length ? rooms : conversations;
-
-    const normalized = sourceRooms
+    const normalized = rooms
       .map((room, index) => {
         const participants = room.users || [];
         const otherUserRaw =
@@ -194,7 +192,7 @@ const MessageListScreen = ({ route, navigation }) => {
       });
 
     return normalized;
-  }, [rooms, conversations, currentUserId, deriveLastMessageInfo]);
+  }, [rooms, currentUserId, deriveLastMessageInfo]);
 
   const renderConversation = ({ item }) => {
     const username = item.user?.username || "Buddy";
