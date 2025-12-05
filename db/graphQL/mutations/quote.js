@@ -26,7 +26,72 @@ module.exports = {
       throw new UserInputError("Quotes must be 240 characters or fewer");
     }
 
+    const normalizeForComparison = (input) =>
+      (input || "")
+        .toLowerCase()
+        // Remove emoji and variation selectors
+        .replace(/[\p{Emoji_Presentation}\p{Emoji}\u200d\ufe0f]/gu, "")
+        .replace(/\s+/g, " ")
+        .trim();
+
+    const levenshteinDistance = (a, b) => {
+      const aLen = a.length;
+      const bLen = b.length;
+
+      if (aLen === 0) return bLen;
+      if (bLen === 0) return aLen;
+
+      const matrix = Array.from({ length: aLen + 1 }, () =>
+        Array(bLen + 1).fill(0)
+      );
+
+      for (let i = 0; i <= aLen; i += 1) {
+        matrix[i][0] = i;
+      }
+
+      for (let j = 0; j <= bLen; j += 1) {
+        matrix[0][j] = j;
+      }
+
+      for (let i = 1; i <= aLen; i += 1) {
+        for (let j = 1; j <= bLen; j += 1) {
+          const cost = a[i - 1] === b[j - 1] ? 0 : 1;
+
+          matrix[i][j] = Math.min(
+            matrix[i - 1][j] + 1,
+            matrix[i][j - 1] + 1,
+            matrix[i - 1][j - 1] + cost
+          );
+        }
+      }
+
+      return matrix[aLen][bLen];
+    };
+
+    const similarityScore = (a, b) => {
+      const maxLen = Math.max(a.length, b.length) || 1;
+      const distance = levenshteinDistance(a, b);
+      return 1 - distance / maxLen;
+    };
+
     try {
+      const sanitizedNewQuote = normalizeForComparison(normalized);
+      const existingQuotes = await Quote.find({}, "text");
+
+      for (const existing of existingQuotes) {
+        const sanitizedExisting = normalizeForComparison(existing?.text);
+
+        if (!sanitizedExisting) {
+          continue;
+        }
+
+        if (similarityScore(sanitizedNewQuote, sanitizedExisting) >= 0.8) {
+          throw new UserInputError(
+            `A similar quote already exists: "${existing.text}"`
+          );
+        }
+      }
+
       const quote = await Quote.create({
         text: normalized,
         user: currentUser._id,
