@@ -324,6 +324,13 @@ const ContentPreviewModal = ({
   );
 
   const viewerId = viewerUser?.id;
+  const resolvedAuthor =
+    localItem?.author ||
+    localItem?.user ||
+    localItem?.postAuthor ||
+    localItem?.createdBy ||
+    (isPost ? viewerUser : null);
+
   const content = isInfo
     ? localItem
     : localItem
@@ -335,30 +342,10 @@ const ContentPreviewModal = ({
           localItem.video?.createdAt ||
           localItem.created_at ||
           null,
-        author:
-          localItem.author ||
-          localItem.user ||
-          localItem.postAuthor ||
-          localItem.createdBy ||
-          viewerUser,
-        user:
-          localItem.user ||
-          localItem.author ||
-          localItem.postAuthor ||
-          localItem.createdBy ||
-          viewerUser,
-        postAuthor:
-          localItem.postAuthor ||
-          localItem.author ||
-          localItem.user ||
-          localItem.createdBy ||
-          viewerUser,
-        createdBy:
-          localItem.createdBy ||
-          localItem.author ||
-          localItem.user ||
-          localItem.postAuthor ||
-          viewerUser,
+        author: resolvedAuthor,
+        user: resolvedAuthor,
+        postAuthor: resolvedAuthor,
+        createdBy: resolvedAuthor,
         closestCity:
           localItem.closestCity ||
           (localItem.cityName ? { name: localItem.cityName } : null) ||
