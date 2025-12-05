@@ -184,7 +184,7 @@
         const long = await Number(location[1].split("4d")[1]);
 
         // NOTE: Set type manually later (e.g. "Bar" or "Liquor")
-        const type = "Liquor"; // <-- change this manually in your data if needed
+        const type = "Bar"; // <-- change this manually in your data if needed
 
         list.push({
           type,

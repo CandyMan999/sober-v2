@@ -42,6 +42,8 @@ export function configureLocationTrackingClient({
     pushTokenResolver = getPushTokenFn;
   }
 
+  console.log("last known: ", lastBar, lastStore);
+
   if (lastBar !== undefined) {
     lastNearbyBar = lastBar;
   }
@@ -248,6 +250,16 @@ export async function initSoberMotionTracking() {
   if (fg.status !== "granted") return;
 
   const bg = await Location.requestBackgroundPermissionsAsync();
+
+  // ✅ Don't set up a new geofence if one is already running
+  const alreadyRunning = await Location.hasStartedGeofencingAsync(
+    GEOFENCE_TASK
+  );
+  if (alreadyRunning) {
+    console.log("[SoberMotion] Geofence already active, skipping init");
+    return;
+  }
+
   if (bg.status !== "granted") return;
 
   const loc = await Location.getCurrentPositionAsync({
@@ -260,6 +272,15 @@ export async function initSoberMotionTracking() {
 export async function ensureSoberMotionTrackingSetup() {
   const bg = await Location.getBackgroundPermissionsAsync();
   if (bg.status !== "granted") return;
+
+  // ✅ Don't re-create geofence if it already exists
+  const alreadyRunning = await Location.hasStartedGeofencingAsync(
+    GEOFENCE_TASK
+  );
+  if (alreadyRunning) {
+    console.log("[SoberMotion] Geofence already active, skipping ensure");
+    return;
+  }
 
   const loc = await Location.getCurrentPositionAsync({
     accuracy: Location.Accuracy.BestForNavigation,

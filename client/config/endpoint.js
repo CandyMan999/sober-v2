@@ -17,7 +17,7 @@ import { EXPO_PROD_URL } from "@env";
 const USE_PROD = false; // <<< CHANGE THIS TO true/false ANYTIME
 
 // Your Heroku server
-const PROD_URL = EXPO_PROD_URL;
+const PROD_URL = "https://sober-motivation-26a1a1acd5e8.herokuapp.com/graphql";
 
 // Local dev URLs depending on platform
 const LOCALHOST_IOS = "http://localhost:4000/graphql";

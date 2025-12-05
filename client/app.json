@@ -2,7 +2,7 @@
   "expo": {
     "name": "Sober Motivation",
     "slug": "sober-motivation-v2",
-    "version": "1.0.0",
+    "version": "1.0.2",
     "notification": {
       "icon": "./assets/icon.png"
     },
@@ -20,7 +20,7 @@
     "ios": {
       "bundleIdentifier": "com.sobermotivation.app",
       "icon": "./assets/icon.png",
-      "buildNumber": "2",
+      "buildNumber": "2.4",
       "supportsTablet": true,
       "infoPlist": {
         "NSLocationUsageDescription": "Sober Motivation uses your location to send you gentle reminders when you're near a bar or liquor store, helping you make mindful choices in real-time.",

@@ -97,7 +97,7 @@ const AddPhotoScreen = ({ navigation, route }) => {
 
       if (!uploadRes.ok) throw new Error("Cloudflare upload failed");
 
-      const deliveryUrl = `https://imagedelivery.net/${EXPO_CF_ACCOUNT_HASH}/${directUpload.id}/${EXPO_CF_VARIANT}`;
+      const deliveryUrl = `https://imagedelivery.net/o9IMJdMAwk7ijgmm9FnmYg/${directUpload.id}/public`;
 
       const { addPicture } = await client.request(ADD_PICTURE_MUTATION, {
         token,
