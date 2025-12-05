@@ -336,6 +336,51 @@ module.exports = {
     }
   },
 
+  userPostsResolver: async (
+    _,
+    { token, userId, limit: limitArg, cursor: cursorArg },
+    { currentUser }
+  ) => {
+    if (!token) {
+      throw new AuthenticationError("Token is required");
+    }
+
+    if (!userId) {
+      throw new Error("userId is required");
+    }
+
+    const viewer = currentUser || (await User.findOne({ token }));
+    if (!viewer) {
+      throw new AuthenticationError("User not found");
+    }
+
+    const limit = Math.min(limitArg || 24, 50);
+    const cursor = cursorArg ? new Date(cursorArg) : null;
+
+    const query = { author: userId };
+    if (cursor) {
+      query.createdAt = { $lt: cursor };
+    }
+
+    const posts = await Post.find(query)
+      .sort({ createdAt: -1 })
+      .limit(limit + 1)
+      .populate("author")
+      .populate("closestCity")
+      .populate({
+        path: "video",
+        select: "url flagged viewsCount viewers thumbnailUrl",
+      });
+
+    const hasMore = posts.length > limit;
+    const slicedPosts = hasMore ? posts.slice(0, limit) : posts;
+    const nextCursor = slicedPosts.length
+      ? slicedPosts[slicedPosts.length - 1].createdAt?.toISOString?.() || null
+      : null;
+
+    return { posts: slicedPosts, hasMore, cursor: nextCursor };
+  },
+
   postResolver: async (_, { postId, includeFlagged = false }) => {
     if (!postId) {
       throw new Error("postId is required");
@@ -407,13 +452,22 @@ module.exports = {
       throw new AuthenticationError("User not found");
     }
 
+    const limit = 12;
+
     const posts = await Post.find({ author: user._id })
       .sort({ createdAt: -1 })
+      .limit(limit + 1)
       .populate("author")
       .populate({
         path: "video",
         select: "url flagged viewsCount viewers thumbnailUrl",
       });
+
+    const hasMorePosts = posts.length > limit;
+    const trimmedPosts = hasMorePosts ? posts.slice(0, limit) : posts;
+    const postCursor = trimmedPosts.length
+      ? trimmedPosts[trimmedPosts.length - 1].createdAt?.toISOString?.() || null
+      : null;
 
     const savedPosts = await Post.find({ _id: { $in: user.savedPosts || [] } })
       .sort({ createdAt: -1 })
@@ -435,7 +489,9 @@ module.exports = {
 
     return {
       user,
-      posts,
+      posts: trimmedPosts,
+      postCursor,
+      hasMorePosts,
       quotes,
       savedPosts,
       savedQuotes,
@@ -469,14 +525,23 @@ module.exports = {
       throw new AuthenticationError("User not found");
     }
 
+    const limit = 12;
+
     const posts = await Post.find({ author: user._id })
       .sort({ createdAt: -1 })
+      .limit(limit + 1)
       .populate("author")
       .populate("closestCity")
       .populate({
         path: "video",
         select: "url flagged viewsCount viewers thumbnailUrl",
       });
+
+    const hasMorePosts = posts.length > limit;
+    const trimmedPosts = hasMorePosts ? posts.slice(0, limit) : posts;
+    const postCursor = trimmedPosts.length
+      ? trimmedPosts[trimmedPosts.length - 1].createdAt?.toISOString?.() || null
+      : null;
 
     const savedPosts = await Post.find({ _id: { $in: user.savedPosts || [] } })
       .sort({ createdAt: -1 })
@@ -524,7 +589,9 @@ module.exports = {
         drunkPic,
         closestCity: city,
       },
-      posts,
+      posts: trimmedPosts,
+      postCursor,
+      hasMorePosts,
       quotes,
       savedPosts,
       savedQuotes,
