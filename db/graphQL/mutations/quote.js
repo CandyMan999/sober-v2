@@ -1,4 +1,7 @@
-const { AuthenticationError, UserInputError } = require("apollo-server-express");
+const {
+  AuthenticationError,
+  UserInputError,
+} = require("apollo-server-express");
 
 const { Connection, Quote, User } = require("../../models");
 const { sendPushNotifications } = require("../../utils/pushNotifications");
@@ -68,7 +71,7 @@ module.exports = {
 
     try {
       const newQuoteTokens = tokenizeQuote(normalized);
-      const existingQuotes = await Quote.find({}, "text");
+      const existingQuotes = await Quote.find({ isApproved: true }, "text");
 
       for (const existing of existingQuotes) {
         const existingTokens = tokenizeQuote(existing?.text);
@@ -103,9 +106,10 @@ module.exports = {
 
         const notifications = [];
         const senderName = sender?.username || "Someone";
-        const preview = normalized.length > 140
-          ? `${normalized.slice(0, 137)}...`
-          : normalized;
+        const preview =
+          normalized.length > 140
+            ? `${normalized.slice(0, 137)}...`
+            : normalized;
 
         for (const connection of followerConnections) {
           const follower = connection?.follower;
@@ -141,7 +145,10 @@ module.exports = {
           await sendPushNotifications(notifications);
         }
       } catch (notifyErr) {
-        console.warn("Quote notification error", notifyErr?.message || notifyErr);
+        console.warn(
+          "Quote notification error",
+          notifyErr?.message || notifyErr
+        );
       }
       return quote;
     } catch (err) {
