@@ -42,8 +42,6 @@ export function configureLocationTrackingClient({
     pushTokenResolver = getPushTokenFn;
   }
 
-  console.log("last known: ", lastBar, lastStore);
-
   if (lastBar !== undefined) {
     lastNearbyBar = lastBar;
   }
