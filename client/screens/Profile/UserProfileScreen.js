@@ -54,7 +54,7 @@ const AnimatedBlurView = Animated.createAnimatedComponent(BlurView);
 const soberLogo = require("../../assets/icon.png");
 const SOCIAL_ICON_SIZE = 22;
 const SOCIAL_ICON_COLOR = "#e5e7eb";
-const PROFILE_PAGE_SIZE = 5;
+const PROFILE_PAGE_SIZE = 12;
 const LOAD_MORE_THRESHOLD = 360;
 
 const dedupeById = (list = []) => {

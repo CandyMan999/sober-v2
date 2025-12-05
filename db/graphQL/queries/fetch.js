@@ -452,7 +452,7 @@ module.exports = {
       throw new AuthenticationError("User not found");
     }
 
-    const limit = 5;
+    const limit = 12;
 
     const posts = await Post.find({ author: user._id })
       .sort({ createdAt: -1 })
@@ -525,7 +525,7 @@ module.exports = {
       throw new AuthenticationError("User not found");
     }
 
-    const limit = 5;
+    const limit = 12;
 
     const posts = await Post.find({ author: user._id })
       .sort({ createdAt: -1 })
