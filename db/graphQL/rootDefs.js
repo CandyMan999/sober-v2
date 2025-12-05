@@ -202,6 +202,11 @@ const typeDefs = gql`
     commentId: ID
     milestoneDays: Int
     milestoneTag: String
+    fromUserId: ID
+    fromUsername: String
+    fromProfilePicUrl: String
+    venueName: String
+    venueType: String
     createdAt: String
     read: Boolean!
     dismissed: Boolean!

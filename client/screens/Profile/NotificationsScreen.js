@@ -62,6 +62,10 @@ const ICONS = {
     name: "location",
     color: "#c084fc",
   },
+  [NotificationTypes.BUDDY_NEAR_LIQUOR]: {
+    name: "location",
+    color: "#c084fc",
+  },
   [NotificationTypes.MILESTONE]: {
     name: "award",
     color: "#f59e0b",
@@ -79,9 +83,25 @@ const formatSubtitle = (notification) => {
   }
 
   if (notification.type === NotificationTypes.BUDDY_NEAR_BAR) {
+    const venueLabel =
+      notification.venueType === "LIQUOR_STORE"
+        ? "Liquor store"
+        : "Bar";
     return (
       <Text style={styles.placeholderText}>
-        Placeholder until buddy tracking near venues ships.
+        {`${notification.fromUsername || "A buddy"} was spotted at ${
+          notification.venueName || "a venue"
+        } (${venueLabel}). Tap to check in.`}
+      </Text>
+    );
+  }
+
+  if (notification.type === NotificationTypes.BUDDY_NEAR_LIQUOR) {
+    return (
+      <Text style={styles.placeholderText}>
+        {`${notification.fromUsername || "A buddy"} was spotted at ${
+          notification.venueName || "a venue"
+        } (Liquor store). Tap to check in.`}
       </Text>
     );
   }
@@ -285,6 +305,23 @@ const NotificationsScreen = ({ navigation }) => {
     (notification) => {
       if (!notification) return;
 
+      const isBuddyVenueNotification =
+        (notification.type === NotificationTypes.BUDDY_NEAR_BAR ||
+          notification.type === NotificationTypes.BUDDY_NEAR_LIQUOR) &&
+        notification.fromUserId;
+
+      if (isBuddyVenueNotification) {
+        const userParam = {
+          id: notification.fromUserId,
+          username: notification.fromUsername || "Buddy",
+          profilePicUrl: notification.fromProfilePicUrl,
+        };
+
+        navigation?.navigate?.("DirectMessage", { user: userParam });
+        markNotificationRead(notification.id);
+        return;
+      }
+
       const isPostNotification =
         notification.intent === NotificationIntents.OPEN_POST_COMMENTS &&
         notification.postId;
@@ -322,7 +359,12 @@ const NotificationsScreen = ({ navigation }) => {
         setActiveNotificationId(notification.id);
       }
     },
-    [openPostFromNotification, openQuoteFromNotification]
+    [
+      markNotificationRead,
+      navigation,
+      openPostFromNotification,
+      openQuoteFromNotification,
+    ]
   );
 
   useEffect(() => {
@@ -338,8 +380,13 @@ const NotificationsScreen = ({ navigation }) => {
       (item.intent === NotificationIntents.OPEN_POST_COMMENTS && item.postId) ||
       (item.type === NotificationTypes.NEW_QUOTE && item.quoteId) ||
       item.type === NotificationTypes.MILESTONE ||
-      item.intent === NotificationIntents.SHOW_INFO;
+      item.intent === NotificationIntents.SHOW_INFO ||
+      (item.intent === NotificationIntents.OPEN_DIRECT_MESSAGE &&
+        item.fromUserId);
     const isMilestone = item.type === NotificationTypes.MILESTONE;
+    const isBuddyVenueAlert =
+      item.type === NotificationTypes.BUDDY_NEAR_BAR ||
+      item.type === NotificationTypes.BUDDY_NEAR_LIQUOR;
 
     return (
       <Swipeable
@@ -389,13 +436,15 @@ const NotificationsScreen = ({ navigation }) => {
           </View>
           <View style={styles.alertCopy}>
             <Text style={styles.alertTitle}>{item.title}</Text>
-            <Text
-              style={styles.alertDescription}
-              numberOfLines={isMilestone ? 2 : undefined}
-              ellipsizeMode="tail"
-            >
-              {item.description}
-            </Text>
+            {!isBuddyVenueAlert ? (
+              <Text
+                style={styles.alertDescription}
+                numberOfLines={isMilestone ? 2 : undefined}
+                ellipsizeMode="tail"
+              >
+                {item.description}
+              </Text>
+            ) : null}
             {formatSubtitle(item)}
           </View>
           {actionable ? (
