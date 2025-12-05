@@ -31,7 +31,7 @@ import { ContentPreviewModal } from "../../components";
 import Context from "../../context";
 import { useClient } from "../../client";
 import { getToken } from "../../utils/helpers";
-import { USER_PROFILE_QUERY } from "../../GraphQL/queries";
+import { USER_POSTS_PAGINATED_QUERY, USER_PROFILE_QUERY } from "../../GraphQL/queries";
 import { useOpenSocial } from "../../hooks/useOpenSocial";
 import {
   FOLLOW_USER_MUTATION,
@@ -54,6 +54,18 @@ const AnimatedBlurView = Animated.createAnimatedComponent(BlurView);
 const soberLogo = require("../../assets/icon.png");
 const SOCIAL_ICON_SIZE = 22;
 const SOCIAL_ICON_COLOR = "#e5e7eb";
+const PROFILE_PAGE_SIZE = 24;
+const LOAD_MORE_THRESHOLD = 360;
+
+const dedupeById = (list = []) => {
+  const seen = new Set();
+  return list.filter((item) => {
+    const id = item?.id;
+    if (!id || seen.has(id)) return false;
+    seen.add(id);
+    return true;
+  });
+};
 
 const SOCIAL_ICON_PROPS = {
   instagram: {
@@ -107,6 +119,9 @@ const UserProfileScreen = ({ route, navigation }) => {
   const [previewFromSaved, setPreviewFromSaved] = useState(false);
   const [isAvatarExpanded, setIsAvatarExpanded] = useState(false);
   const [avatarLayout, setAvatarLayout] = useState(null);
+  const [loadingMorePosts, setLoadingMorePosts] = useState(false);
+  const [hasMorePosts, setHasMorePosts] = useState(true);
+  const postCursorRef = useRef(null);
   const avatarAnimation = useRef(new Animated.Value(0)).current;
   const avatarRef = useRef(null);
   const avatarImageRef = useRef(null);
@@ -234,6 +249,47 @@ const UserProfileScreen = ({ route, navigation }) => {
     setSavedPosts(state.savedState.savedPosts || []);
     setSavedQuotes(state.savedState.savedQuotes || []);
   }, [isViewingSelf, state?.savedState]);
+
+  const fetchUserPostsPage = useCallback(
+    async ({ append = false } = {}) => {
+      if (!userId || loadingMorePosts) return;
+
+      const cursor = append ? postCursorRef.current : null;
+      if (append && !hasMorePosts) return;
+
+      try {
+        if (append) {
+          setLoadingMorePosts(true);
+        }
+
+        const token = await getToken();
+        if (!token) return;
+
+        const data = await client.request(USER_POSTS_PAGINATED_QUERY, {
+          token,
+          userId,
+          limit: PROFILE_PAGE_SIZE,
+          cursor,
+        });
+
+        const payload = data?.userPosts;
+        const nextPosts = payload?.posts || [];
+
+        setPosts((prev) => dedupeById(append ? [...prev, ...nextPosts] : nextPosts));
+
+        const nextCursor = payload?.cursor || null;
+        postCursorRef.current = nextCursor;
+        setHasMorePosts(Boolean(payload?.hasMore));
+      } catch (err) {
+        console.log("Error fetching user posts", err);
+      } finally {
+        if (append) {
+          setLoadingMorePosts(false);
+        }
+      }
+    },
+    [client, hasMorePosts, loadingMorePosts, userId]
+  );
 
   const socialLinks = useMemo(() => {
     const social = profileData?.social;
@@ -784,13 +840,16 @@ const UserProfileScreen = ({ route, navigation }) => {
         if (!mounted) return;
 
         setProfileData(overview?.user || initialUser || null);
-        setPosts(overview?.posts || []);
+        setPosts([]);
         setQuotes(overview?.quotes || []);
         setSavedPosts(overview?.savedPosts || []);
         setSavedQuotes(overview?.savedQuotes || []);
         setFollowers(overview?.user?.followers || []);
         setFollowing(overview?.user?.following || []);
         setBuddies(overview?.user?.buddies || []);
+        postCursorRef.current = null;
+        setHasMorePosts(true);
+        await fetchUserPostsPage({ append: false });
       } catch (err) {
         console.log("User profile load failed", err);
       } finally {
@@ -803,7 +862,7 @@ const UserProfileScreen = ({ route, navigation }) => {
     return () => {
       mounted = false;
     };
-  }, [initialUser, userId]);
+  }, [fetchUserPostsPage, initialUser, userId]);
 
   const measureAvatarPosition = useCallback(() => {
     if (avatarImageRef.current?.measureInWindow) {
@@ -1164,6 +1223,24 @@ const UserProfileScreen = ({ route, navigation }) => {
     return <View style={styles.scene}>{renderContent(tabType)}</View>;
   };
 
+  const handleScroll = useCallback(
+    ({ nativeEvent }) => {
+      const { contentOffset, contentSize, layoutMeasurement } = nativeEvent;
+      const distanceFromBottom =
+        contentSize.height - (contentOffset.y + layoutMeasurement.height);
+
+      if (
+        activeTab === "POSTS" &&
+        distanceFromBottom < LOAD_MORE_THRESHOLD &&
+        !loadingMorePosts &&
+        hasMorePosts
+      ) {
+        fetchUserPostsPage({ append: true });
+      }
+    },
+    [activeTab, fetchUserPostsPage, hasMorePosts, loadingMorePosts]
+  );
+
   const renderTabBar = () => (
     <View style={styles.tabBar}>
       {tabConfig.map((route, i) => {
@@ -1211,6 +1288,8 @@ const UserProfileScreen = ({ route, navigation }) => {
       <ScrollView
         style={styles.container}
         contentContainerStyle={styles.containerContent}
+        scrollEventThrottle={16}
+        onScroll={handleScroll}
       >
         <View style={styles.topActionsRow}>
           <View style={styles.editIconWrapper}>
@@ -1423,6 +1502,11 @@ const UserProfileScreen = ({ route, navigation }) => {
           swipeEnabled
           lazy={false}
         />
+        {activeTab === "POSTS" && loadingMorePosts ? (
+          <View style={styles.loadMoreContainer}>
+            <ActivityIndicator size="small" color="#f59e0b" />
+          </View>
+        ) : null}
       </View>
       </ScrollView>
 
@@ -1651,6 +1735,11 @@ const styles = StyleSheet.create({
   },
   tabWrapper: {
     position: "relative",
+  },
+  loadMoreContainer: {
+    paddingVertical: 12,
+    alignItems: "center",
+    justifyContent: "center",
   },
   scene: {
     flex: 1,

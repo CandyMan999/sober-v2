@@ -475,6 +475,51 @@ export const USER_PROFILE_QUERY = `
   }
 `;
 
+export const USER_POSTS_PAGINATED_QUERY = `
+  query UserPosts($token: String!, $userId: ID!, $limit: Int, $cursor: String) {
+    userPosts(token: $token, userId: $userId, limit: $limit, cursor: $cursor) {
+      hasMore
+      cursor
+      posts {
+        id
+        text
+        mediaType
+        imageUrl
+        imagePublicId
+        flagged
+        review
+        adminApproved
+        isMilestone
+        milestoneDays
+        milestoneTag
+        likesCount
+        commentsCount
+        viewsCount
+        lat
+        long
+        closestCity {
+          name
+        }
+        createdAt
+        author {
+          id
+          username
+          profilePicUrl
+          isFollowedByViewer
+          isBuddyWithViewer
+        }
+        video {
+          id
+          url
+          flagged
+          viewsCount
+          thumbnailUrl
+        }
+      }
+    }
+  }
+`;
+
 export const GET_QUOTES_QUERY = `
   query GetQuotes {
     getQuotes {
