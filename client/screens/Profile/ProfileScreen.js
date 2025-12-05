@@ -125,12 +125,7 @@ const ProfileScreen = ({ navigation }) => {
     });
   }, [buddies]);
 
-  const unreadCount = useMemo(
-    () => conversations.filter((conversation) => conversation.unread).length,
-    [conversations]
-  );
-
-  const directMessageCount = useMemo(
+  const directRoomCount = useMemo(
     () => (directRooms?.length ? directRooms.length : conversations.length),
     [conversations.length, directRooms?.length]
   );
@@ -1423,12 +1418,11 @@ const ProfileScreen = ({ navigation }) => {
                 onPress={handleOpenMessages}
                 activeOpacity={0.85}
               >
-                <Text style={styles.metricValue}>{directMessageCount}</Text>
                 <View style={styles.metricIconWrapper}>
                   <Ionicons name="chatbubbles" size={18} color="#f59e0b" />
-                  {unreadCount > 0 ? (
+                  {directRoomCount > 0 ? (
                     <View style={styles.metricBadge}>
-                      <Text style={styles.metricBadgeText}>{unreadCount}</Text>
+                      <Text style={styles.metricBadgeText}>{directRoomCount}</Text>
                     </View>
                   ) : null}
                 </View>
