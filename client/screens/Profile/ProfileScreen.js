@@ -35,6 +35,7 @@ import {
   ADMIN_REVIEW_ITEMS_QUERY,
   USER_NOTIFICATIONS_QUERY,
 } from "../../GraphQL/queries";
+import { MY_DIRECT_ROOMS } from "../../GraphQL/directMessages";
 import {
   TOGGLE_LIKE_MUTATION,
   SET_POST_REVIEW_MUTATION,
@@ -89,6 +90,7 @@ const ProfileScreen = ({ navigation }) => {
   const [isAvatarExpanded, setIsAvatarExpanded] = useState(false);
   const [avatarLayout, setAvatarLayout] = useState(null);
   const [notificationCount, setNotificationCount] = useState(0);
+  const [directRooms, setDirectRooms] = useState([]);
   const avatarAnimation = useRef(new Animated.Value(0)).current;
   const avatarRef = useRef(null);
   const avatarImageRef = useRef(null);
@@ -123,9 +125,9 @@ const ProfileScreen = ({ navigation }) => {
     });
   }, [buddies]);
 
-  const unreadCount = useMemo(
-    () => conversations.filter((conversation) => conversation.unread).length,
-    [conversations]
+  const directRoomCount = useMemo(
+    () => (directRooms?.length ? directRooms.length : conversations.length),
+    [conversations.length, directRooms?.length]
   );
 
   const counts = useMemo(() => {
@@ -209,6 +211,26 @@ const ProfileScreen = ({ navigation }) => {
 
     fetchNotifications();
   }, [client]);
+
+  useEffect(() => {
+    if (!state?.user?.id) return undefined;
+
+    let isMounted = true;
+
+    client
+      .request(MY_DIRECT_ROOMS)
+      .then((result) => {
+        if (!isMounted) return;
+        setDirectRooms(result?.myDirectRooms || []);
+      })
+      .catch((err) => {
+        console.log("Error fetching direct rooms", err);
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, [client, state?.user?.id]);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -1245,7 +1267,8 @@ const ProfileScreen = ({ navigation }) => {
   };
 
   const handleOpenMessages = () => {
-    navigation.navigate("Messages", { conversations });
+    const initialRooms = directRooms.length ? directRooms : conversations;
+    navigation.navigate("Messages", { conversations: initialRooms });
   };
 
   const tabConfig = useMemo(() => {
@@ -1397,9 +1420,9 @@ const ProfileScreen = ({ navigation }) => {
               >
                 <View style={styles.metricIconWrapper}>
                   <Ionicons name="chatbubbles" size={18} color="#f59e0b" />
-                  {unreadCount > 0 ? (
+                  {directRoomCount > 0 ? (
                     <View style={styles.metricBadge}>
-                      <Text style={styles.metricBadgeText}>{unreadCount}</Text>
+                      <Text style={styles.metricBadgeText}>{directRoomCount}</Text>
                     </View>
                   ) : null}
                 </View>
