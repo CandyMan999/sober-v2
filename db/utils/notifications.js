@@ -6,6 +6,7 @@ const NotificationTypes = {
   COMMENT_LIKED: "COMMENT_LIKED",
   FLAGGED_POST: "FLAGGED_POST",
   BUDDY_NEAR_BAR: "BUDDY_NEAR_BAR",
+  BUDDY_NEAR_LIQUOR: "BUDDY_NEAR_LIQUOR",
   MILESTONE: "MILESTONE",
   FOLLOWING_NEW_POST: "FOLLOWING_NEW_POST",
   NEW_QUOTE: "new_quote",
@@ -15,6 +16,7 @@ const NotificationIntents = {
   OPEN_POST_COMMENTS: "OPEN_POST_COMMENTS",
   ACKNOWLEDGE: "ACKNOWLEDGE",
   SHOW_INFO: "SHOW_INFO",
+  OPEN_DIRECT_MESSAGE: "OPEN_DIRECT_MESSAGE",
 };
 
 const createNotificationForUser = async ({
@@ -30,6 +32,11 @@ const createNotificationForUser = async ({
   milestoneDays,
   milestoneTag,
   createdAt,
+  fromUserId,
+  fromUsername,
+  fromProfilePicUrl,
+  venueName,
+  venueType,
 }) => {
   if (!userId || !notificationId) return null;
 
@@ -43,6 +50,11 @@ const createNotificationForUser = async ({
     commentId,
     milestoneDays,
     milestoneTag,
+    fromUserId,
+    fromUsername,
+    fromProfilePicUrl,
+    venueName,
+    venueType,
   };
 
   const doc = await Notification.findOneAndUpdate(

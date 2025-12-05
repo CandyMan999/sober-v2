@@ -285,6 +285,11 @@ export const USER_NOTIFICATIONS_QUERY = `
       commentId
       milestoneDays
       milestoneTag
+      fromUserId
+      fromUsername
+      fromProfilePicUrl
+      venueName
+      venueType
       createdAt
       read
       dismissed

@@ -1,7 +1,13 @@
 const { AuthenticationError } = require("apollo-server-express");
-const { User, City } = require("../../models");
+const { Connection, User, City } = require("../../models");
 const { getDistanceFromCoords } = require("../../utils/helpers");
 const { findClosestCity } = require("../../utils/location");
+const { sendPushNotifications } = require("../../utils/pushNotifications");
+const {
+  NotificationTypes,
+  NotificationIntents,
+  createNotificationForUser,
+} = require("../../utils/notifications");
 
 const { Expo } = require("expo-server-sdk");
 const moment = require("moment");
@@ -142,6 +148,104 @@ function buildBarSecondaryMessage(barName, index) {
   return messages[index] || messages[0];
 }
 
+const VENUE_TYPES = {
+  BAR: "BAR",
+  LIQUOR_STORE: "LIQUOR_STORE",
+};
+
+async function getBuddyTargets(userId) {
+  if (!userId) return [];
+
+  const userIdStr = userId.toString();
+
+  const connections = await Connection.find({
+    isBuddy: true,
+    $or: [{ follower: userId }, { followee: userId }],
+  })
+    .populate("follower")
+    .populate("followee");
+
+  const buddies = new Map();
+
+  for (const connection of connections) {
+    const followerId = connection.follower?._id?.toString?.();
+    const followeeId = connection.followee?._id?.toString?.();
+
+    const buddy =
+      followerId === userIdStr ? connection.followee : connection.follower;
+
+    if (!buddy?._id) continue;
+    if (buddy.notificationsEnabled === false) continue;
+
+    const buddyIdStr = buddy._id.toString();
+
+    if (!buddies.has(buddyIdStr)) {
+      buddies.set(buddyIdStr, buddy);
+    }
+  }
+
+  return Array.from(buddies.values());
+}
+
+async function notifyBuddiesOfVenue({ user, venueName, venueType }) {
+  if (!user?._id || !venueName) return;
+
+  const buddies = await getBuddyTargets(user._id);
+  if (!buddies.length) return;
+
+  const venueLabel =
+    venueType === VENUE_TYPES.LIQUOR_STORE ? "Liquor store" : "Bar";
+  const notificationType =
+    venueType === VENUE_TYPES.LIQUOR_STORE
+      ? NotificationTypes.BUDDY_NEAR_LIQUOR
+      : NotificationTypes.BUDDY_NEAR_BAR;
+
+  const title = `${user.username || "A buddy"} is near a ${venueLabel}`;
+  const description = `${user.username || "A buddy"} was spotted near ${
+    venueName || "a venue"
+  } (${venueLabel}). Tap to check in.`;
+
+  const pushPayloads = [];
+
+  for (const buddy of buddies) {
+    const notificationId = `${notificationType}-${user._id}-${Date.now()}`;
+
+    await createNotificationForUser({
+      userId: buddy._id,
+      notificationId,
+      type: notificationType,
+      title,
+      description,
+      intent: NotificationIntents.OPEN_DIRECT_MESSAGE,
+      fromUserId: user._id.toString(),
+      fromUsername: user.username,
+      fromProfilePicUrl: user.profilePicUrl,
+      venueName,
+      venueType,
+    });
+
+    if (buddy.token && Expo.isExpoPushToken(buddy.token)) {
+      pushPayloads.push({
+        pushToken: buddy.token,
+        title,
+        body: description,
+        data: {
+          type: notificationType,
+          buddyId: user._id.toString(),
+          buddyUsername: user.username,
+          buddyProfilePicUrl: user.profilePicUrl,
+          venueName,
+          venueType,
+        },
+      });
+    }
+  }
+
+  if (pushPayloads.length) {
+    await sendPushNotifications(pushPayloads);
+  }
+}
+
 module.exports = {
   getLiquorLocationResolver: async (root, args, ctx) => {
     const { lat, long, token, store } = args;
@@ -153,7 +257,7 @@ module.exports = {
         ? await City.findById(closestCity._id).populate("liquor")
         : null;
 
-      const { days } = await getSoberStats(token);
+      const { user, days } = await getSoberStats(token);
 
       if (!Expo.isExpoPushToken(token)) {
         console.error(`Push token ${token} is not a valid Expo push token`);
@@ -202,6 +306,12 @@ module.exports = {
             return Math.random() < 0.5 ? primary : secondary;
           },
         });
+
+        await notifyBuddiesOfVenue({
+          user,
+          venueName: storeName,
+          venueType: VENUE_TYPES.LIQUOR_STORE,
+        });
       }
 
       return liquorData;
@@ -221,7 +331,7 @@ module.exports = {
         ? await City.findById(closestCity._id).populate("bars")
         : null;
 
-      const { days, hasSoberTime } = await getSoberStats(token);
+      const { user, days, hasSoberTime } = await getSoberStats(token);
 
       if (!Expo.isExpoPushToken(token)) {
         console.error(`Push token ${token} is not a valid Expo push token`);
@@ -270,6 +380,12 @@ module.exports = {
             const secondary = buildBarSecondaryMessage(barName, index);
             return Math.random() < 0.5 ? primary : secondary;
           },
+        });
+
+        await notifyBuddiesOfVenue({
+          user,
+          venueName: barName,
+          venueType: VENUE_TYPES.BAR,
         });
       }
 

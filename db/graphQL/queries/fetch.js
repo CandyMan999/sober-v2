@@ -127,16 +127,6 @@ module.exports = {
 
     const userId = user._id;
 
-    await createNotificationForUser({
-      userId,
-      notificationId: "buddy-placeholder",
-      type: NotificationTypes.BUDDY_NEAR_BAR,
-      title: "Buddy check-in",
-      description:
-        "A buddy was tracked near a bar. Placeholder until tracking is live.",
-      intent: NotificationIntents.ACKNOWLEDGE,
-    });
-
     const notifications = await Notification.find({
       user: userId,
       $or: [{ dismissed: { $exists: false } }, { dismissed: { $ne: true } }],
@@ -153,6 +143,11 @@ module.exports = {
       commentId: notification.commentId,
       milestoneDays: notification.milestoneDays,
       milestoneTag: notification.milestoneTag,
+      fromUserId: notification.fromUserId,
+      fromUsername: notification.fromUsername,
+      fromProfilePicUrl: notification.fromProfilePicUrl,
+      venueName: notification.venueName,
+      venueType: notification.venueType,
       createdAt: notification.createdAt?.toISOString?.() || notification.createdAt,
       read: Boolean(notification.read),
       dismissed: Boolean(notification.dismissed),

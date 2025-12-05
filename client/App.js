@@ -136,6 +136,20 @@ export default function App() {
   const handleNotificationNavigation = useCallback((data) => {
     setPreviewShowComments(false);
 
+    const navigateToDirectMessage = (userParam) => {
+      const navigate = () => navigationRef.navigate("DirectMessage", { user: userParam });
+
+      if (navigationRef.isReady()) {
+        navigate();
+      } else {
+        setTimeout(() => {
+          if (navigationRef.isReady()) {
+            navigate();
+          }
+        }, 300);
+      }
+    };
+
     const notificationTitle = data?.title || data?.__notificationTitle;
     const notificationBody =
       data?.message || data?.body || data?.__notificationBody;
@@ -157,6 +171,19 @@ export default function App() {
       return;
     }
 
+    if (
+      (data?.type === NotificationTypes.BUDDY_NEAR_BAR ||
+        data?.type === NotificationTypes.BUDDY_NEAR_LIQUOR) &&
+      data.buddyId
+    ) {
+      navigateToDirectMessage({
+        id: data.buddyId,
+        username: data.buddyUsername || "Buddy",
+        profilePicUrl: data.buddyProfilePicUrl || null,
+      });
+      return;
+    }
+
     if (data?.type === "direct_message" && data.senderId) {
       const userParam = {
         id: data.senderId,
@@ -164,19 +191,7 @@ export default function App() {
         profilePicUrl: data.senderProfilePicUrl || null,
       };
 
-      const navigateToDirectMessage = () => {
-        navigationRef.navigate("DirectMessage", { user: userParam });
-      };
-
-      if (navigationRef.isReady()) {
-        navigateToDirectMessage();
-      } else {
-        setTimeout(() => {
-          if (navigationRef.isReady()) {
-            navigateToDirectMessage();
-          }
-        }, 300);
-      }
+      navigateToDirectMessage(userParam);
       return;
     }
 
