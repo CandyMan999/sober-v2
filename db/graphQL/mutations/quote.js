@@ -1,4 +1,7 @@
-const { AuthenticationError, UserInputError } = require("apollo-server-express");
+const {
+  AuthenticationError,
+  UserInputError,
+} = require("apollo-server-express");
 
 const { Connection, Quote, User } = require("../../models");
 const { sendPushNotifications } = require("../../utils/pushNotifications");
@@ -26,7 +29,64 @@ module.exports = {
       throw new UserInputError("Quotes must be 240 characters or fewer");
     }
 
+    const tokenizeQuote = (input) => {
+      const normalized = (input || "")
+        .toLowerCase()
+        // Remove emoji and variation selectors
+        .replace(/[\p{Emoji_Presentation}\p{Emoji}\u200d\ufe0f]/gu, " ")
+        // Drop punctuation and special characters so only words remain
+        .replace(/[^\p{L}\p{N}\s]/gu, " ")
+        .replace(/\s+/g, " ")
+        .trim();
+
+      return normalized ? normalized.split(" ") : [];
+    };
+
+    const similarityScore = (aTokens, bTokens) => {
+      if (!aTokens.length || !bTokens.length) {
+        return 0;
+      }
+
+      const buildFrequency = (tokens) => {
+        const frequencies = {};
+        for (const token of tokens) {
+          frequencies[token] = (frequencies[token] || 0) + 1;
+        }
+        return frequencies;
+      };
+
+      const aFreq = buildFrequency(aTokens);
+      const bFreq = buildFrequency(bTokens);
+
+      let overlap = 0;
+      for (const token of Object.keys(aFreq)) {
+        if (bFreq[token]) {
+          overlap += Math.min(aFreq[token], bFreq[token]);
+        }
+      }
+
+      // Sørensen–Dice coefficient offers balanced weighting even when lengths differ
+      return (2 * overlap) / (aTokens.length + bTokens.length);
+    };
+
     try {
+      const newQuoteTokens = tokenizeQuote(normalized);
+      const existingQuotes = await Quote.find({ isApproved: true }, "text");
+
+      for (const existing of existingQuotes) {
+        const existingTokens = tokenizeQuote(existing?.text);
+
+        if (!existingTokens.length) {
+          continue;
+        }
+
+        if (similarityScore(newQuoteTokens, existingTokens) >= 0.8) {
+          throw new UserInputError(
+            `A similar quote already exists: "${existing.text}"`
+          );
+        }
+      }
+
       const quote = await Quote.create({
         text: normalized,
         user: currentUser._id,
@@ -46,9 +106,10 @@ module.exports = {
 
         const notifications = [];
         const senderName = sender?.username || "Someone";
-        const preview = normalized.length > 140
-          ? `${normalized.slice(0, 137)}...`
-          : normalized;
+        const preview =
+          normalized.length > 140
+            ? `${normalized.slice(0, 137)}...`
+            : normalized;
 
         for (const connection of followerConnections) {
           const follower = connection?.follower;
@@ -84,7 +145,10 @@ module.exports = {
           await sendPushNotifications(notifications);
         }
       } catch (notifyErr) {
-        console.warn("Quote notification error", notifyErr?.message || notifyErr);
+        console.warn(
+          "Quote notification error",
+          notifyErr?.message || notifyErr
+        );
       }
       return quote;
     } catch (err) {

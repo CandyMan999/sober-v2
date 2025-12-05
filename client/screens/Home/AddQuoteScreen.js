@@ -69,10 +69,15 @@ const AddQuoteScreen = ({ navigation }) => {
       navigation.goBack();
     } catch (err) {
       console.error("Error adding quote", err);
+      const message =
+        err?.response?.errors?.[0]?.message ||
+        err?.message ||
+        "Check your connection and try again.";
+
       Toast.show({
         type: "error",
         text1: "Submission failed",
-        text2: "Check your connection and try again.",
+        text2: message,
         position: "top",
         autoHide: true,
         visibilityTime: 6000,
