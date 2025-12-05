@@ -55,7 +55,7 @@ import {
 const AVATAR_SIZE = 110;
 const AnimatedBlurView = Animated.createAnimatedComponent(BlurView);
 const soberLogo = require("../../assets/icon.png");
-const PROFILE_PAGE_SIZE = 24;
+const PROFILE_PAGE_SIZE = 5;
 const LOAD_MORE_THRESHOLD = 360;
 
 const dedupeById = (list = []) => {
@@ -105,6 +105,7 @@ const ProfileScreen = ({ navigation }) => {
   const [loadingMorePosts, setLoadingMorePosts] = useState(false);
   const [hasMorePosts, setHasMorePosts] = useState(true);
   const postCursorRef = useRef(null);
+  const hasHydratedProfile = useRef(false);
   const [notificationCount, setNotificationCount] = useState(0);
   const [directRooms, setDirectRooms] = useState([]);
   const avatarAnimation = useRef(new Animated.Value(0)).current;
@@ -202,9 +203,12 @@ const ProfileScreen = ({ navigation }) => {
     setFollowers(cachedOverview.user?.followers || []);
     setFollowing(cachedOverview.user?.following || []);
     setBuddies(cachedOverview.user?.buddies || []);
-    setLoading(false);
-    postCursorRef.current = null;
-    setHasMorePosts(true);
+    if (!hasHydratedProfile.current) {
+      setLoading(false);
+      postCursorRef.current = null;
+      setHasMorePosts(true);
+      hasHydratedProfile.current = true;
+    }
   }, [cachedOverview]);
 
   useEffect(() => {
@@ -213,6 +217,35 @@ const ProfileScreen = ({ navigation }) => {
     setSavedPosts(state.savedState.savedPosts || []);
     setSavedQuotes(state.savedState.savedQuotes || []);
   }, [state?.savedState]);
+
+  const syncProfileOverviewPosts = useCallback(
+    (nextPosts) => {
+      const currentOverview = state?.profileOverview || {};
+
+      const payload = {
+        ...currentOverview,
+        user: profileData || currentOverview.user || state?.user,
+        posts: nextPosts,
+        quotes: currentOverview.quotes || quotes,
+        savedPosts: currentOverview.savedPosts || savedPosts,
+        savedQuotes: currentOverview.savedQuotes || savedQuotes,
+      };
+
+      dispatch({ type: "SET_PROFILE_OVERVIEW", payload });
+    },
+    [dispatch, profileData, quotes, savedPosts, savedQuotes, state?.profileOverview, state?.user]
+  );
+
+  const mergePosts = useCallback(
+    (incomingPosts, { append }) => {
+      setPosts((prev) => {
+        const merged = dedupeById(append ? [...prev, ...incomingPosts] : incomingPosts);
+        syncProfileOverviewPosts(merged);
+        return merged;
+      });
+    },
+    [syncProfileOverviewPosts]
+  );
 
   const fetchUserPostsPage = useCallback(
     async ({ append = false } = {}) => {
@@ -240,7 +273,7 @@ const ProfileScreen = ({ navigation }) => {
         const payload = data?.userPosts;
         const nextPosts = payload?.posts || [];
 
-        setPosts((prev) => dedupeById(append ? [...prev, ...nextPosts] : nextPosts));
+        mergePosts(nextPosts, { append });
         const nextCursor = payload?.cursor || null;
         postCursorRef.current = nextCursor;
         setHasMorePosts(Boolean(payload?.hasMore));
@@ -258,6 +291,7 @@ const ProfileScreen = ({ navigation }) => {
       hasMorePosts,
       loadingMorePosts,
       profileData?.id,
+      mergePosts,
     ]
   );
 
@@ -309,7 +343,7 @@ const ProfileScreen = ({ navigation }) => {
         const data = await client.request(PROFILE_OVERVIEW_QUERY, { token });
         const overview = data?.profileOverview;
         setProfileData(overview?.user || null);
-        setPosts([]);
+        setPosts(overview?.posts || []);
         setQuotes(overview?.quotes || []);
         setSavedPosts(overview?.savedPosts || []);
         setSavedQuotes(overview?.savedQuotes || []);

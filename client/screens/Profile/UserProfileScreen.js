@@ -54,7 +54,7 @@ const AnimatedBlurView = Animated.createAnimatedComponent(BlurView);
 const soberLogo = require("../../assets/icon.png");
 const SOCIAL_ICON_SIZE = 22;
 const SOCIAL_ICON_COLOR = "#e5e7eb";
-const PROFILE_PAGE_SIZE = 24;
+const PROFILE_PAGE_SIZE = 5;
 const LOAD_MORE_THRESHOLD = 360;
 
 const dedupeById = (list = []) => {
@@ -250,6 +250,45 @@ const UserProfileScreen = ({ route, navigation }) => {
     setSavedQuotes(state.savedState.savedQuotes || []);
   }, [isViewingSelf, state?.savedState]);
 
+  const syncProfileOverviewPosts = useCallback(
+    (nextPosts) => {
+      if (!isViewingSelf) return;
+
+      const currentOverview = state?.profileOverview || {};
+      const payload = {
+        ...currentOverview,
+        user: profileData || currentOverview.user || state?.user,
+        posts: nextPosts,
+        quotes: currentOverview.quotes || quotes,
+        savedPosts: currentOverview.savedPosts || savedPosts,
+        savedQuotes: currentOverview.savedQuotes || savedQuotes,
+      };
+
+      dispatch({ type: "SET_PROFILE_OVERVIEW", payload });
+    },
+    [
+      dispatch,
+      isViewingSelf,
+      profileData,
+      quotes,
+      savedPosts,
+      savedQuotes,
+      state?.profileOverview,
+      state?.user,
+    ]
+  );
+
+  const mergePosts = useCallback(
+    (incomingPosts, { append }) => {
+      setPosts((prev) => {
+        const merged = dedupeById(append ? [...prev, ...incomingPosts] : incomingPosts);
+        syncProfileOverviewPosts(merged);
+        return merged;
+      });
+    },
+    [syncProfileOverviewPosts]
+  );
+
   const fetchUserPostsPage = useCallback(
     async ({ append = false } = {}) => {
       if (!userId || loadingMorePosts) return;
@@ -275,7 +314,7 @@ const UserProfileScreen = ({ route, navigation }) => {
         const payload = data?.userPosts;
         const nextPosts = payload?.posts || [];
 
-        setPosts((prev) => dedupeById(append ? [...prev, ...nextPosts] : nextPosts));
+        mergePosts(nextPosts, { append });
 
         const nextCursor = payload?.cursor || null;
         postCursorRef.current = nextCursor;
@@ -288,7 +327,7 @@ const UserProfileScreen = ({ route, navigation }) => {
         }
       }
     },
-    [client, hasMorePosts, loadingMorePosts, userId]
+    [client, hasMorePosts, loadingMorePosts, mergePosts, userId]
   );
 
   const socialLinks = useMemo(() => {
@@ -840,7 +879,7 @@ const UserProfileScreen = ({ route, navigation }) => {
         if (!mounted) return;
 
         setProfileData(overview?.user || initialUser || null);
-        setPosts([]);
+        setPosts(overview?.posts || []);
         setQuotes(overview?.quotes || []);
         setSavedPosts(overview?.savedPosts || []);
         setSavedQuotes(overview?.savedQuotes || []);
