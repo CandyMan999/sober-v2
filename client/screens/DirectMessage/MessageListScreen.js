@@ -193,22 +193,6 @@ const MessageListScreen = ({ route, navigation }) => {
         return (b.lastActivity || 0) - (a.lastActivity || 0);
       });
 
-    if (!normalized.length) {
-      return [
-        {
-          id: "welcome",
-          user: {
-            username: "Sober Support",
-            profilePicUrl: null,
-          },
-          lastMessage:
-            "Welcome! Start a chat with your buddies to stay accountable.",
-          lastActivity: Date.now(),
-          unread: true,
-        },
-      ];
-    }
-
     return normalized;
   }, [rooms, conversations, currentUserId, deriveLastMessageInfo]);
 
@@ -349,6 +333,19 @@ const MessageListScreen = ({ route, navigation }) => {
         renderItem={renderConversation}
         ItemSeparatorComponent={() => <View style={styles.separator} />}
         contentContainerStyle={styles.listContent}
+        ListEmptyComponent={() =>
+          !loading ? (
+            <View style={styles.emptyState}>
+              <View style={styles.emptyIconWrapper}>
+                <Ionicons name="chatbubble-ellipses-outline" size={26} color="#cbd5e1" />
+              </View>
+              <Text style={styles.emptyTitle}>No conversations yet</Text>
+              <Text style={styles.emptySubtitle}>
+                Start a chat with your sober buddies to check in and stay accountable.
+              </Text>
+            </View>
+          ) : null
+        }
       />
     </SafeAreaView>
   );
@@ -394,6 +391,7 @@ const styles = StyleSheet.create({
   },
   listContent: {
     paddingVertical: 10,
+    flexGrow: 1,
   },
   row: {
     flexDirection: "row",
@@ -481,6 +479,34 @@ const styles = StyleSheet.create({
   loadingContainer: {
     paddingVertical: 8,
     alignItems: "center",
+  },
+  emptyState: {
+    flex: 1,
+    minHeight: 340,
+    paddingHorizontal: 32,
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 12,
+  },
+  emptyIconWrapper: {
+    width: 72,
+    height: 72,
+    borderRadius: 36,
+    backgroundColor: "rgba(148,163,184,0.12)",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  emptyTitle: {
+    color: "#e5e7eb",
+    fontSize: 18,
+    fontWeight: "800",
+    textAlign: "center",
+  },
+  emptySubtitle: {
+    color: "#94a3b8",
+    fontSize: 14,
+    lineHeight: 20,
+    textAlign: "center",
   },
   swipeActionsContainer: {
     width: 120,
