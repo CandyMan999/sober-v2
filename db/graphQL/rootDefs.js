@@ -221,6 +221,8 @@ const typeDefs = gql`
   type ProfileOverview {
     user: User!
     posts: [Post!]!
+    postCursor: String
+    hasMorePosts: Boolean!
     quotes: [Quote!]!
     savedPosts: [Post!]!
     savedQuotes: [Quote!]!

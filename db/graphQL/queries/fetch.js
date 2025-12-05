@@ -452,13 +452,22 @@ module.exports = {
       throw new AuthenticationError("User not found");
     }
 
+    const limit = 5;
+
     const posts = await Post.find({ author: user._id })
       .sort({ createdAt: -1 })
+      .limit(limit + 1)
       .populate("author")
       .populate({
         path: "video",
         select: "url flagged viewsCount viewers thumbnailUrl",
       });
+
+    const hasMorePosts = posts.length > limit;
+    const trimmedPosts = hasMorePosts ? posts.slice(0, limit) : posts;
+    const postCursor = trimmedPosts.length
+      ? trimmedPosts[trimmedPosts.length - 1].createdAt?.toISOString?.() || null
+      : null;
 
     const savedPosts = await Post.find({ _id: { $in: user.savedPosts || [] } })
       .sort({ createdAt: -1 })
@@ -480,7 +489,9 @@ module.exports = {
 
     return {
       user,
-      posts,
+      posts: trimmedPosts,
+      postCursor,
+      hasMorePosts,
       quotes,
       savedPosts,
       savedQuotes,
@@ -514,14 +525,23 @@ module.exports = {
       throw new AuthenticationError("User not found");
     }
 
+    const limit = 5;
+
     const posts = await Post.find({ author: user._id })
       .sort({ createdAt: -1 })
+      .limit(limit + 1)
       .populate("author")
       .populate("closestCity")
       .populate({
         path: "video",
         select: "url flagged viewsCount viewers thumbnailUrl",
       });
+
+    const hasMorePosts = posts.length > limit;
+    const trimmedPosts = hasMorePosts ? posts.slice(0, limit) : posts;
+    const postCursor = trimmedPosts.length
+      ? trimmedPosts[trimmedPosts.length - 1].createdAt?.toISOString?.() || null
+      : null;
 
     const savedPosts = await Post.find({ _id: { $in: user.savedPosts || [] } })
       .sort({ createdAt: -1 })
@@ -569,7 +589,9 @@ module.exports = {
         drunkPic,
         closestCity: city,
       },
-      posts,
+      posts: trimmedPosts,
+      postCursor,
+      hasMorePosts,
       quotes,
       savedPosts,
       savedQuotes,

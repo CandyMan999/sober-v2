@@ -886,9 +886,10 @@ const UserProfileScreen = ({ route, navigation }) => {
         setFollowers(overview?.user?.followers || []);
         setFollowing(overview?.user?.following || []);
         setBuddies(overview?.user?.buddies || []);
-        postCursorRef.current = null;
-        setHasMorePosts(true);
-        await fetchUserPostsPage({ append: false });
+        postCursorRef.current = overview?.postCursor || null;
+        const overviewHasMore =
+          overview?.hasMorePosts ?? (overview?.posts || []).length >= PROFILE_PAGE_SIZE;
+        setHasMorePosts(Boolean(overviewHasMore));
       } catch (err) {
         console.log("User profile load failed", err);
       } finally {
@@ -901,7 +902,7 @@ const UserProfileScreen = ({ route, navigation }) => {
     return () => {
       mounted = false;
     };
-  }, [fetchUserPostsPage, initialUser, userId]);
+  }, [client, initialUser, userId]);
 
   const measureAvatarPosition = useCallback(() => {
     if (avatarImageRef.current?.measureInWindow) {

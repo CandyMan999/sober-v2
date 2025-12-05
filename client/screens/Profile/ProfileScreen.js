@@ -203,10 +203,13 @@ const ProfileScreen = ({ navigation }) => {
     setFollowers(cachedOverview.user?.followers || []);
     setFollowing(cachedOverview.user?.following || []);
     setBuddies(cachedOverview.user?.buddies || []);
+    postCursorRef.current = cachedOverview.postCursor || null;
+    const cachedHasMore =
+      cachedOverview.hasMorePosts ??
+      (cachedOverview.posts || []).length >= PROFILE_PAGE_SIZE;
+    setHasMorePosts(Boolean(cachedHasMore));
     if (!hasHydratedProfile.current) {
       setLoading(false);
-      postCursorRef.current = null;
-      setHasMorePosts(true);
       hasHydratedProfile.current = true;
     }
   }, [cachedOverview]);
@@ -350,10 +353,10 @@ const ProfileScreen = ({ navigation }) => {
         setFollowers(overview?.user?.followers || []);
         setFollowing(overview?.user?.following || []);
         setBuddies(overview?.user?.buddies || []);
-        postCursorRef.current = null;
-        setHasMorePosts(true);
-
-        await fetchUserPostsPage({ append: false });
+        postCursorRef.current = overview?.postCursor || null;
+        const overviewHasMore =
+          overview?.hasMorePosts ?? (overview?.posts || []).length >= PROFILE_PAGE_SIZE;
+        setHasMorePosts(Boolean(overviewHasMore));
 
         if (overview) {
           dispatch({ type: "SET_PROFILE_OVERVIEW", payload: overview });
@@ -375,7 +378,7 @@ const ProfileScreen = ({ navigation }) => {
     };
 
     fetchProfile();
-  }, [fetchUserPostsPage]);
+  }, [client, dispatch]);
 
   useEffect(() => {
     if (!isAdminUser) {

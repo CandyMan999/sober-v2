@@ -152,6 +152,8 @@ export const PROFILE_OVERVIEW_QUERY = `
           isBuddyWithViewer
         }
       }
+      postCursor
+      hasMorePosts
       posts {
         id
         text
@@ -402,6 +404,8 @@ export const USER_PROFILE_QUERY = `
           isBuddyWithViewer
         }
       }
+      postCursor
+      hasMorePosts
       posts {
         id
         text
