@@ -335,6 +335,12 @@ const typeDefs = gql`
       mediaType: PostMediaType
       isMilestone: Boolean
     ): PostConnection!
+    userPosts(
+      token: String!
+      userId: ID!
+      limit: Int
+      cursor: String
+    ): PostConnection!
     post(postId: ID!, token: String, includeFlagged: Boolean): Post
     quote(quoteId: ID!, token: String): Quote
     profileOverview(token: String!): ProfileOverview!

@@ -336,6 +336,51 @@ module.exports = {
     }
   },
 
+  userPostsResolver: async (
+    _,
+    { token, userId, limit: limitArg, cursor: cursorArg },
+    { currentUser }
+  ) => {
+    if (!token) {
+      throw new AuthenticationError("Token is required");
+    }
+
+    if (!userId) {
+      throw new Error("userId is required");
+    }
+
+    const viewer = currentUser || (await User.findOne({ token }));
+    if (!viewer) {
+      throw new AuthenticationError("User not found");
+    }
+
+    const limit = Math.min(limitArg || 24, 50);
+    const cursor = cursorArg ? new Date(cursorArg) : null;
+
+    const query = { author: userId };
+    if (cursor) {
+      query.createdAt = { $lt: cursor };
+    }
+
+    const posts = await Post.find(query)
+      .sort({ createdAt: -1 })
+      .limit(limit + 1)
+      .populate("author")
+      .populate("closestCity")
+      .populate({
+        path: "video",
+        select: "url flagged viewsCount viewers thumbnailUrl",
+      });
+
+    const hasMore = posts.length > limit;
+    const slicedPosts = hasMore ? posts.slice(0, limit) : posts;
+    const nextCursor = slicedPosts.length
+      ? slicedPosts[slicedPosts.length - 1].createdAt?.toISOString?.() || null
+      : null;
+
+    return { posts: slicedPosts, hasMore, cursor: nextCursor };
+  },
+
   postResolver: async (_, { postId, includeFlagged = false }) => {
     if (!postId) {
       throw new Error("postId is required");
