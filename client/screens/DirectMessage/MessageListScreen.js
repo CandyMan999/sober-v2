@@ -56,6 +56,7 @@ const MessageListScreen = ({ route, navigation }) => {
 
   const [rooms, setRooms] = useState(conversations || []);
   const [loading, setLoading] = useState(false);
+  const [deletingRoomIds, setDeletingRoomIds] = useState({});
 
   const deriveLastMessageInfo = useCallback((room, fallbackIndex = 0) => {
     const lastComment = room?.comments?.[room.comments.length - 1];
@@ -133,17 +134,27 @@ const MessageListScreen = ({ route, navigation }) => {
     async (roomId) => {
       if (!roomId) return;
 
-      setRooms((prev) =>
-        prev.filter((room) => String(room.id || room._id) !== String(roomId))
-      );
+      const roomKey = String(roomId);
+      if (deletingRoomIds[roomKey]) return;
+
+      setDeletingRoomIds((prev) => ({ ...prev, [roomKey]: true }));
 
       try {
         await client.request(DELETE_DIRECT_ROOM, { roomId });
+        setRooms((prev) =>
+          prev.filter((room) => String(room.id || room._id) !== roomKey)
+        );
       } catch (error) {
         console.log("Failed to delete direct room", error);
+      } finally {
+        setDeletingRoomIds((prev) => {
+          const next = { ...prev };
+          delete next[roomKey];
+          return next;
+        });
       }
     },
-    [client]
+    [client, deletingRoomIds]
   );
 
   const listData = useMemo(() => {
@@ -216,6 +227,8 @@ const MessageListScreen = ({ route, navigation }) => {
       ? "rgba(245,158,11,0.12)"
       : "rgba(56,189,248,0.14)";
     const canDelete = item.user?.id;
+    const roomKey = item.id?.toString();
+    const isDeleting = roomKey ? Boolean(deletingRoomIds[roomKey]) : false;
 
     return (
       <Swipeable
@@ -242,11 +255,16 @@ const MessageListScreen = ({ route, navigation }) => {
                     <TouchableOpacity
                       style={styles.swipeAction}
                       onPress={() => handleDeleteRoom(item.id)}
+                      disabled={isDeleting}
                       accessibilityRole="button"
                       accessibilityLabel={`Delete conversation with ${username}`}
                     >
                       <View style={styles.swipeActionIcon}>
-                        <Ionicons name="trash" size={18} color="#fecdd3" />
+                        {isDeleting ? (
+                          <ActivityIndicator size="small" color="#fecdd3" />
+                        ) : (
+                          <Ionicons name="trash" size={18} color="#fecdd3" />
+                        )}
                       </View>
                       <Text style={styles.swipeActionText}>Delete</Text>
                     </TouchableOpacity>
@@ -260,9 +278,12 @@ const MessageListScreen = ({ route, navigation }) => {
         <TouchableOpacity
           style={[styles.row, unread && styles.unreadRow]}
           onPress={() =>
-            canDelete ? navigation.navigate("DirectMessage", { user: item.user }) : null
+            canDelete && !isDeleting
+              ? navigation.navigate("DirectMessage", { user: item.user })
+              : null
           }
-          activeOpacity={canDelete ? 0.85 : 1}
+          activeOpacity={canDelete && !isDeleting ? 0.85 : 1}
+          disabled={isDeleting}
         >
           <Avatar uri={item.user?.profilePicUrl} size={48} disableNavigation />
           <View style={styles.rowContent}>

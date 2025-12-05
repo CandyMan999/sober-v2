@@ -141,7 +141,14 @@ const PhotoTileBase = ({ children, label, onPress, style }) => (
   </TouchableOpacity>
 );
 
-const ProfilePhotoTile = ({ label, uri, isUploading, onPick, onDelete }) => (
+const ProfilePhotoTile = ({
+  label,
+  uri,
+  isUploading,
+  isDeleting,
+  onPick,
+  onDelete,
+}) => (
   <PhotoTileBase label={label} onPress={onPick}>
     <LinearGradient colors={[accent, accent]} style={styles.profileHalo}>
       <View style={styles.profilePreview}>
@@ -168,9 +175,14 @@ const ProfilePhotoTile = ({ label, uri, isUploading, onPick, onDelete }) => (
           <TouchableOpacity
             onPress={onDelete}
             style={styles.deleteButton}
+            disabled={isDeleting}
             hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
           >
-            <Feather name="trash-2" size={16} color="#fff" />
+            {isDeleting ? (
+              <ActivityIndicator size="small" color="#fff" />
+            ) : (
+              <Feather name="trash-2" size={16} color="#fff" />
+            )}
           </TouchableOpacity>
         ) : null}
       </View>
@@ -178,7 +190,14 @@ const ProfilePhotoTile = ({ label, uri, isUploading, onPick, onDelete }) => (
   </PhotoTileBase>
 );
 
-const DrunkPhotoTile = ({ label, uri, isUploading, onPick, onDelete }) => (
+const DrunkPhotoTile = ({
+  label,
+  uri,
+  isUploading,
+  isDeleting,
+  onPick,
+  onDelete,
+}) => (
   <PhotoTileBase label={label} onPress={onPick} style={styles.drunkTile}>
     <LinearGradient colors={[oceanBlue, oceanBlue]} style={styles.drunkHalo}>
       <View style={styles.drunkPreview}>
@@ -205,9 +224,14 @@ const DrunkPhotoTile = ({ label, uri, isUploading, onPick, onDelete }) => (
           <TouchableOpacity
             onPress={onDelete}
             style={styles.deleteButton}
+            disabled={isDeleting}
             hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
           >
-            <Feather name="trash-2" size={16} color="#fff" />
+            {isDeleting ? (
+              <ActivityIndicator size="small" color="#fff" />
+            ) : (
+              <Feather name="trash-2" size={16} color="#fff" />
+            )}
           </TouchableOpacity>
         ) : null}
       </View>
@@ -698,6 +722,7 @@ const EditProfileScreen = ({ navigation }) => {
                 label="Profile Photo"
                 uri={profileUri}
                 isUploading={uploadingSlot === "PROFILE"}
+                isDeleting={deletingSlot === "PROFILE"}
                 onPick={() => pickImage("PROFILE")}
                 onDelete={() => deletePhoto("PROFILE")}
               />
@@ -705,6 +730,7 @@ const EditProfileScreen = ({ navigation }) => {
                 label="Drunk Photo"
                 uri={drunkUri}
                 isUploading={uploadingSlot === "DRUNK"}
+                isDeleting={deletingSlot === "DRUNK"}
                 onPick={() => pickImage("DRUNK")}
                 onDelete={() => deletePhoto("DRUNK")}
               />
