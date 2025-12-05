@@ -435,6 +435,7 @@ const typeDefs = gql`
     markNotificationRead(token: String!, id: ID!): Notification!
     dismissNotification(token: String!, id: ID!): Notification!
     clearAllNotifications(token: String!, ids: [ID!]!): Boolean!
+    deleteDirectRoom(roomId: ID!): Boolean!
     sendDirectMessage(recipientId: ID!, text: String!, replyTo: ID): Comment!
     followUser(token: String!, userId: ID!): Connection!
     unfollowUser(token: String!, userId: ID!): Boolean!
