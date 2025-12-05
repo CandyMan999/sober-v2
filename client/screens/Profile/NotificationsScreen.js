@@ -123,6 +123,7 @@ const NotificationsScreen = ({ navigation }) => {
   const [loadingPreview, setLoadingPreview] = useState(false);
   const [activeNotificationId, setActiveNotificationId] = useState(null);
   const [clearingAll, setClearingAll] = useState(false);
+  const [clearingNotificationIds, setClearingNotificationIds] = useState({});
 
   const updateNotifications = useCallback((updater) => {
     setNotifications((prev) =>
@@ -222,10 +223,12 @@ const NotificationsScreen = ({ navigation }) => {
   const dismissNotification = useCallback(
     async (notification) => {
       if (!notification?.id) return;
+      if (clearingNotificationIds[notification.id]) return;
 
-      updateNotifications((prev) =>
-        prev.filter((item) => item.id !== notification.id && !item.dismissed)
-      );
+      setClearingNotificationIds((prev) => ({
+        ...prev,
+        [notification.id]: true,
+      }));
 
       try {
         const token = await getToken();
@@ -235,11 +238,21 @@ const NotificationsScreen = ({ navigation }) => {
             id: notification.id,
           });
         }
+
+        updateNotifications((prev) =>
+          prev.filter((item) => item.id !== notification.id && !item.dismissed)
+        );
       } catch (error) {
         console.log("Unable to dismiss notification", error);
+      } finally {
+        setClearingNotificationIds((prev) => {
+          const next = { ...prev };
+          delete next[notification.id];
+          return next;
+        });
       }
     },
-    [client, updateNotifications]
+    [client, clearingNotificationIds, updateNotifications]
   );
 
   const openPostFromNotification = useCallback(
@@ -411,11 +424,16 @@ const NotificationsScreen = ({ navigation }) => {
               <TouchableOpacity
                 style={styles.swipeAction}
                 onPress={() => dismissNotification(item)}
+                disabled={clearingNotificationIds[item.id]}
                 accessibilityRole="button"
                 accessibilityLabel={`Clear ${item.title}`}
               >
                 <View style={styles.swipeActionIcon}>
-                  <Ionicons name="trash" size={18} color="#fecdd3" />
+                  {clearingNotificationIds[item.id] ? (
+                    <ActivityIndicator size="small" color="#fecdd3" />
+                  ) : (
+                    <Ionicons name="trash" size={18} color="#fecdd3" />
+                  )}
                 </View>
                 <Text style={styles.swipeActionText}>Clear</Text>
               </TouchableOpacity>
@@ -426,10 +444,15 @@ const NotificationsScreen = ({ navigation }) => {
       >
         <TouchableOpacity
           style={[styles.alertRow, item.read ? null : styles.alertRowUnread]}
-          onPress={() => (actionable ? handleNotificationPress(item) : null)}
+          onPress={() =>
+            actionable && !clearingNotificationIds[item.id]
+              ? handleNotificationPress(item)
+              : null
+          }
           accessibilityRole={actionable ? "button" : "text"}
           accessibilityLabel={`${item.title}. ${item.description}`}
-          activeOpacity={actionable ? 0.85 : 1}
+          activeOpacity={actionable && !clearingNotificationIds[item.id] ? 0.85 : 1}
+          disabled={Boolean(clearingNotificationIds[item.id])}
         >
           <View style={styles.iconBadge}>
             <IconComponent name={icon.name} size={18} color={icon.color} />
