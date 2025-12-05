@@ -4,7 +4,7 @@ const {
   UserInputError,
 } = require("apollo-server-express");
 
-const { Room, User, Comment } = require("../../models");
+const { Room, User, Comment, Like } = require("../../models");
 const {
   publishDirectMessage,
   publishDirectRoomUpdate,
@@ -125,4 +125,54 @@ const setDirectTypingResolver = async (_, { roomId, isTyping }, ctx) => {
   return typingPayload;
 };
 
-module.exports = { sendDirectMessageResolver, setDirectTypingResolver };
+const deleteDirectRoomResolver = async (_, { roomId }, ctx) => {
+  const me = ctx.currentUser;
+  if (!me) throw new AuthenticationError("Not authenticated");
+
+  if (!roomId) throw new UserInputError("Room ID is required.");
+
+  const room = await Room.findById(roomId).populate("users");
+  if (!room || !room.isDirect) {
+    throw new UserInputError("Direct room not found.");
+  }
+
+  const isParticipant = room.users?.some(
+    (user) => String(user._id || user.id) === String(me._id)
+  );
+
+  if (!isParticipant) {
+    throw new AuthenticationError("Not a participant");
+  }
+
+  const commentsForRoom = await Comment.find({
+    targetType: "ROOM",
+    targetId: room._id,
+  })
+    .select("_id")
+    .lean()
+    .exec();
+
+  const commentIds = Array.from(
+    new Set(
+      [
+        ...(room.comments || []).map((commentId) => commentId?.toString?.()),
+        ...commentsForRoom.map((comment) => comment._id?.toString?.()),
+      ].filter(Boolean)
+    )
+  );
+
+  if (commentIds.length) {
+    await Like.deleteMany({ targetType: "COMMENT", targetId: { $in: commentIds } });
+    await Comment.deleteMany({ _id: { $in: commentIds } });
+  }
+
+  await Room.deleteOne({ _id: room._id });
+
+  return true;
+};
+
+module.exports = {
+  sendDirectMessageResolver,
+  setDirectTypingResolver,
+  deleteDirectRoomResolver,
+};

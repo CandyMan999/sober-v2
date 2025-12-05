@@ -103,6 +103,12 @@ export const SET_DIRECT_TYPING = `
   }
 `;
 
+export const DELETE_DIRECT_ROOM = `
+  mutation DeleteDirectRoom($roomId: ID!) {
+    deleteDirectRoom(roomId: $roomId)
+  }
+`;
+
 export const DIRECT_MESSAGE_SUBSCRIPTION = gql`
   subscription DirectMessageReceived($roomId: ID!) {
     directMessageReceived(roomId: $roomId) {

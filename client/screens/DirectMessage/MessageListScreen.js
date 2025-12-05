@@ -13,14 +13,17 @@ import {
   FlatList,
   TouchableOpacity,
   ActivityIndicator,
+  Animated,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { Swipeable } from "react-native-gesture-handler";
 import { useSubscription } from "@apollo/client/react";
 import { formatDistanceToNow } from "date-fns";
 
 import Avatar from "../../components/Avatar";
 import Context from "../../context";
 import {
+  DELETE_DIRECT_ROOM,
   DIRECT_ROOM_UPDATED,
   MY_DIRECT_ROOMS,
 } from "../../GraphQL/directMessages";
@@ -51,7 +54,7 @@ const MessageListScreen = ({ route, navigation }) => {
   const conversations = route?.params?.conversations || [];
   const client = useClient();
 
-  const [rooms, setRooms] = useState([]);
+  const [rooms, setRooms] = useState(conversations || []);
   const [loading, setLoading] = useState(false);
 
   const deriveLastMessageInfo = useCallback((room, fallbackIndex = 0) => {
@@ -126,6 +129,23 @@ const MessageListScreen = ({ route, navigation }) => {
     },
   });
 
+  const handleDeleteRoom = useCallback(
+    async (roomId) => {
+      if (!roomId) return;
+
+      setRooms((prev) =>
+        prev.filter((room) => String(room.id || room._id) !== String(roomId))
+      );
+
+      try {
+        await client.request(DELETE_DIRECT_ROOM, { roomId });
+      } catch (error) {
+        console.log("Failed to delete direct room", error);
+      }
+    },
+    [client]
+  );
+
   const listData = useMemo(() => {
     const sourceRooms = rooms.length ? rooms : conversations;
 
@@ -195,38 +215,84 @@ const MessageListScreen = ({ route, navigation }) => {
     const statusBackground = waitingForYou
       ? "rgba(245,158,11,0.12)"
       : "rgba(56,189,248,0.14)";
+    const canDelete = item.user?.id;
 
     return (
-      <TouchableOpacity
-        style={[styles.row, unread && styles.unreadRow]}
-        onPress={() => navigation.navigate("DirectMessage", { user: item.user })}
-        activeOpacity={0.85}
+      <Swipeable
+        renderRightActions={
+          canDelete
+            ? (progress) => (
+                <View style={styles.swipeActionsContainer}>
+                  <Animated.View
+                    style={[
+                      styles.swipeActionCard,
+                      {
+                        transform: [
+                          {
+                            scale: progress.interpolate({
+                              inputRange: [0, 1],
+                              outputRange: [0.9, 1],
+                              extrapolate: "clamp",
+                            }),
+                          },
+                        ],
+                      },
+                    ]}
+                  >
+                    <TouchableOpacity
+                      style={styles.swipeAction}
+                      onPress={() => handleDeleteRoom(item.id)}
+                      accessibilityRole="button"
+                      accessibilityLabel={`Delete conversation with ${username}`}
+                    >
+                      <View style={styles.swipeActionIcon}>
+                        <Ionicons name="trash" size={18} color="#fecdd3" />
+                      </View>
+                      <Text style={styles.swipeActionText}>Delete</Text>
+                    </TouchableOpacity>
+                  </Animated.View>
+                </View>
+              )
+            : undefined
+        }
+        overshootRight={false}
       >
-        <Avatar uri={item.user?.profilePicUrl} size={48} disableNavigation />
-        <View style={styles.rowContent}>
-          <View style={styles.rowHeader}>
-            <View style={styles.rowLeft}>
-              <Text style={[styles.username, unread && styles.usernameUnread]} numberOfLines={1}>
-                {username}
-              </Text>
-              <View style={styles.messageLine}>
-                <Ionicons name="chatbubble-ellipses" size={14} color="#94a3b8" />
-                <Text style={[styles.lastMessage, unread && styles.lastMessageUnread]} numberOfLines={1}>
-                  {lastMessage}
+        <TouchableOpacity
+          style={[styles.row, unread && styles.unreadRow]}
+          onPress={() =>
+            canDelete ? navigation.navigate("DirectMessage", { user: item.user }) : null
+          }
+          activeOpacity={canDelete ? 0.85 : 1}
+        >
+          <Avatar uri={item.user?.profilePicUrl} size={48} disableNavigation />
+          <View style={styles.rowContent}>
+            <View style={styles.rowHeader}>
+              <View style={styles.rowLeft}>
+                <Text style={[styles.username, unread && styles.usernameUnread]} numberOfLines={1}>
+                  {username}
                 </Text>
+                <View style={styles.messageLine}>
+                  <Ionicons name="chatbubble-ellipses" size={14} color="#94a3b8" />
+                  <Text
+                    style={[styles.lastMessage, unread && styles.lastMessageUnread]}
+                    numberOfLines={1}
+                  >
+                    {lastMessage}
+                  </Text>
+                </View>
               </View>
-            </View>
-            <View style={styles.rowMeta}>
-              <Text style={styles.timestamp}>{timestampLabel}</Text>
-              <View style={[styles.statusPill, { backgroundColor: statusBackground }]}>
-                <Ionicons name={statusIcon} size={14} color={statusColor} />
-                <Text style={[styles.statusText, { color: statusColor }]}>{statusLabel}</Text>
+              <View style={styles.rowMeta}>
+                <Text style={styles.timestamp}>{timestampLabel}</Text>
+                <View style={[styles.statusPill, { backgroundColor: statusBackground }]}>
+                  <Ionicons name={statusIcon} size={14} color={statusColor} />
+                  <Text style={[styles.statusText, { color: statusColor }]}>{statusLabel}</Text>
+                </View>
               </View>
             </View>
           </View>
-        </View>
-        {unread ? <View style={styles.unreadDot} /> : null}
-      </TouchableOpacity>
+          {unread ? <View style={styles.unreadDot} /> : null}
+        </TouchableOpacity>
+      </Swipeable>
     );
   };
 
@@ -394,6 +460,42 @@ const styles = StyleSheet.create({
   loadingContainer: {
     paddingVertical: 8,
     alignItems: "center",
+  },
+  swipeActionsContainer: {
+    width: 120,
+    marginLeft: 8,
+    justifyContent: "center",
+    alignItems: "flex-end",
+  },
+  swipeActionCard: {
+    backgroundColor: "#111827",
+    paddingVertical: 8,
+    paddingHorizontal: 10,
+    borderRadius: 14,
+    borderWidth: 1,
+    borderColor: "rgba(239,68,68,0.35)",
+    shadowColor: "#ef4444",
+    shadowOpacity: 0.12,
+    shadowRadius: 12,
+    shadowOffset: { width: 0, height: 4 },
+    elevation: 4,
+  },
+  swipeAction: {
+    alignItems: "center",
+    gap: 2,
+  },
+  swipeActionIcon: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: "rgba(239,68,68,0.1)",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  swipeActionText: {
+    color: "#fecdd3",
+    fontWeight: "800",
+    fontSize: 13,
   },
 });
 
