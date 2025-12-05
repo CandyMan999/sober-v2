@@ -231,11 +231,12 @@ const ProfileScreen = ({ navigation }) => {
   }, [state?.savedState]);
 
   const syncProfileOverviewPosts = useCallback(
-    (nextPosts) => {
+    (nextPosts, meta = {}) => {
       const currentOverview = state?.profileOverview || {};
 
       const payload = {
         ...currentOverview,
+        ...meta,
         user: profileData || currentOverview.user || state?.user,
         posts: nextPosts,
         quotes: currentOverview.quotes || quotes,
@@ -249,10 +250,10 @@ const ProfileScreen = ({ navigation }) => {
   );
 
   const mergePosts = useCallback(
-    (incomingPosts, { append }) => {
+    (incomingPosts, { append, meta = {} }) => {
       setPosts((prev) => {
         const merged = dedupeById(append ? [...prev, ...incomingPosts] : incomingPosts);
-        syncProfileOverviewPosts(merged);
+        syncProfileOverviewPosts(merged, meta);
         return merged;
       });
     },
@@ -285,12 +286,15 @@ const ProfileScreen = ({ navigation }) => {
         const payload = data?.userPosts;
         const nextPosts = payload?.posts || [];
 
-        mergePosts(nextPosts, { append });
         const nextCursor = payload?.cursor || null;
         postCursorRef.current = nextCursor;
         const nextHasMore = Boolean(payload?.hasMore);
         setHasMorePosts(nextHasMore);
         fetchGuard(hasMorePostsRef, nextHasMore);
+        mergePosts(nextPosts, {
+          append,
+          meta: { postCursor: nextCursor, hasMorePosts: nextHasMore },
+        });
       } catch (err) {
         console.log("Error fetching profile posts", err);
       } finally {
