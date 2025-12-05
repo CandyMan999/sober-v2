@@ -89,7 +89,7 @@ const formatSubtitle = (notification) => {
         : "Bar";
     return (
       <Text style={styles.placeholderText}>
-        {`${notification.fromUsername || "A buddy"} was near ${
+        {`${notification.fromUsername || "A buddy"} was spotted at ${
           notification.venueName || "a venue"
         } (${venueLabel}). Tap to check in.`}
       </Text>
@@ -99,7 +99,7 @@ const formatSubtitle = (notification) => {
   if (notification.type === NotificationTypes.BUDDY_NEAR_LIQUOR) {
     return (
       <Text style={styles.placeholderText}>
-        {`${notification.fromUsername || "A buddy"} was near ${
+        {`${notification.fromUsername || "A buddy"} was spotted at ${
           notification.venueName || "a venue"
         } (Liquor store). Tap to check in.`}
       </Text>
@@ -384,6 +384,9 @@ const NotificationsScreen = ({ navigation }) => {
       (item.intent === NotificationIntents.OPEN_DIRECT_MESSAGE &&
         item.fromUserId);
     const isMilestone = item.type === NotificationTypes.MILESTONE;
+    const isBuddyVenueAlert =
+      item.type === NotificationTypes.BUDDY_NEAR_BAR ||
+      item.type === NotificationTypes.BUDDY_NEAR_LIQUOR;
 
     return (
       <Swipeable
@@ -433,13 +436,15 @@ const NotificationsScreen = ({ navigation }) => {
           </View>
           <View style={styles.alertCopy}>
             <Text style={styles.alertTitle}>{item.title}</Text>
-            <Text
-              style={styles.alertDescription}
-              numberOfLines={isMilestone ? 2 : undefined}
-              ellipsizeMode="tail"
-            >
-              {item.description}
-            </Text>
+            {!isBuddyVenueAlert ? (
+              <Text
+                style={styles.alertDescription}
+                numberOfLines={isMilestone ? 2 : undefined}
+                ellipsizeMode="tail"
+              >
+                {item.description}
+              </Text>
+            ) : null}
             {formatSubtitle(item)}
           </View>
           {actionable ? (

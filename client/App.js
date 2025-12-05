@@ -154,6 +154,24 @@ export default function App() {
     const notificationBody =
       data?.message || data?.body || data?.__notificationBody;
 
+    if (data?.type === "VENUE_WARNING") {
+      setPreviewType("INFO");
+      setPreviewContent({
+        id: data?.id || `venue-warning-${Date.now()}`,
+        title:
+          data?.subtitle ||
+          data?.title ||
+          notificationTitle ||
+          "Venue warning",
+        text:
+          notificationBody ||
+          "Spotted at a bar or liquor store. Take a breath and stay strong.",
+        day: data?.day,
+      });
+      setPreviewVisible(true);
+      return;
+    }
+
     if (
       data?.type === NotificationTypes.MILESTONE ||
       data?.type === "milestone"

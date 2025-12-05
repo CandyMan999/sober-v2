@@ -44,10 +44,12 @@ async function getSoberStats(token) {
 // Schedule multiple notification bursts with Expo
 function scheduleRepeatedPushes({
   token,
+  title = "Stay focused",
   subtitle,
   count,
   intervalMs,
   buildBody, // (index) => string | Promise<string>
+  data = {},
 }) {
   for (let i = 0; i < count; i++) {
     setTimeout(async () => {
@@ -65,10 +67,16 @@ function scheduleRepeatedPushes({
           {
             to: token,
             sound: "default",
-            title: "Sober Motivation",
+            title,
             subtitle,
             body, // ✅ guaranteed string
-            data: { pushToken: token },
+            data: {
+              pushToken: token,
+              ...data,
+              message: body,
+              subtitle,
+              title,
+            },
           },
         ];
 
@@ -200,8 +208,8 @@ async function notifyBuddiesOfVenue({ user, venueName, venueType }) {
       ? NotificationTypes.BUDDY_NEAR_LIQUOR
       : NotificationTypes.BUDDY_NEAR_BAR;
 
-  const title = `${user.username || "A buddy"} is near a ${venueLabel}`;
-  const description = `${user.username || "A buddy"} was spotted near ${
+  const title = `${user.username || "A buddy"} is at a ${venueLabel}`;
+  const description = `${user.username || "A buddy"} was spotted at ${
     venueName || "a venue"
   } (${venueLabel}). Tap to check in.`;
 
@@ -294,18 +302,25 @@ module.exports = {
         scheduleRepeatedPushes({
           token,
           subtitle: storeName,
-          count: 5, // same as before
-          intervalMs: 10000, // 10 seconds
-          buildBody: async (index) => {
-            const primary = buildLiquorPrimaryMessage(storeName, index, days);
-            const secondary = buildLiquorSecondaryMessage(
-              storeName,
-              index,
-              days
-            );
-            return Math.random() < 0.5 ? primary : secondary;
-          },
-        });
+      count: 5, // same as before
+      intervalMs: 10000, // 10 seconds
+      title: "Warning",
+      subtitle: `Spotted at liquor store: ${storeName}`,
+      buildBody: async (index) => {
+        const primary = buildLiquorPrimaryMessage(storeName, index, days);
+        const secondary = buildLiquorSecondaryMessage(
+          storeName,
+          index,
+          days
+        );
+        return Math.random() < 0.5 ? primary : secondary;
+      },
+      data: {
+        type: "VENUE_WARNING",
+        venueType: VENUE_TYPES.LIQUOR_STORE,
+        venueName: storeName,
+      },
+    });
 
         await notifyBuddiesOfVenue({
           user,
@@ -368,19 +383,26 @@ module.exports = {
         scheduleRepeatedPushes({
           token,
           subtitle: barName,
-          count: 3, // same as before
-          intervalMs: 20000, // 20 seconds
-          buildBody: async (index) => {
-            const primary = buildBarPrimaryMessage(
-              barName,
-              index,
-              days,
-              hasSoberTime
-            );
-            const secondary = buildBarSecondaryMessage(barName, index);
-            return Math.random() < 0.5 ? primary : secondary;
-          },
-        });
+      count: 3, // same as before
+      intervalMs: 20000, // 20 seconds
+      title: "Warning",
+      subtitle: `Spotted at bar: ${barName}`,
+      buildBody: async (index) => {
+        const primary = buildBarPrimaryMessage(
+          barName,
+          index,
+          days,
+          hasSoberTime
+        );
+        const secondary = buildBarSecondaryMessage(barName, index);
+        return Math.random() < 0.5 ? primary : secondary;
+      },
+      data: {
+        type: "VENUE_WARNING",
+        venueType: VENUE_TYPES.BAR,
+        venueName: barName,
+      },
+    });
 
         await notifyBuddiesOfVenue({
           user,
