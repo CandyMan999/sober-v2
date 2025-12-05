@@ -96,38 +96,9 @@ const ProfileScreen = ({ navigation }) => {
   const avatarImageRef = useRef(null);
   const currentUser = state?.user;
   const currentUserId = currentUser?.id;
-  const conversations = useMemo(() => {
-    const buddyList = Array.isArray(buddies) ? buddies : [];
-    const prompts = [
-      "Let's check in later today.",
-      "Proud of you for showing up!",
-      "How's the day going?",
-      "Need a quick accountability chat?",
-    ];
-
-    return buddyList.map((buddy, index) => {
-      const unreadFlag =
-        typeof buddy.unreadMessagesCount === "number"
-          ? buddy.unreadMessagesCount > 0
-          : buddy.hasUnreadMessages === true;
-
-      return {
-        id: buddy.id || `buddy-${index}`,
-        user: buddy,
-        lastMessage:
-          buddy.lastMessage?.text ||
-          buddy.lastMessageText ||
-          prompts[index % prompts.length],
-        lastActivity:
-          buddy.lastMessage?.createdAt || Date.now() - index * 45 * 60 * 1000,
-        unread: unreadFlag || index === 0,
-      };
-    });
-  }, [buddies]);
-
   const directRoomCount = useMemo(
-    () => (directRooms?.length ? directRooms.length : conversations.length),
-    [conversations.length, directRooms?.length]
+    () => directRooms?.length || 0,
+    [directRooms?.length]
   );
 
   const counts = useMemo(() => {
@@ -1267,8 +1238,7 @@ const ProfileScreen = ({ navigation }) => {
   };
 
   const handleOpenMessages = () => {
-    const initialRooms = directRooms.length ? directRooms : conversations;
-    navigation.navigate("Messages", { conversations: initialRooms });
+    navigation.navigate("Messages", { conversations: directRooms || [] });
   };
 
   const tabConfig = useMemo(() => {
