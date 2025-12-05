@@ -26,66 +26,58 @@ module.exports = {
       throw new UserInputError("Quotes must be 240 characters or fewer");
     }
 
-    const normalizeForComparison = (input) =>
-      (input || "")
+    const tokenizeQuote = (input) => {
+      const normalized = (input || "")
         .toLowerCase()
         // Remove emoji and variation selectors
-        .replace(/[\p{Emoji_Presentation}\p{Emoji}\u200d\ufe0f]/gu, "")
+        .replace(/[\p{Emoji_Presentation}\p{Emoji}\u200d\ufe0f]/gu, " ")
+        // Drop punctuation and special characters so only words remain
+        .replace(/[^\p{L}\p{N}\s]/gu, " ")
         .replace(/\s+/g, " ")
         .trim();
 
-    const levenshteinDistance = (a, b) => {
-      const aLen = a.length;
-      const bLen = b.length;
+      return normalized ? normalized.split(" ") : [];
+    };
 
-      if (aLen === 0) return bLen;
-      if (bLen === 0) return aLen;
-
-      const matrix = Array.from({ length: aLen + 1 }, () =>
-        Array(bLen + 1).fill(0)
-      );
-
-      for (let i = 0; i <= aLen; i += 1) {
-        matrix[i][0] = i;
+    const similarityScore = (aTokens, bTokens) => {
+      if (!aTokens.length || !bTokens.length) {
+        return 0;
       }
 
-      for (let j = 0; j <= bLen; j += 1) {
-        matrix[0][j] = j;
-      }
+      const buildFrequency = (tokens) => {
+        const frequencies = {};
+        for (const token of tokens) {
+          frequencies[token] = (frequencies[token] || 0) + 1;
+        }
+        return frequencies;
+      };
 
-      for (let i = 1; i <= aLen; i += 1) {
-        for (let j = 1; j <= bLen; j += 1) {
-          const cost = a[i - 1] === b[j - 1] ? 0 : 1;
+      const aFreq = buildFrequency(aTokens);
+      const bFreq = buildFrequency(bTokens);
 
-          matrix[i][j] = Math.min(
-            matrix[i - 1][j] + 1,
-            matrix[i][j - 1] + 1,
-            matrix[i - 1][j - 1] + cost
-          );
+      let overlap = 0;
+      for (const token of Object.keys(aFreq)) {
+        if (bFreq[token]) {
+          overlap += Math.min(aFreq[token], bFreq[token]);
         }
       }
 
-      return matrix[aLen][bLen];
-    };
-
-    const similarityScore = (a, b) => {
-      const maxLen = Math.max(a.length, b.length) || 1;
-      const distance = levenshteinDistance(a, b);
-      return 1 - distance / maxLen;
+      // Sørensen–Dice coefficient offers balanced weighting even when lengths differ
+      return (2 * overlap) / (aTokens.length + bTokens.length);
     };
 
     try {
-      const sanitizedNewQuote = normalizeForComparison(normalized);
+      const newQuoteTokens = tokenizeQuote(normalized);
       const existingQuotes = await Quote.find({}, "text");
 
       for (const existing of existingQuotes) {
-        const sanitizedExisting = normalizeForComparison(existing?.text);
+        const existingTokens = tokenizeQuote(existing?.text);
 
-        if (!sanitizedExisting) {
+        if (!existingTokens.length) {
           continue;
         }
 
-        if (similarityScore(sanitizedNewQuote, sanitizedExisting) >= 0.8) {
+        if (similarityScore(newQuoteTokens, existingTokens) >= 0.8) {
           throw new UserInputError(
             `A similar quote already exists: "${existing.text}"`
           );
