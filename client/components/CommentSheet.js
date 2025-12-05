@@ -540,7 +540,9 @@ const CommentSheet = ({
             haloColor={avatarUri ? "orange" : "blue"}
             size={32}
             userId={
-              comment?.author?.id || comment?.author?._id || comment?.author?.userId
+              comment?.author?.id ||
+              comment?.author?._id ||
+              comment?.author?.userId
             }
             username={comment?.author?.username}
             onPress={() => handleProfilePress(comment?.author)}
@@ -654,7 +656,8 @@ const CommentSheet = ({
       const targetId = author?.id || author?._id || author?.userId;
       if (!targetId || targetId === userId) return;
 
-      const profileImage = author?.profilePicUrl || author?.profilePic?.url || null;
+      const profileImage =
+        author?.profilePicUrl || author?.profilePic?.url || null;
       onClose?.();
       navigation.navigate("UserProfile", {
         userId: targetId,
@@ -700,10 +703,16 @@ const CommentSheet = ({
             <View style={styles.postHeader}>
               <View style={styles.posterRow}>
                 <Avatar
-                  uri={effectiveAuthor?.profilePicUrl || effectiveAuthor?.profilePic?.url}
-                  fallbackSource={isQuoteSheet && !postAuthor ? soberLogo : null}
+                  uri={
+                    effectiveAuthor?.profilePicUrl ||
+                    effectiveAuthor?.profilePic?.url
+                  }
+                  fallbackSource={
+                    isQuoteSheet && !postAuthor ? soberLogo : null
+                  }
                   haloColor={
-                    effectiveAuthor?.profilePicUrl || effectiveAuthor?.profilePic?.url
+                    effectiveAuthor?.profilePicUrl ||
+                    effectiveAuthor?.profilePic?.url
                       ? "orange"
                       : "blue"
                   }
@@ -772,7 +781,7 @@ const CommentSheet = ({
                   {postCityName ? (
                     <>
                       {formattedPostDate ? (
-                        <Text style={styles.posterMetaDivider}>, </Text>
+                        <Text style={styles.posterMetaDivider}> • </Text>
                       ) : null}
                       <View style={styles.posterLocationRow}>
                         <Ionicons
@@ -781,7 +790,9 @@ const CommentSheet = ({
                           color="#38bdf8"
                           style={styles.posterLocationIcon}
                         />
-                        <Text style={styles.posterLocationText}>{postCityName}</Text>
+                        <Text style={styles.posterLocationText}>
+                          {postCityName}
+                        </Text>
                       </View>
                     </>
                   ) : null}
