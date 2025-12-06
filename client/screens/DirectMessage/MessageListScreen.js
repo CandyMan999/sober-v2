@@ -25,6 +25,7 @@ import Context from "../../context";
 import {
   DELETE_DIRECT_ROOM,
   DIRECT_ROOM_UPDATED,
+  DIRECT_ROOM_WITH_USER,
   MY_DIRECT_ROOMS,
 } from "../../GraphQL/directMessages";
 import { useClient } from "../../client";
@@ -48,10 +49,7 @@ const timeAgo = (timestamp) => {
   return `${formatDistanceToNow(parsed)} ago`;
 };
 
-const SOBER_COMPANION = {
-  id: "693394413ea6a3e530516505",
-  username: "SoberOwl",
-};
+const SOBER_COMPANION_ID = "693394413ea6a3e530516505";
 
 const MessageListScreen = ({ route, navigation }) => {
   const { state } = useContext(Context);
@@ -60,6 +58,7 @@ const MessageListScreen = ({ route, navigation }) => {
   const client = useClient();
 
   const [rooms, setRooms] = useState(conversations || []);
+  const [companionUser, setCompanionUser] = useState(null);
   const [loading, setLoading] = useState(false);
   const [deletingRoomIds, setDeletingRoomIds] = useState({});
 
@@ -122,6 +121,52 @@ const MessageListScreen = ({ route, navigation }) => {
     // when navigation props or the client reference changes.
   }, []);
 
+  useEffect(() => {
+    if (!currentUserId) return;
+
+    let isMounted = true;
+
+    client
+      .request(DIRECT_ROOM_WITH_USER, { userId: SOBER_COMPANION_ID })
+      .then((result) => {
+        if (!isMounted) return;
+
+        const room = result?.directRoomWithUser;
+        if (!room) return;
+
+        const participants = room.users || [];
+        const companion = participants.find(
+          (participant) =>
+            String(participant?.id || participant?._id) ===
+            String(SOBER_COMPANION_ID)
+        );
+
+        if (companion?.id || companion?._id) {
+          setCompanionUser({
+            ...companion,
+            id: companion.id || companion._id,
+            username: companion.username || "SoberOwl",
+          });
+        }
+
+        setRooms((prev) => {
+          const roomId = room.id || room._id;
+          const normalizedRoom = roomId ? { ...room, id: roomId } : room;
+          const filtered = prev.filter(
+            (existing) => String(existing.id || existing._id) !== String(roomId)
+          );
+          return [normalizedRoom, ...filtered];
+        });
+      })
+      .catch((error) => {
+        console.log("Failed to ensure companion room", error);
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, [client, currentUserId]);
+
   useSubscription(DIRECT_ROOM_UPDATED, {
     skip: !currentUserId,
     onData: ({ data: subscriptionData }) => {
@@ -169,13 +214,26 @@ const MessageListScreen = ({ route, navigation }) => {
         const otherUserRaw =
           participants.find(
             (participant) =>
-              participant && String(participant.id || participant._id) !== String(currentUserId)
+              participant &&
+              String(participant.id || participant._id) !==
+                String(currentUserId)
           ) ||
           participants.find(Boolean) ||
           room.user;
 
+        const isCompanionUser =
+          otherUserRaw &&
+          String(otherUserRaw.id || otherUserRaw._id) ===
+            String(SOBER_COMPANION_ID);
+
         const otherUser = otherUserRaw
-          ? { ...otherUserRaw, id: otherUserRaw.id || otherUserRaw._id }
+          ? {
+              ...otherUserRaw,
+              id: otherUserRaw.id || otherUserRaw._id,
+              username:
+                otherUserRaw.username ||
+                (isCompanionUser ? "SoberOwl" : "Buddy"),
+            }
           : null;
 
         if (!otherUser?.id) return null;
@@ -196,15 +254,20 @@ const MessageListScreen = ({ route, navigation }) => {
         return (b.lastActivity || 0) - (a.lastActivity || 0);
       });
 
+    const companionProfile = companionUser || {
+      id: SOBER_COMPANION_ID,
+      username: "SoberOwl",
+    };
+
     const hasCompanion = normalized.some(
       (conversation) =>
-        String(conversation?.user?.id) === String(SOBER_COMPANION.id)
+        String(conversation?.user?.id) === String(SOBER_COMPANION_ID)
     );
 
     if (!hasCompanion) {
       normalized.unshift({
-        id: `room-${SOBER_COMPANION.id}`,
-        user: SOBER_COMPANION,
+        id: `room-${SOBER_COMPANION_ID}`,
+        user: companionProfile,
         lastMessage:
           "Chat with your sober AI companion anytime you need encouragement.",
         lastActivity: Date.now(),
@@ -217,11 +280,11 @@ const MessageListScreen = ({ route, navigation }) => {
   }, [rooms, currentUserId, deriveLastMessageInfo]);
 
   const renderConversation = ({ item }) => {
-    const username = item.user?.username || "Buddy";
+    const isCompanion = String(item.user?.id) === String(SOBER_COMPANION_ID);
+    const username =
+      item.user?.username || (isCompanion ? "SoberOwl" : "Buddy");
     const lastMessage = item.lastMessage || "New chat";
     const unread = Boolean(item.unread);
-    const isCompanion =
-      String(item.user?.id) === String(SOBER_COMPANION.id);
     const timestampLabel = timeAgo(item.lastActivity);
     const waitingForYou = isCompanion
       ? false
@@ -233,11 +296,15 @@ const MessageListScreen = ({ route, navigation }) => {
       ? "Waiting for reply"
       : "Sent";
     const statusIcon = isCompanion
-      ? "sparkles"
+      ? "moon"
       : waitingForYou
       ? "alert-circle"
       : "checkmark-done";
-    const statusColor = isCompanion ? "#34d399" : waitingForYou ? "#f59e0b" : "#38bdf8";
+    const statusColor = isCompanion
+      ? "#34d399"
+      : waitingForYou
+      ? "#f59e0b"
+      : "#38bdf8";
     const statusBackground = isCompanion
       ? "rgba(52,211,153,0.12)"
       : waitingForYou
@@ -303,28 +370,73 @@ const MessageListScreen = ({ route, navigation }) => {
           activeOpacity={canOpen && !isDeleting ? 0.85 : 1}
           disabled={isDeleting}
         >
-          <Avatar uri={item.user?.profilePicUrl} size={48} disableNavigation />
+          <Avatar
+            uri={item.user?.profilePicUrl}
+            size={isCompanion ? 54 : 48}
+            disableNavigation
+            fallbackSource={
+              isCompanion ? require("../../assets/icon.png") : undefined
+            }
+            haloColors={
+              isCompanion ? ["#bef264", "#34d399", "#22d3ee"] : undefined
+            }
+          />
           <View style={styles.rowContent}>
             <View style={styles.rowHeader}>
               <View style={styles.rowLeft}>
-                <Text style={[styles.username, unread && styles.usernameUnread]} numberOfLines={1}>
-                  {username}
-                </Text>
-                <View style={styles.messageLine}>
-                  <Ionicons name="chatbubble-ellipses" size={14} color="#94a3b8" />
+                <View style={styles.nameLine}>
                   <Text
-                    style={[styles.lastMessage, unread && styles.lastMessageUnread]}
+                    style={[styles.username, unread && styles.usernameUnread]}
+                    numberOfLines={1}
+                  >
+                    {username}
+                  </Text>
+                </View>
+                <View style={styles.messageLine}>
+                  <Ionicons
+                    name="chatbubble-ellipses"
+                    size={14}
+                    color="#94a3b8"
+                  />
+                  <Text
+                    style={[
+                      styles.lastMessage,
+                      unread && styles.lastMessageUnread,
+                    ]}
                     numberOfLines={1}
                   >
                     {lastMessage}
                   </Text>
                 </View>
+                {isCompanion ? (
+                  <View style={styles.metaBottom}>
+                    <View style={styles.companionChip}>
+                      <Ionicons
+                        name="shield-checkmark"
+                        size={12}
+                        color="#0f172a"
+                      />
+                      <Text style={styles.companionChipText}>
+                        Sobriety Coach
+                      </Text>
+                    </View>
+                  </View>
+                ) : null}
               </View>
               <View style={styles.rowMeta}>
-                <Text style={styles.timestamp}>{timestampLabel}</Text>
-                <View style={[styles.statusPill, { backgroundColor: statusBackground }]}>
-                  <Ionicons name={statusIcon} size={14} color={statusColor} />
-                  <Text style={[styles.statusText, { color: statusColor }]}>{statusLabel}</Text>
+                <View style={styles.metaTop}>
+                  <Text style={styles.timestamp}>{timestampLabel}</Text>
+                  <View
+                    style={[
+                      styles.statusPill,
+                      { backgroundColor: statusBackground },
+                    ]}
+                  >
+                    <Ionicons name={statusIcon} size={14} color={statusColor} />
+                    <Text style={[styles.statusText, { color: statusColor }]}>
+                      {statusLabel}
+                    </Text>
+                  </View>
                 </View>
               </View>
             </View>
@@ -371,11 +483,16 @@ const MessageListScreen = ({ route, navigation }) => {
           !loading ? (
             <View style={styles.emptyState}>
               <View style={styles.emptyIconWrapper}>
-                <Ionicons name="chatbubble-ellipses-outline" size={26} color="#cbd5e1" />
+                <Ionicons
+                  name="chatbubble-ellipses-outline"
+                  size={26}
+                  color="#cbd5e1"
+                />
               </View>
               <Text style={styles.emptyTitle}>No conversations yet</Text>
               <Text style={styles.emptySubtitle}>
-                Start a chat with your sober buddies or message SoberOwl for a quick boost.
+                Start a chat with your sober buddies or message SoberOwl for a
+                quick boost.
               </Text>
             </View>
           ) : null
@@ -445,16 +562,32 @@ const styles = StyleSheet.create({
   rowHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "flex-start",
+    alignItems: "stretch",
   },
   rowLeft: {
     flex: 1,
     gap: 6,
   },
+  nameLine: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+  },
   rowMeta: {
     marginLeft: 12,
+    alignSelf: "stretch",
+    justifyContent: "space-between",
+    alignItems: "flex-end",
+    gap: 8,
+  },
+  metaTop: {
     alignItems: "flex-end",
     gap: 6,
+  },
+  metaBottom: {
+    flexDirection: "row",
+    alignItems: "flex-end",
+    justifyContent: "flex-end",
   },
   username: {
     color: "#e5e7eb",
@@ -497,6 +630,25 @@ const styles = StyleSheet.create({
   lastMessageUnread: {
     color: "#fef3c7",
     fontWeight: "600",
+  },
+  companionChip: {
+    flexDirection: "row",
+    alignItems: "center",
+    alignSelf: "flex-end",
+    gap: 4,
+    backgroundColor: "#fbbf24",
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderRadius: 999,
+    borderWidth: 1,
+    borderColor: "#fef3c7",
+  },
+  companionChipText: {
+    color: "#0f172a",
+    fontSize: 12,
+    fontWeight: "800",
+    letterSpacing: 0.2,
+    textTransform: "uppercase",
   },
   unreadDot: {
     width: 10,

@@ -65,20 +65,23 @@ const formatTime = (timestamp) => {
 
 const buildWsUrl = () => GRAPHQL_URI.replace(/^http/, "ws");
 
-const SOBER_COMPANION = {
-  id: "693394413ea6a3e530516505",
-  username: "SoberOwl",
-};
+const SOBER_COMPANION_ID = "693394413ea6a3e530516505";
+const COMPANION_ACCENT = "#34d399";
 
 const DirectMessageScreen = ({ route, navigation }) => {
   const { state } = useContext(Context);
   const client = useClient();
   const currentUserId = state?.user?.id;
   const userFromRoute = route?.params?.user;
-  const user = userFromRoute?.id ? userFromRoute : SOBER_COMPANION;
-  const targetUserId = user?.id;
-  const username = user.username || "Buddy";
-  const isCompanionChat = String(targetUserId) === String(SOBER_COMPANION.id);
+  const [resolvedUser, setResolvedUser] = useState(
+    userFromRoute?.id
+      ? userFromRoute
+      : { id: SOBER_COMPANION_ID, username: "SoberOwl" }
+  );
+  const targetUserId = resolvedUser?.id;
+  const username = resolvedUser?.username || "Buddy";
+  const isCompanionChat = String(targetUserId) === String(SOBER_COMPANION_ID);
+  const user = resolvedUser;
 
   const [messageText, setMessageText] = useState("");
   const [messages, setMessages] = useState([]);
@@ -149,6 +152,27 @@ const DirectMessageScreen = ({ route, navigation }) => {
         const room = result?.directRoomWithUser;
 
         if (!isMounted || !room) return;
+
+        const participants = room.users || [];
+        const otherUser =
+          participants.find(
+            (participant) =>
+              participant &&
+              String(participant.id || participant._id) !== String(currentUserId)
+          ) || participants.find(Boolean);
+
+        if (otherUser?.id || otherUser?._id) {
+          setResolvedUser({
+            ...otherUser,
+            id: otherUser.id || otherUser._id,
+            username:
+              otherUser.username ||
+              (String(otherUser.id || otherUser._id) ===
+              String(SOBER_COMPANION_ID)
+                ? "SoberOwl"
+                : "Buddy"),
+          });
+        }
 
         if (room?.id || room?._id) {
           const id = room.id || room._id;
@@ -634,6 +658,12 @@ const DirectMessageScreen = ({ route, navigation }) => {
 
   const renderMessage = ({ item }) => {
     const isMine = String(item.author?.id) === String(currentUserId);
+    const isCompanionAuthor =
+      String(item.author?.id || item.author?._id) === String(SOBER_COMPANION_ID);
+    const companionHalo =
+      isCompanionAuthor && !isMine
+        ? ["#bef264", "#34d399", "#22d3ee"]
+        : undefined;
     const likeScale = getLikeScale(item.id);
     const likeOpacity = getLikeOpacity(item.id);
 
@@ -642,6 +672,7 @@ const DirectMessageScreen = ({ route, navigation }) => {
         {!isMine && (
           <Avatar
             uri={item.author?.profilePicUrl}
+            haloColors={companionHalo}
             size={34}
             disableNavigation
             style={styles.messageAvatar}
@@ -656,13 +687,18 @@ const DirectMessageScreen = ({ route, navigation }) => {
               style={[
                 styles.bubble,
                 isMine ? styles.bubbleMine : styles.bubbleTheirs,
+                !isMine && isCompanionAuthor ? styles.bubbleCompanion : null,
               ]}
             >
               <Animated.View
                 pointerEvents="none"
                 style={[
                   styles.likeBadge,
-                  isMine ? styles.likeBadgeMine : styles.likeBadgeTheirs,
+                  isMine
+                    ? styles.likeBadgeMine
+                    : isCompanionAuthor
+                    ? styles.likeBadgeCompanion
+                    : styles.likeBadgeTheirs,
                   {
                     opacity: likeOpacity,
                     transform: [{ scale: likeScale }],
@@ -674,7 +710,11 @@ const DirectMessageScreen = ({ route, navigation }) => {
               <Text
                 style={[
                   styles.messageText,
-                  isMine ? styles.messageTextMine : styles.messageTextTheirs,
+                  isMine
+                    ? styles.messageTextMine
+                    : isCompanionAuthor
+                    ? styles.messageTextCompanion
+                    : styles.messageTextTheirs,
                 ]}
               >
                 {item.text}
@@ -703,13 +743,20 @@ const DirectMessageScreen = ({ route, navigation }) => {
 
     return (
       <View style={styles.typingRow}>
-        <Avatar uri={user.profilePicUrl} size={30} disableNavigation />
+        <Avatar
+          uri={user.profilePicUrl}
+          size={30}
+          disableNavigation
+          haloColors={
+            isCompanionChat ? ["#bef264", "#34d399", "#22d3ee"] : undefined
+          }
+        />
         <TypingIndicator
           username={user.username}
-          accentColor="#f59e0b"
+          accentColor={isCompanionChat ? COMPANION_ACCENT : "#f59e0b"}
           bubbleColor="rgba(11,18,32,0.95)"
           borderColor="rgba(148,163,184,0.35)"
-          dotColor="#f59e0b"
+          dotColor={isCompanionChat ? COMPANION_ACCENT : "#f59e0b"}
         />
       </View>
     );
@@ -732,7 +779,14 @@ const DirectMessageScreen = ({ route, navigation }) => {
             <Ionicons name="chevron-back" size={22} color="#f59e0b" />
           </TouchableOpacity>
           <View style={styles.headerUser}>
-            <Avatar uri={user.profilePicUrl} size={40} disableNavigation />
+            <Avatar
+              uri={user.profilePicUrl}
+              size={40}
+              disableNavigation
+              haloColors={
+                isCompanionChat ? ["#bef264", "#34d399", "#22d3ee"] : undefined
+              }
+            />
             <View>
               <Text style={styles.headerTitle}>Direct Message</Text>
               <Text style={styles.headerSubtitle}>{username}</Text>
@@ -908,6 +962,10 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 6,
     alignSelf: "flex-start",
   },
+  bubbleCompanion: {
+    backgroundColor: "rgba(52,211,153,0.12)",
+    borderColor: COMPANION_ACCENT,
+  },
   typingRow: {
     flexDirection: "row",
     alignItems: "center",
@@ -924,6 +982,10 @@ const styles = StyleSheet.create({
   },
   messageTextTheirs: {
     color: "#fef3c7",
+  },
+  messageTextCompanion: {
+    color: "#d1fae5",
+    fontWeight: "600",
   },
   timestamp: {
     color: "#94a3b8",
@@ -1001,6 +1063,10 @@ const styles = StyleSheet.create({
   },
   likeBadgeTheirs: {
     right: -12,
+  },
+  likeBadgeCompanion: {
+    right: -12,
+    borderColor: "rgba(52,211,153,0.4)",
   },
   likeBadgeText: {
     fontSize: 14,
