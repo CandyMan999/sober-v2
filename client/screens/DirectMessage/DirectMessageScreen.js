@@ -66,6 +66,7 @@ const formatTime = (timestamp) => {
 const buildWsUrl = () => GRAPHQL_URI.replace(/^http/, "ws");
 
 const SOBER_COMPANION_ID = "693394413ea6a3e530516505";
+const COMPANION_ACCENT = "#34d399";
 
 const DirectMessageScreen = ({ route, navigation }) => {
   const { state } = useContext(Context);
@@ -680,13 +681,18 @@ const DirectMessageScreen = ({ route, navigation }) => {
               style={[
                 styles.bubble,
                 isMine ? styles.bubbleMine : styles.bubbleTheirs,
+                !isMine && isCompanionAuthor ? styles.bubbleCompanion : null,
               ]}
             >
               <Animated.View
                 pointerEvents="none"
                 style={[
                   styles.likeBadge,
-                  isMine ? styles.likeBadgeMine : styles.likeBadgeTheirs,
+                  isMine
+                    ? styles.likeBadgeMine
+                    : isCompanionAuthor
+                    ? styles.likeBadgeCompanion
+                    : styles.likeBadgeTheirs,
                   {
                     opacity: likeOpacity,
                     transform: [{ scale: likeScale }],
@@ -698,7 +704,11 @@ const DirectMessageScreen = ({ route, navigation }) => {
               <Text
                 style={[
                   styles.messageText,
-                  isMine ? styles.messageTextMine : styles.messageTextTheirs,
+                  isMine
+                    ? styles.messageTextMine
+                    : isCompanionAuthor
+                    ? styles.messageTextCompanion
+                    : styles.messageTextTheirs,
                 ]}
               >
                 {item.text}
@@ -737,10 +747,10 @@ const DirectMessageScreen = ({ route, navigation }) => {
         />
         <TypingIndicator
           username={user.username}
-          accentColor="#f59e0b"
+          accentColor={isCompanionChat ? COMPANION_ACCENT : "#f59e0b"}
           bubbleColor="rgba(11,18,32,0.95)"
           borderColor="rgba(148,163,184,0.35)"
-          dotColor="#f59e0b"
+          dotColor={isCompanionChat ? COMPANION_ACCENT : "#f59e0b"}
         />
       </View>
     );
@@ -946,6 +956,10 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 6,
     alignSelf: "flex-start",
   },
+  bubbleCompanion: {
+    backgroundColor: "rgba(52,211,153,0.12)",
+    borderColor: COMPANION_ACCENT,
+  },
   typingRow: {
     flexDirection: "row",
     alignItems: "center",
@@ -962,6 +976,10 @@ const styles = StyleSheet.create({
   },
   messageTextTheirs: {
     color: "#fef3c7",
+  },
+  messageTextCompanion: {
+    color: "#d1fae5",
+    fontWeight: "600",
   },
   timestamp: {
     color: "#94a3b8",
@@ -1039,6 +1057,10 @@ const styles = StyleSheet.create({
   },
   likeBadgeTheirs: {
     right: -12,
+  },
+  likeBadgeCompanion: {
+    right: -12,
+    borderColor: "rgba(52,211,153,0.4)",
   },
   likeBadgeText: {
     fontSize: 14,

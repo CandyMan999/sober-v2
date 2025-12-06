@@ -280,7 +280,7 @@ const MessageListScreen = ({ route, navigation }) => {
       ? "Waiting for reply"
       : "Sent";
     const statusIcon = isCompanion
-      ? "sparkles"
+      ? "moon"
       : waitingForYou
       ? "alert-circle"
       : "checkmark-done";
