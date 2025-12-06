@@ -36,7 +36,7 @@ const MessageList = ({
   });
 
   const autoScrollThreshold = useMemo(
-    () => Math.max(viewportHeight * 0.2, 0),
+    () => Math.max(viewportHeight * 0.8, 0),
     [viewportHeight]
   );
   const shouldAutoScroll = distanceFromBottom <= autoScrollThreshold;
