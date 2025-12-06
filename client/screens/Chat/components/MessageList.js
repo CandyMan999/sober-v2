@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import {
   ActivityIndicator,
   FlatList,
+  InteractionManager,
   RefreshControl,
   StyleSheet,
   Text,
@@ -21,6 +22,8 @@ const MessageList = ({
   const [distanceFromBottom, setDistanceFromBottom] = useState(0);
   const previousMessageCount = useRef(0);
   const pendingInitialScroll = useRef(false);
+  const pendingAutoScroll = useRef(false);
+  const lastMessageIdRef = useRef(null);
 
   const autoScrollThreshold = useMemo(() => 420, []);
   const shouldAutoScroll = distanceFromBottom <= autoScrollThreshold;
@@ -34,21 +37,32 @@ const MessageList = ({
     />
   );
 
+  const scrollToBottom = (animated = true) => {
+    requestAnimationFrame(() => {
+      InteractionManager.runAfterInteractions(() => {
+        listRef.current?.scrollToEnd({ animated });
+      });
+    });
+  };
+
   useEffect(() => {
     const hasMessages = !!messages?.length;
-    const hasNewMessage =
-      hasMessages && messages.length > previousMessageCount.current;
+    const lastMessageId = hasMessages
+      ? String(messages[messages.length - 1]?.id || messages[messages.length - 1]?._id || "")
+      : null;
 
     const isFirstLoad = hasMessages && previousMessageCount.current === 0;
+    const isNewMessage =
+      hasMessages && lastMessageId && lastMessageId !== lastMessageIdRef.current;
 
     if (isFirstLoad) {
       pendingInitialScroll.current = true;
-    } else if (hasNewMessage && shouldAutoScroll) {
-      requestAnimationFrame(() => {
-        listRef.current?.scrollToEnd({ animated: true });
-      });
+      pendingAutoScroll.current = true;
+    } else if (isNewMessage && shouldAutoScroll) {
+      pendingAutoScroll.current = true;
     }
 
+    lastMessageIdRef.current = lastMessageId;
     previousMessageCount.current = messages?.length || 0;
   }, [messages, shouldAutoScroll]);
 
@@ -64,11 +78,10 @@ const MessageList = ({
   };
 
   const handleContentSizeChange = () => {
-    if (pendingInitialScroll.current && messages?.length) {
+    if (pendingAutoScroll.current && messages?.length) {
       pendingInitialScroll.current = false;
-      requestAnimationFrame(() => {
-        listRef.current?.scrollToEnd({ animated: true });
-      });
+      pendingAutoScroll.current = false;
+      scrollToBottom(true);
     }
   };
 
