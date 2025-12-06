@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import {
   ActivityIndicator,
   FlatList,
@@ -17,6 +17,12 @@ const MessageList = ({
   onRefresh,
   contentPaddingBottom = 0,
 }) => {
+  const listRef = useRef(null);
+  const [distanceFromBottom, setDistanceFromBottom] = useState(0);
+
+  const autoScrollThreshold = useMemo(() => 420, []);
+  const shouldAutoScroll = distanceFromBottom <= autoScrollThreshold;
+
   const renderItem = ({ item }) => (
     <MessageBubble
       message={item}
@@ -26,8 +32,28 @@ const MessageList = ({
     />
   );
 
+  useEffect(() => {
+    if (!messages?.length || !shouldAutoScroll) return;
+
+    requestAnimationFrame(() => {
+      listRef.current?.scrollToEnd({ animated: true });
+    });
+  }, [messages, shouldAutoScroll]);
+
+  const handleScroll = (event) => {
+    const {
+      contentOffset: { y: offsetY },
+      contentSize: { height: contentHeight },
+      layoutMeasurement: { height: layoutHeight },
+    } = event.nativeEvent;
+
+    const distance = Math.max(contentHeight - layoutHeight - offsetY, 0);
+    setDistanceFromBottom(distance);
+  };
+
   return (
     <FlatList
+      ref={listRef}
       data={messages}
       keyExtractor={(item) => String(item?.id || item?._id)}
       renderItem={renderItem}
@@ -37,6 +63,8 @@ const MessageList = ({
       ]}
       keyboardShouldPersistTaps="handled"
       showsVerticalScrollIndicator={false}
+      onScroll={handleScroll}
+      scrollEventThrottle={16}
       refreshControl={
         <RefreshControl
           tintColor="#f59e0b"
