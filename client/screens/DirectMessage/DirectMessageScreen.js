@@ -34,6 +34,7 @@ import {
   DIRECT_MESSAGE_SUBSCRIPTION,
   DIRECT_ROOM_WITH_USER,
   SEND_DIRECT_MESSAGE,
+  THERAPY_CHAT,
   SET_DIRECT_TYPING,
   DIRECT_TYPING_SUBSCRIPTION,
 } from "../../GraphQL/directMessages";
@@ -64,13 +65,20 @@ const formatTime = (timestamp) => {
 
 const buildWsUrl = () => GRAPHQL_URI.replace(/^http/, "ws");
 
+const SOBER_COMPANION = {
+  id: "693394413ea6a3e530516505",
+  username: "SoberOwl",
+};
+
 const DirectMessageScreen = ({ route, navigation }) => {
   const { state } = useContext(Context);
   const client = useClient();
   const currentUserId = state?.user?.id;
-  const user = route?.params?.user || {};
+  const userFromRoute = route?.params?.user;
+  const user = userFromRoute?.id ? userFromRoute : SOBER_COMPANION;
   const targetUserId = user?.id;
   const username = user.username || "Buddy";
+  const isCompanionChat = String(targetUserId) === String(SOBER_COMPANION.id);
 
   const [messageText, setMessageText] = useState("");
   const [messages, setMessages] = useState([]);
@@ -380,6 +388,51 @@ const DirectMessageScreen = ({ route, navigation }) => {
     const text = messageText.trim();
     if (!text || !targetUserId || !currentUserId) return;
 
+    if (isCompanionChat) {
+      try {
+        setSending(true);
+
+        const response = await client.request(THERAPY_CHAT, {
+          message: text,
+        });
+
+        const payload = response?.therapyChat;
+        const newMessages = [
+          payload?.userMessage,
+          payload?.assistantMessage,
+        ].filter(Boolean);
+
+        if (newMessages.length) {
+          setMessages((prev) => {
+            const merged = new Map(prev.map((msg) => [msg.id, msg]));
+            newMessages.forEach((msg) => {
+              if (!msg?.id) return;
+              merged.set(msg.id, {
+                ...merged.get(msg.id),
+                ...msg,
+                liked: msg?.liked ?? (msg?.likesCount || 0) > 0,
+                likesCount: msg?.likesCount ?? 0,
+              });
+            });
+
+            return [...merged.values()].sort(
+              (a, b) =>
+                (parseDateValue(a.createdAt)?.getTime() || 0) -
+                (parseDateValue(b.createdAt)?.getTime() || 0)
+            );
+          });
+        }
+
+        setMessageText("");
+      } catch (err) {
+        console.error("Failed to start therapy chat", err);
+      } finally {
+        setSending(false);
+      }
+
+      return;
+    }
+
     try {
       setSending(true);
 
@@ -414,7 +467,13 @@ const DirectMessageScreen = ({ route, navigation }) => {
     } finally {
       setSending(false);
     }
-  }, [client, currentUserId, messageText, targetUserId]);
+  }, [
+    client,
+    currentUserId,
+    isCompanionChat,
+    messageText,
+    targetUserId,
+  ]);
 
   // 10) Renderers
   const ensureAnimValue = (store, key, initialValue) => {

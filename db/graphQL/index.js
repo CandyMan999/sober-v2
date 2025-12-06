@@ -25,6 +25,7 @@ const {
   sendDirectMessageResolver,
   setDirectTypingResolver,
   deleteDirectRoomResolver,
+  therapyChatResolver,
   markNotificationReadResolver,
   dismissNotificationResolver,
   clearAllNotificationsResolver,
@@ -58,7 +59,10 @@ const {
 const { Like, Comment, Connection, City } = require("../models");
 const { findClosestCity } = require("../utils/location");
 
-const typeDefs = [rootDefs];
+// Use the original DocumentNode for schema construction so every definition
+// declared in rootDefs (e.g., therapyChat) is available to the executable
+// schema.
+const typeDefs = rootDefs;
 
 // Reusable helper for likes
 const resolveLikes = (targetType) => async (parent) => {
@@ -124,6 +128,7 @@ const resolvers = {
     sendDirectMessage: sendDirectMessageResolver,
     setDirectTyping: setDirectTypingResolver,
     deleteDirectRoom: deleteDirectRoomResolver,
+    therapyChat: therapyChatResolver,
     markNotificationRead: markNotificationReadResolver,
     dismissNotification: dismissNotificationResolver,
     clearAllNotifications: clearAllNotificationsResolver,
