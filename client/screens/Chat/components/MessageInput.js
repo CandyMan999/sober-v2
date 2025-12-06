@@ -15,15 +15,7 @@ const MessageInput = ({
   const canSend = value?.trim()?.length > 0 && !disabled;
 
   return (
-    <View
-      style={[
-        styles.container,
-        {
-          paddingTop: 6,
-          paddingBottom: Math.max(6, bottomInset),
-        },
-      ]}
-    >
+    <View style={[styles.container, { paddingBottom: bottomInset }]}>
       <Avatar
         uri={currentUser?.profilePicUrl}
         haloColor="blue"
@@ -64,14 +56,14 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "flex-end",
     gap: 12,
-    paddingHorizontal: 16,
-    paddingVertical: 6,
+    paddingHorizontal: 12,
+    paddingVertical: 4,
     borderTopWidth: 1,
     borderTopColor: "#1f2937",
     backgroundColor: "#0b1220",
   },
   avatar: {
-    marginBottom: 6,
+    marginBottom: 2,
   },
   inputWrapper: {
     flex: 1,
@@ -81,8 +73,8 @@ const styles = StyleSheet.create({
     borderRadius: 999,
     borderWidth: 1,
     borderColor: "rgba(148,163,184,0.4)",
-    paddingHorizontal: 14,
-    paddingVertical: 8,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
   },
   input: {
     flex: 1,

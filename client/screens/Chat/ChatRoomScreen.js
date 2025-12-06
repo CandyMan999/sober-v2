@@ -13,7 +13,7 @@ import {
   StyleSheet,
   View,
 } from "react-native";
-import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { SubscriptionClient } from "subscriptions-transport-ws";
 import { useFocusEffect, useIsFocused } from "@react-navigation/native";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
@@ -65,7 +65,6 @@ const ChatRoomScreen = ({ route }) => {
   const roomName = route?.params?.roomName || "General";
   const currentUser = state?.user;
   const currentUserId = currentUser?.id;
-  const insets = useSafeAreaInsets();
   const isFocused = useIsFocused();
   const tabBarHeight = useBottomTabBarHeight?.() || 0;
 
@@ -230,7 +229,7 @@ const ChatRoomScreen = ({ route }) => {
     >
       <SafeAreaView
         style={styles.safeArea}
-        edges={["left", "right", "top"]}
+        edges={["left", "right"]}
       >
         <View style={styles.container}>
           <View style={styles.messageArea}>
@@ -244,7 +243,7 @@ const ChatRoomScreen = ({ route }) => {
                 currentUserId={currentUserId}
                 loading={loadingMessages}
                 onRefresh={loadMessages}
-                contentPaddingBottom={insets.bottom}
+                contentPaddingBottom={0}
               />
             )}
           </View>
@@ -256,7 +255,7 @@ const ChatRoomScreen = ({ route }) => {
               onSend={handleSend}
               disabled={sending || !room?.id}
               currentUser={currentUser}
-              bottomInset={Math.max(insets.bottom, 2)}
+              bottomInset={0}
             />
           </View>
         </View>
