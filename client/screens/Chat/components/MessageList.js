@@ -19,6 +19,7 @@ const MessageList = ({
 }) => {
   const listRef = useRef(null);
   const [distanceFromBottom, setDistanceFromBottom] = useState(0);
+  const previousMessageCount = useRef(0);
 
   const autoScrollThreshold = useMemo(() => 420, []);
   const shouldAutoScroll = distanceFromBottom <= autoScrollThreshold;
@@ -33,11 +34,20 @@ const MessageList = ({
   );
 
   useEffect(() => {
-    if (!messages?.length || !shouldAutoScroll) return;
+    const hasMessages = !!messages?.length;
+    const isFirstLoad = hasMessages && previousMessageCount.current === 0;
+    const hasNewMessage =
+      hasMessages && messages.length > previousMessageCount.current;
 
-    requestAnimationFrame(() => {
-      listRef.current?.scrollToEnd({ animated: true });
-    });
+    previousMessageCount.current = messages?.length || 0;
+
+    if (!hasMessages) return;
+
+    if (isFirstLoad || (hasNewMessage && shouldAutoScroll)) {
+      requestAnimationFrame(() => {
+        listRef.current?.scrollToEnd({ animated: true });
+      });
+    }
   }, [messages, shouldAutoScroll]);
 
   const handleScroll = (event) => {
