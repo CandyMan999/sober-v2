@@ -16,6 +16,7 @@ import {
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 import { SubscriptionClient } from "subscriptions-transport-ws";
 import { useFocusEffect, useIsFocused } from "@react-navigation/native";
+import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 
 import MessageList from "./components/MessageList";
 import MessageInput from "./components/MessageInput";
@@ -66,6 +67,7 @@ const ChatRoomScreen = ({ route }) => {
   const currentUserId = currentUser?.id;
   const insets = useSafeAreaInsets();
   const isFocused = useIsFocused();
+  const tabBarHeight = useBottomTabBarHeight?.() || 0;
 
   const wsClientRef = useRef(null);
   const commentSubscriptionRef = useRef(null);
@@ -219,7 +221,7 @@ const ChatRoomScreen = ({ route }) => {
   );
 
   const keyboardVerticalOffset =
-    Platform.OS === "ios" ? insets.bottom + 72 : 0;
+    Platform.OS === "ios" ? insets.bottom + tabBarHeight + 16 : 0;
 
   return (
     <KeyboardAvoidingView
@@ -229,7 +231,7 @@ const ChatRoomScreen = ({ route }) => {
     >
       <SafeAreaView
         style={styles.safeArea}
-        edges={["left", "right", "bottom"]}
+        edges={["left", "right", "top"]}
       >
         <View style={styles.container}>
           <View style={styles.messageArea}>
@@ -243,7 +245,7 @@ const ChatRoomScreen = ({ route }) => {
                 currentUserId={currentUserId}
                 loading={loadingMessages}
                 onRefresh={loadMessages}
-                contentPaddingBottom={Math.max(insets.bottom + 8, 12)}
+                contentPaddingBottom={12}
               />
             )}
           </View>
@@ -255,7 +257,7 @@ const ChatRoomScreen = ({ route }) => {
               onSend={handleSend}
               disabled={sending || !room?.id}
               currentUser={currentUser}
-              bottomInset={insets.bottom}
+              bottomInset={Math.max(insets.bottom, tabBarHeight)}
             />
           </View>
         </View>

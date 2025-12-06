@@ -15,10 +15,16 @@ const MessageInput = ({
   const canSend = value?.trim()?.length > 0 && !disabled;
 
   return (
-    <View style={[styles.container, { paddingBottom: Math.max(12, bottomInset) }]}>
+    <View
+      style={[
+        styles.container,
+        { paddingBottom: Math.max(12, bottomInset + 6) },
+      ]}
+    >
       <Avatar
         uri={currentUser?.profilePicUrl}
-        size={34}
+        haloColor="blue"
+        size={32}
         style={styles.avatar}
         fallbackText={currentUser?.username}
       />
@@ -39,7 +45,11 @@ const MessageInput = ({
           accessibilityRole="button"
           accessibilityLabel="Send message"
         >
-          <Ionicons name="send" size={20} color="#f59e0b" />
+          <Ionicons
+            name="send"
+            size={17}
+            color={canSend ? "#38bdf8" : "#64748b"}
+          />
         </TouchableOpacity>
       </View>
     </View>
