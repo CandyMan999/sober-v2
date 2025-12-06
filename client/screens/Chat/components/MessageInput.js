@@ -1,4 +1,4 @@
-import React from "react";
+import React, { forwardRef, useImperativeHandle, useRef } from "react";
 import {
   Keyboard,
   View,
@@ -11,18 +11,27 @@ import { Ionicons } from "@expo/vector-icons";
 
 import Avatar from "../../../components/Avatar";
 
-const MessageInput = ({
-  value,
-  onChangeText,
-  onSend,
-  disabled,
-  currentUser,
-  bottomInset = 0,
-  replyTarget,
-  onCancelReply,
-}) => {
+const MessageInput = (
+  {
+    value,
+    onChangeText,
+    onSend,
+    disabled,
+    currentUser,
+    bottomInset = 0,
+    replyTarget,
+    onCancelReply,
+  },
+  ref
+) => {
   const canSend = value?.trim()?.length > 0 && !disabled;
   const replyUsername = replyTarget?.author?.username;
+  const inputRef = useRef(null);
+
+  useImperativeHandle(ref, () => ({
+    focus: () => inputRef.current?.focus?.(),
+    blur: () => inputRef.current?.blur?.(),
+  }));
 
   return (
     <View
@@ -42,7 +51,7 @@ const MessageInput = ({
               <Text style={styles.replyingLabel} numberOfLines={1}>
                 Replying to <Text style={styles.replyingName}>@{replyUsername}</Text>
               </Text>
-              <Text style={styles.replyingPreview} numberOfLines={2}>
+              <Text style={styles.replyingPreview} numberOfLines={1}>
                 {replyTarget?.text || "Message"}
               </Text>
             </View>
@@ -68,6 +77,7 @@ const MessageInput = ({
             returnKeyType="done"
             blurOnSubmit
             onSubmitEditing={() => Keyboard.dismiss()}
+            ref={inputRef}
           />
           <TouchableOpacity
             onPress={onSend}
@@ -92,7 +102,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
     alignItems: "flex-end",
-    gap: 12,
+    gap: 10,
     paddingHorizontal: 12,
     paddingVertical: 10,
     borderTopWidth: 1,
@@ -101,7 +111,7 @@ const styles = StyleSheet.create({
   },
   composerColumn: {
     flex: 1,
-    gap: 8,
+    gap: 6,
   },
   avatar: {
     marginBottom: 2,
@@ -115,38 +125,39 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "rgba(148,163,184,0.4)",
     paddingHorizontal: 12,
-    paddingVertical: 6,
+    paddingVertical: 8,
+    minHeight: 46,
   },
   replyingTo: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 12,
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 10,
     borderWidth: 1,
-    borderColor: "rgba(59,130,246,0.35)",
-    backgroundColor: "rgba(59,130,246,0.12)",
-    gap: 10,
+    borderColor: "rgba(59,130,246,0.3)",
+    backgroundColor: "rgba(59,130,246,0.1)",
+    gap: 8,
   },
   replyingCopy: {
     flex: 1,
-    gap: 4,
+    gap: 2,
   },
   replyingLabel: {
     color: "#bfdbfe",
     fontWeight: "700",
-    fontSize: 12,
+    fontSize: 11,
   },
   replyingName: {
     color: "#f59e0b",
   },
   replyingPreview: {
     color: "#cbd5e1",
-    fontSize: 12,
+    fontSize: 11,
   },
   closeReply: {
-    backgroundColor: "rgba(248,250,252,0.12)",
+    backgroundColor: "rgba(248,250,252,0.1)",
     padding: 6,
     borderRadius: 999,
   },
@@ -167,4 +178,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MessageInput;
+export default forwardRef(MessageInput);

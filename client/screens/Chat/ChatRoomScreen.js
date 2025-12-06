@@ -66,6 +66,7 @@ const ChatRoomScreen = ({ route }) => {
   const wsClientRef = useRef(null);
   const commentSubscriptionRef = useRef(null);
   const scrollToBottomRef = useRef(null);
+  const inputRef = useRef(null);
   const appState = useRef(AppState.currentState);
 
   const [room, setRoom] = useState(null);
@@ -291,12 +292,14 @@ const ChatRoomScreen = ({ route }) => {
       ? `@${target.author.username} `
       : "";
 
-    if (!mention) return;
+    if (mention) {
+      setMessageText((prev) => {
+        if (prev.startsWith(mention)) return prev;
+        return `${mention}${prev.trim() ? prev.trim() + " " : ""}`;
+      });
+    }
 
-    setMessageText((prev) => {
-      if (prev.startsWith(mention)) return prev;
-      return `${mention}${prev.trim() ? prev.trim() + " " : ""}`;
-    });
+    requestAnimationFrame(() => inputRef.current?.focus?.());
   }, []);
 
   const handleCancelReply = useCallback(() => {
@@ -402,6 +405,7 @@ const ChatRoomScreen = ({ route }) => {
             bottomInset={0}
             replyTarget={replyTarget}
             onCancelReply={handleCancelReply}
+            ref={inputRef}
           />
         </View>
       </View>

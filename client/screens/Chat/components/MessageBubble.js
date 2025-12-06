@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { formatDistanceToNow } from "date-fns";
@@ -26,7 +26,6 @@ const MessageBubble = ({ message, isMine, onReply, currentUsername }) => {
   const author = message?.author || {};
   const timeLabel = formatTime(message?.createdAt);
   const replyTo = message?.replyTo;
-  const [replyExpanded, setReplyExpanded] = useState(false);
 
   const handleReplyPress = () => {
     if (onReply) onReply(message);
@@ -43,6 +42,13 @@ const MessageBubble = ({ message, isMine, onReply, currentUsername }) => {
       timestamp: formatTime(replyTo?.createdAt),
     };
   }, [replyTo]);
+
+  const isReplyingToMe = useMemo(() => {
+    if (!replyTo?.author?.username || !currentUsername) return false;
+    return (
+      replyTo.author.username.toLowerCase() === currentUsername.toLowerCase()
+    );
+  }, [currentUsername, replyTo?.author?.username]);
 
   const renderTextWithMentions = useMemo(() => {
     const content = message?.text || "";
@@ -112,15 +118,13 @@ const MessageBubble = ({ message, isMine, onReply, currentUsername }) => {
             replyLabel && styles.bubbleWithReply,
           ]}
         >
-          {!isMine && author?.username ? (
-            <Text style={styles.username}>{author.username}</Text>
-          ) : null}
-
           {replyLabel ? (
             <TouchableOpacity
-              onPress={() => setReplyExpanded((prev) => !prev)}
-              activeOpacity={0.9}
-              style={[styles.replyContainer, replyExpanded && styles.replyExpanded]}
+              activeOpacity={0.8}
+              style={[
+                styles.replyContainer,
+                isReplyingToMe && styles.replyToMe,
+              ]}
               accessibilityRole="button"
               accessibilityLabel={`Replying to ${replyLabel.username}`}
             >
@@ -128,16 +132,15 @@ const MessageBubble = ({ message, isMine, onReply, currentUsername }) => {
               <View style={styles.replyContent}>
                 <Text style={styles.replyTitle} numberOfLines={1}>
                   Reply to <Text style={styles.replyUsername}>{replyLabel.username}</Text>
+                  {"  "}
+                  <Text style={styles.replyTimestamp}>{replyLabel.timestamp}</Text>
                 </Text>
                 <Text
                   style={styles.replyPreview}
-                  numberOfLines={replyExpanded ? 4 : 1}
+                  numberOfLines={1}
                 >
                   {replyLabel.previewText}
                 </Text>
-                {replyExpanded ? (
-                  <Text style={styles.replyTimestamp}>{replyLabel.timestamp}</Text>
-                ) : null}
               </View>
             </TouchableOpacity>
           ) : null}
@@ -169,7 +172,7 @@ const MessageBubble = ({ message, isMine, onReply, currentUsername }) => {
                 style={styles.replyButton}
                 hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
               >
-                <Ionicons name="return-up-forward" size={18} color="#cbd5e1" />
+                <Ionicons name="arrow-undo-outline" size={14} color="#f472b6" />
               </TouchableOpacity>
             ) : null}
           </View>
@@ -195,7 +198,7 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: "row",
     alignItems: "flex-start",
-    gap: 10,
+    gap: 8,
   },
   rowMine: {
     justifyContent: "flex-end",
@@ -210,67 +213,59 @@ const styles = StyleSheet.create({
   bubbleStackMine: {
     alignItems: "flex-end",
   },
-  username: {
-    color: "#cbd5e1",
-    fontSize: 12,
-    fontWeight: "700",
-    marginBottom: 8,
-    paddingLeft: 2,
-  },
   replyButton: {
     paddingHorizontal: 6,
     paddingVertical: 4,
     borderRadius: 999,
-    backgroundColor: "rgba(148,163,184,0.12)",
     marginLeft: 8,
   },
   replyContainer: {
     flexDirection: "row",
-    alignItems: "flex-start",
-    gap: 8,
+    alignItems: "center",
+    gap: 6,
     width: "100%",
-    backgroundColor: "rgba(255,255,255,0.05)",
-    borderRadius: 12,
-    paddingHorizontal: 10,
-    paddingVertical: 8,
-    borderWidth: 1,
-    borderColor: "rgba(148,163,184,0.2)",
-    marginBottom: 10,
+    backgroundColor: "transparent",
+    borderRadius: 10,
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderLeftWidth: 3,
+    borderLeftColor: "#e2e8f0",
+    marginBottom: 6,
   },
-  replyExpanded: {
-    backgroundColor: "rgba(255,255,255,0.08)",
-    borderColor: "rgba(148,163,184,0.35)",
+  replyToMe: {
+    borderLeftColor: "#f472b6",
+    backgroundColor: "rgba(244,114,182,0.08)",
   },
   replyLine: {
-    width: 3,
-    borderRadius: 12,
-    backgroundColor: "#e2e8f0",
+    width: 2,
+    borderRadius: 6,
+    backgroundColor: "rgba(226,232,240,0.7)",
     height: "100%",
   },
   replyContent: {
     flex: 1,
-    gap: 4,
+    gap: 2,
   },
   replyTitle: {
     color: "#e2e8f0",
     fontWeight: "700",
-    fontSize: 12,
+    fontSize: 11,
   },
   replyUsername: {
     color: "#f59e0b",
   },
   replyPreview: {
     color: "#cbd5e1",
-    fontSize: 12,
+    fontSize: 11,
   },
   replyTimestamp: {
     color: "#94a3b8",
-    fontSize: 11,
+    fontSize: 10,
   },
   bubble: {
-    borderRadius: 17,
-    paddingHorizontal: 14,
-    paddingVertical: 12,
+    borderRadius: 14,
+    paddingHorizontal: 12,
+    paddingVertical: 10,
     borderWidth: 1,
     maxWidth: "100%",
   },
@@ -287,10 +282,10 @@ const styles = StyleSheet.create({
     alignSelf: "flex-start",
   },
   bubbleWithReply: {
-    paddingTop: 14,
+    paddingTop: 12,
   },
   text: {
-    fontSize: 15,
+    fontSize: 14,
   },
   textMine: {
     color: "#e0f2fe",
@@ -311,7 +306,7 @@ const styles = StyleSheet.create({
   timestamp: {
     color: "#94a3b8",
     fontSize: 10,
-    marginTop: 8,
+    marginTop: 4,
   },
   timestampMine: {
     color: "#bae6fd",
@@ -324,7 +319,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "flex-end",
-    marginTop: 6,
+    marginTop: 4,
   },
   footerRowMine: {
     justifyContent: "flex-end",
