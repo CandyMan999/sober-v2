@@ -18,7 +18,6 @@ import { useClient } from "../../client";
 import {
   CHANGE_ROOM,
   CREATE_COMMENT,
-  CREATE_ROOM,
   GET_COMMENTS,
   GET_ROOMS,
   ROOM_COMMENT_SUBSCRIPTION,
@@ -71,27 +70,24 @@ const ChatRoomScreen = ({ route }) => {
   const [room, setRoom] = useState(null);
   const [messages, setMessages] = useState([]);
   const [messageText, setMessageText] = useState("");
-  const [loadingRoom, setLoadingRoom] = useState(false);
+  const [loadingRoom, setLoadingRoom] = useState(true);
   const [loadingMessages, setLoadingMessages] = useState(false);
   const [sending, setSending] = useState(false);
   const [isTypingLocal, setIsTypingLocal] = useState(false);
   const [typingUsers, setTypingUsers] = useState({});
-  const [doneLoading, setDoneLoading] = useState(false);
 
   const ensureRoom = useCallback(async () => {
-    if (!currentUserId) return;
+    if (!currentUserId) {
+      setLoadingRoom(false);
+      return;
+    }
     setLoadingRoom(true);
 
     try {
       const roomListResponse = await client.request(GET_ROOMS);
       const rooms = roomListResponse?.getRooms || [];
 
-      let targetRoom = rooms.find((candidate) => candidate.name === roomName);
-
-      if (!targetRoom) {
-        const created = await client.request(CREATE_ROOM, { name: roomName });
-        targetRoom = created?.createRoom;
-      }
+      const targetRoom = rooms.find((candidate) => candidate.name === roomName);
 
       if (targetRoom?.id) {
         const result = await client.request(CHANGE_ROOM, {
@@ -108,23 +104,36 @@ const ChatRoomScreen = ({ route }) => {
     }
   }, [client, currentUserId, roomName]);
 
-  const loadMessages = useCallback(async () => {
-    if (!room?.id) return;
+  const applyMessages = useCallback((updater) => {
+    setMessages((prev) => {
+      const next = dedupeMessages(sortByCreatedAt(updater(prev)));
+      return next;
+    });
+  }, []);
 
-    setDoneLoading(false);
-    setLoadingMessages(true);
-    try {
-      const response = await client.request(GET_COMMENTS, { roomId: room.id });
-      const incoming = response?.getComments || [];
-      const normalized = dedupeMessages(sortByCreatedAt(incoming));
-      setMessages(normalized);
-    } catch (error) {
-      console.log("Failed to load comments", error);
-    } finally {
-      setLoadingMessages(false);
-      setDoneLoading(true);
-    }
-  }, [client, room?.id]);
+  const hydrateMessages = useCallback(
+    async (isActive = () => true) => {
+      if (!room?.id) return;
+
+      setLoadingMessages(true);
+
+      try {
+        const response = await client.request(GET_COMMENTS, { roomId: room.id });
+        const incoming = response?.getComments || [];
+
+        if (isActive()) {
+          applyMessages(() => incoming);
+        }
+      } catch (error) {
+        console.log("Failed to load comments", error);
+      } finally {
+        if (isActive()) {
+          setLoadingMessages(false);
+        }
+      }
+    },
+    [applyMessages, client, room?.id]
+  );
 
   useFocusEffect(
     useCallback(() => {
@@ -134,8 +143,15 @@ const ChatRoomScreen = ({ route }) => {
   );
 
   useEffect(() => {
-    loadMessages();
-  }, [loadMessages]);
+    if (!room?.id) return undefined;
+
+    let isActive = true;
+    hydrateMessages(() => isActive);
+
+    return () => {
+      isActive = false;
+    };
+  }, [hydrateMessages, room?.id]);
 
   useEffect(() => {
     const handleAppStateChange = (nextState) => {
@@ -156,14 +172,14 @@ const ChatRoomScreen = ({ route }) => {
   }, []);
 
   useEffect(() => {
-    if (!doneLoading) return;
+    if (loadingMessages) return undefined;
 
     const timer = setTimeout(() => {
       scrollToBottomRef.current?.(true);
     }, 1000);
 
     return () => clearTimeout(timer);
-  }, [doneLoading]);
+  }, [loadingMessages]);
 
   useEffect(() => {
     if (!room?.id || !isFocused) return undefined;
@@ -194,7 +210,7 @@ const ChatRoomScreen = ({ route }) => {
         const incoming = data?.roomCommentCreated;
         if (!incoming) return;
 
-        setMessages((prev) => {
+        applyMessages((prev) => {
           const next = [...prev];
           const incomingId = getMessageId(incoming);
           const existingIndex = next.findIndex(
@@ -203,10 +219,10 @@ const ChatRoomScreen = ({ route }) => {
 
           if (existingIndex !== -1) {
             next[existingIndex] = { ...next[existingIndex], ...incoming };
-            return sortByCreatedAt(next);
+            return next;
           }
 
-          return dedupeMessages(sortByCreatedAt([...next, incoming]));
+          return [...next, incoming];
         });
       },
       error: (error) => {
@@ -253,7 +269,7 @@ const ChatRoomScreen = ({ route }) => {
       wsClientRef.current = null;
       setTypingUsers({});
     };
-  }, [currentUserId, isFocused, room?.id, wsClientRef]);
+  }, [applyMessages, currentUserId, isFocused, room?.id, wsClientRef]);
 
   const handleSend = useCallback(async () => {
     if (!messageText?.trim() || !room?.id || !currentUserId) return;
@@ -268,9 +284,7 @@ const ChatRoomScreen = ({ route }) => {
 
       const newComment = response?.createComment;
       if (newComment) {
-        setMessages((prev) =>
-          dedupeMessages(sortByCreatedAt([...prev, newComment]))
-        );
+        applyMessages((prev) => [...prev, newComment]);
         setMessageText("");
       }
     } catch (error) {
@@ -278,7 +292,7 @@ const ChatRoomScreen = ({ route }) => {
     } finally {
       setSending(false);
     }
-  }, [client, currentUserId, messageText, room?.id]);
+  }, [applyMessages, client, currentUserId, messageText, room?.id]);
 
   useEffect(() => {
     const next = messageText.trim().length > 0;
@@ -313,8 +327,8 @@ const ChatRoomScreen = ({ route }) => {
   );
 
   const isLoading = useMemo(
-    () => loadingRoom || (loadingMessages && !messages.length),
-    [loadingRoom, loadingMessages, messages.length]
+    () => loadingRoom || !room?.id || (loadingMessages && !messages.length),
+    [loadingMessages, loadingRoom, messages.length, room?.id]
   );
 
   const lastMessageId = useMemo(() => {
@@ -349,14 +363,14 @@ const ChatRoomScreen = ({ route }) => {
             </View>
           ) : (
             <MessageList
-              key={room?.id || roomName}
+              key={roomName}
               messages={listData}
               currentUserId={currentUserId}
               loading={loadingMessages}
-              onRefresh={loadMessages}
+              onRefresh={hydrateMessages}
               lastMessageId={lastMessageId}
               contentPaddingBottom={0}
-              doneLoading={doneLoading}
+              doneLoading={!loadingMessages}
             />
           )}
         </View>
