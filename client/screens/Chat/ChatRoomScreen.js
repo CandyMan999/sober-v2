@@ -8,6 +8,7 @@ import React, {
 } from "react";
 import {
   ActivityIndicator,
+  Keyboard,
   KeyboardAvoidingView,
   Platform,
   StyleSheet,
@@ -70,6 +71,8 @@ const ChatRoomScreen = ({ route }) => {
 
   const wsClientRef = useRef(null);
   const commentSubscriptionRef = useRef(null);
+  const keyboardShowListener = useRef(null);
+  const keyboardHideListener = useRef(null);
 
   const [room, setRoom] = useState(null);
   const [messages, setMessages] = useState([]);
@@ -77,6 +80,7 @@ const ChatRoomScreen = ({ route }) => {
   const [loadingRoom, setLoadingRoom] = useState(false);
   const [loadingMessages, setLoadingMessages] = useState(false);
   const [sending, setSending] = useState(false);
+  const [keyboardInset, setKeyboardInset] = useState(0);
 
   const ensureRoom = useCallback(async () => {
     if (!currentUserId) return;
@@ -134,6 +138,26 @@ const ChatRoomScreen = ({ route }) => {
   useEffect(() => {
     loadMessages();
   }, [loadMessages]);
+
+  useEffect(() => {
+    const showEvent = Platform.OS === "ios" ? "keyboardWillShow" : "keyboardDidShow";
+    const hideEvent = Platform.OS === "ios" ? "keyboardWillHide" : "keyboardDidHide";
+
+    keyboardShowListener.current = Keyboard.addListener(showEvent, (event) => {
+      const height = event?.endCoordinates?.height || 0;
+      const adjusted = Math.max(height - tabBarHeight, 0);
+      setKeyboardInset(adjusted);
+    });
+
+    keyboardHideListener.current = Keyboard.addListener(hideEvent, () => {
+      setKeyboardInset(0);
+    });
+
+    return () => {
+      keyboardShowListener.current?.remove?.();
+      keyboardHideListener.current?.remove?.();
+    };
+  }, [tabBarHeight]);
 
   useEffect(() => {
     if (!room?.id || !isFocused) return undefined;
@@ -219,7 +243,7 @@ const ChatRoomScreen = ({ route }) => {
     [loadingRoom, loadingMessages, messages.length]
   );
 
-  const keyboardVerticalOffset = Platform.OS === "ios" ? tabBarHeight : 0;
+  const keyboardVerticalOffset = 0;
 
   return (
     <KeyboardAvoidingView
@@ -248,7 +272,12 @@ const ChatRoomScreen = ({ route }) => {
             )}
           </View>
 
-          <View style={styles.inputArea}>
+          <View
+            style={[
+              styles.inputArea,
+              keyboardInset ? { marginBottom: keyboardInset } : null,
+            ]}
+          >
             <MessageInput
               value={messageText}
               onChangeText={setMessageText}
