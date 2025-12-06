@@ -1,5 +1,5 @@
 import React from "react";
-import { View, TextInput, StyleSheet, TouchableOpacity } from "react-native";
+import { Keyboard, View, TextInput, StyleSheet, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
 import Avatar from "../../../components/Avatar";
@@ -30,8 +30,10 @@ const MessageInput = ({
           placeholderTextColor="#9ca3af"
           value={value}
           onChangeText={onChangeText}
-          multiline
           maxLength={500}
+          returnKeyType="done"
+          blurOnSubmit
+          onSubmitEditing={() => Keyboard.dismiss()}
         />
         <TouchableOpacity
           onPress={onSend}
