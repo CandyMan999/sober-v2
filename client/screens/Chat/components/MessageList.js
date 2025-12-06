@@ -3,12 +3,15 @@ import {
   ActivityIndicator,
   FlatList,
   InteractionManager,
+  Image,
   RefreshControl,
   StyleSheet,
   Text,
   View,
 } from "react-native";
 
+import Avatar from "../../../components/Avatar";
+import TypingIndicator from "../../../components/TypingIndicator";
 import MessageBubble from "./MessageBubble";
 
 const MessageList = ({
@@ -18,23 +21,43 @@ const MessageList = ({
   onRefresh,
   lastMessageId,
   contentPaddingBottom = 0,
+  doneLoading,
 }) => {
   const listRef = useRef(null);
   const [distanceFromBottom, setDistanceFromBottom] = useState(0);
   const initialScrollDone = useRef(false);
   const lastMessageIdRef = useRef(undefined);
+  const typingKeysRef = useRef([]);
 
   const autoScrollThreshold = useMemo(() => 420, []);
   const shouldAutoScroll = distanceFromBottom <= autoScrollThreshold;
 
-  const renderItem = ({ item }) => (
-    <MessageBubble
-      message={item}
-      isMine={
-        String(item?.author?.id || item?.author?._id) === String(currentUserId)
-      }
-    />
-  );
+  const renderItem = ({ item }) => {
+    if (item?.__typingIndicator) {
+      return (
+        <View style={styles.typingRow}>
+          <Avatar uri={item.profilePicUrl} size={30} disableNavigation />
+          <TypingIndicator
+            username={item.username || "Someone"}
+            accentColor="#f59e0b"
+            bubbleColor="rgba(11,18,32,0.95)"
+            borderColor="rgba(148,163,184,0.35)"
+            dotColor="#f59e0b"
+          />
+        </View>
+      );
+    }
+
+    return (
+      <MessageBubble
+        message={item}
+        isMine={
+          String(item?.author?.id || item?.author?._id) ===
+          String(currentUserId)
+        }
+      />
+    );
+  };
 
   const scrollToBottom = (animated = true) => {
     requestAnimationFrame(() => {
@@ -43,9 +66,16 @@ const MessageList = ({
       });
     });
   };
+  useEffect(() => {
+    if (!!doneLoading) {
+      setTimeout(() => {
+        scrollToBottom(true);
+      }, 500);
+    }
+  });
 
   useEffect(() => {
-    if (!lastMessageId || !messages?.length) return;
+    if (!messages?.length) return;
 
     const isFirstMessage = !initialScrollDone.current;
     const isNewMessage =
@@ -58,8 +88,22 @@ const MessageList = ({
       scrollToBottom(true);
     }
 
-    lastMessageIdRef.current = lastMessageId;
+    lastMessageIdRef.current = lastMessageId || lastMessageIdRef.current;
   }, [lastMessageId, messages?.length, shouldAutoScroll]);
+
+  useEffect(() => {
+    const typingKeys = (messages || [])
+      .filter((item) => item?.__typingIndicator)
+      .map((item) => String(item?._id || item?.userId || item?.username));
+
+    const hasChanged = typingKeys.join("|") !== typingKeysRef.current.join("|");
+    typingKeysRef.current = typingKeys;
+
+    if (!hasChanged) return;
+    if (!shouldAutoScroll) return;
+
+    scrollToBottom(true);
+  }, [messages, shouldAutoScroll]);
 
   const handleScroll = (event) => {
     const {
@@ -81,56 +125,101 @@ const MessageList = ({
   };
 
   return (
-    <FlatList
-      ref={listRef}
-      data={messages}
-      keyExtractor={(item) => String(item?.id || item?._id)}
-      renderItem={renderItem}
-      contentContainerStyle={[
-        styles.listContent,
-        { paddingBottom: contentPaddingBottom, paddingTop: 0 },
-      ]}
-      keyboardShouldPersistTaps="handled"
-      showsVerticalScrollIndicator={false}
-      onContentSizeChange={handleContentSizeChange}
-      onScroll={handleScroll}
-      scrollEventThrottle={16}
-      refreshControl={
-        <RefreshControl
-          tintColor="#f59e0b"
-          colors={["#f59e0b"]}
-          refreshing={loading}
-          onRefresh={onRefresh}
-        />
-      }
-      ListEmptyComponent={
-        <View style={styles.emptyState}>
-          {loading ? (
-            <ActivityIndicator size="small" color="#f59e0b" />
-          ) : (
-            <Text style={styles.emptyText}>
-              Start the conversation and support others on their journey.
-            </Text>
-          )}
-        </View>
-      }
-    />
+    <View style={styles.container}>
+      <FlatList
+        ref={listRef}
+        data={messages}
+        keyExtractor={(item) =>
+          item?.__typingIndicator
+            ? String(item?._id || item?.userId || item?.username)
+            : String(item?.id || item?._id)
+        }
+        renderItem={renderItem}
+        contentContainerStyle={[
+          styles.listContent,
+          { paddingBottom: contentPaddingBottom, paddingTop: 0 },
+        ]}
+        keyboardShouldPersistTaps="handled"
+        showsVerticalScrollIndicator={false}
+        onContentSizeChange={handleContentSizeChange}
+        onScroll={handleScroll}
+        scrollEventThrottle={16}
+        refreshControl={
+          <RefreshControl
+            tintColor="#f59e0b"
+            colors={["#f59e0b"]}
+            refreshing={loading}
+            onRefresh={onRefresh}
+          />
+        }
+        ListEmptyComponent={
+          <View style={styles.emptyState}>
+            <Image
+              source={require("../../../assets/icon.png")}
+              style={styles.emptyLogo}
+              resizeMode="contain"
+            />
+
+            {loading ? (
+              <ActivityIndicator size="small" color="#f59e0b" />
+            ) : (
+              <View style={styles.emptyCopy}>
+                <Text style={styles.emptyHeadline}>Join the chat</Text>
+                <Text style={styles.emptyText}>
+                  Say hello or share an update. Messages from everyone in the
+                  room will show up here.
+                </Text>
+              </View>
+            )}
+          </View>
+        }
+      />
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#0b1220",
+  },
   listContent: {
     paddingTop: 0,
     paddingBottom: 0,
     gap: 6,
   },
-  emptyState: {
-    paddingTop: 40,
+  typingRow: {
+    flexDirection: "row",
     alignItems: "center",
+    gap: 8,
+    paddingLeft: 4,
+    paddingTop: 2,
+  },
+  emptyState: {
+    paddingTop: 48,
+    paddingBottom: 32,
+    alignItems: "center",
+    gap: 16,
+  },
+  emptyLogo: {
+    width: 124,
+    height: 124,
+    opacity: 0.32,
+  },
+  emptyCopy: {
+    paddingHorizontal: 24,
+    gap: 8,
+  },
+  emptyHeadline: {
+    color: "#f59e0b",
+    fontSize: 18,
+    fontWeight: "700",
+    textAlign: "center",
   },
   emptyText: {
-    color: "#94a3b8",
+    color: "#cbd5e1",
     textAlign: "center",
+    fontSize: 14,
   },
 });
 

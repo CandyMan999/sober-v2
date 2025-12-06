@@ -1,4 +1,11 @@
-import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { ActivityIndicator, StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { SubscriptionClient } from "subscriptions-transport-ws";
@@ -16,6 +23,10 @@ import {
   GET_ROOMS,
   ROOM_COMMENT_SUBSCRIPTION,
 } from "../../GraphQL/chatRooms";
+import {
+  DIRECT_TYPING_SUBSCRIPTION,
+  SET_DIRECT_TYPING,
+} from "../../GraphQL/directMessages";
 import { GRAPHQL_URI } from "../../config/endpoint";
 
 const sortByCreatedAt = (items = []) => {
@@ -26,8 +37,7 @@ const sortByCreatedAt = (items = []) => {
   });
 };
 
-const getMessageId = (message = {}) =>
-  String(message.id || message._id || "");
+const getMessageId = (message = {}) => String(message.id || message._id || "");
 
 const dedupeMessages = (items = []) => {
   const seen = new Set();
@@ -55,6 +65,7 @@ const ChatRoomScreen = ({ route }) => {
 
   const wsClientRef = useRef(null);
   const commentSubscriptionRef = useRef(null);
+  const scrollToBottomRef = useRef(null);
 
   const [room, setRoom] = useState(null);
   const [messages, setMessages] = useState([]);
@@ -62,6 +73,9 @@ const ChatRoomScreen = ({ route }) => {
   const [loadingRoom, setLoadingRoom] = useState(false);
   const [loadingMessages, setLoadingMessages] = useState(false);
   const [sending, setSending] = useState(false);
+  const [isTypingLocal, setIsTypingLocal] = useState(false);
+  const [typingUsers, setTypingUsers] = useState({});
+  const [doneLoading, setDoneLoading] = useState(false);
 
   const ensureRoom = useCallback(async () => {
     if (!currentUserId) return;
@@ -96,6 +110,7 @@ const ChatRoomScreen = ({ route }) => {
   const loadMessages = useCallback(async () => {
     if (!room?.id) return;
 
+    setDoneLoading(false);
     setLoadingMessages(true);
     try {
       const response = await client.request(GET_COMMENTS, { roomId: room.id });
@@ -106,6 +121,7 @@ const ChatRoomScreen = ({ route }) => {
       console.log("Failed to load comments", error);
     } finally {
       setLoadingMessages(false);
+      setDoneLoading(true);
     }
   }, [client, room?.id]);
 
@@ -119,6 +135,16 @@ const ChatRoomScreen = ({ route }) => {
   useEffect(() => {
     loadMessages();
   }, [loadMessages]);
+
+  useEffect(() => {
+    if (!doneLoading) return;
+
+    const timer = setTimeout(() => {
+      scrollToBottomRef.current?.(true);
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, [doneLoading]);
 
   useEffect(() => {
     if (!room?.id || !isFocused) return undefined;
@@ -136,6 +162,11 @@ const ChatRoomScreen = ({ route }) => {
 
     const commentObservable = wsClient.request({
       query: ROOM_COMMENT_SUBSCRIPTION,
+      variables: { roomId: room.id },
+    });
+
+    const typingObservable = wsClient.request({
+      query: DIRECT_TYPING_SUBSCRIPTION,
       variables: { roomId: room.id },
     });
 
@@ -164,15 +195,46 @@ const ChatRoomScreen = ({ route }) => {
       },
     });
 
+    const typingSubscription = typingObservable.subscribe({
+      next: ({ data }) => {
+        try {
+          const typing = data?.directTyping;
+          if (!typing) return;
+
+          if (String(typing.userId) === String(currentUserId)) return;
+
+          setTypingUsers((prev) => {
+            const next = { ...prev };
+            const key = String(typing.userId);
+
+            if (typing.isTyping) {
+              next[key] = typing;
+            } else {
+              delete next[key];
+            }
+
+            return next;
+          });
+        } catch (err) {
+          console.error("Room typing subscription handler failed:", err);
+        }
+      },
+      error: (err) => {
+        console.error("Room typing subscription error:", err);
+      },
+    });
+
     commentSubscriptionRef.current = subscription;
 
     return () => {
       subscription?.unsubscribe?.();
+      typingSubscription?.unsubscribe?.();
       commentSubscriptionRef.current = null;
       wsClient?.close?.();
       wsClientRef.current = null;
+      setTypingUsers({});
     };
-  }, [isFocused, room?.id, wsClientRef]);
+  }, [currentUserId, isFocused, room?.id, wsClientRef]);
 
   const handleSend = useCallback(async () => {
     if (!messageText?.trim() || !room?.id || !currentUserId) return;
@@ -199,6 +261,38 @@ const ChatRoomScreen = ({ route }) => {
     }
   }, [client, currentUserId, messageText, room?.id]);
 
+  useEffect(() => {
+    const next = messageText.trim().length > 0;
+    setIsTypingLocal(next);
+  }, [messageText]);
+
+  useEffect(() => {
+    if (!room?.id) return;
+
+    const send = async () => {
+      try {
+        await client.request(SET_DIRECT_TYPING, {
+          roomId: room.id,
+          isTyping: isTypingLocal,
+        });
+      } catch (err) {
+        console.error("Failed to publish typing state", err);
+      }
+    };
+
+    send();
+  }, [client, isTypingLocal, room?.id]);
+
+  useFocusEffect(
+    useCallback(() => {
+      return () => {
+        setMessageText("");
+        setIsTypingLocal(false);
+        setTypingUsers({});
+      };
+    }, [])
+  );
+
   const isLoading = useMemo(
     () => loadingRoom || (loadingMessages && !messages.length),
     [loadingRoom, loadingMessages, messages.length]
@@ -206,16 +300,28 @@ const ChatRoomScreen = ({ route }) => {
 
   const lastMessageId = useMemo(() => {
     const latest = messages?.[messages.length - 1];
-    return (
-      getMessageId(latest) || getMessageId(room?.lastMessage) || undefined
-    );
+    return getMessageId(latest) || getMessageId(room?.lastMessage) || undefined;
   }, [messages, room?.lastMessage]);
 
+  const typingIndicators = useMemo(
+    () => Object.values(typingUsers || {}).filter((typing) => typing?.isTyping),
+    [typingUsers]
+  );
+
+  const listData = useMemo(
+    () => [
+      ...messages,
+      ...typingIndicators.map((typing) => ({
+        ...typing,
+        __typingIndicator: true,
+        _id: `typing-${typing.userId || typing.username || Math.random()}`,
+      })),
+    ],
+    [messages, typingIndicators]
+  );
+
   return (
-    <SafeAreaView
-      style={styles.safeArea}
-      edges={["left", "right"]}
-    >
+    <SafeAreaView style={styles.safeArea} edges={["left", "right"]}>
       <View style={styles.container}>
         <View style={styles.messageArea}>
           {isLoading ? (
@@ -225,12 +331,13 @@ const ChatRoomScreen = ({ route }) => {
           ) : (
             <MessageList
               key={room?.id || roomName}
-              messages={messages}
+              messages={listData}
               currentUserId={currentUserId}
               loading={loadingMessages}
               onRefresh={loadMessages}
               lastMessageId={lastMessageId}
               contentPaddingBottom={0}
+              doneLoading={doneLoading}
             />
           )}
         </View>
@@ -262,7 +369,7 @@ const styles = StyleSheet.create({
   messageArea: {
     flex: 1,
     backgroundColor: "#0b1220",
-    paddingHorizontal: 16,
+    paddingHorizontal: 0,
     paddingTop: 0,
   },
   inputArea: {
