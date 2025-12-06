@@ -1,4 +1,11 @@
-import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { ActivityIndicator, StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { SubscriptionClient } from "subscriptions-transport-ws";
@@ -30,8 +37,7 @@ const sortByCreatedAt = (items = []) => {
   });
 };
 
-const getMessageId = (message = {}) =>
-  String(message.id || message._id || "");
+const getMessageId = (message = {}) => String(message.id || message._id || "");
 
 const dedupeMessages = (items = []) => {
   const seen = new Set();
@@ -294,9 +300,7 @@ const ChatRoomScreen = ({ route }) => {
 
   const lastMessageId = useMemo(() => {
     const latest = messages?.[messages.length - 1];
-    return (
-      getMessageId(latest) || getMessageId(room?.lastMessage) || undefined
-    );
+    return getMessageId(latest) || getMessageId(room?.lastMessage) || undefined;
   }, [messages, room?.lastMessage]);
 
   const typingIndicators = useMemo(
@@ -305,23 +309,19 @@ const ChatRoomScreen = ({ route }) => {
   );
 
   const listData = useMemo(
-    () =>
-      [
-        ...messages,
-        ...typingIndicators.map((typing) => ({
-          ...typing,
-          __typingIndicator: true,
-          _id: `typing-${typing.userId || typing.username || Math.random()}`,
-        })),
-      ],
+    () => [
+      ...messages,
+      ...typingIndicators.map((typing) => ({
+        ...typing,
+        __typingIndicator: true,
+        _id: `typing-${typing.userId || typing.username || Math.random()}`,
+      })),
+    ],
     [messages, typingIndicators]
   );
 
   return (
-    <SafeAreaView
-      style={styles.safeArea}
-      edges={["left", "right"]}
-    >
+    <SafeAreaView style={styles.safeArea} edges={["left", "right"]}>
       <View style={styles.container}>
         <View style={styles.messageArea}>
           {isLoading ? (
@@ -337,9 +337,7 @@ const ChatRoomScreen = ({ route }) => {
               onRefresh={loadMessages}
               lastMessageId={lastMessageId}
               contentPaddingBottom={0}
-              onRegisterScrollToBottom={(fn) => {
-                scrollToBottomRef.current = fn;
-              }}
+              doneLoading={doneLoading}
             />
           )}
         </View>

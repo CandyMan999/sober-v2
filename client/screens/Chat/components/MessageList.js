@@ -21,7 +21,7 @@ const MessageList = ({
   onRefresh,
   lastMessageId,
   contentPaddingBottom = 0,
-  onRegisterScrollToBottom,
+  doneLoading,
 }) => {
   const listRef = useRef(null);
   const [distanceFromBottom, setDistanceFromBottom] = useState(0);
@@ -52,7 +52,8 @@ const MessageList = ({
       <MessageBubble
         message={item}
         isMine={
-          String(item?.author?.id || item?.author?._id) === String(currentUserId)
+          String(item?.author?.id || item?.author?._id) ===
+          String(currentUserId)
         }
       />
     );
@@ -65,13 +66,13 @@ const MessageList = ({
       });
     });
   };
-
   useEffect(() => {
-    if (!onRegisterScrollToBottom) return undefined;
-
-    onRegisterScrollToBottom(scrollToBottom);
-    return () => onRegisterScrollToBottom(null);
-  }, [onRegisterScrollToBottom]);
+    if (!!doneLoading) {
+      setTimeout(() => {
+        scrollToBottom(true);
+      }, 500);
+    }
+  });
 
   useEffect(() => {
     if (!messages?.length) return;
