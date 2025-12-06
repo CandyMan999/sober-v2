@@ -239,8 +239,9 @@ const styles = StyleSheet.create({
     alignItems: "flex-end",
   },
   username: {
-    color: "#cbd5e1",
-    fontSize: 11,
+    color: "#f59e0b",
+    fontSize: 13,
+    fontWeight: "700",
     marginBottom: 4,
     paddingLeft: 4,
   },

@@ -406,6 +406,7 @@ const ChatRoomScreen = ({ route }) => {
             replyTarget={replyTarget}
             onCancelReply={handleCancelReply}
             ref={inputRef}
+            participants={room?.users || []}
           />
         </View>
       </View>

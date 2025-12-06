@@ -1,4 +1,11 @@
-import React, { forwardRef, useImperativeHandle, useRef } from "react";
+import React, {
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import {
   Keyboard,
   View,
@@ -21,17 +28,55 @@ const MessageInput = (
     bottomInset = 0,
     replyTarget,
     onCancelReply,
+    participants = [],
   },
   ref
 ) => {
   const canSend = value?.trim()?.length > 0 && !disabled;
   const replyUsername = replyTarget?.author?.username;
   const inputRef = useRef(null);
+  const [mentionQuery, setMentionQuery] = useState(null);
 
   useImperativeHandle(ref, () => ({
     focus: () => inputRef.current?.focus?.(),
     blur: () => inputRef.current?.blur?.(),
   }));
+
+  useEffect(() => {
+    const match = value?.match(/(^|\s)@([^@\s]*)$/);
+    if (match) {
+      setMentionQuery(match[2] || "");
+    } else {
+      setMentionQuery(null);
+    }
+  }, [value]);
+
+  const mentionSuggestions = useMemo(() => {
+    if (mentionQuery === null) return [];
+
+    const query = mentionQuery.toLowerCase();
+    const uniqueUsers = new Map();
+
+    participants.forEach((user) => {
+      if (!user?.username) return;
+      if (uniqueUsers.has(user.username.toLowerCase())) return;
+      uniqueUsers.set(user.username.toLowerCase(), user);
+    });
+
+    const filtered = Array.from(uniqueUsers.values()).filter((user) => {
+      if (!query) return true;
+      return user.username.toLowerCase().includes(query);
+    });
+
+    return filtered.slice(0, 8);
+  }, [mentionQuery, participants]);
+
+  const handleSelectMention = (username) => {
+    if (!username || !onChangeText) return;
+    const next = value?.replace(/@[^@\s]*$/, `@${username} `) || `@${username} `;
+    onChangeText(next);
+    requestAnimationFrame(() => inputRef.current?.focus?.());
+  };
 
   return (
     <View
@@ -65,6 +110,24 @@ const MessageInput = (
             >
               <Ionicons name="close" size={16} color="#e2e8f0" />
             </TouchableOpacity>
+          </View>
+        ) : null}
+        {mentionSuggestions.length ? (
+          <View style={styles.mentionBanner}>
+            <Text style={styles.mentionLabel}>Mention someone</Text>
+            <View style={styles.mentionList}>
+              {mentionSuggestions.map((user) => (
+                <TouchableOpacity
+                  key={`mention-${user.id || user.username}`}
+                  style={styles.mentionChip}
+                  onPress={() => handleSelectMention(user.username)}
+                  accessibilityRole="button"
+                  accessibilityLabel={`Mention ${user.username}`}
+                >
+                  <Text style={styles.mentionText}>@{user.username}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
           </View>
         ) : null}
         <View style={styles.inputWrapper}>
@@ -165,6 +228,38 @@ const styles = StyleSheet.create({
   closeReply: {
     padding: 6,
     borderRadius: 999,
+  },
+  mentionBanner: {
+    backgroundColor: "rgba(15,23,42,0.92)",
+    borderWidth: 1,
+    borderColor: "rgba(148,163,184,0.4)",
+    borderRadius: 12,
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+    gap: 8,
+  },
+  mentionLabel: {
+    color: "#cbd5e1",
+    fontSize: 11,
+    fontWeight: "600",
+  },
+  mentionList: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 8,
+  },
+  mentionChip: {
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    backgroundColor: "rgba(56,189,248,0.12)",
+    borderRadius: 999,
+    borderWidth: 1,
+    borderColor: "rgba(148,163,184,0.4)",
+  },
+  mentionText: {
+    color: "#bae6fd",
+    fontWeight: "700",
+    fontSize: 12,
   },
   input: {
     flex: 1,
