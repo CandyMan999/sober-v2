@@ -275,12 +275,12 @@ const MessageListScreen = ({ route, navigation }) => {
   }, [rooms, currentUserId, deriveLastMessageInfo]);
 
   const renderConversation = ({ item }) => {
+    const isCompanion =
+      String(item.user?.id) === String(SOBER_COMPANION_ID);
     const username =
       item.user?.username || (isCompanion ? "SoberOwl" : "Buddy");
     const lastMessage = item.lastMessage || "New chat";
     const unread = Boolean(item.unread);
-    const isCompanion =
-      String(item.user?.id) === String(SOBER_COMPANION_ID);
     const timestampLabel = timeAgo(item.lastActivity);
     const waitingForYou = isCompanion
       ? false
@@ -382,12 +382,6 @@ const MessageListScreen = ({ route, navigation }) => {
                   <Text style={[styles.username, unread && styles.usernameUnread]} numberOfLines={1}>
                     {username}
                   </Text>
-                  {isCompanion ? (
-                    <View style={styles.coachBadge}>
-                      <Ionicons name="shield-checkmark" size={14} color="#0f172a" />
-                      <Text style={styles.coachBadgeText}>Sobriety Coach</Text>
-                    </View>
-                  ) : null}
                 </View>
                 <View style={styles.messageLine}>
                   <Ionicons name="chatbubble-ellipses" size={14} color="#94a3b8" />
@@ -410,7 +404,7 @@ const MessageListScreen = ({ route, navigation }) => {
                 {isCompanion ? (
                   <View style={styles.metaBottom}>
                     <View style={styles.companionChip}>
-                      <Ionicons name="sparkles" size={12} color="#0f172a" />
+                      <Ionicons name="shield-checkmark" size={12} color="#0f172a" />
                       <Text style={styles.companionChipText}>Sobriety Coach</Text>
                     </View>
                   </View>
@@ -603,39 +597,21 @@ const styles = StyleSheet.create({
     color: "#fef3c7",
     fontWeight: "600",
   },
-  coachBadge: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 6,
-    backgroundColor: "#fbbf24",
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: 999,
-    borderWidth: 1,
-    borderColor: "#fef3c7",
-  },
-  coachBadgeText: {
-    color: "#0f172a",
-    fontWeight: "800",
-    fontSize: 12,
-    letterSpacing: 0.3,
-    textTransform: "uppercase",
-  },
   companionChip: {
     flexDirection: "row",
     alignItems: "center",
     alignSelf: "flex-end",
     gap: 4,
-    backgroundColor: "rgba(163,230,53,0.75)",
-    paddingHorizontal: 8,
-    paddingVertical: 4,
+    backgroundColor: "#fbbf24",
+    paddingHorizontal: 10,
+    paddingVertical: 6,
     borderRadius: 999,
     borderWidth: 1,
-    borderColor: "#bef264",
+    borderColor: "#fef3c7",
   },
   companionChipText: {
     color: "#0f172a",
-    fontSize: 11,
+    fontSize: 12,
     fontWeight: "800",
     letterSpacing: 0.2,
     textTransform: "uppercase",
