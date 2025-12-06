@@ -738,6 +738,7 @@ const styles = StyleSheet.create({
   timestamp: {
     color: "#9ca3af",
     fontSize: 11,
+    alignSelf: "flex-end",
   },
   emptyCard: {
     backgroundColor: "#0b1220",
