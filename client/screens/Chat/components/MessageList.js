@@ -15,7 +15,7 @@ const MessageList = ({
   currentUserId,
   loading,
   onRefresh,
-  contentPaddingBottom = 16,
+  contentPaddingBottom = 8,
 }) => {
   const renderItem = ({ item }) => (
     <MessageBubble
@@ -62,8 +62,9 @@ const MessageList = ({
 
 const styles = StyleSheet.create({
   listContent: {
-    paddingVertical: 12,
-    gap: 12,
+    paddingTop: 4,
+    paddingBottom: 4,
+    gap: 8,
   },
   emptyState: {
     paddingTop: 40,

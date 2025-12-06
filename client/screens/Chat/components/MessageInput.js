@@ -18,7 +18,10 @@ const MessageInput = ({
     <View
       style={[
         styles.container,
-        { paddingBottom: Math.max(12, bottomInset + 6) },
+        {
+          paddingTop: 10,
+          paddingBottom: Math.max(10, bottomInset),
+        },
       ]}
     >
       <Avatar
@@ -62,7 +65,7 @@ const styles = StyleSheet.create({
     alignItems: "flex-end",
     gap: 12,
     paddingHorizontal: 16,
-    paddingVertical: 12,
+    paddingVertical: 10,
     borderTopWidth: 1,
     borderTopColor: "#1f2937",
     backgroundColor: "#0b1220",
