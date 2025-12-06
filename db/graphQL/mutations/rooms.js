@@ -4,6 +4,7 @@ const {
 } = require("apollo-server-express");
 const { Room, Comment, User } = require("../../models");
 const { normalizeCommentForGraphQL } = require("../subscription/subscription");
+const { normalizeRoomForGraphQL } = require("../utils/normalize");
 
 const ALLOWED_ROOM_NAMES = ["General", "Early Days", "Relapse Support"];
 
@@ -19,11 +20,11 @@ const createRoomResolver = async (_, { name }, ctx) => {
   }
   const existing = await Room.findOne({ name: trimmed, isDirect: false });
   if (existing) {
-    return existing;
+    return normalizeRoomForGraphQL(existing);
   }
 
   const room = await Room.create({ name: trimmed, isDirect: false });
-  return room;
+  return normalizeRoomForGraphQL(room);
 };
 
 const changeRoomResolver = async (_, { roomId, userId }, ctx) => {
@@ -48,10 +49,10 @@ const changeRoomResolver = async (_, { roomId, userId }, ctx) => {
     { $addToSet: { users: me._id } },
     { new: true }
   )
-    .populate("users")
+    .populate({ path: "users", select: "username profilePic profilePicUrl" })
     .populate({ path: "lastMessage", populate: { path: "author", populate: "profilePic" } });
 
-  return updatedRoom;
+  return normalizeRoomForGraphQL(updatedRoom);
 };
 
 const createCommentResolver = async (

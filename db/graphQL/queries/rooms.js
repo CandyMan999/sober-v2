@@ -1,6 +1,7 @@
 const { AuthenticationError, UserInputError } = require("apollo-server-express");
 const { Room, Comment } = require("../../models");
 const { normalizeCommentForGraphQL } = require("../subscription/subscription");
+const { normalizeRoomForGraphQL } = require("../utils/normalize");
 
 const getRoomsResolver = async (_, __, ctx) => {
   const me = ctx.currentUser;
@@ -8,12 +9,10 @@ const getRoomsResolver = async (_, __, ctx) => {
 
   const rooms = await Room.find({ isDirect: false })
     .sort({ createdAt: 1 })
+    .populate({ path: "users", select: "username profilePic profilePicUrl" })
     .populate({ path: "lastMessage", populate: { path: "author", populate: "profilePic" } });
 
-  return rooms.map((room) => ({
-    ...room.toObject(),
-    id: room.id || room._id?.toString?.(),
-  }));
+  return rooms.map((room) => normalizeRoomForGraphQL(room));
 };
 
 const getCommentsResolver = async (_, { roomId }, ctx) => {
