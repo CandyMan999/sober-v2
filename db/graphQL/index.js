@@ -59,7 +59,10 @@ const {
 const { Like, Comment, Connection, City } = require("../models");
 const { findClosestCity } = require("../utils/location");
 
-const typeDefs = [rootDefs];
+// Using the single DocumentNode avoids nesting within another array, which can
+// prevent newly added types (like TherapyChatHistoryMessageInput) from being
+// picked up when constructing the executable schema.
+const typeDefs = rootDefs;
 
 // Reusable helper for likes
 const resolveLikes = (targetType) => async (parent) => {
