@@ -1,5 +1,12 @@
 import React from "react";
-import { Keyboard, View, TextInput, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  Keyboard,
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  TouchableOpacity,
+} from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
 import Avatar from "../../../components/Avatar";
@@ -11,11 +18,41 @@ const MessageInput = ({
   disabled,
   currentUser,
   bottomInset = 0,
+  replyTarget,
+  onCancelReply,
 }) => {
   const canSend = value?.trim()?.length > 0 && !disabled;
+  const replyUsername = replyTarget?.author?.username;
 
   return (
-    <View style={[styles.container, { paddingBottom: bottomInset }]}>
+    <View
+      style={[
+        styles.container,
+        replyTarget ? styles.containerReplying : null,
+        { paddingBottom: bottomInset },
+      ]}
+    >
+      {replyTarget ? (
+        <View style={styles.replyingTo}>
+          <View style={styles.replyingCopy}>
+            <Text style={styles.replyingLabel}>
+              Replying to <Text style={styles.replyingName}>@{replyUsername}</Text>
+            </Text>
+            <Text style={styles.replyingPreview} numberOfLines={2}>
+              {replyTarget?.text || "Message"}
+            </Text>
+          </View>
+          <TouchableOpacity
+            onPress={onCancelReply}
+            style={styles.closeReply}
+            accessibilityRole="button"
+            accessibilityLabel="Cancel reply"
+            hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+          >
+            <Ionicons name="close" size={16} color="#e2e8f0" />
+          </TouchableOpacity>
+        </View>
+      ) : null}
       <Avatar
         uri={currentUser?.profilePicUrl}
         haloColor="blue"
@@ -77,6 +114,44 @@ const styles = StyleSheet.create({
     borderColor: "rgba(148,163,184,0.4)",
     paddingHorizontal: 12,
     paddingVertical: 6,
+  },
+  containerReplying: {
+    paddingTop: 72,
+  },
+  replyingTo: {
+    position: "absolute",
+    top: -72,
+    left: 12,
+    right: 12,
+    flexDirection: "row",
+    alignItems: "flex-start",
+    padding: 10,
+    borderRadius: 14,
+    borderWidth: 1,
+    borderColor: "rgba(148,163,184,0.4)",
+    backgroundColor: "rgba(15,23,42,0.96)",
+    gap: 10,
+  },
+  replyingCopy: {
+    flex: 1,
+    gap: 4,
+  },
+  replyingLabel: {
+    color: "#e2e8f0",
+    fontWeight: "700",
+    fontSize: 13,
+  },
+  replyingName: {
+    color: "#f59e0b",
+  },
+  replyingPreview: {
+    color: "#cbd5e1",
+    fontSize: 12,
+  },
+  closeReply: {
+    backgroundColor: "rgba(248,250,252,0.12)",
+    padding: 6,
+    borderRadius: 999,
   },
   input: {
     flex: 1,

@@ -22,6 +22,8 @@ const MessageList = ({
   lastMessageId,
   contentPaddingBottom = 0,
   doneLoading,
+  onReply,
+  currentUsername,
 }) => {
   const listRef = useRef(null);
   const [distanceFromBottom, setDistanceFromBottom] = useState(0);
@@ -57,16 +59,18 @@ const MessageList = ({
       );
     }
 
-    return (
-      <MessageBubble
-        message={item}
-        isMine={
-          String(item?.author?.id || item?.author?._id) ===
-          String(currentUserId)
-        }
-      />
-    );
-  };
+      return (
+        <MessageBubble
+          message={item}
+          isMine={
+            String(item?.author?.id || item?.author?._id) ===
+            String(currentUserId)
+          }
+          onReply={onReply}
+          currentUsername={currentUsername}
+        />
+      );
+    };
 
   const scrollToBottom = (animated = true) => {
     requestAnimationFrame(() => {
