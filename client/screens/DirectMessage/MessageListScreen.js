@@ -518,7 +518,7 @@ const styles = StyleSheet.create({
   rowHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "flex-start",
+    alignItems: "stretch",
   },
   rowLeft: {
     flex: 1,
@@ -531,6 +531,8 @@ const styles = StyleSheet.create({
   },
   rowMeta: {
     marginLeft: 12,
+    alignSelf: "stretch",
+    justifyContent: "flex-end",
     alignItems: "flex-end",
     gap: 6,
   },
