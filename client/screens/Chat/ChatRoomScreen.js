@@ -15,6 +15,7 @@ import {
 } from "react-native";
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 import { SubscriptionClient } from "subscriptions-transport-ws";
+import { useFocusEffect, useIsFocused } from "@react-navigation/native";
 
 import MessageList from "./components/MessageList";
 import MessageInput from "./components/MessageInput";
@@ -64,6 +65,7 @@ const ChatRoomScreen = ({ route }) => {
   const currentUser = state?.user;
   const currentUserId = currentUser?.id;
   const insets = useSafeAreaInsets();
+  const isFocused = useIsFocused();
 
   const wsClientRef = useRef(null);
   const commentSubscriptionRef = useRef(null);
@@ -121,16 +123,19 @@ const ChatRoomScreen = ({ route }) => {
     }
   }, [client, room?.id]);
 
-  useEffect(() => {
-    ensureRoom();
-  }, [ensureRoom]);
+  useFocusEffect(
+    useCallback(() => {
+      ensureRoom();
+      return undefined;
+    }, [ensureRoom])
+  );
 
   useEffect(() => {
     loadMessages();
   }, [loadMessages]);
 
   useEffect(() => {
-    if (!room?.id) return undefined;
+    if (!room?.id || !isFocused) return undefined;
 
     const wsUrl = buildWsUrl();
     let wsClient;
@@ -181,7 +186,7 @@ const ChatRoomScreen = ({ route }) => {
       wsClient?.close?.();
       wsClientRef.current = null;
     };
-  }, [room?.id, wsClientRef]);
+  }, [isFocused, room?.id, wsClientRef]);
 
   const handleSend = useCallback(async () => {
     if (!messageText?.trim() || !room?.id || !currentUserId) return;
