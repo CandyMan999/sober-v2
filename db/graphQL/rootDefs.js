@@ -473,15 +473,15 @@ const typeDefs = gql`
     targetId: ID!
   }
 
+  input TherapyChatHistoryMessageInput {
+    role: String!
+    content: String!
+  }
+
   type Subscription {
     directMessageReceived(roomId: ID!): Comment!
     directRoomUpdated: Room!
     directTyping(roomId: ID!): TypingStatus!
-  }
-
-  input TherapyChatHistoryMessageInput {
-    role: String!
-    content: String!
   }
 `;
 
