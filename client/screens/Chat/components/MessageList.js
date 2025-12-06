@@ -16,14 +16,13 @@ const MessageList = ({
   currentUserId,
   loading,
   onRefresh,
+  lastMessageId,
   contentPaddingBottom = 0,
 }) => {
   const listRef = useRef(null);
   const [distanceFromBottom, setDistanceFromBottom] = useState(0);
-  const previousMessageCount = useRef(0);
-  const pendingInitialScroll = useRef(false);
-  const pendingAutoScroll = useRef(false);
-  const lastMessageIdRef = useRef(null);
+  const initialScrollDone = useRef(false);
+  const lastMessageIdRef = useRef(undefined);
 
   const autoScrollThreshold = useMemo(() => 420, []);
   const shouldAutoScroll = distanceFromBottom <= autoScrollThreshold;
@@ -46,25 +45,21 @@ const MessageList = ({
   };
 
   useEffect(() => {
-    const hasMessages = !!messages?.length;
-    const lastMessageId = hasMessages
-      ? String(messages[messages.length - 1]?.id || messages[messages.length - 1]?._id || "")
-      : null;
+    if (!lastMessageId || !messages?.length) return;
 
-    const isFirstLoad = hasMessages && previousMessageCount.current === 0;
+    const isFirstMessage = !initialScrollDone.current;
     const isNewMessage =
-      hasMessages && lastMessageId && lastMessageId !== lastMessageIdRef.current;
+      !!lastMessageIdRef.current && lastMessageIdRef.current !== lastMessageId;
 
-    if (isFirstLoad) {
-      pendingInitialScroll.current = true;
-      pendingAutoScroll.current = true;
+    if (isFirstMessage) {
+      scrollToBottom(false);
+      initialScrollDone.current = true;
     } else if (isNewMessage && shouldAutoScroll) {
-      pendingAutoScroll.current = true;
+      scrollToBottom(true);
     }
 
     lastMessageIdRef.current = lastMessageId;
-    previousMessageCount.current = messages?.length || 0;
-  }, [messages, shouldAutoScroll]);
+  }, [lastMessageId, messages?.length, shouldAutoScroll]);
 
   const handleScroll = (event) => {
     const {
@@ -78,20 +73,12 @@ const MessageList = ({
   };
 
   const handleContentSizeChange = () => {
-    if ((pendingAutoScroll.current || pendingInitialScroll.current) && messages?.length) {
-      pendingInitialScroll.current = false;
-      pendingAutoScroll.current = false;
-      scrollToBottom(true);
+    if (!initialScrollDone.current && lastMessageId && messages?.length) {
+      scrollToBottom(false);
+      initialScrollDone.current = true;
+      lastMessageIdRef.current = lastMessageId;
     }
   };
-
-  useEffect(() => {
-    if (pendingInitialScroll.current && messages?.length) {
-      pendingInitialScroll.current = false;
-      pendingAutoScroll.current = false;
-      scrollToBottom(false);
-    }
-  }, [messages]);
 
   return (
     <FlatList

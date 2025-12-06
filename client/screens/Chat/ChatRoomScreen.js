@@ -204,6 +204,13 @@ const ChatRoomScreen = ({ route }) => {
     [loadingRoom, loadingMessages, messages.length]
   );
 
+  const lastMessageId = useMemo(() => {
+    const latest = messages?.[messages.length - 1];
+    return (
+      getMessageId(latest) || getMessageId(room?.lastMessage) || undefined
+    );
+  }, [messages, room?.lastMessage]);
+
   return (
     <SafeAreaView
       style={styles.safeArea}
@@ -221,6 +228,7 @@ const ChatRoomScreen = ({ route }) => {
               currentUserId={currentUserId}
               loading={loadingMessages}
               onRefresh={loadMessages}
+              lastMessageId={lastMessageId}
               contentPaddingBottom={0}
             />
           )}
