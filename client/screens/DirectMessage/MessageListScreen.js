@@ -51,6 +51,8 @@ const timeAgo = (timestamp) => {
 const SOBER_COMPANION = {
   id: "693394413ea6a3e530516505",
   username: "SoberOwl",
+  profilePicUrl:
+    "https://images.unsplash.com/photo-1508182311256-e3f7d4c0c7c3?auto=format&fit=crop&w=240&q=80",
 };
 
 const MessageListScreen = ({ route, navigation }) => {
@@ -303,13 +305,33 @@ const MessageListScreen = ({ route, navigation }) => {
           activeOpacity={canOpen && !isDeleting ? 0.85 : 1}
           disabled={isDeleting}
         >
-          <Avatar uri={item.user?.profilePicUrl} size={48} disableNavigation />
+          <Avatar
+            uri={item.user?.profilePicUrl}
+            size={isCompanion ? 54 : 48}
+            disableNavigation
+            fallbackSource={
+              isCompanion ? require("../../assets/icon.png") : undefined
+            }
+            haloColors={
+              isCompanion
+                ? ["#bef264", "#34d399", "#22d3ee"]
+                : undefined
+            }
+          />
           <View style={styles.rowContent}>
             <View style={styles.rowHeader}>
               <View style={styles.rowLeft}>
-                <Text style={[styles.username, unread && styles.usernameUnread]} numberOfLines={1}>
-                  {username}
-                </Text>
+                <View style={styles.nameLine}>
+                  <Text style={[styles.username, unread && styles.usernameUnread]} numberOfLines={1}>
+                    {username}
+                  </Text>
+                  {isCompanion ? (
+                    <View style={styles.coachBadge}>
+                      <Ionicons name="shield-checkmark" size={14} color="#0f172a" />
+                      <Text style={styles.coachBadgeText}>Sobriety Coach</Text>
+                    </View>
+                  ) : null}
+                </View>
                 <View style={styles.messageLine}>
                   <Ionicons name="chatbubble-ellipses" size={14} color="#94a3b8" />
                   <Text
@@ -319,6 +341,14 @@ const MessageListScreen = ({ route, navigation }) => {
                     {lastMessage}
                   </Text>
                 </View>
+                {isCompanion ? (
+                  <View style={styles.companionNote}>
+                    <Ionicons name="moon" size={14} color="#fde68a" />
+                    <Text style={styles.companionNoteText} numberOfLines={1}>
+                      Virtual assistant ready with coping tips anytime.
+                    </Text>
+                  </View>
+                ) : null}
               </View>
               <View style={styles.rowMeta}>
                 <Text style={styles.timestamp}>{timestampLabel}</Text>
@@ -451,6 +481,11 @@ const styles = StyleSheet.create({
     flex: 1,
     gap: 6,
   },
+  nameLine: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+  },
   rowMeta: {
     marginLeft: 12,
     alignItems: "flex-end",
@@ -497,6 +532,41 @@ const styles = StyleSheet.create({
   lastMessageUnread: {
     color: "#fef3c7",
     fontWeight: "600",
+  },
+  coachBadge: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
+    backgroundColor: "#fbbf24",
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 999,
+    borderWidth: 1,
+    borderColor: "#fef3c7",
+  },
+  coachBadgeText: {
+    color: "#0f172a",
+    fontWeight: "800",
+    fontSize: 12,
+    letterSpacing: 0.3,
+    textTransform: "uppercase",
+  },
+  companionNote: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
+    backgroundColor: "rgba(251,191,36,0.08)",
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: "rgba(251,191,36,0.25)",
+  },
+  companionNoteText: {
+    color: "#fef9c3",
+    fontSize: 12,
+    fontWeight: "600",
+    flex: 1,
   },
   unreadDot: {
     width: 10,

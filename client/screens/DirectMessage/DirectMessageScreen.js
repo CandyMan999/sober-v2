@@ -68,6 +68,8 @@ const buildWsUrl = () => GRAPHQL_URI.replace(/^http/, "ws");
 const SOBER_COMPANION = {
   id: "693394413ea6a3e530516505",
   username: "SoberOwl",
+  profilePicUrl:
+    "https://images.unsplash.com/photo-1508182311256-e3f7d4c0c7c3?auto=format&fit=crop&w=240&q=80",
 };
 
 const DirectMessageScreen = ({ route, navigation }) => {
