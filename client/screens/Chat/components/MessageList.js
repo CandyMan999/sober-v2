@@ -78,12 +78,20 @@ const MessageList = ({
   };
 
   const handleContentSizeChange = () => {
-    if (pendingAutoScroll.current && messages?.length) {
+    if ((pendingAutoScroll.current || pendingInitialScroll.current) && messages?.length) {
       pendingInitialScroll.current = false;
       pendingAutoScroll.current = false;
       scrollToBottom(true);
     }
   };
+
+  useEffect(() => {
+    if (pendingInitialScroll.current && messages?.length) {
+      pendingInitialScroll.current = false;
+      pendingAutoScroll.current = false;
+      scrollToBottom(false);
+    }
+  }, [messages]);
 
   return (
     <FlatList
