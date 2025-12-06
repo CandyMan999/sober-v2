@@ -25,11 +25,15 @@ const MessageList = ({
 }) => {
   const listRef = useRef(null);
   const [distanceFromBottom, setDistanceFromBottom] = useState(0);
+  const [viewportHeight, setViewportHeight] = useState(0);
   const initialScrollDone = useRef(false);
   const lastMessageIdRef = useRef(undefined);
   const typingKeysRef = useRef([]);
 
-  const autoScrollThreshold = useMemo(() => 100, []);
+  const autoScrollThreshold = useMemo(
+    () => Math.max(viewportHeight * 0.2, 0),
+    [viewportHeight]
+  );
   const shouldAutoScroll = distanceFromBottom <= autoScrollThreshold;
 
   const renderItem = ({ item }) => {
@@ -114,8 +118,15 @@ const MessageList = ({
       layoutMeasurement: { height: layoutHeight },
     } = event.nativeEvent;
 
+    setViewportHeight(layoutHeight);
+
     const distance = Math.max(contentHeight - layoutHeight - offsetY, 0);
     setDistanceFromBottom(distance);
+  };
+
+  const handleLayout = (event) => {
+    const { height } = event.nativeEvent.layout || {};
+    if (height) setViewportHeight(height);
   };
 
   const handleContentSizeChange = () => {
@@ -127,7 +138,7 @@ const MessageList = ({
   };
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container} onLayout={handleLayout}>
       <FlatList
         ref={listRef}
         data={messages}
