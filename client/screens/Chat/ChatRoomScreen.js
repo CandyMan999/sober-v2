@@ -6,7 +6,7 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { ActivityIndicator, StyleSheet, View } from "react-native";
+import { ActivityIndicator, AppState, StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { SubscriptionClient } from "subscriptions-transport-ws";
 import { useFocusEffect, useIsFocused } from "@react-navigation/native";
@@ -66,6 +66,7 @@ const ChatRoomScreen = ({ route }) => {
   const wsClientRef = useRef(null);
   const commentSubscriptionRef = useRef(null);
   const scrollToBottomRef = useRef(null);
+  const appState = useRef(AppState.currentState);
 
   const [room, setRoom] = useState(null);
   const [messages, setMessages] = useState([]);
@@ -135,6 +136,24 @@ const ChatRoomScreen = ({ route }) => {
   useEffect(() => {
     loadMessages();
   }, [loadMessages]);
+
+  useEffect(() => {
+    const handleAppStateChange = (nextState) => {
+      if (nextState.match(/inactive|background/i)) {
+        appState.current = nextState;
+        setMessageText("");
+        setIsTypingLocal(false);
+      } else {
+        appState.current = nextState;
+      }
+    };
+
+    const subscription = AppState.addEventListener("change", handleAppStateChange);
+
+    return () => {
+      subscription.remove();
+    };
+  }, []);
 
   useEffect(() => {
     if (!doneLoading) return;
