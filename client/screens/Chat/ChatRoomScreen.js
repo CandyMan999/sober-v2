@@ -220,7 +220,7 @@ const ChatRoomScreen = ({ route }) => {
     [loadingRoom, loadingMessages, messages.length]
   );
 
-  const keyboardVerticalOffset = Platform.OS === "ios" ? 0 : 0;
+  const keyboardVerticalOffset = Platform.OS === "ios" ? tabBarHeight : 0;
 
   return (
     <KeyboardAvoidingView
@@ -244,7 +244,7 @@ const ChatRoomScreen = ({ route }) => {
                 currentUserId={currentUserId}
                 loading={loadingMessages}
                 onRefresh={loadMessages}
-                contentPaddingBottom={4}
+                contentPaddingBottom={insets.bottom}
               />
             )}
           </View>
@@ -256,7 +256,7 @@ const ChatRoomScreen = ({ route }) => {
               onSend={handleSend}
               disabled={sending || !room?.id}
               currentUser={currentUser}
-              bottomInset={insets.bottom}
+              bottomInset={Math.max(insets.bottom, 2)}
             />
           </View>
         </View>

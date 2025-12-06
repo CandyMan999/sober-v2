@@ -19,8 +19,8 @@ const MessageInput = ({
       style={[
         styles.container,
         {
-          paddingTop: 10,
-          paddingBottom: Math.max(10, bottomInset),
+          paddingTop: 6,
+          paddingBottom: Math.max(6, bottomInset),
         },
       ]}
     >
@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
     alignItems: "flex-end",
     gap: 12,
     paddingHorizontal: 16,
-    paddingVertical: 10,
+    paddingVertical: 6,
     borderTopWidth: 1,
     borderTopColor: "#1f2937",
     backgroundColor: "#0b1220",

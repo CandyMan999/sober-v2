@@ -15,7 +15,7 @@ const MessageList = ({
   currentUserId,
   loading,
   onRefresh,
-  contentPaddingBottom = 8,
+  contentPaddingBottom = 0,
 }) => {
   const renderItem = ({ item }) => (
     <MessageBubble
@@ -33,7 +33,7 @@ const MessageList = ({
       renderItem={renderItem}
       contentContainerStyle={[
         styles.listContent,
-        { paddingBottom: contentPaddingBottom },
+        { paddingBottom: contentPaddingBottom, paddingTop: 0 },
       ]}
       keyboardShouldPersistTaps="handled"
       showsVerticalScrollIndicator={false}
@@ -62,9 +62,9 @@ const MessageList = ({
 
 const styles = StyleSheet.create({
   listContent: {
-    paddingTop: 4,
-    paddingBottom: 4,
-    gap: 8,
+    paddingTop: 0,
+    paddingBottom: 0,
+    gap: 6,
   },
   emptyState: {
     paddingTop: 40,
