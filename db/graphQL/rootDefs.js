@@ -80,6 +80,11 @@ const typeDefs = gql`
     QUOTE
   }
 
+  input TherapyChatHistoryMessageInput {
+    role: String!
+    content: String!
+  }
+
   enum PictureSlot {
     PROFILE
     DRUNK
@@ -445,8 +450,18 @@ const typeDefs = gql`
     clearAllNotifications(token: String!, ids: [ID!]!): Boolean!
     deleteDirectRoom(roomId: ID!): Boolean!
     sendDirectMessage(recipientId: ID!, text: String!, replyTo: ID): Comment!
+    therapyChat(
+      message: String!
+      history: [TherapyChatHistoryMessageInput!]
+    ): TherapyChatPayload!
     followUser(token: String!, userId: ID!): Connection!
     unfollowUser(token: String!, userId: ID!): Boolean!
+  }
+
+  type TherapyChatPayload {
+    reply: String!
+    userMessage: Comment
+    assistantMessage: Comment
   }
 
   type LikePayload {

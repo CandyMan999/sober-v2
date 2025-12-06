@@ -90,6 +90,40 @@ export const SEND_DIRECT_MESSAGE = `
   }
 `;
 
+export const THERAPY_CHAT = `
+  mutation TherapyChat($message: String!, $history: [TherapyChatHistoryMessageInput!]) {
+    therapyChat(message: $message, history: $history) {
+      reply
+      userMessage {
+        id
+        text
+        createdAt
+        likesCount
+        targetId
+        targetType
+        author {
+          id
+          username
+          profilePicUrl
+        }
+      }
+      assistantMessage {
+        id
+        text
+        createdAt
+        likesCount
+        targetId
+        targetType
+        author {
+          id
+          username
+          profilePicUrl
+        }
+      }
+    }
+  }
+`;
+
 export const SET_DIRECT_TYPING = `
   mutation SetDirectTyping($roomId: ID!, $isTyping: Boolean!) {
     setDirectTyping(roomId: $roomId, isTyping: $isTyping) {

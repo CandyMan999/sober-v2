@@ -48,6 +48,11 @@ const timeAgo = (timestamp) => {
   return `${formatDistanceToNow(parsed)} ago`;
 };
 
+const SOBER_COMPANION = {
+  id: "693394413ea6a3e530516505",
+  username: "SoberOwl",
+};
+
 const MessageListScreen = ({ route, navigation }) => {
   const { state } = useContext(Context);
   const currentUserId = state?.user?.id;
@@ -191,6 +196,23 @@ const MessageListScreen = ({ route, navigation }) => {
         return (b.lastActivity || 0) - (a.lastActivity || 0);
       });
 
+    const hasCompanion = normalized.some(
+      (conversation) =>
+        String(conversation?.user?.id) === String(SOBER_COMPANION.id)
+    );
+
+    if (!hasCompanion) {
+      normalized.unshift({
+        id: `room-${SOBER_COMPANION.id}`,
+        user: SOBER_COMPANION,
+        lastMessage:
+          "Chat with your sober AI companion anytime you need encouragement.",
+        lastActivity: Date.now(),
+        lastMessageAuthorId: null,
+        unread: false,
+      });
+    }
+
     return normalized;
   }, [rooms, currentUserId, deriveLastMessageInfo]);
 
@@ -198,17 +220,31 @@ const MessageListScreen = ({ route, navigation }) => {
     const username = item.user?.username || "Buddy";
     const lastMessage = item.lastMessage || "New chat";
     const unread = Boolean(item.unread);
+    const isCompanion =
+      String(item.user?.id) === String(SOBER_COMPANION.id);
     const timestampLabel = timeAgo(item.lastActivity);
-    const waitingForYou =
-      !item.lastMessageAuthorId ||
-      String(item.lastMessageAuthorId) !== String(currentUserId);
-    const statusLabel = waitingForYou ? "Waiting for reply" : "Sent";
-    const statusIcon = waitingForYou ? "alert-circle" : "checkmark-done";
-    const statusColor = waitingForYou ? "#f59e0b" : "#38bdf8";
-    const statusBackground = waitingForYou
+    const waitingForYou = isCompanion
+      ? false
+      : !item.lastMessageAuthorId ||
+        String(item.lastMessageAuthorId) !== String(currentUserId);
+    const statusLabel = isCompanion
+      ? "Always here"
+      : waitingForYou
+      ? "Waiting for reply"
+      : "Sent";
+    const statusIcon = isCompanion
+      ? "sparkles"
+      : waitingForYou
+      ? "alert-circle"
+      : "checkmark-done";
+    const statusColor = isCompanion ? "#34d399" : waitingForYou ? "#f59e0b" : "#38bdf8";
+    const statusBackground = isCompanion
+      ? "rgba(52,211,153,0.12)"
+      : waitingForYou
       ? "rgba(245,158,11,0.12)"
       : "rgba(56,189,248,0.14)";
-    const canDelete = item.user?.id;
+    const canOpen = Boolean(item.user?.id);
+    const canDelete = canOpen && !isCompanion;
     const roomKey = item.id?.toString();
     const isDeleting = roomKey ? Boolean(deletingRoomIds[roomKey]) : false;
 
@@ -260,11 +296,11 @@ const MessageListScreen = ({ route, navigation }) => {
         <TouchableOpacity
           style={[styles.row, unread && styles.unreadRow]}
           onPress={() =>
-            canDelete && !isDeleting
+            canOpen && !isDeleting
               ? navigation.navigate("DirectMessage", { user: item.user })
               : null
           }
-          activeOpacity={canDelete && !isDeleting ? 0.85 : 1}
+          activeOpacity={canOpen && !isDeleting ? 0.85 : 1}
           disabled={isDeleting}
         >
           <Avatar uri={item.user?.profilePicUrl} size={48} disableNavigation />
@@ -339,7 +375,7 @@ const MessageListScreen = ({ route, navigation }) => {
               </View>
               <Text style={styles.emptyTitle}>No conversations yet</Text>
               <Text style={styles.emptySubtitle}>
-                Start a chat with your sober buddies to check in and stay accountable.
+                Start a chat with your sober buddies or message SoberOwl for a quick boost.
               </Text>
             </View>
           ) : null
