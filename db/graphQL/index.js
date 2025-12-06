@@ -58,6 +58,7 @@ const {
   directMessageReceivedSubscription,
   directRoomUpdatedSubscription,
   directTypingSubscription,
+  roomCommentCreatedSubscription,
 } = require("./subscription/subscription");
 
 // Import models
@@ -151,6 +152,7 @@ const resolvers = {
     directMessageReceived: directMessageReceivedSubscription,
     directRoomUpdated: directRoomUpdatedSubscription,
     directTyping: directTypingSubscription,
+    roomCommentCreated: roomCommentCreatedSubscription,
   },
 
   // ---- Type-level resolvers ----

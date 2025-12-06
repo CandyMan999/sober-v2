@@ -3,7 +3,10 @@ const {
   UserInputError,
 } = require("apollo-server-express");
 const { Room, Comment, User } = require("../../models");
-const { normalizeCommentForGraphQL } = require("../subscription/subscription");
+const {
+  normalizeCommentForGraphQL,
+  publishRoomComment,
+} = require("../subscription/subscription");
 const { normalizeRoomForGraphQL } = require("../utils/normalize");
 
 const ALLOWED_ROOM_NAMES = ["General", "Early Days", "Relapse Support"];
@@ -91,7 +94,12 @@ const createCommentResolver = async (
     .populate({ path: "author", populate: "profilePic" })
     .populate({ path: "replyTo", populate: { path: "author", populate: "profilePic" } });
 
-  return normalizeCommentForGraphQL(populatedComment);
+  const normalized = normalizeCommentForGraphQL(populatedComment);
+
+  // Broadcast the new comment to any subscribers watching this room
+  publishRoomComment(normalized);
+
+  return normalized;
 };
 
 module.exports = {

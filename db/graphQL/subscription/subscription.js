@@ -6,6 +6,7 @@ const pubsub = new PubSub();
 const DIRECT_MESSAGE_SENT = "DIRECT_MESSAGE_SENT";
 const DIRECT_ROOM_UPDATED = "DIRECT_ROOM_UPDATED";
 const DIRECT_TYPING = "DIRECT_TYPING";
+const ROOM_COMMENT_CREATED = "ROOM_COMMENT_CREATED";
 
 /**
  * Normalize a comment for GraphQL.
@@ -67,6 +68,20 @@ const publishDirectTyping = (typingPayload) => {
 };
 
 /**
+ * Trigger subscription event when a room comment is created.
+ */
+const publishRoomComment = (commentDoc) => {
+  if (!commentDoc) return;
+
+  const normalized = normalizeCommentForGraphQL(commentDoc);
+  if (!normalized) return;
+
+  pubsub.publish(ROOM_COMMENT_CREATED, {
+    roomCommentCreated: normalized,
+  });
+};
+
+/**
  * Broadcast messages to anyone subscribed to that roomId.
  */
 const directMessageReceivedSubscription = {
@@ -118,17 +133,37 @@ const directTypingSubscription = {
   ),
 };
 
+/**
+ * Broadcast room comments to anyone subscribed to that room.
+ */
+const roomCommentCreatedSubscription = {
+  subscribe: withFilter(
+    () => pubsub.asyncIterator(ROOM_COMMENT_CREATED),
+    (payload, variables) => {
+      const comment = payload?.roomCommentCreated;
+      const roomId = variables?.roomId;
+
+      if (!comment || !roomId) return false;
+
+      return String(comment.targetId) === String(roomId);
+    }
+  ),
+};
+
 module.exports = {
   pubsub,
   withFilter,
   DIRECT_MESSAGE_SENT,
   DIRECT_ROOM_UPDATED,
   DIRECT_TYPING,
+  ROOM_COMMENT_CREATED,
   publishDirectMessage,
   publishDirectRoomUpdate,
   publishDirectTyping,
+  publishRoomComment,
   directMessageReceivedSubscription,
   directRoomUpdatedSubscription,
   directTypingSubscription,
+  roomCommentCreatedSubscription,
   normalizeCommentForGraphQL,
 };

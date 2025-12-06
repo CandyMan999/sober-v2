@@ -1,3 +1,5 @@
+import { gql } from "@apollo/client";
+
 export const GET_ROOMS = `
   query GetRooms {
     getRooms {
@@ -82,6 +84,25 @@ export const CREATE_COMMENT = `
       id
       text
       createdAt
+      replyTo {
+        id
+      }
+      author {
+        id
+        username
+        profilePicUrl
+      }
+    }
+  }
+`;
+
+export const ROOM_COMMENT_SUBSCRIPTION = gql`
+  subscription RoomCommentCreated($roomId: ID!) {
+    roomCommentCreated(roomId: $roomId) {
+      id
+      text
+      createdAt
+      targetId
       replyTo {
         id
       }

@@ -483,6 +483,7 @@ const typeDefs = gql`
     directMessageReceived(roomId: ID!): Comment!
     directRoomUpdated: Room!
     directTyping(roomId: ID!): TypingStatus!
+    roomCommentCreated(roomId: ID!): Comment!
   }
 `;
 

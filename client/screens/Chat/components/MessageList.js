@@ -10,7 +10,13 @@ import {
 
 import MessageBubble from "./MessageBubble";
 
-const MessageList = ({ messages, currentUserId, loading, onRefresh }) => {
+const MessageList = ({
+  messages,
+  currentUserId,
+  loading,
+  onRefresh,
+  contentPaddingBottom = 120,
+}) => {
   const renderItem = ({ item }) => (
     <MessageBubble
       message={item}
@@ -23,7 +29,12 @@ const MessageList = ({ messages, currentUserId, loading, onRefresh }) => {
       data={messages}
       keyExtractor={(item) => item?.id || String(item?._id)}
       renderItem={renderItem}
-      contentContainerStyle={styles.listContent}
+      contentContainerStyle={[
+        styles.listContent,
+        { paddingBottom: contentPaddingBottom },
+      ]}
+      keyboardShouldPersistTaps="handled"
+      showsVerticalScrollIndicator={false}
       refreshControl={
         <RefreshControl
           tintColor="#f59e0b"

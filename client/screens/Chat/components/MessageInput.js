@@ -16,7 +16,7 @@ const MessageInput = ({
   return (
     <View style={styles.container}>
       <Avatar
-        url={currentUser?.profilePicUrl}
+        uri={currentUser?.profilePicUrl}
         size={34}
         style={styles.avatar}
         fallbackText={currentUser?.username}

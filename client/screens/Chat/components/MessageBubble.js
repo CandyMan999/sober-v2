@@ -33,7 +33,7 @@ const MessageBubble = ({ message, isMine }) => {
     >
       {!isMine ? (
         <Avatar
-          url={author.profilePicUrl}
+          uri={author.profilePicUrl}
           size={36}
           style={styles.avatar}
           fallbackText={author.username}

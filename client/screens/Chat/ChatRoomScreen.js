@@ -1,14 +1,22 @@
-import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import {
   ActivityIndicator,
   KeyboardAvoidingView,
   Platform,
   StyleSheet,
+  Text,
   View,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
+import { SubscriptionClient } from "subscriptions-transport-ws";
 
-import RoomHeader from "./components/RoomHeader";
 import MessageList from "./components/MessageList";
 import MessageInput from "./components/MessageInput";
 import Context from "../../context";
@@ -19,7 +27,9 @@ import {
   CREATE_ROOM,
   GET_COMMENTS,
   GET_ROOMS,
+  ROOM_COMMENT_SUBSCRIPTION,
 } from "../../GraphQL/chatRooms";
+import { GRAPHQL_URI } from "../../config/endpoint";
 
 const sortByCreatedAt = (items = []) => {
   return [...items].sort((a, b) => {
@@ -29,12 +39,18 @@ const sortByCreatedAt = (items = []) => {
   });
 };
 
+const buildWsUrl = () => GRAPHQL_URI.replace(/^http/, "ws");
+
 const ChatRoomScreen = ({ route }) => {
   const { state } = useContext(Context);
   const client = useClient();
   const roomName = route?.params?.roomName || "General";
   const currentUser = state?.user;
   const currentUserId = currentUser?.id;
+  const insets = useSafeAreaInsets();
+
+  const wsClientRef = useRef(null);
+  const commentSubscriptionRef = useRef(null);
 
   const [room, setRoom] = useState(null);
   const [messages, setMessages] = useState([]);
@@ -96,6 +112,59 @@ const ChatRoomScreen = ({ route }) => {
     loadMessages();
   }, [loadMessages]);
 
+  useEffect(() => {
+    if (!room?.id) return undefined;
+
+    const wsUrl = buildWsUrl();
+    let wsClient;
+
+    try {
+      wsClient = new SubscriptionClient(wsUrl, { reconnect: true });
+      wsClientRef.current = wsClient;
+    } catch (error) {
+      console.log("Room subscription init failed", error);
+      return undefined;
+    }
+
+    const commentObservable = wsClient.request({
+      query: ROOM_COMMENT_SUBSCRIPTION,
+      variables: { roomId: room.id },
+    });
+
+    const subscription = commentObservable.subscribe({
+      next: ({ data }) => {
+        const incoming = data?.roomCommentCreated;
+        if (!incoming) return;
+
+        setMessages((prev) => {
+          const existingIndex = prev.findIndex(
+            (msg) => String(msg.id) === String(incoming.id)
+          );
+
+          if (existingIndex !== -1) {
+            const updated = [...prev];
+            updated[existingIndex] = { ...updated[existingIndex], ...incoming };
+            return sortByCreatedAt(updated);
+          }
+
+          return sortByCreatedAt([...prev, incoming]);
+        });
+      },
+      error: (error) => {
+        console.log("Room comment subscription error", error);
+      },
+    });
+
+    commentSubscriptionRef.current = subscription;
+
+    return () => {
+      subscription?.unsubscribe?.();
+      commentSubscriptionRef.current = null;
+      wsClient?.close?.();
+      wsClientRef.current = null;
+    };
+  }, [room?.id, wsClientRef]);
+
   const handleSend = useCallback(async () => {
     if (!messageText?.trim() || !room?.id || !currentUserId) return;
 
@@ -124,37 +193,56 @@ const ChatRoomScreen = ({ route }) => {
     [loadingRoom, loadingMessages, messages.length]
   );
 
+  const bottomInset = Math.max(insets.bottom, 12);
+  const listPaddingBottom = bottomInset + 96;
+  const keyboardVerticalOffset = Platform.OS === "ios" ? insets.top + 28 : 0;
+
   return (
     <SafeAreaView
       style={styles.safeArea}
-      edges={["top", "left", "right", "bottom"]}
+      edges={["top", "left", "right"]}
     >
       <KeyboardAvoidingView
         style={styles.flex}
         behavior={Platform.OS === "ios" ? "padding" : "height"}
-        keyboardVerticalOffset={Platform.OS === "ios" ? 12 : 80}
+        keyboardVerticalOffset={keyboardVerticalOffset}
       >
         <View style={styles.container}>
-          <RoomHeader name={roomName} />
-          {isLoading ? (
-            <View style={styles.loaderContainer}>
-              <ActivityIndicator size="large" color="#f59e0b" />
+          <View style={styles.topMeta}>
+            <View style={styles.livePill}>
+              <View style={styles.statusDot} />
+              <Text style={styles.liveText}>Community support is live</Text>
             </View>
-          ) : (
-            <MessageList
-              messages={messages}
-              currentUserId={currentUserId}
-              loading={loadingMessages}
-              onRefresh={loadMessages}
+            <Text style={styles.helperText} numberOfLines={2}>
+              Support others, ask questions, and celebrate the wins together.
+            </Text>
+          </View>
+
+          <View style={styles.messageArea}>
+            {isLoading ? (
+              <View style={styles.loaderContainer}>
+                <ActivityIndicator size="large" color="#f59e0b" />
+              </View>
+            ) : (
+              <MessageList
+                messages={messages}
+                currentUserId={currentUserId}
+                loading={loadingMessages}
+                onRefresh={loadMessages}
+                contentPaddingBottom={listPaddingBottom}
+              />
+            )}
+          </View>
+
+          <View style={[styles.inputArea, { paddingBottom: bottomInset }]}>
+            <MessageInput
+              value={messageText}
+              onChangeText={setMessageText}
+              onSend={handleSend}
+              disabled={sending || !room?.id}
+              currentUser={currentUser}
             />
-          )}
-          <MessageInput
-            value={messageText}
-            onChangeText={setMessageText}
-            onSend={handleSend}
-            disabled={sending || !room?.id}
-            currentUser={currentUser}
-          />
+          </View>
         </View>
       </KeyboardAvoidingView>
     </SafeAreaView>
@@ -171,6 +259,52 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
+    backgroundColor: "#0b1220",
+    paddingTop: 6,
+  },
+  topMeta: {
+    paddingHorizontal: 16,
+    paddingTop: 6,
+    paddingBottom: 12,
+    gap: 8,
+  },
+  livePill: {
+    flexDirection: "row",
+    alignItems: "center",
+    alignSelf: "flex-start",
+    backgroundColor: "rgba(56,189,248,0.12)",
+    borderRadius: 999,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderWidth: 1,
+    borderColor: "rgba(56,189,248,0.35)",
+  },
+  statusDot: {
+    width: 8,
+    height: 8,
+    borderRadius: 999,
+    marginRight: 8,
+    backgroundColor: "#34d399",
+    shadowColor: "#34d399",
+    shadowOpacity: 0.6,
+    shadowOffset: { width: 0, height: 0 },
+    shadowRadius: 6,
+  },
+  liveText: {
+    color: "#e0f2fe",
+    fontWeight: "700",
+    fontSize: 12,
+    letterSpacing: 0.2,
+  },
+  helperText: {
+    color: "#94a3b8",
+    fontSize: 13,
+    lineHeight: 18,
+  },
+  messageArea: {
+    flex: 1,
+  },
+  inputArea: {
     backgroundColor: "#0b1220",
   },
   loaderContainer: {
