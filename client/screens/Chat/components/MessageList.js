@@ -29,7 +29,7 @@ const MessageList = ({
   const lastMessageIdRef = useRef(undefined);
   const typingKeysRef = useRef([]);
 
-  const autoScrollThreshold = useMemo(() => 420, []);
+  const autoScrollThreshold = useMemo(() => 100, []);
   const shouldAutoScroll = distanceFromBottom <= autoScrollThreshold;
 
   const renderItem = ({ item }) => {
@@ -67,12 +67,14 @@ const MessageList = ({
     });
   };
   useEffect(() => {
-    if (!!doneLoading) {
-      setTimeout(() => {
-        scrollToBottom(true);
-      }, 500);
-    }
-  });
+    if (!doneLoading) return undefined;
+
+    const timeout = setTimeout(() => {
+      scrollToBottom(true);
+    }, 500);
+
+    return () => clearTimeout(timeout);
+  }, [doneLoading]);
 
   useEffect(() => {
     if (!messages?.length) return;
