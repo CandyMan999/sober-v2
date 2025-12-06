@@ -20,6 +20,7 @@ const MessageList = ({
   const listRef = useRef(null);
   const [distanceFromBottom, setDistanceFromBottom] = useState(0);
   const previousMessageCount = useRef(0);
+  const pendingInitialScroll = useRef(false);
 
   const autoScrollThreshold = useMemo(() => 420, []);
   const shouldAutoScroll = distanceFromBottom <= autoScrollThreshold;
@@ -35,19 +36,20 @@ const MessageList = ({
 
   useEffect(() => {
     const hasMessages = !!messages?.length;
-    const isFirstLoad = hasMessages && previousMessageCount.current === 0;
     const hasNewMessage =
       hasMessages && messages.length > previousMessageCount.current;
 
-    previousMessageCount.current = messages?.length || 0;
+    const isFirstLoad = hasMessages && previousMessageCount.current === 0;
 
-    if (!hasMessages) return;
-
-    if (isFirstLoad || (hasNewMessage && shouldAutoScroll)) {
+    if (isFirstLoad) {
+      pendingInitialScroll.current = true;
+    } else if (hasNewMessage && shouldAutoScroll) {
       requestAnimationFrame(() => {
         listRef.current?.scrollToEnd({ animated: true });
       });
     }
+
+    previousMessageCount.current = messages?.length || 0;
   }, [messages, shouldAutoScroll]);
 
   const handleScroll = (event) => {
@@ -59,6 +61,15 @@ const MessageList = ({
 
     const distance = Math.max(contentHeight - layoutHeight - offsetY, 0);
     setDistanceFromBottom(distance);
+  };
+
+  const handleContentSizeChange = () => {
+    if (pendingInitialScroll.current && messages?.length) {
+      pendingInitialScroll.current = false;
+      requestAnimationFrame(() => {
+        listRef.current?.scrollToEnd({ animated: true });
+      });
+    }
   };
 
   return (
@@ -73,6 +84,7 @@ const MessageList = ({
       ]}
       keyboardShouldPersistTaps="handled"
       showsVerticalScrollIndicator={false}
+      onContentSizeChange={handleContentSizeChange}
       onScroll={handleScroll}
       scrollEventThrottle={16}
       refreshControl={
