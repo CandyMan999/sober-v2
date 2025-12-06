@@ -47,9 +47,10 @@ const MessageInput = (
       <View style={styles.composerColumn}>
         {replyTarget ? (
           <View style={styles.replyingTo}>
+            <View style={styles.replyingIndicator} />
             <View style={styles.replyingCopy}>
               <Text style={styles.replyingLabel} numberOfLines={1}>
-                Replying to <Text style={styles.replyingName}>@{replyUsername}</Text>
+                Reply to <Text style={styles.replyingName}>{replyUsername}</Text>
               </Text>
               <Text style={styles.replyingPreview} numberOfLines={1}>
                 {replyTarget?.text || "Message"}
@@ -132,32 +133,36 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    paddingHorizontal: 10,
-    paddingVertical: 4,
+    paddingHorizontal: 8,
+    paddingVertical: 6,
     borderRadius: 10,
-    borderWidth: 1,
-    borderColor: "rgba(59,130,246,0.24)",
-    backgroundColor: "rgba(59,130,246,0.07)",
-    gap: 8,
+    backgroundColor: "rgba(10,16,26,0.92)",
+    gap: 10,
+  },
+  replyingIndicator: {
+    width: 3,
+    height: "100%",
+    alignSelf: "stretch",
+    backgroundColor: "#fff",
+    borderRadius: 2,
   },
   replyingCopy: {
     flex: 1,
     gap: 2,
   },
   replyingLabel: {
-    color: "#bfdbfe",
-    fontWeight: "700",
+    color: "#e5e7eb",
+    fontWeight: "600",
     fontSize: 11,
   },
   replyingName: {
-    color: "#f59e0b",
+    color: "#fef3c7",
   },
   replyingPreview: {
     color: "#cbd5e1",
-    fontSize: 11,
+    fontSize: 10,
   },
   closeReply: {
-    backgroundColor: "rgba(248,250,252,0.1)",
     padding: 6,
     borderRadius: 999,
   },
