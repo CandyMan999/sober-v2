@@ -3,6 +3,7 @@ import {
   ActivityIndicator,
   FlatList,
   InteractionManager,
+  Image,
   RefreshControl,
   StyleSheet,
   Text,
@@ -115,48 +116,68 @@ const MessageList = ({
   };
 
   return (
-    <FlatList
-      ref={listRef}
-      data={messages}
-      keyExtractor={(item) =>
-        item?.__typingIndicator
-          ? String(item?._id || item?.userId || item?.username)
-          : String(item?.id || item?._id)
-      }
-      renderItem={renderItem}
-      contentContainerStyle={[
-        styles.listContent,
-        { paddingBottom: contentPaddingBottom, paddingTop: 0 },
-      ]}
-      keyboardShouldPersistTaps="handled"
-      showsVerticalScrollIndicator={false}
-      onContentSizeChange={handleContentSizeChange}
-      onScroll={handleScroll}
-      scrollEventThrottle={16}
-      refreshControl={
-        <RefreshControl
-          tintColor="#f59e0b"
-          colors={["#f59e0b"]}
-          refreshing={loading}
-          onRefresh={onRefresh}
-        />
-      }
-      ListEmptyComponent={
-        <View style={styles.emptyState}>
-          {loading ? (
-            <ActivityIndicator size="small" color="#f59e0b" />
-          ) : (
-            <Text style={styles.emptyText}>
-              Start the conversation and support others on their journey.
-            </Text>
-          )}
-        </View>
-      }
-    />
+    <View style={styles.container}>
+      <FlatList
+        ref={listRef}
+        data={messages}
+        keyExtractor={(item) =>
+          item?.__typingIndicator
+            ? String(item?._id || item?.userId || item?.username)
+            : String(item?.id || item?._id)
+        }
+        renderItem={renderItem}
+        contentContainerStyle={[
+          styles.listContent,
+          { paddingBottom: contentPaddingBottom, paddingTop: 0 },
+        ]}
+        keyboardShouldPersistTaps="handled"
+        showsVerticalScrollIndicator={false}
+        onContentSizeChange={handleContentSizeChange}
+        onScroll={handleScroll}
+        scrollEventThrottle={16}
+        refreshControl={
+          <RefreshControl
+            tintColor="#f59e0b"
+            colors={["#f59e0b"]}
+            refreshing={loading}
+            onRefresh={onRefresh}
+          />
+        }
+        ListEmptyComponent={
+          <View style={styles.emptyState}>
+            <Image
+              source={require("../../../assets/icon.png")}
+              style={styles.emptyLogo}
+              resizeMode="contain"
+            />
+
+            {loading ? (
+              <ActivityIndicator size="small" color="#f59e0b" />
+            ) : (
+              <View style={styles.emptyCopy}>
+                <Text style={styles.emptyHeadline}>Join the chat</Text>
+                <Text style={styles.emptyText}>
+                  Say hello or share an update. Messages from everyone in the
+                  room will show up here.
+                </Text>
+              </View>
+            )}
+          </View>
+        }
+      />
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#0b1220",
+    borderRadius: 18,
+    overflow: "hidden",
+    borderWidth: 1,
+    borderColor: "rgba(255,255,255,0.05)",
+  },
   listContent: {
     paddingTop: 0,
     paddingBottom: 0,
@@ -170,12 +191,30 @@ const styles = StyleSheet.create({
     paddingTop: 2,
   },
   emptyState: {
-    paddingTop: 40,
+    paddingTop: 48,
+    paddingBottom: 32,
     alignItems: "center",
+    gap: 16,
+  },
+  emptyLogo: {
+    width: 124,
+    height: 124,
+    opacity: 0.32,
+  },
+  emptyCopy: {
+    paddingHorizontal: 24,
+    gap: 8,
+  },
+  emptyHeadline: {
+    color: "#f59e0b",
+    fontSize: 18,
+    fontWeight: "700",
+    textAlign: "center",
   },
   emptyText: {
-    color: "#94a3b8",
+    color: "#cbd5e1",
     textAlign: "center",
+    fontSize: 14,
   },
 });
 
