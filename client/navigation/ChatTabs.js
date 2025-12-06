@@ -177,8 +177,8 @@ const styles = StyleSheet.create({
   },
   tabBadge: {
     position: "absolute",
-    top: -2,
-    right: 6,
+    top: -8,
+    right: -10,
     backgroundColor: "#f59e0b",
     borderRadius: 999,
     minWidth: 18,
