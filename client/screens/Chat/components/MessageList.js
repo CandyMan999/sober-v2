@@ -65,7 +65,7 @@ const MessageList = ({
   };
 
   useEffect(() => {
-    if (!lastMessageId || !messages?.length) return;
+    if (!messages?.length) return;
 
     const isFirstMessage = !initialScrollDone.current;
     const isNewMessage =
@@ -78,7 +78,7 @@ const MessageList = ({
       scrollToBottom(true);
     }
 
-    lastMessageIdRef.current = lastMessageId;
+    lastMessageIdRef.current = lastMessageId || lastMessageIdRef.current;
   }, [lastMessageId, messages?.length, shouldAutoScroll]);
 
   useEffect(() => {
