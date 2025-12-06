@@ -16,6 +16,7 @@ import {
 } from "react-native";
 import { Feather, Ionicons } from "@expo/vector-icons";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
+import { formatDistanceToNow } from "date-fns";
 import { Swipeable } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -73,6 +74,25 @@ const ICONS = {
   },
 };
 
+const parseDateValue = (value) => {
+  if (!value) return null;
+
+  const numeric = Number(value);
+  if (!Number.isNaN(numeric)) {
+    const fromNumeric = new Date(numeric);
+    if (!Number.isNaN(fromNumeric.getTime())) return fromNumeric;
+  }
+
+  const fromString = new Date(value);
+  return Number.isNaN(fromString.getTime()) ? null : fromString;
+};
+
+const formatTimeAgo = (timestamp) => {
+  const parsed = parseDateValue(timestamp);
+  if (!parsed) return "Just now";
+  return `${formatDistanceToNow(parsed)} ago`;
+};
+
 const formatSubtitle = (notification) => {
   if (notification.type === NotificationTypes.FLAGGED_POST) {
     return (
@@ -88,21 +108,27 @@ const formatSubtitle = (notification) => {
         ? "Liquor store"
         : "Bar";
     return (
-      <Text style={styles.placeholderText}>
-        {`${notification.fromUsername || "A buddy"} was spotted at ${
-          notification.venueName || "a venue"
-        } (${venueLabel}). Tap to check in.`}
-      </Text>
+      <View style={styles.subtitleStack}>
+        <Text style={styles.placeholderText}>
+          {`${notification.fromUsername || "A buddy"} was spotted at ${
+            notification.venueName || "a venue"
+          } (${venueLabel}). Tap to check in.`}
+        </Text>
+        <Text style={styles.timestamp}>{formatTimeAgo(notification.createdAt)}</Text>
+      </View>
     );
   }
 
   if (notification.type === NotificationTypes.BUDDY_NEAR_LIQUOR) {
     return (
-      <Text style={styles.placeholderText}>
-        {`${notification.fromUsername || "A buddy"} was spotted at ${
-          notification.venueName || "a venue"
-        } (Liquor store). Tap to check in.`}
-      </Text>
+      <View style={styles.subtitleStack}>
+        <Text style={styles.placeholderText}>
+          {`${notification.fromUsername || "A buddy"} was spotted at ${
+            notification.venueName || "a venue"
+          } (Liquor store). Tap to check in.`}
+        </Text>
+        <Text style={styles.timestamp}>{formatTimeAgo(notification.createdAt)}</Text>
+      </View>
     );
   }
 
@@ -702,9 +728,17 @@ const styles = StyleSheet.create({
     fontWeight: "800",
     fontSize: 13,
   },
+  subtitleStack: {
+    gap: 4,
+  },
   placeholderText: {
     color: "#c084fc",
     fontSize: 12,
+  },
+  timestamp: {
+    color: "#9ca3af",
+    fontSize: 11,
+    alignSelf: "flex-end",
   },
   emptyCard: {
     backgroundColor: "#0b1220",
