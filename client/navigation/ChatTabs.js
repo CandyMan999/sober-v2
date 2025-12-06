@@ -101,10 +101,15 @@ const ChatTabs = () => {
   const tabLabel = useCallback(
     ({ route, color }) => {
       const count = roomCounts[route.name] ?? 0;
+      const showBadge = count >= 0;
       return (
         <View style={styles.tabLabelContainer}>
-          <Text style={[styles.tabCount, { color }]}>{count}</Text>
           <Text style={[styles.tabLabel, { color }]}>{route.name}</Text>
+          {showBadge ? (
+            <View style={styles.tabBadge}>
+              <Text style={styles.tabBadgeText}>{count}</Text>
+            </View>
+          ) : null}
         </View>
       );
     },
@@ -161,15 +166,32 @@ const styles = StyleSheet.create({
   tabLabelContainer: {
     alignItems: "center",
     justifyContent: "center",
-  },
-  tabCount: {
-    fontSize: 12,
-    fontWeight: "700",
-    opacity: 0.8,
+    paddingHorizontal: 16,
+    paddingVertical: 6,
+    position: "relative",
   },
   tabLabel: {
     fontSize: 14,
     fontWeight: "800",
     marginTop: 2,
+  },
+  tabBadge: {
+    position: "absolute",
+    top: -2,
+    right: 6,
+    backgroundColor: "#f59e0b",
+    borderRadius: 999,
+    minWidth: 18,
+    height: 18,
+    paddingHorizontal: 5,
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 1,
+    borderColor: "#050816",
+  },
+  tabBadgeText: {
+    color: "#0b1220",
+    fontSize: 10,
+    fontWeight: "800",
   },
 });
