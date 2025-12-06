@@ -48,12 +48,7 @@ const timeAgo = (timestamp) => {
   return `${formatDistanceToNow(parsed)} ago`;
 };
 
-const SOBER_COMPANION = {
-  id: "693394413ea6a3e530516505",
-  username: "SoberOwl",
-  profilePicUrl:
-    "https://images.unsplash.com/photo-1508182311256-e3f7d4c0c7c3?auto=format&fit=crop&w=240&q=80",
-};
+const SOBER_COMPANION_ID = "693394413ea6a3e530516505";
 
 const MessageListScreen = ({ route, navigation }) => {
   const { state } = useContext(Context);
@@ -62,6 +57,7 @@ const MessageListScreen = ({ route, navigation }) => {
   const client = useClient();
 
   const [rooms, setRooms] = useState(conversations || []);
+  const [companionUser, setCompanionUser] = useState(null);
   const [loading, setLoading] = useState(false);
   const [deletingRoomIds, setDeletingRoomIds] = useState({});
 
@@ -123,6 +119,51 @@ const MessageListScreen = ({ route, navigation }) => {
     // Intentionally empty dependency array to avoid duplicate room loads
     // when navigation props or the client reference changes.
   }, []);
+
+  useEffect(() => {
+    if (!currentUserId) return;
+
+    let isMounted = true;
+
+    client
+      .request(DIRECT_ROOM_WITH_USER, { userId: SOBER_COMPANION_ID })
+      .then((result) => {
+        if (!isMounted) return;
+
+        const room = result?.directRoomWithUser;
+        if (!room) return;
+
+        const participants = room.users || [];
+        const companion = participants.find(
+          (participant) =>
+            String(participant?.id || participant?._id) ===
+            String(SOBER_COMPANION_ID)
+        );
+
+        if (companion?.id || companion?._id) {
+          setCompanionUser({
+            ...companion,
+            id: companion.id || companion._id,
+          });
+        }
+
+        setRooms((prev) => {
+          const roomId = room.id || room._id;
+          const normalizedRoom = roomId ? { ...room, id: roomId } : room;
+          const filtered = prev.filter(
+            (existing) => String(existing.id || existing._id) !== String(roomId)
+          );
+          return [normalizedRoom, ...filtered];
+        });
+      })
+      .catch((error) => {
+        console.log("Failed to ensure companion room", error);
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, [client, currentUserId]);
 
   useSubscription(DIRECT_ROOM_UPDATED, {
     skip: !currentUserId,
@@ -198,15 +239,18 @@ const MessageListScreen = ({ route, navigation }) => {
         return (b.lastActivity || 0) - (a.lastActivity || 0);
       });
 
+    const companionProfile =
+      companionUser || { id: SOBER_COMPANION_ID, username: "SoberOwl" };
+
     const hasCompanion = normalized.some(
       (conversation) =>
-        String(conversation?.user?.id) === String(SOBER_COMPANION.id)
+        String(conversation?.user?.id) === String(SOBER_COMPANION_ID)
     );
 
     if (!hasCompanion) {
       normalized.unshift({
-        id: `room-${SOBER_COMPANION.id}`,
-        user: SOBER_COMPANION,
+        id: `room-${SOBER_COMPANION_ID}`,
+        user: companionProfile,
         lastMessage:
           "Chat with your sober AI companion anytime you need encouragement.",
         lastActivity: Date.now(),
@@ -223,7 +267,7 @@ const MessageListScreen = ({ route, navigation }) => {
     const lastMessage = item.lastMessage || "New chat";
     const unread = Boolean(item.unread);
     const isCompanion =
-      String(item.user?.id) === String(SOBER_COMPANION.id);
+      String(item.user?.id) === String(SOBER_COMPANION_ID);
     const timestampLabel = timeAgo(item.lastActivity);
     const waitingForYou = isCompanion
       ? false

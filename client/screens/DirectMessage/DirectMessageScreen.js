@@ -65,22 +65,22 @@ const formatTime = (timestamp) => {
 
 const buildWsUrl = () => GRAPHQL_URI.replace(/^http/, "ws");
 
-const SOBER_COMPANION = {
-  id: "693394413ea6a3e530516505",
-  username: "SoberOwl",
-  profilePicUrl:
-    "https://images.unsplash.com/photo-1508182311256-e3f7d4c0c7c3?auto=format&fit=crop&w=240&q=80",
-};
+const SOBER_COMPANION_ID = "693394413ea6a3e530516505";
 
 const DirectMessageScreen = ({ route, navigation }) => {
   const { state } = useContext(Context);
   const client = useClient();
   const currentUserId = state?.user?.id;
   const userFromRoute = route?.params?.user;
-  const user = userFromRoute?.id ? userFromRoute : SOBER_COMPANION;
-  const targetUserId = user?.id;
-  const username = user.username || "Buddy";
-  const isCompanionChat = String(targetUserId) === String(SOBER_COMPANION.id);
+  const [resolvedUser, setResolvedUser] = useState(
+    userFromRoute?.id
+      ? userFromRoute
+      : { id: SOBER_COMPANION_ID, username: "SoberOwl" }
+  );
+  const targetUserId = resolvedUser?.id;
+  const username = resolvedUser?.username || "Buddy";
+  const isCompanionChat = String(targetUserId) === String(SOBER_COMPANION_ID);
+  const user = resolvedUser;
 
   const [messageText, setMessageText] = useState("");
   const [messages, setMessages] = useState([]);
@@ -151,6 +151,21 @@ const DirectMessageScreen = ({ route, navigation }) => {
         const room = result?.directRoomWithUser;
 
         if (!isMounted || !room) return;
+
+        const participants = room.users || [];
+        const otherUser =
+          participants.find(
+            (participant) =>
+              participant &&
+              String(participant.id || participant._id) !== String(currentUserId)
+          ) || participants.find(Boolean);
+
+        if (otherUser?.id || otherUser?._id) {
+          setResolvedUser({
+            ...otherUser,
+            id: otherUser.id || otherUser._id,
+          });
+        }
 
         if (room?.id || room?._id) {
           const id = room.id || room._id;
