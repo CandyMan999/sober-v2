@@ -8,6 +8,7 @@ import React, {
 } from "react";
 import {
   Keyboard,
+  ScrollView,
   View,
   Text,
   TextInput,
@@ -59,17 +60,17 @@ const MessageInput = (
 
     participants.forEach((user) => {
       if (!user?.username) return;
-      if (uniqueUsers.has(user.username.toLowerCase())) return;
-      uniqueUsers.set(user.username.toLowerCase(), user);
+      if (user.id && currentUser?.id && user.id === currentUser.id) return;
+      const key = user.username.toLowerCase();
+      if (uniqueUsers.has(key)) return;
+      uniqueUsers.set(key, user);
     });
 
-    const filtered = Array.from(uniqueUsers.values()).filter((user) => {
+    return Array.from(uniqueUsers.values()).filter((user) => {
       if (!query) return true;
       return user.username.toLowerCase().includes(query);
     });
-
-    return filtered.slice(0, 8);
-  }, [mentionQuery, participants]);
+  }, [mentionQuery, participants, currentUser?.id]);
 
   const handleSelectMention = (username) => {
     if (!username || !onChangeText) return;
@@ -115,7 +116,11 @@ const MessageInput = (
         {mentionSuggestions.length ? (
           <View style={styles.mentionBanner}>
             <Text style={styles.mentionLabel}>Mention someone</Text>
-            <View style={styles.mentionList}>
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={styles.mentionList}
+            >
               {mentionSuggestions.map((user) => (
                 <TouchableOpacity
                   key={`mention-${user.id || user.username}`}
@@ -127,7 +132,7 @@ const MessageInput = (
                   <Text style={styles.mentionText}>@{user.username}</Text>
                 </TouchableOpacity>
               ))}
-            </View>
+            </ScrollView>
           </View>
         ) : null}
         <View style={styles.inputWrapper}>
