@@ -651,6 +651,12 @@ const DirectMessageScreen = ({ route, navigation }) => {
 
   const renderMessage = ({ item }) => {
     const isMine = String(item.author?.id) === String(currentUserId);
+    const isCompanionAuthor =
+      String(item.author?.id || item.author?._id) === String(SOBER_COMPANION_ID);
+    const companionHalo =
+      isCompanionAuthor && !isMine
+        ? ["#bef264", "#34d399", "#22d3ee"]
+        : undefined;
     const likeScale = getLikeScale(item.id);
     const likeOpacity = getLikeOpacity(item.id);
 
@@ -659,6 +665,7 @@ const DirectMessageScreen = ({ route, navigation }) => {
         {!isMine && (
           <Avatar
             uri={item.author?.profilePicUrl}
+            haloColors={companionHalo}
             size={34}
             disableNavigation
             style={styles.messageAvatar}
@@ -720,7 +727,14 @@ const DirectMessageScreen = ({ route, navigation }) => {
 
     return (
       <View style={styles.typingRow}>
-        <Avatar uri={user.profilePicUrl} size={30} disableNavigation />
+        <Avatar
+          uri={user.profilePicUrl}
+          size={30}
+          disableNavigation
+          haloColors={
+            isCompanionChat ? ["#bef264", "#34d399", "#22d3ee"] : undefined
+          }
+        />
         <TypingIndicator
           username={user.username}
           accentColor="#f59e0b"
@@ -749,7 +763,14 @@ const DirectMessageScreen = ({ route, navigation }) => {
             <Ionicons name="chevron-back" size={22} color="#f59e0b" />
           </TouchableOpacity>
           <View style={styles.headerUser}>
-            <Avatar uri={user.profilePicUrl} size={40} disableNavigation />
+            <Avatar
+              uri={user.profilePicUrl}
+              size={40}
+              disableNavigation
+              haloColors={
+                isCompanionChat ? ["#bef264", "#34d399", "#22d3ee"] : undefined
+              }
+            />
             <View>
               <Text style={styles.headerTitle}>Direct Message</Text>
               <Text style={styles.headerSubtitle}>{username}</Text>

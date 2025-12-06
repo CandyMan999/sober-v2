@@ -25,6 +25,7 @@ import Context from "../../context";
 import {
   DELETE_DIRECT_ROOM,
   DIRECT_ROOM_UPDATED,
+  DIRECT_ROOM_WITH_USER,
   MY_DIRECT_ROOMS,
 } from "../../GraphQL/directMessages";
 import { useClient } from "../../client";
@@ -386,11 +387,9 @@ const MessageListScreen = ({ route, navigation }) => {
                   </Text>
                 </View>
                 {isCompanion ? (
-                  <View style={styles.companionNote}>
-                    <Ionicons name="moon" size={14} color="#fde68a" />
-                    <Text style={styles.companionNoteText} numberOfLines={1}>
-                      Virtual assistant ready with coping tips anytime.
-                    </Text>
+                  <View style={styles.companionChip}>
+                    <Ionicons name="sparkles" size={14} color="#0f172a" />
+                    <Text style={styles.companionChipText}>Virtual Assistant</Text>
                   </View>
                 ) : null}
               </View>
@@ -595,22 +594,24 @@ const styles = StyleSheet.create({
     letterSpacing: 0.3,
     textTransform: "uppercase",
   },
-  companionNote: {
+  companionChip: {
     flexDirection: "row",
     alignItems: "center",
+    alignSelf: "flex-end",
     gap: 6,
-    backgroundColor: "rgba(251,191,36,0.08)",
+    backgroundColor: "#a3e635",
     paddingHorizontal: 10,
     paddingVertical: 6,
-    borderRadius: 12,
+    borderRadius: 999,
     borderWidth: 1,
-    borderColor: "rgba(251,191,36,0.25)",
+    borderColor: "#bef264",
   },
-  companionNoteText: {
-    color: "#fef9c3",
+  companionChipText: {
+    color: "#0f172a",
     fontSize: 12,
-    fontWeight: "600",
-    flex: 1,
+    fontWeight: "800",
+    letterSpacing: 0.3,
+    textTransform: "uppercase",
   },
   unreadDot: {
     width: 10,
