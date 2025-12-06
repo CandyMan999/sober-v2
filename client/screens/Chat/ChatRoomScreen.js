@@ -6,8 +6,6 @@ import { useFocusEffect, useIsFocused } from "@react-navigation/native";
 
 import MessageList from "./components/MessageList";
 import MessageInput from "./components/MessageInput";
-import Avatar from "../../components/Avatar";
-import TypingIndicator from "../../components/TypingIndicator";
 import Context from "../../context";
 import { useClient } from "../../client";
 import {
@@ -69,7 +67,7 @@ const ChatRoomScreen = ({ route }) => {
   const [loadingMessages, setLoadingMessages] = useState(false);
   const [sending, setSending] = useState(false);
   const [isTypingLocal, setIsTypingLocal] = useState(false);
-  const [typingUser, setTypingUser] = useState(null);
+  const [typingUsers, setTypingUsers] = useState({});
 
   const ensureRoom = useCallback(async () => {
     if (!currentUserId) return;
@@ -185,11 +183,18 @@ const ChatRoomScreen = ({ route }) => {
 
           if (String(typing.userId) === String(currentUserId)) return;
 
-          if (typing.isTyping) {
-            setTypingUser(typing);
-          } else {
-            setTypingUser(null);
-          }
+          setTypingUsers((prev) => {
+            const next = { ...prev };
+            const key = String(typing.userId);
+
+            if (typing.isTyping) {
+              next[key] = typing;
+            } else {
+              delete next[key];
+            }
+
+            return next;
+          });
         } catch (err) {
           console.error("Room typing subscription handler failed:", err);
         }
@@ -207,7 +212,7 @@ const ChatRoomScreen = ({ route }) => {
       commentSubscriptionRef.current = null;
       wsClient?.close?.();
       wsClientRef.current = null;
-      setTypingUser(null);
+      setTypingUsers({});
     };
   }, [currentUserId, isFocused, room?.id, wsClientRef]);
 
@@ -263,7 +268,7 @@ const ChatRoomScreen = ({ route }) => {
       return () => {
         setMessageText("");
         setIsTypingLocal(false);
-        setTypingUser(null);
+        setTypingUsers({});
       };
     }, [])
   );
@@ -280,26 +285,23 @@ const ChatRoomScreen = ({ route }) => {
     );
   }, [messages, room?.lastMessage]);
 
-  const renderTypingIndicator = () => {
-    if (!typingUser?.isTyping) return null;
+  const typingIndicators = useMemo(
+    () => Object.values(typingUsers || {}).filter((typing) => typing?.isTyping),
+    [typingUsers]
+  );
 
-    return (
-      <View style={styles.typingRow}>
-        <Avatar
-          uri={typingUser.profilePicUrl}
-          size={32}
-          disableNavigation
-        />
-        <TypingIndicator
-          username={typingUser.username || "Someone"}
-          accentColor="#38bdf8"
-          bubbleColor="rgba(11,18,32,0.95)"
-          borderColor="rgba(148,163,184,0.35)"
-          dotColor="#38bdf8"
-        />
-      </View>
-    );
-  };
+  const listData = useMemo(
+    () =>
+      [
+        ...messages,
+        ...typingIndicators.map((typing) => ({
+          ...typing,
+          __typingIndicator: true,
+          _id: `typing-${typing.userId || typing.username || Math.random()}`,
+        })),
+      ],
+    [messages, typingIndicators]
+  );
 
   return (
     <SafeAreaView
@@ -315,7 +317,7 @@ const ChatRoomScreen = ({ route }) => {
           ) : (
             <MessageList
               key={room?.id || roomName}
-              messages={messages}
+              messages={listData}
               currentUserId={currentUserId}
               loading={loadingMessages}
               onRefresh={loadMessages}
@@ -323,7 +325,6 @@ const ChatRoomScreen = ({ route }) => {
               contentPaddingBottom={0}
             />
           )}
-          {renderTypingIndicator()}
         </View>
 
         <View style={styles.inputArea}>
@@ -363,12 +364,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-  },
-  typingRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    paddingVertical: 8,
-    gap: 12,
   },
 });
 

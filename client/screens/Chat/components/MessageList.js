@@ -9,6 +9,8 @@ import {
   View,
 } from "react-native";
 
+import Avatar from "../../../components/Avatar";
+import TypingIndicator from "../../../components/TypingIndicator";
 import MessageBubble from "./MessageBubble";
 
 const MessageList = ({
@@ -27,14 +29,31 @@ const MessageList = ({
   const autoScrollThreshold = useMemo(() => 420, []);
   const shouldAutoScroll = distanceFromBottom <= autoScrollThreshold;
 
-  const renderItem = ({ item }) => (
-    <MessageBubble
-      message={item}
-      isMine={
-        String(item?.author?.id || item?.author?._id) === String(currentUserId)
-      }
-    />
-  );
+  const renderItem = ({ item }) => {
+    if (item?.__typingIndicator) {
+      return (
+        <View style={styles.typingRow}>
+          <Avatar uri={item.profilePicUrl} size={30} disableNavigation />
+          <TypingIndicator
+            username={item.username || "Someone"}
+            accentColor="#f59e0b"
+            bubbleColor="rgba(11,18,32,0.95)"
+            borderColor="rgba(148,163,184,0.35)"
+            dotColor="#f59e0b"
+          />
+        </View>
+      );
+    }
+
+    return (
+      <MessageBubble
+        message={item}
+        isMine={
+          String(item?.author?.id || item?.author?._id) === String(currentUserId)
+        }
+      />
+    );
+  };
 
   const scrollToBottom = (animated = true) => {
     requestAnimationFrame(() => {
@@ -84,7 +103,11 @@ const MessageList = ({
     <FlatList
       ref={listRef}
       data={messages}
-      keyExtractor={(item) => String(item?.id || item?._id)}
+      keyExtractor={(item) =>
+        item?.__typingIndicator
+          ? String(item?._id || item?.userId || item?.username)
+          : String(item?.id || item?._id)
+      }
       renderItem={renderItem}
       contentContainerStyle={[
         styles.listContent,
@@ -123,6 +146,13 @@ const styles = StyleSheet.create({
     paddingTop: 0,
     paddingBottom: 0,
     gap: 6,
+  },
+  typingRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+    paddingLeft: 4,
+    paddingTop: 2,
   },
   emptyState: {
     paddingTop: 40,
