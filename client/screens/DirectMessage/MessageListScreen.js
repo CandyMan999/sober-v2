@@ -386,14 +386,14 @@ const MessageListScreen = ({ route, navigation }) => {
                     {lastMessage}
                   </Text>
                 </View>
+              </View>
+              <View style={styles.rowMeta}>
                 {isCompanion ? (
                   <View style={styles.companionChip}>
-                    <Ionicons name="sparkles" size={14} color="#0f172a" />
+                    <Ionicons name="sparkles" size={12} color="#0f172a" />
                     <Text style={styles.companionChipText}>Virtual Assistant</Text>
                   </View>
                 ) : null}
-              </View>
-              <View style={styles.rowMeta}>
                 <Text style={styles.timestamp}>{timestampLabel}</Text>
                 <View style={[styles.statusPill, { backgroundColor: statusBackground }]}>
                   <Ionicons name={statusIcon} size={14} color={statusColor} />
@@ -598,19 +598,19 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     alignSelf: "flex-end",
-    gap: 6,
-    backgroundColor: "#a3e635",
-    paddingHorizontal: 10,
-    paddingVertical: 6,
+    gap: 4,
+    backgroundColor: "rgba(163,230,53,0.75)",
+    paddingHorizontal: 8,
+    paddingVertical: 4,
     borderRadius: 999,
     borderWidth: 1,
     borderColor: "#bef264",
   },
   companionChipText: {
     color: "#0f172a",
-    fontSize: 12,
+    fontSize: 11,
     fontWeight: "800",
-    letterSpacing: 0.3,
+    letterSpacing: 0.2,
     textTransform: "uppercase",
   },
   unreadDot: {
