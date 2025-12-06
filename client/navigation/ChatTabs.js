@@ -1,5 +1,12 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { KeyboardAvoidingView, Platform, StyleSheet, Text, View } from "react-native";
+import {
+  Animated,
+  KeyboardAvoidingView,
+  Platform,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useFocusEffect } from "@react-navigation/native";
@@ -16,6 +23,72 @@ import {
 import { GRAPHQL_URI } from "../config/endpoint";
 
 const TopTab = createMaterialTopTabNavigator();
+
+// Simple metadata for subtitles
+const ROOM_META = {
+  General: {
+    description: "Main chat",
+  },
+  "Early Days": {
+    description: "Day 1–30",
+  },
+  "Relapse Support": {
+    description: "Support & resets",
+  },
+};
+
+const PulsingDot = () => {
+  const scale = React.useRef(new Animated.Value(1)).current;
+  const opacity = React.useRef(new Animated.Value(1)).current;
+
+  useEffect(() => {
+    const animation = Animated.loop(
+      Animated.parallel([
+        Animated.sequence([
+          Animated.timing(scale, {
+            toValue: 1.4,
+            duration: 800,
+            useNativeDriver: true,
+          }),
+          Animated.timing(scale, {
+            toValue: 1,
+            duration: 800,
+            useNativeDriver: true,
+          }),
+        ]),
+        Animated.sequence([
+          Animated.timing(opacity, {
+            toValue: 0.4,
+            duration: 800,
+            useNativeDriver: true,
+          }),
+          Animated.timing(opacity, {
+            toValue: 1,
+            duration: 800,
+            useNativeDriver: true,
+          }),
+        ]),
+      ])
+    );
+
+    animation.start();
+    return () => {
+      animation.stop();
+    };
+  }, [scale, opacity]);
+
+  return (
+    <Animated.View
+      style={[
+        styles.onlineDot,
+        {
+          transform: [{ scale }],
+          opacity,
+        },
+      ]}
+    />
+  );
+};
 
 const ChatTabs = () => {
   const { state } = React.useContext(Context);
@@ -99,17 +172,36 @@ const ChatTabs = () => {
   );
 
   const tabLabel = useCallback(
-    ({ route, color }) => {
+    ({ route, color, focused }) => {
       const count = roomCounts[route.name] ?? 0;
-      const showBadge = count >= 0;
+      const hasPeople = count > 0;
+      const meta = ROOM_META[route.name] || {};
+      const baseDescription = meta.description || "Chat room";
+      const statusText = hasPeople ? `${count} online` : "Quiet right now";
+
       return (
         <View style={styles.tabLabelContainer}>
-          <Text style={[styles.tabLabel, { color }]}>{route.name}</Text>
-          {showBadge ? (
-            <View style={styles.tabBadge}>
-              <Text style={styles.tabBadgeText}>{count}</Text>
-            </View>
-          ) : null}
+          <View style={styles.tabTitleRow}>
+            <Text
+              style={[
+                styles.tabLabel,
+                focused ? styles.tabLabelActive : styles.tabLabelInactive,
+              ]}
+              numberOfLines={1}
+            >
+              {route.name}
+            </Text>
+            {hasPeople && <PulsingDot />}
+          </View>
+          <Text
+            style={[
+              styles.tabSubtitle,
+              focused ? styles.tabSubtitleActive : styles.tabSubtitleInactive,
+            ]}
+            numberOfLines={1}
+          >
+            {statusText} • {baseDescription}
+          </Text>
         </View>
       );
     },
@@ -129,14 +221,21 @@ const ChatTabs = () => {
         <TopTab.Navigator
           sceneContainerStyle={{ backgroundColor: "#0b1220" }}
           screenOptions={({ route }) => ({
+            // Original style: underline only under active tab
             tabBarIndicatorStyle: { backgroundColor: "#f59e0b", height: 3 },
-            tabBarStyle: { backgroundColor: "#050816" },
+            tabBarStyle: {
+              backgroundColor: "#050816",
+              elevation: 0,
+              shadowOpacity: 0,
+              borderBottomWidth: 0,
+            },
             tabBarActiveTintColor: "#fff",
             tabBarInactiveTintColor: "#9ca3af",
-            tabBarLabelStyle: { fontWeight: "700" },
             tabBarScrollEnabled: true,
-            tabBarItemStyle: { width: 140 },
-            tabBarLabel: ({ color }) => tabLabel({ route, color }),
+            tabBarItemStyle: { width: 180 },
+            tabBarLabelStyle: { fontWeight: "700" },
+            tabBarLabel: ({ color, focused }) =>
+              tabLabel({ route, color, focused }),
           })}
         >
           <TopTab.Screen
@@ -166,32 +265,44 @@ const styles = StyleSheet.create({
   tabLabelContainer: {
     alignItems: "center",
     justifyContent: "center",
-    paddingHorizontal: 16,
-    paddingVertical: 6,
-    position: "relative",
+    paddingHorizontal: 12,
+    paddingVertical: 0,
+    paddingTop: 0,
+    paddingBottom: 0,
+  },
+  tabTitleRow: {
+    flexDirection: "row",
+    alignItems: "center",
   },
   tabLabel: {
     fontSize: 14,
     fontWeight: "800",
+  },
+  tabLabelActive: {
+    color: "#f9fafb",
+  },
+  tabLabelInactive: {
+    color: "#9ca3af",
+  },
+  tabSubtitle: {
+    fontSize: 11,
     marginTop: 2,
   },
-  tabBadge: {
-    position: "absolute",
-    top: -8,
-    right: -10,
-    backgroundColor: "#f59e0b",
-    borderRadius: 999,
-    minWidth: 18,
-    height: 18,
-    paddingHorizontal: 5,
-    alignItems: "center",
-    justifyContent: "center",
-    borderWidth: 1,
-    borderColor: "#050816",
+  tabSubtitleActive: {
+    color: "#e5e7eb",
   },
-  tabBadgeText: {
-    color: "#0b1220",
-    fontSize: 10,
-    fontWeight: "800",
+  tabSubtitleInactive: {
+    color: "#6b7280",
+  },
+  onlineDot: {
+    width: 7,
+    height: 7,
+    borderRadius: 999,
+    marginLeft: 6,
+    backgroundColor: "#22c55e",
+    shadowColor: "#22c55e",
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.8,
+    shadowRadius: 4,
   },
 });
