@@ -143,14 +143,16 @@ const styles = StyleSheet.create({
     color: "#94a3b8",
     fontSize: 10,
     marginTop: 6,
-    alignSelf: "flex-end",
+    alignSelf: "flex-start",
   },
   timestampMine: {
     color: "#bae6fd",
     opacity: 0.9,
+    alignSelf: "flex-end",
   },
   timestampTheirs: {
     color: "#fef9c3",
+    alignSelf: "flex-start",
   },
 });
 
