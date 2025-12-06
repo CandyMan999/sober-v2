@@ -37,6 +37,8 @@ const MessageBubble = ({ message, isMine }) => {
           size={36}
           style={styles.avatar}
           fallbackText={author.username}
+          userId={author.id || author._id}
+          username={author.username}
         />
       ) : null}
 
@@ -74,6 +76,8 @@ const MessageBubble = ({ message, isMine }) => {
           style={styles.avatar}
           fallbackText={author.username}
           haloColor="blue"
+          userId={author.id || author._id}
+          username={author.username}
         />
       ) : null}
     </View>

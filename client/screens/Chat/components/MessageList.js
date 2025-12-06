@@ -25,11 +25,20 @@ const MessageList = ({
 }) => {
   const listRef = useRef(null);
   const [distanceFromBottom, setDistanceFromBottom] = useState(0);
+  const [viewportHeight, setViewportHeight] = useState(0);
   const initialScrollDone = useRef(false);
   const lastMessageIdRef = useRef(undefined);
   const typingKeysRef = useRef([]);
+  const scrollMetricsRef = useRef({
+    offsetY: 0,
+    contentHeight: 0,
+    layoutHeight: 0,
+  });
 
-  const autoScrollThreshold = useMemo(() => 420, []);
+  const autoScrollThreshold = useMemo(
+    () => Math.max(viewportHeight * 0.8, 0),
+    [viewportHeight]
+  );
   const shouldAutoScroll = distanceFromBottom <= autoScrollThreshold;
 
   const renderItem = ({ item }) => {
@@ -67,12 +76,14 @@ const MessageList = ({
     });
   };
   useEffect(() => {
-    if (!!doneLoading) {
-      setTimeout(() => {
-        scrollToBottom(true);
-      }, 500);
-    }
-  });
+    if (!doneLoading) return undefined;
+
+    const timeout = setTimeout(() => {
+      scrollToBottom(true);
+    }, 500);
+
+    return () => clearTimeout(timeout);
+  }, [doneLoading]);
 
   useEffect(() => {
     if (!messages?.length) return;
@@ -105,6 +116,12 @@ const MessageList = ({
     scrollToBottom(true);
   }, [messages, shouldAutoScroll]);
 
+  const updateDistanceFromMetrics = (metrics) => {
+    const { offsetY, contentHeight, layoutHeight } = metrics;
+    const distance = Math.max(contentHeight - layoutHeight - offsetY, 0);
+    setDistanceFromBottom(distance);
+  };
+
   const handleScroll = (event) => {
     const {
       contentOffset: { y: offsetY },
@@ -112,11 +129,31 @@ const MessageList = ({
       layoutMeasurement: { height: layoutHeight },
     } = event.nativeEvent;
 
-    const distance = Math.max(contentHeight - layoutHeight - offsetY, 0);
-    setDistanceFromBottom(distance);
+    setViewportHeight(layoutHeight);
+
+    scrollMetricsRef.current = { offsetY, contentHeight, layoutHeight };
+    updateDistanceFromMetrics(scrollMetricsRef.current);
   };
 
-  const handleContentSizeChange = () => {
+  const handleLayout = (event) => {
+    const { height } = event.nativeEvent.layout || {};
+    if (height) {
+      setViewportHeight(height);
+      scrollMetricsRef.current = {
+        ...scrollMetricsRef.current,
+        layoutHeight: height,
+      };
+      updateDistanceFromMetrics(scrollMetricsRef.current);
+    }
+  };
+
+  const handleContentSizeChange = (_width, height) => {
+    scrollMetricsRef.current = {
+      ...scrollMetricsRef.current,
+      contentHeight: height || scrollMetricsRef.current.contentHeight,
+    };
+    updateDistanceFromMetrics(scrollMetricsRef.current);
+
     if (!initialScrollDone.current && lastMessageId && messages?.length) {
       scrollToBottom(false);
       initialScrollDone.current = true;
@@ -125,7 +162,7 @@ const MessageList = ({
   };
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container} onLayout={handleLayout}>
       <FlatList
         ref={listRef}
         data={messages}
