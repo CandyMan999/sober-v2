@@ -80,11 +80,6 @@ const typeDefs = gql`
     QUOTE
   }
 
-  input TherapyChatHistoryMessageInput {
-    role: String!
-    content: String!
-  }
-
   enum PictureSlot {
     PROFILE
     DRUNK
@@ -482,6 +477,11 @@ const typeDefs = gql`
     directMessageReceived(roomId: ID!): Comment!
     directRoomUpdated: Room!
     directTyping(roomId: ID!): TypingStatus!
+  }
+
+  input TherapyChatHistoryMessageInput {
+    role: String!
+    content: String!
   }
 `;
 
