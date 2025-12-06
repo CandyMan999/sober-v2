@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import {
   ActivityIndicator,
   FlatList,
@@ -11,6 +11,8 @@ import {
 
 import MessageBubble from "./MessageBubble";
 
+const AUTO_SCROLL_THRESHOLD_PX = 420; // how far from bottom we still auto-scroll
+
 const MessageList = ({
   messages,
   currentUserId,
@@ -20,12 +22,21 @@ const MessageList = ({
   contentPaddingBottom = 0,
 }) => {
   const listRef = useRef(null);
+
+  // How far the user is from the bottom
   const [distanceFromBottom, setDistanceFromBottom] = useState(0);
+
+  // Track first “anchor” scroll
   const initialScrollDone = useRef(false);
+
+  // Track last message we reacted to
   const lastMessageIdRef = useRef(undefined);
 
-  const autoScrollThreshold = useMemo(() => 420, []);
-  const shouldAutoScroll = distanceFromBottom <= autoScrollThreshold;
+  // Track previous message count (like DirectMessageScreen)
+  const previousCountRef = useRef(0);
+
+  // Fast flag to know if we’re near the bottom
+  const isNearBottomRef = useRef(true);
 
   const renderItem = ({ item }) => (
     <MessageBubble
@@ -36,30 +47,39 @@ const MessageList = ({
     />
   );
 
-  const scrollToBottom = (animated = true) => {
+  const scrollToBottom = useCallback((animated = true) => {
     requestAnimationFrame(() => {
       InteractionManager.runAfterInteractions(() => {
         listRef.current?.scrollToEnd({ animated });
       });
     });
-  };
+  }, []);
 
+  // 🔥 Core auto-scroll logic: “new message + near bottom → scroll”
   useEffect(() => {
-    if (!lastMessageId || !messages?.length) return;
+    if (!messages?.length) return;
 
-    const isFirstMessage = !initialScrollDone.current;
-    const isNewMessage =
-      !!lastMessageIdRef.current && lastMessageIdRef.current !== lastMessageId;
+    const prevCount = previousCountRef.current;
+    const hasNewMessage = messages.length > prevCount;
+    previousCountRef.current = messages.length;
 
-    if (isFirstMessage) {
+    // First time we load messages → hard jump to bottom
+    if (!initialScrollDone.current) {
       scrollToBottom(false);
       initialScrollDone.current = true;
-    } else if (isNewMessage && shouldAutoScroll) {
+      lastMessageIdRef.current = lastMessageId;
+      return;
+    }
+
+    // For subsequent updates: only auto-scroll if:
+    // 1) There is a new message
+    // 2) We’re close enough to the bottom (user not reading history)
+    if (hasNewMessage && isNearBottomRef.current) {
       scrollToBottom(true);
     }
 
     lastMessageIdRef.current = lastMessageId;
-  }, [lastMessageId, messages?.length, shouldAutoScroll]);
+  }, [messages.length, lastMessageId, scrollToBottom]);
 
   const handleScroll = (event) => {
     const {
@@ -70,8 +90,10 @@ const MessageList = ({
 
     const distance = Math.max(contentHeight - layoutHeight - offsetY, 0);
     setDistanceFromBottom(distance);
+    isNearBottomRef.current = distance <= AUTO_SCROLL_THRESHOLD_PX;
   };
 
+  // Make sure initial render (or heavy reload) anchors at bottom
   const handleContentSizeChange = () => {
     if (!initialScrollDone.current && lastMessageId && messages?.length) {
       scrollToBottom(false);
@@ -88,7 +110,12 @@ const MessageList = ({
       renderItem={renderItem}
       contentContainerStyle={[
         styles.listContent,
-        { paddingBottom: contentPaddingBottom, paddingTop: 0 },
+        {
+          // small bottom pad helps avoid “one bubble off” feeling,
+          // and keeps it symmetric with your DM screen
+          paddingBottom: 16 + contentPaddingBottom,
+          paddingTop: 0,
+        },
       ]}
       keyboardShouldPersistTaps="handled"
       showsVerticalScrollIndicator={false}
