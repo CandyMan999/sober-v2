@@ -196,7 +196,7 @@ const deleteDirectRoomResolver = async (_, { roomId }, ctx) => {
   return true;
 };
 
-const therapyChatResolver = async (_, { message, history = [] }, ctx) => {
+const therapyChatResolver = async (_, { message }, ctx) => {
   const me = ctx.currentUser;
   if (!me) throw new AuthenticationError("Not authenticated");
 
@@ -209,15 +209,28 @@ const therapyChatResolver = async (_, { message, history = [] }, ctx) => {
     throw new Error("Sober companion account is unavailable.");
   }
 
-  const historyMessages = Array.isArray(history)
-    ? history
-        .map((entry) => {
-          if (!entry?.content) return null;
-          const role = entry?.role === "assistant" ? "assistant" : "user";
-          return { role, content: String(entry.content) };
+  const room = await ensureSingleDirectRoom(me._id, companion._id);
+  const historyMessages = await Comment.find({
+    targetType: "ROOM",
+    targetId: room?._id,
+  })
+    .sort({ createdAt: 1 })
+    .populate("author")
+    .select(["text", "author"])
+    .lean()
+    .then((comments) =>
+      comments
+        .map((comment) => {
+          if (!comment?.text) return null;
+          const authorId = comment?.author?._id || comment?.author?.id;
+          const role =
+            String(authorId) === String(SOBER_COMPANION_USER_ID)
+              ? "assistant"
+              : "user";
+          return { role, content: comment.text };
         })
         .filter(Boolean)
-    : [];
+    );
 
   let reply =
     "I’m here for you. Tell me what’s going on, and we’ll take it one step at a time.";

@@ -91,8 +91,8 @@ export const SEND_DIRECT_MESSAGE = `
 `;
 
 export const THERAPY_CHAT = `
-  mutation TherapyChat($message: String!, $history: [TherapyChatHistoryMessageInput!]) {
-    therapyChat(message: $message, history: $history) {
+  mutation TherapyChat($message: String!) {
+    therapyChat(message: $message) {
       reply
       userMessage {
         id

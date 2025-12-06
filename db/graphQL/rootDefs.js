@@ -445,10 +445,7 @@ const typeDefs = gql`
     clearAllNotifications(token: String!, ids: [ID!]!): Boolean!
     deleteDirectRoom(roomId: ID!): Boolean!
     sendDirectMessage(recipientId: ID!, text: String!, replyTo: ID): Comment!
-    therapyChat(
-      message: String!
-      history: [TherapyChatHistoryMessageInput!]
-    ): TherapyChatPayload!
+    therapyChat(message: String!): TherapyChatPayload!
     followUser(token: String!, userId: ID!): Connection!
     unfollowUser(token: String!, userId: ID!): Boolean!
   }
@@ -471,11 +468,6 @@ const typeDefs = gql`
     saved: Boolean!
     targetType: SaveTarget!
     targetId: ID!
-  }
-
-  input TherapyChatHistoryMessageInput {
-    role: String!
-    content: String!
   }
 
   type Subscription {

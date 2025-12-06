@@ -99,23 +99,6 @@ const DirectMessageScreen = ({ route, navigation }) => {
   const likeOpacities = useRef({});
   const tapTimestamps = useRef({});
 
-  const companionHistory = useMemo(() => {
-    if (!isCompanionChat || !messages.length) return [];
-
-    return messages
-      .map((msg) => {
-        if (!msg?.text) return null;
-        const role =
-          String(msg.author?.id || msg.author?._id) ===
-          String(SOBER_COMPANION.id)
-            ? "assistant"
-            : "user";
-
-        return { role, content: msg.text };
-      })
-      .filter(Boolean);
-  }, [isCompanionChat, messages]);
-
   const syncMessagesFromRoom = useCallback(
     (roomData) => {
       if (!roomData?.comments) return;
@@ -411,7 +394,6 @@ const DirectMessageScreen = ({ route, navigation }) => {
 
         const response = await client.request(THERAPY_CHAT, {
           message: text,
-          history: companionHistory,
         });
 
         const payload = response?.therapyChat;
@@ -487,7 +469,6 @@ const DirectMessageScreen = ({ route, navigation }) => {
     }
   }, [
     client,
-    companionHistory,
     currentUserId,
     isCompanionChat,
     messageText,
