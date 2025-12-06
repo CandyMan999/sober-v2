@@ -64,6 +64,13 @@ export const GET_COMMENTS = `
       createdAt
       replyTo {
         id
+        text
+        createdAt
+        author {
+          id
+          username
+          profilePicUrl
+        }
       }
       author {
         id
@@ -92,6 +99,13 @@ export const CREATE_COMMENT = `
       createdAt
       replyTo {
         id
+        text
+        createdAt
+        author {
+          id
+          username
+          profilePicUrl
+        }
       }
       author {
         id
@@ -111,6 +125,13 @@ export const ROOM_COMMENT_SUBSCRIPTION = gql`
       targetId
       replyTo {
         id
+        text
+        createdAt
+        author {
+          id
+          username
+          profilePicUrl
+        }
       }
       author {
         id

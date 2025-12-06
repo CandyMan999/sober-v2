@@ -66,11 +66,13 @@ const ChatRoomScreen = ({ route }) => {
   const wsClientRef = useRef(null);
   const commentSubscriptionRef = useRef(null);
   const scrollToBottomRef = useRef(null);
+  const inputRef = useRef(null);
   const appState = useRef(AppState.currentState);
 
   const [room, setRoom] = useState(null);
   const [messages, setMessages] = useState([]);
   const [messageText, setMessageText] = useState("");
+  const [replyTarget, setReplyTarget] = useState(null);
   const [loadingRoom, setLoadingRoom] = useState(false);
   const [loadingMessages, setLoadingMessages] = useState(false);
   const [sending, setSending] = useState(false);
@@ -264,6 +266,7 @@ const ChatRoomScreen = ({ route }) => {
         text: messageText.trim(),
         userId: currentUserId,
         roomId: room.id,
+        replyToCommentId: replyTarget?.id || replyTarget?._id,
       });
 
       const newComment = response?.createComment;
@@ -272,13 +275,42 @@ const ChatRoomScreen = ({ route }) => {
           dedupeMessages(sortByCreatedAt([...prev, newComment]))
         );
         setMessageText("");
+        setReplyTarget(null);
       }
     } catch (error) {
       console.log("Failed to send comment", error);
     } finally {
       setSending(false);
     }
-  }, [client, currentUserId, messageText, room?.id]);
+  }, [client, currentUserId, messageText, replyTarget?._id, replyTarget?.id, room?.id]);
+
+  const handleSelectReply = useCallback((target) => {
+    if (!target) return;
+
+    setReplyTarget(target);
+    const mention = target?.author?.username
+      ? `@${target.author.username} `
+      : "";
+
+    if (mention) {
+      setMessageText((prev) => {
+        if (prev.startsWith(mention)) return prev;
+        return `${mention}${prev.trim() ? prev.trim() + " " : ""}`;
+      });
+    }
+
+    requestAnimationFrame(() => inputRef.current?.focus?.());
+  }, []);
+
+  const handleCancelReply = useCallback(() => {
+    if (replyTarget?.author?.username) {
+      const mention = `@${replyTarget.author.username} `;
+      setMessageText((prev) =>
+        prev.startsWith(mention) ? prev.slice(mention.length) : prev
+      );
+    }
+    setReplyTarget(null);
+  }, [replyTarget]);
 
   useEffect(() => {
     const next = messageText.trim().length > 0;
@@ -357,6 +389,8 @@ const ChatRoomScreen = ({ route }) => {
               lastMessageId={lastMessageId}
               contentPaddingBottom={0}
               doneLoading={doneLoading}
+              onReply={handleSelectReply}
+              currentUsername={currentUser?.username}
             />
           )}
         </View>
@@ -369,6 +403,10 @@ const ChatRoomScreen = ({ route }) => {
             disabled={sending || !room?.id}
             currentUser={currentUser}
             bottomInset={0}
+            replyTarget={replyTarget}
+            onCancelReply={handleCancelReply}
+            ref={inputRef}
+            participants={room?.users || []}
           />
         </View>
       </View>

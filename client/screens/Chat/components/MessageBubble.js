@@ -1,5 +1,6 @@
-import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import React, { useMemo, useState } from "react";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 import { formatDistanceToNow } from "date-fns";
 
 import Avatar from "../../../components/Avatar";
@@ -21,9 +22,85 @@ const formatTime = (timestamp) => {
   return `${formatDistanceToNow(parsed)} ago`;
 };
 
-const MessageBubble = ({ message, isMine }) => {
+const MessageBubble = ({ message, isMine, onReply, currentUsername }) => {
   const author = message?.author || {};
   const timeLabel = formatTime(message?.createdAt);
+  const replyTo = message?.replyTo;
+  const bubbleAccentColor = isMine ? "#38bdf8" : "#f59e0b";
+
+  const handleReplyPress = () => {
+    if (onReply) onReply(message);
+  };
+
+  const [replyExpanded, setReplyExpanded] = useState(false);
+
+  const replyLabel = useMemo(() => {
+    if (!replyTo) return null;
+    const username = replyTo?.author?.username || "Someone";
+    const previewText = replyTo?.text || "Original message";
+
+    return {
+      username,
+      previewText,
+      timestamp: formatTime(replyTo?.createdAt),
+    };
+  }, [replyTo]);
+
+  const isReplyingToMe = useMemo(() => {
+    if (!replyTo?.author?.username || !currentUsername) return false;
+    return (
+      replyTo.author.username.toLowerCase() === currentUsername.toLowerCase()
+    );
+  }, [currentUsername, replyTo?.author?.username]);
+
+  const isMentioningMe = useMemo(() => {
+    if (!currentUsername) return false;
+    const content = message?.text || "";
+    return content.toLowerCase().includes(`@${currentUsername.toLowerCase()}`);
+  }, [currentUsername, message?.text]);
+
+  const renderTextWithMentions = useMemo(() => {
+    const content = message?.text || "";
+    const mentionRegex = /@[A-Za-z0-9_]+/g;
+    const parts = [];
+    let lastIndex = 0;
+    let match;
+    let key = 0;
+
+    while ((match = mentionRegex.exec(content))) {
+      if (match.index > lastIndex) {
+        parts.push(content.slice(lastIndex, match.index));
+      }
+
+      const mentionText = match[0];
+      const isMentioningCurrentUser = currentUsername
+        ? mentionText.toLowerCase() === `@${currentUsername}`.toLowerCase()
+        : false;
+
+      parts.push(
+        <Text
+          key={`mention-${key}`}
+          style={[
+            styles.text,
+            isMine ? styles.textMine : styles.textTheirs,
+            styles.mention,
+            isMentioningCurrentUser && styles.mentionHighlight,
+          ]}
+        >
+          {mentionText}
+        </Text>
+      );
+
+      key += 1;
+      lastIndex = mentionRegex.lastIndex;
+    }
+
+    if (lastIndex < content.length) {
+      parts.push(content.slice(lastIndex));
+    }
+
+    return parts;
+  }, [currentUsername, isMine, message?.text]);
 
   return (
     <View
@@ -43,29 +120,87 @@ const MessageBubble = ({ message, isMine }) => {
       ) : null}
 
       <View style={[styles.bubbleStack, isMine ? styles.bubbleStackMine : null]}>
-        {!isMine && author?.username ? (
-          <Text style={styles.username}>{author.username}</Text>
+        {!isMine ? (
+          <Text style={styles.username} numberOfLines={1}>
+            {author.username || "User"}
+          </Text>
         ) : null}
         <View
           style={[
             styles.bubble,
             isMine ? styles.bubbleMine : styles.bubbleTheirs,
+            replyLabel && styles.bubbleWithReply,
+            isMentioningMe && !isMine ? styles.bubbleMention : null,
           ]}
         >
-          <Text
-            style={[styles.text, isMine ? styles.textMine : styles.textTheirs]}
-          >
-            {message?.text || ""}
+          {replyLabel ? (
+            <TouchableOpacity
+              activeOpacity={0.8}
+              style={[
+                styles.replyContainer,
+                { borderLeftColor: bubbleAccentColor },
+                isReplyingToMe && styles.replyToMe,
+                isReplyingToMe && { shadowColor: bubbleAccentColor },
+              ]}
+              accessibilityRole="button"
+              accessibilityLabel={`Replying to ${replyLabel.username}`}
+              onPress={() => setReplyExpanded((prev) => !prev)}
+            >
+              <View style={styles.replyContent}>
+                <Text
+                  style={styles.replyTitle}
+                  numberOfLines={replyExpanded ? undefined : 1}
+                >
+                  <Text style={styles.replyLabel}>Reply to </Text>
+                  <Text style={styles.replyUsername}>{replyLabel.username}</Text>
+                  {replyLabel.timestamp ? (
+                    <Text style={styles.replyTimestamp}>
+                      {"  "}
+                      {replyLabel.timestamp}
+                    </Text>
+                  ) : null}
+                </Text>
+                <Text
+                  style={styles.replyPreview}
+                  numberOfLines={replyExpanded ? undefined : 1}
+                >
+                  {replyLabel.previewText}
+                </Text>
+              </View>
+            </TouchableOpacity>
+          ) : null}
+
+          <Text style={[styles.text, isMine ? styles.textMine : styles.textTheirs]}>
+            {renderTextWithMentions}
           </Text>
-          <Text
+
+          <View
             style={[
-              styles.timestamp,
-              isMine ? styles.timestampMine : styles.timestampTheirs,
+              styles.footerRow,
+              isMine ? styles.footerRowMine : styles.footerRowTheirs,
             ]}
-            accessibilityLabel={`Sent ${timeLabel}`}
           >
-            {timeLabel}
-          </Text>
+            <Text
+              style={[
+                styles.timestamp,
+                isMine ? styles.timestampMine : styles.timestampTheirs,
+              ]}
+              accessibilityLabel={`Sent ${timeLabel}`}
+            >
+              {timeLabel}
+            </Text>
+            {!isMine && onReply ? (
+              <TouchableOpacity
+                onPress={handleReplyPress}
+                accessibilityRole="button"
+                accessibilityLabel={`Reply to ${author.username || "message"}`}
+                style={styles.replyButton}
+                hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+              >
+                <Ionicons name="arrow-undo-outline" size={14} color="#cbd5e1" />
+              </TouchableOpacity>
+            ) : null}
+          </View>
         </View>
       </View>
 
@@ -88,7 +223,7 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: "row",
     alignItems: "flex-start",
-    gap: 10,
+    gap: 8,
   },
   rowMine: {
     justifyContent: "flex-end",
@@ -104,16 +239,66 @@ const styles = StyleSheet.create({
     alignItems: "flex-end",
   },
   username: {
-    color: "#cbd5e1",
-    fontSize: 12,
+    color: "#f59e0b",
+    fontSize: 13,
     fontWeight: "700",
     marginBottom: 4,
     paddingLeft: 4,
   },
+  replyButton: {
+    paddingHorizontal: 4,
+    paddingVertical: 2,
+    borderRadius: 999,
+    marginLeft: 8,
+  },
+  replyContainer: {
+    flexDirection: "row",
+    alignItems: "flex-start",
+    width: "100%",
+    borderLeftWidth: 2,
+    borderLeftColor: "rgba(255,255,255,0.85)",
+    paddingLeft: 8,
+    paddingRight: 0,
+    paddingVertical: 2,
+    marginRight: 0,
+  },
+  replyToMe: {
+    shadowColor: "rgba(59,130,246,0.45)",
+    shadowOpacity: 0.9,
+    shadowRadius: 8,
+    shadowOffset: { width: 0, height: 0 },
+    elevation: 4,
+  },
+  replyContent: {
+    flex: 1,
+    gap: 2,
+  },
+  replyTitle: {
+    color: "#e2e8f0",
+    fontWeight: "600",
+    fontSize: 11,
+  },
+  replyLabel: {
+    color: "#e2e8f0",
+    opacity: 0.9,
+  },
+  replyUsername: {
+    color: "#fef3c7",
+    fontWeight: "700",
+  },
+  replyPreview: {
+    color: "#cbd5e1",
+    fontSize: 11,
+    marginTop: 1,
+  },
+  replyTimestamp: {
+    color: "#94a3b8",
+    fontSize: 10,
+  },
   bubble: {
-    borderRadius: 17,
-    paddingHorizontal: 14,
-    paddingVertical: 10,
+    borderRadius: 14,
+    paddingHorizontal: 10,
+    paddingVertical: 8,
     borderWidth: 1,
     maxWidth: "100%",
   },
@@ -129,8 +314,18 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 6,
     alignSelf: "flex-start",
   },
+  bubbleWithReply: {
+    paddingTop: 0,
+  },
+  bubbleMention: {
+    shadowColor: "rgba(251,191,36,0.8)",
+    shadowOpacity: 0.95,
+    shadowRadius: 10,
+    shadowOffset: { width: 0, height: 0 },
+    elevation: 7,
+  },
   text: {
-    fontSize: 15,
+    fontSize: 14,
   },
   textMine: {
     color: "#e0f2fe",
@@ -139,20 +334,38 @@ const styles = StyleSheet.create({
   textTheirs: {
     color: "#fef3c7",
   },
+  mention: {
+    fontWeight: "700",
+  },
+  mentionHighlight: {
+    color: "#0ea5e9",
+    backgroundColor: "rgba(14,165,233,0.12)",
+    paddingHorizontal: 2,
+    borderRadius: 6,
+  },
   timestamp: {
     color: "#94a3b8",
     fontSize: 10,
-    marginTop: 6,
-    alignSelf: "flex-start",
+    marginTop: 4,
   },
   timestampMine: {
     color: "#bae6fd",
     opacity: 0.9,
-    alignSelf: "flex-end",
   },
   timestampTheirs: {
     color: "#fef9c3",
-    alignSelf: "flex-start",
+  },
+  footerRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "flex-end",
+    marginTop: 4,
+  },
+  footerRowMine: {
+    justifyContent: "flex-end",
+  },
+  footerRowTheirs: {
+    justifyContent: "flex-end",
   },
 });
 
