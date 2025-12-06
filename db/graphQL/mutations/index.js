@@ -24,6 +24,11 @@ const {
   deleteDirectRoomResolver,
   therapyChatResolver,
 } = require("./directMessage");
+const {
+  createRoomResolver,
+  changeRoomResolver,
+  createCommentResolver,
+} = require("./rooms");
 const { toggleSaveResolver } = require("./save");
 const { moderatePostResolver, moderateQuoteResolver } = require("./moderation");
 const { deleteAccountResolver } = require("./deleteUser");
@@ -59,6 +64,9 @@ module.exports = {
   setDirectTypingResolver,
   deleteDirectRoomResolver,
   therapyChatResolver,
+  createRoomResolver,
+  changeRoomResolver,
+  createCommentResolver,
   markNotificationReadResolver,
   dismissNotificationResolver,
   clearAllNotificationsResolver,
