@@ -25,6 +25,7 @@ const MessageList = ({
   const [distanceFromBottom, setDistanceFromBottom] = useState(0);
   const initialScrollDone = useRef(false);
   const lastMessageIdRef = useRef(undefined);
+  const typingKeysRef = useRef([]);
 
   const autoScrollThreshold = useMemo(() => 420, []);
   const shouldAutoScroll = distanceFromBottom <= autoScrollThreshold;
@@ -79,6 +80,20 @@ const MessageList = ({
 
     lastMessageIdRef.current = lastMessageId;
   }, [lastMessageId, messages?.length, shouldAutoScroll]);
+
+  useEffect(() => {
+    const typingKeys = (messages || [])
+      .filter((item) => item?.__typingIndicator)
+      .map((item) => String(item?._id || item?.userId || item?.username));
+
+    const hasChanged = typingKeys.join("|") !== typingKeysRef.current.join("|");
+    typingKeysRef.current = typingKeys;
+
+    if (!hasChanged) return;
+    if (!shouldAutoScroll) return;
+
+    scrollToBottom(true);
+  }, [messages, shouldAutoScroll]);
 
   const handleScroll = (event) => {
     const {
