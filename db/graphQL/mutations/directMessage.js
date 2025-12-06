@@ -3,6 +3,10 @@ const {
   AuthenticationError,
   UserInputError,
 } = require("apollo-server-express");
+const OpenAI = require("openai");
+require("dotenv").config();
+
+const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 const { Room, User, Comment, Like } = require("../../models");
 const {
@@ -16,7 +20,6 @@ const {
   ensureSingleDirectRoom,
 } = require("../utils/directMessage");
 const { sendPushNotifications } = require("../../utils/pushNotifications");
-const openai = require("../openaiClient");
 
 const SOBER_COMPANION_USER_ID =
   process.env.SOBER_COMPANION_USER_ID || "693394413ea6a3e530516505";
@@ -187,7 +190,10 @@ const deleteDirectRoomResolver = async (_, { roomId }, ctx) => {
   );
 
   if (commentIds.length) {
-    await Like.deleteMany({ targetType: "COMMENT", targetId: { $in: commentIds } });
+    await Like.deleteMany({
+      targetType: "COMMENT",
+      targetId: { $in: commentIds },
+    });
     await Comment.deleteMany({ _id: { $in: commentIds } });
   }
 
@@ -209,7 +215,10 @@ const therapyChatResolver = async (_, { message }, ctx) => {
     throw new Error("Sober companion account is unavailable.");
   }
 
+  // Ensure a room exists between the user and the sober companion
   const room = await ensureSingleDirectRoom(me._id, companion._id);
+
+  // Build history from prior comments in this room
   const historyMessages = await Comment.find({
     targetType: "ROOM",
     targetId: room?._id,
@@ -232,87 +241,134 @@ const therapyChatResolver = async (_, { message }, ctx) => {
         .filter(Boolean)
     );
 
+  // 1️⃣ Store the USER message first (no push for Owl)
+  let userMessage = null;
+  try {
+    const result = await sendMessageBetweenUsers({
+      sender: me,
+      recipient: companion,
+      text: message,
+      sendPush: false, // 🚫 no push notifications in Owl chat
+    });
+    userMessage = result?.normalized || null;
+  } catch (err) {
+    console.error("therapyChat user delivery error:", err);
+  }
+
+  // 2️⃣ Turn ON typing indicator for SoberOwl while we wait
+  try {
+    const typingPayload = {
+      roomId: room._id.toString(),
+      userId: companion._id.toString(),
+      username: companion.username || "SoberOwl",
+      profilePicUrl: companion.profilePicUrl,
+      isTyping: true,
+      lastTypedAt: new Date().toISOString(),
+    };
+    publishDirectTyping(typingPayload);
+  } catch (err) {
+    console.error("therapyChat typing-on error:", err);
+  }
+
+  // 3️⃣ Call OpenAI Responses API for SoberOwl reply
   let reply =
     "I’m here for you. Tell me what’s going on, and we’ll take it one step at a time.";
 
   try {
-    const response = await openai.chat.completions.create({
-      model: "gpt-4o-mini",
-      messages: [
-        {
-          role: "system",
-          content: `
-You are a compassionate, calm, emotionally supportive guide inside the Sober Motivation app.
-You are NOT a therapist, doctor, or emergency service. 
-Your purpose is to give general emotional support, reflective questions, and practical coping strategies that help people stay sober, motivated, and grounded.
+    const soberOwlInstructions = `
+    Introduce yourself as SoberOwl – "Sober Motivation’s virtual sobriety coach." You operate inside the Sober Motivation app.
+    You are a compassionate, calm, emotionally supportive guide. You are not a therapist, doctor, or emergency service. You provide general emotional support, reflective questions, and practical coping strategies to help people stay sober, motivated, and grounded.
+    
+    Your style:
+    - Warm, steady, encouraging
+    - Never judgmental or shaming
+    - Validating of feelings, but honest and clear
+    - Simple, human, conversational language
+    
+    Use ideas from:
+    - Twelve-step recovery and peer support.
+    - Cognitive and behavioral approaches that help people examine thoughts, feelings, and actions.
+    - Approaches that help the person separate addictive urges from their deeper values and identity.
+    - Family- and medically-informed recovery perspectives.
+    - Mindfulness and present-moment awareness.
+    - Approaches that focus on accepting difficult feelings while still choosing actions that match the person’s values.
+    - Skills for distress tolerance, emotional regulation, and healthier communication.
+    
+    Your goals:
+    - Help the user feel heard and understood.
+    - Reflect back what you hear in a clear, gentle way.
+    - Ask thoughtful, open-ended questions when helpful.
+    - Offer concrete, realistic coping suggestions and next steps.
+    - Encourage habits that support sobriety, self-respect, and connection.
+    - When it fits, invite the user to “get it off their chest” by recording a short video post in the app so the community can see it and respond with support, similar to a short video feed. Explain this option briefly, without pressure.
+    
+    Safety rules:
+    - If the user talks about wanting to harm themselves, harm someone else, or feeling completely unsafe, clearly say you care, explain that you are not an emergency service, and urge them to contact local emergency services, a crisis hotline, or a trusted professional right away.
+    - Do not diagnose any condition or prescribe medication.
+    - Do not create formal treatment plans. Keep your role focused on emotional support, reflection, and practical coping ideas.
+    
+    Always stay aligned with the mission of Sober Motivation:
+    - Helping people feel stronger, more hopeful, and more supported on their sober journey.
+    - Reminding them that every effort and every day of trying matters.
+        `.trim();
 
-Your tone:
-- Warm, steady, encouraging
-- Never judgmental
-- Always validating feelings
-- Sound like a supportive coach or mentor, not a clinician
-- Keep language simple, human, and conversational
-
-Your goals:
-- Help the user feel heard and understood
-- Offer gentle guidance and perspective
-- Ask thoughtful questions when appropriate
-- Encourage healthy habits, reflection, and positive momentum
-- Reinforce that Sober Motivation is proud of them for making progress
-
-Safety rules:
-- If the user expresses thoughts of self-harm, hurting others, or being unsafe:
-    *Tell them you care*
-    *Say you are not an emergency service*
-    *Encourage them to immediately reach out to local emergency services, a crisis hotline, or a trusted professional*
-- Never diagnose conditions or claim you can treat anything.
-- Never suggest medication, medical treatment, or therapy plans.
-- Provide emotional support only.
-
-Always stay aligned with the mission of the Sober Motivation app:
-- Helping people feel stronger, hopeful, and supported on their sober journey.
-- Reminding them that every day of effort matters.
-          `.trim(),
-        },
-        ...historyMessages,
+    const response = await openai.responses.create({
+      model: "gpt-4.1-mini",
+      instructions: soberOwlInstructions,
+      input: [
+        // history from this DM room
+        ...historyMessages.map((m) => ({
+          role: m.role,
+          content: m.content,
+        })),
+        // latest user turn
         {
           role: "user",
           content: message,
         },
       ],
-      temperature: 0.7,
-      max_tokens: 600,
+      max_output_tokens: 600,
+      store: false, // no stored convo state on OpenAI side
     });
 
-    reply =
-      response?.choices?.[0]?.message?.content?.trim() ||
-      "I’m here for you. Tell me what’s going on, and we’ll take it one step at a time.";
+    const aiReply = (response.output_text || "").trim();
+    if (aiReply) {
+      reply = aiReply;
+    } else {
+      console.error(
+        "therapyChat: Responses API returned no output_text. Full response:",
+        JSON.stringify(response, null, 2)
+      );
+    }
   } catch (err) {
-    console.error("therapyChat error:", err);
+    console.error("therapyChat error (OpenAI Responses call failed):", err);
   }
 
-  let userMessage = null;
+  // 4️⃣ Turn OFF typing indicator for SoberOwl
   try {
-    const response = await sendMessageBetweenUsers({
-      sender: me,
-      recipient: companion,
-      text: message,
-      sendPush: false,
-    });
-    userMessage = response?.normalized || null;
+    const typingPayloadOff = {
+      roomId: room._id.toString(),
+      userId: companion._id.toString(),
+      username: companion.username || "SoberOwl",
+      profilePicUrl: companion.profilePicUrl,
+      isTyping: false,
+      lastTypedAt: new Date().toISOString(),
+    };
+    publishDirectTyping(typingPayloadOff);
   } catch (err) {
-    console.error("therapyChat user delivery error:", err);
+    console.error("therapyChat typing-off error:", err);
   }
 
+  // 5️⃣ Store the assistant reply in the DM room (no push)
   let assistantMessage = null;
   try {
-    const response = await sendMessageBetweenUsers({
+    const result = await sendMessageBetweenUsers({
       sender: companion,
       recipient: me,
       text: reply,
-      sendPush: true,
+      sendPush: false, // 🚫 no push notifications in Owl chat
     });
-    assistantMessage = response?.normalized || null;
+    assistantMessage = result?.normalized || null;
   } catch (err) {
     console.error("therapyChat delivery error:", err);
   }

@@ -214,7 +214,9 @@ const MessageListScreen = ({ route, navigation }) => {
         const otherUserRaw =
           participants.find(
             (participant) =>
-              participant && String(participant.id || participant._id) !== String(currentUserId)
+              participant &&
+              String(participant.id || participant._id) !==
+                String(currentUserId)
           ) ||
           participants.find(Boolean) ||
           room.user;
@@ -229,7 +231,8 @@ const MessageListScreen = ({ route, navigation }) => {
               ...otherUserRaw,
               id: otherUserRaw.id || otherUserRaw._id,
               username:
-                otherUserRaw.username || (isCompanionUser ? "SoberOwl" : "Buddy"),
+                otherUserRaw.username ||
+                (isCompanionUser ? "SoberOwl" : "Buddy"),
             }
           : null;
 
@@ -251,8 +254,10 @@ const MessageListScreen = ({ route, navigation }) => {
         return (b.lastActivity || 0) - (a.lastActivity || 0);
       });
 
-    const companionProfile =
-      companionUser || { id: SOBER_COMPANION_ID, username: "SoberOwl" };
+    const companionProfile = companionUser || {
+      id: SOBER_COMPANION_ID,
+      username: "SoberOwl",
+    };
 
     const hasCompanion = normalized.some(
       (conversation) =>
@@ -275,8 +280,7 @@ const MessageListScreen = ({ route, navigation }) => {
   }, [rooms, currentUserId, deriveLastMessageInfo]);
 
   const renderConversation = ({ item }) => {
-    const isCompanion =
-      String(item.user?.id) === String(SOBER_COMPANION_ID);
+    const isCompanion = String(item.user?.id) === String(SOBER_COMPANION_ID);
     const username =
       item.user?.username || (isCompanion ? "SoberOwl" : "Buddy");
     const lastMessage = item.lastMessage || "New chat";
@@ -296,7 +300,11 @@ const MessageListScreen = ({ route, navigation }) => {
       : waitingForYou
       ? "alert-circle"
       : "checkmark-done";
-    const statusColor = isCompanion ? "#34d399" : waitingForYou ? "#f59e0b" : "#38bdf8";
+    const statusColor = isCompanion
+      ? "#34d399"
+      : waitingForYou
+      ? "#f59e0b"
+      : "#38bdf8";
     const statusBackground = isCompanion
       ? "rgba(52,211,153,0.12)"
       : waitingForYou
@@ -370,45 +378,66 @@ const MessageListScreen = ({ route, navigation }) => {
               isCompanion ? require("../../assets/icon.png") : undefined
             }
             haloColors={
-              isCompanion
-                ? ["#bef264", "#34d399", "#22d3ee"]
-                : undefined
+              isCompanion ? ["#bef264", "#34d399", "#22d3ee"] : undefined
             }
           />
           <View style={styles.rowContent}>
             <View style={styles.rowHeader}>
               <View style={styles.rowLeft}>
                 <View style={styles.nameLine}>
-                  <Text style={[styles.username, unread && styles.usernameUnread]} numberOfLines={1}>
+                  <Text
+                    style={[styles.username, unread && styles.usernameUnread]}
+                    numberOfLines={1}
+                  >
                     {username}
                   </Text>
                 </View>
                 <View style={styles.messageLine}>
-                  <Ionicons name="chatbubble-ellipses" size={14} color="#94a3b8" />
+                  <Ionicons
+                    name="chatbubble-ellipses"
+                    size={14}
+                    color="#94a3b8"
+                  />
                   <Text
-                    style={[styles.lastMessage, unread && styles.lastMessageUnread]}
+                    style={[
+                      styles.lastMessage,
+                      unread && styles.lastMessageUnread,
+                    ]}
                     numberOfLines={1}
                   >
                     {lastMessage}
                   </Text>
                 </View>
+                {isCompanion ? (
+                  <View style={styles.metaBottom}>
+                    <View style={styles.companionChip}>
+                      <Ionicons
+                        name="shield-checkmark"
+                        size={12}
+                        color="#0f172a"
+                      />
+                      <Text style={styles.companionChipText}>
+                        Sobriety Coach
+                      </Text>
+                    </View>
+                  </View>
+                ) : null}
               </View>
               <View style={styles.rowMeta}>
                 <View style={styles.metaTop}>
                   <Text style={styles.timestamp}>{timestampLabel}</Text>
-                  <View style={[styles.statusPill, { backgroundColor: statusBackground }]}>
+                  <View
+                    style={[
+                      styles.statusPill,
+                      { backgroundColor: statusBackground },
+                    ]}
+                  >
                     <Ionicons name={statusIcon} size={14} color={statusColor} />
-                    <Text style={[styles.statusText, { color: statusColor }]}>{statusLabel}</Text>
+                    <Text style={[styles.statusText, { color: statusColor }]}>
+                      {statusLabel}
+                    </Text>
                   </View>
                 </View>
-                {isCompanion ? (
-                  <View style={styles.metaBottom}>
-                    <View style={styles.companionChip}>
-                      <Ionicons name="shield-checkmark" size={12} color="#0f172a" />
-                      <Text style={styles.companionChipText}>Sobriety Coach</Text>
-                    </View>
-                  </View>
-                ) : null}
               </View>
             </View>
           </View>
@@ -454,11 +483,16 @@ const MessageListScreen = ({ route, navigation }) => {
           !loading ? (
             <View style={styles.emptyState}>
               <View style={styles.emptyIconWrapper}>
-                <Ionicons name="chatbubble-ellipses-outline" size={26} color="#cbd5e1" />
+                <Ionicons
+                  name="chatbubble-ellipses-outline"
+                  size={26}
+                  color="#cbd5e1"
+                />
               </View>
               <Text style={styles.emptyTitle}>No conversations yet</Text>
               <Text style={styles.emptySubtitle}>
-                Start a chat with your sober buddies or message SoberOwl for a quick boost.
+                Start a chat with your sober buddies or message SoberOwl for a
+                quick boost.
               </Text>
             </View>
           ) : null
