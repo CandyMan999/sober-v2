@@ -388,17 +388,21 @@ const MessageListScreen = ({ route, navigation }) => {
                 </View>
               </View>
               <View style={styles.rowMeta}>
+                <View style={styles.metaTop}>
+                  <Text style={styles.timestamp}>{timestampLabel}</Text>
+                  <View style={[styles.statusPill, { backgroundColor: statusBackground }]}>
+                    <Ionicons name={statusIcon} size={14} color={statusColor} />
+                    <Text style={[styles.statusText, { color: statusColor }]}>{statusLabel}</Text>
+                  </View>
+                </View>
                 {isCompanion ? (
-                  <View style={styles.companionChip}>
-                    <Ionicons name="sparkles" size={12} color="#0f172a" />
-                    <Text style={styles.companionChipText}>Virtual Assistant</Text>
+                  <View style={styles.metaBottom}>
+                    <View style={styles.companionChip}>
+                      <Ionicons name="sparkles" size={12} color="#0f172a" />
+                      <Text style={styles.companionChipText}>Virtual Assistant</Text>
+                    </View>
                   </View>
                 ) : null}
-                <Text style={styles.timestamp}>{timestampLabel}</Text>
-                <View style={[styles.statusPill, { backgroundColor: statusBackground }]}>
-                  <Ionicons name={statusIcon} size={14} color={statusColor} />
-                  <Text style={[styles.statusText, { color: statusColor }]}>{statusLabel}</Text>
-                </View>
               </View>
             </View>
           </View>
@@ -532,9 +536,18 @@ const styles = StyleSheet.create({
   rowMeta: {
     marginLeft: 12,
     alignSelf: "stretch",
-    justifyContent: "flex-end",
+    justifyContent: "space-between",
+    alignItems: "flex-end",
+    gap: 8,
+  },
+  metaTop: {
     alignItems: "flex-end",
     gap: 6,
+  },
+  metaBottom: {
+    flexDirection: "row",
+    alignItems: "flex-end",
+    justifyContent: "flex-end",
   },
   username: {
     color: "#e5e7eb",
