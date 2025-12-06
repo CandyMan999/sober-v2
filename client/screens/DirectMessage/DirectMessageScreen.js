@@ -165,6 +165,12 @@ const DirectMessageScreen = ({ route, navigation }) => {
           setResolvedUser({
             ...otherUser,
             id: otherUser.id || otherUser._id,
+            username:
+              otherUser.username ||
+              (String(otherUser.id || otherUser._id) ===
+              String(SOBER_COMPANION_ID)
+                ? "SoberOwl"
+                : "Buddy"),
           });
         }
 

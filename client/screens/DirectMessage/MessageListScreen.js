@@ -145,6 +145,7 @@ const MessageListScreen = ({ route, navigation }) => {
           setCompanionUser({
             ...companion,
             id: companion.id || companion._id,
+            username: companion.username || "SoberOwl",
           });
         }
 
@@ -218,8 +219,18 @@ const MessageListScreen = ({ route, navigation }) => {
           participants.find(Boolean) ||
           room.user;
 
+        const isCompanionUser =
+          otherUserRaw &&
+          String(otherUserRaw.id || otherUserRaw._id) ===
+            String(SOBER_COMPANION_ID);
+
         const otherUser = otherUserRaw
-          ? { ...otherUserRaw, id: otherUserRaw.id || otherUserRaw._id }
+          ? {
+              ...otherUserRaw,
+              id: otherUserRaw.id || otherUserRaw._id,
+              username:
+                otherUserRaw.username || (isCompanionUser ? "SoberOwl" : "Buddy"),
+            }
           : null;
 
         if (!otherUser?.id) return null;
@@ -264,7 +275,8 @@ const MessageListScreen = ({ route, navigation }) => {
   }, [rooms, currentUserId, deriveLastMessageInfo]);
 
   const renderConversation = ({ item }) => {
-    const username = item.user?.username || "Buddy";
+    const username =
+      item.user?.username || (isCompanion ? "SoberOwl" : "Buddy");
     const lastMessage = item.lastMessage || "New chat";
     const unread = Boolean(item.unread);
     const isCompanion =
@@ -399,7 +411,7 @@ const MessageListScreen = ({ route, navigation }) => {
                   <View style={styles.metaBottom}>
                     <View style={styles.companionChip}>
                       <Ionicons name="sparkles" size={12} color="#0f172a" />
-                      <Text style={styles.companionChipText}>Virtual Assistant</Text>
+                      <Text style={styles.companionChipText}>Sobriety Coach</Text>
                     </View>
                   </View>
                 ) : null}
