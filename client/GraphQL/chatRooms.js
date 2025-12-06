@@ -50,6 +50,12 @@ export const CHANGE_ROOM = `
   }
 `;
 
+export const LEAVE_ALL_ROOMS = `
+  mutation LeaveAllRooms($userId: ID!) {
+    leaveAllRooms(userId: $userId)
+  }
+`;
+
 export const GET_COMMENTS = `
   query GetComments($roomId: ID!) {
     getComments(roomId: $roomId) {
@@ -110,6 +116,18 @@ export const ROOM_COMMENT_SUBSCRIPTION = gql`
         id
         username
         profilePicUrl
+      }
+    }
+  }
+`;
+
+export const ROOMS_UPDATED_SUBSCRIPTION = gql`
+  subscription RoomsUpdated {
+    roomsUpdated {
+      id
+      name
+      users {
+        id
       }
     }
   }

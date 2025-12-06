@@ -6,6 +6,7 @@ const { Room, Comment, User } = require("../../models");
 const {
   normalizeCommentForGraphQL,
   publishRoomComment,
+  publishRoomsUpdated,
 } = require("../subscription/subscription");
 const { normalizeRoomForGraphQL } = require("../utils/normalize");
 
@@ -55,7 +56,24 @@ const changeRoomResolver = async (_, { roomId, userId }, ctx) => {
     .populate({ path: "users", select: "username profilePic profilePicUrl" })
     .populate({ path: "lastMessage", populate: { path: "author", populate: "profilePic" } });
 
+  await publishRoomsUpdated();
+
   return normalizeRoomForGraphQL(updatedRoom);
+};
+
+const leaveAllRoomsResolver = async (_, { userId }, ctx) => {
+  const me = ctx.currentUser;
+  if (!me) throw new AuthenticationError("Not authenticated");
+  if (!userId) throw new UserInputError("User ID is required");
+  if (String(userId) !== String(me._id)) {
+    throw new AuthenticationError("Cannot update another user");
+  }
+
+  await Room.updateMany({ isDirect: false }, { $pull: { users: me._id } });
+
+  await publishRoomsUpdated();
+
+  return true;
 };
 
 const createCommentResolver = async (
@@ -106,4 +124,5 @@ module.exports = {
   createRoomResolver,
   changeRoomResolver,
   createCommentResolver,
+  leaveAllRoomsResolver,
 };

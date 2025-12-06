@@ -213,7 +213,8 @@ const ChatRoomScreen = ({ route }) => {
     [loadingRoom, loadingMessages, messages.length]
   );
 
-  const keyboardVerticalOffset = Platform.OS === "ios" ? insets.top : 0;
+  const keyboardVerticalOffset =
+    Platform.OS === "ios" ? insets.bottom + 72 : 0;
 
   return (
     <KeyboardAvoidingView
@@ -223,7 +224,7 @@ const ChatRoomScreen = ({ route }) => {
     >
       <SafeAreaView
         style={styles.safeArea}
-        edges={["top", "left", "right"]}
+        edges={["left", "right", "bottom"]}
       >
         <View style={styles.container}>
           <View style={styles.messageArea}>
@@ -237,6 +238,7 @@ const ChatRoomScreen = ({ route }) => {
                 currentUserId={currentUserId}
                 loading={loadingMessages}
                 onRefresh={loadMessages}
+                contentPaddingBottom={Math.max(insets.bottom + 8, 12)}
               />
             )}
           </View>
@@ -248,6 +250,7 @@ const ChatRoomScreen = ({ route }) => {
               onSend={handleSend}
               disabled={sending || !room?.id}
               currentUser={currentUser}
+              bottomInset={insets.bottom}
             />
           </View>
         </View>
@@ -272,7 +275,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#0b1220",
     paddingHorizontal: 16,
-    paddingTop: 6,
+    paddingTop: 0,
   },
   inputArea: {
     backgroundColor: "#0b1220",

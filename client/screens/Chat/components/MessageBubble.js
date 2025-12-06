@@ -41,6 +41,9 @@ const MessageBubble = ({ message, isMine }) => {
       ) : null}
 
       <View style={[styles.bubbleStack, isMine ? styles.bubbleStackMine : null]}>
+        {!isMine && author?.username ? (
+          <Text style={styles.username}>{author.username}</Text>
+        ) : null}
         <View
           style={[
             styles.bubble,
@@ -52,14 +55,27 @@ const MessageBubble = ({ message, isMine }) => {
           >
             {message?.text || ""}
           </Text>
+          <Text
+            style={[
+              styles.timestamp,
+              isMine ? styles.timestampMine : styles.timestampTheirs,
+            ]}
+            accessibilityLabel={`Sent ${timeLabel}`}
+          >
+            {timeLabel}
+          </Text>
         </View>
-        <Text
-          style={[styles.timestamp, isMine ? styles.timestampMine : null]}
-          accessibilityLabel={`Sent ${timeLabel}`}
-        >
-          {timeLabel}
-        </Text>
       </View>
+
+      {isMine ? (
+        <Avatar
+          uri={author.profilePicUrl}
+          size={34}
+          style={styles.avatar}
+          fallbackText={author.username}
+          haloColor="blue"
+        />
+      ) : null}
     </View>
   );
 };
@@ -82,6 +98,13 @@ const styles = StyleSheet.create({
   },
   bubbleStackMine: {
     alignItems: "flex-end",
+  },
+  username: {
+    color: "#cbd5e1",
+    fontSize: 12,
+    fontWeight: "700",
+    marginBottom: 4,
+    paddingLeft: 4,
   },
   bubble: {
     borderRadius: 17,
@@ -116,10 +139,14 @@ const styles = StyleSheet.create({
     color: "#94a3b8",
     fontSize: 10,
     marginTop: 6,
+    alignSelf: "flex-end",
   },
   timestampMine: {
     color: "#bae6fd",
     opacity: 0.9,
+  },
+  timestampTheirs: {
+    color: "#fef9c3",
   },
 });
 

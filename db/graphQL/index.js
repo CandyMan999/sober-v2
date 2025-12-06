@@ -29,6 +29,7 @@ const {
   createRoomResolver,
   changeRoomResolver,
   createCommentResolver,
+  leaveAllRoomsResolver,
   markNotificationReadResolver,
   dismissNotificationResolver,
   clearAllNotificationsResolver,
@@ -59,6 +60,7 @@ const {
   directRoomUpdatedSubscription,
   directTypingSubscription,
   roomCommentCreatedSubscription,
+  roomsUpdatedSubscription,
 } = require("./subscription/subscription");
 
 // Import models
@@ -139,6 +141,7 @@ const resolvers = {
     therapyChat: therapyChatResolver,
     createRoom: createRoomResolver,
     changeRoom: changeRoomResolver,
+    leaveAllRooms: leaveAllRoomsResolver,
     createComment: createCommentResolver,
     markNotificationRead: markNotificationReadResolver,
     dismissNotification: dismissNotificationResolver,
@@ -153,6 +156,7 @@ const resolvers = {
     directRoomUpdated: directRoomUpdatedSubscription,
     directTyping: directTypingSubscription,
     roomCommentCreated: roomCommentCreatedSubscription,
+    roomsUpdated: roomsUpdatedSubscription,
   },
 
   // ---- Type-level resolvers ----

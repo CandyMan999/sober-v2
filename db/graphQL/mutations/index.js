@@ -28,6 +28,7 @@ const {
   createRoomResolver,
   changeRoomResolver,
   createCommentResolver,
+  leaveAllRoomsResolver,
 } = require("./rooms");
 const { toggleSaveResolver } = require("./save");
 const { moderatePostResolver, moderateQuoteResolver } = require("./moderation");
@@ -67,6 +68,7 @@ module.exports = {
   createRoomResolver,
   changeRoomResolver,
   createCommentResolver,
+  leaveAllRoomsResolver,
   markNotificationReadResolver,
   dismissNotificationResolver,
   clearAllNotificationsResolver,

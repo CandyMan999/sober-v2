@@ -403,6 +403,7 @@ const typeDefs = gql`
     ): User!
     createRoom(name: String!): Room!
     changeRoom(roomId: ID!, userId: ID!): Room!
+    leaveAllRooms(userId: ID!): Boolean!
     createComment(
       text: String!
       userId: ID!
@@ -484,6 +485,7 @@ const typeDefs = gql`
     directRoomUpdated: Room!
     directTyping(roomId: ID!): TypingStatus!
     roomCommentCreated(roomId: ID!): Comment!
+    roomsUpdated: [Room!]!
   }
 `;
 

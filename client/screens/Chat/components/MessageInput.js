@@ -10,11 +10,12 @@ const MessageInput = ({
   onSend,
   disabled,
   currentUser,
+  bottomInset = 0,
 }) => {
   const canSend = value?.trim()?.length > 0 && !disabled;
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { paddingBottom: Math.max(12, bottomInset) }]}>
       <Avatar
         uri={currentUser?.profilePicUrl}
         size={34}
