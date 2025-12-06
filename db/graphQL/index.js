@@ -1,5 +1,4 @@
 const rootDefs = require("./rootDefs.js");
-const { print } = require("graphql");
 
 const {
   addPictureResolver,
@@ -60,10 +59,10 @@ const {
 const { Like, Comment, Connection, City } = require("../models");
 const { findClosestCity } = require("../utils/location");
 
-// Convert the DocumentNode to a printed SDL string so every definition is
-// preserved when building the executable schema (some tooling can ignore nested
-// DocumentNodes).
-const typeDefs = print(rootDefs);
+// Use the original DocumentNode for schema construction so every definition
+// declared in rootDefs (e.g., therapyChat) is available to the executable
+// schema.
+const typeDefs = rootDefs;
 
 // Reusable helper for likes
 const resolveLikes = (targetType) => async (parent) => {
