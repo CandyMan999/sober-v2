@@ -6,6 +6,8 @@ const pubsub = new PubSub();
 const DIRECT_MESSAGE_SENT = "DIRECT_MESSAGE_SENT";
 const DIRECT_ROOM_UPDATED = "DIRECT_ROOM_UPDATED";
 const DIRECT_TYPING = "DIRECT_TYPING";
+const ROOM_COMMENT_CREATED = "ROOM_COMMENT_CREATED";
+const ROOMS_UPDATED = "ROOMS_UPDATED";
 
 /**
  * Normalize a comment for GraphQL.
@@ -67,6 +69,38 @@ const publishDirectTyping = (typingPayload) => {
 };
 
 /**
+ * Trigger subscription event when a room comment is created.
+ */
+const publishRoomComment = (commentDoc) => {
+  if (!commentDoc) return;
+
+  const normalized = normalizeCommentForGraphQL(commentDoc);
+  if (!normalized) return;
+
+  pubsub.publish(ROOM_COMMENT_CREATED, {
+    roomCommentCreated: normalized,
+  });
+};
+
+/**
+ * Trigger subscription event when room rosters change.
+ */
+const publishRoomsUpdated = async () => {
+  const { normalizeRoomForGraphQL } = require("../utils/normalize");
+  const rooms = await Room.find({ isDirect: false })
+    .populate({ path: "users", select: "username profilePicUrl" })
+    .populate({ path: "lastMessage", populate: { path: "author" } });
+
+  const normalizedRooms = rooms
+    .map((room) => normalizeRoomForGraphQL(room))
+    .filter(Boolean);
+
+  pubsub.publish(ROOMS_UPDATED, {
+    roomsUpdated: normalizedRooms,
+  });
+};
+
+/**
  * Broadcast messages to anyone subscribed to that roomId.
  */
 const directMessageReceivedSubscription = {
@@ -118,17 +152,47 @@ const directTypingSubscription = {
   ),
 };
 
+/**
+ * Broadcast room comments to anyone subscribed to that room.
+ */
+const roomCommentCreatedSubscription = {
+  subscribe: withFilter(
+    () => pubsub.asyncIterator(ROOM_COMMENT_CREATED),
+    (payload, variables) => {
+      const comment = payload?.roomCommentCreated;
+      const roomId = variables?.roomId;
+
+      if (!comment || !roomId) return false;
+
+      return String(comment.targetId) === String(roomId);
+    }
+  ),
+};
+
+/**
+ * Broadcast room roster changes to all subscribers.
+ */
+const roomsUpdatedSubscription = {
+  subscribe: () => pubsub.asyncIterator(ROOMS_UPDATED),
+};
+
 module.exports = {
   pubsub,
   withFilter,
   DIRECT_MESSAGE_SENT,
   DIRECT_ROOM_UPDATED,
   DIRECT_TYPING,
+  ROOM_COMMENT_CREATED,
+  ROOMS_UPDATED,
   publishDirectMessage,
   publishDirectRoomUpdate,
   publishDirectTyping,
+  publishRoomComment,
+  publishRoomsUpdated,
   directMessageReceivedSubscription,
   directRoomUpdatedSubscription,
   directTypingSubscription,
+  roomCommentCreatedSubscription,
+  roomsUpdatedSubscription,
   normalizeCommentForGraphQL,
 };

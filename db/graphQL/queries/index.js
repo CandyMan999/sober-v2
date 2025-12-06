@@ -16,6 +16,7 @@ const {
   myDirectRoomsResolver,
   directRoomWithUserResolver,
 } = require("./directMessage");
+const { getRoomsResolver, getCommentsResolver } = require("./rooms");
 
 const {
   getBarLocationResolver,
@@ -37,6 +38,8 @@ module.exports = {
   userProfileResolver,
   myDirectRoomsResolver,
   directRoomWithUserResolver,
+  getRoomsResolver,
+  getCommentsResolver,
   getBarLocationResolver,
   getLiquorLocationResolver,
 };

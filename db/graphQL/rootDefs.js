@@ -347,6 +347,8 @@ const typeDefs = gql`
     quote(quoteId: ID!, token: String): Quote
     profileOverview(token: String!): ProfileOverview!
     userProfile(token: String!, userId: ID!): ProfileOverview!
+    getRooms: [Room!]
+    getComments(roomId: ID!): [Comment!]
     myDirectRooms: [Room!]!
     directRoomWithUser(userId: ID!): Room!
     getLiquorLocation(
@@ -400,6 +402,14 @@ const typeDefs = gql`
       slot: PictureSlot = PROFILE
     ): User!
     createRoom(name: String!): Room!
+    changeRoom(roomId: ID!, userId: ID!): Room!
+    leaveAllRooms(userId: ID!): Boolean!
+    createComment(
+      text: String!
+      userId: ID!
+      roomId: ID!
+      replyToCommentId: ID
+    ): Comment!
     sendComment(
       roomId: ID!
       text: String!
@@ -474,6 +484,8 @@ const typeDefs = gql`
     directMessageReceived(roomId: ID!): Comment!
     directRoomUpdated: Room!
     directTyping(roomId: ID!): TypingStatus!
+    roomCommentCreated(roomId: ID!): Comment!
+    roomsUpdated: [Room!]!
   }
 `;
 

@@ -26,6 +26,10 @@ const {
   setDirectTypingResolver,
   deleteDirectRoomResolver,
   therapyChatResolver,
+  createRoomResolver,
+  changeRoomResolver,
+  createCommentResolver,
+  leaveAllRoomsResolver,
   markNotificationReadResolver,
   dismissNotificationResolver,
   clearAllNotificationsResolver,
@@ -48,11 +52,15 @@ const {
   directRoomWithUserResolver,
   getBarLocationResolver,
   getLiquorLocationResolver,
+  getRoomsResolver,
+  getCommentsResolver,
 } = require("./queries/index.js");
 const {
   directMessageReceivedSubscription,
   directRoomUpdatedSubscription,
   directTypingSubscription,
+  roomCommentCreatedSubscription,
+  roomsUpdatedSubscription,
 } = require("./subscription/subscription");
 
 // Import models
@@ -98,6 +106,8 @@ const resolvers = {
     userProfile: userProfileResolver,
     myDirectRooms: myDirectRoomsResolver,
     directRoomWithUser: directRoomWithUserResolver,
+    getRooms: getRoomsResolver,
+    getComments: getCommentsResolver,
     getBarLocation: getBarLocationResolver,
     getLiquorLocation: getLiquorLocationResolver,
   },
@@ -129,6 +139,10 @@ const resolvers = {
     setDirectTyping: setDirectTypingResolver,
     deleteDirectRoom: deleteDirectRoomResolver,
     therapyChat: therapyChatResolver,
+    createRoom: createRoomResolver,
+    changeRoom: changeRoomResolver,
+    leaveAllRooms: leaveAllRoomsResolver,
+    createComment: createCommentResolver,
     markNotificationRead: markNotificationReadResolver,
     dismissNotification: dismissNotificationResolver,
     clearAllNotifications: clearAllNotificationsResolver,
@@ -141,6 +155,8 @@ const resolvers = {
     directMessageReceived: directMessageReceivedSubscription,
     directRoomUpdated: directRoomUpdatedSubscription,
     directTyping: directTypingSubscription,
+    roomCommentCreated: roomCommentCreatedSubscription,
+    roomsUpdated: roomsUpdatedSubscription,
   },
 
   // ---- Type-level resolvers ----
