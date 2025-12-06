@@ -11,7 +11,6 @@ import {
   KeyboardAvoidingView,
   Platform,
   StyleSheet,
-  Text,
   View,
 } from "react-native";
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
@@ -37,6 +36,23 @@ const sortByCreatedAt = (items = []) => {
     const bDate = new Date(b?.createdAt || 0).getTime();
     return aDate - bDate;
   });
+};
+
+const getMessageId = (message = {}) =>
+  String(message.id || message._id || "");
+
+const dedupeMessages = (items = []) => {
+  const seen = new Set();
+  const unique = [];
+
+  items.forEach((item) => {
+    const id = getMessageId(item);
+    if (!id || seen.has(id)) return;
+    seen.add(id);
+    unique.push(item);
+  });
+
+  return unique;
 };
 
 const buildWsUrl = () => GRAPHQL_URI.replace(/^http/, "ws");
@@ -96,7 +112,8 @@ const ChatRoomScreen = ({ route }) => {
     try {
       const response = await client.request(GET_COMMENTS, { roomId: room.id });
       const incoming = response?.getComments || [];
-      setMessages(sortByCreatedAt(incoming));
+      const normalized = dedupeMessages(sortByCreatedAt(incoming));
+      setMessages(normalized);
     } catch (error) {
       console.log("Failed to load comments", error);
     } finally {
@@ -137,17 +154,18 @@ const ChatRoomScreen = ({ route }) => {
         if (!incoming) return;
 
         setMessages((prev) => {
-          const existingIndex = prev.findIndex(
-            (msg) => String(msg.id) === String(incoming.id)
+          const next = [...prev];
+          const incomingId = getMessageId(incoming);
+          const existingIndex = next.findIndex(
+            (msg) => getMessageId(msg) === incomingId
           );
 
           if (existingIndex !== -1) {
-            const updated = [...prev];
-            updated[existingIndex] = { ...updated[existingIndex], ...incoming };
-            return sortByCreatedAt(updated);
+            next[existingIndex] = { ...next[existingIndex], ...incoming };
+            return sortByCreatedAt(next);
           }
 
-          return sortByCreatedAt([...prev, incoming]);
+          return dedupeMessages(sortByCreatedAt([...next, incoming]));
         });
       },
       error: (error) => {
@@ -178,7 +196,9 @@ const ChatRoomScreen = ({ route }) => {
 
       const newComment = response?.createComment;
       if (newComment) {
-        setMessages((prev) => sortByCreatedAt([...prev, newComment]));
+        setMessages((prev) =>
+          dedupeMessages(sortByCreatedAt([...prev, newComment]))
+        );
         setMessageText("");
       }
     } catch (error) {
@@ -193,31 +213,19 @@ const ChatRoomScreen = ({ route }) => {
     [loadingRoom, loadingMessages, messages.length]
   );
 
-  const bottomInset = Math.max(insets.bottom, 12);
-  const listPaddingBottom = bottomInset + 96;
-  const keyboardVerticalOffset = Platform.OS === "ios" ? insets.top + 28 : 0;
+  const keyboardVerticalOffset = Platform.OS === "ios" ? insets.top : 0;
 
   return (
-    <SafeAreaView
-      style={styles.safeArea}
-      edges={["top", "left", "right"]}
+    <KeyboardAvoidingView
+      style={styles.flex}
+      behavior={Platform.OS === "ios" ? "padding" : undefined}
+      keyboardVerticalOffset={keyboardVerticalOffset}
     >
-      <KeyboardAvoidingView
-        style={styles.flex}
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        keyboardVerticalOffset={keyboardVerticalOffset}
+      <SafeAreaView
+        style={styles.safeArea}
+        edges={["top", "left", "right"]}
       >
         <View style={styles.container}>
-          <View style={styles.topMeta}>
-            <View style={styles.livePill}>
-              <View style={styles.statusDot} />
-              <Text style={styles.liveText}>Community support is live</Text>
-            </View>
-            <Text style={styles.helperText} numberOfLines={2}>
-              Support others, ask questions, and celebrate the wins together.
-            </Text>
-          </View>
-
           <View style={styles.messageArea}>
             {isLoading ? (
               <View style={styles.loaderContainer}>
@@ -229,12 +237,11 @@ const ChatRoomScreen = ({ route }) => {
                 currentUserId={currentUserId}
                 loading={loadingMessages}
                 onRefresh={loadMessages}
-                contentPaddingBottom={listPaddingBottom}
               />
             )}
           </View>
 
-          <View style={[styles.inputArea, { paddingBottom: bottomInset }]}>
+          <View style={styles.inputArea}>
             <MessageInput
               value={messageText}
               onChangeText={setMessageText}
@@ -244,8 +251,8 @@ const ChatRoomScreen = ({ route }) => {
             />
           </View>
         </View>
-      </KeyboardAvoidingView>
-    </SafeAreaView>
+      </SafeAreaView>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -259,50 +266,13 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: "#0b1220",
-    paddingTop: 6,
-  },
-  topMeta: {
-    paddingHorizontal: 16,
-    paddingTop: 6,
-    paddingBottom: 12,
-    gap: 8,
-  },
-  livePill: {
-    flexDirection: "row",
-    alignItems: "center",
-    alignSelf: "flex-start",
-    backgroundColor: "rgba(56,189,248,0.12)",
-    borderRadius: 999,
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderWidth: 1,
-    borderColor: "rgba(56,189,248,0.35)",
-  },
-  statusDot: {
-    width: 8,
-    height: 8,
-    borderRadius: 999,
-    marginRight: 8,
-    backgroundColor: "#34d399",
-    shadowColor: "#34d399",
-    shadowOpacity: 0.6,
-    shadowOffset: { width: 0, height: 0 },
-    shadowRadius: 6,
-  },
-  liveText: {
-    color: "#e0f2fe",
-    fontWeight: "700",
-    fontSize: 12,
-    letterSpacing: 0.2,
-  },
-  helperText: {
-    color: "#94a3b8",
-    fontSize: 13,
-    lineHeight: 18,
+    backgroundColor: "#050816",
   },
   messageArea: {
     flex: 1,
+    backgroundColor: "#0b1220",
+    paddingHorizontal: 16,
+    paddingTop: 6,
   },
   inputArea: {
     backgroundColor: "#0b1220",

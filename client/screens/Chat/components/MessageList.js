@@ -15,19 +15,21 @@ const MessageList = ({
   currentUserId,
   loading,
   onRefresh,
-  contentPaddingBottom = 120,
+  contentPaddingBottom = 16,
 }) => {
   const renderItem = ({ item }) => (
     <MessageBubble
       message={item}
-      isMine={String(item?.author?.id) === String(currentUserId)}
+      isMine={
+        String(item?.author?.id || item?.author?._id) === String(currentUserId)
+      }
     />
   );
 
   return (
     <FlatList
       data={messages}
-      keyExtractor={(item) => item?.id || String(item?._id)}
+      keyExtractor={(item) => String(item?.id || item?._id)}
       renderItem={renderItem}
       contentContainerStyle={[
         styles.listContent,
@@ -60,9 +62,8 @@ const MessageList = ({
 
 const styles = StyleSheet.create({
   listContent: {
-    paddingHorizontal: 16,
-    paddingVertical: 20,
-    gap: 14,
+    paddingVertical: 12,
+    gap: 12,
   },
   emptyState: {
     paddingTop: 40,
