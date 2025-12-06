@@ -136,8 +136,8 @@ const styles = StyleSheet.create({
     paddingVertical: 4,
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: "rgba(59,130,246,0.3)",
-    backgroundColor: "rgba(59,130,246,0.1)",
+    borderColor: "rgba(59,130,246,0.24)",
+    backgroundColor: "rgba(59,130,246,0.07)",
     gap: 8,
   },
   replyingCopy: {

@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { formatDistanceToNow } from "date-fns";
@@ -30,6 +30,8 @@ const MessageBubble = ({ message, isMine, onReply, currentUsername }) => {
   const handleReplyPress = () => {
     if (onReply) onReply(message);
   };
+
+  const [replyExpanded, setReplyExpanded] = useState(false);
 
   const replyLabel = useMemo(() => {
     if (!replyTo) return null;
@@ -127,17 +129,20 @@ const MessageBubble = ({ message, isMine, onReply, currentUsername }) => {
               ]}
               accessibilityRole="button"
               accessibilityLabel={`Replying to ${replyLabel.username}`}
+              onPress={() => setReplyExpanded((prev) => !prev)}
             >
-              <View style={styles.replyLine} />
               <View style={styles.replyContent}>
-                <Text style={styles.replyTitle} numberOfLines={1}>
-                  Reply to <Text style={styles.replyUsername}>{replyLabel.username}</Text>
+                <Text
+                  style={styles.replyTitle}
+                  numberOfLines={replyExpanded ? undefined : 1}
+                >
+                  ↩︎ <Text style={styles.replyUsername}>{replyLabel.username}</Text>
                   {"  "}
                   <Text style={styles.replyTimestamp}>{replyLabel.timestamp}</Text>
                 </Text>
                 <Text
                   style={styles.replyPreview}
-                  numberOfLines={1}
+                  numberOfLines={replyExpanded ? undefined : 1}
                 >
                   {replyLabel.previewText}
                 </Text>
@@ -172,7 +177,7 @@ const MessageBubble = ({ message, isMine, onReply, currentUsername }) => {
                 style={styles.replyButton}
                 hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
               >
-                <Ionicons name="arrow-undo-outline" size={14} color="#f472b6" />
+                <Ionicons name="arrow-undo-outline" size={14} color="#cbd5e1" />
               </TouchableOpacity>
             ) : null}
           </View>
@@ -214,8 +219,8 @@ const styles = StyleSheet.create({
     alignItems: "flex-end",
   },
   replyButton: {
-    paddingHorizontal: 6,
-    paddingVertical: 4,
+    paddingHorizontal: 4,
+    paddingVertical: 2,
     borderRadius: 999,
     marginLeft: 8,
   },
@@ -224,23 +229,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: 6,
     width: "100%",
-    backgroundColor: "transparent",
+    backgroundColor: "rgba(15,23,42,0.4)",
     borderRadius: 10,
-    paddingHorizontal: 6,
+    paddingLeft: 0,
+    paddingRight: 0,
     paddingVertical: 2,
-    borderLeftWidth: 3,
-    borderLeftColor: "#e2e8f0",
-    marginBottom: 6,
   },
   replyToMe: {
-    borderLeftColor: "#f472b6",
-    backgroundColor: "rgba(244,114,182,0.08)",
-  },
-  replyLine: {
-    width: 2,
-    borderRadius: 6,
-    backgroundColor: "rgba(226,232,240,0.7)",
-    height: "100%",
+    backgroundColor: "rgba(244,114,182,0.14)",
   },
   replyContent: {
     flex: 1,
@@ -264,8 +260,8 @@ const styles = StyleSheet.create({
   },
   bubble: {
     borderRadius: 14,
-    paddingHorizontal: 12,
-    paddingVertical: 10,
+    paddingHorizontal: 10,
+    paddingVertical: 8,
     borderWidth: 1,
     maxWidth: "100%",
   },
@@ -282,7 +278,7 @@ const styles = StyleSheet.create({
     alignSelf: "flex-start",
   },
   bubbleWithReply: {
-    paddingTop: 12,
+    paddingTop: 0,
   },
   text: {
     fontSize: 14,
