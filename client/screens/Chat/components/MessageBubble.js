@@ -136,9 +136,14 @@ const MessageBubble = ({ message, isMine, onReply, currentUsername }) => {
                   style={styles.replyTitle}
                   numberOfLines={replyExpanded ? undefined : 1}
                 >
-                  ↩︎ <Text style={styles.replyUsername}>{replyLabel.username}</Text>
-                  {"  "}
-                  <Text style={styles.replyTimestamp}>{replyLabel.timestamp}</Text>
+                  <Text style={styles.replyLabel}>Reply to </Text>
+                  <Text style={styles.replyUsername}>{replyLabel.username}</Text>
+                  {replyLabel.timestamp ? (
+                    <Text style={styles.replyTimestamp}>
+                      {"  "}
+                      {replyLabel.timestamp}
+                    </Text>
+                  ) : null}
                 </Text>
                 <Text
                   style={styles.replyPreview}
@@ -226,17 +231,17 @@ const styles = StyleSheet.create({
   },
   replyContainer: {
     flexDirection: "row",
-    alignItems: "center",
-    gap: 6,
+    alignItems: "flex-start",
     width: "100%",
-    backgroundColor: "rgba(15,23,42,0.4)",
-    borderRadius: 10,
-    paddingLeft: 0,
+    borderLeftWidth: 2,
+    borderLeftColor: "rgba(255,255,255,0.85)",
+    paddingLeft: 8,
     paddingRight: 0,
     paddingVertical: 2,
+    marginRight: 0,
   },
   replyToMe: {
-    backgroundColor: "rgba(244,114,182,0.14)",
+    borderLeftColor: "#f472b6",
   },
   replyContent: {
     flex: 1,
@@ -244,15 +249,21 @@ const styles = StyleSheet.create({
   },
   replyTitle: {
     color: "#e2e8f0",
-    fontWeight: "700",
+    fontWeight: "600",
     fontSize: 11,
   },
+  replyLabel: {
+    color: "#e2e8f0",
+    opacity: 0.9,
+  },
   replyUsername: {
-    color: "#f59e0b",
+    color: "#fef3c7",
+    fontWeight: "700",
   },
   replyPreview: {
     color: "#cbd5e1",
     fontSize: 11,
+    marginTop: 1,
   },
   replyTimestamp: {
     color: "#94a3b8",
