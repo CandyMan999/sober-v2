@@ -6,6 +6,8 @@ import { useFocusEffect, useIsFocused } from "@react-navigation/native";
 
 import MessageList from "./components/MessageList";
 import MessageInput from "./components/MessageInput";
+import Avatar from "../../components/Avatar";
+import TypingIndicator from "../../components/TypingIndicator";
 import Context from "../../context";
 import { useClient } from "../../client";
 import {
@@ -16,6 +18,10 @@ import {
   GET_ROOMS,
   ROOM_COMMENT_SUBSCRIPTION,
 } from "../../GraphQL/chatRooms";
+import {
+  DIRECT_TYPING_SUBSCRIPTION,
+  SET_DIRECT_TYPING,
+} from "../../GraphQL/directMessages";
 import { GRAPHQL_URI } from "../../config/endpoint";
 
 const sortByCreatedAt = (items = []) => {
@@ -62,6 +68,8 @@ const ChatRoomScreen = ({ route }) => {
   const [loadingRoom, setLoadingRoom] = useState(false);
   const [loadingMessages, setLoadingMessages] = useState(false);
   const [sending, setSending] = useState(false);
+  const [isTypingLocal, setIsTypingLocal] = useState(false);
+  const [typingUser, setTypingUser] = useState(null);
 
   const ensureRoom = useCallback(async () => {
     if (!currentUserId) return;
@@ -139,6 +147,11 @@ const ChatRoomScreen = ({ route }) => {
       variables: { roomId: room.id },
     });
 
+    const typingObservable = wsClient.request({
+      query: DIRECT_TYPING_SUBSCRIPTION,
+      variables: { roomId: room.id },
+    });
+
     const subscription = commentObservable.subscribe({
       next: ({ data }) => {
         const incoming = data?.roomCommentCreated;
@@ -164,15 +177,39 @@ const ChatRoomScreen = ({ route }) => {
       },
     });
 
+    const typingSubscription = typingObservable.subscribe({
+      next: ({ data }) => {
+        try {
+          const typing = data?.directTyping;
+          if (!typing) return;
+
+          if (String(typing.userId) === String(currentUserId)) return;
+
+          if (typing.isTyping) {
+            setTypingUser(typing);
+          } else {
+            setTypingUser(null);
+          }
+        } catch (err) {
+          console.error("Room typing subscription handler failed:", err);
+        }
+      },
+      error: (err) => {
+        console.error("Room typing subscription error:", err);
+      },
+    });
+
     commentSubscriptionRef.current = subscription;
 
     return () => {
       subscription?.unsubscribe?.();
+      typingSubscription?.unsubscribe?.();
       commentSubscriptionRef.current = null;
       wsClient?.close?.();
       wsClientRef.current = null;
+      setTypingUser(null);
     };
-  }, [isFocused, room?.id, wsClientRef]);
+  }, [currentUserId, isFocused, room?.id, wsClientRef]);
 
   const handleSend = useCallback(async () => {
     if (!messageText?.trim() || !room?.id || !currentUserId) return;
@@ -199,6 +236,38 @@ const ChatRoomScreen = ({ route }) => {
     }
   }, [client, currentUserId, messageText, room?.id]);
 
+  useEffect(() => {
+    const next = messageText.trim().length > 0;
+    setIsTypingLocal(next);
+  }, [messageText]);
+
+  useEffect(() => {
+    if (!room?.id) return;
+
+    const send = async () => {
+      try {
+        await client.request(SET_DIRECT_TYPING, {
+          roomId: room.id,
+          isTyping: isTypingLocal,
+        });
+      } catch (err) {
+        console.error("Failed to publish typing state", err);
+      }
+    };
+
+    send();
+  }, [client, isTypingLocal, room?.id]);
+
+  useFocusEffect(
+    useCallback(() => {
+      return () => {
+        setMessageText("");
+        setIsTypingLocal(false);
+        setTypingUser(null);
+      };
+    }, [])
+  );
+
   const isLoading = useMemo(
     () => loadingRoom || (loadingMessages && !messages.length),
     [loadingRoom, loadingMessages, messages.length]
@@ -210,6 +279,27 @@ const ChatRoomScreen = ({ route }) => {
       getMessageId(latest) || getMessageId(room?.lastMessage) || undefined
     );
   }, [messages, room?.lastMessage]);
+
+  const renderTypingIndicator = () => {
+    if (!typingUser?.isTyping) return null;
+
+    return (
+      <View style={styles.typingRow}>
+        <Avatar
+          uri={typingUser.profilePicUrl}
+          size={32}
+          disableNavigation
+        />
+        <TypingIndicator
+          username={typingUser.username || "Someone"}
+          accentColor="#38bdf8"
+          bubbleColor="rgba(11,18,32,0.95)"
+          borderColor="rgba(148,163,184,0.35)"
+          dotColor="#38bdf8"
+        />
+      </View>
+    );
+  };
 
   return (
     <SafeAreaView
@@ -233,6 +323,7 @@ const ChatRoomScreen = ({ route }) => {
               contentPaddingBottom={0}
             />
           )}
+          {renderTypingIndicator()}
         </View>
 
         <View style={styles.inputArea}>
@@ -272,6 +363,12 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
+  },
+  typingRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingVertical: 8,
+    gap: 12,
   },
 });
 
