@@ -224,6 +224,7 @@ const ChatRoomScreen = ({ route }) => {
             </View>
           ) : (
             <MessageList
+              key={room?.id || roomName}
               messages={messages}
               currentUserId={currentUserId}
               loading={loadingMessages}
