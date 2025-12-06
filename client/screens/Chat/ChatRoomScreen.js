@@ -1,23 +1,8 @@
-import React, {
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
-import {
-  ActivityIndicator,
-  Keyboard,
-  KeyboardAvoidingView,
-  Platform,
-  StyleSheet,
-  View,
-} from "react-native";
+import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
+import { ActivityIndicator, StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { SubscriptionClient } from "subscriptions-transport-ws";
 import { useFocusEffect, useIsFocused } from "@react-navigation/native";
-import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 
 import MessageList from "./components/MessageList";
 import MessageInput from "./components/MessageInput";
@@ -67,12 +52,9 @@ const ChatRoomScreen = ({ route }) => {
   const currentUser = state?.user;
   const currentUserId = currentUser?.id;
   const isFocused = useIsFocused();
-  const tabBarHeight = useBottomTabBarHeight?.() || 0;
 
   const wsClientRef = useRef(null);
   const commentSubscriptionRef = useRef(null);
-  const keyboardShowListener = useRef(null);
-  const keyboardHideListener = useRef(null);
 
   const [room, setRoom] = useState(null);
   const [messages, setMessages] = useState([]);
@@ -80,7 +62,6 @@ const ChatRoomScreen = ({ route }) => {
   const [loadingRoom, setLoadingRoom] = useState(false);
   const [loadingMessages, setLoadingMessages] = useState(false);
   const [sending, setSending] = useState(false);
-  const [keyboardInset, setKeyboardInset] = useState(0);
 
   const ensureRoom = useCallback(async () => {
     if (!currentUserId) return;
@@ -138,26 +119,6 @@ const ChatRoomScreen = ({ route }) => {
   useEffect(() => {
     loadMessages();
   }, [loadMessages]);
-
-  useEffect(() => {
-    const showEvent = Platform.OS === "ios" ? "keyboardWillShow" : "keyboardDidShow";
-    const hideEvent = Platform.OS === "ios" ? "keyboardWillHide" : "keyboardDidHide";
-
-    keyboardShowListener.current = Keyboard.addListener(showEvent, (event) => {
-      const height = event?.endCoordinates?.height || 0;
-      const adjusted = Math.max(height - tabBarHeight, 0);
-      setKeyboardInset(adjusted);
-    });
-
-    keyboardHideListener.current = Keyboard.addListener(hideEvent, () => {
-      setKeyboardInset(0);
-    });
-
-    return () => {
-      keyboardShowListener.current?.remove?.();
-      keyboardHideListener.current?.remove?.();
-    };
-  }, [tabBarHeight]);
 
   useEffect(() => {
     if (!room?.id || !isFocused) return undefined;
@@ -243,53 +204,40 @@ const ChatRoomScreen = ({ route }) => {
     [loadingRoom, loadingMessages, messages.length]
   );
 
-  const keyboardVerticalOffset = 0;
-
   return (
-    <KeyboardAvoidingView
-      style={styles.flex}
-      behavior={Platform.OS === "ios" ? "padding" : undefined}
-      keyboardVerticalOffset={keyboardVerticalOffset}
+    <SafeAreaView
+      style={styles.safeArea}
+      edges={["left", "right"]}
     >
-      <SafeAreaView
-        style={styles.safeArea}
-        edges={["left", "right"]}
-      >
-        <View style={styles.container}>
-          <View style={styles.messageArea}>
-            {isLoading ? (
-              <View style={styles.loaderContainer}>
-                <ActivityIndicator size="large" color="#f59e0b" />
-              </View>
-            ) : (
-              <MessageList
-                messages={messages}
-                currentUserId={currentUserId}
-                loading={loadingMessages}
-                onRefresh={loadMessages}
-                contentPaddingBottom={0}
-              />
-            )}
-          </View>
-
-          <View
-            style={[
-              styles.inputArea,
-              keyboardInset ? { marginBottom: keyboardInset } : null,
-            ]}
-          >
-            <MessageInput
-              value={messageText}
-              onChangeText={setMessageText}
-              onSend={handleSend}
-              disabled={sending || !room?.id}
-              currentUser={currentUser}
-              bottomInset={0}
+      <View style={styles.container}>
+        <View style={styles.messageArea}>
+          {isLoading ? (
+            <View style={styles.loaderContainer}>
+              <ActivityIndicator size="large" color="#f59e0b" />
+            </View>
+          ) : (
+            <MessageList
+              messages={messages}
+              currentUserId={currentUserId}
+              loading={loadingMessages}
+              onRefresh={loadMessages}
+              contentPaddingBottom={0}
             />
-          </View>
+          )}
         </View>
-      </SafeAreaView>
-    </KeyboardAvoidingView>
+
+        <View style={styles.inputArea}>
+          <MessageInput
+            value={messageText}
+            onChangeText={setMessageText}
+            onSend={handleSend}
+            disabled={sending || !room?.id}
+            currentUser={currentUser}
+            bottomInset={0}
+          />
+        </View>
+      </View>
+    </SafeAreaView>
   );
 };
 
@@ -297,9 +245,6 @@ const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
     backgroundColor: "#050816",
-  },
-  flex: {
-    flex: 1,
   },
   container: {
     flex: 1,

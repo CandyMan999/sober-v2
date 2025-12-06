@@ -1,9 +1,10 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Text, View, StyleSheet } from "react-native";
+import { KeyboardAvoidingView, Platform, StyleSheet, Text, View } from "react-native";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useFocusEffect } from "@react-navigation/native";
 import { SubscriptionClient } from "subscriptions-transport-ws";
+import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 
 import ChatRoomScreen from "../screens/Chat/ChatRoomScreen";
 import Context from "../context";
@@ -22,6 +23,7 @@ const ChatTabs = () => {
   const client = useClient();
   const [roomCounts, setRoomCounts] = useState({});
   const userId = state?.user?.id;
+  const tabBarHeight = useBottomTabBarHeight?.() || 0;
 
   const buildWsUrl = useCallback(() => GRAPHQL_URI.replace(/^http/, "ws"), []);
 
@@ -112,40 +114,46 @@ const ChatTabs = () => {
   );
 
   return (
-    <SafeAreaView
-      style={{ flex: 1, backgroundColor: "#050816" }}
-      edges={["top", "left", "right"]}
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === "ios" ? "padding" : undefined}
+      keyboardVerticalOffset={tabBarHeight}
     >
-      <TopTab.Navigator
-        sceneContainerStyle={{ backgroundColor: "#0b1220" }}
-        screenOptions={({ route }) => ({
-          tabBarIndicatorStyle: { backgroundColor: "#f59e0b", height: 3 },
-          tabBarStyle: { backgroundColor: "#050816" },
-          tabBarActiveTintColor: "#fff",
-          tabBarInactiveTintColor: "#9ca3af",
-          tabBarLabelStyle: { fontWeight: "700" },
-          tabBarScrollEnabled: true,
-          tabBarItemStyle: { width: 140 },
-          tabBarLabel: ({ color }) => tabLabel({ route, color }),
-        })}
+      <SafeAreaView
+        style={{ flex: 1, backgroundColor: "#050816" }}
+        edges={["top", "left", "right"]}
       >
-        <TopTab.Screen
-          name="General"
-          component={ChatRoomScreen}
-          initialParams={{ roomName: "General" }}
-        />
-        <TopTab.Screen
-          name="Early Days"
-          component={ChatRoomScreen}
-          initialParams={{ roomName: "Early Days" }}
-        />
-        <TopTab.Screen
-          name="Relapse Support"
-          component={ChatRoomScreen}
-          initialParams={{ roomName: "Relapse Support" }}
-        />
-      </TopTab.Navigator>
-    </SafeAreaView>
+        <TopTab.Navigator
+          sceneContainerStyle={{ backgroundColor: "#0b1220" }}
+          screenOptions={({ route }) => ({
+            tabBarIndicatorStyle: { backgroundColor: "#f59e0b", height: 3 },
+            tabBarStyle: { backgroundColor: "#050816" },
+            tabBarActiveTintColor: "#fff",
+            tabBarInactiveTintColor: "#9ca3af",
+            tabBarLabelStyle: { fontWeight: "700" },
+            tabBarScrollEnabled: true,
+            tabBarItemStyle: { width: 140 },
+            tabBarLabel: ({ color }) => tabLabel({ route, color }),
+          })}
+        >
+          <TopTab.Screen
+            name="General"
+            component={ChatRoomScreen}
+            initialParams={{ roomName: "General" }}
+          />
+          <TopTab.Screen
+            name="Early Days"
+            component={ChatRoomScreen}
+            initialParams={{ roomName: "Early Days" }}
+          />
+          <TopTab.Screen
+            name="Relapse Support"
+            component={ChatRoomScreen}
+            initialParams={{ roomName: "Relapse Support" }}
+          />
+        </TopTab.Navigator>
+      </SafeAreaView>
+    </KeyboardAvoidingView>
   );
 };
 
