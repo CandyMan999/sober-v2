@@ -21,6 +21,7 @@ const MessageList = ({
   onRefresh,
   lastMessageId,
   contentPaddingBottom = 0,
+  onRegisterScrollToBottom,
 }) => {
   const listRef = useRef(null);
   const [distanceFromBottom, setDistanceFromBottom] = useState(0);
@@ -64,6 +65,13 @@ const MessageList = ({
       });
     });
   };
+
+  useEffect(() => {
+    if (!onRegisterScrollToBottom) return undefined;
+
+    onRegisterScrollToBottom(scrollToBottom);
+    return () => onRegisterScrollToBottom(null);
+  }, [onRegisterScrollToBottom]);
 
   useEffect(() => {
     if (!messages?.length) return;
@@ -173,10 +181,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#0b1220",
-    borderRadius: 18,
-    overflow: "hidden",
-    borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.05)",
   },
   listContent: {
     paddingTop: 0,

@@ -59,6 +59,7 @@ const ChatRoomScreen = ({ route }) => {
 
   const wsClientRef = useRef(null);
   const commentSubscriptionRef = useRef(null);
+  const scrollToBottomRef = useRef(null);
 
   const [room, setRoom] = useState(null);
   const [messages, setMessages] = useState([]);
@@ -68,6 +69,7 @@ const ChatRoomScreen = ({ route }) => {
   const [sending, setSending] = useState(false);
   const [isTypingLocal, setIsTypingLocal] = useState(false);
   const [typingUsers, setTypingUsers] = useState({});
+  const [doneLoading, setDoneLoading] = useState(false);
 
   const ensureRoom = useCallback(async () => {
     if (!currentUserId) return;
@@ -102,6 +104,7 @@ const ChatRoomScreen = ({ route }) => {
   const loadMessages = useCallback(async () => {
     if (!room?.id) return;
 
+    setDoneLoading(false);
     setLoadingMessages(true);
     try {
       const response = await client.request(GET_COMMENTS, { roomId: room.id });
@@ -112,6 +115,7 @@ const ChatRoomScreen = ({ route }) => {
       console.log("Failed to load comments", error);
     } finally {
       setLoadingMessages(false);
+      setDoneLoading(true);
     }
   }, [client, room?.id]);
 
@@ -125,6 +129,16 @@ const ChatRoomScreen = ({ route }) => {
   useEffect(() => {
     loadMessages();
   }, [loadMessages]);
+
+  useEffect(() => {
+    if (!doneLoading) return;
+
+    const timer = setTimeout(() => {
+      scrollToBottomRef.current?.(true);
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, [doneLoading]);
 
   useEffect(() => {
     if (!room?.id || !isFocused) return undefined;
@@ -323,6 +337,9 @@ const ChatRoomScreen = ({ route }) => {
               onRefresh={loadMessages}
               lastMessageId={lastMessageId}
               contentPaddingBottom={0}
+              onRegisterScrollToBottom={(fn) => {
+                scrollToBottomRef.current = fn;
+              }}
             />
           )}
         </View>
@@ -354,7 +371,7 @@ const styles = StyleSheet.create({
   messageArea: {
     flex: 1,
     backgroundColor: "#0b1220",
-    paddingHorizontal: 16,
+    paddingHorizontal: 0,
     paddingTop: 0,
   },
   inputArea: {
