@@ -26,6 +26,7 @@ const MessageBubble = ({ message, isMine, onReply, currentUsername }) => {
   const author = message?.author || {};
   const timeLabel = formatTime(message?.createdAt);
   const replyTo = message?.replyTo;
+  const bubbleAccentColor = isMine ? "#38bdf8" : "#f59e0b";
 
   const handleReplyPress = () => {
     if (onReply) onReply(message);
@@ -51,6 +52,12 @@ const MessageBubble = ({ message, isMine, onReply, currentUsername }) => {
       replyTo.author.username.toLowerCase() === currentUsername.toLowerCase()
     );
   }, [currentUsername, replyTo?.author?.username]);
+
+  const isMentioningMe = useMemo(() => {
+    if (!currentUsername) return false;
+    const content = message?.text || "";
+    return content.toLowerCase().includes(`@${currentUsername.toLowerCase()}`);
+  }, [currentUsername, message?.text]);
 
   const renderTextWithMentions = useMemo(() => {
     const content = message?.text || "";
@@ -113,11 +120,17 @@ const MessageBubble = ({ message, isMine, onReply, currentUsername }) => {
       ) : null}
 
       <View style={[styles.bubbleStack, isMine ? styles.bubbleStackMine : null]}>
+        {!isMine ? (
+          <Text style={styles.username} numberOfLines={1}>
+            {author.username || "User"}
+          </Text>
+        ) : null}
         <View
           style={[
             styles.bubble,
             isMine ? styles.bubbleMine : styles.bubbleTheirs,
             replyLabel && styles.bubbleWithReply,
+            isMentioningMe && !isMine ? styles.bubbleMention : null,
           ]}
         >
           {replyLabel ? (
@@ -125,7 +138,9 @@ const MessageBubble = ({ message, isMine, onReply, currentUsername }) => {
               activeOpacity={0.8}
               style={[
                 styles.replyContainer,
+                { borderLeftColor: bubbleAccentColor },
                 isReplyingToMe && styles.replyToMe,
+                isReplyingToMe && { shadowColor: bubbleAccentColor },
               ]}
               accessibilityRole="button"
               accessibilityLabel={`Replying to ${replyLabel.username}`}
@@ -223,6 +238,12 @@ const styles = StyleSheet.create({
   bubbleStackMine: {
     alignItems: "flex-end",
   },
+  username: {
+    color: "#cbd5e1",
+    fontSize: 11,
+    marginBottom: 4,
+    paddingLeft: 4,
+  },
   replyButton: {
     paddingHorizontal: 4,
     paddingVertical: 2,
@@ -241,7 +262,11 @@ const styles = StyleSheet.create({
     marginRight: 0,
   },
   replyToMe: {
-    borderLeftColor: "#f472b6",
+    shadowColor: "rgba(59,130,246,0.45)",
+    shadowOpacity: 0.9,
+    shadowRadius: 8,
+    shadowOffset: { width: 0, height: 0 },
+    elevation: 4,
   },
   replyContent: {
     flex: 1,
@@ -290,6 +315,13 @@ const styles = StyleSheet.create({
   },
   bubbleWithReply: {
     paddingTop: 0,
+  },
+  bubbleMention: {
+    shadowColor: "rgba(251,191,36,0.8)",
+    shadowOpacity: 0.95,
+    shadowRadius: 10,
+    shadowOffset: { width: 0, height: 0 },
+    elevation: 7,
   },
   text: {
     fontSize: 14,
