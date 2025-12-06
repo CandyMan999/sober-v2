@@ -105,68 +105,74 @@ const MessageBubble = ({ message, isMine, onReply, currentUsername }) => {
       ) : null}
 
       <View style={[styles.bubbleStack, isMine ? styles.bubbleStackMine : null]}>
-        <View style={[styles.metaRow, isMine && styles.metaRowMine]}>
-          {!isMine && author?.username ? (
-            <Text style={styles.username}>{author.username}</Text>
-          ) : (
-            <View style={styles.metaSpacer} />
-          )}
-          {onReply ? (
-            <TouchableOpacity
-              onPress={handleReplyPress}
-              accessibilityRole="button"
-              accessibilityLabel={`Reply to ${author.username || "message"}`}
-              style={styles.replyButton}
-              hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
-            >
-              <Ionicons name="return-up-forward" size={18} color="#cbd5e1" />
-            </TouchableOpacity>
-          ) : null}
-        </View>
-
-        {replyLabel ? (
-          <TouchableOpacity
-            onPress={() => setReplyExpanded((prev) => !prev)}
-            activeOpacity={0.9}
-            style={[styles.replyContainer, replyExpanded && styles.replyExpanded]}
-            accessibilityRole="button"
-            accessibilityLabel={`Replying to ${replyLabel.username}`}
-          >
-            <View style={styles.replyLine} />
-            <View style={styles.replyContent}>
-              <Text style={styles.replyTitle} numberOfLines={1}>
-                Reply to <Text style={styles.replyUsername}>{replyLabel.username}</Text>
-              </Text>
-              <Text
-                style={styles.replyPreview}
-                numberOfLines={replyExpanded ? 4 : 1}
-              >
-                {replyLabel.previewText}
-              </Text>
-              {replyExpanded ? (
-                <Text style={styles.replyTimestamp}>{replyLabel.timestamp}</Text>
-              ) : null}
-            </View>
-          </TouchableOpacity>
-        ) : null}
         <View
           style={[
             styles.bubble,
             isMine ? styles.bubbleMine : styles.bubbleTheirs,
+            replyLabel && styles.bubbleWithReply,
           ]}
         >
+          {!isMine && author?.username ? (
+            <Text style={styles.username}>{author.username}</Text>
+          ) : null}
+
+          {replyLabel ? (
+            <TouchableOpacity
+              onPress={() => setReplyExpanded((prev) => !prev)}
+              activeOpacity={0.9}
+              style={[styles.replyContainer, replyExpanded && styles.replyExpanded]}
+              accessibilityRole="button"
+              accessibilityLabel={`Replying to ${replyLabel.username}`}
+            >
+              <View style={styles.replyLine} />
+              <View style={styles.replyContent}>
+                <Text style={styles.replyTitle} numberOfLines={1}>
+                  Reply to <Text style={styles.replyUsername}>{replyLabel.username}</Text>
+                </Text>
+                <Text
+                  style={styles.replyPreview}
+                  numberOfLines={replyExpanded ? 4 : 1}
+                >
+                  {replyLabel.previewText}
+                </Text>
+                {replyExpanded ? (
+                  <Text style={styles.replyTimestamp}>{replyLabel.timestamp}</Text>
+                ) : null}
+              </View>
+            </TouchableOpacity>
+          ) : null}
+
           <Text style={[styles.text, isMine ? styles.textMine : styles.textTheirs]}>
             {renderTextWithMentions}
           </Text>
-          <Text
+
+          <View
             style={[
-              styles.timestamp,
-              isMine ? styles.timestampMine : styles.timestampTheirs,
+              styles.footerRow,
+              isMine ? styles.footerRowMine : styles.footerRowTheirs,
             ]}
-            accessibilityLabel={`Sent ${timeLabel}`}
           >
-            {timeLabel}
-          </Text>
+            <Text
+              style={[
+                styles.timestamp,
+                isMine ? styles.timestampMine : styles.timestampTheirs,
+              ]}
+              accessibilityLabel={`Sent ${timeLabel}`}
+            >
+              {timeLabel}
+            </Text>
+            {!isMine && onReply ? (
+              <TouchableOpacity
+                onPress={handleReplyPress}
+                accessibilityRole="button"
+                accessibilityLabel={`Reply to ${author.username || "message"}`}
+                style={styles.replyButton}
+                hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+              >
+                <Ionicons name="return-up-forward" size={18} color="#cbd5e1" />
+              </TouchableOpacity>
+            ) : null}
+          </View>
         </View>
       </View>
 
@@ -204,33 +210,19 @@ const styles = StyleSheet.create({
   bubbleStackMine: {
     alignItems: "flex-end",
   },
-  metaRow: {
-    width: "100%",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingLeft: 2,
-    marginBottom: 2,
-  },
-  metaRowMine: {
-    flexDirection: "row-reverse",
-  },
   username: {
     color: "#cbd5e1",
     fontSize: 12,
     fontWeight: "700",
-    marginBottom: 4,
-    paddingLeft: 4,
-  },
-  metaSpacer: {
-    height: 18,
-    flex: 1,
+    marginBottom: 8,
+    paddingLeft: 2,
   },
   replyButton: {
     paddingHorizontal: 6,
     paddingVertical: 4,
     borderRadius: 999,
     backgroundColor: "rgba(148,163,184,0.12)",
+    marginLeft: 8,
   },
   replyContainer: {
     flexDirection: "row",
@@ -243,7 +235,7 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     borderWidth: 1,
     borderColor: "rgba(148,163,184,0.2)",
-    marginBottom: 6,
+    marginBottom: 10,
   },
   replyExpanded: {
     backgroundColor: "rgba(255,255,255,0.08)",
@@ -278,7 +270,7 @@ const styles = StyleSheet.create({
   bubble: {
     borderRadius: 17,
     paddingHorizontal: 14,
-    paddingVertical: 10,
+    paddingVertical: 12,
     borderWidth: 1,
     maxWidth: "100%",
   },
@@ -293,6 +285,9 @@ const styles = StyleSheet.create({
     borderColor: "#f59e0b",
     borderTopLeftRadius: 6,
     alignSelf: "flex-start",
+  },
+  bubbleWithReply: {
+    paddingTop: 14,
   },
   text: {
     fontSize: 15,
@@ -316,17 +311,26 @@ const styles = StyleSheet.create({
   timestamp: {
     color: "#94a3b8",
     fontSize: 10,
-    marginTop: 6,
-    alignSelf: "flex-start",
+    marginTop: 8,
   },
   timestampMine: {
     color: "#bae6fd",
     opacity: 0.9,
-    alignSelf: "flex-end",
   },
   timestampTheirs: {
     color: "#fef9c3",
-    alignSelf: "flex-start",
+  },
+  footerRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "flex-end",
+    marginTop: 6,
+  },
+  footerRowMine: {
+    justifyContent: "flex-end",
+  },
+  footerRowTheirs: {
+    justifyContent: "flex-end",
   },
 });
 

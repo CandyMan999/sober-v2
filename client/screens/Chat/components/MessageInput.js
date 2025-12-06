@@ -26,33 +26,8 @@ const MessageInput = ({
 
   return (
     <View
-      style={[
-        styles.container,
-        replyTarget ? styles.containerReplying : null,
-        { paddingBottom: bottomInset },
-      ]}
+      style={[styles.container, { paddingBottom: bottomInset }]}
     >
-      {replyTarget ? (
-        <View style={styles.replyingTo}>
-          <View style={styles.replyingCopy}>
-            <Text style={styles.replyingLabel}>
-              Replying to <Text style={styles.replyingName}>@{replyUsername}</Text>
-            </Text>
-            <Text style={styles.replyingPreview} numberOfLines={2}>
-              {replyTarget?.text || "Message"}
-            </Text>
-          </View>
-          <TouchableOpacity
-            onPress={onCancelReply}
-            style={styles.closeReply}
-            accessibilityRole="button"
-            accessibilityLabel="Cancel reply"
-            hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-          >
-            <Ionicons name="close" size={16} color="#e2e8f0" />
-          </TouchableOpacity>
-        </View>
-      ) : null}
       <Avatar
         uri={currentUser?.profilePicUrl}
         haloColor="blue"
@@ -60,31 +35,54 @@ const MessageInput = ({
         style={styles.avatar}
         fallbackText={currentUser?.username}
       />
-      <View style={styles.inputWrapper}>
-        <TextInput
-          style={styles.input}
-          placeholder="Share encouragement..."
-          placeholderTextColor="#9ca3af"
-          value={value}
-          onChangeText={onChangeText}
-          maxLength={500}
-          returnKeyType="done"
-          blurOnSubmit
-          onSubmitEditing={() => Keyboard.dismiss()}
-        />
-        <TouchableOpacity
-          onPress={onSend}
-          disabled={!canSend}
-          style={[styles.sendButton, !canSend && styles.sendButtonDisabled]}
-          accessibilityRole="button"
-          accessibilityLabel="Send message"
-        >
-          <Ionicons
-            name="send"
-            size={17}
-            color={canSend ? "#38bdf8" : "#64748b"}
+      <View style={styles.composerColumn}>
+        {replyTarget ? (
+          <View style={styles.replyingTo}>
+            <View style={styles.replyingCopy}>
+              <Text style={styles.replyingLabel} numberOfLines={1}>
+                Replying to <Text style={styles.replyingName}>@{replyUsername}</Text>
+              </Text>
+              <Text style={styles.replyingPreview} numberOfLines={2}>
+                {replyTarget?.text || "Message"}
+              </Text>
+            </View>
+            <TouchableOpacity
+              onPress={onCancelReply}
+              style={styles.closeReply}
+              accessibilityRole="button"
+              accessibilityLabel="Cancel reply"
+              hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+            >
+              <Ionicons name="close" size={16} color="#e2e8f0" />
+            </TouchableOpacity>
+          </View>
+        ) : null}
+        <View style={styles.inputWrapper}>
+          <TextInput
+            style={styles.input}
+            placeholder="Share encouragement..."
+            placeholderTextColor="#9ca3af"
+            value={value}
+            onChangeText={onChangeText}
+            maxLength={500}
+            returnKeyType="done"
+            blurOnSubmit
+            onSubmitEditing={() => Keyboard.dismiss()}
           />
-        </TouchableOpacity>
+          <TouchableOpacity
+            onPress={onSend}
+            disabled={!canSend}
+            style={[styles.sendButton, !canSend && styles.sendButtonDisabled]}
+            accessibilityRole="button"
+            accessibilityLabel="Send message"
+          >
+            <Ionicons
+              name="send"
+              size={17}
+              color={canSend ? "#38bdf8" : "#64748b"}
+            />
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
@@ -96,10 +94,14 @@ const styles = StyleSheet.create({
     alignItems: "flex-end",
     gap: 12,
     paddingHorizontal: 12,
-    paddingVertical: 4,
+    paddingVertical: 10,
     borderTopWidth: 1,
     borderTopColor: "#1f2937",
     backgroundColor: "#0b1220",
+  },
+  composerColumn: {
+    flex: 1,
+    gap: 8,
   },
   avatar: {
     marginBottom: 2,
@@ -115,21 +117,16 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 6,
   },
-  containerReplying: {
-    paddingTop: 72,
-  },
   replyingTo: {
-    position: "absolute",
-    top: -72,
-    left: 12,
-    right: 12,
     flexDirection: "row",
-    alignItems: "flex-start",
-    padding: 10,
-    borderRadius: 14,
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 12,
     borderWidth: 1,
-    borderColor: "rgba(148,163,184,0.4)",
-    backgroundColor: "rgba(15,23,42,0.96)",
+    borderColor: "rgba(59,130,246,0.35)",
+    backgroundColor: "rgba(59,130,246,0.12)",
     gap: 10,
   },
   replyingCopy: {
@@ -137,9 +134,9 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   replyingLabel: {
-    color: "#e2e8f0",
+    color: "#bfdbfe",
     fontWeight: "700",
-    fontSize: 13,
+    fontSize: 12,
   },
   replyingName: {
     color: "#f59e0b",
