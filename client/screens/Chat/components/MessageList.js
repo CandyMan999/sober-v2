@@ -24,6 +24,7 @@ const MessageList = ({
   doneLoading,
   onReply,
   currentUsername,
+  onPressMessage,
 }) => {
   const listRef = useRef(null);
   const [distanceFromBottom, setDistanceFromBottom] = useState(0);
@@ -59,18 +60,18 @@ const MessageList = ({
       );
     }
 
-      return (
-        <MessageBubble
-          message={item}
-          isMine={
-            String(item?.author?.id || item?.author?._id) ===
-            String(currentUserId)
-          }
-          onReply={onReply}
-          currentUsername={currentUsername}
-        />
-      );
-    };
+    return (
+      <MessageBubble
+        message={item}
+        isMine={
+          String(item?.author?.id || item?.author?._id) === String(currentUserId)
+        }
+        onReply={onReply}
+        currentUsername={currentUsername}
+        onPress={onPressMessage ? () => onPressMessage(item) : undefined}
+      />
+    );
+  };
 
   const scrollToBottom = (animated = true) => {
     requestAnimationFrame(() => {
@@ -227,7 +228,7 @@ const styles = StyleSheet.create({
   listContent: {
     paddingTop: 0,
     paddingBottom: 0,
-    gap: 6,
+    gap: 10,
   },
   typingRow: {
     flexDirection: "row",
