@@ -391,9 +391,10 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   likeBadgeMine: {
-    backgroundColor: "#38bdf8",
+    backgroundColor: "#0ea5e9",
+    opacity: 1,
     borderWidth: 1,
-    borderColor: "#0ea5e9",
+    borderColor: "#0284c7",
     left: -6,
   },
   likeBadgeTheirs: {
