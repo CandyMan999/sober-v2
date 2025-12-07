@@ -63,7 +63,11 @@ export const GET_COMMENTS = `
       text
       createdAt
       likesCount
-      liked
+      likes {
+        user {
+          id
+        }
+      }
       replyTo {
         id
         text
@@ -100,7 +104,11 @@ export const CREATE_COMMENT = `
       text
       createdAt
       likesCount
-      liked
+      likes {
+        user {
+          id
+        }
+      }
       replyTo {
         id
         text
@@ -128,7 +136,11 @@ export const ROOM_COMMENT_SUBSCRIPTION = gql`
       createdAt
       targetId
       likesCount
-      liked
+      likes {
+        user {
+          id
+        }
+      }
       replyTo {
         id
         text

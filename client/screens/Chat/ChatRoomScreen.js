@@ -55,19 +55,38 @@ const dedupeMessages = (items = []) => {
   return unique;
 };
 
-const normalizeMessage = (incoming = {}, previous = {}) => {
+const normalizeMessage = (incoming = {}, previous = {}, currentUserId) => {
   const likesCount = incoming?.likesCount ?? previous?.likesCount ?? 0;
-  const liked =
+  const likes = Array.isArray(incoming?.likes)
+    ? incoming.likes
+    : previous?.likes;
+
+  const payloadLiked =
     typeof incoming?.liked === "boolean"
       ? incoming.liked
       : typeof previous?.liked === "boolean"
       ? previous.liked
+      : undefined;
+
+  const likedFromLikes = Array.isArray(likes) && currentUserId
+    ? likes.some((like) => {
+        const userId = like?.user?.id || like?.user?._id;
+        return userId && String(userId) === String(currentUserId);
+      })
+    : undefined;
+
+  const liked =
+    typeof payloadLiked === "boolean"
+      ? payloadLiked
+      : typeof likedFromLikes === "boolean"
+      ? likedFromLikes
       : false;
 
   return {
     ...previous,
     ...incoming,
     likesCount,
+    likes,
     liked,
   };
 };
@@ -81,6 +100,12 @@ const ChatRoomScreen = ({ route }) => {
   const currentUser = state?.user;
   const currentUserId = currentUser?.id;
   const isFocused = useIsFocused();
+
+  const normalizeForUser = useCallback(
+    (incoming = {}, previous = {}) =>
+      normalizeMessage(incoming, previous, currentUserId),
+    [currentUserId]
+  );
 
   const wsClientRef = useRef(null);
   const commentSubscriptionRef = useRef(null);
@@ -139,7 +164,7 @@ const ChatRoomScreen = ({ route }) => {
       const response = await client.request(GET_COMMENTS, { roomId: room.id });
       const incoming = response?.getComments || [];
       const normalized = dedupeMessages(sortByCreatedAt(incoming)).map((msg) =>
-        normalizeMessage(msg)
+        normalizeForUser(msg)
       );
       setMessages(normalized);
     } catch (error) {
@@ -148,7 +173,7 @@ const ChatRoomScreen = ({ route }) => {
       setLoadingMessages(false);
       setDoneLoading(true);
     }
-  }, [client, room?.id]);
+  }, [client, normalizeForUser, room?.id]);
 
   useFocusEffect(
     useCallback(() => {
@@ -226,14 +251,14 @@ const ChatRoomScreen = ({ route }) => {
           );
 
           if (existingIndex !== -1) {
-            next[existingIndex] = normalizeMessage(
+            next[existingIndex] = normalizeForUser(
               incoming,
               next[existingIndex]
             );
             return sortByCreatedAt(next);
           }
 
-          const normalizedIncoming = normalizeMessage(incoming);
+          const normalizedIncoming = normalizeForUser(incoming);
           return dedupeMessages(
             sortByCreatedAt([...next, normalizedIncoming])
           );
@@ -283,7 +308,7 @@ const ChatRoomScreen = ({ route }) => {
       wsClientRef.current = null;
       setTypingUsers({});
     };
-  }, [currentUserId, isFocused, room?.id, wsClientRef]);
+  }, [currentUserId, isFocused, normalizeForUser, room?.id, wsClientRef]);
 
   const handleSend = useCallback(async () => {
     if (!messageText?.trim() || !room?.id || !currentUserId) return;
@@ -297,7 +322,7 @@ const ChatRoomScreen = ({ route }) => {
         replyToCommentId: replyTarget?.id || replyTarget?._id,
       });
 
-      const newComment = normalizeMessage(response?.createComment);
+      const newComment = normalizeForUser(response?.createComment);
       if (newComment) {
         setMessages((prev) =>
           dedupeMessages(sortByCreatedAt([...prev, newComment]))
@@ -388,11 +413,18 @@ const ChatRoomScreen = ({ route }) => {
               if (getMessageId(msg) !== String(payload.targetId || messageId))
                 return msg;
 
-              return normalizeMessage(
+              return normalizeForUser(
                 {
                   ...msg,
                   likesCount: payload.likesCount ?? msg.likesCount ?? 0,
                   liked: payloadLiked,
+                  likes: payload.like
+                    ? payloadLiked
+                      ? [...(msg.likes || []), payload.like]
+                      : (msg.likes || []).filter(
+                          (like) => getMessageId(like) !== getMessageId(payload.like)
+                        )
+                    : msg.likes,
                 },
                 msg
               );
@@ -409,7 +441,7 @@ const ChatRoomScreen = ({ route }) => {
         );
       }
     },
-    [client, currentUserId, messages]
+    [client, currentUserId, messages, normalizeForUser]
   );
 
   const handleMessagePress = useCallback(
