@@ -139,6 +139,8 @@ const setDirectTypingResolver = async (_, { roomId, isTyping }, ctx) => {
   );
   if (!isParticipant) throw new AuthenticationError("Not a participant");
 
+  await User.ensureChatRoomStyle(me);
+
   const typingPayload = {
     roomId: room._id.toString(),
     userId: me._id.toString(),
@@ -146,6 +148,8 @@ const setDirectTypingResolver = async (_, { roomId, isTyping }, ctx) => {
     profilePicUrl: me.profilePicUrl,
     isTyping: Boolean(isTyping),
     lastTypedAt: new Date().toISOString(),
+    chatRoomStyle: me.chatRoomStyle,
+    messageStyle: me.chatRoomStyle,
   };
 
   publishDirectTyping(typingPayload);

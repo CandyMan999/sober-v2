@@ -22,6 +22,7 @@ const buildContext = async (token) => {
   if (token) {
     try {
       currentUser = await User.findOne({ token }).populate("profilePic");
+      await User.ensureChatRoomStyle(currentUser);
     } catch (err) {
       console.error("❌ Error fetching user from token:", err);
     }

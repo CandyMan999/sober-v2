@@ -43,6 +43,7 @@ module.exports = {
       if (!user) {
         throw new AuthenticationError("User not found");
       }
+      await User.ensureChatRoomStyle(user);
       return user;
     } catch (err) {
       throw new AuthenticationError(err.message);
@@ -454,6 +455,8 @@ module.exports = {
       throw new AuthenticationError("User not found");
     }
 
+    await User.ensureChatRoomStyle(user);
+
     const limit = 12;
 
     const posts = await Post.find({ author: user._id })
@@ -516,6 +519,8 @@ module.exports = {
       throw new AuthenticationError("User not found");
     }
 
+    await User.ensureChatRoomStyle(viewer);
+
     const user = await User.findById(userId).populate([
       "profilePic",
       "drunkPic",
@@ -526,6 +531,8 @@ module.exports = {
     if (!user) {
       throw new AuthenticationError("User not found");
     }
+
+    await User.ensureChatRoomStyle(user);
 
     const limit = 12;
 

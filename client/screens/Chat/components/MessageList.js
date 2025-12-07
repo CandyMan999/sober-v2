@@ -13,6 +13,7 @@ import {
 import Avatar from "../../../components/Avatar";
 import TypingIndicator from "../../../components/TypingIndicator";
 import MessageBubble from "./MessageBubble";
+import { MESSAGE_STYLE_PRESETS } from "./messageStyles";
 
 const MessageList = ({
   messages,
@@ -44,17 +45,47 @@ const MessageList = ({
   );
   const shouldAutoScroll = distanceFromBottom <= autoScrollThreshold;
 
+  const getStyleVariant = useMemo(
+    () =>
+      (item) => {
+        const styleIndex =
+          typeof item?.messageStyle === "number"
+            ? item.messageStyle
+            : typeof item?.author?.messageStyle === "number"
+            ? item.author.messageStyle
+            : undefined;
+
+        if (typeof styleIndex !== "number") return undefined;
+        const normalized = ((styleIndex % MESSAGE_STYLE_PRESETS.length) +
+          MESSAGE_STYLE_PRESETS.length) %
+          MESSAGE_STYLE_PRESETS.length;
+        return MESSAGE_STYLE_PRESETS[normalized];
+      },
+    []
+  );
+
   const renderItem = ({ item }) => {
+    const styleVariant = getStyleVariant(item);
     if (item?.__typingIndicator) {
+      const accentColor = styleVariant?.accentColor || "#f59e0b";
+      const bubbleColor =
+        styleVariant?.bubble?.backgroundColor || "rgba(11,18,32,0.95)";
+      const borderColor = styleVariant?.bubble?.borderColor || "rgba(148,163,184,0.35)";
+
       return (
         <View style={styles.typingRow}>
-          <Avatar uri={item.profilePicUrl} size={30} disableNavigation />
+          <Avatar
+            uri={item.profilePicUrl}
+            size={30}
+            disableNavigation
+            haloColors={styleVariant?.haloColors}
+          />
           <TypingIndicator
             username={item.username || "Someone"}
-            accentColor="#f59e0b"
-            bubbleColor="rgba(11,18,32,0.95)"
-            borderColor="rgba(148,163,184,0.35)"
-            dotColor="#f59e0b"
+            accentColor={accentColor}
+            bubbleColor={bubbleColor}
+            borderColor={borderColor}
+            dotColor={accentColor}
           />
         </View>
       );
@@ -69,6 +100,7 @@ const MessageList = ({
         onReply={onReply}
         currentUsername={currentUsername}
         onPress={onPressMessage ? () => onPressMessage(item) : undefined}
+        styleVariant={styleVariant}
       />
     );
   };

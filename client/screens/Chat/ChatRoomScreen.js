@@ -13,6 +13,7 @@ import { useFocusEffect, useIsFocused } from "@react-navigation/native";
 
 import MessageList from "./components/MessageList";
 import MessageInput from "./components/MessageInput";
+import { MESSAGE_STYLE_PRESETS } from "./components/messageStyles";
 import Context from "../../context";
 import { useClient } from "../../client";
 import {
@@ -99,6 +100,21 @@ const resolveMessageMatchId = (message = {}) => {
   return id || targetId || "";
 };
 
+const STYLE_PRESET_COUNT = MESSAGE_STYLE_PRESETS.length;
+
+const hashStyleIndex = (input) => {
+  if (!input) return 0;
+
+  const value = String(input);
+  let hash = 0;
+
+  for (let i = 0; i < value.length; i += 1) {
+    hash = (hash + value.charCodeAt(i) * (i + 1)) % 2147483647;
+  }
+
+  return hash % STYLE_PRESET_COUNT;
+};
+
 const ChatRoomScreen = ({ route }) => {
   const { state } = useContext(Context);
   const client = useClient();
@@ -130,6 +146,75 @@ const ChatRoomScreen = ({ route }) => {
   const [isTypingLocal, setIsTypingLocal] = useState(false);
   const [typingUsers, setTypingUsers] = useState({});
   const [doneLoading, setDoneLoading] = useState(false);
+  const [userStyleMap, setUserStyleMap] = useState({});
+
+  const resolveUserStyle = useCallback(
+    (author = {}) => {
+      const authorId = author?.id || author?._id || author?.userId || author?.username;
+      if (!authorId || String(authorId) === String(currentUserId)) return undefined;
+
+      if (typeof author?.chatRoomStyle === "number") {
+        return author.chatRoomStyle % STYLE_PRESET_COUNT;
+      }
+
+      if (typeof author?.messageStyle === "number") {
+        return author.messageStyle % STYLE_PRESET_COUNT;
+      }
+
+      if (typeof userStyleMap[authorId] === "number") {
+        return userStyleMap[authorId];
+      }
+
+      return hashStyleIndex(authorId);
+    },
+    [currentUserId, userStyleMap]
+  );
+
+  const assignStylesToMessages = useCallback(
+    (items = []) => {
+      let didChange = false;
+      const nextMap = { ...userStyleMap };
+
+      const styledMessages = items.map((message) => {
+        const author = message?.author || {};
+        const authorId = author?.id || author?._id;
+
+        if (!authorId || String(authorId) === String(currentUserId)) {
+          return message;
+        }
+
+        let styleIndex;
+
+        if (typeof author?.chatRoomStyle === "number") {
+          styleIndex = author.chatRoomStyle % STYLE_PRESET_COUNT;
+        } else if (typeof author?.messageStyle === "number") {
+          styleIndex = author.messageStyle % STYLE_PRESET_COUNT;
+        } else if (typeof nextMap[authorId] === "number") {
+          styleIndex = nextMap[authorId];
+        } else {
+          styleIndex = hashStyleIndex(authorId);
+          nextMap[authorId] = styleIndex;
+          didChange = true;
+        }
+
+        return {
+          ...message,
+          author: {
+            ...author,
+            messageStyle: styleIndex,
+            chatRoomStyle: styleIndex,
+          },
+        };
+      });
+
+      if (didChange) {
+        setUserStyleMap(nextMap);
+      }
+
+      return styledMessages;
+    },
+    [currentUserId, userStyleMap]
+  );
 
   const ensureRoom = useCallback(async () => {
     if (!currentUserId) return;
@@ -172,14 +257,14 @@ const ChatRoomScreen = ({ route }) => {
       const normalized = dedupeMessages(sortByCreatedAt(incoming)).map((msg) =>
         normalizeForUser(msg)
       );
-      setMessages(normalized);
+      setMessages(assignStylesToMessages(normalized));
     } catch (error) {
       console.log("Failed to load comments", error);
     } finally {
       setLoadingMessages(false);
       setDoneLoading(true);
     }
-  }, [client, normalizeForUser, room?.id]);
+  }, [assignStylesToMessages, client, normalizeForUser, room?.id]);
 
   useFocusEffect(
     useCallback(() => {
@@ -262,15 +347,15 @@ const ChatRoomScreen = ({ route }) => {
               incoming,
               next[existingIndex]
             );
-            return sortByCreatedAt(next);
+            return assignStylesToMessages(sortByCreatedAt(next));
           }
 
           const normalizedIncoming = normalizeForUser({
             ...incoming,
             id: incomingMatchId || incoming.id,
           });
-          return dedupeMessages(
-            sortByCreatedAt([...next, normalizedIncoming])
+          return assignStylesToMessages(
+            dedupeMessages(sortByCreatedAt([...next, normalizedIncoming]))
           );
         });
       },
@@ -318,7 +403,7 @@ const ChatRoomScreen = ({ route }) => {
       wsClientRef.current = null;
       setTypingUsers({});
     };
-  }, [currentUserId, isFocused, normalizeForUser, room?.id, wsClientRef]);
+  }, [assignStylesToMessages, currentUserId, isFocused, normalizeForUser, room?.id, wsClientRef]);
 
   const handleSend = useCallback(async () => {
     if (!messageText?.trim() || !room?.id || !currentUserId) return;
@@ -335,7 +420,9 @@ const ChatRoomScreen = ({ route }) => {
       const newComment = normalizeForUser(response?.createComment);
       if (newComment) {
         setMessages((prev) =>
-          dedupeMessages(sortByCreatedAt([...prev, newComment]))
+          assignStylesToMessages(
+            dedupeMessages(sortByCreatedAt([...prev, newComment]))
+          )
         );
         setMessageText("");
         setReplyTarget(null);
@@ -345,7 +432,7 @@ const ChatRoomScreen = ({ route }) => {
     } finally {
       setSending(false);
     }
-  }, [client, currentUserId, messageText, replyTarget?._id, replyTarget?.id, room?.id]);
+  }, [assignStylesToMessages, client, currentUserId, messageText, replyTarget?._id, replyTarget?.id, room?.id]);
 
   const handleSelectReply = useCallback((target) => {
     if (!target) return;
@@ -516,8 +603,15 @@ const ChatRoomScreen = ({ route }) => {
   }, [messages, room?.lastMessage]);
 
   const typingIndicators = useMemo(
-    () => Object.values(typingUsers || {}).filter((typing) => typing?.isTyping),
-    [typingUsers]
+    () =>
+      Object.values(typingUsers || {})
+        .filter((typing) => typing?.isTyping)
+        .map((typing) => ({
+          ...typing,
+          messageStyle:
+            resolveUserStyle(typing) || hashStyleIndex(typing.userId || typing.username),
+        })),
+    [resolveUserStyle, typingUsers]
   );
 
   const listData = useMemo(

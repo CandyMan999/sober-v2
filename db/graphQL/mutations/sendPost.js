@@ -127,7 +127,7 @@ const uploadVideoWithRetry = async (fileInfo) => {
       );
 
       if (attempt < maxAttempts) {
-        await delay(1500 * attempt);
+        await delay(1000 * attempt);
       }
     }
   }

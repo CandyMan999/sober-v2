@@ -5,9 +5,17 @@ const normalizeUserForGraphQL = (userDoc) => {
 
   const raw = userDoc.toObject ? userDoc.toObject() : userDoc;
 
+  const messageStyle =
+    typeof raw.chatRoomStyle === "number"
+      ? raw.chatRoomStyle
+      : typeof raw.messageStyle === "number"
+      ? raw.messageStyle
+      : undefined;
+
   return {
     ...raw,
     id: raw.id || raw._id?.toString?.(),
+    messageStyle,
   };
 };
 

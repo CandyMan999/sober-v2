@@ -59,8 +59,19 @@ const changeRoomResolver = async (_, { roomId, userId }, ctx) => {
     { $addToSet: { users: me._id } },
     { new: true }
   )
-    .populate({ path: "users", select: "username profilePic profilePicUrl" })
+    .populate({
+      path: "users",
+      select: "username profilePic profilePicUrl chatRoomStyle",
+    })
     .populate({ path: "lastMessage", populate: { path: "author", populate: "profilePic" } });
+
+  const styleTargets = [
+    ...(updatedRoom?.users || []),
+    updatedRoom?.lastMessage?.author,
+    me,
+  ];
+
+  await Promise.all(styleTargets.map((user) => User.ensureChatRoomStyle(user)));
 
   await publishRoomsUpdated();
 

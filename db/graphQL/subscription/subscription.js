@@ -20,6 +20,13 @@ const normalizeCommentForGraphQL = (commentDoc) => {
   const author =
     authorRaw && authorRaw.toObject ? authorRaw.toObject() : authorRaw;
 
+  const authorStyle =
+    typeof author?.chatRoomStyle === "number"
+      ? author.chatRoomStyle
+      : typeof author?.messageStyle === "number"
+      ? author.messageStyle
+      : undefined;
+
   return {
     ...raw,
     id: raw.id || raw._id?.toString?.(),
@@ -27,6 +34,7 @@ const normalizeCommentForGraphQL = (commentDoc) => {
       ? {
           ...author,
           id: author.id || author._id?.toString?.(),
+          messageStyle: authorStyle,
         }
       : null,
   };
