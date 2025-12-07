@@ -31,6 +31,7 @@ import {
   QUOTE_BY_ID_QUERY,
   USER_NOTIFICATIONS_QUERY,
 } from "../../GraphQL/queries";
+import { TOGGLE_LIKE_MUTATION } from "../../GraphQL/mutations";
 import { getToken } from "../../utils/helpers";
 import { NotificationIntents, NotificationTypes } from "../../utils/notifications";
 
@@ -146,6 +147,8 @@ const formatSubtitle = (notification) => {
 const NotificationsScreen = ({ navigation }) => {
   const { state, dispatch } = useContext(Context);
   const client = useClient();
+  const currentUser = state?.user;
+  const currentUserId = currentUser?.id;
 
   const [notifications, setNotifications] = useState([]);
   const [loadingNotifications, setLoadingNotifications] = useState(true);
@@ -439,6 +442,74 @@ const NotificationsScreen = ({ navigation }) => {
     }
   }, [activeNotificationId, markNotificationRead, previewVisible]);
 
+  const handlePreviewToggleLike = useCallback(
+    async (targetId, targetType = "POST") => {
+      if (!targetId || !currentUserId) return;
+
+      const token = await getToken();
+      if (!token) return;
+
+      const previousPreview = previewContent;
+
+      setPreviewContent((prev) => {
+        if (!prev || prev.id !== targetId) return prev;
+
+        const currentlyLiked = (prev.likes || []).some(
+          (like) => like?.user?.id === currentUserId
+        );
+        const filtered = (prev.likes || []).filter(
+          (like) => like?.user?.id !== currentUserId
+        );
+        const optimisticLikes = currentlyLiked
+          ? filtered
+          : [...filtered, { id: `temp-like-${targetId}`, user: currentUser }];
+
+        return {
+          ...prev,
+          likesCount: Math.max(
+            0,
+            (prev.likesCount || 0) + (currentlyLiked ? -1 : 1)
+          ),
+          likes: optimisticLikes,
+        };
+      });
+
+      try {
+        const data = await client.request(TOGGLE_LIKE_MUTATION, {
+          token,
+          targetType,
+          targetId,
+        });
+
+        const payload = data?.toggleLike;
+        if (payload) {
+          setPreviewContent((prev) => {
+            if (!prev || prev.id !== targetId) return prev;
+
+            const actorId = payload.like?.user?.id || currentUserId;
+            const filtered = (prev.likes || []).filter(
+              (like) => like?.user?.id !== actorId
+            );
+            const nextLikes =
+              payload.liked && payload.like
+                ? [...filtered, payload.like]
+                : filtered;
+
+            return {
+              ...prev,
+              likesCount: payload.likesCount,
+              likes: nextLikes,
+            };
+          });
+        }
+      } catch (err) {
+        console.log("Failed to toggle preview like", err);
+        setPreviewContent(previousPreview);
+      }
+    },
+    [client, currentUser, currentUserId, previewContent]
+  );
+
   const renderNotification = ({ item }) => {
     const icon = ICONS[item.type] || ICONS[NotificationTypes.COMMENT_ON_POST];
     const IconComponent = icon.IconComponent || Ionicons;
@@ -632,6 +703,10 @@ const NotificationsScreen = ({ navigation }) => {
         onToggleSound={() => {}}
         viewerUser={state?.user}
         initialShowComments={previewShowComments}
+        onTogglePostLike={(postId) => handlePreviewToggleLike(postId, "POST")}
+        onToggleQuoteLike={(quoteId) =>
+          handlePreviewToggleLike(quoteId, "QUOTE")
+        }
         hideSaveAction
       />
 
