@@ -93,6 +93,12 @@ const normalizeMessage = (incoming = {}, previous = {}, currentUserId) => {
 
 const buildWsUrl = () => GRAPHQL_URI.replace(/^http/, "ws");
 
+const resolveMessageMatchId = (message = {}) => {
+  const id = getMessageId(message);
+  const targetId = message?.targetId ? String(message.targetId) : "";
+  return id || targetId || "";
+};
+
 const ChatRoomScreen = ({ route }) => {
   const { state } = useContext(Context);
   const client = useClient();
@@ -245,10 +251,11 @@ const ChatRoomScreen = ({ route }) => {
 
         setMessages((prev) => {
           const next = [...prev];
-          const incomingId = getMessageId(incoming);
-          const existingIndex = next.findIndex(
-            (msg) => getMessageId(msg) === incomingId
-          );
+          const incomingMatchId = resolveMessageMatchId(incoming);
+          const existingIndex = next.findIndex((msg) => {
+            const msgId = getMessageId(msg);
+            return msgId && msgId === incomingMatchId;
+          });
 
           if (existingIndex !== -1) {
             next[existingIndex] = normalizeForUser(
@@ -258,7 +265,10 @@ const ChatRoomScreen = ({ route }) => {
             return sortByCreatedAt(next);
           }
 
-          const normalizedIncoming = normalizeForUser(incoming);
+          const normalizedIncoming = normalizeForUser({
+            ...incoming,
+            id: incomingMatchId || incoming.id,
+          });
           return dedupeMessages(
             sortByCreatedAt([...next, normalizedIncoming])
           );
@@ -578,7 +588,7 @@ const styles = StyleSheet.create({
   messageArea: {
     flex: 1,
     backgroundColor: "#0b1220",
-    paddingHorizontal: 0,
+    paddingHorizontal: 6,
     paddingTop: 0,
   },
   inputArea: {

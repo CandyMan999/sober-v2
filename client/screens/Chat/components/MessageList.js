@@ -228,6 +228,7 @@ const styles = StyleSheet.create({
   listContent: {
     paddingTop: 0,
     paddingBottom: 0,
+    paddingHorizontal: 6,
     gap: 10,
   },
   typingRow: {

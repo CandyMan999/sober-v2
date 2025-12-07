@@ -382,8 +382,8 @@ const styles = StyleSheet.create({
   },
   likeBadge: {
     position: "absolute",
-    top: -10,
-    right: -10,
+    top: -8,
+    right: -6,
     paddingHorizontal: 8,
     paddingVertical: 4,
     borderRadius: 999,
