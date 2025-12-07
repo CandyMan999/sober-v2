@@ -43,6 +43,10 @@ const ICONS = {
     name: "chatbox-ellipses",
     color: "#60a5fa",
   },
+  [NotificationTypes.ROOM_REPLY]: {
+    name: "chatbox-ellipses",
+    color: "#60a5fa",
+  },
   [NotificationTypes.COMMENT_LIKED]: {
     name: "heart",
     color: "#f472b6",
@@ -344,22 +348,41 @@ const NotificationsScreen = ({ navigation }) => {
     (notification) => {
       if (!notification) return;
 
-      const isBuddyVenueNotification =
-        (notification.type === NotificationTypes.BUDDY_NEAR_BAR ||
-          notification.type === NotificationTypes.BUDDY_NEAR_LIQUOR) &&
-        notification.fromUserId;
+    const isBuddyVenueNotification =
+      (notification.type === NotificationTypes.BUDDY_NEAR_BAR ||
+        notification.type === NotificationTypes.BUDDY_NEAR_LIQUOR) &&
+      notification.fromUserId;
 
-      if (isBuddyVenueNotification) {
-        const userParam = {
-          id: notification.fromUserId,
-          username: notification.fromUsername || "Buddy",
-          profilePicUrl: notification.fromProfilePicUrl,
-        };
+    const isChatRoomNotification =
+      notification.intent === NotificationIntents.OPEN_CHAT_ROOM &&
+      (notification.roomId || notification.roomName);
 
-        navigation?.navigate?.("DirectMessage", { user: userParam });
-        markNotificationRead(notification.id);
-        return;
-      }
+    if (isBuddyVenueNotification) {
+      const userParam = {
+        id: notification.fromUserId,
+        username: notification.fromUsername || "Buddy",
+        profilePicUrl: notification.fromProfilePicUrl,
+      };
+
+      navigation?.navigate?.("DirectMessage", { user: userParam });
+      markNotificationRead(notification.id);
+      return;
+    }
+
+    if (isChatRoomNotification) {
+      const targetRoomName = notification.roomName || "General";
+
+      navigation?.navigate?.("Chat", {
+        screen: "ChatRooms",
+        params: {
+          screen: targetRoomName,
+          params: { roomName: targetRoomName },
+        },
+      });
+
+      markNotificationRead(notification.id);
+      return;
+    }
 
       const isPostNotification =
         notification.intent === NotificationIntents.OPEN_POST_COMMENTS &&
@@ -421,7 +444,9 @@ const NotificationsScreen = ({ navigation }) => {
       item.type === NotificationTypes.MILESTONE ||
       item.intent === NotificationIntents.SHOW_INFO ||
       (item.intent === NotificationIntents.OPEN_DIRECT_MESSAGE &&
-        item.fromUserId);
+        item.fromUserId) ||
+      (item.intent === NotificationIntents.OPEN_CHAT_ROOM &&
+        (item.roomId || item.roomName));
     const isMilestone = item.type === NotificationTypes.MILESTONE;
     const isBuddyVenueAlert =
       item.type === NotificationTypes.BUDDY_NEAR_BAR ||

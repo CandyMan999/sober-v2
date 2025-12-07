@@ -150,6 +150,24 @@ export default function App() {
       }
     };
 
+    const navigateToChatRoom = (roomName = "General") => {
+      const navigate = () =>
+        navigationRef.navigate("Chat", {
+          screen: "ChatRooms",
+          params: { screen: roomName, params: { roomName } },
+        });
+
+      if (navigationRef.isReady()) {
+        navigate();
+      } else {
+        setTimeout(() => {
+          if (navigationRef.isReady()) {
+            navigate();
+          }
+        }, 300);
+      }
+    };
+
     const notificationTitle = data?.title || data?.__notificationTitle;
     const notificationBody =
       data?.message || data?.body || data?.__notificationBody;
@@ -210,6 +228,19 @@ export default function App() {
       };
 
       navigateToDirectMessage(userParam);
+      return;
+    }
+
+    if (
+      data?.intent === NotificationIntents.OPEN_CHAT_ROOM &&
+      (data.roomName || data.roomId)
+    ) {
+      navigateToChatRoom(data.roomName || "General");
+      return;
+    }
+
+    if (data?.type === NotificationTypes.ROOM_REPLY && (data.roomName || data.roomId)) {
+      navigateToChatRoom(data.roomName || "General");
       return;
     }
 

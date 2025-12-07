@@ -207,6 +207,8 @@ const typeDefs = gql`
     fromProfilePicUrl: String
     venueName: String
     venueType: String
+    roomId: ID
+    roomName: String
     createdAt: String
     read: Boolean!
     dismissed: Boolean!

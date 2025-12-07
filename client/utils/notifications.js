@@ -8,6 +8,7 @@ export const NotificationTypes = {
   MILESTONE: "MILESTONE",
   FOLLOWING_NEW_POST: "FOLLOWING_NEW_POST",
   NEW_QUOTE: "new_quote",
+  ROOM_REPLY: "ROOM_REPLY",
 };
 
 export const NotificationIntents = {
@@ -15,6 +16,7 @@ export const NotificationIntents = {
   ACKNOWLEDGE: "ACKNOWLEDGE",
   SHOW_INFO: "SHOW_INFO",
   OPEN_DIRECT_MESSAGE: "OPEN_DIRECT_MESSAGE",
+  OPEN_CHAT_ROOM: "OPEN_CHAT_ROOM",
 };
 
 export const buildBuddyNearBarNotification = (buddyName) => ({

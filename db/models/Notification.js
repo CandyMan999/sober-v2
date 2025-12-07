@@ -17,6 +17,8 @@ const NotificationSchema = new mongoose.Schema(
     fromProfilePicUrl: { type: String },
     venueName: { type: String },
     venueType: { type: String },
+    roomId: { type: String },
+    roomName: { type: String },
     user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
     read: { type: Boolean, default: false },
     dismissed: { type: Boolean, default: false },
