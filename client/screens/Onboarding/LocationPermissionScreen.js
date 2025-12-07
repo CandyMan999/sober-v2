@@ -10,6 +10,7 @@ import {
   ActivityIndicator,
   Image,
   Animated,
+  Platform,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import * as Location from "expo-location";
@@ -39,6 +40,11 @@ const LocationPermissionScreen = ({ navigation }) => {
   const [checking, setChecking] = useState(true);
   const [showAlwaysPulse, setShowAlwaysPulse] = useState(false);
   const alwaysPulse = useRef(new Animated.Value(0)).current;
+  const alwaysAnchorBottom = Platform.select({
+    ios: 196,
+    android: 164,
+    default: 178,
+  });
 
   const hasAlwaysPermission = async () => {
     const fg = await Location.getForegroundPermissionsAsync();
@@ -124,12 +130,22 @@ const LocationPermissionScreen = ({ navigation }) => {
 
   const ringScale = alwaysPulse.interpolate({
     inputRange: [0, 1],
-    outputRange: [1, 1.35],
+    outputRange: [1, 1.4],
   });
 
   const ringOpacity = alwaysPulse.interpolate({
     inputRange: [0, 1],
-    outputRange: [0.55, 0],
+    outputRange: [0.6, 0],
+  });
+
+  const outerRingScale = alwaysPulse.interpolate({
+    inputRange: [0, 1],
+    outputRange: [1, 1.7],
+  });
+
+  const outerRingOpacity = alwaysPulse.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0.4, 0],
   });
 
   const checkPermissions = async () => {
@@ -298,7 +314,19 @@ const LocationPermissionScreen = ({ navigation }) => {
       </View>
 
       {showAlwaysPulse && (
-        <View pointerEvents="none" style={styles.alwaysOverlay}>
+        <View
+          pointerEvents="none"
+          style={[
+            styles.alwaysOverlay,
+            { transform: [{ translateY: -alwaysAnchorBottom }] },
+          ]}
+        >
+          <Animated.View
+            style={[
+              styles.pulseHaloOuter,
+              { transform: [{ scale: outerRingScale }], opacity: outerRingOpacity },
+            ]}
+          />
           <Animated.View
             style={[
               styles.pulseHalo,
@@ -390,16 +418,17 @@ const styles = StyleSheet.create({
     position: "absolute",
     left: 0,
     right: 0,
-    bottom: 110,
+    bottom: 0,
     alignItems: "center",
+    justifyContent: "center",
   },
   pulseTarget: {
-    width: 220,
-    height: 58,
-    borderRadius: 999,
+    width: 112,
+    height: 112,
+    borderRadius: 56,
     borderWidth: 2,
     borderColor: accent,
-    backgroundColor: "rgba(245, 158, 11, 0.15)",
+    backgroundColor: "rgba(245, 158, 11, 0.18)",
     shadowColor: accent,
     shadowOpacity: 0.7,
     shadowRadius: 14,
@@ -408,12 +437,21 @@ const styles = StyleSheet.create({
   },
   pulseHalo: {
     position: "absolute",
-    width: 260,
-    height: 82,
-    borderRadius: 999,
+    width: 140,
+    height: 140,
+    borderRadius: 70,
     borderWidth: 2,
     borderColor: accent,
     backgroundColor: "rgba(245, 158, 11, 0.12)",
+  },
+  pulseHaloOuter: {
+    position: "absolute",
+    width: 184,
+    height: 184,
+    borderRadius: 92,
+    borderWidth: 2,
+    borderColor: accent,
+    backgroundColor: "rgba(245, 158, 11, 0.08)",
   },
 });
 

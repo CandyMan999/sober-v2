@@ -57,7 +57,7 @@ const UsernameScreen = ({ navigation }) => {
     )
   ).current;
   const notifArrowBaseXOffset = Platform.select({
-    ios: 94,
+    ios: 65,
     android: 78,
     default: 86,
   });
