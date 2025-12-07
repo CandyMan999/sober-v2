@@ -1,5 +1,5 @@
 // screens/Onboarding/LocationPermissionScreen.js
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   View,
   Text,
@@ -9,6 +9,7 @@ import {
   Linking,
   ActivityIndicator,
   Image,
+  Animated,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import * as Location from "expo-location";
@@ -22,7 +23,6 @@ import { useClient } from "../../client";
 import { UPDATE_USER_PROFILE_MUTATION } from "../../GraphQL/mutations";
 import { getToken } from "../../utils/helpers";
 import { COLORS } from "../../constants/colors";
-import PermissionCoachmark from "../../components/PermissionCoachmark";
 const {
   primaryBackground,
   cardBackground,
@@ -37,7 +37,8 @@ const LocationPermissionScreen = ({ navigation }) => {
   const client = useClient();
   const [loading, setLoading] = useState(false);
   const [checking, setChecking] = useState(true);
-  const [showAlwaysCoachmark, setShowAlwaysCoachmark] = useState(false);
+  const [showAlwaysPulse, setShowAlwaysPulse] = useState(false);
+  const alwaysPulse = useRef(new Animated.Value(0)).current;
 
   const hasAlwaysPermission = async () => {
     const fg = await Location.getForegroundPermissionsAsync();
@@ -103,6 +104,34 @@ const LocationPermissionScreen = ({ navigation }) => {
     checkPermissions();
   }, []);
 
+  useEffect(() => {
+    if (!showAlwaysPulse) return;
+
+    alwaysPulse.setValue(0);
+
+    const loop = Animated.loop(
+      Animated.timing(alwaysPulse, {
+        toValue: 1,
+        duration: 1600,
+        useNativeDriver: true,
+      })
+    );
+
+    loop.start();
+
+    return () => loop.stop();
+  }, [alwaysPulse, showAlwaysPulse]);
+
+  const ringScale = alwaysPulse.interpolate({
+    inputRange: [0, 1],
+    outputRange: [1, 1.35],
+  });
+
+  const ringOpacity = alwaysPulse.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0.55, 0],
+  });
+
   const checkPermissions = async () => {
     try {
       if (await hasAlwaysPermission()) {
@@ -145,6 +174,9 @@ const LocationPermissionScreen = ({ navigation }) => {
         );
       }
 
+      setShowAlwaysPulse(true);
+      await new Promise((resolve) => setTimeout(resolve, 120));
+
       const bg = await Location.requestBackgroundPermissionsAsync();
 
       if (bg.status === "granted" || (await hasAlwaysPermission())) {
@@ -157,12 +189,20 @@ const LocationPermissionScreen = ({ navigation }) => {
         return;
       }
 
-      setShowAlwaysCoachmark(true);
+      Alert.alert(
+        "Always Allow needed",
+        "Tap \"Always Allow\" so we can keep you aware even when the app is closed.",
+        [
+          { text: "Open Settings", onPress: openSettings },
+          { text: "Skip", style: "cancel", onPress: routeToApp },
+        ]
+      );
     } catch (err) {
       console.log("Location permission error:", err);
       Alert.alert("Error", "Something went wrong. Try again.");
     } finally {
       setLoading(false);
+      setShowAlwaysPulse(false);
     }
   };
 
@@ -170,16 +210,6 @@ const LocationPermissionScreen = ({ navigation }) => {
     await Linking.openSettings();
     // Re-check when returning from settings
     setTimeout(checkPermissions, 2000);
-  };
-
-  const handleAlwaysAllowConfirm = async () => {
-    setShowAlwaysCoachmark(false);
-    await openSettings();
-  };
-
-  const handleAlwaysAllowSkip = async () => {
-    setShowAlwaysCoachmark(false);
-    routeToApp();
   };
 
   const skip = () => {
@@ -267,16 +297,17 @@ const LocationPermissionScreen = ({ navigation }) => {
         </View>
       </View>
 
-      <PermissionCoachmark
-        visible={showAlwaysCoachmark}
-        title="Change to Always Allow"
-        message="Tap “Change to Always Allow” so we can keep you aware even when the app is closed. You can update this anytime in Settings."
-        confirmLabel="Change to Always Allow"
-        cancelLabel="Skip"
-        indicatorColor={accent}
-        onConfirm={handleAlwaysAllowConfirm}
-        onCancel={handleAlwaysAllowSkip}
-      />
+      {showAlwaysPulse && (
+        <View pointerEvents="none" style={styles.alwaysOverlay}>
+          <Animated.View
+            style={[
+              styles.pulseHalo,
+              { transform: [{ scale: ringScale }], opacity: ringOpacity },
+            ]}
+          />
+          <View style={styles.pulseTarget} />
+        </View>
+      )}
     </LinearGradient>
   );
 };
@@ -354,6 +385,35 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: textSecondary,
     textDecorationLine: "underline",
+  },
+  alwaysOverlay: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    bottom: 110,
+    alignItems: "center",
+  },
+  pulseTarget: {
+    width: 220,
+    height: 58,
+    borderRadius: 999,
+    borderWidth: 2,
+    borderColor: accent,
+    backgroundColor: "rgba(245, 158, 11, 0.15)",
+    shadowColor: accent,
+    shadowOpacity: 0.7,
+    shadowRadius: 14,
+    shadowOffset: { width: 0, height: 4 },
+    elevation: 12,
+  },
+  pulseHalo: {
+    position: "absolute",
+    width: 260,
+    height: 82,
+    borderRadius: 999,
+    borderWidth: 2,
+    borderColor: accent,
+    backgroundColor: "rgba(245, 158, 11, 0.12)",
   },
 });
 

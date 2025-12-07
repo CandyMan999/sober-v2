@@ -10,6 +10,7 @@ import {
   ActivityIndicator,
   Alert,
   Image,
+  Animated,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import * as Notifications from "expo-notifications";
@@ -18,12 +19,12 @@ import * as Device from "expo-device";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Context from "../../context";
 import LogoIcon from "../../assets/icon.png";
+import { Ionicons } from "@expo/vector-icons";
 
 import { useClient } from "../../client";
 import { UPDATE_USER_PROFILE_MUTATION } from "../../GraphQL/mutations";
 import { FETCH_ME_QUERY } from "../../GraphQL/queries";
 import { COLORS } from "../../constants/colors";
-import PermissionCoachmark from "../../components/PermissionCoachmark";
 const MIN_LEN = 3;
 const PUSH_TOKEN_KEY = "expoPushToken";
 
@@ -48,7 +49,8 @@ const UsernameScreen = ({ navigation }) => {
   const [notifLoading, setNotifLoading] = useState(false);
   const [notifStatus, setNotifStatus] = useState(null);
   const [pushToken, setPushToken] = useState(null);
-  const [showNotifCoachmark, setShowNotifCoachmark] = useState(false);
+  const [showNotifPointer, setShowNotifPointer] = useState(false);
+  const notifArrowAnim = useRef(new Animated.Value(0)).current;
 
   const [username, setUsername] = useState("");
   const [saving, setSaving] = useState(false);
@@ -219,18 +221,46 @@ const UsernameScreen = ({ navigation }) => {
     };
   }, [client, navigation]);
 
+  useEffect(() => {
+    if (!showNotifPointer) return;
+
+    notifArrowAnim.setValue(0);
+
+    const loop = Animated.loop(
+      Animated.sequence([
+        Animated.timing(notifArrowAnim, {
+          toValue: -12,
+          duration: 650,
+          useNativeDriver: true,
+        }),
+        Animated.timing(notifArrowAnim, {
+          toValue: 0,
+          duration: 650,
+          useNativeDriver: true,
+        }),
+      ])
+    );
+
+    loop.start();
+
+    return () => loop.stop();
+  }, [notifArrowAnim, showNotifPointer]);
+
   // ------- notifications step: user taps "Enable" -------
   const handleEnableNotifications = () => {
     if (notifLoading) return;
-    setShowNotifCoachmark(true);
+    beginNotificationRequest();
   };
 
   const beginNotificationRequest = async () => {
     if (notifLoading) return;
 
     try {
-      setShowNotifCoachmark(false);
+      setShowNotifPointer(true);
       setNotifLoading(true);
+
+      // Let the pointer render underneath the native prompt
+      await new Promise((resolve) => setTimeout(resolve, 120));
 
       if (!Device.isDevice) {
         Alert.alert(
@@ -239,6 +269,7 @@ const UsernameScreen = ({ navigation }) => {
         );
         setNotifStatus("denied");
         setStep(2);
+        setShowNotifPointer(false);
         return;
       }
 
@@ -257,6 +288,7 @@ const UsernameScreen = ({ navigation }) => {
           "You can turn them on later in Settings. We'll still support you."
         );
         setStep(2);
+        setShowNotifPointer(false);
         return;
       }
 
@@ -278,12 +310,13 @@ const UsernameScreen = ({ navigation }) => {
       setStep(2);
     } finally {
       setNotifLoading(false);
+      setShowNotifPointer(false);
     }
   };
 
   const handleSkipNotifications = () => {
     setNotifStatus("denied");
-    setShowNotifCoachmark(false);
+    setShowNotifPointer(false);
     setStep(2);
   };
 
@@ -498,16 +531,18 @@ const UsernameScreen = ({ navigation }) => {
         </View>
       </KeyboardAvoidingView>
 
-      <PermissionCoachmark
-        visible={showNotifCoachmark}
-        title="Get Daily Motivation"
-        message="Plus get alerts when people like, follow, or comment on your posts. These can be configured in Settings."
-        confirmLabel="Allow"
-        cancelLabel="Don't Allow"
-        indicatorColor={accent}
-        onConfirm={beginNotificationRequest}
-        onCancel={handleSkipNotifications}
-      />
+      {showNotifPointer && (
+        <View pointerEvents="none" style={styles.permissionOverlay}>
+          <Animated.View
+            style={[
+              styles.arrowBubble,
+              { transform: [{ translateY: notifArrowAnim }] },
+            ]}
+          >
+            <Ionicons name="arrow-up" size={42} color="#fff" />
+          </Animated.View>
+        </View>
+      )}
     </LinearGradient>
   );
 };
@@ -688,6 +723,25 @@ const styles = StyleSheet.create({
     fontSize: 11,
     color: "#6B7280",
     textAlign: "center",
+  },
+  permissionOverlay: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    bottom: Platform.select({ ios: 120, android: 96, default: 110 }),
+    alignItems: "flex-end",
+    paddingRight: 48,
+  },
+  arrowBubble: {
+    backgroundColor: "rgba(255,255,255,0.14)",
+    paddingVertical: 6,
+    paddingHorizontal: 10,
+    borderRadius: 18,
+    shadowColor: "#000",
+    shadowOpacity: 0.5,
+    shadowRadius: 10,
+    shadowOffset: { width: 0, height: 6 },
+    elevation: 10,
   },
 });
 
