@@ -22,11 +22,19 @@ const formatTime = (timestamp) => {
   return `${formatDistanceToNow(parsed)} ago`;
 };
 
-const MessageBubble = ({ message, isMine, onReply, currentUsername }) => {
+const MessageBubble = ({
+  message,
+  isMine,
+  onReply,
+  currentUsername,
+  onPress,
+}) => {
   const author = message?.author || {};
   const timeLabel = formatTime(message?.createdAt);
   const replyTo = message?.replyTo;
   const bubbleAccentColor = isMine ? "#38bdf8" : "#f59e0b";
+  const likesCount = message?.likesCount || 0;
+  const showLikeBadge = likesCount > 0;
 
   const handleReplyPress = () => {
     if (onReply) onReply(message);
@@ -119,89 +127,120 @@ const MessageBubble = ({ message, isMine, onReply, currentUsername }) => {
         />
       ) : null}
 
-      <View style={[styles.bubbleStack, isMine ? styles.bubbleStackMine : null]}>
+      <View
+        style={[styles.bubbleStack, isMine ? styles.bubbleStackMine : null]}
+      >
         {!isMine ? (
           <Text style={styles.username} numberOfLines={1}>
             {author.username || "User"}
           </Text>
         ) : null}
-        <View
-          style={[
-            styles.bubble,
-            isMine ? styles.bubbleMine : styles.bubbleTheirs,
-            replyLabel && styles.bubbleWithReply,
-            isMentioningMe && !isMine ? styles.bubbleMention : null,
-          ]}
-        >
-          {replyLabel ? (
-            <TouchableOpacity
-              activeOpacity={0.8}
-              style={[
-                styles.replyContainer,
-                { borderLeftColor: bubbleAccentColor },
-                isReplyingToMe && styles.replyToMe,
-                isReplyingToMe && { shadowColor: bubbleAccentColor },
-              ]}
-              accessibilityRole="button"
-              accessibilityLabel={`Replying to ${replyLabel.username}`}
-              onPress={() => setReplyExpanded((prev) => !prev)}
-            >
-              <View style={styles.replyContent}>
-                <Text
-                  style={styles.replyTitle}
-                  numberOfLines={replyExpanded ? undefined : 1}
-                >
-                  <Text style={styles.replyLabel}>Reply to </Text>
-                  <Text style={styles.replyUsername}>{replyLabel.username}</Text>
-                  {replyLabel.timestamp ? (
-                    <Text style={styles.replyTimestamp}>
-                      {"  "}
-                      {replyLabel.timestamp}
-                    </Text>
-                  ) : null}
-                </Text>
-                <Text
-                  style={styles.replyPreview}
-                  numberOfLines={replyExpanded ? undefined : 1}
-                >
-                  {replyLabel.previewText}
-                </Text>
-              </View>
-            </TouchableOpacity>
-          ) : null}
-
-          <Text style={[styles.text, isMine ? styles.textMine : styles.textTheirs]}>
-            {renderTextWithMentions}
-          </Text>
-
+        <TouchableOpacity activeOpacity={0.9} onPress={onPress}>
           <View
             style={[
-              styles.footerRow,
-              isMine ? styles.footerRowMine : styles.footerRowTheirs,
+              styles.bubble,
+              isMine ? styles.bubbleMine : styles.bubbleTheirs,
+              replyLabel && styles.bubbleWithReply,
+              isMentioningMe && !isMine ? styles.bubbleMention : null,
             ]}
           >
-            <Text
-              style={[
-                styles.timestamp,
-                isMine ? styles.timestampMine : styles.timestampTheirs,
-              ]}
-              accessibilityLabel={`Sent ${timeLabel}`}
-            >
-              {timeLabel}
-            </Text>
-            {!isMine && onReply ? (
-              <TouchableOpacity
-                onPress={handleReplyPress}
-                accessibilityRole="button"
-                accessibilityLabel={`Reply to ${author.username || "message"}`}
-                style={styles.replyButton}
-                hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+            {showLikeBadge ? (
+              <View
+                style={[
+                  styles.likeBadge,
+                  isMine ? styles.likeBadgeMine : styles.likeBadgeTheirs,
+                ]}
               >
-                <Ionicons name="arrow-undo-outline" size={14} color="#cbd5e1" />
+                <Text style={styles.likeBadgeText}>👍</Text>
+                {likesCount > 1 ? (
+                  <Text style={styles.likeBadgeCount}>{likesCount}</Text>
+                ) : null}
+              </View>
+            ) : null}
+
+            {replyLabel ? (
+              <TouchableOpacity
+                activeOpacity={0.8}
+                style={[
+                  styles.replyContainer,
+                  { borderLeftColor: bubbleAccentColor },
+                  isReplyingToMe && styles.replyToMe,
+                  isReplyingToMe && { shadowColor: bubbleAccentColor },
+                ]}
+                accessibilityRole="button"
+                accessibilityLabel={`Replying to ${replyLabel.username}`}
+                onPress={() => setReplyExpanded((prev) => !prev)}
+              >
+                <View style={styles.replyContent}>
+                  <Text
+                    style={styles.replyTitle}
+                    numberOfLines={replyExpanded ? undefined : 1}
+                  >
+                    <Text style={styles.replyLabel}>Reply to </Text>
+                    <Text style={styles.replyUsername}>
+                      {replyLabel.username}
+                    </Text>
+                    {replyLabel.timestamp ? (
+                      <Text style={styles.replyTimestamp}>
+                        {"  "}
+                        {replyLabel.timestamp}
+                      </Text>
+                    ) : null}
+                  </Text>
+                  <Text
+                    style={styles.replyPreview}
+                    numberOfLines={replyExpanded ? undefined : 1}
+                  >
+                    {replyLabel.previewText}
+                  </Text>
+                </View>
               </TouchableOpacity>
             ) : null}
+
+            <Text
+              style={[
+                styles.text,
+                isMine ? styles.textMine : styles.textTheirs,
+              ]}
+            >
+              {renderTextWithMentions}
+            </Text>
+
+            <View
+              style={[
+                styles.footerRow,
+                isMine ? styles.footerRowMine : styles.footerRowTheirs,
+              ]}
+            >
+              <Text
+                style={[
+                  styles.timestamp,
+                  isMine ? styles.timestampMine : styles.timestampTheirs,
+                ]}
+                accessibilityLabel={`Sent ${timeLabel}`}
+              >
+                {timeLabel}
+              </Text>
+              {!isMine && onReply ? (
+                <TouchableOpacity
+                  onPress={handleReplyPress}
+                  accessibilityRole="button"
+                  accessibilityLabel={`Reply to ${
+                    author.username || "message"
+                  }`}
+                  style={styles.replyButton}
+                  hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+                >
+                  <Ionicons
+                    name="arrow-undo-outline"
+                    size={14}
+                    color="#cbd5e1"
+                  />
+                </TouchableOpacity>
+              ) : null}
+            </View>
           </View>
-        </View>
+        </TouchableOpacity>
       </View>
 
       {isMine ? (
@@ -301,6 +340,7 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     borderWidth: 1,
     maxWidth: "100%",
+    position: "relative",
   },
   bubbleMine: {
     backgroundColor: "rgba(56,189,248,0.14)",
@@ -354,6 +394,39 @@ const styles = StyleSheet.create({
   },
   timestampTheirs: {
     color: "#fef9c3",
+  },
+  likeBadge: {
+    position: "absolute",
+    top: -8,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 999,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 4,
+  },
+  likeBadgeMine: {
+    backgroundColor: "#0ea5e9",
+    opacity: 1,
+    zIndex: 100,
+    borderWidth: 1,
+    borderColor: "#0284c7",
+    left: -6,
+  },
+  likeBadgeTheirs: {
+    backgroundColor: "#f59e0b",
+    borderWidth: 1,
+    borderColor: "#b45309",
+    right: -6,
+  },
+  likeBadgeText: {
+    fontSize: 12,
+    color: "#fef3c7",
+  },
+  likeBadgeCount: {
+    fontSize: 11,
+    fontWeight: "700",
+    color: "#fef3c7",
   },
   footerRow: {
     flexDirection: "row",

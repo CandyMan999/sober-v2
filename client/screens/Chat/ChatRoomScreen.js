@@ -27,7 +27,9 @@ import {
   DIRECT_TYPING_SUBSCRIPTION,
   SET_DIRECT_TYPING,
 } from "../../GraphQL/directMessages";
+import { TOGGLE_LIKE_MUTATION } from "../../GraphQL/mutations";
 import { GRAPHQL_URI } from "../../config/endpoint";
+import { getToken } from "../../utils/helpers";
 
 const sortByCreatedAt = (items = []) => {
   return [...items].sort((a, b) => {
@@ -53,7 +55,49 @@ const dedupeMessages = (items = []) => {
   return unique;
 };
 
+const normalizeMessage = (incoming = {}, previous = {}, currentUserId) => {
+  const likesCount = incoming?.likesCount ?? previous?.likesCount ?? 0;
+  const likes = Array.isArray(incoming?.likes)
+    ? incoming.likes
+    : previous?.likes;
+
+  const payloadLiked =
+    typeof incoming?.liked === "boolean"
+      ? incoming.liked
+      : typeof previous?.liked === "boolean"
+      ? previous.liked
+      : undefined;
+
+  const likedFromLikes = Array.isArray(likes) && currentUserId
+    ? likes.some((like) => {
+        const userId = like?.user?.id || like?.user?._id;
+        return userId && String(userId) === String(currentUserId);
+      })
+    : undefined;
+
+  const liked =
+    typeof payloadLiked === "boolean"
+      ? payloadLiked
+      : typeof likedFromLikes === "boolean"
+      ? likedFromLikes
+      : false;
+
+  return {
+    ...previous,
+    ...incoming,
+    likesCount,
+    likes,
+    liked,
+  };
+};
+
 const buildWsUrl = () => GRAPHQL_URI.replace(/^http/, "ws");
+
+const resolveMessageMatchId = (message = {}) => {
+  const id = getMessageId(message);
+  const targetId = message?.targetId ? String(message.targetId) : "";
+  return id || targetId || "";
+};
 
 const ChatRoomScreen = ({ route }) => {
   const { state } = useContext(Context);
@@ -63,11 +107,18 @@ const ChatRoomScreen = ({ route }) => {
   const currentUserId = currentUser?.id;
   const isFocused = useIsFocused();
 
+  const normalizeForUser = useCallback(
+    (incoming = {}, previous = {}) =>
+      normalizeMessage(incoming, previous, currentUserId),
+    [currentUserId]
+  );
+
   const wsClientRef = useRef(null);
   const commentSubscriptionRef = useRef(null);
   const scrollToBottomRef = useRef(null);
   const inputRef = useRef(null);
   const appState = useRef(AppState.currentState);
+  const tapTimestampsRef = useRef({});
 
   const [room, setRoom] = useState(null);
   const [messages, setMessages] = useState([]);
@@ -118,7 +169,9 @@ const ChatRoomScreen = ({ route }) => {
     try {
       const response = await client.request(GET_COMMENTS, { roomId: room.id });
       const incoming = response?.getComments || [];
-      const normalized = dedupeMessages(sortByCreatedAt(incoming));
+      const normalized = dedupeMessages(sortByCreatedAt(incoming)).map((msg) =>
+        normalizeForUser(msg)
+      );
       setMessages(normalized);
     } catch (error) {
       console.log("Failed to load comments", error);
@@ -126,7 +179,7 @@ const ChatRoomScreen = ({ route }) => {
       setLoadingMessages(false);
       setDoneLoading(true);
     }
-  }, [client, room?.id]);
+  }, [client, normalizeForUser, room?.id]);
 
   useFocusEffect(
     useCallback(() => {
@@ -198,17 +251,27 @@ const ChatRoomScreen = ({ route }) => {
 
         setMessages((prev) => {
           const next = [...prev];
-          const incomingId = getMessageId(incoming);
-          const existingIndex = next.findIndex(
-            (msg) => getMessageId(msg) === incomingId
-          );
+          const incomingMatchId = resolveMessageMatchId(incoming);
+          const existingIndex = next.findIndex((msg) => {
+            const msgId = getMessageId(msg);
+            return msgId && msgId === incomingMatchId;
+          });
 
           if (existingIndex !== -1) {
-            next[existingIndex] = { ...next[existingIndex], ...incoming };
+            next[existingIndex] = normalizeForUser(
+              incoming,
+              next[existingIndex]
+            );
             return sortByCreatedAt(next);
           }
 
-          return dedupeMessages(sortByCreatedAt([...next, incoming]));
+          const normalizedIncoming = normalizeForUser({
+            ...incoming,
+            id: incomingMatchId || incoming.id,
+          });
+          return dedupeMessages(
+            sortByCreatedAt([...next, normalizedIncoming])
+          );
         });
       },
       error: (error) => {
@@ -255,7 +318,7 @@ const ChatRoomScreen = ({ route }) => {
       wsClientRef.current = null;
       setTypingUsers({});
     };
-  }, [currentUserId, isFocused, room?.id, wsClientRef]);
+  }, [currentUserId, isFocused, normalizeForUser, room?.id, wsClientRef]);
 
   const handleSend = useCallback(async () => {
     if (!messageText?.trim() || !room?.id || !currentUserId) return;
@@ -269,7 +332,7 @@ const ChatRoomScreen = ({ route }) => {
         replyToCommentId: replyTarget?.id || replyTarget?._id,
       });
 
-      const newComment = response?.createComment;
+      const newComment = normalizeForUser(response?.createComment);
       if (newComment) {
         setMessages((prev) =>
           dedupeMessages(sortByCreatedAt([...prev, newComment]))
@@ -311,6 +374,104 @@ const ChatRoomScreen = ({ route }) => {
     }
     setReplyTarget(null);
   }, [replyTarget]);
+
+  const toggleMessageLike = useCallback(
+    async (messageId) => {
+      if (!messageId || !currentUserId) return;
+
+      const target = messages.find(
+        (msg) => getMessageId(msg) === String(messageId)
+      );
+
+      if (!target) return;
+
+      const authorId = target?.author?.id || target?.author?._id;
+      if (String(authorId) === String(currentUserId)) return;
+
+      const previousLiked = !!target.liked;
+      const previousLikesCount = target.likesCount || 0;
+      const nextLiked = !previousLiked;
+      const nextLikesCount = Math.max(
+        0,
+        previousLikesCount + (nextLiked ? 1 : -1)
+      );
+
+      setMessages((prev) =>
+        prev.map((msg) => {
+          if (getMessageId(msg) !== String(messageId)) return msg;
+          return { ...msg, liked: nextLiked, likesCount: nextLikesCount };
+        })
+      );
+
+      try {
+        const token = await getToken();
+        const response = await client.request(TOGGLE_LIKE_MUTATION, {
+          token,
+          targetType: "COMMENT",
+          targetId: messageId,
+        });
+
+        const payload = response?.toggleLike;
+        if (payload) {
+          const payloadLiked =
+            typeof payload.liked === "boolean"
+              ? payload.liked
+              : (payload.likesCount || 0) > 0;
+
+          setMessages((prev) =>
+            prev.map((msg) => {
+              if (getMessageId(msg) !== String(payload.targetId || messageId))
+                return msg;
+
+              return normalizeForUser(
+                {
+                  ...msg,
+                  likesCount: payload.likesCount ?? msg.likesCount ?? 0,
+                  liked: payloadLiked,
+                  likes: payload.like
+                    ? payloadLiked
+                      ? [...(msg.likes || []), payload.like]
+                      : (msg.likes || []).filter(
+                          (like) => getMessageId(like) !== getMessageId(payload.like)
+                        )
+                    : msg.likes,
+                },
+                msg
+              );
+            })
+          );
+        }
+      } catch (err) {
+        console.log("Failed to toggle comment like", err);
+        setMessages((prev) =>
+          prev.map((msg) => {
+            if (getMessageId(msg) !== String(messageId)) return msg;
+            return { ...msg, liked: previousLiked, likesCount: previousLikesCount };
+          })
+        );
+      }
+    },
+    [client, currentUserId, messages, normalizeForUser]
+  );
+
+  const handleMessagePress = useCallback(
+    (message) => {
+      const messageId = getMessageId(message);
+      if (!messageId) return;
+
+      const authorId = message?.author?.id || message?.author?._id;
+      if (String(authorId) === String(currentUserId)) return;
+
+      const now = Date.now();
+      const lastTap = tapTimestampsRef.current[messageId] || 0;
+
+      tapTimestampsRef.current[messageId] = now;
+      if (now - lastTap < 280) {
+        toggleMessageLike(messageId);
+      }
+    },
+    [currentUserId, toggleMessageLike]
+  );
 
   useEffect(() => {
     const next = messageText.trim().length > 0;
@@ -391,6 +552,7 @@ const ChatRoomScreen = ({ route }) => {
               doneLoading={doneLoading}
               onReply={handleSelectReply}
               currentUsername={currentUser?.username}
+              onPressMessage={handleMessagePress}
             />
           )}
         </View>
@@ -426,7 +588,7 @@ const styles = StyleSheet.create({
   messageArea: {
     flex: 1,
     backgroundColor: "#0b1220",
-    paddingHorizontal: 0,
+    paddingHorizontal: 6,
     paddingTop: 0,
   },
   inputArea: {

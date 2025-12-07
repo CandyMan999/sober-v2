@@ -1,6 +1,10 @@
 const { AuthenticationError, UserInputError } = require("apollo-server-express");
 const { Like, Post, Quote, Comment, Room, User } = require("../../models");
-const { publishDirectMessage } = require("../subscription/subscription");
+const {
+  publishDirectMessage,
+  publishRoomComment,
+  normalizeCommentForGraphQL,
+} = require("../subscription/subscription");
 const {
   NotificationTypes,
   NotificationIntents,
@@ -27,6 +31,34 @@ const publishDirectMessageLikeUpdate = async (targetType, targetId) => {
     .exec();
 
   publishDirectMessage(hydratedComment);
+};
+
+const publishRoomCommentLikeUpdate = async (commentId) => {
+  if (!commentId) return;
+
+  const [comment, likes] = await Promise.all([
+    Comment.findById(commentId)
+      .populate({ path: "author", populate: "profilePic" })
+      .populate({
+        path: "replyTo",
+        populate: { path: "author", populate: "profilePic" },
+      })
+      .lean(),
+    Like.find({ targetType: "COMMENT", targetId: commentId })
+      .populate({ path: "user", select: "username profilePicUrl" })
+      .lean(),
+  ]);
+
+  if (!comment) return;
+
+  const hydrated = {
+    ...comment,
+    id: comment.id || comment._id?.toString?.(),
+    likes,
+    likesCount: comment.likesCount || likes?.length || 0,
+  };
+
+  publishRoomComment(normalizeCommentForGraphQL(hydrated));
 };
 
 const findTarget = async (targetType, targetId) => {
@@ -73,6 +105,10 @@ const toggleLikeResolver = async (_, { token, targetType, targetId }) => {
 
     await publishDirectMessageLikeUpdate(targetType, targetId);
 
+    if (targetType === "COMMENT") {
+      await publishRoomCommentLikeUpdate(targetId);
+    }
+
     return {
       liked: false,
       likesCount: target.likesCount || 0,
@@ -100,6 +136,10 @@ const toggleLikeResolver = async (_, { token, targetType, targetId }) => {
   };
 
   await publishDirectMessageLikeUpdate(targetType, targetId);
+
+  if (targetType === "COMMENT") {
+    await publishRoomCommentLikeUpdate(targetId);
+  }
 
   if (targetType === "COMMENT") {
     const comment = await Comment.findById(targetId).populate("author");
