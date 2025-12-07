@@ -28,11 +28,15 @@ const MessageBubble = ({
   onReply,
   currentUsername,
   onPress,
+  styleVariant,
 }) => {
   const author = message?.author || {};
   const timeLabel = formatTime(message?.createdAt);
   const replyTo = message?.replyTo;
-  const bubbleAccentColor = isMine ? "#38bdf8" : "#f59e0b";
+  const accentColor = isMine
+    ? "#38bdf8"
+    : styleVariant?.accentColor || "#f59e0b";
+  const bubbleColors = !isMine ? styleVariant?.bubble || {} : {};
   const likesCount = message?.likesCount || 0;
   const showLikeBadge = likesCount > 0;
 
@@ -122,6 +126,7 @@ const MessageBubble = ({
           size={36}
           style={styles.avatar}
           fallbackText={author.username}
+          haloColors={styleVariant?.haloColors}
           userId={author.id || author._id}
           username={author.username}
         />
@@ -131,7 +136,16 @@ const MessageBubble = ({
         style={[styles.bubbleStack, isMine ? styles.bubbleStackMine : null]}
       >
         {!isMine ? (
-          <Text style={styles.username} numberOfLines={1}>
+          <Text
+            style={[
+              styles.username,
+              { color: accentColor },
+              styleVariant?.usernameColor
+                ? { color: styleVariant.usernameColor }
+                : null,
+            ]}
+            numberOfLines={1}
+          >
             {author.username || "User"}
           </Text>
         ) : null}
@@ -141,14 +155,44 @@ const MessageBubble = ({
               styles.bubble,
               isMine ? styles.bubbleMine : styles.bubbleTheirs,
               replyLabel && styles.bubbleWithReply,
-              isMentioningMe && !isMine ? styles.bubbleMention : null,
+              !isMine && bubbleColors.backgroundColor
+                ? { backgroundColor: bubbleColors.backgroundColor }
+                : null,
+              !isMine && bubbleColors.borderColor
+                ? { borderColor: bubbleColors.borderColor }
+                : null,
+              !isMine && bubbleColors.shadowColor
+                ? {
+                    shadowColor: bubbleColors.shadowColor,
+                    shadowOpacity: 0.9,
+                    shadowRadius: 10,
+                    shadowOffset: { width: 0, height: 0 },
+                    elevation: 8,
+                  }
+                : null,
+              isMentioningMe && !isMine
+                ? [
+                    styles.bubbleMention,
+                    { shadowColor: bubbleColors.shadowColor || accentColor },
+                  ]
+                : null,
             ]}
           >
             {showLikeBadge ? (
               <View
                 style={[
                   styles.likeBadge,
-                  isMine ? styles.likeBadgeMine : styles.likeBadgeTheirs,
+                  isMine
+                    ? styles.likeBadgeMine
+                    : [
+                        styles.likeBadgeTheirs,
+                        styleVariant?.accentColor
+                          ? { backgroundColor: styleVariant.accentColor }
+                          : null,
+                        bubbleColors.borderColor
+                          ? { borderColor: bubbleColors.borderColor }
+                          : null,
+                      ],
                 ]}
               >
                 <Text style={styles.likeBadgeText}>👍</Text>
@@ -163,9 +207,9 @@ const MessageBubble = ({
                 activeOpacity={0.8}
                 style={[
                   styles.replyContainer,
-                  { borderLeftColor: bubbleAccentColor },
+                  { borderLeftColor: bubbleColors.replyBorderColor || accentColor },
                   isReplyingToMe && styles.replyToMe,
-                  isReplyingToMe && { shadowColor: bubbleAccentColor },
+                  isReplyingToMe && { shadowColor: bubbleColors.shadowColor || accentColor },
                 ]}
                 accessibilityRole="button"
                 accessibilityLabel={`Replying to ${replyLabel.username}`}
@@ -201,6 +245,9 @@ const MessageBubble = ({
               style={[
                 styles.text,
                 isMine ? styles.textMine : styles.textTheirs,
+                !isMine && bubbleColors.textColor
+                  ? { color: bubbleColors.textColor }
+                  : null,
               ]}
             >
               {renderTextWithMentions}
@@ -216,6 +263,9 @@ const MessageBubble = ({
                 style={[
                   styles.timestamp,
                   isMine ? styles.timestampMine : styles.timestampTheirs,
+                  !isMine && bubbleColors.timestampColor
+                    ? { color: bubbleColors.timestampColor }
+                    : null,
                 ]}
                 accessibilityLabel={`Sent ${timeLabel}`}
               >
