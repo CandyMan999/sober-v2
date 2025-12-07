@@ -9,6 +9,12 @@ const {
   publishRoomsUpdated,
 } = require("../subscription/subscription");
 const { normalizeRoomForGraphQL } = require("../utils/normalize");
+const {
+  NotificationIntents,
+  NotificationTypes,
+  createNotificationForUser,
+} = require("../../utils/notifications");
+const { sendPushNotifications } = require("../../utils/pushNotifications");
 
 const ALLOWED_ROOM_NAMES = ["General", "Early Days", "Relapse Support"];
 
@@ -113,6 +119,52 @@ const createCommentResolver = async (
     .populate({ path: "replyTo", populate: { path: "author", populate: "profilePic" } });
 
   const normalized = normalizeCommentForGraphQL(populatedComment);
+
+  if (replyToCommentId && populatedComment?.replyTo?.author) {
+    const recipient = populatedComment.replyTo.author;
+    const isSelf = String(recipient._id) === String(me._id);
+    const actorName = me.username || "Someone";
+    const trimmedBody = text.trim();
+    const preview =
+      trimmedBody.length > 140
+        ? `${trimmedBody.slice(0, 137)}...`
+        : trimmedBody;
+
+    if (!isSelf && recipient.token && recipient.notificationsEnabled !== false) {
+      await sendPushNotifications([
+        {
+          pushToken: recipient.token,
+          title: `${actorName} replied in ${room.name}`,
+          body: preview,
+          data: {
+            type: NotificationTypes.ROOM_REPLY,
+            intent: NotificationIntents.OPEN_CHAT_ROOM,
+            roomId: String(room._id),
+            roomName: room.name,
+            commentId: String(comment._id),
+          },
+        },
+      ]);
+    }
+
+    if (!isSelf) {
+      await createNotificationForUser({
+        userId: recipient._id,
+        notificationId: `room-reply-${comment._id.toString()}`,
+        type: NotificationTypes.ROOM_REPLY,
+        title: `${actorName} replied in ${room.name}`,
+        description: preview,
+        intent: NotificationIntents.OPEN_CHAT_ROOM,
+        commentId: String(comment._id),
+        fromUserId: String(me._id),
+        fromUsername: actorName,
+        fromProfilePicUrl: me.profilePicUrl || null,
+        roomId: String(room._id),
+        roomName: room.name,
+        createdAt: comment.createdAt,
+      });
+    }
+  }
 
   // Broadcast the new comment to any subscribers watching this room
   publishRoomComment(normalized);

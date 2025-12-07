@@ -148,6 +148,8 @@ module.exports = {
       fromProfilePicUrl: notification.fromProfilePicUrl,
       venueName: notification.venueName,
       venueType: notification.venueType,
+      roomId: notification.roomId,
+      roomName: notification.roomName,
       createdAt: notification.createdAt?.toISOString?.() || notification.createdAt,
       read: Boolean(notification.read),
       dismissed: Boolean(notification.dismissed),

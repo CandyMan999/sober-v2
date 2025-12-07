@@ -292,6 +292,8 @@ export const USER_NOTIFICATIONS_QUERY = `
       fromProfilePicUrl
       venueName
       venueType
+      roomId
+      roomName
       createdAt
       read
       dismissed

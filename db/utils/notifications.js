@@ -10,6 +10,7 @@ const NotificationTypes = {
   MILESTONE: "MILESTONE",
   FOLLOWING_NEW_POST: "FOLLOWING_NEW_POST",
   NEW_QUOTE: "new_quote",
+  ROOM_REPLY: "ROOM_REPLY",
 };
 
 const NotificationIntents = {
@@ -17,6 +18,7 @@ const NotificationIntents = {
   ACKNOWLEDGE: "ACKNOWLEDGE",
   SHOW_INFO: "SHOW_INFO",
   OPEN_DIRECT_MESSAGE: "OPEN_DIRECT_MESSAGE",
+  OPEN_CHAT_ROOM: "OPEN_CHAT_ROOM",
 };
 
 const createNotificationForUser = async ({
@@ -37,6 +39,8 @@ const createNotificationForUser = async ({
   fromProfilePicUrl,
   venueName,
   venueType,
+  roomId,
+  roomName,
 }) => {
   if (!userId || !notificationId) return null;
 
@@ -55,6 +59,8 @@ const createNotificationForUser = async ({
     fromProfilePicUrl,
     venueName,
     venueType,
+    roomId,
+    roomName,
   };
 
   const doc = await Notification.findOneAndUpdate(
