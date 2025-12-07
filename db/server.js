@@ -16,19 +16,24 @@ const playground = require("graphql-playground-middleware-express").default;
 
 const PORT = process.env.PORT || 4000;
 
-const buildContext = async (token) => {
+const buildContext = async (token, appleId) => {
   let currentUser = null;
 
-  if (token) {
-    try {
-      currentUser = await User.findOne({ token }).populate("profilePic");
-      await User.ensureChatRoomStyle(currentUser);
-    } catch (err) {
-      console.error("❌ Error fetching user from token:", err);
+  try {
+    if (appleId) {
+      currentUser = await User.findOne({ appleId }).populate("profilePic");
     }
+
+    if (!currentUser && token) {
+      currentUser = await User.findOne({ token }).populate("profilePic");
+    }
+
+    await User.ensureChatRoomStyle(currentUser);
+  } catch (err) {
+    console.error("❌ Error fetching user from identity:", err);
   }
 
-  return { token, currentUser };
+  return { token, appleId, currentUser };
 };
 
 async function start() {
@@ -51,7 +56,8 @@ async function start() {
       playground: false,
       context: async ({ req }) => {
         const token = req.headers["x-push-token"] || null;
-        return buildContext(token);
+        const appleId = req.headers["x-apple-id"] || null;
+        return buildContext(token, appleId);
       },
     });
 
@@ -87,8 +93,12 @@ async function start() {
             connectionParams?.["x-push-token"] ||
             connectionParams?.headers?.["x-push-token"] ||
             null;
+          const appleId =
+            connectionParams?.["x-apple-id"] ||
+            connectionParams?.headers?.["x-apple-id"] ||
+            null;
 
-          return buildContext(token);
+          return buildContext(token, appleId);
         },
       },
       {

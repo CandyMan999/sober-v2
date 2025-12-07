@@ -38,6 +38,7 @@ const {
   dismissNotificationResolver,
   clearAllNotificationsResolver,
 } = require("./notifications");
+const { appleLoginResolver } = require("./appleLogin");
 
 module.exports = {
   directUploadResolver,
@@ -73,4 +74,5 @@ module.exports = {
   dismissNotificationResolver,
   clearAllNotificationsResolver,
   deleteAccountResolver,
+  appleLoginResolver,
 };

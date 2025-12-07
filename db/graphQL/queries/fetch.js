@@ -31,10 +31,15 @@ const buildRepliesPopulate = (depth = 1) => {
 
 module.exports = {
   fetchMeResolver: async (root, args, ctx) => {
-    const { token } = args;
+    const { token, appleId } = args;
 
     try {
-      const user = await User.findOne({ token }).populate([
+      if (!token && !appleId) {
+        throw new AuthenticationError("Token or Apple ID is required");
+      }
+
+      const query = appleId ? { appleId } : { token };
+      const user = await User.findOne(query).populate([
         "profilePic",
         "drunkPic",
         "savedPosts",

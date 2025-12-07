@@ -26,10 +26,11 @@ import { getMainDefinition } from "@apollo/client/utilities";
 import * as Notifications from "expo-notifications";
 
 import { GRAPHQL_URI } from "./config/endpoint";
-import { getToken } from "./utils/helpers";
+import { getAppleId, getToken } from "./utils/helpers";
 
 import { TabNavigator } from "./navigation";
 import {
+  AppleLoginScreen,
   AddUserNameScreen,
   AddPhotoScreen,
   AddSobrietyDateScreen,
@@ -64,10 +65,12 @@ const httpLink = new HttpLink({ uri: GRAPHQL_URI });
 
 const authLink = setContext(async (_, { headers }) => {
   const token = await getToken();
+  const appleId = await getAppleId();
   return {
     headers: {
       ...headers,
       "x-push-token": token || "",
+      "x-apple-id": appleId || "",
     },
   };
 });
@@ -78,6 +81,7 @@ const wsLink = new WebSocketLink({
     reconnect: true,
     connectionParams: async () => ({
       "x-push-token": (await getToken()) || "",
+      "x-apple-id": (await getAppleId()) || "",
     }),
   },
 });
@@ -500,6 +504,11 @@ export default function App() {
                     headerShown: true,
                   }}
                 >
+                  <Stack.Screen
+                    name="AppleLogin"
+                    component={AppleLoginScreen}
+                    options={{ title: "Sign In" }}
+                  />
                   <Stack.Screen
                     name="AddUserName"
                     component={AddUserNameScreen}

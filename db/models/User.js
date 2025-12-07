@@ -6,8 +6,16 @@ const UserSchema = new mongoose.Schema(
     // Device push token – still your core identifier, no password/signup.
     token: {
       type: String,
-      required: true,
+      required: false,
       unique: true,
+      index: true,
+      sparse: true,
+    },
+
+    appleId: {
+      type: String,
+      unique: true,
+      sparse: true,
       index: true,
     },
 

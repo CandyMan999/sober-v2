@@ -43,6 +43,7 @@ const serializeUser = (user) => {
   return {
     ...plain,
     id: toIdString(plain.id) || toIdString(plain._id),
+    appleId: plain.appleId || null,
     profilePic: serializePicture(plain.profilePic),
     drunkPic: serializePicture(plain.drunkPic),
     savedPosts: mapIds(plain.savedPosts),

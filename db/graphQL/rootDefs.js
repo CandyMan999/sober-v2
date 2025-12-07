@@ -7,7 +7,8 @@ const typeDefs = gql`
   """
   type User {
     id: ID!
-    token: String!
+    token: String
+    appleId: String
     username: String
     profilePic: Picture
     profilePicUrl: String
@@ -320,8 +321,8 @@ const typeDefs = gql`
   scalar Upload
 
   type Query {
-    me(token: String!): User
-    fetchMe(token: String!): User!
+    me(token: String): User
+    fetchMe(token: String, appleId: String): User!
     users: [User!]
     rooms: [Room!]
     room(id: ID!): Room
@@ -375,8 +376,10 @@ const typeDefs = gql`
   }
 
   type Mutation {
+    appleLogin(appleId: String!, token: String): User!
     updateUserProfile(
-      token: String!
+      token: String
+      appleId: String
       username: String
       profilePicUrl: String
       sobrietyStartAt: String

@@ -28,6 +28,7 @@ import { FETCH_ME_QUERY } from "../../GraphQL/queries";
 import { COLORS } from "../../constants/colors";
 const MIN_LEN = 3;
 const PUSH_TOKEN_KEY = "expoPushToken";
+const APPLE_ID_KEY = "appleUserId";
 
 const {
   primaryBackground,
@@ -38,7 +39,7 @@ const {
   textSecondary,
 } = COLORS;
 
-const UsernameScreen = ({ navigation }) => {
+const UsernameScreen = ({ navigation, route }) => {
   const client = useClient();
   const { dispatch } = useContext(Context);
 
@@ -50,6 +51,7 @@ const UsernameScreen = ({ navigation }) => {
   const [notifLoading, setNotifLoading] = useState(false);
   const [notifStatus, setNotifStatus] = useState(null);
   const [pushToken, setPushToken] = useState(null);
+  const [appleId, setAppleId] = useState(route?.params?.appleId || null);
   const [showNotifPointer, setShowNotifPointer] = useState(false);
   const notifArrowAnim = useRef(new Animated.Value(0)).current;
   const notifArrowBaseYOffset = useRef(
@@ -71,6 +73,23 @@ const UsernameScreen = ({ navigation }) => {
 
   // 🚦 guard so we only navigate once
   const hasRoutedRef = useRef(false);
+
+  useEffect(() => {
+    const ensureAppleIdentity = async () => {
+      const storedAppleId =
+        route?.params?.appleId || (await AsyncStorage.getItem(APPLE_ID_KEY));
+
+      if (storedAppleId) {
+        setAppleId(storedAppleId);
+        await AsyncStorage.setItem(APPLE_ID_KEY, storedAppleId);
+        return;
+      }
+
+      navigation.replace("AppleLogin");
+    };
+
+    ensureAppleIdentity();
+  }, [navigation, route?.params?.appleId]);
 
   const updateLocationIfGranted = async (token) => {
     try {
@@ -108,10 +127,10 @@ const UsernameScreen = ({ navigation }) => {
 
   // ------- helper: fetch "me" with a known token -------
   const fetchMeWithToken = async (token) => {
-    if (!token) return;
+    if (!token && !appleId) return;
 
     try {
-      const data = await client.request(FETCH_ME_QUERY, { token });
+      const data = await client.request(FETCH_ME_QUERY, { token, appleId });
       const me = data?.fetchMe;
 
       // if we have a full user with username already
@@ -182,6 +201,10 @@ const UsernameScreen = ({ navigation }) => {
     let cancelled = false;
 
     const init = async () => {
+      if (!appleId) {
+        setInitializing(false);
+        return;
+      }
       try {
         // 1) Try to restore token from storage
         const storedToken = await AsyncStorage.getItem(PUSH_TOKEN_KEY);
@@ -230,7 +253,7 @@ const UsernameScreen = ({ navigation }) => {
     return () => {
       cancelled = true;
     };
-  }, [client, navigation]);
+  }, [appleId, client, navigation]);
 
   useEffect(() => {
     if (!showNotifPointer) return;
@@ -370,6 +393,15 @@ const UsernameScreen = ({ navigation }) => {
   const handleContinue = async () => {
     if (!isValid || saving) return;
 
+    if (!appleId) {
+      Alert.alert(
+        "Sign in required",
+        "Please sign in with Apple to continue your onboarding."
+      );
+      navigation.replace("AppleLogin");
+      return;
+    }
+
     if (!pushToken) {
       Alert.alert(
         "Missing device ID",
@@ -383,6 +415,7 @@ const UsernameScreen = ({ navigation }) => {
 
       const variables = {
         token: pushToken,
+        appleId,
         username,
       };
 
@@ -398,7 +431,7 @@ const UsernameScreen = ({ navigation }) => {
         return;
       }
 
-      navigation.navigate("AddPhoto", { username, pushToken });
+      navigation.navigate("AddPhoto", { username, pushToken, appleId });
     } catch (err) {
       console.log("Error saving username:", err);
       Alert.alert(

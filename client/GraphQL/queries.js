@@ -1,8 +1,9 @@
 export const FETCH_ME_QUERY = `
-  query FetchMe($token: String!) {
-    fetchMe(token: $token) {
+  query FetchMe($token: String, $appleId: String) {
+    fetchMe(token: $token, appleId: $appleId) {
       id
       token
+      appleId
       username
       profilePicUrl
       drunkPicUrl
