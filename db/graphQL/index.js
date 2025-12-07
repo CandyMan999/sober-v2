@@ -34,6 +34,7 @@ const {
   dismissNotificationResolver,
   clearAllNotificationsResolver,
   deleteAccountResolver,
+  appleLoginResolver,
 } = require("./mutations/index.js");
 
 const {
@@ -147,6 +148,7 @@ const resolvers = {
     dismissNotification: dismissNotificationResolver,
     clearAllNotifications: clearAllNotificationsResolver,
     deleteAccount: deleteAccountResolver,
+    appleLogin: appleLoginResolver,
   },
 
   Upload: require("graphql-upload-minimal").GraphQLUpload,

@@ -3,7 +3,8 @@ import { gql } from "graphql-request";
 
 export const UPDATE_USER_PROFILE_MUTATION = gql`
   mutation UpdateUserProfile(
-    $token: String!
+    $token: String
+    $appleId: String
     $username: String
     $profilePicUrl: String
     $sobrietyStartAt: String
@@ -15,6 +16,7 @@ export const UPDATE_USER_PROFILE_MUTATION = gql`
   ) {
     updateUserProfile(
       token: $token
+      appleId: $appleId
       username: $username
       profilePicUrl: $profilePicUrl
       sobrietyStartAt: $sobrietyStartAt
@@ -27,6 +29,7 @@ export const UPDATE_USER_PROFILE_MUTATION = gql`
       id
       token
       username
+      appleId
       profilePicUrl
       drunkPicUrl
       sobrietyStartAt
@@ -93,6 +96,21 @@ export const UPDATE_USER_PROFILE_MUTATION = gql`
         publicId
         provider
       }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+
+export const APPLE_LOGIN_MUTATION = gql`
+  mutation AppleLogin($appleId: String!, $token: String) {
+    appleLogin(appleId: $appleId, token: $token) {
+      id
+      appleId
+      token
+      username
+      profilePicUrl
+      drunkPicUrl
       createdAt
       updatedAt
     }

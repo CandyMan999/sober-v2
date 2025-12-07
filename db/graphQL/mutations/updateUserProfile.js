@@ -60,6 +60,7 @@ module.exports = {
     _,
     {
       token,
+      appleId,
       username,
       profilePicUrl,
       sobrietyStartAt,
@@ -71,10 +72,28 @@ module.exports = {
     }
   ) => {
     try {
-      let user = await User.findOne({ token });
+      const sanitizedAppleId = appleId?.trim();
+      if (!token && !sanitizedAppleId) {
+        throw new AuthenticationError("Token or Apple ID is required");
+      }
+      const userQuery = sanitizedAppleId ? { appleId: sanitizedAppleId } : { token };
+
+      let user = await User.findOne(userQuery);
+
+      if (!user && token) {
+        user = await User.findOne({ token });
+      }
 
       if (!user) {
-        user = new User({ token });
+        user = new User({ token, appleId: sanitizedAppleId });
+      }
+
+      if (sanitizedAppleId) {
+        user.appleId = sanitizedAppleId;
+      }
+
+      if (token) {
+        user.token = token;
       }
 
       if (typeof username === "string") {
