@@ -17,6 +17,7 @@ import { APPLE_LOGIN_MUTATION } from "../../GraphQL/mutations";
 import Context from "../../context";
 import LogoIcon from "../../assets/icon.png";
 import { COLORS } from "../../constants/colors";
+import { getToken } from "../../utils/helpers";
 
 const APPLE_ID_KEY = "appleUserId";
 
@@ -44,8 +45,11 @@ const AppleLoginScreen = ({ navigation }) => {
 
       await AsyncStorage.setItem(APPLE_ID_KEY, appleId);
 
+      const token = await getToken();
+
       const { appleLogin } = await client.request(APPLE_LOGIN_MUTATION, {
         appleId,
+        token,
       });
 
       if (appleLogin) {
@@ -56,7 +60,10 @@ const AppleLoginScreen = ({ navigation }) => {
     } catch (err) {
       if (err?.code === "ERR_CANCELED") return;
       console.log("Apple sign-in error", err);
-      Alert.alert("Sign-in error", "Please try again or use a different device.");
+      Alert.alert(
+        "Sign-in error",
+        "Please try again or use a different device."
+      );
     } finally {
       setLoading(false);
     }
@@ -77,7 +84,11 @@ const AppleLoginScreen = ({ navigation }) => {
         disabled={loading}
       >
         <LinearGradient
-          colors={loading ? ["#4B5563", "#4B5563"] : [COLORS.accent, COLORS.accentSoft]}
+          colors={
+            loading
+              ? ["#4B5563", "#4B5563"]
+              : [COLORS.accent, COLORS.accentSoft]
+          }
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
           style={styles.buttonGradient}

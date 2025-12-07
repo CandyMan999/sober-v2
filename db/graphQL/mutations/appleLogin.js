@@ -11,27 +11,52 @@ module.exports = {
     const sanitizedAppleId = appleId.trim();
 
     try {
-      let user = await User.findOne({ appleId: sanitizedAppleId });
+      let user;
 
-      if (!user && token) {
-        user = await User.findOne({ token });
-      }
+      if (token) {
+        // 1️⃣ Primary: find by token and attach appleId
+        user = await User.findOneAndUpdate(
+          { token },
+          { $set: { appleId: sanitizedAppleId } },
+          { new: true }
+        );
 
-      if (!user) {
-        user = new User({ appleId: sanitizedAppleId, token });
+        // 2️⃣ If no user by token, try by appleId and attach token
+        if (!user) {
+          user = await User.findOneAndUpdate(
+            { appleId: sanitizedAppleId },
+            { $set: { token } },
+            { new: true }
+          );
+        }
+
+        // 3️⃣ If still no user, create a new one with both
+        if (!user) {
+          user = await User.create({
+            appleId: sanitizedAppleId,
+            token,
+          });
+        }
       } else {
-        user.appleId = sanitizedAppleId;
-        if (token) {
-          user.token = token;
+        // No token: fall back to appleId only
+        user = await User.findOne({ appleId: sanitizedAppleId });
+
+        if (!user) {
+          user = await User.create({ appleId: sanitizedAppleId });
         }
       }
 
-      await user.save();
-      await user.populate(["profilePic", "drunkPic", "savedPosts", "savedQuotes"]);
+      await user.populate([
+        "profilePic",
+        "drunkPic",
+        "savedPosts",
+        "savedQuotes",
+      ]);
 
       return serializeUser(user);
     } catch (err) {
-      throw new AuthenticationError(err.message);
+      console.error("APPLE_LOGIN_ERROR:", err);
+      throw new AuthenticationError("Failed to log in with Apple.");
     }
   },
 };
