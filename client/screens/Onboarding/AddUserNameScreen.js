@@ -51,6 +51,16 @@ const UsernameScreen = ({ navigation }) => {
   const [pushToken, setPushToken] = useState(null);
   const [showNotifPointer, setShowNotifPointer] = useState(false);
   const notifArrowAnim = useRef(new Animated.Value(0)).current;
+  const notifArrowBaseYOffset = useRef(
+    new Animated.Value(
+      Platform.select({ ios: 92, android: 76, default: 84 })
+    )
+  ).current;
+  const notifArrowBaseXOffset = Platform.select({
+    ios: 94,
+    android: 78,
+    default: 86,
+  });
 
   const [username, setUsername] = useState("");
   const [saving, setSaving] = useState(false);
@@ -536,7 +546,17 @@ const UsernameScreen = ({ navigation }) => {
           <Animated.View
             style={[
               styles.arrowBubble,
-              { transform: [{ translateY: notifArrowAnim }] },
+              {
+                transform: [
+                  {
+                    translateY: Animated.add(
+                      notifArrowAnim,
+                      notifArrowBaseYOffset
+                    ),
+                  },
+                  { translateX: notifArrowBaseXOffset },
+                ],
+              },
             ]}
           >
             <Ionicons name="arrow-up" size={42} color="#fff" />
@@ -725,12 +745,9 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   permissionOverlay: {
-    position: "absolute",
-    left: 0,
-    right: 0,
-    bottom: Platform.select({ ios: 120, android: 96, default: 110 }),
-    alignItems: "flex-end",
-    paddingRight: 48,
+    ...StyleSheet.absoluteFillObject,
+    justifyContent: "center",
+    alignItems: "center",
   },
   arrowBubble: {
     backgroundColor: "rgba(255,255,255,0.14)",
