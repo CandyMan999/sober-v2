@@ -153,6 +153,10 @@ const ChatRoomScreen = ({ route }) => {
       const authorId = author?.id || author?._id || author?.userId || author?.username;
       if (!authorId || String(authorId) === String(currentUserId)) return undefined;
 
+      if (typeof author?.chatRoomStyle === "number") {
+        return author.chatRoomStyle % STYLE_PRESET_COUNT;
+      }
+
       if (typeof author?.messageStyle === "number") {
         return author.messageStyle % STYLE_PRESET_COUNT;
       }
@@ -181,7 +185,9 @@ const ChatRoomScreen = ({ route }) => {
 
         let styleIndex;
 
-        if (typeof author?.messageStyle === "number") {
+        if (typeof author?.chatRoomStyle === "number") {
+          styleIndex = author.chatRoomStyle % STYLE_PRESET_COUNT;
+        } else if (typeof author?.messageStyle === "number") {
           styleIndex = author.messageStyle % STYLE_PRESET_COUNT;
         } else if (typeof nextMap[authorId] === "number") {
           styleIndex = nextMap[authorId];
@@ -193,7 +199,11 @@ const ChatRoomScreen = ({ route }) => {
 
         return {
           ...message,
-          author: { ...author, messageStyle: styleIndex },
+          author: {
+            ...author,
+            messageStyle: styleIndex,
+            chatRoomStyle: styleIndex,
+          },
         };
       });
 

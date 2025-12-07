@@ -167,11 +167,40 @@ const UserSchema = new mongoose.Schema(
       type: String,
       default: "America/Chicago",
     },
+
+    // Persisted chat room message style preset for consistent theming
+    chatRoomStyle: {
+      type: Number,
+      min: 0,
+      max: 9,
+      default: () => Math.floor(Math.random() * 10),
+    },
   },
   {
     timestamps: true,
   }
 );
+
+// Ensure a user document always has a chat room style assigned
+UserSchema.methods.ensureChatRoomStyle = async function () {
+  const hasStyle = typeof this.chatRoomStyle === "number";
+
+  if (!hasStyle) {
+    this.chatRoomStyle = Math.floor(Math.random() * 10);
+    try {
+      await this.save();
+    } catch (err) {
+      console.error("Failed to persist chatRoomStyle for user", this._id, err);
+    }
+  }
+
+  return this.chatRoomStyle;
+};
+
+UserSchema.statics.ensureChatRoomStyle = async function (userDoc) {
+  if (!userDoc || typeof userDoc.ensureChatRoomStyle !== "function") return null;
+  return userDoc.ensureChatRoomStyle();
+};
 
 // Recalculate followers/following/buddies counts for the provided user
 UserSchema.statics.recalcSocialCounts = async function (userId) {

@@ -37,6 +37,7 @@ const typeDefs = gql`
     followers: [User!]!
     following: [User!]!
     buddies: [User!]!
+    chatRoomStyle: Int
   }
 
   type Connection {

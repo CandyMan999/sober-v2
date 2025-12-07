@@ -19,6 +19,13 @@ const normalizeUser = (userDoc) => {
   };
 };
 
+const ensureChatStyles = async (users = []) => {
+  const unique = users.filter(Boolean);
+  if (!unique.length) return [];
+
+  return Promise.all(unique.map((user) => User.ensureChatRoomStyle(user)));
+};
+
 /**
  * Normalize a Comment mongoose doc to plain JS with string id and normalized author/replyTo.
  */
@@ -34,6 +41,13 @@ const normalizeComment = (commentDoc) => {
   const replyTo =
     replyToRaw && replyToRaw.toObject ? replyToRaw.toObject() : replyToRaw;
 
+  const authorStyle =
+    typeof author?.chatRoomStyle === "number"
+      ? author.chatRoomStyle
+      : typeof author?.messageStyle === "number"
+      ? author.messageStyle
+      : undefined;
+
   return {
     ...raw,
     id: raw.id || raw._id?.toString?.(),
@@ -41,6 +55,7 @@ const normalizeComment = (commentDoc) => {
       ? {
           ...author,
           id: author.id || author._id?.toString?.(),
+          messageStyle: authorStyle,
         }
       : null,
     replyTo: replyTo
@@ -135,6 +150,19 @@ module.exports = {
       })
       .exec();
 
+    await Promise.all(
+      rooms.map((room) =>
+        ensureChatStyles([
+          ...(room?.users || []),
+          room?.lastMessage?.author,
+          ...(room?.comments || []).flatMap((comment) => [
+            comment?.author,
+            comment?.replyTo?.author,
+          ]),
+        ])
+      )
+    );
+
     // Normalize everything so GraphQL sees string IDs, not Buffers/Objects
     return rooms.map((room) => normalizeRoomForGraphQL(room));
   },
@@ -177,6 +205,15 @@ module.exports = {
             { path: "replyTo", populate: { path: "author", model: "User" } },
           ],
         });
+
+      await ensureChatStyles([
+        ...(room?.users || []),
+        room?.lastMessage?.author,
+        ...(room?.comments || []).flatMap((comment) => [
+          comment?.author,
+          comment?.replyTo?.author,
+        ]),
+      ]);
 
       const normalized = normalizeRoomForGraphQL(room);
 
