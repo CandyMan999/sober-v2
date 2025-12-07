@@ -105,7 +105,7 @@ async function start() {
       `🚀 HTTP GraphQL ready at   http://localhost:${PORT}${server.graphqlPath}`
     );
     console.log(
-      `🧪 Original Playground ready at http://localhost:${PORT}/playground`
+      `🧪 The Original Playground ready at http://localhost:${PORT}/playground`
     );
   } catch (err) {
     console.error("❌ Error starting server:", err);
