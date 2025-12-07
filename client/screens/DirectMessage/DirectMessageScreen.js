@@ -674,7 +674,8 @@ const DirectMessageScreen = ({ route, navigation }) => {
             uri={item.author?.profilePicUrl}
             haloColors={companionHalo}
             size={34}
-            disableNavigation
+            userId={item.author?.id || item.author?._id}
+            username={item.author?.username || username}
             style={styles.messageAvatar}
           />
         )}
@@ -782,7 +783,8 @@ const DirectMessageScreen = ({ route, navigation }) => {
             <Avatar
               uri={user.profilePicUrl}
               size={40}
-              disableNavigation
+              userId={user.id}
+              username={user.username}
               haloColors={
                 isCompanionChat ? ["#bef264", "#34d399", "#22d3ee"] : undefined
               }
@@ -911,7 +913,7 @@ const styles = StyleSheet.create({
   },
   body: {
     flex: 1,
-    paddingHorizontal: 16,
+    paddingHorizontal: 12,
     paddingTop: 0,
     paddingBottom: 0,
   },
@@ -991,10 +993,14 @@ const styles = StyleSheet.create({
     color: "#94a3b8",
     fontSize: 10,
     marginTop: 6,
+    alignSelf: "flex-start",
+    textAlign: "left",
   },
   timestampMine: {
     color: "#bae6fd",
     opacity: 0.9,
+    alignSelf: "flex-end",
+    textAlign: "right",
   },
   inputBar: {
     flexDirection: "row",

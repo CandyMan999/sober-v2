@@ -11,6 +11,7 @@ const NotificationTypes = {
   FOLLOWING_NEW_POST: "FOLLOWING_NEW_POST",
   NEW_QUOTE: "new_quote",
   ROOM_REPLY: "ROOM_REPLY",
+  RELAPSE_PREDICTION: "relapse_prediction",
 };
 
 const NotificationIntents = {

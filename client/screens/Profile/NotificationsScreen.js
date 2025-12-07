@@ -76,6 +76,10 @@ const ICONS = {
     color: "#f59e0b",
     IconComponent: FontAwesome5,
   },
+  [NotificationTypes.RELAPSE_PREDICTION]: {
+    name: "shield-checkmark",
+    color: "#38bdf8",
+  },
 };
 
 const parseDateValue = (value) => {

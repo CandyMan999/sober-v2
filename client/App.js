@@ -244,7 +244,7 @@ export default function App() {
       return;
     }
 
-    if (data?.type === "relapse_prediction") {
+    if (data?.type === NotificationTypes.RELAPSE_PREDICTION) {
       const message =
         data?.message ||
         "Based on your history you usually relapse around this time. Keep going, you’ve got this.";

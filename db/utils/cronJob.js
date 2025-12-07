@@ -455,12 +455,25 @@ const cronJob = () => {
           const username = user.username || "buddy";
           const message = `Based on history ${username} you usually relapse on day ${user.averageRelapseDay}, keep strong fight that addictive voice.`;
 
+          const notificationId = `relapse-${user._id}-${userTime.toISODate()}`;
+
+          await createNotificationForUser({
+            userId: user._id,
+            notificationId,
+            type: NotificationTypes.RELAPSE_PREDICTION,
+            title: "Stay strong",
+            description: message,
+            intent: NotificationIntents.SHOW_INFO,
+            createdAt: userTime.toJSDate(),
+          });
+
           notifications.push({
             pushToken: user.token,
             title: "Stay strong",
             body: message,
             data: {
-              type: "relapse_prediction",
+              id: notificationId,
+              type: NotificationTypes.RELAPSE_PREDICTION,
               message,
               day: user.averageRelapseDay,
               username,
