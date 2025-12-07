@@ -217,13 +217,23 @@ const ProfileScreen = ({ navigation }) => {
 
       dispatch({ type: "SET_PROFILE_OVERVIEW", payload });
     },
-    [dispatch, profileData, quotes, savedPosts, savedQuotes, state?.profileOverview, state?.user]
+    [
+      dispatch,
+      profileData,
+      quotes,
+      savedPosts,
+      savedQuotes,
+      state?.profileOverview,
+      state?.user,
+    ]
   );
 
   const mergePosts = useCallback(
     (incomingPosts, { append, meta = {} }) => {
       setPosts((prev) => {
-        const merged = dedupeById(append ? [...prev, ...incomingPosts] : incomingPosts);
+        const merged = dedupeById(
+          append ? [...prev, ...incomingPosts] : incomingPosts
+        );
         syncProfileOverviewPosts(merged, meta);
         return merged;
       });
@@ -275,12 +285,7 @@ const ProfileScreen = ({ navigation }) => {
         }
       }
     },
-    [
-      client,
-      currentUserId,
-      profileData?.id,
-      mergePosts,
-    ]
+    [client, currentUserId, profileData?.id, mergePosts]
   );
 
   useEffect(() => {
@@ -344,7 +349,8 @@ const ProfileScreen = ({ navigation }) => {
         setBuddies(overview?.user?.buddies || []);
         postCursorRef.current = overview?.postCursor || null;
         const overviewHasMore =
-          overview?.hasMorePosts ?? (overview?.posts || []).length >= PROFILE_PAGE_SIZE;
+          overview?.hasMorePosts ??
+          (overview?.posts || []).length >= PROFILE_PAGE_SIZE;
         setHasMorePosts(Boolean(overviewHasMore));
         fetchGuard(hasMorePostsRef, Boolean(overviewHasMore));
 
@@ -1537,7 +1543,9 @@ const ProfileScreen = ({ navigation }) => {
                   <Ionicons name="chatbubbles" size={18} color="#f59e0b" />
                   {directRoomCount > 0 ? (
                     <View style={styles.metricBadge}>
-                      <Text style={styles.metricBadgeText}>{directRoomCount}</Text>
+                      <Text style={styles.metricBadgeText}>
+                        {directRoomCount}
+                      </Text>
                     </View>
                   ) : null}
                 </View>
@@ -2037,6 +2045,7 @@ const styles = StyleSheet.create({
     fontWeight: "800",
     textTransform: "uppercase",
     letterSpacing: 0.8,
+    textAlign: "center",
   },
 });
 

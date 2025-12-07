@@ -1,8 +1,15 @@
+const toIdString = (id) => {
+  if (!id) return null;
+  if (typeof id === "string") return id;
+  if (typeof id?.toString === "function") return id.toString();
+  return null;
+};
+
 const serializePicture = (picture) => {
   if (!picture) return null;
 
   const plain = picture.toObject ? picture.toObject() : picture;
-  const pictureId = plain.id || plain._id?.toString();
+  const pictureId = toIdString(plain.id) || toIdString(plain._id);
 
   if (!pictureId) return null;
 
@@ -20,7 +27,8 @@ const serializeUser = (user) => {
     (items || [])
       .map((entry) => {
         const value = entry?.toObject ? entry.toObject() : entry;
-        const id = value?.id || value?._id?.toString?.() || value?.toString?.();
+        const id =
+          toIdString(value?.id) || toIdString(value?._id) || toIdString(value);
 
         if (!id) return null;
 
@@ -34,7 +42,7 @@ const serializeUser = (user) => {
 
   return {
     ...plain,
-    id: plain.id || plain._id?.toString(),
+    id: toIdString(plain.id) || toIdString(plain._id),
     profilePic: serializePicture(plain.profilePic),
     drunkPic: serializePicture(plain.drunkPic),
     savedPosts: mapIds(plain.savedPosts),
