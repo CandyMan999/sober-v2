@@ -11,6 +11,7 @@ import {
   Alert,
   Image,
   Animated,
+  Linking,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import * as Notifications from "expo-notifications";
@@ -262,6 +263,39 @@ const UsernameScreen = ({ navigation }) => {
     beginNotificationRequest();
   };
 
+  const handleOpenNotificationSettings = async () => {
+    try {
+      await Linking.openSettings();
+    } catch (err) {
+      console.log("Unable to open settings:", err);
+      return;
+    }
+
+    // Re-check after returning from settings
+    setTimeout(async () => {
+      try {
+        const { status } = await Notifications.getPermissionsAsync();
+        setNotifStatus(status);
+
+        if (status !== "granted") return;
+
+        if (!Device.isDevice) {
+          setStep(2);
+          return;
+        }
+
+        const tokenResult = await Notifications.getExpoPushTokenAsync();
+        const token = tokenResult.data;
+        setPushToken(token);
+        await AsyncStorage.setItem(PUSH_TOKEN_KEY, token);
+        await fetchMeWithToken(token);
+        setStep(2);
+      } catch (err) {
+        console.log("Error refreshing notif permissions after settings:", err);
+      }
+    }, 1200);
+  };
+
   const beginNotificationRequest = async () => {
     if (notifLoading) return;
 
@@ -295,9 +329,12 @@ const UsernameScreen = ({ navigation }) => {
         setNotifStatus("denied");
         Alert.alert(
           "Notifications disabled",
-          "You can turn them on later in Settings. We'll still support you."
+          "You can turn them on later in Settings. We'll still support you.",
+          [
+            { text: "Open Settings", onPress: handleOpenNotificationSettings },
+            { text: "Continue", style: "cancel", onPress: () => setStep(2) },
+          ]
         );
-        setStep(2);
         setShowNotifPointer(false);
         return;
       }
@@ -422,9 +459,17 @@ const UsernameScreen = ({ navigation }) => {
       </TouchableOpacity>
 
       {notifStatus === "denied" && (
-        <Text style={styles.smallNote}>
-          You can always turn notifications on later in Settings.
-        </Text>
+        <View style={styles.settingsHelper}>
+          <Text style={styles.smallNote}>
+            You can always turn notifications on later in Settings.
+          </Text>
+          <TouchableOpacity
+            onPress={handleOpenNotificationSettings}
+            style={styles.settingsButton}
+          >
+            <Text style={styles.settingsButtonText}>Open Settings</Text>
+          </TouchableOpacity>
+        </View>
       )}
     </View>
   );
@@ -743,6 +788,22 @@ const styles = StyleSheet.create({
     fontSize: 11,
     color: "#6B7280",
     textAlign: "center",
+  },
+  settingsHelper: {
+    alignItems: "center",
+    marginTop: 6,
+  },
+  settingsButton: {
+    marginTop: 6,
+    paddingHorizontal: 14,
+    paddingVertical: 8,
+    borderRadius: 999,
+    backgroundColor: "rgba(255,255,255,0.08)",
+  },
+  settingsButtonText: {
+    color: "#E5E7EB",
+    fontSize: 12,
+    fontWeight: "600",
   },
   permissionOverlay: {
     ...StyleSheet.absoluteFillObject,
