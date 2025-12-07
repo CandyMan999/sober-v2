@@ -21,6 +21,7 @@
       "bundleIdentifier": "com.sobermotivation.app",
       "icon": "./assets/icon.png",
       "buildNumber": "2.4",
+      "usesAppleSignIn": true,
       "supportsTablet": true,
       "infoPlist": {
         "NSLocationUsageDescription": "We use your location to remind you when you're near bars or liquor stores so you can stay mindful.",

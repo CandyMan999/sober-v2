@@ -1,17 +1,14 @@
-// RecordButton.js (glass like Snack; animations unchanged)
+// RecordButton.js (Liquid Glass version)
 import React, { useRef } from "react";
-import {
-  Animated,
-  TouchableOpacity,
-  StyleSheet,
-  Easing,
-  View,
-  StyleSheet as RNStyleSheet,
-} from "react-native";
+import { Animated, TouchableOpacity, StyleSheet, Easing } from "react-native";
 
-// import { Audio } from "expo-av";
-import { BlurView } from "expo-blur";
-import { LinearGradient } from "expo-linear-gradient";
+import {
+  LiquidGlassView,
+  isLiquidGlassSupported,
+} from "@callstack/liquid-glass";
+
+const SIZE = 70;
+const RADIUS = SIZE / 2;
 
 const RecordButton = ({ isRecording, startRecording, stopRecording }) => {
   const animatedButtonSize = useRef(new Animated.Value(1)).current;
@@ -32,10 +29,6 @@ const RecordButton = ({ isRecording, startRecording, stopRecording }) => {
         useNativeDriver: true,
       }).start();
     } else {
-      // const { sound } = await Audio.Sound.createAsync(
-      //   require("../sounds/startVideo.mp3")
-      // );
-      // await sound.playAsync();
       startRecording();
       Animated.timing(animatedButtonSize, {
         toValue: 2,
@@ -55,108 +48,73 @@ const RecordButton = ({ isRecording, startRecording, stopRecording }) => {
     <TouchableOpacity onPress={handlePress} activeOpacity={0.9}>
       <Animated.View
         style={[
-          styles.recordButton,
-          { transform: [{ scale: animatedButtonSize }] }, // <-- unchanged animation
+          styles.shadowWrapper,
+          { transform: [{ scale: animatedButtonSize }] },
         ]}
       >
-        {/* Glass layer (same structure as Snack) */}
-        <View style={styles.glassWrap}>
-          {/* Backdrop blur */}
-          <BlurView
-            intensity={20}
-            tint="light"
-            style={RNStyleSheet.absoluteFill}
-          />
-
-          {/* White rim / stroke */}
-          <View style={styles.whiteRim} />
-
-          {/* Specular highlight (top-left) */}
-          <LinearGradient
-            colors={[
-              "rgba(255,255,255,0.70)",
-              "rgba(255,255,255,0.15)",
-              "transparent",
-            ]}
-            locations={[0, 0.25, 1]}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 0.9, y: 0.9 }}
-            style={RNStyleSheet.absoluteFill}
-          />
-
-          {/* Subtle inner shadow (bottom-right) */}
-          <LinearGradient
-            colors={["transparent", "rgba(0,0,0,0.08)"]}
-            start={{ x: 0.2, y: 0.2 }}
-            end={{ x: 1, y: 1 }}
-            style={RNStyleSheet.absoluteFill}
-          />
-        </View>
-
-        {/* Your original animated inner shape (UNCHANGED math) */}
-        <Animated.View
+        <LiquidGlassView
           style={[
-            styles.recordInnerButton,
-            {
-              backgroundColor: isRecording ? "red" : "red",
-              borderRadius: animatedInnerShape.interpolate({
-                inputRange: [0, 1],
-                outputRange: [5, 50], // square -> circle
-              }),
-              transform: [
-                {
-                  scale: animatedInnerShape.interpolate({
-                    inputRange: [0, 0.6],
-                    outputRange: [0.6, 0.6], // constant 0.6 (same as yours)
-                  }),
-                },
-              ],
-            },
+            styles.glassShell,
+            !isLiquidGlassSupported && styles.glassFallback,
           ]}
-        />
+          interactive
+          effect="clear"
+          tintColor="rgba(255,255,255,0.25)" // tweak for brand / theme
+          colorScheme="system"
+        >
+          <Animated.View
+            style={[
+              styles.recordInnerButton,
+              {
+                backgroundColor: "red",
+                borderRadius: animatedInnerShape.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: [5, 50], // square -> circle
+                }),
+                transform: [
+                  {
+                    scale: animatedInnerShape.interpolate({
+                      inputRange: [0, 0.6],
+                      outputRange: [0.6, 0.6],
+                    }),
+                  },
+                ],
+              },
+            ]}
+          />
+        </LiquidGlassView>
       </Animated.View>
     </TouchableOpacity>
   );
 };
 
-const SIZE = 70;
-const RADIUS = SIZE / 2;
-
 const styles = StyleSheet.create({
-  recordButton: {
+  shadowWrapper: {
     width: SIZE,
     height: SIZE,
     borderRadius: RADIUS,
     justifyContent: "center",
     alignItems: "center",
-    // Keep it like the Snack (thin white ring outside)
-    borderWidth: 0,
-    borderColor: "rgba(255,255,255,0.55)",
 
-    // Raised look
     shadowColor: "#000",
     shadowOpacity: 0.18,
     shadowRadius: 16,
     shadowOffset: { width: 0, height: 10 },
     elevation: 8,
-
-    backgroundColor: "transparent",
-    overflow: "hidden", // clips the glass layers perfectly to the circle
   },
-
-  glassWrap: {
-    ...RNStyleSheet.absoluteFillObject,
+  glassShell: {
+    width: SIZE,
+    height: SIZE,
     borderRadius: RADIUS,
-    backgroundColor: "rgba(255,255,255,0.10)",
+    justifyContent: "center",
+    alignItems: "center",
+    overflow: "hidden",
   },
-
-  whiteRim: {
-    ...RNStyleSheet.absoluteFillObject,
-    borderRadius: RADIUS,
-    borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.55)",
+  glassFallback: {
+    // When Liquid Glass isn't supported (current iOS / Android),
+    // fall back to a translucent dark circle instead of solid black.
+    backgroundColor: "rgba(15,23,42,0.85)",
   },
-
   recordInnerButton: {
     width: 50,
     height: 50,
