@@ -46,6 +46,7 @@ import MessageListScreen from "./screens/DirectMessage/MessageListScreen";
 import { ContentPreviewModal } from "./components";
 import { POST_BY_ID_QUERY, QUOTE_BY_ID_QUERY } from "./GraphQL/queries";
 import { useClient } from "./client";
+import { TOGGLE_LIKE_MUTATION } from "./GraphQL/mutations";
 import { NotificationIntents, NotificationTypes } from "./utils/notifications";
 import {
   ensureSoberMotionTrackingSetup,
@@ -114,6 +115,8 @@ export default function App() {
   const initialState = useContext(Context);
   const [state, dispatch] = useReducer(reducer, initialState);
   const graphClient = useClient();
+  const currentUser = state?.user;
+  const currentUserId = currentUser?.id;
   const [previewRequest, setPreviewRequest] = useState(null);
   const [previewContent, setPreviewContent] = useState(null);
   const [previewType, setPreviewType] = useState("POST");
@@ -414,6 +417,74 @@ export default function App() {
     };
   }, [closePreview, graphClient, previewRequest]);
 
+  const handlePreviewToggleLike = useCallback(
+    async (targetId, targetType = "POST") => {
+      if (!targetId || !currentUserId) return;
+
+      const token = await getToken();
+      if (!token) return;
+
+      const previousPreview = previewContent;
+
+      setPreviewContent((prev) => {
+        if (!prev || prev.id !== targetId) return prev;
+
+        const currentlyLiked = (prev.likes || []).some(
+          (like) => like?.user?.id === currentUserId
+        );
+        const filtered = (prev.likes || []).filter(
+          (like) => like?.user?.id !== currentUserId
+        );
+        const optimisticLikes = currentlyLiked
+          ? filtered
+          : [...filtered, { id: `temp-like-${targetId}`, user: currentUser }];
+
+        return {
+          ...prev,
+          likesCount: Math.max(
+            0,
+            (prev.likesCount || 0) + (currentlyLiked ? -1 : 1)
+          ),
+          likes: optimisticLikes,
+        };
+      });
+
+      try {
+        const data = await graphClient.request(TOGGLE_LIKE_MUTATION, {
+          token,
+          targetType,
+          targetId,
+        });
+
+        const payload = data?.toggleLike;
+        if (payload) {
+          setPreviewContent((prev) => {
+            if (!prev || prev.id !== targetId) return prev;
+
+            const actorId = payload.like?.user?.id || currentUserId;
+            const filtered = (prev.likes || []).filter(
+              (like) => like?.user?.id !== actorId
+            );
+            const nextLikes =
+              payload.liked && payload.like
+                ? [...filtered, payload.like]
+                : filtered;
+
+            return {
+              ...prev,
+              likesCount: payload.likesCount,
+              likes: nextLikes,
+            };
+          });
+        }
+      } catch (err) {
+        console.error("Failed to toggle preview like", err);
+        setPreviewContent(previousPreview);
+      }
+    },
+    [currentUser, currentUserId, graphClient, previewContent]
+  );
+
   return (
     <ApolloProvider client={client}>
       <GestureHandlerRootView style={{ flex: 1 }}>
@@ -505,8 +576,12 @@ export default function App() {
                   isMuted={previewMuted}
                   initialShowComments={previewShowComments}
                   onToggleSound={() => setPreviewMuted((prev) => !prev)}
-                  onTogglePostLike={() => {}}
-                  onToggleQuoteLike={() => {}}
+                  onTogglePostLike={(postId) =>
+                    handlePreviewToggleLike(postId, "POST")
+                  }
+                  onToggleQuoteLike={(quoteId) =>
+                    handlePreviewToggleLike(quoteId, "QUOTE")
+                  }
                   onToggleFollow={() => {}}
                   onFlagForReview={() => {}}
                   onToggleSave={() => {}}
