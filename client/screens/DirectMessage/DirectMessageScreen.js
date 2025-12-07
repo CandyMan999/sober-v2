@@ -674,7 +674,8 @@ const DirectMessageScreen = ({ route, navigation }) => {
             uri={item.author?.profilePicUrl}
             haloColors={companionHalo}
             size={34}
-            disableNavigation
+            userId={item.author?.id || item.author?._id}
+            username={item.author?.username || username}
             style={styles.messageAvatar}
           />
         )}
@@ -782,7 +783,8 @@ const DirectMessageScreen = ({ route, navigation }) => {
             <Avatar
               uri={user.profilePicUrl}
               size={40}
-              disableNavigation
+              userId={user.id}
+              username={user.username}
               haloColors={
                 isCompanionChat ? ["#bef264", "#34d399", "#22d3ee"] : undefined
               }
