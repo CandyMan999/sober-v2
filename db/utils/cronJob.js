@@ -1,7 +1,8 @@
 // cron/notificationCron.js
 const cron = require("node-cron");
 const { Expo } = require("expo-server-sdk");
-const { User, Quote, Post, Picture } = require("../models");
+const mongoose = require("mongoose");
+const { User, Quote, Post, Picture, Room, Comment, Like } = require("../models");
 const {
   NotificationTypes,
   NotificationIntents,
@@ -396,6 +397,90 @@ const pickRandomMilestoneImage = async (milestoneDays) => {
   }
 };
 
+// --- CHATROOM CLEANUP ---
+const pruneOldChatroomComments = async () => {
+  const cutoffDate = DateTime.utc().minus({ days: 2 }).toJSDate();
+  console.log("🧹 Pruning chatroom comments older than", cutoffDate.toISOString());
+
+  const rooms = await Room.find({ isDirect: false });
+  if (!rooms.length) {
+    console.log("No chatrooms found to prune.");
+    return;
+  }
+
+  let totalDeleted = 0;
+  let totalLikesRemoved = 0;
+
+  for (const room of rooms) {
+    const staleComments = await Comment.find({
+      targetType: "ROOM",
+      targetId: room._id,
+      createdAt: { $lt: cutoffDate },
+    }).select(["_id", "replies"]);
+
+    if (!staleComments.length) continue;
+
+    const staleIds = staleComments.map((comment) => comment._id).filter(Boolean);
+
+    // Replies can be stored via `replies` array and/or `replyTo` reference
+    const replyIdsFromChildren = staleComments
+      .flatMap((comment) => comment.replies || [])
+      .map((replyId) => replyId?.toString?.())
+      .filter(Boolean);
+
+    const replyIdsFromQuery = (
+      await Comment.find({ replyTo: { $in: staleIds } }).select("_id")
+    )
+      .map((reply) => reply._id?.toString?.())
+      .filter(Boolean);
+
+    const idsToDelete = Array.from(
+      new Set(
+        [
+          ...staleIds.map((id) => id?.toString?.()),
+          ...replyIdsFromChildren,
+          ...replyIdsFromQuery,
+        ].filter(Boolean)
+      )
+    ).map((id) => new mongoose.Types.ObjectId(id));
+
+    if (!idsToDelete.length) continue;
+
+    const likeResult = await Like.deleteMany({
+      targetType: "COMMENT",
+      targetId: { $in: idsToDelete },
+    });
+
+    const commentResult = await Comment.deleteMany({ _id: { $in: idsToDelete } });
+
+    const updatePayload = {
+      $pull: { comments: { $in: idsToDelete } },
+    };
+
+    const lastMessageDeleted =
+      room.lastMessage && idsToDelete.some((id) => String(room.lastMessage) === String(id));
+
+    if (lastMessageDeleted) {
+      updatePayload.$set = { lastMessage: null, lastMessageAt: null };
+    }
+
+    await Room.updateOne({ _id: room._id }, updatePayload);
+
+    totalDeleted += commentResult.deletedCount || 0;
+    totalLikesRemoved += likeResult.deletedCount || 0;
+
+    console.log(
+      `🧼 Pruned ${commentResult.deletedCount || 0} comment(s) and ${
+        likeResult.deletedCount || 0
+      } like(s) from room ${room._id}`
+    );
+  }
+
+  console.log(
+    `✅ Chatroom pruning complete. Removed ${totalDeleted} comment(s) and ${totalLikesRemoved} like(s).`
+  );
+};
+
 // --- MAIN CRON JOB SETUP ---
 
 const cronJob = () => {
@@ -750,6 +835,8 @@ const cronJob = () => {
         console.log(
           `📨 Sent quote "${quote.text}" to ${notifications.length} user(s).`
         );
+
+        await pruneOldChatroomComments();
       },
       {
         scheduled: true,
