@@ -993,10 +993,14 @@ const styles = StyleSheet.create({
     color: "#94a3b8",
     fontSize: 10,
     marginTop: 6,
+    alignSelf: "flex-start",
+    textAlign: "left",
   },
   timestampMine: {
     color: "#bae6fd",
     opacity: 0.9,
+    alignSelf: "flex-end",
+    textAlign: "right",
   },
   inputBar: {
     flexDirection: "row",
