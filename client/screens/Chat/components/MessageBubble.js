@@ -127,7 +127,9 @@ const MessageBubble = ({
         />
       ) : null}
 
-      <View style={[styles.bubbleStack, isMine ? styles.bubbleStackMine : null]}>
+      <View
+        style={[styles.bubbleStack, isMine ? styles.bubbleStackMine : null]}
+      >
         {!isMine ? (
           <Text style={styles.username} numberOfLines={1}>
             {author.username || "User"}
@@ -175,7 +177,9 @@ const MessageBubble = ({
                     numberOfLines={replyExpanded ? undefined : 1}
                   >
                     <Text style={styles.replyLabel}>Reply to </Text>
-                    <Text style={styles.replyUsername}>{replyLabel.username}</Text>
+                    <Text style={styles.replyUsername}>
+                      {replyLabel.username}
+                    </Text>
                     {replyLabel.timestamp ? (
                       <Text style={styles.replyTimestamp}>
                         {"  "}
@@ -193,7 +197,12 @@ const MessageBubble = ({
               </TouchableOpacity>
             ) : null}
 
-            <Text style={[styles.text, isMine ? styles.textMine : styles.textTheirs]}>
+            <Text
+              style={[
+                styles.text,
+                isMine ? styles.textMine : styles.textTheirs,
+              ]}
+            >
               {renderTextWithMentions}
             </Text>
 
@@ -216,11 +225,17 @@ const MessageBubble = ({
                 <TouchableOpacity
                   onPress={handleReplyPress}
                   accessibilityRole="button"
-                  accessibilityLabel={`Reply to ${author.username || "message"}`}
+                  accessibilityLabel={`Reply to ${
+                    author.username || "message"
+                  }`}
                   style={styles.replyButton}
                   hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
                 >
-                  <Ionicons name="arrow-undo-outline" size={14} color="#cbd5e1" />
+                  <Ionicons
+                    name="arrow-undo-outline"
+                    size={14}
+                    color="#cbd5e1"
+                  />
                 </TouchableOpacity>
               ) : null}
             </View>
@@ -393,6 +408,7 @@ const styles = StyleSheet.create({
   likeBadgeMine: {
     backgroundColor: "#0ea5e9",
     opacity: 1,
+    zIndex: 100,
     borderWidth: 1,
     borderColor: "#0284c7",
     left: -6,
