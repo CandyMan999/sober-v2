@@ -1940,12 +1940,14 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     padding: 12,
+    alignItems: "center",
   },
   drunkOverlayText: {
     color: "#e0f2fe",
     fontWeight: "800",
     textTransform: "uppercase",
     letterSpacing: 0.8,
+    textAlign: "center",
   },
   profileActionsRow: {
     marginTop: 12,
