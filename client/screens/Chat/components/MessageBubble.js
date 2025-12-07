@@ -383,7 +383,6 @@ const styles = StyleSheet.create({
   likeBadge: {
     position: "absolute",
     top: -8,
-    right: -6,
     paddingHorizontal: 8,
     paddingVertical: 4,
     borderRadius: 999,
@@ -392,14 +391,16 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   likeBadgeMine: {
-    backgroundColor: "rgba(56,189,248,0.18)",
+    backgroundColor: "#38bdf8",
     borderWidth: 1,
-    borderColor: "#38bdf8",
+    borderColor: "#0ea5e9",
+    left: -6,
   },
   likeBadgeTheirs: {
-    backgroundColor: "rgba(245,158,11,0.18)",
+    backgroundColor: "#f59e0b",
     borderWidth: 1,
-    borderColor: "#f59e0b",
+    borderColor: "#b45309",
+    right: -6,
   },
   likeBadgeText: {
     fontSize: 12,
