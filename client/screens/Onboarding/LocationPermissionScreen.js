@@ -7,7 +7,6 @@ import {
   StyleSheet,
   Alert,
   Linking,
-  Platform,
   ActivityIndicator,
   Image,
 } from "react-native";
@@ -27,6 +26,7 @@ const {
   primaryBackground,
   cardBackground,
   accent,
+  accentSoft,
 
   textPrimary,
   textSecondary,
@@ -36,8 +36,6 @@ const LocationPermissionScreen = ({ navigation }) => {
   const client = useClient();
   const [loading, setLoading] = useState(false);
   const [checking, setChecking] = useState(true);
-
-  const { accent, accentSoft } = COLORS;
 
   const hasAlwaysPermission = async () => {
     const fg = await Location.getForegroundPermissionsAsync();
@@ -157,17 +155,12 @@ const LocationPermissionScreen = ({ navigation }) => {
         return;
       }
 
-      // iOS requires user to manually change to "Always"
       Alert.alert(
-        "Enable ‘Always Allow’",
-        "To notify you when you're near a bar or liquor store, set location access to “Always Allow.”",
+        "Always Allow needed",
+        "This is our best feature to help keep you sober — tap \"Always Allow\" so we can support you even when the app is closed.",
         [
           { text: "Open Settings", onPress: openSettings },
-          {
-            text: "Skip",
-            style: "cancel",
-            onPress: routeToApp,
-          },
+          { text: "Skip", style: "cancel", onPress: routeToApp },
         ]
       );
     } catch (err) {
@@ -268,6 +261,7 @@ const LocationPermissionScreen = ({ navigation }) => {
           </View>
         </View>
       </View>
+
     </LinearGradient>
   );
 };

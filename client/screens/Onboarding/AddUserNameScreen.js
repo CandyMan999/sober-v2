@@ -10,6 +10,8 @@ import {
   ActivityIndicator,
   Alert,
   Image,
+  Animated,
+  Linking,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import * as Notifications from "expo-notifications";
@@ -18,6 +20,7 @@ import * as Device from "expo-device";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Context from "../../context";
 import LogoIcon from "../../assets/icon.png";
+import { Ionicons } from "@expo/vector-icons";
 
 import { useClient } from "../../client";
 import { UPDATE_USER_PROFILE_MUTATION } from "../../GraphQL/mutations";
@@ -47,6 +50,18 @@ const UsernameScreen = ({ navigation }) => {
   const [notifLoading, setNotifLoading] = useState(false);
   const [notifStatus, setNotifStatus] = useState(null);
   const [pushToken, setPushToken] = useState(null);
+  const [showNotifPointer, setShowNotifPointer] = useState(false);
+  const notifArrowAnim = useRef(new Animated.Value(0)).current;
+  const notifArrowBaseYOffset = useRef(
+    new Animated.Value(
+      Platform.select({ ios: 92, android: 76, default: 84 })
+    )
+  ).current;
+  const notifArrowBaseXOffset = Platform.select({
+    ios: 65,
+    android: 78,
+    default: 86,
+  });
 
   const [username, setUsername] = useState("");
   const [saving, setSaving] = useState(false);
@@ -217,12 +232,79 @@ const UsernameScreen = ({ navigation }) => {
     };
   }, [client, navigation]);
 
+  useEffect(() => {
+    if (!showNotifPointer) return;
+
+    notifArrowAnim.setValue(0);
+
+    const loop = Animated.loop(
+      Animated.sequence([
+        Animated.timing(notifArrowAnim, {
+          toValue: -12,
+          duration: 650,
+          useNativeDriver: true,
+        }),
+        Animated.timing(notifArrowAnim, {
+          toValue: 0,
+          duration: 650,
+          useNativeDriver: true,
+        }),
+      ])
+    );
+
+    loop.start();
+
+    return () => loop.stop();
+  }, [notifArrowAnim, showNotifPointer]);
+
   // ------- notifications step: user taps "Enable" -------
-  const handleEnableNotifications = async () => {
+  const handleEnableNotifications = () => {
+    if (notifLoading) return;
+    beginNotificationRequest();
+  };
+
+  const handleOpenNotificationSettings = async () => {
+    try {
+      await Linking.openSettings();
+    } catch (err) {
+      console.log("Unable to open settings:", err);
+      return;
+    }
+
+    // Re-check after returning from settings
+    setTimeout(async () => {
+      try {
+        const { status } = await Notifications.getPermissionsAsync();
+        setNotifStatus(status);
+
+        if (status !== "granted") return;
+
+        if (!Device.isDevice) {
+          setStep(2);
+          return;
+        }
+
+        const tokenResult = await Notifications.getExpoPushTokenAsync();
+        const token = tokenResult.data;
+        setPushToken(token);
+        await AsyncStorage.setItem(PUSH_TOKEN_KEY, token);
+        await fetchMeWithToken(token);
+        setStep(2);
+      } catch (err) {
+        console.log("Error refreshing notif permissions after settings:", err);
+      }
+    }, 1200);
+  };
+
+  const beginNotificationRequest = async () => {
     if (notifLoading) return;
 
     try {
+      setShowNotifPointer(true);
       setNotifLoading(true);
+
+      // Let the pointer render underneath the native prompt
+      await new Promise((resolve) => setTimeout(resolve, 120));
 
       if (!Device.isDevice) {
         Alert.alert(
@@ -231,6 +313,7 @@ const UsernameScreen = ({ navigation }) => {
         );
         setNotifStatus("denied");
         setStep(2);
+        setShowNotifPointer(false);
         return;
       }
 
@@ -246,9 +329,13 @@ const UsernameScreen = ({ navigation }) => {
         setNotifStatus("denied");
         Alert.alert(
           "Notifications disabled",
-          "You can turn them on later in Settings. We'll still support you."
+          "You can turn them on later in Settings. We'll still support you.",
+          [
+            { text: "Open Settings", onPress: handleOpenNotificationSettings },
+            { text: "Continue", style: "cancel", onPress: () => setStep(2) },
+          ]
         );
-        setStep(2);
+        setShowNotifPointer(false);
         return;
       }
 
@@ -270,11 +357,13 @@ const UsernameScreen = ({ navigation }) => {
       setStep(2);
     } finally {
       setNotifLoading(false);
+      setShowNotifPointer(false);
     }
   };
 
   const handleSkipNotifications = () => {
     setNotifStatus("denied");
+    setShowNotifPointer(false);
     setStep(2);
   };
 
@@ -370,9 +459,17 @@ const UsernameScreen = ({ navigation }) => {
       </TouchableOpacity>
 
       {notifStatus === "denied" && (
-        <Text style={styles.smallNote}>
-          You can always turn notifications on later in Settings.
-        </Text>
+        <View style={styles.settingsHelper}>
+          <Text style={styles.smallNote}>
+            You can always turn notifications on later in Settings.
+          </Text>
+          <TouchableOpacity
+            onPress={handleOpenNotificationSettings}
+            style={styles.settingsButton}
+          >
+            <Text style={styles.settingsButtonText}>Open Settings</Text>
+          </TouchableOpacity>
+        </View>
       )}
     </View>
   );
@@ -488,6 +585,29 @@ const UsernameScreen = ({ navigation }) => {
           </Text>
         </View>
       </KeyboardAvoidingView>
+
+      {showNotifPointer && (
+        <View pointerEvents="none" style={styles.permissionOverlay}>
+          <Animated.View
+            style={[
+              styles.arrowBubble,
+              {
+                transform: [
+                  {
+                    translateY: Animated.add(
+                      notifArrowAnim,
+                      notifArrowBaseYOffset
+                    ),
+                  },
+                  { translateX: notifArrowBaseXOffset },
+                ],
+              },
+            ]}
+          >
+            <Ionicons name="arrow-up" size={42} color="#fff" />
+          </Animated.View>
+        </View>
+      )}
     </LinearGradient>
   );
 };
@@ -668,6 +788,38 @@ const styles = StyleSheet.create({
     fontSize: 11,
     color: "#6B7280",
     textAlign: "center",
+  },
+  settingsHelper: {
+    alignItems: "center",
+    marginTop: 6,
+  },
+  settingsButton: {
+    marginTop: 6,
+    paddingHorizontal: 14,
+    paddingVertical: 8,
+    borderRadius: 999,
+    backgroundColor: "rgba(255,255,255,0.08)",
+  },
+  settingsButtonText: {
+    color: "#E5E7EB",
+    fontSize: 12,
+    fontWeight: "600",
+  },
+  permissionOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  arrowBubble: {
+    backgroundColor: "rgba(255,255,255,0.14)",
+    paddingVertical: 6,
+    paddingHorizontal: 10,
+    borderRadius: 18,
+    shadowColor: "#000",
+    shadowOpacity: 0.5,
+    shadowRadius: 10,
+    shadowOffset: { width: 0, height: 6 },
+    elevation: 10,
   },
 });
 
