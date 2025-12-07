@@ -1,7 +1,6 @@
 // utils/locationTracking.js
 import * as Location from "expo-location";
 import * as TaskManager from "expo-task-manager";
-import * as Notifications from "expo-notifications";
 import { GET_LIQUOR_STORE_QUERY, GET_BAR_QUERY } from "../GraphQL/queries";
 import { getToken as getStoredPushToken } from "./helpers";
 
@@ -62,21 +61,10 @@ export function resetVenueTrackingCache() {
 TaskManager.defineTask(GEOFENCE_TASK, async ({ data, error }) => {
   if (error) return console.log("[SoberMotion] GEOFENCE_TASK error", error);
 
-  const { eventType, region } = data || {};
+  const { eventType } = data || {};
   const isExit = eventType === Location.GeofencingEventType.Exit;
 
   if (isExit) {
-    try {
-      await Notifications.scheduleNotificationAsync({
-        content: {
-          title: "EXIT geofence",
-          body: `Exited radius ${GEOFENCE_RADIUS_METERS}m`,
-          data: { type: "geo_exit" },
-        },
-        trigger: null,
-      });
-    } catch {}
-
     motionPingCount = 0;
     lastAcceptedPingTime = 0;
     lastStopCheckLocation = null;
@@ -124,26 +112,6 @@ TaskManager.defineTask(MOTION_TASK, async ({ data, error }) => {
   const movingStatus =
     moveDistance < STOP_DISTANCE_METERS ? "STILL-ish" : "MOVING";
 
-  // --------------------------------
-  // 🔔 Motion ping notification
-  // --------------------------------
-  try {
-    await Notifications.scheduleNotificationAsync({
-      content: {
-        title: `Ping #${motionPingCount} (${movingStatus})`,
-        body: `Moved ${moveDistance.toFixed(1)}m\nLat: ${latitude.toFixed(
-          5
-        )}, Lng: ${longitude.toFixed(5)}`,
-        data: {
-          type: "motion_ping",
-          distanceMoved: moveDistance,
-          pingNumber: motionPingCount,
-        },
-      },
-      trigger: null,
-    });
-  } catch {}
-
   await checkNearbyVenues(latitude, longitude);
 
   // --------------------------------
@@ -166,18 +134,6 @@ TaskManager.defineTask(MOTION_TASK, async ({ data, error }) => {
     motionPingCount = 0;
     lastStopCheckLocation = null;
     lastAcceptedPingTime = 0;
-
-    // 🔔 stopped notification
-    try {
-      await Notifications.scheduleNotificationAsync({
-        content: {
-          title: "Stopped moving",
-          body: "Resetting geofence at new location.",
-          data: { type: "stopped_moving" },
-        },
-        trigger: null,
-      });
-    } catch {}
 
     await stopMotionTracking();
     await setGeofenceAtCurrentLocation(loc);
@@ -215,7 +171,6 @@ async function checkNearbyVenues(latitude, longitude) {
 
     const liquorResults = liquorResponse?.getLiquorLocation;
 
-    // ✅ Only update when we actually HAVE at least one result
     if (!!liquorResults.length) {
       lastNearbyStore = liquorResults[0].name;
     }
@@ -231,7 +186,6 @@ async function checkNearbyVenues(latitude, longitude) {
 
     const barResults = barResponse?.getBarLocation;
 
-    // ✅ Only update when we actually HAVE at least one result
     if (!!barResults.length) {
       lastNearbyBar = barResults[0]?.name;
     }
@@ -249,7 +203,6 @@ export async function initSoberMotionTracking() {
 
   const bg = await Location.requestBackgroundPermissionsAsync();
 
-  // ✅ Don't set up a new geofence if one is already running
   const alreadyRunning = await Location.hasStartedGeofencingAsync(
     GEOFENCE_TASK
   );
@@ -271,7 +224,6 @@ export async function ensureSoberMotionTrackingSetup() {
   const bg = await Location.getBackgroundPermissionsAsync();
   if (bg.status !== "granted") return;
 
-  // ✅ Don't re-create geofence if it already exists
   const alreadyRunning = await Location.hasStartedGeofencingAsync(
     GEOFENCE_TASK
   );
@@ -323,29 +275,15 @@ async function setGeofenceAtCurrentLocation(loc) {
   ];
 
   await Location.startGeofencingAsync(GEOFENCE_TASK, regions);
-
-  // 🔔 geofence set notification
-  try {
-    await Notifications.scheduleNotificationAsync({
-      content: {
-        title: "Geofence set",
-        body: `Radius ${GEOFENCE_RADIUS_METERS}m at ${latitude.toFixed(
-          5
-        )}, ${longitude.toFixed(5)}`,
-        data: { type: "geofence_set" },
-      },
-      trigger: null,
-    });
-  } catch {}
 }
 
 async function startMotionTracking() {
   if (await Location.hasStartedLocationUpdatesAsync(MOTION_TASK)) return;
 
   await Location.startLocationUpdatesAsync(MOTION_TASK, {
-    accuracy: Location.Accuracy.BestForNavigation, // highest
-    distanceInterval: 10, // <-- ⭐ NEW
-    timeInterval: MOTION_TIME_INTERVAL_MS, // android only
+    accuracy: Location.Accuracy.BestForNavigation,
+    distanceInterval: 10,
+    timeInterval: MOTION_TIME_INTERVAL_MS,
     pausesUpdatesAutomatically: true,
     showsBackgroundLocationIndicator: false,
   });
