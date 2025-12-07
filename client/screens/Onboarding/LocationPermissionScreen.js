@@ -1,5 +1,5 @@
 // screens/Onboarding/LocationPermissionScreen.js
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -9,8 +9,6 @@ import {
   Linking,
   ActivityIndicator,
   Image,
-  Animated,
-  Platform,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import * as Location from "expo-location";
@@ -38,13 +36,6 @@ const LocationPermissionScreen = ({ navigation }) => {
   const client = useClient();
   const [loading, setLoading] = useState(false);
   const [checking, setChecking] = useState(true);
-  const [showAlwaysPulse, setShowAlwaysPulse] = useState(false);
-  const alwaysPulse = useRef(new Animated.Value(0)).current;
-  const alwaysAnchorBottom = Platform.select({
-    ios: 196,
-    android: 164,
-    default: 178,
-  });
 
   const hasAlwaysPermission = async () => {
     const fg = await Location.getForegroundPermissionsAsync();
@@ -110,44 +101,6 @@ const LocationPermissionScreen = ({ navigation }) => {
     checkPermissions();
   }, []);
 
-  useEffect(() => {
-    if (!showAlwaysPulse) return;
-
-    alwaysPulse.setValue(0);
-
-    const loop = Animated.loop(
-      Animated.timing(alwaysPulse, {
-        toValue: 1,
-        duration: 1600,
-        useNativeDriver: true,
-      })
-    );
-
-    loop.start();
-
-    return () => loop.stop();
-  }, [alwaysPulse, showAlwaysPulse]);
-
-  const ringScale = alwaysPulse.interpolate({
-    inputRange: [0, 1],
-    outputRange: [1, 1.4],
-  });
-
-  const ringOpacity = alwaysPulse.interpolate({
-    inputRange: [0, 1],
-    outputRange: [0.6, 0],
-  });
-
-  const outerRingScale = alwaysPulse.interpolate({
-    inputRange: [0, 1],
-    outputRange: [1, 1.7],
-  });
-
-  const outerRingOpacity = alwaysPulse.interpolate({
-    inputRange: [0, 1],
-    outputRange: [0.4, 0],
-  });
-
   const checkPermissions = async () => {
     try {
       if (await hasAlwaysPermission()) {
@@ -190,9 +143,6 @@ const LocationPermissionScreen = ({ navigation }) => {
         );
       }
 
-      setShowAlwaysPulse(true);
-      await new Promise((resolve) => setTimeout(resolve, 120));
-
       const bg = await Location.requestBackgroundPermissionsAsync();
 
       if (bg.status === "granted" || (await hasAlwaysPermission())) {
@@ -207,7 +157,7 @@ const LocationPermissionScreen = ({ navigation }) => {
 
       Alert.alert(
         "Always Allow needed",
-        "Tap \"Always Allow\" so we can keep you aware even when the app is closed.",
+        "This is our best feature to help keep you sober — tap \"Always Allow\" so we can support you even when the app is closed.",
         [
           { text: "Open Settings", onPress: openSettings },
           { text: "Skip", style: "cancel", onPress: routeToApp },
@@ -218,7 +168,6 @@ const LocationPermissionScreen = ({ navigation }) => {
       Alert.alert("Error", "Something went wrong. Try again.");
     } finally {
       setLoading(false);
-      setShowAlwaysPulse(false);
     }
   };
 
@@ -313,29 +262,6 @@ const LocationPermissionScreen = ({ navigation }) => {
         </View>
       </View>
 
-      {showAlwaysPulse && (
-        <View
-          pointerEvents="none"
-          style={[
-            styles.alwaysOverlay,
-            { transform: [{ translateY: -alwaysAnchorBottom }] },
-          ]}
-        >
-          <Animated.View
-            style={[
-              styles.pulseHaloOuter,
-              { transform: [{ scale: outerRingScale }], opacity: outerRingOpacity },
-            ]}
-          />
-          <Animated.View
-            style={[
-              styles.pulseHalo,
-              { transform: [{ scale: ringScale }], opacity: ringOpacity },
-            ]}
-          />
-          <View style={styles.pulseTarget} />
-        </View>
-      )}
     </LinearGradient>
   );
 };
@@ -413,45 +339,6 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: textSecondary,
     textDecorationLine: "underline",
-  },
-  alwaysOverlay: {
-    position: "absolute",
-    left: 0,
-    right: 0,
-    bottom: 0,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  pulseTarget: {
-    width: 112,
-    height: 112,
-    borderRadius: 56,
-    borderWidth: 2,
-    borderColor: accent,
-    backgroundColor: "rgba(245, 158, 11, 0.18)",
-    shadowColor: accent,
-    shadowOpacity: 0.7,
-    shadowRadius: 14,
-    shadowOffset: { width: 0, height: 4 },
-    elevation: 12,
-  },
-  pulseHalo: {
-    position: "absolute",
-    width: 140,
-    height: 140,
-    borderRadius: 70,
-    borderWidth: 2,
-    borderColor: accent,
-    backgroundColor: "rgba(245, 158, 11, 0.12)",
-  },
-  pulseHaloOuter: {
-    position: "absolute",
-    width: 184,
-    height: 184,
-    borderRadius: 92,
-    borderWidth: 2,
-    borderColor: accent,
-    backgroundColor: "rgba(245, 158, 11, 0.08)",
   },
 });
 
