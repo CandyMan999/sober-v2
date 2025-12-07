@@ -7,7 +7,6 @@ import {
   StyleSheet,
   Alert,
   Linking,
-  Platform,
   ActivityIndicator,
   Image,
 } from "react-native";
@@ -23,10 +22,12 @@ import { useClient } from "../../client";
 import { UPDATE_USER_PROFILE_MUTATION } from "../../GraphQL/mutations";
 import { getToken } from "../../utils/helpers";
 import { COLORS } from "../../constants/colors";
+import PermissionCoachmark from "../../components/PermissionCoachmark";
 const {
   primaryBackground,
   cardBackground,
   accent,
+  accentSoft,
 
   textPrimary,
   textSecondary,
@@ -36,8 +37,7 @@ const LocationPermissionScreen = ({ navigation }) => {
   const client = useClient();
   const [loading, setLoading] = useState(false);
   const [checking, setChecking] = useState(true);
-
-  const { accent, accentSoft } = COLORS;
+  const [showAlwaysCoachmark, setShowAlwaysCoachmark] = useState(false);
 
   const hasAlwaysPermission = async () => {
     const fg = await Location.getForegroundPermissionsAsync();
@@ -157,19 +157,7 @@ const LocationPermissionScreen = ({ navigation }) => {
         return;
       }
 
-      // iOS requires user to manually change to "Always"
-      Alert.alert(
-        "Enable ‘Always Allow’",
-        "To notify you when you're near a bar or liquor store, set location access to “Always Allow.”",
-        [
-          { text: "Open Settings", onPress: openSettings },
-          {
-            text: "Skip",
-            style: "cancel",
-            onPress: routeToApp,
-          },
-        ]
-      );
+      setShowAlwaysCoachmark(true);
     } catch (err) {
       console.log("Location permission error:", err);
       Alert.alert("Error", "Something went wrong. Try again.");
@@ -182,6 +170,16 @@ const LocationPermissionScreen = ({ navigation }) => {
     await Linking.openSettings();
     // Re-check when returning from settings
     setTimeout(checkPermissions, 2000);
+  };
+
+  const handleAlwaysAllowConfirm = async () => {
+    setShowAlwaysCoachmark(false);
+    await openSettings();
+  };
+
+  const handleAlwaysAllowSkip = async () => {
+    setShowAlwaysCoachmark(false);
+    routeToApp();
   };
 
   const skip = () => {
@@ -268,6 +266,17 @@ const LocationPermissionScreen = ({ navigation }) => {
           </View>
         </View>
       </View>
+
+      <PermissionCoachmark
+        visible={showAlwaysCoachmark}
+        title="Change to Always Allow"
+        message="Tap “Change to Always Allow” so we can keep you aware even when the app is closed. You can update this anytime in Settings."
+        confirmLabel="Change to Always Allow"
+        cancelLabel="Skip"
+        indicatorColor={accent}
+        onConfirm={handleAlwaysAllowConfirm}
+        onCancel={handleAlwaysAllowSkip}
+      />
     </LinearGradient>
   );
 };

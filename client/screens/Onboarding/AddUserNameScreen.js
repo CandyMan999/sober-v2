@@ -23,6 +23,7 @@ import { useClient } from "../../client";
 import { UPDATE_USER_PROFILE_MUTATION } from "../../GraphQL/mutations";
 import { FETCH_ME_QUERY } from "../../GraphQL/queries";
 import { COLORS } from "../../constants/colors";
+import PermissionCoachmark from "../../components/PermissionCoachmark";
 const MIN_LEN = 3;
 const PUSH_TOKEN_KEY = "expoPushToken";
 
@@ -47,6 +48,7 @@ const UsernameScreen = ({ navigation }) => {
   const [notifLoading, setNotifLoading] = useState(false);
   const [notifStatus, setNotifStatus] = useState(null);
   const [pushToken, setPushToken] = useState(null);
+  const [showNotifCoachmark, setShowNotifCoachmark] = useState(false);
 
   const [username, setUsername] = useState("");
   const [saving, setSaving] = useState(false);
@@ -218,10 +220,16 @@ const UsernameScreen = ({ navigation }) => {
   }, [client, navigation]);
 
   // ------- notifications step: user taps "Enable" -------
-  const handleEnableNotifications = async () => {
+  const handleEnableNotifications = () => {
+    if (notifLoading) return;
+    setShowNotifCoachmark(true);
+  };
+
+  const beginNotificationRequest = async () => {
     if (notifLoading) return;
 
     try {
+      setShowNotifCoachmark(false);
       setNotifLoading(true);
 
       if (!Device.isDevice) {
@@ -275,6 +283,7 @@ const UsernameScreen = ({ navigation }) => {
 
   const handleSkipNotifications = () => {
     setNotifStatus("denied");
+    setShowNotifCoachmark(false);
     setStep(2);
   };
 
@@ -488,6 +497,17 @@ const UsernameScreen = ({ navigation }) => {
           </Text>
         </View>
       </KeyboardAvoidingView>
+
+      <PermissionCoachmark
+        visible={showNotifCoachmark}
+        title="Get Daily Motivation"
+        message="Plus get alerts when people like, follow, or comment on your posts. These can be configured in Settings."
+        confirmLabel="Allow"
+        cancelLabel="Don't Allow"
+        indicatorColor={accent}
+        onConfirm={beginNotificationRequest}
+        onCancel={handleSkipNotifications}
+      />
     </LinearGradient>
   );
 };
