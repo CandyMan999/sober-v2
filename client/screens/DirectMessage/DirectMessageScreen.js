@@ -913,7 +913,7 @@ const styles = StyleSheet.create({
   },
   body: {
     flex: 1,
-    paddingHorizontal: 16,
+    paddingHorizontal: 12,
     paddingTop: 0,
     paddingBottom: 0,
   },
