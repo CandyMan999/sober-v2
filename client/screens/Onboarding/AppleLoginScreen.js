@@ -1,14 +1,5 @@
 import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  ActivityIndicator,
-  Alert,
-  Image,
-  FlatList,
-} from "react-native";
+import { View, Text, StyleSheet, ActivityIndicator, Alert, Image, FlatList } from "react-native";
 import * as AppleAuthentication from "expo-apple-authentication";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { LinearGradient } from "expo-linear-gradient";
@@ -86,20 +77,19 @@ const AppleLoginScreen = ({ navigation }) => {
     const fetchFaces = async () => {
       try {
         setFacesLoading(true);
-        const offset = Math.floor(Math.random() * 50);
-        const data = await client.request(RANDOM_USERS_QUERY, {
-          limit: 14,
-          offset,
-        });
+        const data = await client.request(RANDOM_USERS_QUERY);
 
         if (!isMounted) return;
 
         const users = data?.users || [];
-        const mappedUsers = users.map((user) => ({
-          id: user?.id,
-          username: user?.username,
-          avatar: user?.profilePic?.url || user?.profilePicUrl,
-        }));
+        const mappedUsers = [...users]
+          .sort(() => Math.random() - 0.5)
+          .slice(0, 14)
+          .map((user) => ({
+            id: user?.id,
+            username: user?.username,
+            avatar: user?.profilePic?.url || user?.profilePicUrl,
+          }));
 
         setFeaturedUsers(mappedUsers);
       } catch (err) {
@@ -121,15 +111,23 @@ const AppleLoginScreen = ({ navigation }) => {
       colors={["#0b0b0f", "#0f1119", "#0b0b0f"]}
       style={styles.container}
     >
-      <View style={styles.logoRow}>
+      <View style={styles.topSection}>
+        <Text style={styles.title}>Log into Sober Motivation</Text>
+        <Text style={styles.subtitle}>Continue with your existing account</Text>
+      </View>
+
+      <View style={styles.logoCenter}>
         <Image source={LogoIcon} style={styles.logo} resizeMode="contain" />
-        <View style={styles.titleBlock}>
-          <Text style={styles.title}>Log into Sober Motivation</Text>
-          <Text style={styles.subtitle}>Continue with your existing account</Text>
-        </View>
       </View>
 
       <View style={styles.faceCluster}>
+        <View style={styles.faceHeader}>
+          <Text style={styles.faceHeaderText}>Meet the community</Text>
+          {facesLoading && <ActivityIndicator color={COLORS.accent} />}
+        </View>
+        {!facesLoading && !randomizedFaces.length && (
+          <Text style={styles.emptyText}>Faces will show here</Text>
+        )}
         {facesLoading ? (
           <ActivityIndicator color={COLORS.accent} />
         ) : (
@@ -166,7 +164,7 @@ const AppleLoginScreen = ({ navigation }) => {
         <AppleAuthentication.AppleAuthenticationButton
           buttonType={AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN}
           buttonStyle={AppleAuthentication.AppleAuthenticationButtonStyle.BLACK}
-          cornerRadius={12}
+          cornerRadius={14}
           style={styles.appleButton}
           onPress={handleAppleSignIn}
           disabled={loading}
@@ -174,23 +172,12 @@ const AppleLoginScreen = ({ navigation }) => {
         <AppleAuthentication.AppleAuthenticationButton
           buttonType={AppleAuthentication.AppleAuthenticationButtonType.SIGN_UP}
           buttonStyle={AppleAuthentication.AppleAuthenticationButtonStyle.WHITE}
-          cornerRadius={12}
+          cornerRadius={14}
           style={[styles.appleButton, styles.altAppleButton]}
           onPress={handleAppleSignIn}
           disabled={loading}
         />
       </View>
-
-      <TouchableOpacity
-        style={[styles.secondaryCta, loading && styles.buttonDisabled]}
-        activeOpacity={0.9}
-        onPress={handleAppleSignIn}
-        disabled={loading}
-      >
-        <Text style={styles.secondaryText}>
-          {loading ? "Connecting..." : "Continue with your existing account"}
-        </Text>
-      </TouchableOpacity>
     </LinearGradient>
   );
 };
@@ -199,35 +186,32 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#05050a",
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: "stretch",
+    justifyContent: "flex-start",
     paddingHorizontal: 24,
-    paddingVertical: 32,
+    paddingVertical: 36,
   },
-  logoRow: {
-    width: "100%",
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 24,
-  },
-  logo: {
-    width: 72,
-    height: 72,
-    marginRight: 12,
-  },
-  titleBlock: {
-    flex: 1,
+  topSection: {
+    marginBottom: 28,
+    gap: 4,
   },
   title: {
-    fontSize: 24,
+    fontSize: 26,
     fontWeight: "700",
     color: "#ffffff",
-    marginBottom: 4,
   },
   subtitle: {
-    fontSize: 14,
+    fontSize: 15,
     color: "#9ba3b4",
-    textAlign: "center",
+  },
+  logoCenter: {
+    width: "100%",
+    alignItems: "center",
+    marginBottom: 20,
+  },
+  logo: {
+    width: 100,
+    height: 100,
   },
   faceCluster: {
     width: "100%",
@@ -238,6 +222,18 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "rgba(255,255,255,0.05)",
     marginBottom: 24,
+  },
+  faceHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 8,
+    marginBottom: 8,
+  },
+  faceHeaderText: {
+    color: "#f8f9fc",
+    fontWeight: "700",
+    fontSize: 14,
   },
   faceList: {
     alignItems: "center",
@@ -273,35 +269,23 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: "#dce1ea",
   },
+  emptyText: {
+    color: "#8c93a3",
+    textAlign: "center",
+    paddingVertical: 12,
+    fontSize: 13,
+  },
   buttonStack: {
     width: "100%",
-    gap: 12,
-    marginBottom: 16,
+    gap: 14,
+    marginTop: 10,
   },
   appleButton: {
     width: "100%",
-    height: 52,
+    height: 56,
   },
   altAppleButton: {
     backgroundColor: "#f1f1f1",
-  },
-  secondaryCta: {
-    marginTop: 4,
-    paddingVertical: 12,
-    paddingHorizontal: 24,
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.12)",
-    backgroundColor: "rgba(255,255,255,0.05)",
-  },
-  secondaryText: {
-    color: "#f5f6f7",
-    textAlign: "center",
-    fontWeight: "600",
-    letterSpacing: 0.2,
-  },
-  buttonDisabled: {
-    opacity: 0.6,
   },
 });
 
