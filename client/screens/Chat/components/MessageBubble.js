@@ -2,6 +2,10 @@ import React, { useMemo, useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { formatDistanceToNow } from "date-fns";
+import {
+  LiquidGlassView,
+  isLiquidGlassSupported,
+} from "@callstack/liquid-glass";
 
 import Avatar from "../../../components/Avatar";
 
@@ -114,6 +118,8 @@ const MessageBubble = ({
     return parts;
   }, [currentUsername, isMine, message?.text]);
 
+  const tintColor = isMine ? "rgba(56,189,248,0.25)" : "rgba(245,158,11,0.20)";
+
   return (
     <View
       style={[styles.row, isMine ? styles.rowMine : null]}
@@ -150,7 +156,7 @@ const MessageBubble = ({
           </Text>
         ) : null}
         <TouchableOpacity activeOpacity={0.9} onPress={onPress}>
-          <View
+          <LiquidGlassView
             style={[
               styles.bubble,
               isMine ? styles.bubbleMine : styles.bubbleTheirs,
@@ -177,6 +183,10 @@ const MessageBubble = ({
                   ]
                 : null,
             ]}
+            interactive
+            effect="clear"
+            tintColor={tintColor}
+            colorScheme="system"
           >
             {showLikeBadge ? (
               <View
@@ -207,9 +217,14 @@ const MessageBubble = ({
                 activeOpacity={0.8}
                 style={[
                   styles.replyContainer,
-                  { borderLeftColor: bubbleColors.replyBorderColor || accentColor },
+                  {
+                    borderLeftColor:
+                      bubbleColors.replyBorderColor || accentColor,
+                  },
                   isReplyingToMe && styles.replyToMe,
-                  isReplyingToMe && { shadowColor: bubbleColors.shadowColor || accentColor },
+                  isReplyingToMe && {
+                    shadowColor: bubbleColors.shadowColor || accentColor,
+                  },
                 ]}
                 accessibilityRole="button"
                 accessibilityLabel={`Replying to ${replyLabel.username}`}
@@ -289,7 +304,7 @@ const MessageBubble = ({
                 </TouchableOpacity>
               ) : null}
             </View>
-          </View>
+          </LiquidGlassView>
         </TouchableOpacity>
       </View>
 

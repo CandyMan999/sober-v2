@@ -9,6 +9,7 @@ import {
   Modal,
 } from "react-native";
 import { BlurView } from "expo-blur";
+import { LiquidGlassView } from "@callstack/liquid-glass";
 
 const ACCENT = "#F59E0B";
 
@@ -33,7 +34,6 @@ const AlertModal = ({
       ? "Are you sure?"
       : "Heads up");
 
-  // ✅ Make confirm + cancel labels super explicit
   const resolvedConfirmLabel =
     typeof confirmLabel === "string" && confirmLabel.trim().length > 0
       ? confirmLabel
@@ -47,11 +47,8 @@ const AlertModal = ({
       : "Close";
 
   const handleClose = () => {
-    if (onCancel) {
-      onCancel();
-    } else if (onConfirm) {
-      onConfirm();
-    }
+    if (onCancel) onCancel();
+    else if (onConfirm) onConfirm();
   };
 
   return (
@@ -62,64 +59,64 @@ const AlertModal = ({
       onRequestClose={handleClose}
     >
       <View style={styles.modalContainer}>
-        <BlurView intensity={30} style={styles.blurBackground}>
-          <View style={styles.modalContent}>
-            <Image
-              source={require("../assets/icon.png")}
-              style={styles.modalLogo}
-            />
+        {/* Soft backdrop blur */}
+        <BlurView intensity={42} tint="dark" style={styles.blurBackground}>
+          {/* Shadow wrapper */}
+          <View style={styles.shadowWrapper}>
+            <LiquidGlassView
+              interactive
+              effect="clear"
+              tintColor="rgba(255,255,255,0.25)"
+              colorScheme="system"
+              style={styles.modalContent}
+            >
+              <Image
+                source={require("../assets/icon.png")}
+                style={styles.modalLogo}
+              />
 
-            {resolvedTitle ? (
-              <Text style={styles.modalTitle}>{resolvedTitle}</Text>
-            ) : null}
+              {resolvedTitle ? (
+                <Text style={styles.modalTitle}>{resolvedTitle}</Text>
+              ) : null}
 
-            {message ? (
-              <Text style={styles.modalMessage}>{message}</Text>
-            ) : null}
+              {message ? (
+                <Text style={styles.modalMessage}>{message}</Text>
+              ) : null}
 
-            {isConfirm ? (
-              // Confirm: Cancel + Confirm buttons
-              <View style={styles.buttonRow}>
+              {isConfirm ? (
+                <View style={styles.buttonRow}>
+                  <TouchableOpacity
+                    style={[styles.button, styles.secondaryButton]}
+                    onPress={onCancel || handleClose}
+                    activeOpacity={0.85}
+                  >
+                    <Text style={styles.secondaryText}>
+                      {resolvedCancelLabel}
+                    </Text>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity
+                    style={[styles.button, styles.primaryButton]}
+                    onPress={onConfirm || handleClose}
+                    activeOpacity={0.9}
+                  >
+                    <Text style={styles.primaryText}>
+                      {resolvedConfirmLabel}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              ) : (
                 <TouchableOpacity
-                  style={[styles.button, styles.secondaryButton]}
-                  onPress={onCancel || handleClose}
-                  activeOpacity={0.85}
-                >
-                  <Text style={styles.secondaryText}>
-                    {String(resolvedCancelLabel)}
-                  </Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                  style={[styles.button, styles.primaryButton]}
                   onPress={onConfirm || handleClose}
                   activeOpacity={0.9}
+                  style={styles.singlePrimaryButton}
                 >
-                  <Text style={styles.primaryText}>
-                    {String(resolvedConfirmLabel)}
+                  <Text style={styles.singlePrimaryText}>
+                    {resolvedConfirmLabel}
                   </Text>
                 </TouchableOpacity>
-              </View>
-            ) : (
-              <TouchableOpacity
-                onPress={onConfirm || handleClose}
-                activeOpacity={0.9}
-                style={{
-                  backgroundColor: ACCENT,
-                  borderRadius: 999,
-                  height: 50,
-                  justifyContent: "center",
-                  alignItems: "center",
-                  width: "100%",
-                }}
-              >
-                <Text
-                  style={{ color: "#1A1A1A", fontSize: 16, fontWeight: "700" }}
-                >
-                  {resolvedConfirmLabel}
-                </Text>
-              </TouchableOpacity>
-            )}
+              )}
+            </LiquidGlassView>
           </View>
         </BlurView>
       </View>
@@ -138,19 +135,22 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  modalContent: {
+  shadowWrapper: {
     width: "80%",
     maxWidth: 380,
-    backgroundColor: "white",
+    borderRadius: 20,
+    shadowColor: "#000",
+    shadowOpacity: 0.28,
+    shadowRadius: 22,
+    shadowOffset: { width: 0, height: 16 },
+    elevation: 14,
+  },
+  modalContent: {
+    borderRadius: 20,
     paddingVertical: 22,
     paddingHorizontal: 20,
-    borderRadius: 16,
     alignItems: "center",
-    shadowColor: "#000",
-    shadowOpacity: 0.25,
-    shadowRadius: 18,
-    shadowOffset: { width: 0, height: 10 },
-    elevation: 10,
+    overflow: "hidden",
   },
   modalLogo: {
     width: 80,
@@ -161,13 +161,13 @@ const styles = StyleSheet.create({
   modalTitle: {
     fontSize: 18,
     fontWeight: "700",
-    color: "#111827",
+    color: "#F9FAFB",
     textAlign: "center",
     marginBottom: 6,
   },
   modalMessage: {
     fontSize: 14,
-    color: "#4B5563",
+    color: "#E5E7EB",
     textAlign: "center",
     marginBottom: 20,
     lineHeight: 20,
@@ -184,19 +184,23 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  singleButton: {
-    width: "100%",
-    marginTop: 4,
-  },
   secondaryButton: {
     marginRight: 8,
     borderWidth: 1,
-    borderColor: "#D1D5DB",
-    backgroundColor: "#F9FAFB",
+    borderColor: "rgba(249,250,251,0.4)",
+    backgroundColor: "rgba(255,255,255,0.1)",
   },
   primaryButton: {
-    marginLeft: 0,
     backgroundColor: ACCENT,
+  },
+  singlePrimaryButton: {
+    backgroundColor: ACCENT,
+    borderRadius: 999,
+    height: 50,
+    justifyContent: "center",
+    alignItems: "center",
+    width: "100%",
+    marginTop: 4,
   },
   primaryText: {
     color: "#111827",
@@ -204,9 +208,14 @@ const styles = StyleSheet.create({
     fontWeight: "700",
   },
   secondaryText: {
-    color: "#374151",
+    color: "#F9FAFB",
     fontSize: 14,
     fontWeight: "500",
+  },
+  singlePrimaryText: {
+    color: "#111827",
+    fontSize: 16,
+    fontWeight: "700",
   },
 });
 

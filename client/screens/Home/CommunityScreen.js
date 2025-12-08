@@ -24,7 +24,12 @@ import { useIsFocused } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import { BlurView } from "expo-blur";
 import { ResizeMode, Video } from "expo-av";
-import { CommunityFeedLayout, FeedLayout, FilterSheet } from "../../components";
+import {
+  CommunityFeedLayout,
+  FeedLayout,
+  FilterSheet,
+  WatchAgainButton,
+} from "../../components";
 import { GET_ALL_POSTS } from "../../GraphQL/queries";
 import { useClient } from "../../client";
 import {
@@ -384,17 +389,7 @@ const CommunityScreen = () => {
 
   const renderOverlay = (index) => (
     <View style={styles.overlay}>
-      <TouchableOpacity
-        style={styles.replayButton}
-        onPress={() => replayVideo(index)}
-        activeOpacity={0.9}
-      >
-        <BlurView intensity={70} tint="dark" style={styles.replayGlass} />
-        <View style={styles.replayContent}>
-          <Ionicons name="refresh" size={20} color="#fef3c7" />
-          <Text style={styles.replayText}>Watch Again</Text>
-        </View>
-      </TouchableOpacity>
+      <WatchAgainButton onPress={() => replayVideo(index)} />
     </View>
   );
 

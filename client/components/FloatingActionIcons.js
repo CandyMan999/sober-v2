@@ -8,6 +8,7 @@ import {
   Easing,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { LiquidGlassView } from "@callstack/liquid-glass";
 
 const ACCENT = "#F59E0B";
 
@@ -86,53 +87,100 @@ const FloatingActionIcons = ({
     <View style={styles.container}>
       {showFilter ? (
         <TouchableOpacity
-          style={styles.pill}
+          style={styles.pillWrapper}
           onPress={onFilterPress || (() => {})}
+          activeOpacity={0.9}
         >
-          <Ionicons name="options-outline" size={20} color="#fff" />
+          <LiquidGlassView
+            style={styles.pillGlass}
+            interactive
+            effect="clear"
+            tintColor="rgba(15,23,42,0.35)"
+            colorScheme="system"
+          >
+            <Ionicons name="options-outline" size={20} color="#fff" />
+          </LiquidGlassView>
         </TouchableOpacity>
       ) : null}
 
       {/* ❤️ Like */}
-      <TouchableOpacity style={styles.pill} onPress={handleLikePress}>
-        <View style={styles.heartWrapper}>
-          <Animated.View
-            pointerEvents="none"
-            style={[
-              styles.heartBurst,
-              {
-                opacity: burstOpacity,
-                transform: [{ scale: burstScale }],
-              },
-            ]}
-          />
-          <Animated.Text
-            style={[
-              styles.icon,
-              { color: heartColor, transform: [{ scale: heartScale }] },
-            ]}
-          >
-            {heartIcon}
-          </Animated.Text>
-        </View>
-        <Text style={styles.countText}>{formatCount(likesCount)}</Text>
+      <TouchableOpacity
+        style={styles.pillWrapper}
+        onPress={handleLikePress}
+        activeOpacity={0.9}
+      >
+        <LiquidGlassView
+          style={styles.pillGlass}
+          interactive
+          effect="clear"
+          tintColor="rgba(15,23,42,0.35)"
+          colorScheme="system"
+        >
+          <View style={styles.heartWrapper}>
+            <Animated.View
+              pointerEvents="none"
+              style={[
+                styles.heartBurst,
+                {
+                  opacity: burstOpacity,
+                  transform: [{ scale: burstScale }],
+                },
+              ]}
+            />
+            <Animated.Text
+              style={[
+                styles.icon,
+                { color: heartColor, transform: [{ scale: heartScale }] },
+              ]}
+            >
+              {heartIcon}
+            </Animated.Text>
+          </View>
+          <Text style={styles.countText}>{formatCount(likesCount)}</Text>
+        </LiquidGlassView>
       </TouchableOpacity>
 
       {/* 💬 Comment */}
-      <TouchableOpacity style={styles.pill} onPress={onCommentPress}>
-        <Text style={styles.icon}>💬</Text>
-        <Text style={styles.countText}>{formatCount(commentsCount)}</Text>
+      <TouchableOpacity
+        style={styles.pillWrapper}
+        onPress={onCommentPress}
+        activeOpacity={0.9}
+      >
+        <LiquidGlassView
+          style={styles.pillGlass}
+          interactive
+          effect="clear"
+          tintColor="rgba(15,23,42,0.35)"
+          colorScheme="system"
+        >
+          <Text style={styles.icon}>💬</Text>
+          <Text style={styles.countText}>{formatCount(commentsCount)}</Text>
+        </LiquidGlassView>
       </TouchableOpacity>
 
-      {/* ⋯ More – keep same width, but hide count */}
-      <TouchableOpacity style={styles.pill} onPress={onMorePress}>
-        <Text style={styles.icon}>⋯</Text>
+      {/* ⋯ More */}
+      <TouchableOpacity
+        style={styles.pillWrapper}
+        onPress={onMorePress}
+        activeOpacity={0.9}
+      >
+        <LiquidGlassView
+          style={styles.pillGlass}
+          interactive
+          effect="clear"
+          tintColor="rgba(15,23,42,0.35)"
+          colorScheme="system"
+        >
+          <Text style={styles.icon}>⋯</Text>
+        </LiquidGlassView>
       </TouchableOpacity>
+
       {showSoundToggle ? (
         <TouchableOpacity
           onPress={onToggleSound}
           accessibilityRole="button"
           accessibilityLabel={isMuted ? "Unmute video" : "Mute video"}
+          activeOpacity={0.9}
         >
           <Text style={styles.soundIcon}>{isMuted ? "🔇" : "🔊"}</Text>
         </TouchableOpacity>
@@ -152,25 +200,26 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: "#fff",
   },
-  pill: {
+  pillWrapper: {
+    marginBottom: 12,
+    // keep the glow on the wrapper so it surrounds the glass
+    shadowColor: ACCENT,
+    shadowOpacity: 0.35,
+    shadowRadius: 12,
+    shadowOffset: { width: 0, height: 4 },
+    elevation: 6,
+  },
+  pillGlass: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
     paddingVertical: 10,
     paddingHorizontal: 14,
     borderRadius: 999,
-    minWidth: 70, // forces equal width
-    backgroundColor: "rgba(15,23,42,0.96)",
+    minWidth: 70,
     borderWidth: 1,
     borderColor: "rgba(245,158,11,0.7)",
-    marginBottom: 12,
-
-    // Subtle glow
-    shadowColor: ACCENT,
-    shadowOpacity: 0.35,
-    shadowRadius: 12,
-    shadowOffset: { width: 0, height: 4 },
-    elevation: 6,
+    backgroundColor: "transparent",
   },
   icon: {
     fontSize: 20,

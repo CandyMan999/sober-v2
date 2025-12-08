@@ -9,3 +9,4 @@ export { default as RecordButton } from "./RecordButton";
 export { default as LogoLoader } from "./LogoLoader";
 export { default as ToggleSwitch } from "./ToggleSwitch";
 export { default as Avatar } from "./Avatar";
+export { default as WatchAgainButton } from "./WatchAgainButton";
