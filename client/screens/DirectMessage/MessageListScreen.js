@@ -89,10 +89,18 @@ const MessageListScreen = ({ route, navigation }) => {
       lastComment?.author?._id ||
       null;
 
+    const lastMessageIsRead =
+      typeof room?.lastMessage?.isRead === "boolean"
+        ? room.lastMessage.isRead
+        : typeof lastComment?.isRead === "boolean"
+        ? lastComment.isRead
+        : false;
+
     return {
       lastActivity,
       lastMessageText,
       lastMessageAuthorId,
+      lastMessageIsRead,
     };
   }, []);
 
@@ -176,8 +184,12 @@ const MessageListScreen = ({ route, navigation }) => {
       if (!updatedRoom) return;
 
       setRooms((prev) => {
-        const filtered = prev.filter((room) => room.id !== updatedRoom.id);
-        return [updatedRoom, ...filtered];
+        const updatedId = updatedRoom.id || updatedRoom._id;
+        const filtered = prev.filter(
+          (room) => String(room.id || room._id) !== String(updatedId)
+        );
+        const normalized = updatedId ? { ...updatedRoom, id: updatedId } : updatedRoom;
+        return [normalized, ...filtered];
       });
     },
   });
@@ -240,14 +252,19 @@ const MessageListScreen = ({ route, navigation }) => {
 
         if (!otherUser?.id) return null;
 
-        const { lastActivity, lastMessageText, lastMessageAuthorId } =
-          deriveLastMessageInfo(room, index);
+        const {
+          lastActivity,
+          lastMessageText,
+          lastMessageAuthorId,
+          lastMessageIsRead,
+        } = deriveLastMessageInfo(room, index);
         return {
           id: room.id || room._id || `room-${index}`,
           user: otherUser,
           lastMessage: lastMessageText,
           lastActivity,
           lastMessageAuthorId,
+          lastMessageIsRead,
           unread: false,
         };
       })
@@ -292,26 +309,27 @@ const MessageListScreen = ({ route, navigation }) => {
       ? false
       : !item.lastMessageAuthorId ||
         String(item.lastMessageAuthorId) !== String(currentUserId);
-    const statusLabel = isCompanion
-      ? "Always here"
-      : waitingForYou
-      ? "Waiting for reply"
-      : "Sent";
-    const statusIcon = isCompanion
-      ? "moon"
-      : waitingForYou
-      ? "alert-circle"
-      : "checkmark-done";
-    const statusColor = isCompanion
-      ? "#34d399"
-      : waitingForYou
-      ? "#f59e0b"
-      : "#38bdf8";
-    const statusBackground = isCompanion
-      ? "rgba(52,211,153,0.12)"
-      : waitingForYou
-      ? "rgba(245,158,11,0.12)"
-      : "rgba(56,189,248,0.14)";
+    let statusLabel = "Sent";
+    let statusIcon = "checkmark";
+    let statusColor = "#38bdf8";
+    let statusBackground = "rgba(56,189,248,0.14)";
+
+    if (isCompanion) {
+      statusLabel = "Always here";
+      statusIcon = "moon";
+      statusColor = "#34d399";
+      statusBackground = "rgba(52,211,153,0.12)";
+    } else if (waitingForYou) {
+      statusLabel = "Waiting for reply";
+      statusIcon = "alert-circle";
+      statusColor = "#f59e0b";
+      statusBackground = "rgba(245,158,11,0.12)";
+    } else if (item.lastMessageIsRead) {
+      statusLabel = "Read";
+      statusIcon = "checkmark-done";
+      statusColor = "#94a3b8";
+      statusBackground = "rgba(148,163,184,0.18)";
+    }
     const canOpen = Boolean(item.user?.id);
     const canDelete = canOpen && !isCompanion;
     const roomKey = item.id?.toString();

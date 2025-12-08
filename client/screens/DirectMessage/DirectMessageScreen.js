@@ -35,6 +35,7 @@ import Context from "../../context";
 import {
   DIRECT_MESSAGE_SUBSCRIPTION,
   DIRECT_ROOM_WITH_USER,
+  MARK_DIRECT_ROOM_READ,
   SEND_DIRECT_MESSAGE,
   THERAPY_CHAT,
   SET_DIRECT_TYPING,
@@ -199,6 +200,30 @@ const DirectMessageScreen = ({ route, navigation }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    if (!roomId) return;
+
+    client
+      .request(MARK_DIRECT_ROOM_READ, { roomId })
+      .then((result) => {
+        const updatedMessages = result?.markDirectRoomRead;
+        if (!Array.isArray(updatedMessages)) return;
+
+        setMessages((prev) => {
+          const next = prev.map((message) => {
+            const incoming = updatedMessages.find((m) => m.id === message.id);
+            return incoming ? { ...message, ...incoming } : message;
+          });
+          return next.sort(
+            (a, b) =>
+              (parseDateValue(a.createdAt)?.getTime() || 0) -
+              (parseDateValue(b.createdAt)?.getTime() || 0)
+          );
+        });
+      })
+      .catch((error) => console.log("Failed to mark room read", error));
+  }, [client, roomId]);
+
   // 2) Manual WebSocket subscriptions (messages + typing)
   useEffect(() => {
     if (!roomId) return;
@@ -341,6 +366,16 @@ const DirectMessageScreen = ({ route, navigation }) => {
       ),
     [messages]
   );
+
+  const lastSentMessage = useMemo(() => {
+    for (let i = sortedMessages.length - 1; i >= 0; i -= 1) {
+      const message = sortedMessages[i];
+      if (String(message.author?.id) === String(currentUserId)) {
+        return message;
+      }
+    }
+    return null;
+  }, [currentUserId, sortedMessages]);
 
   useEffect(() => {
     const shouldScroll = sortedMessages.length > previousCount.current;
@@ -664,6 +699,8 @@ const DirectMessageScreen = ({ route, navigation }) => {
     const isCompanionAuthor =
       String(item.author?.id || item.author?._id) ===
       String(SOBER_COMPANION_ID);
+    const isLatestMine =
+      isMine && lastSentMessage && lastSentMessage.id === item.id;
     const companionHalo =
       isCompanionAuthor && !isMine
         ? ["#bef264", "#34d399", "#22d3ee"]
@@ -738,6 +775,18 @@ const DirectMessageScreen = ({ route, navigation }) => {
               </Text>
             </LiquidGlassView>
           </TouchableOpacity>
+          {isLatestMine && (
+            <View style={styles.receiptRow}>
+              <Ionicons
+                name={item.isRead ? "checkmark-done" : "checkmark"}
+                size={14}
+                color="#94a3b8"
+              />
+              <Text style={styles.receiptText}>
+                {item.isRead ? "Read" : "Sent"}
+              </Text>
+            </View>
+          )}
         </View>
         {isMine && (
           <Avatar
@@ -1032,6 +1081,18 @@ const styles = StyleSheet.create({
     opacity: 0.9,
     alignSelf: "flex-end",
     textAlign: "right",
+  },
+  receiptRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: 4,
+    alignSelf: "flex-end",
+  },
+  receiptText: {
+    color: "#94a3b8",
+    fontSize: 12,
+    fontWeight: "600",
+    marginLeft: 6,
   },
   inputBar: {
     flexDirection: "row",
