@@ -28,7 +28,7 @@ import { useFocusEffect } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import { formatDistanceToNow } from "date-fns";
 import { SubscriptionClient } from "subscriptions-transport-ws";
-import { LiquidGlassView } from "@callstack/liquid-glass";
+import MessageBubble from "../../components/MessageBubble";
 
 import Avatar from "../../components/Avatar";
 import Context from "../../context";
@@ -750,55 +750,16 @@ const DirectMessageScreen = ({ route, navigation }) => {
           />
         )}
         <View style={[styles.bubbleStack, isMine && styles.bubbleStackMine]}>
-          <TouchableOpacity
-            activeOpacity={0.9}
+          <MessageBubble
+            bubbleTint={bubbleTint}
+            isMine={isMine}
+            isCompanionAuthor={isCompanionAuthor}
+            likeScale={likeScale}
+            likeOpacity={likeOpacity}
             onPress={() => handleBubblePress(item.id, item.author?.id)}
-          >
-            <LiquidGlassView
-              interactive
-              effect="clear"
-              tintColor={bubbleTint}
-              colorScheme="system"
-              style={[
-                styles.bubble,
-                isMine ? styles.bubbleMine : styles.bubbleTheirs,
-                !isMine && isCompanionAuthor ? styles.bubbleCompanion : null,
-              ]}
-            >
-              <Animated.View
-                pointerEvents="none"
-                style={[
-                  styles.likeBadge,
-                  isMine
-                    ? styles.likeBadgeMine
-                    : isCompanionAuthor
-                    ? styles.likeBadgeCompanion
-                    : styles.likeBadgeTheirs,
-                  {
-                    opacity: likeOpacity,
-                    transform: [{ scale: likeScale }],
-                  },
-                ]}
-              >
-                <Text style={styles.likeBadgeText}>👍</Text>
-              </Animated.View>
-              <Text
-                style={[
-                  styles.messageText,
-                  isMine
-                    ? styles.messageTextMine
-                    : isCompanionAuthor
-                    ? styles.messageTextCompanion
-                    : styles.messageTextTheirs,
-                ]}
-              >
-                {item.text}
-              </Text>
-              <Text style={[styles.timestamp, isMine && styles.timestampMine]}>
-                {formatTime(item.createdAt)}
-              </Text>
-            </LiquidGlassView>
-          </TouchableOpacity>
+            text={item.text}
+            timestamp={formatTime(item.createdAt)}
+          />
           {isLatestMine && (
             <View style={styles.receiptRow}>
               <Ionicons
@@ -1049,62 +1010,12 @@ const styles = StyleSheet.create({
   bubbleStackMine: {
     alignItems: "flex-end",
   },
-  bubble: {
-    maxWidth: "100%",
-    borderRadius: 17,
-    paddingHorizontal: 14,
-    paddingVertical: 10,
-    borderWidth: 1,
-  },
-  bubbleMine: {
-    backgroundColor: "rgba(56,189,248,0.14)",
-    borderColor: "#38bdf8",
-    borderTopRightRadius: 6,
-    alignSelf: "flex-end",
-  },
-  bubbleTheirs: {
-    backgroundColor: "rgba(245,158,11,0.08)",
-    borderColor: "#f59e0b",
-    borderTopLeftRadius: 6,
-    alignSelf: "flex-start",
-  },
-  bubbleCompanion: {
-    backgroundColor: "rgba(52,211,153,0.12)",
-    borderColor: COMPANION_ACCENT,
-  },
   typingRow: {
     flexDirection: "row",
     alignItems: "center",
     gap: 8,
     paddingLeft: 4,
     paddingTop: 4,
-  },
-  messageText: {
-    fontSize: 15,
-  },
-  messageTextMine: {
-    color: "#e0f2fe",
-    fontWeight: "600",
-  },
-  messageTextTheirs: {
-    color: "#fef3c7",
-  },
-  messageTextCompanion: {
-    color: "#d1fae5",
-    fontWeight: "600",
-  },
-  timestamp: {
-    color: "#94a3b8",
-    fontSize: 10,
-    marginTop: 6,
-    alignSelf: "flex-start",
-    textAlign: "left",
-  },
-  timestampMine: {
-    color: "#bae6fd",
-    opacity: 0.9,
-    alignSelf: "flex-end",
-    textAlign: "right",
   },
   receiptRow: {
     flexDirection: "row",
@@ -1164,34 +1075,6 @@ const styles = StyleSheet.create({
   emptyText: {
     color: "#94a3b8",
     textAlign: "center",
-  },
-  likeBadge: {
-    position: "absolute",
-    top: -10,
-    backgroundColor: "rgba(15,23,42,0.9)",
-    borderRadius: 12,
-    paddingHorizontal: 6,
-    paddingVertical: 3,
-    borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.15)",
-    shadowColor: "#000",
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    shadowOffset: { width: 0, height: 2 },
-    elevation: 3,
-  },
-  likeBadgeMine: {
-    left: -6,
-  },
-  likeBadgeTheirs: {
-    right: -12,
-  },
-  likeBadgeCompanion: {
-    right: -12,
-    borderColor: "rgba(52,211,153,0.4)",
-  },
-  likeBadgeText: {
-    fontSize: 14,
   },
 });
 
