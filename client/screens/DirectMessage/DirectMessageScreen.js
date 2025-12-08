@@ -35,6 +35,7 @@ import Context from "../../context";
 import {
   DIRECT_MESSAGE_SUBSCRIPTION,
   DIRECT_ROOM_WITH_USER,
+  MARK_DIRECT_ROOM_READ,
   SEND_DIRECT_MESSAGE,
   THERAPY_CHAT,
   SET_DIRECT_TYPING,
@@ -103,6 +104,7 @@ const DirectMessageScreen = ({ route, navigation }) => {
   const likeScales = useRef({});
   const likeOpacities = useRef({});
   const tapTimestamps = useRef({});
+  const markingReadRef = useRef(false);
 
   const syncMessagesFromRoom = useCallback(
     (roomData) => {
@@ -119,12 +121,19 @@ const DirectMessageScreen = ({ route, navigation }) => {
               : typeof previous?.liked === "boolean"
               ? previous.liked
               : likesCount > 0;
+          const isRead =
+            typeof msg?.isRead === "boolean"
+              ? msg.isRead
+              : typeof previous?.isRead === "boolean"
+              ? previous.isRead
+              : false;
           syncLikeVisualState(msg.id, liked);
           incomingById.set(msg.id, {
             ...previous,
             ...msg,
             likesCount,
             liked,
+            isRead,
           });
         });
 
@@ -232,6 +241,10 @@ const DirectMessageScreen = ({ route, navigation }) => {
           setMessages((prev) => {
             const incomingLiked =
               (incoming?.liked ?? false) || (incoming?.likesCount || 0) > 0;
+            const incomingRead =
+              typeof incoming?.isRead === "boolean"
+                ? incoming.isRead
+                : false;
 
             const existingIndex = prev.findIndex(
               (msg) => msg.id === incoming.id
@@ -248,6 +261,11 @@ const DirectMessageScreen = ({ route, navigation }) => {
                 ...incoming,
                 liked: nextLiked,
                 likesCount: nextLikesCount,
+                isRead: typeof incoming?.isRead === "boolean"
+                  ? incoming.isRead
+                  : typeof existing?.isRead === "boolean"
+                  ? existing.isRead
+                  : false,
               };
 
               if (!existing.liked && nextLiked)
@@ -276,6 +294,7 @@ const DirectMessageScreen = ({ route, navigation }) => {
               {
                 ...incoming,
                 liked: incomingLiked,
+                isRead: incomingRead,
                 likesCount: incoming?.likesCount ?? 0,
               },
             ].sort(
@@ -342,6 +361,11 @@ const DirectMessageScreen = ({ route, navigation }) => {
     [messages]
   );
 
+  const lastMessageId = useMemo(
+    () => sortedMessages[sortedMessages.length - 1]?.id || null,
+    [sortedMessages]
+  );
+
   useEffect(() => {
     const shouldScroll = sortedMessages.length > previousCount.current;
     previousCount.current = sortedMessages.length;
@@ -352,6 +376,42 @@ const DirectMessageScreen = ({ route, navigation }) => {
       });
     }
   }, [sortedMessages.length]);
+
+  useEffect(() => {
+    if (!roomId || !currentUserId) return;
+
+    const hasUnreadFromOther = sortedMessages.some(
+      (message) =>
+        String(message.author?.id) !== String(currentUserId) &&
+        message.isRead !== true
+    );
+
+    if (!hasUnreadFromOther) return;
+    if (markingReadRef.current) return;
+
+    markingReadRef.current = true;
+
+    client
+      .request(MARK_DIRECT_ROOM_READ, { roomId })
+      .then((response) => {
+        const updated = response?.markDirectRoomRead || [];
+        if (!updated.length) return;
+
+        setMessages((prev) =>
+          prev.map((message) => {
+            const match = updated.find((item) => item.id === message.id);
+            if (!match) return message;
+            return { ...message, ...match, isRead: match?.isRead ?? true };
+          })
+        );
+      })
+      .catch((err) => {
+        console.error("[DM] Failed to mark room read", err);
+      })
+      .finally(() => {
+        markingReadRef.current = false;
+      });
+  }, [client, currentUserId, roomId, sortedMessages]);
 
   // 4) Derive LOCAL typing from messageText
   useEffect(() => {
@@ -443,6 +503,7 @@ const DirectMessageScreen = ({ route, navigation }) => {
                 ...merged.get(msg.id),
                 ...msg,
                 liked: msg?.liked ?? (msg?.likesCount || 0) > 0,
+                isRead: msg?.isRead ?? false,
                 likesCount: msg?.likesCount ?? 0,
               });
             });
@@ -482,6 +543,7 @@ const DirectMessageScreen = ({ route, navigation }) => {
             {
               ...newMessage,
               liked: newMessage?.liked ?? (newMessage?.likesCount || 0) > 0,
+              isRead: newMessage?.isRead ?? false,
               likesCount: newMessage?.likesCount ?? 0,
             },
           ].sort(
@@ -675,6 +737,8 @@ const DirectMessageScreen = ({ route, navigation }) => {
       : isCompanionAuthor
       ? "rgba(52,211,153,0.22)"
       : "rgba(245,158,11,0.2)";
+    const showReadReceipt =
+      isMine && item.id === lastMessageId && item.isRead === true;
 
     return (
       <View style={[styles.messageRow, isMine && styles.messageRowMine]}>
@@ -736,6 +800,16 @@ const DirectMessageScreen = ({ route, navigation }) => {
               <Text style={[styles.timestamp, isMine && styles.timestampMine]}>
                 {formatTime(item.createdAt)}
               </Text>
+              {showReadReceipt ? (
+                <Text
+                  style={[
+                    styles.readReceipt,
+                    isMine ? styles.readReceiptMine : styles.readReceiptTheirs,
+                  ]}
+                >
+                  Read
+                </Text>
+              ) : null}
             </LiquidGlassView>
           </TouchableOpacity>
         </View>
@@ -1032,6 +1106,20 @@ const styles = StyleSheet.create({
     opacity: 0.9,
     alignSelf: "flex-end",
     textAlign: "right",
+  },
+  readReceipt: {
+    fontSize: 10,
+    marginTop: 2,
+  },
+  readReceiptMine: {
+    color: "#bae6fd",
+    alignSelf: "flex-end",
+    textAlign: "right",
+  },
+  readReceiptTheirs: {
+    color: "#cbd5e1",
+    alignSelf: "flex-start",
+    textAlign: "left",
   },
   inputBar: {
     flexDirection: "row",

@@ -72,6 +72,13 @@ const MessageListScreen = ({ route, navigation }) => {
       parseDateValue(room?.lastMessage?.createdAt) ||
       parseDateValue(lastComment?.createdAt);
 
+    const lastMessageIsRead =
+      typeof room?.lastMessage?.isRead === "boolean"
+        ? room.lastMessage.isRead
+        : typeof lastComment?.isRead === "boolean"
+        ? lastComment.isRead
+        : false;
+
     const lastActivity = lastMessageTimestamp
       ? lastMessageTimestamp.getTime()
       : Date.now() - fallbackIndex * 1000;
@@ -93,6 +100,7 @@ const MessageListScreen = ({ route, navigation }) => {
       lastActivity,
       lastMessageText,
       lastMessageAuthorId,
+      lastMessageIsRead,
     };
   }, []);
 
@@ -240,7 +248,7 @@ const MessageListScreen = ({ route, navigation }) => {
 
         if (!otherUser?.id) return null;
 
-        const { lastActivity, lastMessageText, lastMessageAuthorId } =
+        const { lastActivity, lastMessageText, lastMessageAuthorId, lastMessageIsRead } =
           deriveLastMessageInfo(room, index);
         return {
           id: room.id || room._id || `room-${index}`,
@@ -248,6 +256,7 @@ const MessageListScreen = ({ route, navigation }) => {
           lastMessage: lastMessageText,
           lastActivity,
           lastMessageAuthorId,
+          lastMessageIsRead,
           unread: false,
         };
       })
@@ -274,6 +283,7 @@ const MessageListScreen = ({ route, navigation }) => {
           "Chat with your sober AI companion anytime you need encouragement.",
         lastActivity: Date.now(),
         lastMessageAuthorId: null,
+        lastMessageIsRead: true,
         unread: false,
       });
     }
@@ -292,23 +302,35 @@ const MessageListScreen = ({ route, navigation }) => {
       ? false
       : !item.lastMessageAuthorId ||
         String(item.lastMessageAuthorId) !== String(currentUserId);
+    const wasReadByThem =
+      !isCompanion &&
+      String(item.lastMessageAuthorId) === String(currentUserId) &&
+      item.lastMessageIsRead;
     const statusLabel = isCompanion
       ? "Always here"
+      : wasReadByThem
+      ? "Read"
       : waitingForYou
       ? "Waiting for reply"
       : "Sent";
     const statusIcon = isCompanion
       ? "moon"
+      : wasReadByThem
+      ? "checkmark-done"
       : waitingForYou
       ? "alert-circle"
       : "checkmark-done";
     const statusColor = isCompanion
       ? "#34d399"
+      : wasReadByThem
+      ? "#22c55e"
       : waitingForYou
       ? "#f59e0b"
       : "#38bdf8";
     const statusBackground = isCompanion
       ? "rgba(52,211,153,0.12)"
+      : wasReadByThem
+      ? "rgba(34,197,94,0.12)"
       : waitingForYou
       ? "rgba(245,158,11,0.12)"
       : "rgba(56,189,248,0.14)";

@@ -33,6 +33,11 @@ const normalizeRoomForGraphQL = (roomDoc) => {
     lastMessage: raw.lastMessage
       ? normalizeCommentForGraphQL(raw.lastMessage)
       : null,
+    comments: Array.isArray(raw.comments)
+      ? raw.comments
+          .map((comment) => normalizeCommentForGraphQL(comment))
+          .filter(Boolean)
+      : [],
   };
 };
 

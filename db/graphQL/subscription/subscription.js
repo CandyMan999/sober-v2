@@ -30,6 +30,7 @@ const normalizeCommentForGraphQL = (commentDoc) => {
   return {
     ...raw,
     id: raw.id || raw._id?.toString?.(),
+    isRead: Boolean(raw.isRead),
     author: author
       ? {
           ...author,
@@ -136,7 +137,8 @@ const directRoomUpdatedSubscription = {
       const room = payload?.directRoomUpdated;
       const roomId = variables?.roomId;
 
-      if (!room || !roomId) return false;
+      if (!room) return false;
+      if (!roomId) return true;
 
       return String(room.id || room._id) === String(roomId);
     }

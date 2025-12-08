@@ -157,6 +157,56 @@ const setDirectTypingResolver = async (_, { roomId, isTyping }, ctx) => {
   return typingPayload;
 };
 
+const markDirectRoomReadResolver = async (_, { roomId }, ctx) => {
+  const me = ctx.currentUser;
+  if (!me) throw new AuthenticationError("Not authenticated");
+
+  if (!roomId) throw new UserInputError("Room ID is required.");
+
+  const room = await Room.findById(roomId).populate("users");
+  if (!room || !room.isDirect) {
+    throw new UserInputError("Direct room not found.");
+  }
+
+  const isParticipant = room.users?.some(
+    (user) => String(user._id || user.id) === String(me._id)
+  );
+
+  if (!isParticipant) {
+    throw new AuthenticationError("Not a participant");
+  }
+
+  const unreadComments = await Comment.find({
+    targetType: "ROOM",
+    targetId: room._id,
+    author: { $ne: me._id },
+    $or: [{ isRead: { $exists: false } }, { isRead: false }],
+  })
+    .populate({ path: "author", populate: "profilePic" })
+    .populate({ path: "replyTo", populate: { path: "author", model: "User" } })
+    .exec();
+
+  if (!unreadComments.length) return [];
+
+  const normalizedComments = await Promise.all(
+    unreadComments.map(async (comment) => {
+      comment.isRead = true;
+      await comment.save();
+
+      const normalized = normalizeCommentForGraphQL(comment);
+      publishDirectMessage(normalized);
+      return normalized;
+    })
+  );
+
+  const hydratedRoom = await populateDirectRoom(room);
+  if (hydratedRoom) {
+    publishDirectRoomUpdate(hydratedRoom);
+  }
+
+  return normalizedComments;
+};
+
 const deleteDirectRoomResolver = async (_, { roomId }, ctx) => {
   const me = ctx.currentUser;
   if (!me) throw new AuthenticationError("Not authenticated");
@@ -386,5 +436,6 @@ module.exports = {
   sendDirectMessageResolver,
   setDirectTypingResolver,
   deleteDirectRoomResolver,
+  markDirectRoomReadResolver,
   therapyChatResolver,
 };

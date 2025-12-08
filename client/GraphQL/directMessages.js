@@ -9,6 +9,7 @@ export const MY_DIRECT_ROOMS = `
         id
         text
         createdAt
+        isRead
         author {
           id
           username
@@ -23,6 +24,7 @@ export const MY_DIRECT_ROOMS = `
         id
         text
         createdAt
+        isRead
         likesCount
         targetId
         targetType
@@ -53,6 +55,7 @@ export const DIRECT_ROOM_WITH_USER = `
         id
         text
         createdAt
+        isRead
         likesCount
         targetId
         targetType
@@ -75,6 +78,7 @@ export const SEND_DIRECT_MESSAGE = `
       id
       text
       createdAt
+      isRead
       likesCount
       targetId
       targetType
@@ -98,6 +102,7 @@ export const THERAPY_CHAT = `
         id
         text
         createdAt
+        isRead
         likesCount
         targetId
         targetType
@@ -111,6 +116,7 @@ export const THERAPY_CHAT = `
         id
         text
         createdAt
+        isRead
         likesCount
         targetId
         targetType
@@ -143,12 +149,29 @@ export const DELETE_DIRECT_ROOM = `
   }
 `;
 
+export const MARK_DIRECT_ROOM_READ = `
+  mutation MarkDirectRoomRead($roomId: ID!) {
+    markDirectRoomRead(roomId: $roomId) {
+      id
+      isRead
+      text
+      createdAt
+      targetId
+      targetType
+      author {
+        id
+      }
+    }
+  }
+`;
+
 export const DIRECT_MESSAGE_SUBSCRIPTION = gql`
   subscription DirectMessageReceived($roomId: ID!) {
     directMessageReceived(roomId: $roomId) {
       id
       text
       createdAt
+      isRead
       likesCount
       targetId
       targetType
@@ -186,6 +209,7 @@ export const DIRECT_ROOM_UPDATED = gql`
         id
         text
         createdAt
+        isRead
         author {
           id
           username

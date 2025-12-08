@@ -22,6 +22,7 @@ const {
   sendDirectMessageResolver,
   setDirectTypingResolver,
   deleteDirectRoomResolver,
+  markDirectRoomReadResolver,
   therapyChatResolver,
 } = require("./directMessage");
 const {
@@ -65,6 +66,7 @@ module.exports = {
   sendDirectMessageResolver,
   setDirectTypingResolver,
   deleteDirectRoomResolver,
+  markDirectRoomReadResolver,
   therapyChatResolver,
   createRoomResolver,
   changeRoomResolver,
