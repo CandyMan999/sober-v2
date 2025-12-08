@@ -737,8 +737,10 @@ const DirectMessageScreen = ({ route, navigation }) => {
       : isCompanionAuthor
       ? "rgba(52,211,153,0.22)"
       : "rgba(245,158,11,0.2)";
-    const showReadReceipt =
-      isMine && item.id === lastMessageId && item.isRead === true;
+    const isLastMessageMine = isMine && item.id === lastMessageId;
+    const showReadReceipt = isLastMessageMine;
+    const receiptText = item.isRead ? "Read" : "Sent";
+    const receiptIcon = item.isRead ? "checkmark-done" : "checkmark";
 
     return (
       <View style={[styles.messageRow, isMine && styles.messageRowMine]}>
@@ -802,14 +804,14 @@ const DirectMessageScreen = ({ route, navigation }) => {
               </Text>
               {showReadReceipt ? (
                 <View style={styles.readReceiptRow}>
-                  <Ionicons name="checkmark-done" size={14} color="#cbd5e1" />
+                  <Ionicons name={receiptIcon} size={14} color="#cbd5e1" />
                   <Text
                     style={[
                       styles.readReceipt,
                       isMine ? styles.readReceiptMine : styles.readReceiptTheirs,
                     ]}
                   >
-                    Read
+                    {receiptText}
                   </Text>
                 </View>
               ) : null}
