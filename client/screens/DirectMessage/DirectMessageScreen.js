@@ -801,14 +801,17 @@ const DirectMessageScreen = ({ route, navigation }) => {
                 {formatTime(item.createdAt)}
               </Text>
               {showReadReceipt ? (
-                <Text
-                  style={[
-                    styles.readReceipt,
-                    isMine ? styles.readReceiptMine : styles.readReceiptTheirs,
-                  ]}
-                >
-                  Read
-                </Text>
+                <View style={styles.readReceiptRow}>
+                  <Ionicons name="checkmark-done" size={14} color="#cbd5e1" />
+                  <Text
+                    style={[
+                      styles.readReceipt,
+                      isMine ? styles.readReceiptMine : styles.readReceiptTheirs,
+                    ]}
+                  >
+                    Read
+                  </Text>
+                </View>
               ) : null}
             </LiquidGlassView>
           </TouchableOpacity>
@@ -1107,12 +1110,18 @@ const styles = StyleSheet.create({
     alignSelf: "flex-end",
     textAlign: "right",
   },
+  readReceiptRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 4,
+    marginTop: 2,
+    alignSelf: "flex-end",
+  },
   readReceipt: {
     fontSize: 10,
-    marginTop: 2,
   },
   readReceiptMine: {
-    color: "#bae6fd",
+    color: "#cbd5e1",
     alignSelf: "flex-end",
     textAlign: "right",
   },

@@ -323,14 +323,14 @@ const MessageListScreen = ({ route, navigation }) => {
     const statusColor = isCompanion
       ? "#34d399"
       : wasReadByThem
-      ? "#22c55e"
+      ? "#cbd5e1"
       : waitingForYou
       ? "#f59e0b"
       : "#38bdf8";
     const statusBackground = isCompanion
       ? "rgba(52,211,153,0.12)"
       : wasReadByThem
-      ? "rgba(34,197,94,0.12)"
+      ? "rgba(148,163,184,0.16)"
       : waitingForYou
       ? "rgba(245,158,11,0.12)"
       : "rgba(56,189,248,0.14)";
