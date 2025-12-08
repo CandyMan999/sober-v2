@@ -186,11 +186,6 @@ const MessageList = ({
         }
         ListEmptyComponent={
           <View style={styles.emptyState}>
-            <Image
-              source={require("../../../assets/icon.png")}
-              style={styles.emptyLogo}
-              resizeMode="contain"
-            />
             {loading ? (
               <ActivityIndicator size="small" color="#f59e0b" />
             ) : (
@@ -218,7 +213,7 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(11,18,32,0.75)",
   },
   backgroundImage: {
-    opacity: 0.12,
+    opacity: 0.95,
     width: 380,
     height: 380,
     alignSelf: "center",

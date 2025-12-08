@@ -160,7 +160,8 @@ const DirectMessageScreen = ({ route, navigation }) => {
           participants.find(
             (participant) =>
               participant &&
-              String(participant.id || participant._id) !== String(currentUserId)
+              String(participant.id || participant._id) !==
+                String(currentUserId)
           ) || participants.find(Boolean);
 
         if (otherUser?.id || otherUser?._id) {
@@ -232,12 +233,15 @@ const DirectMessageScreen = ({ route, navigation }) => {
             const incomingLiked =
               (incoming?.liked ?? false) || (incoming?.likesCount || 0) > 0;
 
-            const existingIndex = prev.findIndex((msg) => msg.id === incoming.id);
+            const existingIndex = prev.findIndex(
+              (msg) => msg.id === incoming.id
+            );
 
             if (existingIndex !== -1) {
               const existing = prev[existingIndex];
               const nextLiked = incomingLiked;
-              const nextLikesCount = incoming?.likesCount ?? existing.likesCount ?? 0;
+              const nextLikesCount =
+                incoming?.likesCount ?? existing.likesCount ?? 0;
 
               const updated = {
                 ...existing,
@@ -246,8 +250,10 @@ const DirectMessageScreen = ({ route, navigation }) => {
                 likesCount: nextLikesCount,
               };
 
-              if (!existing.liked && nextLiked) runLikeAnimation(incoming.id, true);
-              if (existing.liked && !nextLiked) runLikeAnimation(incoming.id, false);
+              if (!existing.liked && nextLiked)
+                runLikeAnimation(incoming.id, true);
+              if (existing.liked && !nextLiked)
+                runLikeAnimation(incoming.id, false);
               syncLikeVisualState(incoming.id, nextLiked);
 
               const nextList = [...prev];
@@ -493,13 +499,7 @@ const DirectMessageScreen = ({ route, navigation }) => {
     } finally {
       setSending(false);
     }
-  }, [
-    client,
-    currentUserId,
-    isCompanionChat,
-    messageText,
-    targetUserId,
-  ]);
+  }, [client, currentUserId, isCompanionChat, messageText, targetUserId]);
 
   // 10) Renderers
   const ensureAnimValue = (store, key, initialValue) => {
@@ -510,7 +510,8 @@ const DirectMessageScreen = ({ route, navigation }) => {
   };
 
   const getLikeScale = (messageId) => ensureAnimValue(likeScales, messageId, 0);
-  const getLikeOpacity = (messageId) => ensureAnimValue(likeOpacities, messageId, 0);
+  const getLikeOpacity = (messageId) =>
+    ensureAnimValue(likeOpacities, messageId, 0);
 
   const syncLikeVisualState = useCallback((messageId, liked) => {
     const scale = getLikeScale(messageId);
@@ -661,7 +662,8 @@ const DirectMessageScreen = ({ route, navigation }) => {
   const renderMessage = ({ item }) => {
     const isMine = String(item.author?.id) === String(currentUserId);
     const isCompanionAuthor =
-      String(item.author?.id || item.author?._id) === String(SOBER_COMPANION_ID);
+      String(item.author?.id || item.author?._id) ===
+      String(SOBER_COMPANION_ID);
     const companionHalo =
       isCompanionAuthor && !isMine
         ? ["#bef264", "#34d399", "#22d3ee"]
@@ -940,7 +942,7 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(5,8,22,0.82)",
   },
   backgroundImage: {
-    opacity: 0.12,
+    opacity: 0.95,
     width: 420,
     height: 420,
     alignSelf: "center",
