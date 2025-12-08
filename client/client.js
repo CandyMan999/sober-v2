@@ -1,7 +1,7 @@
 // client.js
 import { GraphQLClient } from "graphql-request";
 import { extractFiles } from "extract-files";
-import { getToken } from "./utils/helpers";
+import { getAppleId, getToken } from "./utils/helpers";
 import { GRAPHQL_URI } from "./config/endpoint";
 
 console.log("📡 GraphQLClient URI:", GRAPHQL_URI);
@@ -15,9 +15,11 @@ const client = {
   request: async (query, variables) => {
     try {
       const token = await getToken(); // <- async storage read
+      const appleId = await getAppleId();
 
       const headers = {
         "x-push-token": token || "",
+        "x-apple-id": appleId || "",
       };
 
       // Detect extractable files (ReactNativeFile, Blob, etc.)

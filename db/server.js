@@ -28,7 +28,9 @@ const buildContext = async (token, appleId) => {
       currentUser = await User.findOne({ token }).populate("profilePic");
     }
 
-    await User.ensureChatRoomStyle(currentUser);
+    if (currentUser) {
+      await User.ensureChatRoomStyle(currentUser);
+    }
   } catch (err) {
     console.error("❌ Error fetching user from identity:", err);
   }
