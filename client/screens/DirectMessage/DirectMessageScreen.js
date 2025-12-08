@@ -21,12 +21,14 @@ import {
   Keyboard,
   AppState,
   Easing,
+  ImageBackground,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useFocusEffect } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import { formatDistanceToNow } from "date-fns";
 import { SubscriptionClient } from "subscriptions-transport-ws";
+import { LiquidGlassView } from "@callstack/liquid-glass";
 
 import Avatar from "../../components/Avatar";
 import Context from "../../context";
@@ -68,6 +70,13 @@ const buildWsUrl = () => GRAPHQL_URI.replace(/^http/, "ws");
 const SOBER_COMPANION_ID = "693394413ea6a3e530516505";
 const COMPANION_ACCENT = "#34d399";
 
+const CHAT_BACKGROUNDS = [
+  require("../../assets/background1.jpg"),
+  require("../../assets/background2.jpg"),
+  require("../../assets/background3.jpg"),
+  require("../../assets/background4.jpg"),
+];
+
 const DirectMessageScreen = ({ route, navigation }) => {
   const { state } = useContext(Context);
   const client = useClient();
@@ -93,6 +102,14 @@ const DirectMessageScreen = ({ route, navigation }) => {
   const [isTypingLocal, setIsTypingLocal] = useState(false);
   // REMOTE typing (other user)
   const [isTypingRemote, setIsTypingRemote] = useState(false);
+
+  const backgroundImage = useMemo(
+    () =>
+      CHAT_BACKGROUNDS[
+        Math.floor(Math.random() * CHAT_BACKGROUNDS.length) || 0
+      ],
+    []
+  );
 
   const listRef = useRef(null);
   const previousCount = useRef(0);
@@ -667,6 +684,12 @@ const DirectMessageScreen = ({ route, navigation }) => {
     const likeScale = getLikeScale(item.id);
     const likeOpacity = getLikeOpacity(item.id);
 
+    const tintColor = isMine
+      ? "rgba(56,189,248,0.22)"
+      : isCompanionAuthor
+      ? "rgba(52,211,153,0.22)"
+      : "rgba(245,158,11,0.18)";
+
     return (
       <View style={[styles.messageRow, isMine && styles.messageRowMine]}>
         {!isMine && (
@@ -684,12 +707,16 @@ const DirectMessageScreen = ({ route, navigation }) => {
             activeOpacity={0.9}
             onPress={() => handleBubblePress(item.id, item.author?.id)}
           >
-            <View
+            <LiquidGlassView
               style={[
                 styles.bubble,
                 isMine ? styles.bubbleMine : styles.bubbleTheirs,
                 !isMine && isCompanionAuthor ? styles.bubbleCompanion : null,
               ]}
+              interactive
+              effect="clear"
+              tintColor={tintColor}
+              colorScheme="system"
             >
               <Animated.View
                 pointerEvents="none"
@@ -723,7 +750,7 @@ const DirectMessageScreen = ({ route, navigation }) => {
               <Text style={[styles.timestamp, isMine && styles.timestampMine]}>
                 {formatTime(item.createdAt)}
               </Text>
-            </View>
+            </LiquidGlassView>
           </TouchableOpacity>
         </View>
         {isMine && (
@@ -796,36 +823,44 @@ const DirectMessageScreen = ({ route, navigation }) => {
           </View>
         </View>
 
-        <View style={styles.body}>
-          {loading && !sortedMessages.length ? (
-            <View style={styles.loaderContainer}>
-              <ActivityIndicator size="large" color="#f59e0b" />
-            </View>
-          ) : (
-            <FlatList
-              ref={listRef}
-              data={sortedMessages}
-              keyExtractor={(item) => item.id}
-              renderItem={renderMessage}
-              contentContainerStyle={styles.listContent}
-              showsVerticalScrollIndicator={false}
-              keyboardShouldPersistTaps="handled"
-              ListFooterComponent={renderTypingIndicator}
-              onContentSizeChange={() =>
-                requestAnimationFrame(() =>
-                  listRef.current?.scrollToEnd({ animated: true })
-                )
-              }
-              ListEmptyComponent={() => (
-                <View style={styles.emptyState}>
-                  <Text style={styles.emptyText}>
-                    Start the accountability chat with {username}.
-                  </Text>
-                </View>
-              )}
-            />
-          )}
-        </View>
+        <ImageBackground
+          source={backgroundImage}
+          style={styles.body}
+          imageStyle={styles.backgroundImage}
+          resizeMode="cover"
+        >
+          <View style={styles.backgroundOverlay} />
+          <View style={styles.bodyContent}>
+            {loading && !sortedMessages.length ? (
+              <View style={styles.loaderContainer}>
+                <ActivityIndicator size="large" color="#f59e0b" />
+              </View>
+            ) : (
+              <FlatList
+                ref={listRef}
+                data={sortedMessages}
+                keyExtractor={(item) => item.id}
+                renderItem={renderMessage}
+                contentContainerStyle={styles.listContent}
+                showsVerticalScrollIndicator={false}
+                keyboardShouldPersistTaps="handled"
+                ListFooterComponent={renderTypingIndicator}
+                onContentSizeChange={() =>
+                  requestAnimationFrame(() =>
+                    listRef.current?.scrollToEnd({ animated: true })
+                  )
+                }
+                ListEmptyComponent={() => (
+                  <View style={styles.emptyState}>
+                    <Text style={styles.emptyText}>
+                      Start the accountability chat with {username}.
+                    </Text>
+                  </View>
+                )}
+              />
+            )}
+          </View>
+        </ImageBackground>
 
         <View style={styles.inputBar}>
           <Avatar
@@ -912,6 +947,23 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
   body: {
+    flex: 1,
+    position: "relative",
+    overflow: "hidden",
+    backgroundColor: "#050816",
+  },
+  backgroundImage: {
+    opacity: 0.85,
+  },
+  backgroundOverlay: {
+    position: "absolute",
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+    backgroundColor: "rgba(5,8,22,0.45)",
+  },
+  bodyContent: {
     flex: 1,
     paddingHorizontal: 12,
     paddingTop: 0,
