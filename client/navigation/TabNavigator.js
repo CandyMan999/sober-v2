@@ -29,6 +29,7 @@ import { useClient } from "../client";
 import { getToken } from "../utils/helpers";
 import { PROFILE_OVERVIEW_QUERY, FETCH_ME_QUERY } from "../GraphQL/queries";
 import { COLORS } from "../constants/colors";
+import LiquidTabBar from "./LiquidTabBar";
 
 const Tab = createBottomTabNavigator();
 const HomeStack = createStackNavigator();
@@ -167,16 +168,12 @@ const TabNavigator = () => {
 
   return (
     <Tab.Navigator
+      tabBar={(props) => <LiquidTabBar {...props} />}
       screenOptions={{
         headerShown: false,
         tabBarShowLabel: true,
         tabBarActiveTintColor: ACTIVE_COLOR,
         tabBarInactiveTintColor: INACTIVE_COLOR,
-        tabBarStyle: {
-          backgroundColor: "#050816",
-          borderTopColor: "#1f2937",
-          height: 68,
-        },
       }}
     >
       <Tab.Screen
