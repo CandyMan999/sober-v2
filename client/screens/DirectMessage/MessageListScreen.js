@@ -14,11 +14,13 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   Animated,
+  ImageBackground,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Swipeable } from "react-native-gesture-handler";
 import { useSubscription } from "@apollo/client/react";
 import { formatDistanceToNow } from "date-fns";
+import { LiquidGlassView } from "@callstack/liquid-glass";
 
 import Avatar from "../../components/Avatar";
 import Context from "../../context";
@@ -361,7 +363,6 @@ const MessageListScreen = ({ route, navigation }) => {
         overshootRight={false}
       >
         <TouchableOpacity
-          style={[styles.row, unread && styles.unreadRow]}
           onPress={() =>
             canOpen && !isDeleting
               ? navigation.navigate("DirectMessage", { user: item.user })
@@ -370,139 +371,172 @@ const MessageListScreen = ({ route, navigation }) => {
           activeOpacity={canOpen && !isDeleting ? 0.85 : 1}
           disabled={isDeleting}
         >
-          <Avatar
-            uri={item.user?.profilePicUrl}
-            size={isCompanion ? 54 : 48}
-            disableNavigation
-            fallbackSource={
-              isCompanion ? require("../../assets/icon.png") : undefined
+          <LiquidGlassView
+            interactive
+            effect="clear"
+            colorScheme="system"
+            tintColor={
+              unread ? "rgba(245,158,11,0.22)" : "rgba(148,163,184,0.14)"
             }
-            haloColors={
-              isCompanion ? ["#bef264", "#34d399", "#22d3ee"] : undefined
-            }
-          />
-          <View style={styles.rowContent}>
-            <View style={styles.rowHeader}>
-              <View style={styles.rowLeft}>
-                <View style={styles.nameLine}>
-                  <Text
-                    style={[styles.username, unread && styles.usernameUnread]}
-                    numberOfLines={1}
-                  >
-                    {username}
-                  </Text>
+            style={[styles.row, unread && styles.unreadRow]}
+          >
+            <Avatar
+              uri={item.user?.profilePicUrl}
+              size={isCompanion ? 54 : 48}
+              disableNavigation
+              fallbackSource={
+                isCompanion ? require("../../assets/icon.png") : undefined
+              }
+              haloColors={
+                isCompanion ? ["#bef264", "#34d399", "#22d3ee"] : undefined
+              }
+            />
+            <View style={styles.rowContent}>
+              <View style={styles.rowHeader}>
+                <View style={styles.rowLeft}>
+                  <View style={styles.nameLine}>
+                    <Text
+                      style={[styles.username, unread && styles.usernameUnread]}
+                      numberOfLines={1}
+                    >
+                      {username}
+                    </Text>
+                  </View>
+                  <View style={styles.messageLine}>
+                    <Ionicons
+                      name="chatbubble-ellipses"
+                      size={14}
+                      color="#94a3b8"
+                    />
+                    <Text
+                      style={[
+                        styles.lastMessage,
+                        unread && styles.lastMessageUnread,
+                      ]}
+                      numberOfLines={1}
+                    >
+                      {lastMessage}
+                    </Text>
+                  </View>
+                  {isCompanion ? (
+                    <View style={styles.metaBottom}>
+                      <View style={styles.companionChip}>
+                        <Ionicons
+                          name="shield-checkmark"
+                          size={12}
+                          color="#0f172a"
+                        />
+                        <Text style={styles.companionChipText}>
+                          Sobriety Coach
+                        </Text>
+                      </View>
+                    </View>
+                  ) : null}
                 </View>
-                <View style={styles.messageLine}>
-                  <Ionicons
-                    name="chatbubble-ellipses"
-                    size={14}
-                    color="#94a3b8"
-                  />
-                  <Text
-                    style={[
-                      styles.lastMessage,
-                      unread && styles.lastMessageUnread,
-                    ]}
-                    numberOfLines={1}
-                  >
-                    {lastMessage}
-                  </Text>
-                </View>
-                {isCompanion ? (
-                  <View style={styles.metaBottom}>
-                    <View style={styles.companionChip}>
-                      <Ionicons
-                        name="shield-checkmark"
-                        size={12}
-                        color="#0f172a"
-                      />
-                      <Text style={styles.companionChipText}>
-                        Sobriety Coach
+                <View style={styles.rowMeta}>
+                  <View style={styles.metaTop}>
+                    <Text style={styles.timestamp}>{timestampLabel}</Text>
+                    <View
+                      style={[
+                        styles.statusPill,
+                        { backgroundColor: statusBackground },
+                      ]}
+                    >
+                      <Ionicons name={statusIcon} size={14} color={statusColor} />
+                      <Text style={[styles.statusText, { color: statusColor }]}>
+                        {statusLabel}
                       </Text>
                     </View>
-                  </View>
-                ) : null}
-              </View>
-              <View style={styles.rowMeta}>
-                <View style={styles.metaTop}>
-                  <Text style={styles.timestamp}>{timestampLabel}</Text>
-                  <View
-                    style={[
-                      styles.statusPill,
-                      { backgroundColor: statusBackground },
-                    ]}
-                  >
-                    <Ionicons name={statusIcon} size={14} color={statusColor} />
-                    <Text style={[styles.statusText, { color: statusColor }]}>
-                      {statusLabel}
-                    </Text>
                   </View>
                 </View>
               </View>
             </View>
-          </View>
-          {unread ? <View style={styles.unreadDot} /> : null}
+            {unread ? <View style={styles.unreadDot} /> : null}
+          </LiquidGlassView>
         </TouchableOpacity>
       </Swipeable>
     );
   };
 
   return (
-    <SafeAreaView style={styles.container} edges={["top", "left", "right"]}>
-      <View style={styles.header}>
-        <View style={styles.headerRow}>
-          <TouchableOpacity
-            style={styles.backButton}
-            onPress={() => navigation.goBack()}
-            activeOpacity={0.8}
-          >
-            <Ionicons name="arrow-back" size={22} color="#fbbf24" />
-          </TouchableOpacity>
-          <View style={styles.headerTextBlock}>
-            <Text style={styles.headerTitle}>Messages</Text>
-            <Text style={styles.headerSubtitle}>
-              Direct conversations with your sober buddies
-            </Text>
-          </View>
-        </View>
-      </View>
-
-      {loading && !rooms.length ? (
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator size="small" color="#fbbf24" />
-        </View>
-      ) : null}
-
-      <FlatList
-        data={listData}
-        keyExtractor={(item) => item.id?.toString()}
-        renderItem={renderConversation}
-        ItemSeparatorComponent={() => <View style={styles.separator} />}
-        contentContainerStyle={styles.listContent}
-        ListEmptyComponent={() =>
-          !loading ? (
-            <View style={styles.emptyState}>
-              <View style={styles.emptyIconWrapper}>
-                <Ionicons
-                  name="chatbubble-ellipses-outline"
-                  size={26}
-                  color="#cbd5e1"
-                />
-              </View>
-              <Text style={styles.emptyTitle}>No conversations yet</Text>
-              <Text style={styles.emptySubtitle}>
-                Start a chat with your sober buddies or message SoberOwl for a
-                quick boost.
+    <ImageBackground
+      source={require("../../assets/icon.png")}
+      resizeMode="contain"
+      style={styles.background}
+      imageStyle={styles.backgroundImage}
+    >
+      <View pointerEvents="none" style={styles.backgroundOverlay} />
+      <SafeAreaView style={styles.container} edges={["top", "left", "right"]}>
+        <View style={styles.header}>
+          <View style={styles.headerRow}>
+            <TouchableOpacity
+              style={styles.backButton}
+              onPress={() => navigation.goBack()}
+              activeOpacity={0.8}
+            >
+              <Ionicons name="arrow-back" size={22} color="#fbbf24" />
+            </TouchableOpacity>
+            <View style={styles.headerTextBlock}>
+              <Text style={styles.headerTitle}>Messages</Text>
+              <Text style={styles.headerSubtitle}>
+                Direct conversations with your sober buddies
               </Text>
             </View>
-          ) : null
-        }
-      />
-    </SafeAreaView>
+          </View>
+        </View>
+
+        {loading && !rooms.length ? (
+          <View style={styles.loadingContainer}>
+            <ActivityIndicator size="small" color="#fbbf24" />
+          </View>
+        ) : null}
+
+        <FlatList
+          data={listData}
+          keyExtractor={(item) => item.id?.toString()}
+          renderItem={renderConversation}
+          ItemSeparatorComponent={() => <View style={styles.separator} />}
+          contentContainerStyle={styles.listContent}
+          ListEmptyComponent={() =>
+            !loading ? (
+              <View style={styles.emptyState}>
+                <View style={styles.emptyIconWrapper}>
+                  <Ionicons
+                    name="chatbubble-ellipses-outline"
+                    size={26}
+                    color="#cbd5e1"
+                  />
+                </View>
+                <Text style={styles.emptyTitle}>No conversations yet</Text>
+                <Text style={styles.emptySubtitle}>
+                  Start a chat with your sober buddies or message SoberOwl for
+                  a quick boost.
+                </Text>
+              </View>
+            ) : null
+          }
+        />
+      </SafeAreaView>
+    </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
+  background: {
+    flex: 1,
+    backgroundColor: "#050816",
+  },
+  backgroundOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "rgba(5,8,22,0.86)",
+  },
+  backgroundImage: {
+    opacity: 0.06,
+    width: 320,
+    height: 320,
+    alignSelf: "center",
+    top: "12%",
+  },
   container: {
     flex: 1,
     backgroundColor: "#050816",
@@ -542,6 +576,7 @@ const styles = StyleSheet.create({
   },
   listContent: {
     paddingVertical: 10,
+    paddingHorizontal: 10,
     flexGrow: 1,
   },
   row: {
@@ -549,10 +584,19 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: 16,
     paddingVertical: 12,
-    backgroundColor: "#050816",
+    backgroundColor: "rgba(5,8,22,0.75)",
+    borderWidth: 1,
+    borderColor: "rgba(255,255,255,0.08)",
+    borderRadius: 18,
+    shadowColor: "#0ea5e9",
+    shadowOpacity: 0.08,
+    shadowRadius: 12,
+    shadowOffset: { width: 0, height: 4 },
+    overflow: "hidden",
   },
   unreadRow: {
-    backgroundColor: "rgba(245,158,11,0.06)",
+    backgroundColor: "rgba(245,158,11,0.1)",
+    borderColor: "rgba(245,158,11,0.28)",
   },
   rowContent: {
     flex: 1,

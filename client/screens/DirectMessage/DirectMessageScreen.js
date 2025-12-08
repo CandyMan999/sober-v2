@@ -16,6 +16,7 @@ import {
   TextInput,
   FlatList,
   ActivityIndicator,
+  ImageBackground,
   KeyboardAvoidingView,
   Platform,
   Keyboard,
@@ -27,6 +28,7 @@ import { useFocusEffect } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import { formatDistanceToNow } from "date-fns";
 import { SubscriptionClient } from "subscriptions-transport-ws";
+import { LiquidGlassView } from "@callstack/liquid-glass";
 
 import Avatar from "../../components/Avatar";
 import Context from "../../context";
@@ -666,6 +668,11 @@ const DirectMessageScreen = ({ route, navigation }) => {
         : undefined;
     const likeScale = getLikeScale(item.id);
     const likeOpacity = getLikeOpacity(item.id);
+    const bubbleTint = isMine
+      ? "rgba(56,189,248,0.25)"
+      : isCompanionAuthor
+      ? "rgba(52,211,153,0.22)"
+      : "rgba(245,158,11,0.2)";
 
     return (
       <View style={[styles.messageRow, isMine && styles.messageRowMine]}>
@@ -684,7 +691,11 @@ const DirectMessageScreen = ({ route, navigation }) => {
             activeOpacity={0.9}
             onPress={() => handleBubblePress(item.id, item.author?.id)}
           >
-            <View
+            <LiquidGlassView
+              interactive
+              effect="clear"
+              tintColor={bubbleTint}
+              colorScheme="system"
               style={[
                 styles.bubble,
                 isMine ? styles.bubbleMine : styles.bubbleTheirs,
@@ -723,7 +734,7 @@ const DirectMessageScreen = ({ route, navigation }) => {
               <Text style={[styles.timestamp, isMine && styles.timestampMine]}>
                 {formatTime(item.createdAt)}
               </Text>
-            </View>
+            </LiquidGlassView>
           </TouchableOpacity>
         </View>
         {isMine && (
@@ -796,7 +807,13 @@ const DirectMessageScreen = ({ route, navigation }) => {
           </View>
         </View>
 
-        <View style={styles.body}>
+        <ImageBackground
+          source={require("../../assets/icon.png")}
+          resizeMode="contain"
+          style={styles.body}
+          imageStyle={styles.backgroundImage}
+        >
+          <View pointerEvents="none" style={styles.backgroundOverlay} />
           {loading && !sortedMessages.length ? (
             <View style={styles.loaderContainer}>
               <ActivityIndicator size="large" color="#f59e0b" />
@@ -825,7 +842,7 @@ const DirectMessageScreen = ({ route, navigation }) => {
               )}
             />
           )}
-        </View>
+        </ImageBackground>
 
         <View style={styles.inputBar}>
           <Avatar
@@ -916,6 +933,18 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingTop: 0,
     paddingBottom: 0,
+    position: "relative",
+  },
+  backgroundOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "rgba(5,8,22,0.82)",
+  },
+  backgroundImage: {
+    opacity: 0.08,
+    width: 320,
+    height: 320,
+    alignSelf: "center",
+    top: "14%",
   },
   loaderContainer: {
     flex: 1,
