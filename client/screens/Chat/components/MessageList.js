@@ -142,9 +142,10 @@ const MessageList = ({
 
   return (
     <ImageBackground
-      source={require("../../../assets/background2.jpg")}
-      resizeMode="cover"
+      source={require("../../../assets/icon.png")}
+      resizeMode="contain"
       style={styles.container}
+      imageStyle={styles.backgroundImage}
     >
       {/* Optional dark overlay for contrast */}
       <View style={styles.overlay} />
@@ -215,6 +216,13 @@ const styles = StyleSheet.create({
   overlay: {
     ...StyleSheet.absoluteFillObject,
     backgroundColor: "rgba(11,18,32,0.75)",
+  },
+  backgroundImage: {
+    opacity: 0.12,
+    width: 380,
+    height: 380,
+    alignSelf: "center",
+    top: "18%",
   },
   listContent: {
     paddingHorizontal: 6,

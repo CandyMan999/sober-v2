@@ -940,11 +940,11 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(5,8,22,0.82)",
   },
   backgroundImage: {
-    opacity: 0.08,
-    width: 320,
-    height: 320,
+    opacity: 0.12,
+    width: 420,
+    height: 420,
     alignSelf: "center",
-    top: "14%",
+    top: "12%",
   },
   loaderContainer: {
     flex: 1,
