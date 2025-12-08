@@ -3,6 +3,7 @@ import React, {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -18,7 +19,7 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Swipeable } from "react-native-gesture-handler";
-import { useSubscription } from "@apollo/client/react";
+import { useApolloClient, useSubscription } from "@apollo/client";
 import { formatDistanceToNow } from "date-fns";
 import { LiquidGlassView } from "@callstack/liquid-glass";
 
@@ -26,6 +27,7 @@ import Avatar from "../../components/Avatar";
 import Context from "../../context";
 import {
   DELETE_DIRECT_ROOM,
+  DIRECT_MESSAGE_SUBSCRIPTION,
   DIRECT_ROOM_UPDATED,
   DIRECT_ROOM_WITH_USER,
   MY_DIRECT_ROOMS,
@@ -63,11 +65,14 @@ const MessageListScreen = ({ route, navigation }) => {
   const currentUserId = state?.user?.id;
   const conversations = route?.params?.conversations || [];
   const client = useClient();
+  const apolloClient = useApolloClient();
 
   const [rooms, setRooms] = useState(conversations || []);
   const [companionUser, setCompanionUser] = useState(null);
   const [loading, setLoading] = useState(false);
   const [deletingRoomIds, setDeletingRoomIds] = useState({});
+  const [activeRoomIds, setActiveRoomIds] = useState([]);
+  const directMessageSubscriptions = useRef({});
 
   const deriveLastMessageInfo = useCallback((room, fallbackIndex = 0) => {
     const lastComment = room?.comments?.[room.comments.length - 1];
@@ -135,6 +140,113 @@ const MessageListScreen = ({ route, navigation }) => {
     // Intentionally empty dependency array to avoid duplicate room loads
     // when navigation props or the client reference changes.
   }, []);
+
+  useEffect(() => {
+    const roomIds = Array.from(
+      new Set(
+        rooms
+          .map((room) => resolveRoomId(room))
+          .filter(Boolean)
+          .map((id) => id.toString())
+      )
+    );
+
+    setActiveRoomIds((prev) => {
+      const prevKey = prev.join(",");
+      const nextKey = roomIds.join(",");
+
+      if (prevKey === nextKey) return prev;
+
+      return roomIds;
+    });
+  }, [rooms]);
+
+  useEffect(() => {
+    if (!currentUserId || !apolloClient) return;
+
+    const active = directMessageSubscriptions.current;
+
+    Object.keys(active).forEach((roomId) => {
+      if (!activeRoomIds.includes(roomId)) {
+        active[roomId]?.unsubscribe?.();
+        delete active[roomId];
+      }
+    });
+
+    activeRoomIds.forEach((roomId) => {
+      if (active[roomId]) return;
+
+      const subscription = apolloClient
+        .subscribe({
+          query: DIRECT_MESSAGE_SUBSCRIPTION,
+          variables: { roomId },
+        })
+        .subscribe({
+          next: ({ data }) => {
+            const message = data?.directMessageReceived;
+            if (!message) return;
+
+            setRooms((prev) => {
+              const targetIndex = prev.findIndex(
+                (room) => String(resolveRoomId(room)) === String(roomId)
+              );
+
+              if (targetIndex === -1) return prev;
+
+              const existing = prev[targetIndex];
+              const existingComments = Array.isArray(existing.comments)
+                ? existing.comments
+                : [];
+
+              const incomingId = message?.id || message?._id;
+              const nextComments = existingComments.some(
+                (comment) => String(comment?.id || comment?._id) === String(incomingId)
+              )
+                ? existingComments.map((comment) =>
+                    String(comment?.id || comment?._id) === String(incomingId)
+                      ? { ...comment, ...message }
+                      : comment
+                  )
+                : [...existingComments, message];
+
+              const mergedRoom = {
+                ...existing,
+                comments: nextComments,
+                lastMessage: message,
+                lastMessageAt: message.createdAt || existing.lastMessageAt,
+              };
+
+              const remaining = prev.filter((_, index) => index !== targetIndex);
+              const nextRooms = [mergedRoom, ...remaining];
+
+              return nextRooms.sort((a, b) => {
+                const aTime =
+                  parseDateValue(a.lastMessageAt)?.getTime?.() ||
+                  parseDateValue(a.lastMessage?.createdAt)?.getTime?.() ||
+                  0;
+                const bTime =
+                  parseDateValue(b.lastMessageAt)?.getTime?.() ||
+                  parseDateValue(b.lastMessage?.createdAt)?.getTime?.() ||
+                  0;
+                return bTime - aTime;
+              });
+            });
+          },
+          error: (error) => {
+            console.log("direct message subscription error", error);
+          },
+        });
+
+      active[roomId] = subscription;
+    });
+
+    return () => {
+      Object.keys(active).forEach((roomId) => {
+        active[roomId]?.unsubscribe?.();
+        delete active[roomId];
+      });
+    };
+  }, [apolloClient, currentUserId, activeRoomIds]);
 
   useEffect(() => {
     if (!currentUserId) return;
