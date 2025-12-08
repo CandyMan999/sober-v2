@@ -104,6 +104,7 @@ const DirectMessageScreen = ({ route, navigation }) => {
   const likeScales = useRef({});
   const likeOpacities = useRef({});
   const tapTimestamps = useRef({});
+  const markingReadRef = useRef(false);
 
   const syncMessagesFromRoom = useCallback(
     (roomData) => {
@@ -201,28 +202,51 @@ const DirectMessageScreen = ({ route, navigation }) => {
   }, []);
 
   useEffect(() => {
-    if (!roomId) return;
+    if (!roomId || !currentUserId) return;
 
-    client
-      .request(MARK_DIRECT_ROOM_READ, { roomId })
-      .then((result) => {
-        const updatedMessages = result?.markDirectRoomRead;
-        if (!Array.isArray(updatedMessages)) return;
+    const hasUnreadFromOtherUser = messages.some(
+      (message) =>
+        String(message.author?.id || message.author?._id) !==
+          String(currentUserId) &&
+        message.isRead !== true
+    );
 
-        setMessages((prev) => {
-          const next = prev.map((message) => {
-            const incoming = updatedMessages.find((m) => m.id === message.id);
-            return incoming ? { ...message, ...incoming } : message;
+    if (!hasUnreadFromOtherUser || markingReadRef.current) return;
+
+    const markRead = async () => {
+      try {
+        markingReadRef.current = true;
+        const result = await client.request(MARK_DIRECT_ROOM_READ, { roomId });
+        const updatedMessages = result?.markDirectRoomRead || [];
+
+        if (updatedMessages.length) {
+          setMessages((prev) => {
+            const updatesById = new Map(
+              updatedMessages.map((message) => [message.id, message])
+            );
+
+            const next = prev.map((message) =>
+              updatesById.has(message.id)
+                ? { ...message, ...updatesById.get(message.id) }
+                : message
+            );
+
+            return next.sort(
+              (a, b) =>
+                (parseDateValue(a.createdAt)?.getTime() || 0) -
+                (parseDateValue(b.createdAt)?.getTime() || 0)
+            );
           });
-          return next.sort(
-            (a, b) =>
-              (parseDateValue(a.createdAt)?.getTime() || 0) -
-              (parseDateValue(b.createdAt)?.getTime() || 0)
-          );
-        });
-      })
-      .catch((error) => console.log("Failed to mark room read", error));
-  }, [client, roomId]);
+        }
+      } catch (error) {
+        console.log("Failed to mark room read", error);
+      } finally {
+        markingReadRef.current = false;
+      }
+    };
+
+    markRead();
+  }, [client, currentUserId, messages, roomId]);
 
   // 2) Manual WebSocket subscriptions (messages + typing)
   useEffect(() => {
