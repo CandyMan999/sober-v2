@@ -3,7 +3,6 @@ import React, {
   useContext,
   useEffect,
   useMemo,
-  useRef,
   useState,
 } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -19,7 +18,7 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Swipeable } from "react-native-gesture-handler";
-import { SubscriptionClient } from "subscriptions-transport-ws";
+import { useSubscription } from "@apollo/client/react";
 import { formatDistanceToNow } from "date-fns";
 import { LiquidGlassView } from "@callstack/liquid-glass";
 
@@ -27,15 +26,11 @@ import Avatar from "../../components/Avatar";
 import Context from "../../context";
 import {
   DELETE_DIRECT_ROOM,
-  DIRECT_MESSAGE_SUBSCRIPTION,
   DIRECT_ROOM_UPDATED,
   DIRECT_ROOM_WITH_USER,
   MY_DIRECT_ROOMS,
 } from "../../GraphQL/directMessages";
 import { useClient } from "../../client";
-import { GRAPHQL_URI } from "../../config/endpoint";
-
-const buildWsUrl = () => GRAPHQL_URI.replace(/^http/, "ws");
 
 const parseDateValue = (value) => {
   if (!value) return null;
@@ -58,61 +53,6 @@ const timeAgo = (timestamp) => {
 
 const SOBER_COMPANION_ID = "693394413ea6a3e530516505";
 
-const resolveRoomId = (room) => {
-  if (!room) return null;
-  return room.id || room._id || room.roomId || null;
-};
-
-const enrichMessageAuthor = (message, participants = [], selfUser) => {
-  if (!message) return message;
-
-  const authorId =
-    message?.author?.id || message?.author?._id || message?.authorId || null;
-
-  const participant = participants.find(
-    (user) => String(user?.id || user?._id) === String(authorId)
-  );
-
-  const profilePicUrl =
-    message?.author?.profilePicUrl ||
-    participant?.profilePicUrl ||
-    (selfUser && String(selfUser?.id) === String(authorId)
-      ? selfUser.profilePicUrl
-      : null);
-
-  const username =
-    message?.author?.username ||
-    participant?.username ||
-    (selfUser && String(selfUser?.id) === String(authorId)
-      ? selfUser.username
-      : undefined);
-
-  const normalizedAuthor =
-    message.author ||
-    participant ||
-    (authorId
-      ? {
-          id: authorId,
-        }
-      : null);
-
-  return {
-    ...message,
-    author: normalizedAuthor
-      ? {
-          ...normalizedAuthor,
-          id:
-            normalizedAuthor.id ||
-            normalizedAuthor._id ||
-            message?.author?.id ||
-            message?.author?._id,
-          username,
-          profilePicUrl,
-        }
-      : null,
-  };
-};
-
 const MessageListScreen = ({ route, navigation }) => {
   const { state } = useContext(Context);
   const currentUserId = state?.user?.id;
@@ -123,11 +63,6 @@ const MessageListScreen = ({ route, navigation }) => {
   const [companionUser, setCompanionUser] = useState(null);
   const [loading, setLoading] = useState(false);
   const [deletingRoomIds, setDeletingRoomIds] = useState({});
-  const [activeRoomIds, setActiveRoomIds] = useState([]);
-  const [wsReadyKey, setWsReadyKey] = useState(0);
-  const wsClientRef = useRef(null);
-  const directMessageSubscriptions = useRef({});
-  const directRoomUpdatedSubscription = useRef(null);
 
   const deriveLastMessageInfo = useCallback((room, fallbackIndex = 0) => {
     const lastComment = room?.comments?.[room.comments.length - 1];
@@ -136,13 +71,6 @@ const MessageListScreen = ({ route, navigation }) => {
       parseDateValue(room?.lastMessageAt) ||
       parseDateValue(room?.lastMessage?.createdAt) ||
       parseDateValue(lastComment?.createdAt);
-
-    const lastMessageIsRead =
-      typeof room?.lastMessage?.isRead === "boolean"
-        ? room.lastMessage.isRead
-        : typeof lastComment?.isRead === "boolean"
-        ? lastComment.isRead
-        : false;
 
     const lastActivity = lastMessageTimestamp
       ? lastMessageTimestamp.getTime()
@@ -165,7 +93,6 @@ const MessageListScreen = ({ route, navigation }) => {
       lastActivity,
       lastMessageText,
       lastMessageAuthorId,
-      lastMessageIsRead,
     };
   }, []);
 
@@ -195,174 +122,6 @@ const MessageListScreen = ({ route, navigation }) => {
     // Intentionally empty dependency array to avoid duplicate room loads
     // when navigation props or the client reference changes.
   }, []);
-
-  useEffect(() => {
-    if (!currentUserId) return undefined;
-
-    const wsUrl = buildWsUrl();
-    let wsClient;
-
-    try {
-      wsClient = new SubscriptionClient(wsUrl, { reconnect: true });
-      wsClientRef.current = wsClient;
-      setWsReadyKey((key) => key + 1);
-    } catch (error) {
-      console.log("direct room list ws init failed", error);
-      return undefined;
-    }
-
-    return () => {
-      Object.keys(directMessageSubscriptions.current).forEach((roomId) => {
-        directMessageSubscriptions.current[roomId]?.unsubscribe?.();
-        delete directMessageSubscriptions.current[roomId];
-      });
-
-      directRoomUpdatedSubscription.current?.unsubscribe?.();
-      directRoomUpdatedSubscription.current = null;
-
-      wsClientRef.current?.close?.();
-      wsClientRef.current = null;
-    };
-  }, [currentUserId]);
-
-  useEffect(() => {
-    const roomIds = Array.from(
-      new Set(
-        rooms
-          .map((room) => resolveRoomId(room))
-          .filter(Boolean)
-          .map((id) => id.toString())
-      )
-    );
-
-    setActiveRoomIds((prev) => {
-      const prevKey = prev.join(",");
-      const nextKey = roomIds.join(",");
-
-      if (prevKey === nextKey) return prev;
-
-      return roomIds;
-    });
-  }, [rooms]);
-
-  useEffect(() => {
-    const wsClient = wsClientRef.current;
-
-    if (!currentUserId || !wsClient) return;
-
-    const active = directMessageSubscriptions.current;
-
-    Object.keys(active).forEach((roomId) => {
-      if (!activeRoomIds.includes(roomId)) {
-        active[roomId]?.unsubscribe?.();
-        delete active[roomId];
-      }
-    });
-
-    activeRoomIds.forEach((roomId) => {
-      if (active[roomId]) return;
-
-      const messageObservable = wsClient.request({
-        query: DIRECT_MESSAGE_SUBSCRIPTION,
-        variables: { roomId },
-      });
-
-      const subscription = messageObservable.subscribe({
-        next: ({ data }) => {
-          const message = data?.directMessageReceived;
-          if (!message) return;
-
-          setRooms((prev) => {
-            const targetIndex = prev.findIndex(
-              (room) => String(resolveRoomId(room)) === String(roomId)
-            );
-
-            if (targetIndex === -1) return prev;
-
-            const existing = prev[targetIndex];
-            const normalizedMessage = enrichMessageAuthor(
-              message,
-              existing?.users,
-              state?.user
-            );
-            const existingComments = Array.isArray(existing.comments)
-              ? existing.comments
-              : [];
-
-            const incomingId = message?.id || message?._id;
-            const nextComments = existingComments.some(
-              (comment) => String(comment?.id || comment?._id) === String(incomingId)
-            )
-              ? existingComments.map((comment) =>
-                  String(comment?.id || comment?._id) === String(incomingId)
-                    ? { ...comment, ...normalizedMessage }
-                    : comment
-                )
-              : [...existingComments, normalizedMessage];
-
-            const mergedUsers = Array.isArray(existing?.users)
-              ? existing.users.map((user) =>
-                  String(user?.id || user?._id) ===
-                  String(normalizedMessage?.author?.id || normalizedMessage?.author?._id)
-                    ? {
-                        ...user,
-                        profilePicUrl:
-                          user?.profilePicUrl || normalizedMessage?.author?.profilePicUrl,
-                        username: user?.username || normalizedMessage?.author?.username,
-                      }
-                    : user
-                )
-              : [];
-
-            const authorId =
-              normalizedMessage?.author?.id || normalizedMessage?.author?._id;
-            const hasAuthor = mergedUsers.some(
-              (user) => String(user?.id || user?._id) === String(authorId)
-            );
-
-            const mergedRoom = {
-              ...existing,
-              users:
-                hasAuthor || !normalizedMessage?.author
-                  ? mergedUsers
-                  : [...mergedUsers, normalizedMessage.author],
-              comments: nextComments,
-              lastMessage: normalizedMessage,
-              lastMessageAt:
-                normalizedMessage?.createdAt || existing.lastMessageAt,
-            };
-
-            const remaining = prev.filter((_, index) => index !== targetIndex);
-            const nextRooms = [mergedRoom, ...remaining];
-
-            return nextRooms.sort((a, b) => {
-              const aTime =
-                parseDateValue(a.lastMessageAt)?.getTime?.() ||
-                parseDateValue(a.lastMessage?.createdAt)?.getTime?.() ||
-                0;
-              const bTime =
-                parseDateValue(b.lastMessageAt)?.getTime?.() ||
-                parseDateValue(b.lastMessage?.createdAt)?.getTime?.() ||
-                0;
-              return bTime - aTime;
-            });
-          });
-        },
-        error: (error) => {
-          console.log("direct message subscription error", error);
-        },
-      });
-
-      active[roomId] = subscription;
-    });
-
-    return () => {
-      Object.keys(active).forEach((roomId) => {
-        active[roomId]?.unsubscribe?.();
-        delete active[roomId];
-      });
-    };
-  }, [currentUserId, activeRoomIds, wsReadyKey]);
 
   useEffect(() => {
     if (!currentUserId) return;
@@ -410,85 +169,18 @@ const MessageListScreen = ({ route, navigation }) => {
     };
   }, [client, currentUserId]);
 
-  useEffect(() => {
-    const wsClient = wsClientRef.current;
+  useSubscription(DIRECT_ROOM_UPDATED, {
+    skip: !currentUserId,
+    onData: ({ data: subscriptionData }) => {
+      const updatedRoom = subscriptionData?.data?.directRoomUpdated;
+      if (!updatedRoom) return;
 
-    if (!currentUserId || !wsClient) return undefined;
-
-    const roomUpdatedObservable = wsClient.request({
-      query: DIRECT_ROOM_UPDATED,
-    });
-
-    const subscription = roomUpdatedObservable.subscribe({
-      next: ({ data: subscriptionData }) => {
-        const updatedRoom = subscriptionData?.directRoomUpdated;
-        if (!updatedRoom) return;
-
-        setRooms((prev) => {
-          const updatedId = resolveRoomId(updatedRoom);
-          if (!updatedId) return prev;
-
-          const existing = prev.find(
-            (room) => resolveRoomId(room) === updatedId
-          );
-
-          const incomingComments = Array.isArray(updatedRoom.comments)
-            ? updatedRoom.comments
-            : undefined;
-
-          const mergedComments =
-            incomingComments !== undefined
-              ? incomingComments
-              : existing?.comments || [];
-
-          const mergedLastMessage = updatedRoom.lastMessage
-            ? { ...updatedRoom.lastMessage }
-            : existing?.lastMessage;
-
-          const mergedLastMessageAt =
-            updatedRoom.lastMessageAt ||
-            mergedLastMessage?.createdAt ||
-            existing?.lastMessageAt;
-
-          const mergedRoom = {
-            ...(existing || {}),
-            ...updatedRoom,
-            id: updatedId,
-            users: updatedRoom.users || existing?.users || [],
-            comments: mergedComments,
-            lastMessage: mergedLastMessage,
-            lastMessageAt: mergedLastMessageAt,
-          };
-
-          const nextRooms = prev
-            .filter((room) => resolveRoomId(room) !== updatedId)
-            .concat(mergedRoom);
-
-          return nextRooms.sort((a, b) => {
-            const aTime =
-              parseDateValue(a.lastMessageAt)?.getTime?.() ||
-              parseDateValue(a.lastMessage?.createdAt)?.getTime?.() ||
-              0;
-            const bTime =
-              parseDateValue(b.lastMessageAt)?.getTime?.() ||
-              parseDateValue(b.lastMessage?.createdAt)?.getTime?.() ||
-              0;
-            return bTime - aTime;
-          });
-        });
-      },
-      error: (error) => {
-        console.log("direct room updated subscription error", error);
-      },
-    });
-
-    directRoomUpdatedSubscription.current = subscription;
-
-    return () => {
-      subscription?.unsubscribe?.();
-      directRoomUpdatedSubscription.current = null;
-    };
-  }, [currentUserId, wsReadyKey]);
+      setRooms((prev) => {
+        const filtered = prev.filter((room) => room.id !== updatedRoom.id);
+        return [updatedRoom, ...filtered];
+      });
+    },
+  });
 
   const handleDeleteRoom = useCallback(
     async (roomId) => {
@@ -520,7 +212,6 @@ const MessageListScreen = ({ route, navigation }) => {
   const listData = useMemo(() => {
     const normalized = rooms
       .map((room, index) => {
-        const roomId = resolveRoomId(room);
         const participants = room.users || [];
         const otherUserRaw =
           participants.find(
@@ -549,15 +240,14 @@ const MessageListScreen = ({ route, navigation }) => {
 
         if (!otherUser?.id) return null;
 
-        const { lastActivity, lastMessageText, lastMessageAuthorId, lastMessageIsRead } =
+        const { lastActivity, lastMessageText, lastMessageAuthorId } =
           deriveLastMessageInfo(room, index);
         return {
-          id: roomId || `room-${index}`,
+          id: room.id || room._id || `room-${index}`,
           user: otherUser,
           lastMessage: lastMessageText,
           lastActivity,
           lastMessageAuthorId,
-          lastMessageIsRead,
           unread: false,
         };
       })
@@ -584,7 +274,6 @@ const MessageListScreen = ({ route, navigation }) => {
           "Chat with your sober AI companion anytime you need encouragement.",
         lastActivity: Date.now(),
         lastMessageAuthorId: null,
-        lastMessageIsRead: true,
         unread: false,
       });
     }
@@ -603,35 +292,23 @@ const MessageListScreen = ({ route, navigation }) => {
       ? false
       : !item.lastMessageAuthorId ||
         String(item.lastMessageAuthorId) !== String(currentUserId);
-    const wasReadByThem =
-      !isCompanion &&
-      String(item.lastMessageAuthorId) === String(currentUserId) &&
-      item.lastMessageIsRead;
     const statusLabel = isCompanion
       ? "Always here"
-      : wasReadByThem
-      ? "Read"
       : waitingForYou
       ? "Waiting for reply"
       : "Sent";
     const statusIcon = isCompanion
       ? "moon"
-      : wasReadByThem
-      ? "checkmark-done"
       : waitingForYou
       ? "alert-circle"
       : "checkmark-done";
     const statusColor = isCompanion
       ? "#34d399"
-      : wasReadByThem
-      ? "#cbd5e1"
       : waitingForYou
       ? "#f59e0b"
       : "#38bdf8";
     const statusBackground = isCompanion
       ? "rgba(52,211,153,0.12)"
-      : wasReadByThem
-      ? "rgba(148,163,184,0.16)"
       : waitingForYou
       ? "rgba(245,158,11,0.12)"
       : "rgba(56,189,248,0.14)";

@@ -35,7 +35,6 @@ import Context from "../../context";
 import {
   DIRECT_MESSAGE_SUBSCRIPTION,
   DIRECT_ROOM_WITH_USER,
-  MARK_DIRECT_ROOM_READ,
   SEND_DIRECT_MESSAGE,
   THERAPY_CHAT,
   SET_DIRECT_TYPING,
@@ -71,55 +70,6 @@ const buildWsUrl = () => GRAPHQL_URI.replace(/^http/, "ws");
 const SOBER_COMPANION_ID = "693394413ea6a3e530516505";
 const COMPANION_ACCENT = "#34d399";
 
-const ensureAuthorProfile = (message, knownUsers = [], currentUser) => {
-  if (!message) return message;
-
-  const authorId =
-    message?.author?.id || message?.author?._id || message?.authorId || null;
-  const participant = knownUsers.find(
-    (user) => String(user?.id || user?._id) === String(authorId)
-  );
-
-  const authorProfilePic =
-    message?.author?.profilePicUrl ||
-    participant?.profilePicUrl ||
-    (currentUser && String(currentUser?.id) === String(authorId)
-      ? currentUser.profilePicUrl
-      : null);
-
-  const authorUsername =
-    message?.author?.username ||
-    participant?.username ||
-    (currentUser && String(currentUser?.id) === String(authorId)
-      ? currentUser.username
-      : undefined);
-
-  const normalizedAuthor =
-    message.author ||
-    participant ||
-    (authorId
-      ? {
-          id: authorId,
-        }
-      : null);
-
-  return {
-    ...message,
-    author: normalizedAuthor
-      ? {
-          ...normalizedAuthor,
-          id:
-            normalizedAuthor.id ||
-            normalizedAuthor._id ||
-            message?.author?.id ||
-            message?.author?._id,
-          username: authorUsername,
-          profilePicUrl: authorProfilePic,
-        }
-      : null,
-  };
-};
-
 const DirectMessageScreen = ({ route, navigation }) => {
   const { state } = useContext(Context);
   const client = useClient();
@@ -153,7 +103,6 @@ const DirectMessageScreen = ({ route, navigation }) => {
   const likeScales = useRef({});
   const likeOpacities = useRef({});
   const tapTimestamps = useRef({});
-  const markingReadRef = useRef(false);
 
   const syncMessagesFromRoom = useCallback(
     (roomData) => {
@@ -162,32 +111,20 @@ const DirectMessageScreen = ({ route, navigation }) => {
       setMessages((prev) => {
         const incomingById = new Map(prev.map((msg) => [msg.id, msg]));
         roomData.comments.forEach((msg) => {
-          const normalized = ensureAuthorProfile(
-            msg,
-            roomData?.users || [resolvedUser],
-            state?.user
-          );
           const previous = incomingById.get(msg.id);
           const likesCount = msg?.likesCount ?? previous?.likesCount ?? 0;
           const liked =
-            typeof normalized?.liked === "boolean"
-              ? normalized.liked
+            typeof msg?.liked === "boolean"
+              ? msg.liked
               : typeof previous?.liked === "boolean"
               ? previous.liked
               : likesCount > 0;
-          const isRead =
-            typeof normalized?.isRead === "boolean"
-              ? normalized.isRead
-              : typeof previous?.isRead === "boolean"
-              ? previous.isRead
-              : false;
           syncLikeVisualState(msg.id, liked);
           incomingById.set(msg.id, {
             ...previous,
-            ...normalized,
+            ...msg,
             likesCount,
             liked,
-            isRead,
           });
         });
 
@@ -198,7 +135,7 @@ const DirectMessageScreen = ({ route, navigation }) => {
         );
       });
     },
-    [resolvedUser, state?.user, syncLikeVisualState]
+    [syncLikeVisualState]
   );
 
   // 1) Load room + initial messages
@@ -293,46 +230,31 @@ const DirectMessageScreen = ({ route, navigation }) => {
           if (!incoming) return;
 
           setMessages((prev) => {
-            const enrichedIncoming = ensureAuthorProfile(
-              incoming,
-              [resolvedUser],
-              state?.user
-            );
             const incomingLiked =
-              (enrichedIncoming?.liked ?? false) ||
-              (enrichedIncoming?.likesCount || 0) > 0;
-            const incomingRead =
-              typeof enrichedIncoming?.isRead === "boolean"
-                ? enrichedIncoming.isRead
-                : false;
+              (incoming?.liked ?? false) || (incoming?.likesCount || 0) > 0;
 
             const existingIndex = prev.findIndex(
-              (msg) => msg.id === enrichedIncoming.id
+              (msg) => msg.id === incoming.id
             );
 
             if (existingIndex !== -1) {
               const existing = prev[existingIndex];
               const nextLiked = incomingLiked;
               const nextLikesCount =
-                enrichedIncoming?.likesCount ?? existing.likesCount ?? 0;
+                incoming?.likesCount ?? existing.likesCount ?? 0;
 
               const updated = {
                 ...existing,
-                ...enrichedIncoming,
+                ...incoming,
                 liked: nextLiked,
                 likesCount: nextLikesCount,
-                isRead: typeof enrichedIncoming?.isRead === "boolean"
-                  ? enrichedIncoming.isRead
-                  : typeof existing?.isRead === "boolean"
-                  ? existing.isRead
-                  : false,
               };
 
               if (!existing.liked && nextLiked)
-                runLikeAnimation(enrichedIncoming.id, true);
+                runLikeAnimation(incoming.id, true);
               if (existing.liked && !nextLiked)
-                runLikeAnimation(enrichedIncoming.id, false);
-              syncLikeVisualState(enrichedIncoming.id, nextLiked);
+                runLikeAnimation(incoming.id, false);
+              syncLikeVisualState(incoming.id, nextLiked);
 
               const nextList = [...prev];
               nextList[existingIndex] = updated;
@@ -344,18 +266,17 @@ const DirectMessageScreen = ({ route, navigation }) => {
             }
 
             if (incomingLiked) {
-              runLikeAnimation(enrichedIncoming.id, true);
+              runLikeAnimation(incoming.id, true);
             }
 
-            syncLikeVisualState(enrichedIncoming.id, incomingLiked);
+            syncLikeVisualState(incoming.id, incomingLiked);
 
             return [
               ...prev,
               {
-                ...enrichedIncoming,
+                ...incoming,
                 liked: incomingLiked,
-                isRead: incomingRead,
-                likesCount: enrichedIncoming?.likesCount ?? 0,
+                likesCount: incoming?.likesCount ?? 0,
               },
             ].sort(
               (a, b) =>
@@ -421,11 +342,6 @@ const DirectMessageScreen = ({ route, navigation }) => {
     [messages]
   );
 
-  const lastMessageId = useMemo(
-    () => sortedMessages[sortedMessages.length - 1]?.id || null,
-    [sortedMessages]
-  );
-
   useEffect(() => {
     const shouldScroll = sortedMessages.length > previousCount.current;
     previousCount.current = sortedMessages.length;
@@ -436,42 +352,6 @@ const DirectMessageScreen = ({ route, navigation }) => {
       });
     }
   }, [sortedMessages.length]);
-
-  useEffect(() => {
-    if (!roomId || !currentUserId) return;
-
-    const hasUnreadFromOther = sortedMessages.some(
-      (message) =>
-        String(message.author?.id) !== String(currentUserId) &&
-        message.isRead !== true
-    );
-
-    if (!hasUnreadFromOther) return;
-    if (markingReadRef.current) return;
-
-    markingReadRef.current = true;
-
-    client
-      .request(MARK_DIRECT_ROOM_READ, { roomId })
-      .then((response) => {
-        const updated = response?.markDirectRoomRead || [];
-        if (!updated.length) return;
-
-        setMessages((prev) =>
-          prev.map((message) => {
-            const match = updated.find((item) => item.id === message.id);
-            if (!match) return message;
-            return { ...message, ...match, isRead: match?.isRead ?? true };
-          })
-        );
-      })
-      .catch((err) => {
-        console.error("[DM] Failed to mark room read", err);
-      })
-      .finally(() => {
-        markingReadRef.current = false;
-      });
-  }, [client, currentUserId, roomId, sortedMessages]);
 
   // 4) Derive LOCAL typing from messageText
   useEffect(() => {
@@ -563,7 +443,6 @@ const DirectMessageScreen = ({ route, navigation }) => {
                 ...merged.get(msg.id),
                 ...msg,
                 liked: msg?.liked ?? (msg?.likesCount || 0) > 0,
-                isRead: msg?.isRead ?? false,
                 likesCount: msg?.likesCount ?? 0,
               });
             });
@@ -603,7 +482,6 @@ const DirectMessageScreen = ({ route, navigation }) => {
             {
               ...newMessage,
               liked: newMessage?.liked ?? (newMessage?.likesCount || 0) > 0,
-              isRead: newMessage?.isRead ?? false,
               likesCount: newMessage?.likesCount ?? 0,
             },
           ].sort(
@@ -797,10 +675,6 @@ const DirectMessageScreen = ({ route, navigation }) => {
       : isCompanionAuthor
       ? "rgba(52,211,153,0.22)"
       : "rgba(245,158,11,0.2)";
-    const isLastMessageMine = isMine && item.id === lastMessageId;
-    const showReadReceipt = isLastMessageMine;
-    const receiptText = item.isRead ? "Read" : "Sent";
-    const receiptIcon = item.isRead ? "checkmark-done" : "checkmark";
 
     return (
       <View style={[styles.messageRow, isMine && styles.messageRowMine]}>
@@ -864,25 +738,7 @@ const DirectMessageScreen = ({ route, navigation }) => {
               </Text>
             </LiquidGlassView>
           </TouchableOpacity>
-          {showReadReceipt ? (
-            <View
-              style={[
-                styles.readReceiptRow,
-                isMine ? styles.readReceiptRowMine : styles.readReceiptRowTheirs,
-              ]}
-            >
-              <Ionicons name={receiptIcon} size={14} color="#cbd5e1" />
-              <Text
-                style={[
-                  styles.readReceipt,
-                  isMine ? styles.readReceiptMine : styles.readReceiptTheirs,
-                ]}
-              >
-                {receiptText}
-              </Text>
-            </View>
-          ) : null}
-          </View>
+        </View>
         {isMine && (
           <Avatar
             uri={state?.user?.profilePicUrl}
@@ -1176,33 +1032,6 @@ const styles = StyleSheet.create({
     opacity: 0.9,
     alignSelf: "flex-end",
     textAlign: "right",
-  },
-  readReceiptRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 4,
-    marginTop: 6,
-  },
-  readReceiptRowMine: {
-    alignSelf: "flex-end",
-    marginRight: 6,
-  },
-  readReceiptRowTheirs: {
-    alignSelf: "flex-start",
-    marginLeft: 6,
-  },
-  readReceipt: {
-    fontSize: 10,
-  },
-  readReceiptMine: {
-    color: "#cbd5e1",
-    alignSelf: "flex-end",
-    textAlign: "right",
-  },
-  readReceiptTheirs: {
-    color: "#cbd5e1",
-    alignSelf: "flex-start",
-    textAlign: "left",
   },
   inputBar: {
     flexDirection: "row",
