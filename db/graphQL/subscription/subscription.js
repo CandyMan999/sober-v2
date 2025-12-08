@@ -71,8 +71,12 @@ const publishDirectMessage = (commentDoc) => {
 const publishDirectRoomUpdate = (roomObject) => {
   if (!roomObject) return;
 
+  const { normalizeRoomForGraphQL } = require("../utils/normalize");
+  const normalized = normalizeRoomForGraphQL(roomObject);
+  if (!normalized) return;
+
   pubsub.publish(DIRECT_ROOM_UPDATED, {
-    directRoomUpdated: roomObject,
+    directRoomUpdated: normalized,
   });
 };
 

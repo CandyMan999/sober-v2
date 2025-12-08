@@ -53,6 +53,11 @@ const timeAgo = (timestamp) => {
 
 const SOBER_COMPANION_ID = "693394413ea6a3e530516505";
 
+const resolveRoomId = (room) => {
+  if (!room) return null;
+  return room.id || room._id || room.roomId || null;
+};
+
 const MessageListScreen = ({ route, navigation }) => {
   const { state } = useContext(Context);
   const currentUserId = state?.user?.id;
@@ -184,8 +189,30 @@ const MessageListScreen = ({ route, navigation }) => {
       if (!updatedRoom) return;
 
       setRooms((prev) => {
-        const filtered = prev.filter((room) => room.id !== updatedRoom.id);
-        return [updatedRoom, ...filtered];
+        const updatedId = resolveRoomId(updatedRoom);
+        if (!updatedId) return prev;
+
+        const existing = prev.find(
+          (room) => resolveRoomId(room) === updatedId
+        );
+
+        const merged = {
+          ...(existing || {}),
+          ...updatedRoom,
+          id: updatedId,
+          lastMessage: updatedRoom.lastMessage || existing?.lastMessage,
+          lastMessageAt: updatedRoom.lastMessageAt || existing?.lastMessageAt,
+          users: updatedRoom.users || existing?.users || [],
+          comments:
+            updatedRoom.comments !== undefined
+              ? updatedRoom.comments
+              : existing?.comments,
+        };
+
+        const filtered = prev.filter(
+          (room) => resolveRoomId(room) !== updatedId
+        );
+        return [merged, ...filtered];
       });
     },
   });
@@ -220,6 +247,7 @@ const MessageListScreen = ({ route, navigation }) => {
   const listData = useMemo(() => {
     const normalized = rooms
       .map((room, index) => {
+        const roomId = resolveRoomId(room);
         const participants = room.users || [];
         const otherUserRaw =
           participants.find(
@@ -251,7 +279,7 @@ const MessageListScreen = ({ route, navigation }) => {
         const { lastActivity, lastMessageText, lastMessageAuthorId, lastMessageIsRead } =
           deriveLastMessageInfo(room, index);
         return {
-          id: room.id || room._id || `room-${index}`,
+          id: roomId || `room-${index}`,
           user: otherUser,
           lastMessage: lastMessageText,
           lastActivity,
