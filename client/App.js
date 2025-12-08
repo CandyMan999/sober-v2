@@ -144,7 +144,8 @@ export default function App() {
     setPreviewShowComments(false);
 
     const navigateToDirectMessage = (userParam) => {
-      const navigate = () => navigationRef.navigate("DirectMessage", { user: userParam });
+      const navigate = () =>
+        navigationRef.navigate("DirectMessage", { user: userParam });
 
       if (navigationRef.isReady()) {
         navigate();
@@ -184,10 +185,7 @@ export default function App() {
       setPreviewContent({
         id: data?.id || `venue-warning-${Date.now()}`,
         title:
-          data?.subtitle ||
-          data?.title ||
-          notificationTitle ||
-          "Venue warning",
+          data?.subtitle || data?.title || notificationTitle || "Venue warning",
         text:
           notificationBody ||
           "Spotted at a bar or liquor store. Take a breath and stay strong.",
@@ -246,7 +244,10 @@ export default function App() {
       return;
     }
 
-    if (data?.type === NotificationTypes.ROOM_REPLY && (data.roomName || data.roomId)) {
+    if (
+      data?.type === NotificationTypes.ROOM_REPLY &&
+      (data.roomName || data.roomId)
+    ) {
       navigateToChatRoom(data.roomName || "General");
       return;
     }
@@ -507,7 +508,7 @@ export default function App() {
                   <Stack.Screen
                     name="AppleLogin"
                     component={AppleLoginScreen}
-                    options={{ title: "Sign In" }}
+                    options={{ headerShown: false }}
                   />
                   <Stack.Screen
                     name="AddUserName"

@@ -88,21 +88,37 @@ const Avatar = ({
         {uri ? (
           <Image
             source={{ uri }}
-            style={{ width: imageWidth, height: imageHeight, borderRadius: imageRadius }}
+            style={{
+              width: imageWidth,
+              height: imageHeight,
+              borderRadius: imageRadius,
+            }}
           />
         ) : fallbackSource ? (
           <Image
             source={fallbackSource}
-            style={{ width: imageWidth, height: imageHeight, borderRadius: imageRadius }}
+            style={{
+              width: imageWidth,
+              height: imageHeight,
+              borderRadius: imageRadius,
+            }}
           />
         ) : (
           <View
             style={[
               styles.avatarFallback,
-              { width: imageWidth, height: imageHeight, borderRadius: imageRadius },
+              {
+                width: imageWidth,
+                height: imageHeight,
+                borderRadius: imageRadius,
+              },
             ]}
           >
-            <Ionicons name="person" size={Math.max(14, size / 3)} color="#0b1222" />
+            <Ionicons
+              name="person"
+              size={Math.max(14, size / 3)}
+              color="#0b1222"
+            />
           </View>
         )}
       </View>

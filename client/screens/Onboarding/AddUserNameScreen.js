@@ -55,9 +55,7 @@ const UsernameScreen = ({ navigation, route }) => {
   const [showNotifPointer, setShowNotifPointer] = useState(false);
   const notifArrowAnim = useRef(new Animated.Value(0)).current;
   const notifArrowBaseYOffset = useRef(
-    new Animated.Value(
-      Platform.select({ ios: 92, android: 76, default: 84 })
-    )
+    new Animated.Value(Platform.select({ ios: 92, android: 76, default: 84 }))
   ).current;
   const notifArrowBaseXOffset = Platform.select({
     ios: 65,
