@@ -9,6 +9,13 @@ const DIRECT_TYPING = "DIRECT_TYPING";
 const ROOM_COMMENT_CREATED = "ROOM_COMMENT_CREATED";
 const ROOMS_UPDATED = "ROOMS_UPDATED";
 
+const resolveProfilePicUrl = (userLike) => {
+  if (!userLike) return null;
+
+  const source = userLike.toObject ? userLike.toObject() : userLike;
+  return source.profilePicUrl || source.profilePic?.url || null;
+};
+
 /**
  * Normalize a comment for GraphQL.
  */
@@ -27,14 +34,18 @@ const normalizeCommentForGraphQL = (commentDoc) => {
       ? author.messageStyle
       : undefined;
 
+  const profilePicUrl = resolveProfilePicUrl(author);
+
   return {
     ...raw,
     id: raw.id || raw._id?.toString?.(),
+    isRead: Boolean(raw.isRead),
     author: author
       ? {
           ...author,
           id: author.id || author._id?.toString?.(),
           messageStyle: authorStyle,
+          profilePicUrl,
         }
       : null,
   };
@@ -60,8 +71,12 @@ const publishDirectMessage = (commentDoc) => {
 const publishDirectRoomUpdate = (roomObject) => {
   if (!roomObject) return;
 
+  const { normalizeRoomForGraphQL } = require("../utils/normalize");
+  const normalized = normalizeRoomForGraphQL(roomObject);
+  if (!normalized) return;
+
   pubsub.publish(DIRECT_ROOM_UPDATED, {
-    directRoomUpdated: roomObject,
+    directRoomUpdated: normalized,
   });
 };
 
@@ -136,7 +151,8 @@ const directRoomUpdatedSubscription = {
       const room = payload?.directRoomUpdated;
       const roomId = variables?.roomId;
 
-      if (!room || !roomId) return false;
+      if (!room) return false;
+      if (!roomId) return true;
 
       return String(room.id || room._id) === String(roomId);
     }

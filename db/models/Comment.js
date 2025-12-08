@@ -49,6 +49,12 @@ const CommentSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+
+    // Whether the message has been read by the recipient (for DMs)
+    isRead: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true, // createdAt + updatedAt

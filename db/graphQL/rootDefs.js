@@ -248,6 +248,7 @@ const typeDefs = gql`
     text: String!
     createdAt: String
     author: User!
+    isRead: Boolean!
     likesCount: Int!
     likes: [Like!]!
     replyTo: Comment
@@ -460,6 +461,7 @@ const typeDefs = gql`
     dismissNotification(token: String!, id: ID!): Notification!
     clearAllNotifications(token: String!, ids: [ID!]!): Boolean!
     deleteDirectRoom(roomId: ID!): Boolean!
+    markDirectRoomRead(roomId: ID!): [Comment!]!
     sendDirectMessage(recipientId: ID!, text: String!, replyTo: ID): Comment!
     therapyChat(message: String!): TherapyChatPayload!
     followUser(token: String!, userId: ID!): Connection!
