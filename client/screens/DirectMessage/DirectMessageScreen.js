@@ -66,6 +66,34 @@ const formatTime = (timestamp) => {
   return `${formatDistanceToNow(parsed)} ago`;
 };
 
+const normalizeAuthor = (author, fallbackUsername) => {
+  if (!author) return author;
+
+  const normalizedProfilePic =
+    author.profilePicUrl ||
+    author.profilePicURL ||
+    author.profilePic ||
+    author.avatarUrl;
+
+  const normalizedId = author.id || author._id;
+
+  return {
+    ...author,
+    id: normalizedId,
+    username: author.username || fallbackUsername,
+    profilePicUrl: normalizedProfilePic,
+  };
+};
+
+const normalizeMessage = (message, fallbackUsername) => {
+  if (!message) return message;
+
+  return {
+    ...message,
+    author: normalizeAuthor(message.author, fallbackUsername),
+  };
+};
+
 const buildWsUrl = () => GRAPHQL_URI.replace(/^http/, "ws");
 
 const SOBER_COMPANION_ID = "693394413ea6a3e530516505";
@@ -112,7 +140,8 @@ const DirectMessageScreen = ({ route, navigation }) => {
 
       setMessages((prev) => {
         const incomingById = new Map(prev.map((msg) => [msg.id, msg]));
-        roomData.comments.forEach((msg) => {
+        roomData.comments.forEach((rawMsg) => {
+          const msg = normalizeMessage(rawMsg, username);
           const previous = incomingById.get(msg.id);
           const likesCount = msg?.likesCount ?? previous?.likesCount ?? 0;
           const liked =
@@ -137,7 +166,7 @@ const DirectMessageScreen = ({ route, navigation }) => {
         );
       });
     },
-    [syncLikeVisualState]
+    [syncLikeVisualState, username]
   );
 
   // 1) Load room + initial messages
@@ -274,7 +303,10 @@ const DirectMessageScreen = ({ route, navigation }) => {
     const messageSubscription = messageObservable.subscribe({
       next: ({ data }) => {
         try {
-          const incoming = data?.directMessageReceived;
+          const incoming = normalizeMessage(
+            data?.directMessageReceived,
+            username
+          );
 
           if (!incoming) return;
 
@@ -378,7 +410,7 @@ const DirectMessageScreen = ({ route, navigation }) => {
       wsClientRef.current = null;
       setIsTypingRemote(false);
     };
-  }, [currentUserId, roomId]);
+  }, [currentUserId, roomId, username]);
 
   // 3) Sorted messages + auto-scroll
   const sortedMessages = useMemo(
@@ -491,7 +523,9 @@ const DirectMessageScreen = ({ route, navigation }) => {
         const newMessages = [
           payload?.userMessage,
           payload?.assistantMessage,
-        ].filter(Boolean);
+        ]
+          .filter(Boolean)
+          .map((message) => normalizeMessage(message, username));
 
         if (newMessages.length) {
           setMessages((prev) => {
@@ -532,7 +566,10 @@ const DirectMessageScreen = ({ route, navigation }) => {
         text,
       });
 
-      const newMessage = response?.sendDirectMessage;
+      const newMessage = normalizeMessage(
+        response?.sendDirectMessage,
+        username
+      );
       if (newMessage) {
         setMessages((prev) => {
           if (prev.find((msg) => msg.id === newMessage.id)) return prev;
@@ -558,7 +595,7 @@ const DirectMessageScreen = ({ route, navigation }) => {
     } finally {
       setSending(false);
     }
-  }, [client, currentUserId, isCompanionChat, messageText, targetUserId]);
+  }, [client, currentUserId, isCompanionChat, messageText, targetUserId, username]);
 
   // 10) Renderers
   const ensureAnimValue = (store, key, initialValue) => {
