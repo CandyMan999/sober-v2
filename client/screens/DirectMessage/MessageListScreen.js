@@ -196,23 +196,49 @@ const MessageListScreen = ({ route, navigation }) => {
           (room) => resolveRoomId(room) === updatedId
         );
 
-        const merged = {
+        const incomingComments = Array.isArray(updatedRoom.comments)
+          ? updatedRoom.comments
+          : undefined;
+
+        const mergedComments =
+          incomingComments !== undefined
+            ? incomingComments
+            : existing?.comments || [];
+
+        const mergedLastMessage = updatedRoom.lastMessage
+          ? { ...updatedRoom.lastMessage }
+          : existing?.lastMessage;
+
+        const mergedLastMessageAt =
+          updatedRoom.lastMessageAt ||
+          mergedLastMessage?.createdAt ||
+          existing?.lastMessageAt;
+
+        const mergedRoom = {
           ...(existing || {}),
           ...updatedRoom,
           id: updatedId,
-          lastMessage: updatedRoom.lastMessage || existing?.lastMessage,
-          lastMessageAt: updatedRoom.lastMessageAt || existing?.lastMessageAt,
           users: updatedRoom.users || existing?.users || [],
-          comments:
-            updatedRoom.comments !== undefined
-              ? updatedRoom.comments
-              : existing?.comments,
+          comments: mergedComments,
+          lastMessage: mergedLastMessage,
+          lastMessageAt: mergedLastMessageAt,
         };
 
-        const filtered = prev.filter(
-          (room) => resolveRoomId(room) !== updatedId
-        );
-        return [merged, ...filtered];
+        const nextRooms = prev
+          .filter((room) => resolveRoomId(room) !== updatedId)
+          .concat(mergedRoom);
+
+        return nextRooms.sort((a, b) => {
+          const aTime =
+            parseDateValue(a.lastMessageAt)?.getTime?.() ||
+            parseDateValue(a.lastMessage?.createdAt)?.getTime?.() ||
+            0;
+          const bTime =
+            parseDateValue(b.lastMessageAt)?.getTime?.() ||
+            parseDateValue(b.lastMessage?.createdAt)?.getTime?.() ||
+            0;
+          return bTime - aTime;
+        });
       });
     },
   });
