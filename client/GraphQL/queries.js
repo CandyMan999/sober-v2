@@ -77,8 +77,8 @@ export const FETCH_ME_QUERY = `
 `;
 
 export const RANDOM_USERS_QUERY = `
-  query RandomUsers {
-    users {
+  query RandomUsers($limit: Int, $offset: Int) {
+    users(limit: $limit, offset: $offset) {
       id
       username
       profilePicUrl

@@ -77,7 +77,12 @@ const AppleLoginScreen = ({ navigation }) => {
     const fetchFaces = async () => {
       try {
         setFacesLoading(true);
-        const data = await client.request(RANDOM_USERS_QUERY);
+        const limit = 18;
+        const offset = Math.floor(Math.random() * 50);
+        const data = await client.request(RANDOM_USERS_QUERY, {
+          limit,
+          offset,
+        });
 
         if (!isMounted) return;
 

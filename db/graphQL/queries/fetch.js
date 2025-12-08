@@ -161,6 +161,22 @@ module.exports = {
       dismissed: Boolean(notification.dismissed),
     }));
   },
+  usersResolver: async (_, { limit, offset }) => {
+    const safeLimit = Math.min(limit ?? 50, 50);
+    const safeOffset = Math.max(offset ?? 0, 0);
+
+    try {
+      const usersQuery = User.find({})
+        .sort({ createdAt: -1 })
+        .skip(safeOffset)
+        .limit(safeLimit)
+        .populate("profilePic");
+
+      return await usersQuery.exec();
+    } catch (err) {
+      throw new Error(err.message);
+    }
+  },
   getAllPostsResolver: async (root, args) => {
     const {
       limit: limitArg,
