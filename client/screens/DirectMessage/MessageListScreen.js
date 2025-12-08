@@ -185,11 +185,38 @@ const MessageListScreen = ({ route, navigation }) => {
 
       setRooms((prev) => {
         const updatedId = updatedRoom.id || updatedRoom._id;
-        const filtered = prev.filter(
-          (room) => String(room.id || room._id) !== String(updatedId)
+        if (!updatedId) return prev;
+
+        const participants = updatedRoom.users || [];
+        const involvesCurrentUser = participants.some(
+          (participant) =>
+            participant &&
+            String(participant.id || participant._id) === String(currentUserId)
         );
-        const normalized = updatedId ? { ...updatedRoom, id: updatedId } : updatedRoom;
-        return [normalized, ...filtered];
+
+        if (!involvesCurrentUser) return prev;
+
+        const existingIndex = prev.findIndex(
+          (room) => String(room.id || room._id) === String(updatedId)
+        );
+
+        const mergedRoom =
+          existingIndex !== -1
+            ? { ...prev[existingIndex], ...updatedRoom, id: updatedId }
+            : { ...updatedRoom, id: updatedId };
+
+        if (existingIndex !== -1) {
+          const withoutExisting = prev.filter(
+            (room) => String(room.id || room._id) !== String(updatedId)
+          );
+          return [
+            ...withoutExisting.slice(0, existingIndex),
+            mergedRoom,
+            ...withoutExisting.slice(existingIndex),
+          ];
+        }
+
+        return [...prev, mergedRoom];
       });
     },
   });
