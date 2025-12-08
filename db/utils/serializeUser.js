@@ -11,6 +11,8 @@ const serializePicture = (picture) => {
   const plain = picture.toObject ? picture.toObject() : picture;
   const pictureId = toIdString(plain.id) || toIdString(plain._id);
 
+  if (!plain?.url) return null;
+
   if (!pictureId) return null;
 
   return {

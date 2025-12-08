@@ -15,6 +15,7 @@ const {
   NotificationIntents,
   createNotificationForUser,
 } = require("../../utils/notifications");
+const { serializeUser } = require("../../utils/serializeUser");
 
 require("dotenv").config();
 
@@ -43,7 +44,7 @@ module.exports = {
 
     try {
       if (ctx?.currentUser) {
-        return ctx.currentUser;
+        return serializeUser(ctx.currentUser);
       }
 
       if (!token && !appleId) {
@@ -61,7 +62,7 @@ module.exports = {
         throw new AuthenticationError("User not found");
       }
       await User.ensureChatRoomStyle(user);
-      return user;
+      return serializeUser(user);
     } catch (err) {
       throw new AuthenticationError(err.message);
     }

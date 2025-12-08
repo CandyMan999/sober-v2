@@ -222,10 +222,12 @@ const therapyChatResolver = async (_, { message }, ctx) => {
   // Ensure a room exists between the user and the sober companion
   const room = await ensureSingleDirectRoom(me._id, companion._id);
 
-  // Build history from prior comments in this room
+  // Build history from prior comments in this room (last 2 hours only)
+  const twoHoursAgo = new Date(Date.now() - 2 * 60 * 60 * 1000);
   const historyMessages = await Comment.find({
     targetType: "ROOM",
     targetId: room?._id,
+    createdAt: { $gte: twoHoursAgo },
   })
     .sort({ createdAt: 1 })
     .populate("author")
