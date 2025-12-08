@@ -71,6 +71,55 @@ const buildWsUrl = () => GRAPHQL_URI.replace(/^http/, "ws");
 const SOBER_COMPANION_ID = "693394413ea6a3e530516505";
 const COMPANION_ACCENT = "#34d399";
 
+const ensureAuthorProfile = (message, knownUsers = [], currentUser) => {
+  if (!message) return message;
+
+  const authorId =
+    message?.author?.id || message?.author?._id || message?.authorId || null;
+  const participant = knownUsers.find(
+    (user) => String(user?.id || user?._id) === String(authorId)
+  );
+
+  const authorProfilePic =
+    message?.author?.profilePicUrl ||
+    participant?.profilePicUrl ||
+    (currentUser && String(currentUser?.id) === String(authorId)
+      ? currentUser.profilePicUrl
+      : null);
+
+  const authorUsername =
+    message?.author?.username ||
+    participant?.username ||
+    (currentUser && String(currentUser?.id) === String(authorId)
+      ? currentUser.username
+      : undefined);
+
+  const normalizedAuthor =
+    message.author ||
+    participant ||
+    (authorId
+      ? {
+          id: authorId,
+        }
+      : null);
+
+  return {
+    ...message,
+    author: normalizedAuthor
+      ? {
+          ...normalizedAuthor,
+          id:
+            normalizedAuthor.id ||
+            normalizedAuthor._id ||
+            message?.author?.id ||
+            message?.author?._id,
+          username: authorUsername,
+          profilePicUrl: authorProfilePic,
+        }
+      : null,
+  };
+};
+
 const DirectMessageScreen = ({ route, navigation }) => {
   const { state } = useContext(Context);
   const client = useClient();
@@ -113,24 +162,29 @@ const DirectMessageScreen = ({ route, navigation }) => {
       setMessages((prev) => {
         const incomingById = new Map(prev.map((msg) => [msg.id, msg]));
         roomData.comments.forEach((msg) => {
+          const normalized = ensureAuthorProfile(
+            msg,
+            roomData?.users || [resolvedUser],
+            state?.user
+          );
           const previous = incomingById.get(msg.id);
           const likesCount = msg?.likesCount ?? previous?.likesCount ?? 0;
           const liked =
-            typeof msg?.liked === "boolean"
-              ? msg.liked
+            typeof normalized?.liked === "boolean"
+              ? normalized.liked
               : typeof previous?.liked === "boolean"
               ? previous.liked
               : likesCount > 0;
           const isRead =
-            typeof msg?.isRead === "boolean"
-              ? msg.isRead
+            typeof normalized?.isRead === "boolean"
+              ? normalized.isRead
               : typeof previous?.isRead === "boolean"
               ? previous.isRead
               : false;
           syncLikeVisualState(msg.id, liked);
           incomingById.set(msg.id, {
             ...previous,
-            ...msg,
+            ...normalized,
             likesCount,
             liked,
             isRead,
@@ -144,7 +198,7 @@ const DirectMessageScreen = ({ route, navigation }) => {
         );
       });
     },
-    [syncLikeVisualState]
+    [resolvedUser, state?.user, syncLikeVisualState]
   );
 
   // 1) Load room + initial messages
@@ -239,40 +293,46 @@ const DirectMessageScreen = ({ route, navigation }) => {
           if (!incoming) return;
 
           setMessages((prev) => {
+            const enrichedIncoming = ensureAuthorProfile(
+              incoming,
+              [resolvedUser],
+              state?.user
+            );
             const incomingLiked =
-              (incoming?.liked ?? false) || (incoming?.likesCount || 0) > 0;
+              (enrichedIncoming?.liked ?? false) ||
+              (enrichedIncoming?.likesCount || 0) > 0;
             const incomingRead =
-              typeof incoming?.isRead === "boolean"
-                ? incoming.isRead
+              typeof enrichedIncoming?.isRead === "boolean"
+                ? enrichedIncoming.isRead
                 : false;
 
             const existingIndex = prev.findIndex(
-              (msg) => msg.id === incoming.id
+              (msg) => msg.id === enrichedIncoming.id
             );
 
             if (existingIndex !== -1) {
               const existing = prev[existingIndex];
               const nextLiked = incomingLiked;
               const nextLikesCount =
-                incoming?.likesCount ?? existing.likesCount ?? 0;
+                enrichedIncoming?.likesCount ?? existing.likesCount ?? 0;
 
               const updated = {
                 ...existing,
-                ...incoming,
+                ...enrichedIncoming,
                 liked: nextLiked,
                 likesCount: nextLikesCount,
-                isRead: typeof incoming?.isRead === "boolean"
-                  ? incoming.isRead
+                isRead: typeof enrichedIncoming?.isRead === "boolean"
+                  ? enrichedIncoming.isRead
                   : typeof existing?.isRead === "boolean"
                   ? existing.isRead
                   : false,
               };
 
               if (!existing.liked && nextLiked)
-                runLikeAnimation(incoming.id, true);
+                runLikeAnimation(enrichedIncoming.id, true);
               if (existing.liked && !nextLiked)
-                runLikeAnimation(incoming.id, false);
-              syncLikeVisualState(incoming.id, nextLiked);
+                runLikeAnimation(enrichedIncoming.id, false);
+              syncLikeVisualState(enrichedIncoming.id, nextLiked);
 
               const nextList = [...prev];
               nextList[existingIndex] = updated;
@@ -284,18 +344,18 @@ const DirectMessageScreen = ({ route, navigation }) => {
             }
 
             if (incomingLiked) {
-              runLikeAnimation(incoming.id, true);
+              runLikeAnimation(enrichedIncoming.id, true);
             }
 
-            syncLikeVisualState(incoming.id, incomingLiked);
+            syncLikeVisualState(enrichedIncoming.id, incomingLiked);
 
             return [
               ...prev,
               {
-                ...incoming,
+                ...enrichedIncoming,
                 liked: incomingLiked,
                 isRead: incomingRead,
-                likesCount: incoming?.likesCount ?? 0,
+                likesCount: enrichedIncoming?.likesCount ?? 0,
               },
             ].sort(
               (a, b) =>

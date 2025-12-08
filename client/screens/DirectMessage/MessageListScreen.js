@@ -63,6 +63,56 @@ const resolveRoomId = (room) => {
   return room.id || room._id || room.roomId || null;
 };
 
+const enrichMessageAuthor = (message, participants = [], selfUser) => {
+  if (!message) return message;
+
+  const authorId =
+    message?.author?.id || message?.author?._id || message?.authorId || null;
+
+  const participant = participants.find(
+    (user) => String(user?.id || user?._id) === String(authorId)
+  );
+
+  const profilePicUrl =
+    message?.author?.profilePicUrl ||
+    participant?.profilePicUrl ||
+    (selfUser && String(selfUser?.id) === String(authorId)
+      ? selfUser.profilePicUrl
+      : null);
+
+  const username =
+    message?.author?.username ||
+    participant?.username ||
+    (selfUser && String(selfUser?.id) === String(authorId)
+      ? selfUser.username
+      : undefined);
+
+  const normalizedAuthor =
+    message.author ||
+    participant ||
+    (authorId
+      ? {
+          id: authorId,
+        }
+      : null);
+
+  return {
+    ...message,
+    author: normalizedAuthor
+      ? {
+          ...normalizedAuthor,
+          id:
+            normalizedAuthor.id ||
+            normalizedAuthor._id ||
+            message?.author?.id ||
+            message?.author?._id,
+          username,
+          profilePicUrl,
+        }
+      : null,
+  };
+};
+
 const MessageListScreen = ({ route, navigation }) => {
   const { state } = useContext(Context);
   const currentUserId = state?.user?.id;
@@ -230,6 +280,11 @@ const MessageListScreen = ({ route, navigation }) => {
             if (targetIndex === -1) return prev;
 
             const existing = prev[targetIndex];
+            const normalizedMessage = enrichMessageAuthor(
+              message,
+              existing?.users,
+              state?.user
+            );
             const existingComments = Array.isArray(existing.comments)
               ? existing.comments
               : [];
@@ -240,16 +295,41 @@ const MessageListScreen = ({ route, navigation }) => {
             )
               ? existingComments.map((comment) =>
                   String(comment?.id || comment?._id) === String(incomingId)
-                    ? { ...comment, ...message }
+                    ? { ...comment, ...normalizedMessage }
                     : comment
                 )
-              : [...existingComments, message];
+              : [...existingComments, normalizedMessage];
+
+            const mergedUsers = Array.isArray(existing?.users)
+              ? existing.users.map((user) =>
+                  String(user?.id || user?._id) ===
+                  String(normalizedMessage?.author?.id || normalizedMessage?.author?._id)
+                    ? {
+                        ...user,
+                        profilePicUrl:
+                          user?.profilePicUrl || normalizedMessage?.author?.profilePicUrl,
+                        username: user?.username || normalizedMessage?.author?.username,
+                      }
+                    : user
+                )
+              : [];
+
+            const authorId =
+              normalizedMessage?.author?.id || normalizedMessage?.author?._id;
+            const hasAuthor = mergedUsers.some(
+              (user) => String(user?.id || user?._id) === String(authorId)
+            );
 
             const mergedRoom = {
               ...existing,
+              users:
+                hasAuthor || !normalizedMessage?.author
+                  ? mergedUsers
+                  : [...mergedUsers, normalizedMessage.author],
               comments: nextComments,
-              lastMessage: message,
-              lastMessageAt: message.createdAt || existing.lastMessageAt,
+              lastMessage: normalizedMessage,
+              lastMessageAt:
+                normalizedMessage?.createdAt || existing.lastMessageAt,
             };
 
             const remaining = prev.filter((_, index) => index !== targetIndex);
