@@ -1,6 +1,13 @@
 const { AuthenticationError } = require("apollo-server-express");
 
-const { User, Quote, Post, Like, Comment, Notification } = require("../../models");
+const {
+  User,
+  Quote,
+  Post,
+  Like,
+  Comment,
+  Notification,
+} = require("../../models");
 const { getDistanceFromCoords } = require("../../utils/helpers");
 const { findClosestCity } = require("../../utils/location");
 const {
@@ -156,10 +163,27 @@ module.exports = {
       venueType: notification.venueType,
       roomId: notification.roomId,
       roomName: notification.roomName,
-      createdAt: notification.createdAt?.toISOString?.() || notification.createdAt,
+      createdAt:
+        notification.createdAt?.toISOString?.() || notification.createdAt,
       read: Boolean(notification.read),
       dismissed: Boolean(notification.dismissed),
     }));
+  },
+  usersResolver: async (_, { limit = 10 }) => {
+    const safeLimit = Math.min(limit, 50);
+
+    const pipeline = [
+      // Optional: only users with an avatar
+      { $match: { profilePic: { $exists: true, $ne: null } } },
+      { $sample: { size: safeLimit } },
+    ];
+
+    const docs = await User.aggregate(pipeline);
+
+    // If you need `profilePic` populated (e.g., GridFS or a separate collection)
+    await User.populate(docs, { path: "profilePic" });
+
+    return docs;
   },
   getAllPostsResolver: async (root, args) => {
     const {

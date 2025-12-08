@@ -237,7 +237,7 @@ const typeDefs = gql`
     name: String
     isDirect: Boolean! # NEW
     createdAt: String
-    users: [User!]
+    users(limit: Int, offset: Int): [User!]
     comments: [Comment!]
     lastMessageAt: String # optional but nice
     lastMessage: Comment
@@ -323,7 +323,7 @@ const typeDefs = gql`
   type Query {
     me(token: String): User
     fetchMe(token: String, appleId: String): User!
-    users: [User!]
+    users(limit: Int, offset: Int): [User!]
     rooms: [Room!]
     room(id: ID!): Room
     getQuotes: [Quote!]!

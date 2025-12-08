@@ -72,6 +72,19 @@ export const FETCH_ME_QUERY = `
       }
       createdAt
       updatedAt
+  }
+}
+`;
+
+export const RANDOM_USERS_QUERY = `
+  query RandomUsers($limit: Int, $offset: Int) {
+    users(limit: $limit, offset: $offset) {
+      id
+      username
+      profilePicUrl
+      profilePic {
+        url
+      }
     }
   }
 `;
