@@ -160,6 +160,7 @@ export const MARK_DIRECT_ROOM_READ = `
       targetType
       author {
         id
+        profilePicUrl
       }
     }
   }
