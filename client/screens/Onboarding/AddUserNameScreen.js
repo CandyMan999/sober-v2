@@ -597,7 +597,7 @@ const UsernameScreen = ({ navigation, route }) => {
 
             <View style={styles.headerTextBlock}>
               <Text style={styles.appName}>
-                sober <Text style={styles.appAccent}>motivation</Text>
+                Sober <Text style={styles.appAccent}>Motivation</Text>
               </Text>
               <Text style={styles.tagline}>
                 Build a life you don’t want to numb.
@@ -678,10 +678,9 @@ const styles = StyleSheet.create({
   },
 
   appName: {
-    fontSize: 20,
-    fontWeight: "700",
-    letterSpacing: 1.2,
-    textTransform: "uppercase",
+    fontSize: 26,
+    fontWeight: "800",
+    letterSpacing: 0.8,
     color: textPrimary,
     textAlign: "left",
   },
