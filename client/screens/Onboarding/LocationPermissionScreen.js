@@ -206,7 +206,7 @@ const LocationPermissionScreen = ({ navigation }) => {
             <Image source={LogoIcon} style={styles.logo} resizeMode="contain" />
             <View>
               <Text style={styles.appName}>
-                sober <Text style={styles.appAccent}>motivation</Text>
+                Sober <Text style={styles.appAccent}>Motivation</Text>
               </Text>
               <Text style={styles.tagline}>Stay aware. Stay strong.</Text>
             </View>
@@ -274,10 +274,10 @@ const styles = StyleSheet.create({
   headerRow: { flexDirection: "row", alignItems: "center" },
   logo: { width: 44, height: 44, borderRadius: 10, marginRight: 12 },
   appName: {
-    fontSize: 20,
-    fontWeight: "700",
+    fontSize: 26,
+    fontWeight: "800",
+    letterSpacing: 0.8,
     color: textPrimary,
-    textTransform: "uppercase",
   },
   appAccent: { color: accent },
   tagline: { marginTop: 6, fontSize: 14, color: textSecondary },

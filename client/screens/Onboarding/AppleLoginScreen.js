@@ -15,19 +15,21 @@ import {
   Dimensions,
 } from "react-native";
 import * as AppleAuthentication from "expo-apple-authentication";
+import * as Location from "expo-location";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { LinearGradient } from "expo-linear-gradient";
 import Avatar from "../../components/Avatar";
 
 import { useClient } from "../../client";
-import { APPLE_LOGIN_MUTATION } from "../../GraphQL/mutations";
-import { RANDOM_USERS_QUERY } from "../../GraphQL/queries";
+import { APPLE_LOGIN_MUTATION, UPDATE_USER_PROFILE_MUTATION } from "../../GraphQL/mutations";
+import { FETCH_ME_QUERY, RANDOM_USERS_QUERY } from "../../GraphQL/queries";
 import Context from "../../context";
 import LogoIcon from "../../assets/icon.png";
 import { COLORS } from "../../constants/colors";
 import { getToken } from "../../utils/helpers";
 
 const APPLE_ID_KEY = "appleUserId";
+const MIN_USERNAME_LENGTH = 3;
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
 
 const { primaryBackground, textPrimary, textSecondary, accent } = COLORS;
@@ -62,6 +64,137 @@ const AppleLoginScreen = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
   const [facesLoading, setFacesLoading] = useState(false);
   const [featuredUsers, setFeaturedUsers] = useState([]);
+
+  const updateLocationIfGranted = useCallback(
+    async (token) => {
+      try {
+        const { status } = await Location.getForegroundPermissionsAsync();
+
+        if (status !== "granted") {
+          return;
+        }
+
+        const position = await Location.getCurrentPositionAsync({
+          accuracy: Location.Accuracy.Lowest,
+        });
+
+        const coords = position?.coords;
+
+        if (!coords?.latitude || !coords?.longitude) {
+          return;
+        }
+
+        await client.request(UPDATE_USER_PROFILE_MUTATION, {
+          token,
+          lat: coords.latitude,
+          long: coords.longitude,
+        });
+      } catch (err) {
+        console.log("Unable to refresh location:", err);
+      }
+    },
+    [client]
+  );
+
+  const routeFromProfile = useCallback(
+    async ({ me, token, appleId }) => {
+      if (!me) {
+        navigation.replace("AddUserName", { appleId, pushToken: token });
+        return;
+      }
+
+      const hasUsername =
+        me.username && me.username.trim().length >= MIN_USERNAME_LENGTH;
+
+      if (!hasUsername) {
+        navigation.replace("AddUserName", {
+          appleId,
+          username: me.username || "",
+          photoURI: me.profilePicUrl || null,
+          pushToken: token,
+        });
+        return;
+      }
+
+      dispatch({ type: "SET_USER", payload: me });
+
+      const { status, scope } = await Location.getForegroundPermissionsAsync();
+      const hasAlwaysPermission = status === "granted" && scope === "always";
+
+      if (hasAlwaysPermission && me.sobrietyStartAt && me.profilePic) {
+        await updateLocationIfGranted(token);
+
+        navigation.reset({
+          index: 0,
+          routes: [{ name: "MainTabs" }],
+        });
+        return;
+      }
+
+      await updateLocationIfGranted(token);
+
+      const nextRouteName = !me.profilePic
+        ? "AddPhoto"
+        : !me.sobrietyStartAt
+        ? "AddSobrietyDate"
+        : "LocationPermission";
+
+      navigation.reset({
+        index: 0,
+        routes: [
+          {
+            name: nextRouteName,
+            params: {
+              username: me.username,
+              photoURI: me.profilePicUrl || null,
+              pushToken: token,
+            },
+          },
+        ],
+      });
+    },
+    [dispatch, navigation, updateLocationIfGranted]
+  );
+
+  useEffect(() => {
+    let cancelled = false;
+
+    const autoNavigateIfPossible = async () => {
+      try {
+        const [storedAppleId, token] = await Promise.all([
+          AsyncStorage.getItem(APPLE_ID_KEY),
+          getToken(),
+        ]);
+
+        if (!storedAppleId || !token) return;
+
+        setLoading(true);
+
+        const data = await client.request(FETCH_ME_QUERY, {
+          appleId: storedAppleId,
+          token,
+        });
+
+        if (cancelled) return;
+
+        await routeFromProfile({
+          me: data?.fetchMe,
+          token,
+          appleId: storedAppleId,
+        });
+      } catch (err) {
+        console.log("Auto navigation check failed:", err);
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    };
+
+    autoNavigateIfPossible();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [client, routeFromProfile]);
 
   const handleAppleSignIn = useCallback(async () => {
     try {
