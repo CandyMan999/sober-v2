@@ -38,9 +38,14 @@ const buildRepliesPopulate = (depth = 1) => {
 
 module.exports = {
   fetchMeResolver: async (root, args, ctx) => {
-    const { token, appleId } = args;
+    const appleId = ctx?.appleId || args?.appleId;
+    const token = ctx?.token || args?.token;
 
     try {
+      if (ctx?.currentUser) {
+        return ctx.currentUser;
+      }
+
       if (!token && !appleId) {
         throw new AuthenticationError("Token or Apple ID is required");
       }
