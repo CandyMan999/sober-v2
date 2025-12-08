@@ -3,6 +3,7 @@ import React, {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -18,19 +19,20 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Swipeable } from "react-native-gesture-handler";
-import { useSubscription } from "@apollo/client/react";
 import { formatDistanceToNow } from "date-fns";
 import { LiquidGlassView } from "@callstack/liquid-glass";
+import { SubscriptionClient } from "subscriptions-transport-ws";
 
 import Avatar from "../../components/Avatar";
 import Context from "../../context";
 import {
   DELETE_DIRECT_ROOM,
-  DIRECT_ROOM_UPDATED,
+  DIRECT_MESSAGE_SUBSCRIPTION,
   DIRECT_ROOM_WITH_USER,
   MY_DIRECT_ROOMS,
 } from "../../GraphQL/directMessages";
 import { useClient } from "../../client";
+import { GRAPHQL_URI } from "../../config/endpoint";
 
 const parseDateValue = (value) => {
   if (!value) return null;
@@ -51,6 +53,8 @@ const timeAgo = (timestamp) => {
   return `${formatDistanceToNow(parsed)} ago`;
 };
 
+const buildWsUrl = () => GRAPHQL_URI.replace(/^http/, "ws");
+
 const SOBER_COMPANION_ID = "693394413ea6a3e530516505";
 
 const MessageListScreen = ({ route, navigation }) => {
@@ -63,6 +67,8 @@ const MessageListScreen = ({ route, navigation }) => {
   const [companionUser, setCompanionUser] = useState(null);
   const [loading, setLoading] = useState(false);
   const [deletingRoomIds, setDeletingRoomIds] = useState({});
+  const wsClientRef = useRef(null);
+  const roomSubscriptionsRef = useRef({});
 
   const deriveLastMessageInfo = useCallback((room, fallbackIndex = 0) => {
     const lastComment = room?.comments?.[room.comments.length - 1];
@@ -177,49 +183,113 @@ const MessageListScreen = ({ route, navigation }) => {
     };
   }, [client, currentUserId]);
 
-  useSubscription(DIRECT_ROOM_UPDATED, {
-    skip: !currentUserId,
-    onData: ({ data: subscriptionData }) => {
-      const updatedRoom = subscriptionData?.data?.directRoomUpdated;
-      if (!updatedRoom) return;
+  useEffect(() => {
+    const wsUrl = buildWsUrl();
+    let wsClient;
 
-      setRooms((prev) => {
-        const updatedId = updatedRoom.id || updatedRoom._id;
-        if (!updatedId) return prev;
-
-        const participants = updatedRoom.users || [];
-        const involvesCurrentUser = participants.some(
-          (participant) =>
-            participant &&
-            String(participant.id || participant._id) === String(currentUserId)
-        );
-
-        if (!involvesCurrentUser) return prev;
-
-        const existingIndex = prev.findIndex(
-          (room) => String(room.id || room._id) === String(updatedId)
-        );
-
-        const mergedRoom =
-          existingIndex !== -1
-            ? { ...prev[existingIndex], ...updatedRoom, id: updatedId }
-            : { ...updatedRoom, id: updatedId };
-
-        if (existingIndex !== -1) {
-          const withoutExisting = prev.filter(
-            (room) => String(room.id || room._id) !== String(updatedId)
-          );
-          return [
-            ...withoutExisting.slice(0, existingIndex),
-            mergedRoom,
-            ...withoutExisting.slice(existingIndex),
-          ];
-        }
-
-        return [...prev, mergedRoom];
+    try {
+      wsClient = new SubscriptionClient(wsUrl, {
+        reconnect: true,
       });
-    },
-  });
+      wsClientRef.current = wsClient;
+    } catch (error) {
+      console.log("Failed to init direct message websocket", error);
+      return undefined;
+    }
+
+    return () => {
+      if (wsClient) {
+        wsClient.close();
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    const wsClient = wsClientRef.current;
+    if (!wsClient || !currentUserId) return undefined;
+
+    const activeRoomIds = rooms
+      .map((room) => String(room.id || room._id))
+      .filter(Boolean);
+
+    Object.keys(roomSubscriptionsRef.current).forEach((roomId) => {
+      if (!activeRoomIds.includes(roomId)) {
+        roomSubscriptionsRef.current[roomId]?.unsubscribe?.();
+        delete roomSubscriptionsRef.current[roomId];
+      }
+    });
+
+    activeRoomIds.forEach((roomId) => {
+      if (roomSubscriptionsRef.current[roomId]) return;
+
+      const observable = wsClient.request({
+        query: DIRECT_MESSAGE_SUBSCRIPTION,
+        variables: { roomId },
+      });
+
+      const subscription = observable.subscribe({
+        next: ({ data }) => {
+          const message = data?.directMessageReceived;
+          if (!message) return;
+
+          setRooms((prev) => {
+            const index = prev.findIndex(
+              (room) => String(room.id || room._id) === String(roomId)
+            );
+
+            if (index === -1) return prev;
+
+            const room = prev[index];
+            const existingComments = room.comments || [];
+            const existingIndex = existingComments.findIndex(
+              (comment) => comment.id === message.id
+            );
+
+            const updatedComments =
+              existingIndex !== -1
+                ? existingComments.map((comment, idx) =>
+                    idx === existingIndex ? { ...comment, ...message } : comment
+                  )
+                : [...existingComments, message];
+
+            const updatedRoom = {
+              ...room,
+              comments: updatedComments,
+              lastMessage: message,
+              lastMessageAt: message.createdAt,
+            };
+
+            const nextRooms = [...prev];
+            nextRooms[index] = updatedRoom;
+
+            return nextRooms.sort((a, b) => {
+              const aTime =
+                parseDateValue(a.lastMessageAt)?.getTime() ||
+                parseDateValue(a.lastMessage?.createdAt)?.getTime() ||
+                0;
+              const bTime =
+                parseDateValue(b.lastMessageAt)?.getTime() ||
+                parseDateValue(b.lastMessage?.createdAt)?.getTime() ||
+                0;
+              return bTime - aTime;
+            });
+          });
+        },
+        error: (error) => {
+          console.log("Direct message subscription error", error);
+        },
+      });
+
+      roomSubscriptionsRef.current[roomId] = subscription;
+    });
+
+    return () => {
+      activeRoomIds.forEach((roomId) => {
+        roomSubscriptionsRef.current[roomId]?.unsubscribe?.();
+        delete roomSubscriptionsRef.current[roomId];
+      });
+    };
+  }, [rooms, currentUserId]);
 
   const handleDeleteRoom = useCallback(
     async (roomId) => {
