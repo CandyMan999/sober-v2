@@ -802,22 +802,27 @@ const DirectMessageScreen = ({ route, navigation }) => {
               <Text style={[styles.timestamp, isMine && styles.timestampMine]}>
                 {formatTime(item.createdAt)}
               </Text>
-              {showReadReceipt ? (
-                <View style={styles.readReceiptRow}>
-                  <Ionicons name={receiptIcon} size={14} color="#cbd5e1" />
-                  <Text
-                    style={[
-                      styles.readReceipt,
-                      isMine ? styles.readReceiptMine : styles.readReceiptTheirs,
-                    ]}
-                  >
-                    {receiptText}
-                  </Text>
-                </View>
-              ) : null}
             </LiquidGlassView>
           </TouchableOpacity>
-        </View>
+          {showReadReceipt ? (
+            <View
+              style={[
+                styles.readReceiptRow,
+                isMine ? styles.readReceiptRowMine : styles.readReceiptRowTheirs,
+              ]}
+            >
+              <Ionicons name={receiptIcon} size={14} color="#cbd5e1" />
+              <Text
+                style={[
+                  styles.readReceipt,
+                  isMine ? styles.readReceiptMine : styles.readReceiptTheirs,
+                ]}
+              >
+                {receiptText}
+              </Text>
+            </View>
+          ) : null}
+          </View>
         {isMine && (
           <Avatar
             uri={state?.user?.profilePicUrl}
@@ -1116,8 +1121,15 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 4,
-    marginTop: 2,
+    marginTop: 6,
+  },
+  readReceiptRowMine: {
     alignSelf: "flex-end",
+    marginRight: 6,
+  },
+  readReceiptRowTheirs: {
+    alignSelf: "flex-start",
+    marginLeft: 6,
   },
   readReceipt: {
     fontSize: 10,

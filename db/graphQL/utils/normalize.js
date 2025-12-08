@@ -1,5 +1,12 @@
 const { normalizeCommentForGraphQL } = require("../subscription/subscription");
 
+const resolveProfilePicUrl = (userDoc) => {
+  if (!userDoc) return null;
+
+  const raw = userDoc.toObject ? userDoc.toObject() : userDoc;
+  return raw.profilePicUrl || raw.profilePic?.url || null;
+};
+
 const normalizeUserForGraphQL = (userDoc) => {
   if (!userDoc) return null;
 
@@ -16,6 +23,7 @@ const normalizeUserForGraphQL = (userDoc) => {
     ...raw,
     id: raw.id || raw._id?.toString?.(),
     messageStyle,
+    profilePicUrl: resolveProfilePicUrl(raw),
   };
 };
 

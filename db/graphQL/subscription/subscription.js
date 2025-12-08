@@ -9,6 +9,13 @@ const DIRECT_TYPING = "DIRECT_TYPING";
 const ROOM_COMMENT_CREATED = "ROOM_COMMENT_CREATED";
 const ROOMS_UPDATED = "ROOMS_UPDATED";
 
+const resolveProfilePicUrl = (userLike) => {
+  if (!userLike) return null;
+
+  const source = userLike.toObject ? userLike.toObject() : userLike;
+  return source.profilePicUrl || source.profilePic?.url || null;
+};
+
 /**
  * Normalize a comment for GraphQL.
  */
@@ -27,6 +34,8 @@ const normalizeCommentForGraphQL = (commentDoc) => {
       ? author.messageStyle
       : undefined;
 
+  const profilePicUrl = resolveProfilePicUrl(author);
+
   return {
     ...raw,
     id: raw.id || raw._id?.toString?.(),
@@ -36,6 +45,7 @@ const normalizeCommentForGraphQL = (commentDoc) => {
           ...author,
           id: author.id || author._id?.toString?.(),
           messageStyle: authorStyle,
+          profilePicUrl,
         }
       : null,
   };
