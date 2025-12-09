@@ -128,6 +128,9 @@ export default function App() {
   const [previewMuted, setPreviewMuted] = useState(true);
   const [previewShowComments, setPreviewShowComments] = useState(false);
   const [navigationReady, setNavigationReady] = useState(false);
+  const locationTrackingAllowed =
+    !!state?.user &&
+    state?.user?.notificationSettings?.locationTrackingEnabled !== false;
 
   // Notification listeners
   const notificationListener = useRef();
@@ -331,6 +334,8 @@ export default function App() {
   }, [handleNotificationNavigation]);
 
   useEffect(() => {
+    if (!locationTrackingAllowed) return;
+
     const ensureLocationTracking = async () => {
       try {
         console.log("[SoberMotion] Ensuring motion tracking setup from App.js");
@@ -344,7 +349,7 @@ export default function App() {
     };
 
     ensureLocationTracking();
-  }, []);
+  }, [locationTrackingAllowed]);
 
   useEffect(() => {
     if (!navigationReady) return undefined;
