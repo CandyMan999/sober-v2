@@ -73,7 +73,10 @@ const MessageBubble = ({
     if (!currentUsername) return false;
     const content = message?.text || "";
     const mentionRegex = new RegExp(
-      `@${currentUsername.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}(?=\\b|[^A-Za-z0-9_])`,
+      `@${currentUsername.replace(
+        /[.*+?^${}()|[\]\\]/g,
+        "\\$&"
+      )}(?=\\b|[^A-Za-z0-9_])`,
       "i"
     );
     return mentionRegex.test(content);
@@ -188,7 +191,8 @@ const MessageBubble = ({
                     {
                       borderColor: bubbleColors.borderColor || "#ffffff",
                       backgroundColor:
-                        bubbleColors.backgroundColor || "rgba(255,255,255,0.12)",
+                        bubbleColors.backgroundColor ||
+                        "rgba(255,255,255,0.12)",
                     },
                   ]
                 : null,
@@ -440,7 +444,7 @@ const styles = StyleSheet.create({
     elevation: 14,
   },
   bubbleMentionGlow: {
-    borderWidth: 3,
+    borderWidth: 2,
     shadowRadius: 24,
     shadowOpacity: 1,
     elevation: 18,
