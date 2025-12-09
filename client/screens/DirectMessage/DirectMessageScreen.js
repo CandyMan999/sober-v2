@@ -333,20 +333,19 @@ const DirectMessageScreen = ({ route, navigation }) => {
 
         if (updatedMessages.length) {
           setMessages((prev) => {
-            const updatesById = new Map(
+            const updatedIds = new Set(
               updatedMessages
-                .map((message) => normalizeMessage(message))
-                .filter((message) => message?.id)
-                .map((message) => [message.id, message])
+                .map((message) => resolveMessageId(normalizeMessage(message)))
+                .filter(Boolean)
             );
 
             const next = prev.map((message) => {
               const normalized = normalizeMessage(message);
               const messageId = resolveMessageId(normalized);
 
-              return messageId && updatesById.has(messageId)
-                ? { ...normalized, ...updatesById.get(messageId) }
-                : normalized;
+              if (!messageId || !updatedIds.has(messageId)) return normalized;
+
+              return { ...normalized, isRead: true };
             });
 
             return next
