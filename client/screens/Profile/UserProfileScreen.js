@@ -490,6 +490,8 @@ const UserProfileScreen = ({ route, navigation }) => {
           likesTotal,
           posts: posts || [],
           quotes: quotes || [],
+          postCursor: postCursorRef.current,
+          hasMorePosts,
         });
         break;
       case "Notifications":
