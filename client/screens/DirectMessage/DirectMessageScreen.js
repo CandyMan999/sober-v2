@@ -71,6 +71,39 @@ const buildWsUrl = () => GRAPHQL_URI.replace(/^http/, "ws");
 const SOBER_COMPANION_ID = "693394413ea6a3e530516505";
 const COMPANION_ACCENT = "#34d399";
 
+const resolveMessageId = (message) =>
+  message?.id ||
+  message?._id ||
+  (message?.author?.id && message?.createdAt
+    ? `${message.author.id}-${message.createdAt}`
+    : null);
+
+const normalizeMessage = (message) => {
+  if (!message) return null;
+
+  const id = resolveMessageId(message);
+  const createdAt = message.createdAt || message._createdAt || message._ts;
+  const likesCount = message?.likesCount ?? 0;
+  const author = message?.author
+    ? {
+        ...message.author,
+        id: message.author.id || message.author._id,
+      }
+    : null;
+
+  return {
+    ...message,
+    id,
+    createdAt,
+    likesCount,
+    author,
+    liked:
+      typeof message?.liked === "boolean"
+        ? message.liked
+        : likesCount > 0 || message?.liked === true,
+  };
+};
+
 const DirectMessageScreen = ({ route, navigation }) => {
   const { state } = useContext(Context);
   const client = useClient();
@@ -106,35 +139,114 @@ const DirectMessageScreen = ({ route, navigation }) => {
   const tapTimestamps = useRef({});
   const markingReadRef = useRef(false);
 
+  const ensureAnimValue = (store, key, initialValue) => {
+    if (!store.current[key]) {
+      store.current[key] = new Animated.Value(initialValue);
+    }
+    return store.current[key];
+  };
+
+  const getLikeScale = (messageId) => ensureAnimValue(likeScales, messageId, 0);
+  const getLikeOpacity = (messageId) => ensureAnimValue(likeOpacities, messageId, 0);
+
+  const syncLikeVisualState = useCallback((messageId, liked) => {
+    if (!messageId) return;
+
+    const scale = getLikeScale(messageId);
+    const opacity = getLikeOpacity(messageId);
+
+    scale.setValue(liked ? 1 : 0);
+    opacity.setValue(liked ? 1 : 0);
+  }, []);
+
+  const runLikeAnimation = useCallback((messageId, activating) => {
+    if (!messageId) return;
+
+    const scale = getLikeScale(messageId);
+    const opacity = getLikeOpacity(messageId);
+
+    if (activating) {
+      scale.setValue(0.4);
+      opacity.setValue(0);
+
+      Animated.parallel([
+        Animated.spring(scale, {
+          toValue: 1,
+          friction: 5,
+          tension: 120,
+          useNativeDriver: true,
+        }),
+        Animated.sequence([
+          Animated.timing(opacity, {
+            toValue: 1,
+            duration: 80,
+            easing: Easing.out(Easing.quad),
+            useNativeDriver: true,
+          }),
+          Animated.timing(opacity, {
+            toValue: 1,
+            duration: 180,
+            useNativeDriver: true,
+          }),
+        ]),
+      ]).start();
+    } else {
+      Animated.parallel([
+        Animated.timing(scale, {
+          toValue: 0,
+          duration: 160,
+          easing: Easing.out(Easing.quad),
+          useNativeDriver: true,
+        }),
+        Animated.timing(opacity, {
+          toValue: 0,
+          duration: 120,
+          useNativeDriver: true,
+        }),
+      ]).start();
+    }
+  }, []);
+
   const syncMessagesFromRoom = useCallback(
     (roomData) => {
       if (!roomData?.comments) return;
 
       setMessages((prev) => {
-        const incomingById = new Map(prev.map((msg) => [msg.id, msg]));
+        const incomingById = new Map(
+          prev.map((msg) => [resolveMessageId(msg), normalizeMessage(msg)])
+        );
+
         roomData.comments.forEach((msg) => {
-          const previous = incomingById.get(msg.id);
-          const likesCount = msg?.likesCount ?? previous?.likesCount ?? 0;
+          const normalized = normalizeMessage(msg);
+          if (!normalized?.id) return;
+
+          const previous = incomingById.get(normalized.id);
+          const likesCount =
+            normalized?.likesCount ?? previous?.likesCount ?? normalized?.likesCount;
           const liked =
-            typeof msg?.liked === "boolean"
-              ? msg.liked
+            typeof normalized?.liked === "boolean"
+              ? normalized.liked
               : typeof previous?.liked === "boolean"
               ? previous.liked
               : likesCount > 0;
-          syncLikeVisualState(msg.id, liked);
-          incomingById.set(msg.id, {
+
+          syncLikeVisualState(normalized.id, liked);
+
+          incomingById.set(normalized.id, {
             ...previous,
-            ...msg,
+            ...normalized,
             likesCount,
             liked,
           });
         });
 
-        return [...incomingById.values()].sort(
-          (a, b) =>
-            (parseDateValue(a.createdAt)?.getTime() || 0) -
-            (parseDateValue(b.createdAt)?.getTime() || 0)
-        );
+        return [...incomingById.values()]
+          .filter((message) => message?.id)
+          .sort(
+            (a, b) =>
+              (parseDateValue(a.createdAt)?.getTime() || 0) -
+              (parseDateValue(b.createdAt)?.getTime() || 0)
+          );
       });
     },
     [syncLikeVisualState]
@@ -222,20 +334,28 @@ const DirectMessageScreen = ({ route, navigation }) => {
         if (updatedMessages.length) {
           setMessages((prev) => {
             const updatesById = new Map(
-              updatedMessages.map((message) => [message.id, message])
+              updatedMessages
+                .map((message) => normalizeMessage(message))
+                .filter((message) => message?.id)
+                .map((message) => [message.id, message])
             );
 
-            const next = prev.map((message) =>
-              updatesById.has(message.id)
-                ? { ...message, ...updatesById.get(message.id) }
-                : message
-            );
+            const next = prev.map((message) => {
+              const normalized = normalizeMessage(message);
+              const messageId = resolveMessageId(normalized);
 
-            return next.sort(
-              (a, b) =>
-                (parseDateValue(a.createdAt)?.getTime() || 0) -
-                (parseDateValue(b.createdAt)?.getTime() || 0)
-            );
+              return messageId && updatesById.has(messageId)
+                ? { ...normalized, ...updatesById.get(messageId) }
+                : normalized;
+            });
+
+            return next
+              .filter((message) => message?.id)
+              .sort(
+                (a, b) =>
+                  (parseDateValue(a.createdAt)?.getTime() || 0) -
+                  (parseDateValue(b.createdAt)?.getTime() || 0)
+              );
           });
         }
       } catch (error) {
@@ -274,23 +394,23 @@ const DirectMessageScreen = ({ route, navigation }) => {
     const messageSubscription = messageObservable.subscribe({
       next: ({ data }) => {
         try {
-          const incoming = data?.directMessageReceived;
+          const incoming = normalizeMessage(data?.directMessageReceived);
 
-          if (!incoming) return;
+          if (!incoming?.id) return;
 
           setMessages((prev) => {
             const incomingLiked =
               (incoming?.liked ?? false) || (incoming?.likesCount || 0) > 0;
 
             const existingIndex = prev.findIndex(
-              (msg) => msg.id === incoming.id
+              (msg) => resolveMessageId(msg) === incoming.id
             );
 
             if (existingIndex !== -1) {
-              const existing = prev[existingIndex];
+              const existing = normalizeMessage(prev[existingIndex]);
               const nextLiked = incomingLiked;
               const nextLikesCount =
-                incoming?.likesCount ?? existing.likesCount ?? 0;
+                incoming?.likesCount ?? existing?.likesCount ?? 0;
 
               const updated = {
                 ...existing,
@@ -299,19 +419,22 @@ const DirectMessageScreen = ({ route, navigation }) => {
                 likesCount: nextLikesCount,
               };
 
-              if (!existing.liked && nextLiked)
+              if (!existing?.liked && nextLiked)
                 runLikeAnimation(incoming.id, true);
-              if (existing.liked && !nextLiked)
+              if (existing?.liked && !nextLiked)
                 runLikeAnimation(incoming.id, false);
               syncLikeVisualState(incoming.id, nextLiked);
 
               const nextList = [...prev];
               nextList[existingIndex] = updated;
-              return nextList.sort(
-                (a, b) =>
-                  (parseDateValue(a.createdAt)?.getTime() || 0) -
-                  (parseDateValue(b.createdAt)?.getTime() || 0)
-              );
+              return nextList
+                .map((message) => normalizeMessage(message))
+                .filter((message) => message?.id)
+                .sort(
+                  (a, b) =>
+                    (parseDateValue(a.createdAt)?.getTime() || 0) -
+                    (parseDateValue(b.createdAt)?.getTime() || 0)
+                );
             }
 
             if (incomingLiked) {
@@ -320,18 +443,14 @@ const DirectMessageScreen = ({ route, navigation }) => {
 
             syncLikeVisualState(incoming.id, incomingLiked);
 
-            return [
-              ...prev,
-              {
-                ...incoming,
-                liked: incomingLiked,
-                likesCount: incoming?.likesCount ?? 0,
-              },
-            ].sort(
-              (a, b) =>
-                (parseDateValue(a.createdAt)?.getTime() || 0) -
-                (parseDateValue(b.createdAt)?.getTime() || 0)
-            );
+            return [...prev, incoming]
+              .map((message) => normalizeMessage(message))
+              .filter((message) => message?.id)
+              .sort(
+                (a, b) =>
+                  (parseDateValue(a.createdAt)?.getTime() || 0) -
+                  (parseDateValue(b.createdAt)?.getTime() || 0)
+              );
           });
         } catch (err) {
           console.error("[DM] WS message handler failed:", err);
@@ -491,18 +610,22 @@ const DirectMessageScreen = ({ route, navigation }) => {
         const newMessages = [
           payload?.userMessage,
           payload?.assistantMessage,
-        ].filter(Boolean);
+        ]
+          .map((msg) => normalizeMessage(msg))
+          .filter((msg) => msg?.id);
 
         if (newMessages.length) {
           setMessages((prev) => {
-            const merged = new Map(prev.map((msg) => [msg.id, msg]));
+            const merged = new Map(
+              prev
+                .map((msg) => normalizeMessage(msg))
+                .filter((msg) => msg?.id)
+                .map((msg) => [msg.id, msg])
+            );
             newMessages.forEach((msg) => {
-              if (!msg?.id) return;
               merged.set(msg.id, {
                 ...merged.get(msg.id),
                 ...msg,
-                liked: msg?.liked ?? (msg?.likesCount || 0) > 0,
-                likesCount: msg?.likesCount ?? 0,
               });
             });
 
@@ -532,22 +655,20 @@ const DirectMessageScreen = ({ route, navigation }) => {
         text,
       });
 
-      const newMessage = response?.sendDirectMessage;
-      if (newMessage) {
+      const newMessage = normalizeMessage(response?.sendDirectMessage);
+      if (newMessage?.id) {
         setMessages((prev) => {
-          if (prev.find((msg) => msg.id === newMessage.id)) return prev;
-          return [
-            ...prev,
-            {
-              ...newMessage,
-              liked: newMessage?.liked ?? (newMessage?.likesCount || 0) > 0,
-              likesCount: newMessage?.likesCount ?? 0,
-            },
-          ].sort(
-            (a, b) =>
-              (parseDateValue(a.createdAt)?.getTime() || 0) -
-              (parseDateValue(b.createdAt)?.getTime() || 0)
-          );
+          if (prev.some((msg) => resolveMessageId(msg) === newMessage.id))
+            return prev;
+
+          return [...prev, newMessage]
+            .map((message) => normalizeMessage(message))
+            .filter((message) => message?.id)
+            .sort(
+              (a, b) =>
+                (parseDateValue(a.createdAt)?.getTime() || 0) -
+                (parseDateValue(b.createdAt)?.getTime() || 0)
+            );
         });
       }
 
@@ -561,74 +682,12 @@ const DirectMessageScreen = ({ route, navigation }) => {
   }, [client, currentUserId, isCompanionChat, messageText, targetUserId]);
 
   // 10) Renderers
-  const ensureAnimValue = (store, key, initialValue) => {
-    if (!store.current[key]) {
-      store.current[key] = new Animated.Value(initialValue);
-    }
-    return store.current[key];
-  };
-
-  const getLikeScale = (messageId) => ensureAnimValue(likeScales, messageId, 0);
-  const getLikeOpacity = (messageId) =>
-    ensureAnimValue(likeOpacities, messageId, 0);
-
-  const syncLikeVisualState = useCallback((messageId, liked) => {
-    const scale = getLikeScale(messageId);
-    const opacity = getLikeOpacity(messageId);
-
-    scale.setValue(liked ? 1 : 0);
-    opacity.setValue(liked ? 1 : 0);
-  }, []);
-
-  const runLikeAnimation = useCallback((messageId, activating) => {
-    const scale = getLikeScale(messageId);
-    const opacity = getLikeOpacity(messageId);
-
-    if (activating) {
-      scale.setValue(0.4);
-      opacity.setValue(0);
-
-      Animated.parallel([
-        Animated.spring(scale, {
-          toValue: 1,
-          friction: 5,
-          tension: 120,
-          useNativeDriver: true,
-        }),
-        Animated.sequence([
-          Animated.timing(opacity, {
-            toValue: 1,
-            duration: 80,
-            easing: Easing.out(Easing.quad),
-            useNativeDriver: true,
-          }),
-          Animated.timing(opacity, {
-            toValue: 1,
-            duration: 180,
-            useNativeDriver: true,
-          }),
-        ]),
-      ]).start();
-    } else {
-      Animated.parallel([
-        Animated.timing(scale, {
-          toValue: 0,
-          duration: 160,
-          easing: Easing.out(Easing.quad),
-          useNativeDriver: true,
-        }),
-        Animated.timing(opacity, {
-          toValue: 0,
-          duration: 120,
-          useNativeDriver: true,
-        }),
-      ]).start();
-    }
-  }, []);
 
   const toggleMessageLike = useCallback(
     async (messageId) => {
-      const message = messages.find((msg) => msg.id === messageId);
+      const message = messages
+        .map((msg) => normalizeMessage(msg))
+        .find((msg) => msg?.id === messageId);
       if (!message) return;
 
       const isMine = String(message.author?.id) === String(currentUserId);
@@ -639,18 +698,19 @@ const DirectMessageScreen = ({ route, navigation }) => {
 
       setMessages((prev) =>
         prev.map((current) => {
-          if (current.id !== messageId) return current;
-          previousLiked = current.liked;
-          previousLikesCount = current.likesCount || 0;
-          const nextLiked = !current.liked;
+          const normalized = normalizeMessage(current);
+          if (normalized?.id !== messageId) return normalized || current;
+          previousLiked = normalized?.liked;
+          previousLikesCount = normalized?.likesCount || 0;
+          const nextLiked = !normalized?.liked;
           const likesCount = Math.max(
             0,
-            (current.likesCount || 0) + (nextLiked ? 1 : -1)
+            (normalized?.likesCount || 0) + (nextLiked ? 1 : -1)
           );
 
           runLikeAnimation(messageId, nextLiked);
 
-          return { ...current, liked: nextLiked, likesCount };
+          return { ...normalized, liked: nextLiked, likesCount };
         })
       );
 
@@ -666,21 +726,23 @@ const DirectMessageScreen = ({ route, navigation }) => {
         if (payload) {
           setMessages((prev) =>
             prev.map((message) => {
-              if (message.id !== messageId) return message;
+              const normalized = normalizeMessage(message);
+              if (normalized?.id !== messageId) return normalized || message;
 
               const nextLiked = payload.likesCount > 0;
-              const likesCount = payload.likesCount ?? message.likesCount ?? 0;
+              const likesCount =
+                payload.likesCount ?? normalized?.likesCount ?? 0;
 
-              if (!message.liked && nextLiked) {
+              if (!normalized?.liked && nextLiked) {
                 runLikeAnimation(messageId, true);
               }
-              if (message.liked && !nextLiked) {
+              if (normalized?.liked && !nextLiked) {
                 runLikeAnimation(messageId, false);
               }
 
               syncLikeVisualState(messageId, nextLiked);
 
-              return { ...message, liked: nextLiked, likesCount };
+              return { ...normalized, liked: nextLiked, likesCount };
             })
           );
         }
@@ -688,11 +750,12 @@ const DirectMessageScreen = ({ route, navigation }) => {
         console.error("Failed to toggle message like", err);
         setMessages((prev) =>
           prev.map((message) => {
-            if (message.id !== messageId) return message;
+            const normalized = normalizeMessage(message);
+            if (normalized?.id !== messageId) return normalized || message;
             // revert optimistic toggle
             syncLikeVisualState(messageId, previousLiked);
             return {
-              ...message,
+              ...normalized,
               liked: previousLiked,
               likesCount: previousLikesCount,
             };
@@ -705,6 +768,8 @@ const DirectMessageScreen = ({ route, navigation }) => {
 
   const handleBubblePress = useCallback(
     (messageId, authorId) => {
+      if (!messageId) return;
+
       if (String(authorId) === String(currentUserId)) return;
 
       const now = Date.now();
@@ -719,18 +784,20 @@ const DirectMessageScreen = ({ route, navigation }) => {
   );
 
   const renderMessage = ({ item }) => {
-    const isMine = String(item.author?.id) === String(currentUserId);
+    const normalized = normalizeMessage(item);
+    const messageId = resolveMessageId(normalized);
+    const isMine = String(normalized?.author?.id) === String(currentUserId);
     const isCompanionAuthor =
-      String(item.author?.id || item.author?._id) ===
+      String(normalized?.author?.id || normalized?.author?._id) ===
       String(SOBER_COMPANION_ID);
     const isLatestMine =
-      isMine && lastSentMessage && lastSentMessage.id === item.id;
+      isMine && lastSentMessage && resolveMessageId(lastSentMessage) === messageId;
     const companionHalo =
       isCompanionAuthor && !isMine
         ? ["#bef264", "#34d399", "#22d3ee"]
         : undefined;
-    const likeScale = getLikeScale(item.id);
-    const likeOpacity = getLikeOpacity(item.id);
+    const likeScale = getLikeScale(messageId);
+    const likeOpacity = getLikeOpacity(messageId);
     const bubbleTint = isMine
       ? "rgba(56,189,248,0.25)"
       : isCompanionAuthor
@@ -741,11 +808,11 @@ const DirectMessageScreen = ({ route, navigation }) => {
       <View style={[styles.messageRow, isMine && styles.messageRowMine]}>
         {!isMine && (
           <Avatar
-            uri={item.author?.profilePicUrl}
+            uri={normalized?.author?.profilePicUrl}
             haloColors={companionHalo}
             size={34}
-            userId={item.author?.id || item.author?._id}
-            username={item.author?.username || username}
+            userId={normalized?.author?.id || normalized?.author?._id}
+            username={normalized?.author?.username || username}
             style={styles.messageAvatar}
           />
         )}
@@ -756,19 +823,19 @@ const DirectMessageScreen = ({ route, navigation }) => {
             isCompanionAuthor={isCompanionAuthor}
             likeScale={likeScale}
             likeOpacity={likeOpacity}
-            onPress={() => handleBubblePress(item.id, item.author?.id)}
-            text={item.text}
-            timestamp={formatTime(item.createdAt)}
+            onPress={() => handleBubblePress(messageId, normalized?.author?.id)}
+            text={normalized?.text}
+            timestamp={formatTime(normalized?.createdAt)}
           />
           {isLatestMine && (
             <View style={styles.receiptRow}>
               <Ionicons
-                name={item.isRead ? "checkmark-done" : "checkmark"}
+                name={normalized?.isRead ? "checkmark-done" : "checkmark"}
                 size={14}
                 color="#94a3b8"
               />
               <Text style={styles.receiptText}>
-                {item.isRead ? "Read" : "Sent"}
+                {normalized?.isRead ? "Read" : "Sent"}
               </Text>
             </View>
           )}
@@ -858,7 +925,9 @@ const DirectMessageScreen = ({ route, navigation }) => {
             <FlatList
               ref={listRef}
               data={sortedMessages}
-              keyExtractor={(item) => item.id}
+              keyExtractor={(item, index) =>
+                resolveMessageId(item) || `dm-${index}`
+              }
               renderItem={renderMessage}
               contentContainerStyle={styles.listContent}
               showsVerticalScrollIndicator={false}
