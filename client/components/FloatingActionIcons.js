@@ -10,6 +10,8 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import { LiquidGlassView } from "@callstack/liquid-glass";
 
+import { isIOSLiquidGlassCapable } from "../utils/deviceCapabilities";
+
 const ACCENT = "#F59E0B";
 
 const FloatingActionIcons = ({
@@ -28,6 +30,8 @@ const FloatingActionIcons = ({
   const heartScale = useRef(new Animated.Value(1)).current;
   const burstScale = useRef(new Animated.Value(0)).current;
   const burstOpacity = useRef(new Animated.Value(0)).current;
+
+  const canUseGlass = isIOSLiquidGlassCapable();
 
   const formatCount = (n) => {
     if (n >= 1000) return `${(n / 1000).toFixed(1)}k`;
@@ -83,12 +87,13 @@ const FloatingActionIcons = ({
   const heartIcon = isLiked ? "🩵" : "❤️";
   const heartColor = isLiked ? "#fb7185" : "#fff";
 
-  return (
-    <View style={styles.container}>
-      {showFilter ? (
+  // Helper renderer for a pill (Liquid Glass vs fallback)
+  const renderPill = (children, onPress) => {
+    if (canUseGlass) {
+      return (
         <TouchableOpacity
           style={styles.pillWrapper}
-          onPress={onFilterPress || (() => {})}
+          onPress={onPress}
           activeOpacity={0.9}
         >
           <LiquidGlassView
@@ -98,24 +103,33 @@ const FloatingActionIcons = ({
             tintColor="rgba(15,23,42,0.35)"
             colorScheme="system"
           >
-            <Ionicons name="options-outline" size={20} color="#fff" />
+            {children}
           </LiquidGlassView>
         </TouchableOpacity>
-      ) : null}
+      );
+    }
+
+    // Fallback – original solid pill
+    return (
+      <TouchableOpacity style={styles.pill} onPress={onPress}>
+        {children}
+      </TouchableOpacity>
+    );
+  };
+
+  return (
+    <View style={styles.container}>
+      {/* Filter */}
+      {showFilter
+        ? renderPill(
+            <Ionicons name="options-outline" size={20} color="#fff" />,
+            onFilterPress || (() => {})
+          )
+        : null}
 
       {/* ❤️ Like */}
-      <TouchableOpacity
-        style={styles.pillWrapper}
-        onPress={handleLikePress}
-        activeOpacity={0.9}
-      >
-        <LiquidGlassView
-          style={styles.pillGlass}
-          interactive
-          effect="clear"
-          tintColor="rgba(15,23,42,0.35)"
-          colorScheme="system"
-        >
+      {renderPill(
+        <>
           <View style={styles.heartWrapper}>
             <Animated.View
               pointerEvents="none"
@@ -137,43 +151,21 @@ const FloatingActionIcons = ({
             </Animated.Text>
           </View>
           <Text style={styles.countText}>{formatCount(likesCount)}</Text>
-        </LiquidGlassView>
-      </TouchableOpacity>
+        </>,
+        handleLikePress
+      )}
 
       {/* 💬 Comment */}
-      <TouchableOpacity
-        style={styles.pillWrapper}
-        onPress={onCommentPress}
-        activeOpacity={0.9}
-      >
-        <LiquidGlassView
-          style={styles.pillGlass}
-          interactive
-          effect="clear"
-          tintColor="rgba(15,23,42,0.35)"
-          colorScheme="system"
-        >
+      {renderPill(
+        <>
           <Text style={styles.icon}>💬</Text>
           <Text style={styles.countText}>{formatCount(commentsCount)}</Text>
-        </LiquidGlassView>
-      </TouchableOpacity>
+        </>,
+        onCommentPress
+      )}
 
       {/* ⋯ More */}
-      <TouchableOpacity
-        style={styles.pillWrapper}
-        onPress={onMorePress}
-        activeOpacity={0.9}
-      >
-        <LiquidGlassView
-          style={styles.pillGlass}
-          interactive
-          effect="clear"
-          tintColor="rgba(15,23,42,0.35)"
-          colorScheme="system"
-        >
-          <Text style={styles.icon}>⋯</Text>
-        </LiquidGlassView>
-      </TouchableOpacity>
+      {renderPill(<Text style={styles.icon}>⋯</Text>, onMorePress)}
 
       {showSoundToggle ? (
         <TouchableOpacity
@@ -200,15 +192,18 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: "#fff",
   },
+
+  // Wrapper glow for Liquid Glass version
   pillWrapper: {
     marginBottom: 12,
-    // keep the glow on the wrapper so it surrounds the glass
     shadowColor: ACCENT,
     shadowOpacity: 0.35,
     shadowRadius: 12,
     shadowOffset: { width: 0, height: 4 },
     elevation: 6,
   },
+
+  // Glass interior style
   pillGlass: {
     flexDirection: "row",
     alignItems: "center",
@@ -221,6 +216,27 @@ const styles = StyleSheet.create({
     borderColor: "rgba(245,158,11,0.7)",
     backgroundColor: "transparent",
   },
+
+  // Fallback solid pill (old UI)
+  pill: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: 10,
+    paddingHorizontal: 14,
+    borderRadius: 999,
+    minWidth: 70,
+    backgroundColor: "rgba(15,23,42,0.96)",
+    borderWidth: 1,
+    borderColor: "rgba(245,158,11,0.7)",
+    marginBottom: 12,
+    shadowColor: ACCENT,
+    shadowOpacity: 0.35,
+    shadowRadius: 12,
+    shadowOffset: { width: 0, height: 4 },
+    elevation: 6,
+  },
+
   icon: {
     fontSize: 20,
     color: "#fff",

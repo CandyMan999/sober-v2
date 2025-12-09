@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { BlurView } from "expo-blur";
 import { LiquidGlassView } from "@callstack/liquid-glass";
+import { isIOSLiquidGlassCapable } from "../utils/deviceCapabilities";
 
 const ACCENT = "#F59E0B";
 
@@ -25,6 +26,7 @@ const AlertModal = ({
 }) => {
   const isConfirm = type === "confirm";
   const isError = type === "error";
+  const canUseGlass = isIOSLiquidGlassCapable();
 
   const resolvedTitle =
     title ||
@@ -47,9 +49,26 @@ const AlertModal = ({
       : "Close";
 
   const handleClose = () => {
-    if (onCancel) onCancel();
-    else if (onConfirm) onConfirm();
+    if (onCancel) {
+      onCancel();
+    } else if (onConfirm) {
+      onConfirm();
+    }
   };
+
+  const Card = canUseGlass ? LiquidGlassView : View;
+
+  const cardProps = canUseGlass
+    ? {
+        interactive: true,
+        effect: "clear",
+        tintColor: "rgba(255,255,255,0.25)",
+        colorScheme: "system",
+        style: styles.modalContentGlass,
+      }
+    : {
+        style: styles.modalContentFallback,
+      };
 
   return (
     <Modal
@@ -59,48 +78,78 @@ const AlertModal = ({
       onRequestClose={handleClose}
     >
       <View style={styles.modalContainer}>
-        {/* Soft backdrop blur */}
-        <BlurView intensity={42} tint="dark" style={styles.blurBackground}>
-          {/* Shadow wrapper */}
+        <BlurView
+          intensity={canUseGlass ? 42 : 30}
+          tint="dark"
+          style={styles.blurBackground}
+        >
           <View style={styles.shadowWrapper}>
-            <LiquidGlassView
-              interactive
-              effect="clear"
-              tintColor="rgba(255,255,255,0.25)"
-              colorScheme="system"
-              style={styles.modalContent}
-            >
+            <Card {...cardProps}>
               <Image
                 source={require("../assets/icon.png")}
                 style={styles.modalLogo}
               />
 
               {resolvedTitle ? (
-                <Text style={styles.modalTitle}>{resolvedTitle}</Text>
+                <Text
+                  style={[
+                    styles.modalTitle,
+                    !canUseGlass && styles.modalTitleFallback,
+                  ]}
+                >
+                  {resolvedTitle}
+                </Text>
               ) : null}
 
               {message ? (
-                <Text style={styles.modalMessage}>{message}</Text>
+                <Text
+                  style={[
+                    styles.modalMessage,
+                    !canUseGlass && styles.modalMessageFallback,
+                  ]}
+                >
+                  {message}
+                </Text>
               ) : null}
 
               {isConfirm ? (
                 <View style={styles.buttonRow}>
                   <TouchableOpacity
-                    style={[styles.button, styles.secondaryButton]}
+                    style={[
+                      styles.button,
+                      canUseGlass
+                        ? styles.secondaryButtonGlass
+                        : styles.secondaryButtonFallback,
+                    ]}
                     onPress={onCancel || handleClose}
                     activeOpacity={0.85}
                   >
-                    <Text style={styles.secondaryText}>
+                    <Text
+                      style={[
+                        styles.secondaryText,
+                        !canUseGlass && styles.secondaryTextFallback,
+                      ]}
+                    >
                       {resolvedCancelLabel}
                     </Text>
                   </TouchableOpacity>
 
                   <TouchableOpacity
-                    style={[styles.button, styles.primaryButton]}
+                    style={[
+                      styles.button,
+                      canUseGlass
+                        ? styles.primaryButtonGlass
+                        : styles.primaryButtonFallback,
+                    ]}
                     onPress={onConfirm || handleClose}
                     activeOpacity={0.9}
                   >
-                    <Text style={styles.primaryText}>
+                    <Text
+                      style={[
+                        styles.primaryText,
+                        !canUseGlass && styles.primaryTextFallback,
+                      ]}
+                    >
                       {resolvedConfirmLabel}
                     </Text>
                   </TouchableOpacity>
@@ -109,14 +158,24 @@ const AlertModal = ({
                 <TouchableOpacity
                   onPress={onConfirm || handleClose}
                   activeOpacity={0.9}
-                  style={styles.singlePrimaryButton}
+                  style={[
+                    styles.singlePrimaryButton,
+                    canUseGlass
+                      ? styles.primaryButtonGlass
+                      : styles.primaryButtonFallback,
+                  ]}
                 >
-                  <Text style={styles.singlePrimaryText}>
+                  <Text
+                    style={[
+                      styles.singlePrimaryText,
+                      !canUseGlass && styles.singlePrimaryTextFallback,
+                    ]}
+                  >
                     {resolvedConfirmLabel}
                   </Text>
                 </TouchableOpacity>
               )}
-            </LiquidGlassView>
+            </Card>
           </View>
         </BlurView>
       </View>
@@ -145,33 +204,58 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 16 },
     elevation: 14,
   },
-  modalContent: {
+
+  // 🧊 Liquid Glass card
+  modalContentGlass: {
     borderRadius: 20,
     paddingVertical: 22,
     paddingHorizontal: 20,
     alignItems: "center",
     overflow: "hidden",
   },
+
+  // 🧱 Fallback card (non-glass, high contrast)
+  modalContentFallback: {
+    borderRadius: 20,
+    paddingVertical: 22,
+    paddingHorizontal: 20,
+    alignItems: "center",
+    backgroundColor: "#FFFFFF",
+    borderWidth: 1,
+    borderColor: "#E5E7EB",
+  },
+
   modalLogo: {
     width: 80,
     height: 80,
     marginBottom: 16,
     borderRadius: 18,
   },
+
+  // Titles
   modalTitle: {
     fontSize: 18,
     fontWeight: "700",
-    color: "#F9FAFB",
+    color: "#F9FAFB", // glass default (on dark background)
     textAlign: "center",
     marginBottom: 6,
   },
+  modalTitleFallback: {
+    color: "#0F172A", // much darker for non-glass
+  },
+
+  // Messages
   modalMessage: {
     fontSize: 14,
-    color: "#E5E7EB",
+    color: "#E5E7EB", // glass default
     textAlign: "center",
     marginBottom: 20,
     lineHeight: 20,
   },
+  modalMessageFallback: {
+    color: "#111827", // darker & easier to read on white
+  },
+
   buttonRow: {
     flexDirection: "row",
     width: "100%",
@@ -184,17 +268,30 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  secondaryButton: {
+
+  // Secondary buttons
+  secondaryButtonGlass: {
     marginRight: 8,
     borderWidth: 1,
     borderColor: "rgba(249,250,251,0.4)",
     backgroundColor: "rgba(255,255,255,0.1)",
   },
-  primaryButton: {
+  secondaryButtonFallback: {
+    marginRight: 8,
+    borderWidth: 1,
+    borderColor: "#D1D5DB",
+    backgroundColor: "#F9FAFB",
+  },
+
+  // Primary buttons (shared base color)
+  primaryButtonGlass: {
     backgroundColor: ACCENT,
   },
-  singlePrimaryButton: {
+  primaryButtonFallback: {
     backgroundColor: ACCENT,
+  },
+
+  singlePrimaryButton: {
     borderRadius: 999,
     height: 50,
     justifyContent: "center",
@@ -202,20 +299,33 @@ const styles = StyleSheet.create({
     width: "100%",
     marginTop: 4,
   },
+
+  // Text styles
   primaryText: {
     color: "#111827",
     fontSize: 15,
     fontWeight: "700",
   },
+  primaryTextFallback: {
+    color: "#111827", // same but kept explicit for clarity
+  },
+
   secondaryText: {
     color: "#F9FAFB",
     fontSize: 14,
     fontWeight: "500",
   },
+  secondaryTextFallback: {
+    color: "#111827", // darker on light background
+  },
+
   singlePrimaryText: {
     color: "#111827",
     fontSize: 16,
     fontWeight: "700",
+  },
+  singlePrimaryTextFallback: {
+    color: "#111827",
   },
 });
 
