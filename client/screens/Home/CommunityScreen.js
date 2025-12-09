@@ -46,7 +46,7 @@ const TUTORIAL_SEEN_KEY = "community_tutorial_seen";
 const tutorialImage = require("../../assets/swipe1.png");
 
 const { height: WINDOW_HEIGHT } = Dimensions.get("window");
-const PAGE_SIZE = 20;
+const PAGE_SIZE = 10;
 const SHEET_HEIGHT = Math.round(WINDOW_HEIGHT * 0.26);
 
 const dedupeById = (list = []) => {
