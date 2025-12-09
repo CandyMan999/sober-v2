@@ -957,32 +957,16 @@ const EditProfileScreen = ({ navigation }) => {
       }
 
       if (latestUser) {
-        const sanitizedUser = latestUser?.social
-          ? {
-              ...latestUser,
-              social: Object.fromEntries(
-                Object.entries(latestUser.social).map(([platform, data]) => {
-                  if (!data) return [platform, data];
-                  const handle = normalizeSocialInput(platform, data);
-                  return [platform, { ...data, handle: handle || null }];
-                })
-              ),
-            }
-          : latestUser;
-
-        setUser(sanitizedUser);
-        dispatch({ type: "SET_USER", payload: { ...user, ...sanitizedUser } });
+        setUser(latestUser);
+        dispatch({ type: "SET_USER", payload: { ...user, ...latestUser } });
         dispatch({
           type: "SET_PROFILE_OVERVIEW",
-          payload: { ...(state?.profileOverview || {}), user: sanitizedUser },
+          payload: { ...(state?.profileOverview || {}), user: latestUser },
         });
         setSocialInputs({
-          instagram: normalizeSocialInput(
-            "instagram",
-            sanitizedUser.social?.instagram
-          ),
-          tiktok: normalizeSocialInput("tiktok", sanitizedUser.social?.tiktok),
-          x: normalizeSocialInput("x", sanitizedUser.social?.x),
+          instagram: normalizeSocialInput("instagram", latestUser.social?.instagram),
+          tiktok: normalizeSocialInput("tiktok", latestUser.social?.tiktok),
+          x: normalizeSocialInput("x", latestUser.social?.x),
         });
       }
     } catch (err) {
