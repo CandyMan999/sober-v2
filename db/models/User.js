@@ -148,10 +148,13 @@ const UserSchema = new mongoose.Schema(
       },
     ],
 
-    // Can user receive milestone notifications?
-    notificationsEnabled: {
-      type: Boolean,
-      default: true,
+    notificationSettings: {
+      allPushEnabled: { type: Boolean, default: true },
+      otherUserMilestones: { type: Boolean, default: true },
+      otherUserComments: { type: Boolean, default: true },
+      followingPosts: { type: Boolean, default: true },
+      buddiesNearVenue: { type: Boolean, default: true },
+      dailyPush: { type: Boolean, default: true },
     },
 
     // Saved posts for quick access

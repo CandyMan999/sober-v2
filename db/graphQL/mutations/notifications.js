@@ -1,6 +1,11 @@
 const { AuthenticationError } = require("apollo-server-express");
 
 const { Notification, User } = require("../../models");
+const {
+  NotificationCategories,
+  normalizeNotificationSettings,
+} = require("../../utils/notificationSettings");
+const { serializeUser } = require("../../utils/serializeUser");
 
 const getUserFromToken = async (token) => {
   if (!token) {
@@ -41,6 +46,72 @@ const upsertNotificationStatus = async (userId, notificationId, updates = {}) =>
 };
 
 module.exports = {
+  updateNotificationSettingsResolver: async (_, { token, input }) => {
+    const user = await getUserFromToken(token);
+
+    const settings = normalizeNotificationSettings(user);
+
+    if (typeof input?.allPushEnabled === "boolean") {
+      settings.allPushEnabled = input.allPushEnabled;
+    }
+    if (typeof input?.otherUserMilestones === "boolean") {
+      settings.otherUserMilestones = input.otherUserMilestones;
+    }
+    if (typeof input?.otherUserComments === "boolean") {
+      settings.otherUserComments = input.otherUserComments;
+    }
+    if (typeof input?.followingPosts === "boolean") {
+      settings.followingPosts = input.followingPosts;
+    }
+    if (typeof input?.buddiesNearVenue === "boolean") {
+      settings.buddiesNearVenue = input.buddiesNearVenue;
+    }
+    if (typeof input?.dailyPush === "boolean") {
+      settings.dailyPush = input.dailyPush;
+    }
+
+    user.notificationSettings = settings;
+    await user.save();
+
+    return serializeUser(user);
+  },
+
+  toggleNotificationCategoryResolver: async (
+    _,
+    { token, category, enabled }
+  ) => {
+    const user = await getUserFromToken(token);
+
+    const settings = normalizeNotificationSettings(user);
+    const enabledValue = Boolean(enabled);
+
+    switch (category) {
+      case NotificationCategories.OTHER_USER_MILESTONES:
+        settings.otherUserMilestones = enabledValue;
+        break;
+      case NotificationCategories.OTHER_USER_COMMENTS:
+        settings.otherUserComments = enabledValue;
+        break;
+      case NotificationCategories.FOLLOWING_POSTS:
+        settings.followingPosts = enabledValue;
+        break;
+      case NotificationCategories.BUDDIES_NEAR_VENUE:
+        settings.buddiesNearVenue = enabledValue;
+        break;
+      case NotificationCategories.DAILY_PUSH:
+        settings.dailyPush = enabledValue;
+        break;
+      default:
+        settings.allPushEnabled = enabledValue;
+        break;
+    }
+
+    user.notificationSettings = settings;
+    await user.save();
+
+    return normalizeNotificationSettings(user);
+  },
+
   markNotificationReadResolver: async (_, { token, id }) => {
     const user = await getUserFromToken(token);
 

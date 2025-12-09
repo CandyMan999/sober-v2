@@ -50,7 +50,14 @@ export const UPDATE_USER_PROFILE_MUTATION = gql`
         id
       }
       milestonesNotified
-      notificationsEnabled
+      notificationSettings {
+        allPushEnabled
+        otherUserMilestones
+        otherUserComments
+        followingPosts
+        buddiesNearVenue
+        dailyPush
+      }
       social {
         instagram {
           handle
@@ -137,7 +144,14 @@ export const UPDATE_SOCIAL_MUTATION = gql`
         id
       }
       milestonesNotified
-      notificationsEnabled
+      notificationSettings {
+        allPushEnabled
+        otherUserMilestones
+        otherUserComments
+        followingPosts
+        buddiesNearVenue
+        dailyPush
+      }
       social {
         instagram {
           handle
@@ -232,6 +246,46 @@ export const ADD_PICTURE_MUTATION = gql`
         id
         profilePicUrl
       }
+    }
+  }
+`;
+
+export const UPDATE_NOTIFICATION_SETTINGS_MUTATION = gql`
+  mutation UpdateNotificationSettings(
+    $token: String!
+    $input: NotificationSettingsInput!
+  ) {
+    updateNotificationSettings(token: $token, input: $input) {
+      id
+      notificationSettings {
+        allPushEnabled
+        otherUserMilestones
+        otherUserComments
+        followingPosts
+        buddiesNearVenue
+        dailyPush
+      }
+    }
+  }
+`;
+
+export const TOGGLE_NOTIFICATION_CATEGORY_MUTATION = gql`
+  mutation ToggleNotificationCategory(
+    $token: String!
+    $category: NotificationCategory!
+    $enabled: Boolean!
+  ) {
+    toggleNotificationCategory(
+      token: $token
+      category: $category
+      enabled: $enabled
+    ) {
+      allPushEnabled
+      otherUserMilestones
+      otherUserComments
+      followingPosts
+      buddiesNearVenue
+      dailyPush
     }
   }
 `;

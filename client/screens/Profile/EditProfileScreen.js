@@ -35,6 +35,8 @@ import {
   DELETE_PHOTO_MUTATION,
   UPDATE_USER_PROFILE_MUTATION,
   UPDATE_SOCIAL_MUTATION,
+  UPDATE_NOTIFICATION_SETTINGS_MUTATION,
+  TOGGLE_NOTIFICATION_CATEGORY_MUTATION,
   DELETE_ACCOUNT_MUTATION,
 } from "../../GraphQL/mutations";
 import { FETCH_ME_QUERY } from "../../GraphQL/queries";
@@ -282,16 +284,21 @@ const EditProfileScreen = ({ navigation }) => {
   const [savingSocial, setSavingSocial] = useState(false);
   const [socialOpen, setSocialOpen] = useState(false);
 
-  const [pushEnabled, setPushEnabled] = useState(true);
+  const defaultNotificationSettings = {
+    allPushEnabled: true,
+    otherUserMilestones: true,
+    otherUserComments: true,
+    followingPosts: true,
+    buddiesNearVenue: true,
+    dailyPush: true,
+  };
+
+  const [notificationSettings, setNotificationSettings] = useState(
+    defaultNotificationSettings
+  );
   const [locationEnabled, setLocationEnabled] = useState(false);
   const [notificationsOpen, setNotificationsOpen] = useState(false);
-  const [notificationPrefs, setNotificationPrefs] = useState({
-    milestones: true,
-    comments: true,
-    friendsPosts: true,
-    buddiesNear: false,
-    liquorBars: false,
-  });
+  const [savingNotificationKey, setSavingNotificationKey] = useState(null);
 
   const [alertState, setAlertState] = useState({
     visible: false,
@@ -342,7 +349,10 @@ const EditProfileScreen = ({ navigation }) => {
             tiktok: normalizeSocialInput("tiktok", fetchedUser.social?.tiktok),
             x: normalizeSocialInput("x", fetchedUser.social?.x),
           });
-          setPushEnabled(Boolean(fetchedUser.notificationsEnabled));
+          setNotificationSettings({
+            ...defaultNotificationSettings,
+            ...(fetchedUser.notificationSettings || {}),
+          });
           dispatch({ type: "SET_USER", payload: fetchedUser });
         }
       } catch (err) {
@@ -382,6 +392,89 @@ const EditProfileScreen = ({ navigation }) => {
       onConfirm: closeAlert,
       onCancel: closeAlert,
     });
+  };
+
+  const notificationCategoryMap = useMemo(
+    () => ({
+      otherUserMilestones: "OTHER_USER_MILESTONES",
+      otherUserComments: "OTHER_USER_COMMENTS",
+      followingPosts: "FOLLOWING_POSTS",
+      buddiesNearVenue: "BUDDIES_NEAR_VENUE",
+      dailyPush: "DAILY_PUSH",
+    }),
+    []
+  );
+
+  const handleNotificationSettingChange = async (key, value) => {
+    if (!token) {
+      showError(
+        "We need your device ID to update notifications. Please restart the app.",
+        "Unable to update"
+      );
+      return;
+    }
+
+    const previousValue = notificationSettings[key];
+    setNotificationSettings((prev) => ({ ...prev, [key]: value }));
+    setSavingNotificationKey(key);
+
+    try {
+      if (key === "allPushEnabled") {
+        const response = await client.request(
+          UPDATE_NOTIFICATION_SETTINGS_MUTATION,
+          {
+            token,
+            input: { allPushEnabled: value },
+          }
+        );
+
+        const updated =
+          response?.updateNotificationSettings?.notificationSettings || null;
+
+        if (updated) {
+          setNotificationSettings((prev) => ({ ...prev, ...updated }));
+          dispatch({
+            type: "SET_USER",
+            payload: {
+              ...(response?.updateNotificationSettings || {}),
+              notificationSettings: updated,
+            },
+          });
+        }
+      } else {
+        const category = notificationCategoryMap[key];
+
+        const response = await client.request(
+          TOGGLE_NOTIFICATION_CATEGORY_MUTATION,
+          {
+            token,
+            category,
+            enabled: value,
+          }
+        );
+
+        const updated = response?.toggleNotificationCategory;
+        if (updated) {
+          setNotificationSettings((prev) => ({ ...prev, ...updated }));
+          dispatch({
+            type: "SET_USER",
+            payload: {
+              ...(state?.user || {}),
+              notificationSettings: updated,
+            },
+          });
+        }
+      }
+    } catch (err) {
+      console.log("Failed to update notification preference", err);
+      setNotificationSettings((prev) => ({ ...prev, [key]: previousValue }));
+      showError(
+        "We couldn't update your notification preference. Please try again.",
+        "Notification update failed"
+      );
+    } finally {
+      setSavingNotificationKey(null);
+    }
   };
 
   const requestMediaPermission = async () => {
@@ -935,12 +1028,12 @@ const EditProfileScreen = ({ navigation }) => {
                 <ToggleRow
                   icon={<Feather name="award" size={18} color={accent} />}
                   label="Milestones"
-                  value={notificationPrefs.milestones}
+                  value={notificationSettings.otherUserMilestones}
                   onValueChange={(value) =>
-                    setNotificationPrefs((prev) => ({
-                      ...prev,
-                      milestones: value,
-                    }))
+                    handleNotificationSettingChange(
+                      "otherUserMilestones",
+                      value
+                    )
                   }
                   activeColor={accent}
                 />
@@ -953,24 +1046,18 @@ const EditProfileScreen = ({ navigation }) => {
                     />
                   }
                   label="Comments"
-                  value={notificationPrefs.comments}
+                  value={notificationSettings.otherUserComments}
                   onValueChange={(value) =>
-                    setNotificationPrefs((prev) => ({
-                      ...prev,
-                      comments: value,
-                    }))
+                    handleNotificationSettingChange("otherUserComments", value)
                   }
                   activeColor={oceanBlue}
                 />
                 <ToggleRow
                   icon={<Feather name="users" size={18} color={accent} />}
                   label="Friends posts"
-                  value={notificationPrefs.friendsPosts}
+                  value={notificationSettings.followingPosts}
                   onValueChange={(value) =>
-                    setNotificationPrefs((prev) => ({
-                      ...prev,
-                      friendsPosts: value,
-                    }))
+                    handleNotificationSettingChange("followingPosts", value)
                   }
                   activeColor={accent}
                 />
@@ -982,31 +1069,19 @@ const EditProfileScreen = ({ navigation }) => {
                       color={oceanBlue}
                     />
                   }
-                  label="Buddies near bars"
-                  value={notificationPrefs.buddiesNear}
+                  label="Buddies near bars & liquor stores"
+                  value={notificationSettings.buddiesNearVenue}
                   onValueChange={(value) =>
-                    setNotificationPrefs((prev) => ({
-                      ...prev,
-                      buddiesNear: value,
-                    }))
+                    handleNotificationSettingChange("buddiesNearVenue", value)
                   }
                   activeColor={oceanBlue}
                 />
                 <ToggleRow
-                  icon={
-                    <MaterialCommunityIcons
-                      name="glass-cocktail"
-                      size={18}
-                      color={accent}
-                    />
-                  }
-                  label="Liquor & bars"
-                  value={notificationPrefs.liquorBars}
+                  icon={<Feather name="sunrise" size={18} color={accent} />}
+                  label="Daily push notifications"
+                  value={notificationSettings.dailyPush}
                   onValueChange={(value) =>
-                    setNotificationPrefs((prev) => ({
-                      ...prev,
-                      liquorBars: value,
-                    }))
+                    handleNotificationSettingChange("dailyPush", value)
                   }
                   activeColor={accent}
                 />
@@ -1019,8 +1094,10 @@ const EditProfileScreen = ({ navigation }) => {
             <ToggleRow
               icon={<Ionicons name="notifications" size={18} color={accent} />}
               label="All push notifications"
-              value={pushEnabled}
-              onValueChange={setPushEnabled}
+              value={notificationSettings.allPushEnabled}
+              onValueChange={(value) =>
+                handleNotificationSettingChange("allPushEnabled", value)
+              }
               activeColor={accent}
             />
             <ToggleRow
@@ -1032,8 +1109,8 @@ const EditProfileScreen = ({ navigation }) => {
             />
             <Text style={styles.helperText}>
               We only use your location to catch when you might be hanging at a
-              bar or liquor store so we can ping your sober buddies before you
-              make any dumb decisions.
+              bar or liquor store so we can ping you and your sober buddies
+              before you make any dumb decisions.
             </Text>
             <TouchableOpacity
               style={styles.deleteProfileButton}
@@ -1042,20 +1119,37 @@ const EditProfileScreen = ({ navigation }) => {
               onPress={handleDeleteProfile}
             >
               <LinearGradient
-                colors={["#991b1b", "#f97316"]}
+                colors={
+                  deletingAccount
+                    ? ["rgba(127,29,29,0.85)", "rgba(30,64,175,0.95)"]
+                    : ["rgba(127,29,29,0.95)", "rgba(15,23,42,0.98)"]
+                }
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 1 }}
                 style={[
                   styles.deleteProfileInner,
-                  deletingAccount && { opacity: 0.85 },
+                  deletingAccount && styles.deleteProfileInnerDisabled,
                 ]}
               >
-                <Feather name="trash-2" size={16} color="#fff" />
-                {deletingAccount ? (
-                  <ActivityIndicator color="#fff" size="small" />
-                ) : (
-                  <Text style={styles.deleteProfileText}>Delete profile</Text>
-                )}
+                <View style={styles.deleteProfileContent}>
+                  <View style={styles.deleteProfileIconBadge}>
+                    <Feather name="trash-2" size={16} color="#fecaca" />
+                  </View>
+
+                  <View style={styles.deleteProfileTextBlock}>
+                    <Text style={styles.deleteProfileTitle}>
+                      Delete profile
+                    </Text>
+                  </View>
+
+                  <View style={styles.deleteProfileRight}>
+                    {deletingAccount ? (
+                      <ActivityIndicator color="#fee2e2" size="small" />
+                    ) : (
+                      <Feather name="arrow-right" size={16} color="#fee2e2" />
+                    )}
+                  </View>
+                </View>
               </LinearGradient>
             </TouchableOpacity>
           </View>
@@ -1255,6 +1349,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     lineHeight: 18,
     marginBottom: 8,
+    textAlign: "center",
   },
   socialRow: {
     marginTop: 8,
@@ -1304,22 +1399,54 @@ const styles = StyleSheet.create({
   },
   deleteProfileButton: {
     marginTop: 18,
-    borderRadius: 14,
+    borderRadius: 16,
     overflow: "hidden",
+    borderWidth: 1,
+    borderColor: "rgba(248,113,113,0.45)",
   },
   deleteProfileInner: {
+    borderRadius: 16,
+    paddingVertical: 12,
+    paddingHorizontal: 12,
+  },
+  deleteProfileInnerDisabled: {
+    opacity: 0.8,
+  },
+  deleteProfileContent: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "center",
-    gap: 10,
-    paddingVertical: 12,
-    borderRadius: 14,
+    gap: 12,
   },
-  deleteProfileText: {
-    color: "#fff",
+  deleteProfileIconBadge: {
+    width: 32,
+    height: 32,
+    borderRadius: 999,
+    backgroundColor: "rgba(127,29,29,0.9)",
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 1,
+    borderColor: "rgba(248,113,113,0.8)",
+  },
+  deleteProfileTextBlock: {
+    flex: 1,
+  },
+  deleteProfileTitle: {
+    color: "#fee2e2",
     fontWeight: "800",
     fontSize: 14,
+    textAlign: "center",
   },
+  deleteProfileSubtitle: {
+    color: "#fecaca",
+    fontSize: 11,
+    marginTop: 2,
+  },
+  deleteProfileRight: {
+    paddingHorizontal: 4,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+
   loadingScreen: {
     ...StyleSheet.absoluteFillObject,
     backgroundColor: "rgba(5,8,22,0.75)",

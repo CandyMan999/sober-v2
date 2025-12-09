@@ -34,6 +34,8 @@ const {
   markNotificationReadResolver,
   dismissNotificationResolver,
   clearAllNotificationsResolver,
+  updateNotificationSettingsResolver,
+  toggleNotificationCategoryResolver,
   deleteAccountResolver,
   appleLoginResolver,
 } = require("./mutations/index.js");
@@ -151,6 +153,8 @@ const resolvers = {
     markNotificationRead: markNotificationReadResolver,
     dismissNotification: dismissNotificationResolver,
     clearAllNotifications: clearAllNotificationsResolver,
+    updateNotificationSettings: updateNotificationSettingsResolver,
+    toggleNotificationCategory: toggleNotificationCategoryResolver,
     deleteAccount: deleteAccountResolver,
     appleLogin: appleLoginResolver,
   },

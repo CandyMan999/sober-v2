@@ -19,7 +19,10 @@ const {
   populateDirectRoom,
   ensureSingleDirectRoom,
 } = require("../utils/directMessage");
-const { sendPushNotifications } = require("../../utils/pushNotifications");
+const {
+  sendPushNotifications,
+  shouldSendPush,
+} = require("../../utils/pushNotifications");
 
 const SOBER_COMPANION_USER_ID =
   process.env.SOBER_COMPANION_USER_ID || "693394413ea6a3e530516505";
@@ -65,7 +68,7 @@ const sendMessageBetweenUsers = async ({
   if (
     sendPush &&
     recipient?.token &&
-    recipient?.notificationsEnabled !== false &&
+    shouldSendPush(recipient) &&
     sender
   ) {
     const trimmedBody = text.trim();
