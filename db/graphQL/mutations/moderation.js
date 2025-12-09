@@ -1,6 +1,6 @@
 const { AuthenticationError } = require("apollo-server-express");
 const { User, Post, Quote } = require("../../models");
-const { sendPushNotifications } = require("../../utils/pushNotifications");
+const { sendPushNotifications, shouldSendPush } = require("../../utils/pushNotifications");
 const {
   NotificationTypes,
   NotificationIntents,
@@ -87,7 +87,7 @@ const moderateQuoteResolver = async (_, { token, quoteId, approve }) => {
   if (
     approve &&
     quote.user?.token &&
-    quote.user?.notificationsEnabled !== false
+    shouldSendPush(quote.user)
   ) {
     try {
       await sendPushNotifications([

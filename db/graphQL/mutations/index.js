@@ -38,6 +38,8 @@ const {
   markNotificationReadResolver,
   dismissNotificationResolver,
   clearAllNotificationsResolver,
+  updateNotificationSettingsResolver,
+  toggleNotificationCategoryResolver,
 } = require("./notifications");
 const { appleLoginResolver } = require("./appleLogin");
 
@@ -75,6 +77,8 @@ module.exports = {
   markNotificationReadResolver,
   dismissNotificationResolver,
   clearAllNotificationsResolver,
+  updateNotificationSettingsResolver,
+  toggleNotificationCategoryResolver,
   deleteAccountResolver,
   appleLoginResolver,
 };

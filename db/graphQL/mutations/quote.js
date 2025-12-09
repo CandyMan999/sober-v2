@@ -4,7 +4,7 @@ const {
 } = require("apollo-server-express");
 
 const { Connection, Quote, User } = require("../../models");
-const { sendPushNotifications } = require("../../utils/pushNotifications");
+const { sendPushNotifications, shouldSendPush } = require("../../utils/pushNotifications");
 const {
   NotificationTypes,
   NotificationIntents,
@@ -113,7 +113,7 @@ module.exports = {
 
         for (const connection of followerConnections) {
           const follower = connection?.follower;
-          if (!follower?.token || follower?.notificationsEnabled === false) {
+          if (!follower?.token || !shouldSendPush(follower)) {
             continue;
           }
 

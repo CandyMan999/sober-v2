@@ -2,7 +2,11 @@ const { AuthenticationError } = require("apollo-server-express");
 const { Connection, User, City } = require("../../models");
 const { getDistanceFromCoords } = require("../../utils/helpers");
 const { findClosestCity } = require("../../utils/location");
-const { sendPushNotifications } = require("../../utils/pushNotifications");
+const {
+  sendPushNotifications,
+  shouldSendPush,
+  NotificationCategories,
+} = require("../../utils/pushNotifications");
 const {
   NotificationTypes,
   NotificationIntents,
@@ -183,7 +187,9 @@ async function getBuddyTargets(userId) {
       followerId === userIdStr ? connection.followee : connection.follower;
 
     if (!buddy?._id) continue;
-    if (buddy.notificationsEnabled === false) continue;
+    if (!shouldSendPush(buddy, NotificationCategories.BUDDIES_NEAR_VENUE)) {
+      continue;
+    }
 
     const buddyIdStr = buddy._id.toString();
 

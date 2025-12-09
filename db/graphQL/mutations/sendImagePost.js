@@ -6,7 +6,11 @@ const path = require("path");
 const { pipeline } = require("stream/promises");
 const FormData = require("form-data");
 const { User, Post, Connection } = require("../../models");
-const { sendPushNotifications } = require("../../utils/pushNotifications");
+const {
+  sendPushNotifications,
+  shouldSendPush,
+  NotificationCategories,
+} = require("../../utils/pushNotifications");
 const { findClosestCity } = require("../../utils/location");
 
 require("dotenv").config();
@@ -178,7 +182,10 @@ module.exports = {
 
       for (const connection of followerConnections) {
         const follower = connection?.follower;
-        if (!follower?.token || follower?.notificationsEnabled === false) {
+        if (
+          !follower?.token ||
+          !shouldSendPush(follower, NotificationCategories.FOLLOWING_POSTS)
+        ) {
           continue;
         }
 

@@ -35,6 +35,8 @@ import {
   DELETE_PHOTO_MUTATION,
   UPDATE_USER_PROFILE_MUTATION,
   UPDATE_SOCIAL_MUTATION,
+  UPDATE_NOTIFICATION_SETTINGS_MUTATION,
+  TOGGLE_NOTIFICATION_CATEGORY_MUTATION,
   DELETE_ACCOUNT_MUTATION,
 } from "../../GraphQL/mutations";
 import { FETCH_ME_QUERY } from "../../GraphQL/queries";
@@ -282,16 +284,21 @@ const EditProfileScreen = ({ navigation }) => {
   const [savingSocial, setSavingSocial] = useState(false);
   const [socialOpen, setSocialOpen] = useState(false);
 
-  const [pushEnabled, setPushEnabled] = useState(true);
+  const defaultNotificationSettings = {
+    allPushEnabled: true,
+    otherUserMilestones: true,
+    otherUserComments: true,
+    followingPosts: true,
+    buddiesNearVenue: true,
+    dailyPush: true,
+  };
+
+  const [notificationSettings, setNotificationSettings] = useState(
+    defaultNotificationSettings
+  );
   const [locationEnabled, setLocationEnabled] = useState(false);
   const [notificationsOpen, setNotificationsOpen] = useState(false);
-  const [notificationPrefs, setNotificationPrefs] = useState({
-    milestones: true,
-    comments: true,
-    friendsPosts: true,
-    buddiesNear: false,
-    liquorBars: false,
-  });
+  const [savingNotificationKey, setSavingNotificationKey] = useState(null);
 
   const [alertState, setAlertState] = useState({
     visible: false,
@@ -342,7 +349,10 @@ const EditProfileScreen = ({ navigation }) => {
             tiktok: normalizeSocialInput("tiktok", fetchedUser.social?.tiktok),
             x: normalizeSocialInput("x", fetchedUser.social?.x),
           });
-          setPushEnabled(Boolean(fetchedUser.notificationsEnabled));
+          setNotificationSettings({
+            ...defaultNotificationSettings,
+            ...(fetchedUser.notificationSettings || {}),
+          });
           dispatch({ type: "SET_USER", payload: fetchedUser });
         }
       } catch (err) {
@@ -382,6 +392,89 @@ const EditProfileScreen = ({ navigation }) => {
       onConfirm: closeAlert,
       onCancel: closeAlert,
     });
+  };
+
+  const notificationCategoryMap = useMemo(
+    () => ({
+      otherUserMilestones: "OTHER_USER_MILESTONES",
+      otherUserComments: "OTHER_USER_COMMENTS",
+      followingPosts: "FOLLOWING_POSTS",
+      buddiesNearVenue: "BUDDIES_NEAR_VENUE",
+      dailyPush: "DAILY_PUSH",
+    }),
+    []
+  );
+
+  const handleNotificationSettingChange = async (key, value) => {
+    if (!token) {
+      showError(
+        "We need your device ID to update notifications. Please restart the app.",
+        "Unable to update"
+      );
+      return;
+    }
+
+    const previousValue = notificationSettings[key];
+    setNotificationSettings((prev) => ({ ...prev, [key]: value }));
+    setSavingNotificationKey(key);
+
+    try {
+      if (key === "allPushEnabled") {
+        const response = await client.request(
+          UPDATE_NOTIFICATION_SETTINGS_MUTATION,
+          {
+            token,
+            input: { allPushEnabled: value },
+          }
+        );
+
+        const updated =
+          response?.updateNotificationSettings?.notificationSettings || null;
+
+        if (updated) {
+          setNotificationSettings((prev) => ({ ...prev, ...updated }));
+          dispatch({
+            type: "SET_USER",
+            payload: {
+              ...(response?.updateNotificationSettings || {}),
+              notificationSettings: updated,
+            },
+          });
+        }
+      } else {
+        const category = notificationCategoryMap[key];
+
+        const response = await client.request(
+          TOGGLE_NOTIFICATION_CATEGORY_MUTATION,
+          {
+            token,
+            category,
+            enabled: value,
+          }
+        );
+
+        const updated = response?.toggleNotificationCategory;
+        if (updated) {
+          setNotificationSettings((prev) => ({ ...prev, ...updated }));
+          dispatch({
+            type: "SET_USER",
+            payload: {
+              ...(state?.user || {}),
+              notificationSettings: updated,
+            },
+          });
+        }
+      }
+    } catch (err) {
+      console.log("Failed to update notification preference", err);
+      setNotificationSettings((prev) => ({ ...prev, [key]: previousValue }));
+      showError(
+        "We couldn't update your notification preference. Please try again.",
+        "Notification update failed"
+      );
+    } finally {
+      setSavingNotificationKey(null);
+    }
   };
 
   const requestMediaPermission = async () => {
@@ -935,12 +1028,12 @@ const EditProfileScreen = ({ navigation }) => {
                 <ToggleRow
                   icon={<Feather name="award" size={18} color={accent} />}
                   label="Milestones"
-                  value={notificationPrefs.milestones}
+                  value={notificationSettings.otherUserMilestones}
                   onValueChange={(value) =>
-                    setNotificationPrefs((prev) => ({
-                      ...prev,
-                      milestones: value,
-                    }))
+                    handleNotificationSettingChange(
+                      "otherUserMilestones",
+                      value
+                    )
                   }
                   activeColor={accent}
                 />
@@ -953,24 +1046,21 @@ const EditProfileScreen = ({ navigation }) => {
                     />
                   }
                   label="Comments"
-                  value={notificationPrefs.comments}
+                  value={notificationSettings.otherUserComments}
                   onValueChange={(value) =>
-                    setNotificationPrefs((prev) => ({
-                      ...prev,
-                      comments: value,
-                    }))
+                    handleNotificationSettingChange(
+                      "otherUserComments",
+                      value
+                    )
                   }
                   activeColor={oceanBlue}
                 />
                 <ToggleRow
                   icon={<Feather name="users" size={18} color={accent} />}
                   label="Friends posts"
-                  value={notificationPrefs.friendsPosts}
+                  value={notificationSettings.followingPosts}
                   onValueChange={(value) =>
-                    setNotificationPrefs((prev) => ({
-                      ...prev,
-                      friendsPosts: value,
-                    }))
+                    handleNotificationSettingChange("followingPosts", value)
                   }
                   activeColor={accent}
                 />
@@ -982,31 +1072,19 @@ const EditProfileScreen = ({ navigation }) => {
                       color={oceanBlue}
                     />
                   }
-                  label="Buddies near bars"
-                  value={notificationPrefs.buddiesNear}
+                  label="Buddies near bars & liquor stores"
+                  value={notificationSettings.buddiesNearVenue}
                   onValueChange={(value) =>
-                    setNotificationPrefs((prev) => ({
-                      ...prev,
-                      buddiesNear: value,
-                    }))
+                    handleNotificationSettingChange("buddiesNearVenue", value)
                   }
                   activeColor={oceanBlue}
                 />
                 <ToggleRow
-                  icon={
-                    <MaterialCommunityIcons
-                      name="glass-cocktail"
-                      size={18}
-                      color={accent}
-                    />
-                  }
-                  label="Liquor & bars"
-                  value={notificationPrefs.liquorBars}
+                  icon={<Feather name="sunrise" size={18} color={accent} />}
+                  label="Daily push notifications"
+                  value={notificationSettings.dailyPush}
                   onValueChange={(value) =>
-                    setNotificationPrefs((prev) => ({
-                      ...prev,
-                      liquorBars: value,
-                    }))
+                    handleNotificationSettingChange("dailyPush", value)
                   }
                   activeColor={accent}
                 />
@@ -1019,8 +1097,10 @@ const EditProfileScreen = ({ navigation }) => {
             <ToggleRow
               icon={<Ionicons name="notifications" size={18} color={accent} />}
               label="All push notifications"
-              value={pushEnabled}
-              onValueChange={setPushEnabled}
+              value={notificationSettings.allPushEnabled}
+              onValueChange={(value) =>
+                handleNotificationSettingChange("allPushEnabled", value)
+              }
               activeColor={accent}
             />
             <ToggleRow

@@ -1,3 +1,5 @@
+const { normalizeNotificationSettings } = require("./notificationSettings");
+
 const toIdString = (id) => {
   if (!id) return null;
   if (typeof id === "string") return id;
@@ -50,6 +52,7 @@ const serializeUser = (user) => {
     drunkPic: serializePicture(plain.drunkPic),
     savedPosts: mapIds(plain.savedPosts),
     savedQuotes: mapIds(plain.savedQuotes),
+    notificationSettings: normalizeNotificationSettings(plain),
   };
 };
 

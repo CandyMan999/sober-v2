@@ -9,7 +9,11 @@ const {
   NotificationIntents,
   createNotificationForUser,
 } = require("../../utils/notifications");
-const { sendPushNotifications } = require("../../utils/pushNotifications");
+const {
+  sendPushNotifications,
+  shouldSendPush,
+  NotificationCategories,
+} = require("../../utils/pushNotifications");
 
 const buildRepliesPopulate = (depth = 1) => {
   const populate = [
@@ -112,7 +116,10 @@ const createCommentForTarget = async ({
       ownerNotificationData.quoteId = String(target._id);
     }
 
-    if (targetOwner.token && targetOwner.notificationsEnabled !== false) {
+    if (
+      targetOwner.token &&
+      shouldSendPush(targetOwner, NotificationCategories.OTHER_USER_COMMENTS)
+    ) {
       notifications.push({
         pushToken: targetOwner.token,
         title,
@@ -156,7 +163,10 @@ const createCommentForTarget = async ({
         replyNotificationData.quoteId = String(target._id);
       }
 
-      if (parent.author.token && parent.author.notificationsEnabled !== false) {
+      if (
+        parent.author.token &&
+        shouldSendPush(parent.author, NotificationCategories.OTHER_USER_COMMENTS)
+      ) {
         notifications.push({
           pushToken: parent.author.token,
           title,

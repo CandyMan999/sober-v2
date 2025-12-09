@@ -8,6 +8,7 @@ const {
   NotificationIntents,
   createNotificationForUser,
 } = require("./notifications");
+const { shouldSendPush, NotificationCategories } = require("./notificationSettings");
 const { findClosestCity } = require("./location");
 const { DateTime } = require("luxon");
 
@@ -508,7 +509,6 @@ const cronJob = () => {
         console.log("🛡️  Relapse reminder cron tick", new Date().toISOString());
 
         const users = await User.find({
-          notificationsEnabled: true,
           token: { $ne: null },
           sobrietyStartAt: { $ne: null },
           averageRelapseDay: { $gt: 0 },
@@ -522,6 +522,8 @@ const cronJob = () => {
         const notifications = [];
 
         for (const user of users) {
+          if (!shouldSendPush(user, NotificationCategories.DAILY_PUSH)) continue;
+
           const tz = user.timezone || "UTC";
           const userTime = DateTime.now().setZone(tz);
 
@@ -597,7 +599,6 @@ const cronJob = () => {
         console.log("⏰ Milestone cron tick at", new Date().toISOString());
 
         const users = await User.find({
-          notificationsEnabled: true,
           sobrietyStartAt: { $ne: null },
         }).populate(["drunkPic", "profilePic"]);
 
@@ -611,6 +612,8 @@ const cronJob = () => {
         const celebrationNotifications = [];
 
         for (const user of users) {
+          if (!shouldSendPush(user, NotificationCategories.DAILY_PUSH)) continue;
+
           const tz = user.timezone || "UTC";
           const daysSober = getDaysBetween(user.sobrietyStartAt, now, tz);
 
@@ -675,12 +678,18 @@ const cronJob = () => {
 
             const celebrationPushRecipients = await User.find({
               _id: { $ne: user._id },
-              notificationsEnabled: true,
               token: { $ne: null },
             });
 
             for (const recipient of celebrationPushRecipients) {
               if (!isWithinUserDaytime(recipient)) continue;
+              if (
+                !shouldSendPush(
+                  recipient,
+                  NotificationCategories.OTHER_USER_MILESTONES
+                )
+              )
+                continue;
 
               const notificationData = {
                 type: "milestone_celebration",
@@ -704,6 +713,13 @@ const cronJob = () => {
             });
 
             for (const recipient of celebrationAlertRecipients) {
+              if (
+                !shouldSendPush(
+                  recipient,
+                  NotificationCategories.OTHER_USER_MILESTONES
+                )
+              )
+                continue;
               await createNotificationForUser({
                 userId: recipient._id,
                 notificationId: `follow-milestone-${milestonePost._id.toString()}`,
@@ -751,7 +767,6 @@ const cronJob = () => {
         console.log("💬 Quote cron tick at", new Date().toISOString());
 
         const users = await User.find({
-          notificationsEnabled: true,
           token: { $ne: null },
         });
 
@@ -785,6 +800,8 @@ const cronJob = () => {
         const notifications = [];
 
         for (const user of users) {
+          if (!shouldSendPush(user, NotificationCategories.DAILY_PUSH)) continue;
+
           const tz = user.timezone || "UTC";
           const userTime = DateTime.now().setZone(tz);
           const hour = userTime.hour;

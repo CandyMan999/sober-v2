@@ -14,7 +14,7 @@ const {
   NotificationTypes,
   createNotificationForUser,
 } = require("../../utils/notifications");
-const { sendPushNotifications } = require("../../utils/pushNotifications");
+const { sendPushNotifications, shouldSendPush } = require("../../utils/pushNotifications");
 
 const ALLOWED_ROOM_NAMES = ["General", "Early Days", "Relapse Support"];
 
@@ -141,7 +141,7 @@ const createCommentResolver = async (
         ? `${trimmedBody.slice(0, 137)}...`
         : trimmedBody;
 
-    if (!isSelf && recipient.token && recipient.notificationsEnabled !== false) {
+    if (!isSelf && recipient.token && shouldSendPush(recipient)) {
       await sendPushNotifications([
         {
           pushToken: recipient.token,

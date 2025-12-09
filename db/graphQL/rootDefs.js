@@ -24,7 +24,7 @@ const typeDefs = gql`
     averageRelapseDay: Int
     relapseReminderLastSentAt: String
     milestonesNotified: [Int!]
-    notificationsEnabled: Boolean
+    notificationSettings: NotificationSettings!
     timezone: String
     createdAt: String
     updatedAt: String
@@ -147,6 +147,32 @@ const typeDefs = gql`
     instagram: SocialAccount
     tiktok: SocialAccount
     x: SocialAccount
+  }
+
+  enum NotificationCategory {
+    OTHER_USER_MILESTONES
+    OTHER_USER_COMMENTS
+    FOLLOWING_POSTS
+    BUDDIES_NEAR_VENUE
+    DAILY_PUSH
+  }
+
+  type NotificationSettings {
+    allPushEnabled: Boolean!
+    otherUserMilestones: Boolean!
+    otherUserComments: Boolean!
+    followingPosts: Boolean!
+    buddiesNearVenue: Boolean!
+    dailyPush: Boolean!
+  }
+
+  input NotificationSettingsInput {
+    allPushEnabled: Boolean
+    otherUserMilestones: Boolean
+    otherUserComments: Boolean
+    followingPosts: Boolean
+    buddiesNearVenue: Boolean
+    dailyPush: Boolean
   }
 
   input SocialInput {
@@ -395,6 +421,15 @@ const typeDefs = gql`
       platform: SocialPlatform!
       handle: String
     ): User!
+    updateNotificationSettings(
+      token: String!
+      input: NotificationSettingsInput!
+    ): User!
+    toggleNotificationCategory(
+      token: String!
+      category: NotificationCategory!
+      enabled: Boolean!
+    ): NotificationSettings!
     resetSobrietyDate(token: String!, newStartAt: String!): User!
     directUpload: DirectUploadImage!
     addPicture(

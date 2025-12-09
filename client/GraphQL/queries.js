@@ -53,7 +53,14 @@ export const FETCH_ME_QUERY = `
         id
       }
       milestonesNotified
-      notificationsEnabled
+      notificationSettings {
+        allPushEnabled
+        otherUserMilestones
+        otherUserComments
+        followingPosts
+        buddiesNearVenue
+        dailyPush
+      }
       streaks{
        startAt
         endAt

@@ -1,6 +1,6 @@
 const { AuthenticationError } = require("apollo-server-express");
 const { Connection, User } = require("../../models");
-const { sendPushNotifications } = require("../../utils/pushNotifications");
+const { sendPushNotifications, shouldSendPush } = require("../../utils/pushNotifications");
 
 const populateConnection = (query) =>
   query.populate("follower").populate("followee");
@@ -41,10 +41,7 @@ const followUserResolver = async (_, { token, userId }) => {
     const followerUser = connection.follower;
     const followeeUser = connection.followee;
 
-    if (
-      followeeUser?.token &&
-      followeeUser?.notificationsEnabled !== false
-    ) {
+    if (followeeUser?.token && shouldSendPush(followeeUser)) {
       buddyAlerts.push({
         pushToken: followeeUser.token,
         title: "You have a new sober buddy",

@@ -1,4 +1,10 @@
 const { Expo } = require("expo-server-sdk");
+const {
+  NotificationCategories,
+  shouldSendPush,
+  defaultNotificationSettings,
+  normalizeNotificationSettings,
+} = require("./notificationSettings");
 
 const expo = new Expo();
 
@@ -52,4 +58,8 @@ const sendPushNotifications = async (notifications = []) => {
 
 module.exports = {
   sendPushNotifications,
+  shouldSendPush,
+  NotificationCategories,
+  defaultNotificationSettings,
+  normalizeNotificationSettings,
 };

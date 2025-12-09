@@ -8,7 +8,11 @@ const { pipeline } = require("stream/promises");
 const FormData = require("form-data");
 const { User, Video, Post, Connection } = require("../../models");
 const { findClosestCity } = require("../../utils/location");
-const { sendPushNotifications } = require("../../utils/pushNotifications");
+const {
+  sendPushNotifications,
+  shouldSendPush,
+  NotificationCategories,
+} = require("../../utils/pushNotifications");
 const {
   NotificationTypes,
   NotificationIntents,
@@ -533,7 +537,10 @@ module.exports = {
 
       for (const connection of followerConnections) {
         const follower = connection?.follower;
-        if (!follower?.token || follower?.notificationsEnabled === false) {
+        if (
+          !follower?.token ||
+          !shouldSendPush(follower, NotificationCategories.FOLLOWING_POSTS)
+        ) {
           continue;
         }
 
