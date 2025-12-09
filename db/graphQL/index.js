@@ -69,7 +69,7 @@ const {
 } = require("./subscription/subscription");
 
 // Import models
-const { Like, Comment, Connection, City } = require("../models");
+const { Like, Comment, Connection, City, User } = require("../models");
 const { findClosestCity } = require("../utils/location");
 
 // Use the original DocumentNode for schema construction so every definition
@@ -95,6 +95,32 @@ const resolveLikes = (targetType) => async (parent) => {
 };
 
 const resolveId = (parent) => parent?.id || parent?._id?.toString?.();
+
+const SOCIAL_COUNTS_SYMBOL = Symbol("socialCounts");
+
+const resolveSocialCounts = async (parent) => {
+  const targetId = resolveId(parent);
+
+  if (!targetId) {
+    return {
+      followersCount: 0,
+      followingCount: 0,
+      buddiesCount: 0,
+    };
+  }
+
+  const cachedCounts = parent?.[SOCIAL_COUNTS_SYMBOL];
+  if (cachedCounts) return cachedCounts;
+
+  const counts = await User.recalcSocialCounts(targetId);
+
+  if (parent) {
+    // cache on the parent object so we don't run three separate queries per user
+    parent[SOCIAL_COUNTS_SYMBOL] = counts;
+  }
+
+  return counts;
+};
 
 const resolvers = {
   Query: {
@@ -265,11 +291,9 @@ const resolvers = {
     },
 
     followersCount: async (parent) => {
-      const targetId = parent.id || parent._id;
-      if (!targetId) return 0;
-
       try {
-        return await Connection.countDocuments({ followee: targetId });
+        const counts = await resolveSocialCounts(parent);
+        return counts?.followersCount ?? 0;
       } catch (err) {
         console.error("Error resolving followersCount", err);
         return 0;
@@ -277,11 +301,9 @@ const resolvers = {
     },
 
     followingCount: async (parent) => {
-      const targetId = parent.id || parent._id;
-      if (!targetId) return 0;
-
       try {
-        return await Connection.countDocuments({ follower: targetId });
+        const counts = await resolveSocialCounts(parent);
+        return counts?.followingCount ?? 0;
       } catch (err) {
         console.error("Error resolving followingCount", err);
         return 0;
@@ -289,14 +311,9 @@ const resolvers = {
     },
 
     buddiesCount: async (parent) => {
-      const targetId = parent.id || parent._id;
-      if (!targetId) return 0;
-
       try {
-        return await Connection.countDocuments({
-          follower: targetId,
-          isBuddy: true,
-        });
+        const counts = await resolveSocialCounts(parent);
+        return counts?.buddiesCount ?? 0;
       } catch (err) {
         console.error("Error resolving buddiesCount", err);
         return 0;
