@@ -2,7 +2,15 @@
 const cron = require("node-cron");
 const { Expo } = require("expo-server-sdk");
 const mongoose = require("mongoose");
-const { User, Quote, Post, Picture, Room, Comment, Like } = require("../models");
+const {
+  User,
+  Quote,
+  Post,
+  Picture,
+  Room,
+  Comment,
+  Like,
+} = require("../models");
 const {
   NotificationTypes,
   NotificationIntents,
@@ -400,7 +408,10 @@ const pickRandomMilestoneImage = async (milestoneDays) => {
 // --- CHATROOM CLEANUP ---
 const pruneOldChatroomComments = async () => {
   const cutoffDate = DateTime.utc().minus({ days: 2 }).toJSDate();
-  console.log("🧹 Pruning chatroom comments older than", cutoffDate.toISOString());
+  console.log(
+    "🧹 Pruning chatroom comments older than",
+    cutoffDate.toISOString()
+  );
 
   const rooms = await Room.find({ isDirect: false });
   if (!rooms.length) {
@@ -420,7 +431,9 @@ const pruneOldChatroomComments = async () => {
 
     if (!staleComments.length) continue;
 
-    const staleIds = staleComments.map((comment) => comment._id).filter(Boolean);
+    const staleIds = staleComments
+      .map((comment) => comment._id)
+      .filter(Boolean);
 
     // Replies can be stored via `replies` array and/or `replyTo` reference
     const replyIdsFromChildren = staleComments
@@ -451,14 +464,17 @@ const pruneOldChatroomComments = async () => {
       targetId: { $in: idsToDelete },
     });
 
-    const commentResult = await Comment.deleteMany({ _id: { $in: idsToDelete } });
+    const commentResult = await Comment.deleteMany({
+      _id: { $in: idsToDelete },
+    });
 
     const updatePayload = {
       $pull: { comments: { $in: idsToDelete } },
     };
 
     const lastMessageDeleted =
-      room.lastMessage && idsToDelete.some((id) => String(room.lastMessage) === String(id));
+      room.lastMessage &&
+      idsToDelete.some((id) => String(room.lastMessage) === String(id));
 
     if (lastMessageDeleted) {
       updatePayload.$set = { lastMessage: null, lastMessageAt: null };
@@ -793,22 +809,25 @@ const cronJob = () => {
           if (hour >= 8 && hour <= 22) {
             const notificationId = `quote-${quote._id}-${userTime.toISODate()}`;
 
-            await createNotificationForUser({
-              userId: user._id,
-              notificationId,
-              type: NotificationTypes.NEW_QUOTE,
-              title: "Sober Motivation",
-              description: quote.text,
-              intent: NotificationIntents.SHOW_INFO,
-              quoteId: String(quote._id),
-              createdAt: new Date(),
-            });
+            // await createNotificationForUser({
+            //   userId: user._id,
+            //   notificationId,
+            //   type: NotificationTypes.NEW_QUOTE,
+            //   title: "Sober Motivation",
+            //   description: quote.text,
+            //   intent: NotificationIntents.SHOW_INFO,
+            //   quoteId: String(quote._id),
+            //   createdAt: new Date(),
+            // });
 
             notifications.push({
               pushToken: user.token,
               title: "Sober Motivation",
               body: quote.text,
-              data: { type: NotificationTypes.NEW_QUOTE, quoteId: String(quote._id) },
+              data: {
+                type: NotificationTypes.NEW_QUOTE,
+                quoteId: String(quote._id),
+              },
             });
 
             console.log(

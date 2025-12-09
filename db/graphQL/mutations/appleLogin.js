@@ -15,19 +15,20 @@ module.exports = {
 
       if (token) {
         // 1️⃣ Primary: find by token and attach appleId
-        user = user.findOne({ token });
-        if (
-          user.username === "SoberGuy999￼🍻" ||
-          user.username === "SoberOwl"
-        ) {
-          return serializeUser(user);
-        } else {
-          user = await User.findOneAndUpdate(
-            { token },
-            { $set: { appleId: sanitizedAppleId } },
-            { new: true }
-          );
-        }
+
+        // user = user.findOne({ token });
+        // if (
+        //   user.username === "SoberGuy999￼🍻" ||
+        //   user.username === "SoberOwl"
+        // ) {
+        //   return serializeUser(user);
+        // } else {
+        user = await User.findOneAndUpdate(
+          { token },
+          { $set: { appleId: sanitizedAppleId } },
+          { new: true }
+        );
+        // }
 
         // 2️⃣ If no user by token, try by appleId and attach token
         if (!user) {

@@ -66,25 +66,46 @@ const days10Sober8 = path.join(
 );
 
 // 14 days — 4 pics
-const days14Sober1 = path.join(
+
+const days60Sober1 = path.join(
   __dirname,
   "..",
-  "assets/14daysSober/14days1.png"
+  "assets/60daysSober/60Days1.png"
 );
-const days14Sober2 = path.join(
+const days60Sober2 = path.join(
   __dirname,
   "..",
-  "assets/14daysSober/14days2.png"
+  "assets/60daysSober/60Days2.png"
 );
-const days14Sober3 = path.join(
+const days60Sober3 = path.join(
   __dirname,
   "..",
-  "assets/14daysSober/14days3.png"
+  "assets/60daysSober/60Days3.png"
 );
-const days14Sober4 = path.join(
+const days60Sober4 = path.join(
   __dirname,
   "..",
-  "assets/14daysSober/14days4.png"
+  "assets/60daysSober/60Days4.png"
+);
+const days60Sober5 = path.join(
+  __dirname,
+  "..",
+  "assets/60daysSober/60Days5.png"
+);
+const days60Sober6 = path.join(
+  __dirname,
+  "..",
+  "assets/60daysSober/60Days6.png"
+);
+const days60Sober7 = path.join(
+  __dirname,
+  "..",
+  "assets/60daysSober/60Days7.png"
+);
+const days60Sober8 = path.join(
+  __dirname,
+  "..",
+  "assets/60daysSober/60Days8.png"
 );
 
 // 365 days — 1 pic: 356daysSober/1year1.png (assuming that’s the exact path)
@@ -180,10 +201,17 @@ const addMilestoneImages = async () => {
       //   { file: days10Sober7, milestone: "day10" },
       //   { file: days10Sober8, milestone: "day10" },
       //   // 14 days (4)
-      //   { file: days14Sober1, milestone: "day14" },
-      //   { file: days14Sober2, milestone: "day14" },
-      //   { file: days14Sober3, milestone: "day14" },
-      //   { file: days14Sober4, milestone: "day14" },
+      //   { file: days30Sober1, milestone: "day30" },
+      //   { file: days30Sober2, milestone: "day30" },
+      { file: days60Sober1, milestone: "day60" },
+      { file: days60Sober2, milestone: "day60" },
+      { file: days60Sober3, milestone: "day60" },
+      { file: days60Sober4, milestone: "day60" },
+      { file: days60Sober5, milestone: "day60" },
+      { file: days60Sober6, milestone: "day60" },
+      { file: days60Sober7, milestone: "day60" },
+      { file: days60Sober8, milestone: "day60" },
+
       //   // 365 days (1)
       //   { file: days365Sober1, milestone: "day365" },
     ];
