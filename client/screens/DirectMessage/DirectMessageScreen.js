@@ -221,14 +221,14 @@ const DirectMessageScreen = ({ route, navigation }) => {
 
         if (updatedMessages.length) {
           setMessages((prev) => {
-            const updatesById = new Map(
-              updatedMessages.map((message) => [message.id, message])
+            const updatedIds = new Set(
+              updatedMessages
+                .map((message) => message?.id)
+                .filter(Boolean)
             );
 
             const next = prev.map((message) =>
-              updatesById.has(message.id)
-                ? { ...message, ...updatesById.get(message.id) }
-                : message
+              updatedIds.has(message.id) ? { ...message, isRead: true } : message
             );
 
             return next.sort(
