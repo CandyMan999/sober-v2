@@ -1048,10 +1048,7 @@ const EditProfileScreen = ({ navigation }) => {
                   label="Comments"
                   value={notificationSettings.otherUserComments}
                   onValueChange={(value) =>
-                    handleNotificationSettingChange(
-                      "otherUserComments",
-                      value
-                    )
+                    handleNotificationSettingChange("otherUserComments", value)
                   }
                   activeColor={oceanBlue}
                 />
@@ -1112,8 +1109,8 @@ const EditProfileScreen = ({ navigation }) => {
             />
             <Text style={styles.helperText}>
               We only use your location to catch when you might be hanging at a
-              bar or liquor store so we can ping your sober buddies before you
-              make any dumb decisions.
+              bar or liquor store so we can ping you and your sober buddies
+              before you make any dumb decisions.
             </Text>
             <TouchableOpacity
               style={styles.deleteProfileButton}
@@ -1122,20 +1119,37 @@ const EditProfileScreen = ({ navigation }) => {
               onPress={handleDeleteProfile}
             >
               <LinearGradient
-                colors={["#991b1b", "#f97316"]}
+                colors={
+                  deletingAccount
+                    ? ["rgba(127,29,29,0.85)", "rgba(30,64,175,0.95)"]
+                    : ["rgba(127,29,29,0.95)", "rgba(15,23,42,0.98)"]
+                }
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 1 }}
                 style={[
                   styles.deleteProfileInner,
-                  deletingAccount && { opacity: 0.85 },
+                  deletingAccount && styles.deleteProfileInnerDisabled,
                 ]}
               >
-                <Feather name="trash-2" size={16} color="#fff" />
-                {deletingAccount ? (
-                  <ActivityIndicator color="#fff" size="small" />
-                ) : (
-                  <Text style={styles.deleteProfileText}>Delete profile</Text>
-                )}
+                <View style={styles.deleteProfileContent}>
+                  <View style={styles.deleteProfileIconBadge}>
+                    <Feather name="trash-2" size={16} color="#fecaca" />
+                  </View>
+
+                  <View style={styles.deleteProfileTextBlock}>
+                    <Text style={styles.deleteProfileTitle}>
+                      Delete profile
+                    </Text>
+                  </View>
+
+                  <View style={styles.deleteProfileRight}>
+                    {deletingAccount ? (
+                      <ActivityIndicator color="#fee2e2" size="small" />
+                    ) : (
+                      <Feather name="arrow-right" size={16} color="#fee2e2" />
+                    )}
+                  </View>
+                </View>
               </LinearGradient>
             </TouchableOpacity>
           </View>
@@ -1335,6 +1349,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     lineHeight: 18,
     marginBottom: 8,
+    textAlign: "center",
   },
   socialRow: {
     marginTop: 8,
@@ -1384,22 +1399,54 @@ const styles = StyleSheet.create({
   },
   deleteProfileButton: {
     marginTop: 18,
-    borderRadius: 14,
+    borderRadius: 16,
     overflow: "hidden",
+    borderWidth: 1,
+    borderColor: "rgba(248,113,113,0.45)",
   },
   deleteProfileInner: {
+    borderRadius: 16,
+    paddingVertical: 12,
+    paddingHorizontal: 12,
+  },
+  deleteProfileInnerDisabled: {
+    opacity: 0.8,
+  },
+  deleteProfileContent: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "center",
-    gap: 10,
-    paddingVertical: 12,
-    borderRadius: 14,
+    gap: 12,
   },
-  deleteProfileText: {
-    color: "#fff",
+  deleteProfileIconBadge: {
+    width: 32,
+    height: 32,
+    borderRadius: 999,
+    backgroundColor: "rgba(127,29,29,0.9)",
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 1,
+    borderColor: "rgba(248,113,113,0.8)",
+  },
+  deleteProfileTextBlock: {
+    flex: 1,
+  },
+  deleteProfileTitle: {
+    color: "#fee2e2",
     fontWeight: "800",
     fontSize: 14,
+    textAlign: "center",
   },
+  deleteProfileSubtitle: {
+    color: "#fecaca",
+    fontSize: 11,
+    marginTop: 2,
+  },
+  deleteProfileRight: {
+    paddingHorizontal: 4,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+
   loadingScreen: {
     ...StyleSheet.absoluteFillObject,
     backgroundColor: "rgba(5,8,22,0.75)",
