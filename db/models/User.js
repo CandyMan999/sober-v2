@@ -216,14 +216,48 @@ UserSchema.statics.ensureChatRoomStyle = async function (userDoc) {
 
 // Recalculate followers/following/buddies counts for the provided user
 UserSchema.statics.recalcSocialCounts = async function (userId) {
-  const [followersCount, followingCount, buddiesCount] = await Promise.all([
-    Connection.countDocuments({ followee: userId }),
-    Connection.countDocuments({ follower: userId }),
-    Connection.countDocuments({
-      $or: [{ follower: userId }, { followee: userId }],
+  // Filter out orphaned connections (e.g., when a user was deleted)
+  const [followers, following, buddies] = await Promise.all([
+    Connection.find({ followee: userId }).populate("follower", "_id"),
+    Connection.find({ follower: userId }).populate("followee", "_id"),
+    Connection.find({
       isBuddy: true,
-    }),
+      $or: [{ follower: userId }, { followee: userId }],
+    }).populate(["follower", "followee"]),
   ]);
+
+  const invalidFollowerConnections = followers
+    .filter((conn) => !conn.follower?._id)
+    .map((conn) => conn._id);
+  const invalidFollowingConnections = following
+    .filter((conn) => !conn.followee?._id)
+    .map((conn) => conn._id);
+
+  const invalidConnectionIds = [
+    ...invalidFollowerConnections,
+    ...invalidFollowingConnections,
+  ];
+
+  if (invalidConnectionIds.length) {
+    await Connection.deleteMany({ _id: { $in: invalidConnectionIds } });
+  }
+
+  const followersCount = followers.length - invalidFollowerConnections.length;
+  const followingCount = following.length - invalidFollowingConnections.length;
+
+  const buddyIds = buddies.reduce((set, conn) => {
+    const otherSide = conn.follower?._id?.equals(userId)
+      ? conn.followee?._id
+      : conn.follower?._id;
+
+    if (otherSide) {
+      set.add(otherSide.toString());
+    }
+
+    return set;
+  }, new Set());
+
+  const buddiesCount = buddyIds.size;
 
   await this.findByIdAndUpdate(userId, {
     followersCount,
