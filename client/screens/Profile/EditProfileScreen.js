@@ -309,12 +309,15 @@ const EditProfileScreen = ({ navigation }) => {
     followingPosts: true,
     buddiesNearVenue: true,
     dailyPush: true,
+    locationTrackingEnabled: true,
   };
 
   const [notificationSettings, setNotificationSettings] = useState(
     defaultNotificationSettings
   );
-  const [locationEnabled, setLocationEnabled] = useState(false);
+  const [locationEnabled, setLocationEnabled] = useState(
+    defaultNotificationSettings.locationTrackingEnabled
+  );
   const [locationToggleLoading, setLocationToggleLoading] = useState(false);
   const [notificationsOpen, setNotificationsOpen] = useState(false);
   const [savingNotificationKey, setSavingNotificationKey] = useState(null);
@@ -398,10 +401,17 @@ const EditProfileScreen = ({ navigation }) => {
             tiktok: normalizeSocialInput("tiktok", fetchedUser.social?.tiktok),
             x: normalizeSocialInput("x", fetchedUser.social?.x),
           });
-          setNotificationSettings({
+          const normalizedSettings = {
             ...defaultNotificationSettings,
             ...(fetchedUser.notificationSettings || {}),
-          });
+          };
+
+          setNotificationSettings(normalizedSettings);
+          if (
+            typeof normalizedSettings.locationTrackingEnabled === "boolean"
+          ) {
+            setLocationEnabled(normalizedSettings.locationTrackingEnabled);
+          }
           dispatch({ type: "SET_USER", payload: fetchedUser });
         }
       } catch (err) {
@@ -457,6 +467,49 @@ const EditProfileScreen = ({ navigation }) => {
     }),
     []
   );
+
+  const persistLocationTrackingSetting = async (enabled) => {
+    if (!token) {
+      showError(
+        "We need your device ID to update your location setting. Please restart the app.",
+        "Unable to update"
+      );
+      return false;
+    }
+
+    try {
+      const response = await client.request(
+        UPDATE_NOTIFICATION_SETTINGS_MUTATION,
+        {
+          token,
+          input: { locationTrackingEnabled: enabled },
+        }
+      );
+
+      const updated =
+        response?.updateNotificationSettings?.notificationSettings || null;
+
+      if (updated) {
+        setNotificationSettings((prev) => ({ ...prev, ...updated }));
+        dispatch({
+          type: "SET_USER",
+          payload: {
+            ...(response?.updateNotificationSettings || {}),
+            notificationSettings: updated,
+          },
+        });
+      }
+
+      return true;
+    } catch (err) {
+      console.log("Failed to persist location tracking preference", err);
+      showError(
+        "We couldn't save your location tracking preference. Please try again.",
+        "Location tracking"
+      );
+      return false;
+    }
+  };
 
   const handleNotificationSettingChange = async (key, value) => {
     if (!token) {
@@ -536,6 +589,7 @@ const EditProfileScreen = ({ navigation }) => {
     try {
       await stopAllSoberLocationTracking();
       setLocationEnabled(false);
+      await persistLocationTrackingSetting(false);
     } catch (err) {
       console.log("Unable to disable location tracking", err);
       showError(
@@ -599,6 +653,7 @@ const EditProfileScreen = ({ navigation }) => {
 
       await initSoberMotionTracking();
       setLocationEnabled(true);
+      await persistLocationTrackingSetting(true);
     } catch (err) {
       console.log("Unable to enable location tracking", err);
       setLocationEnabled(false);
