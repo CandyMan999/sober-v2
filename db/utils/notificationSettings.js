@@ -5,6 +5,7 @@ const defaultNotificationSettings = {
   followingPosts: true,
   buddiesNearVenue: true,
   dailyPush: true,
+  locationTrackingEnabled: true,
 };
 
 const NotificationCategories = {

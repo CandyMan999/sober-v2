@@ -118,8 +118,23 @@ const AppleLoginScreen = ({ navigation }) => {
 
       dispatch({ type: "SET_USER", payload: me });
 
+      const locationTrackingDisabled =
+        me?.notificationSettings?.locationTrackingEnabled === false;
       const { status, scope } = await Location.getForegroundPermissionsAsync();
       const hasAlwaysPermission = status === "granted" && scope === "always";
+
+      if (locationTrackingDisabled && me.sobrietyStartAt && me.profilePic) {
+        navigation.reset({
+          index: 0,
+          routes: [
+            {
+              name: "LocationPermission",
+              params: { requireReenable: true },
+            },
+          ],
+        });
+        return;
+      }
 
       if (hasAlwaysPermission && me.sobrietyStartAt && me.profilePic) {
         await updateLocationIfGranted(token);

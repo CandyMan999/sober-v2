@@ -164,6 +164,7 @@ const typeDefs = gql`
     followingPosts: Boolean!
     buddiesNearVenue: Boolean!
     dailyPush: Boolean!
+    locationTrackingEnabled: Boolean!
   }
 
   input NotificationSettingsInput {
@@ -173,6 +174,7 @@ const typeDefs = gql`
     followingPosts: Boolean
     buddiesNearVenue: Boolean
     dailyPush: Boolean
+    locationTrackingEnabled: Boolean
   }
 
   input SocialInput {

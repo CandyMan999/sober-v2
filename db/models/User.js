@@ -155,6 +155,7 @@ const UserSchema = new mongoose.Schema(
       followingPosts: { type: Boolean, default: true },
       buddiesNearVenue: { type: Boolean, default: true },
       dailyPush: { type: Boolean, default: true },
+      locationTrackingEnabled: { type: Boolean, default: true },
     },
 
     // Saved posts for quick access

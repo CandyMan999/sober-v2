@@ -1,5 +1,5 @@
 // screens/Onboarding/LocationPermissionScreen.js
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -19,9 +19,14 @@ import {
 
 import LogoIcon from "../../assets/icon.png";
 import { useClient } from "../../client";
-import { UPDATE_USER_PROFILE_MUTATION } from "../../GraphQL/mutations";
+import {
+  UPDATE_NOTIFICATION_SETTINGS_MUTATION,
+  UPDATE_USER_PROFILE_MUTATION,
+} from "../../GraphQL/mutations";
 import { getToken } from "../../utils/helpers";
 import { COLORS } from "../../constants/colors";
+import { AlertModal } from "../../components";
+import Context from "../../context";
 const {
   primaryBackground,
   cardBackground,
@@ -32,10 +37,15 @@ const {
   textSecondary,
 } = COLORS;
 
-const LocationPermissionScreen = ({ navigation }) => {
+const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+const LocationPermissionScreen = ({ navigation, route }) => {
   const client = useClient();
+  const { state, dispatch } = useContext(Context);
   const [loading, setLoading] = useState(false);
   const [checking, setChecking] = useState(true);
+  const [reenablePromptVisible, setReenablePromptVisible] = useState(false);
+  const shouldRequireReenable = route?.params?.requireReenable === true;
 
   const hasAlwaysPermission = async () => {
     const fg = await Location.getForegroundPermissionsAsync();
@@ -97,6 +107,36 @@ const LocationPermissionScreen = ({ navigation }) => {
     }
   };
 
+  const persistLocationTrackingPreference = async (enabled) => {
+    try {
+      const token = await getToken();
+      if (!token) return;
+
+      const response = await client.request(
+        UPDATE_NOTIFICATION_SETTINGS_MUTATION,
+        {
+          token,
+          input: { locationTrackingEnabled: enabled },
+        }
+      );
+
+      const updated =
+        response?.updateNotificationSettings?.notificationSettings || null;
+
+      if (updated && state?.user) {
+        dispatch({
+          type: "SET_USER",
+          payload: {
+            ...(state?.user || {}),
+            notificationSettings: updated,
+          },
+        });
+      }
+    } catch (err) {
+      console.log("Failed to persist location tracking preference", err);
+    }
+  };
+
   useEffect(() => {
     checkPermissions();
   }, []);
@@ -108,12 +148,21 @@ const LocationPermissionScreen = ({ navigation }) => {
           requestFn: client.request,
           getPushTokenFn: getToken,
         });
+        if (shouldRequireReenable) {
+          setChecking(false);
+          setReenablePromptVisible(true);
+          return;
+        }
+
         await startMotionTrackingIfPermitted();
         await routeToApp();
         return;
       }
 
       setChecking(false);
+      if (shouldRequireReenable) {
+        setReenablePromptVisible(true);
+      }
     } catch (err) {
       console.log("Location permission check failed:", err);
       setChecking(false);
@@ -145,12 +194,26 @@ const LocationPermissionScreen = ({ navigation }) => {
 
       const bg = await Location.requestBackgroundPermissionsAsync();
 
-      if (bg.status === "granted" || (await hasAlwaysPermission())) {
+      const hasAlways =
+        bg.status === "granted" || (await hasAlwaysPermission());
+
+      if (!hasAlways) {
+        await delay(600);
+      }
+
+      const confirmedAlways =
+        hasAlways || (await hasAlwaysPermission());
+
+      if (confirmedAlways) {
         configureLocationTrackingClient({
           requestFn: client.request,
           getPushTokenFn: getToken,
         });
-        await startMotionTrackingIfPermitted();
+        const started = await startMotionTrackingIfPermitted();
+        if (started) {
+          await persistLocationTrackingPreference(true);
+          setReenablePromptVisible(false);
+        }
         await routeToApp();
         return;
       }
@@ -178,6 +241,7 @@ const LocationPermissionScreen = ({ navigation }) => {
   };
 
   const skip = () => {
+    if (reenablePromptVisible) setReenablePromptVisible(false);
     routeToApp();
   };
 
@@ -199,6 +263,19 @@ const LocationPermissionScreen = ({ navigation }) => {
       colors={["#020617", "#020617", "#111827"]}
       style={styles.root}
     >
+      <AlertModal
+        visible={reenablePromptVisible}
+        type="confirm"
+        title="Turn location back on?"
+        message="This is the best feature to keep you sober. We use smart geo-fencing to alert you and your buddies when you're near bars or liquor stores — turning this off won't save battery."
+        confirmLabel="Turn back on"
+        cancelLabel="Skip for now"
+        onConfirm={() => {
+          setReenablePromptVisible(false);
+          handlePermissionRequest();
+        }}
+        onCancel={skip}
+      />
       <View style={styles.flex}>
         {/* Header */}
         <View style={styles.header}>

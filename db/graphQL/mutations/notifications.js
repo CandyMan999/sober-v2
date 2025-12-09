@@ -69,6 +69,9 @@ module.exports = {
     if (typeof input?.dailyPush === "boolean") {
       settings.dailyPush = input.dailyPush;
     }
+    if (typeof input?.locationTrackingEnabled === "boolean") {
+      settings.locationTrackingEnabled = input.locationTrackingEnabled;
+    }
 
     user.notificationSettings = settings;
     await user.save();

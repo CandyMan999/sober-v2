@@ -57,6 +57,7 @@ export const UPDATE_USER_PROFILE_MUTATION = gql`
         followingPosts
         buddiesNearVenue
         dailyPush
+        locationTrackingEnabled
       }
       social {
         instagram {
@@ -151,6 +152,7 @@ export const UPDATE_SOCIAL_MUTATION = gql`
         followingPosts
         buddiesNearVenue
         dailyPush
+        locationTrackingEnabled
       }
       social {
         instagram {
@@ -264,6 +266,7 @@ export const UPDATE_NOTIFICATION_SETTINGS_MUTATION = gql`
         followingPosts
         buddiesNearVenue
         dailyPush
+        locationTrackingEnabled
       }
     }
   }

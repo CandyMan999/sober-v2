@@ -60,6 +60,7 @@ export const FETCH_ME_QUERY = `
         followingPosts
         buddiesNearVenue
         dailyPush
+        locationTrackingEnabled
       }
       streaks{
        startAt
