@@ -157,6 +157,7 @@ const NotificationsScreen = ({ navigation }) => {
   const [previewContent, setPreviewContent] = useState(null);
   const [previewType, setPreviewType] = useState("POST");
   const [previewShowComments, setPreviewShowComments] = useState(false);
+  const [previewMuted, setPreviewMuted] = useState(true);
   const [loadingPreview, setLoadingPreview] = useState(false);
   const [activeNotificationId, setActiveNotificationId] = useState(null);
   const [clearingAll, setClearingAll] = useState(false);
@@ -355,9 +356,11 @@ const NotificationsScreen = ({ navigation }) => {
     (notification) => {
       if (!notification) return;
 
-    const isBuddyVenueNotification =
-      (notification.type === NotificationTypes.BUDDY_NEAR_BAR ||
-        notification.type === NotificationTypes.BUDDY_NEAR_LIQUOR) &&
+      setPreviewMuted(true);
+
+      const isBuddyVenueNotification =
+        (notification.type === NotificationTypes.BUDDY_NEAR_BAR ||
+          notification.type === NotificationTypes.BUDDY_NEAR_LIQUOR) &&
       notification.fromUserId;
 
     const isChatRoomNotification =
@@ -626,6 +629,7 @@ const NotificationsScreen = ({ navigation }) => {
   const handleClosePreview = () => {
     setPreviewContent(null);
     setPreviewShowComments(false);
+    setPreviewMuted(true);
     setPreviewVisible(false);
     setActiveNotificationId(null);
     setPreviewType("POST");
@@ -700,7 +704,8 @@ const NotificationsScreen = ({ navigation }) => {
         item={previewContent}
         type={previewType}
         onClose={handleClosePreview}
-        onToggleSound={() => {}}
+        isMuted={previewMuted}
+        onToggleSound={() => setPreviewMuted((prev) => !prev)}
         viewerUser={state?.user}
         initialShowComments={previewShowComments}
         onTogglePostLike={(postId) => handlePreviewToggleLike(postId, "POST")}
