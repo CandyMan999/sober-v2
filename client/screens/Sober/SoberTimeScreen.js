@@ -1,11 +1,5 @@
 // pages/SoberTimeScreen/SoberTimeScreen.js
-import React, {
-  useContext,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
 import {
   View,
   Text,
@@ -13,16 +7,19 @@ import {
   ScrollView,
   TouchableOpacity,
   Platform,
+  Animated,
+  Easing,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import DateTimePicker from "@react-native-community/datetimepicker";
-
 import { Ionicons } from "@expo/vector-icons";
+import { LiquidGlassView } from "@callstack/liquid-glass";
 
 import { AlertModal, StreakHistoryModal } from "../../components";
 import { RESET_SOBRIETY_MUTATION } from "../../GraphQL/mutations";
 import Context from "../../context";
 import { useClient } from "../../client";
+import { COLORS } from "../../constants/colors";
 
 const MILESTONES = [1, 2, 3, 5, 7, 10, 14, 30, 60, 90, 180, 365];
 
@@ -159,9 +156,7 @@ const SoberTimeScreen = () => {
 
   const averageRelapseDay = useMemo(() => {
     const serverValue =
-      user?.averageRelapseDay != null
-        ? Number(user.averageRelapseDay)
-        : null;
+      user?.averageRelapseDay != null ? Number(user.averageRelapseDay) : null;
 
     if (serverValue != null && Number.isFinite(serverValue) && serverValue > 0)
       return serverValue;
@@ -397,6 +392,69 @@ const SoberTimeScreen = () => {
     }
   }
 
+  /**
+   * 🔥 TIMER CHIP ANIMATIONS 🔥
+   * - Hours & minutes: more pronounced pulse on change
+   * - Seconds: subtle micro-pulse every tick
+   */
+  const hoursAnim = useRef(new Animated.Value(0)).current;
+  const minutesAnim = useRef(new Animated.Value(0)).current;
+  const secondsAnim = useRef(new Animated.Value(0)).current;
+
+  const pulseChip = (anim, durationIn = 130, durationOut = 220) => {
+    anim.stopAnimation?.();
+    anim.setValue(0);
+    Animated.sequence([
+      Animated.timing(anim, {
+        toValue: 1,
+        duration: durationIn,
+        easing: Easing.out(Easing.quad),
+        useNativeDriver: true,
+      }),
+      Animated.timing(anim, {
+        toValue: 0,
+        duration: durationOut,
+        easing: Easing.out(Easing.quad),
+        useNativeDriver: true,
+      }),
+    ]).start();
+  };
+
+  // Hours pulse (bigger, slower)
+  useEffect(() => {
+    if (!diff) return;
+    pulseChip(hoursAnim, 180, 260);
+  }, [diff?.hours]);
+
+  // Minutes pulse
+  useEffect(() => {
+    if (!diff) return;
+    pulseChip(minutesAnim, 150, 230);
+  }, [diff?.minutes]);
+
+  // Seconds micro-pulse
+  useEffect(() => {
+    if (!diff) return;
+    pulseChip(secondsAnim, 110, 200);
+  }, [diff?.seconds]);
+
+  const chipScaleStyle = (anim, intensity = 0.06) => ({
+    transform: [
+      {
+        scale: anim.interpolate({
+          inputRange: [0, 1],
+          outputRange: [1, 1 + intensity],
+        }),
+      },
+      {
+        translateY: anim.interpolate({
+          inputRange: [0, 1],
+          outputRange: [0, -2],
+        }),
+      },
+    ],
+  });
+
   return (
     <View style={styles.safeArea}>
       <ScrollView
@@ -418,21 +476,109 @@ const SoberTimeScreen = () => {
               </View>
 
               <View style={styles.chipsRow}>
-                <View style={styles.chip}>
-                  <Text style={styles.chipValue}>{formatTwo(diff.hours)}</Text>
-                  <Text style={styles.chipLabel}>HRS</Text>
+                {/* HOURS CHIP */}
+                <View style={styles.chipWrapper}>
+                  <Animated.View
+                    pointerEvents="none"
+                    style={[
+                      styles.chipHighlightBase,
+                      {
+                        opacity: hoursAnim,
+                        borderColor: "rgba(251,191,36,0.9)",
+                        backgroundColor: "rgba(251,191,36,0.18)",
+                        shadowColor: "#FBBF24",
+                      },
+                    ]}
+                  />
+                  <Animated.View
+                    style={[
+                      styles.chipAnimated,
+                      chipScaleStyle(hoursAnim, 0.08),
+                    ]}
+                  >
+                    <LiquidGlassView
+                      style={styles.chip}
+                      interactive
+                      effect="clear"
+                      tintColor="rgba(15,23,42,0.45)"
+                      colorScheme="system"
+                    >
+                      <Text style={styles.chipValue}>
+                        {formatTwo(diff.hours)}
+                      </Text>
+                      <Text style={styles.chipLabel}>HRS</Text>
+                    </LiquidGlassView>
+                  </Animated.View>
                 </View>
-                <View style={styles.chip}>
-                  <Text style={styles.chipValue}>
-                    {formatTwo(diff.minutes)}
-                  </Text>
-                  <Text style={styles.chipLabel}>MIN</Text>
+
+                {/* MINUTES CHIP */}
+                <View style={styles.chipWrapper}>
+                  <Animated.View
+                    pointerEvents="none"
+                    style={[
+                      styles.chipHighlightBase,
+                      {
+                        opacity: minutesAnim,
+                        borderColor: "rgba(45,212,191,0.9)",
+                        backgroundColor: "rgba(45,212,191,0.14)",
+                        shadowColor: "#22C55E",
+                      },
+                    ]}
+                  />
+                  <Animated.View
+                    style={[
+                      styles.chipAnimated,
+                      chipScaleStyle(minutesAnim, 0.07),
+                    ]}
+                  >
+                    <LiquidGlassView
+                      style={styles.chip}
+                      interactive
+                      effect="clear"
+                      tintColor="rgba(15,23,42,0.45)"
+                      colorScheme="system"
+                    >
+                      <Text style={styles.chipValue}>
+                        {formatTwo(diff.minutes)}
+                      </Text>
+                      <Text style={styles.chipLabel}>MIN</Text>
+                    </LiquidGlassView>
+                  </Animated.View>
                 </View>
-                <View style={styles.chip}>
-                  <Text style={styles.chipValue}>
-                    {formatTwo(diff.seconds)}
-                  </Text>
-                  <Text style={styles.chipLabel}>SEC</Text>
+
+                {/* SECONDS CHIP */}
+                <View style={styles.chipWrapper}>
+                  <Animated.View
+                    pointerEvents="none"
+                    style={[
+                      styles.chipHighlightBase,
+                      {
+                        opacity: secondsAnim,
+                        borderColor: "rgba(56,189,248,0.9)",
+                        backgroundColor: "rgba(56,189,248,0.16)",
+                        shadowColor: "#38BDF8",
+                      },
+                    ]}
+                  />
+                  <Animated.View
+                    style={[
+                      styles.chipAnimated,
+                      chipScaleStyle(secondsAnim, 0.05),
+                    ]}
+                  >
+                    <LiquidGlassView
+                      style={styles.chip}
+                      interactive
+                      effect="clear"
+                      tintColor="rgba(15,23,42,0.45)"
+                      colorScheme="system"
+                    >
+                      <Text style={styles.chipValue}>
+                        {formatTwo(diff.seconds)}
+                      </Text>
+                      <Text style={styles.chipLabel}>SEC</Text>
+                    </LiquidGlassView>
+                  </Animated.View>
                 </View>
               </View>
 
@@ -499,18 +645,26 @@ const SoberTimeScreen = () => {
                     {pastMilestones.slice(-3).map((m) => {
                       const notified = milestonesNotified.includes(m);
                       return (
-                        <View
+                        <LiquidGlassView
                           key={`past-${m}`}
                           style={[
                             styles.milestoneBadge,
                             notified && styles.milestoneBadgeNotified,
                           ]}
+                          interactive
+                          effect="clear"
+                          tintColor={
+                            notified
+                              ? "rgba(6,78,59,0.7)"
+                              : "rgba(15,23,42,0.7)"
+                          }
+                          colorScheme="system"
                         >
                           <Text style={styles.badgeEmoji}>
                             {notified ? "✅" : "✨"}
                           </Text>
                           <Text style={styles.badgeText}>{m}d</Text>
-                        </View>
+                        </LiquidGlassView>
                       );
                     })}
                   </View>
@@ -522,10 +676,17 @@ const SoberTimeScreen = () => {
                   <Text style={styles.groupLabel}>Coming up</Text>
                   <View style={styles.badgeRow}>
                     {upcomingMilestones.map((m) => (
-                      <View key={`up-${m}`} style={styles.milestoneBadgeDim}>
+                      <LiquidGlassView
+                        key={`up-${m}`}
+                        style={styles.milestoneBadgeDim}
+                        interactive
+                        effect="clear"
+                        tintColor="rgba(15,23,42,0.7)"
+                        colorScheme="system"
+                      >
                         <Text style={styles.badgeEmoji}>⏳</Text>
                         <Text style={styles.badgeText}>{m}d</Text>
-                      </View>
+                      </LiquidGlassView>
                     ))}
                   </View>
                 </View>
@@ -539,7 +700,6 @@ const SoberTimeScreen = () => {
           )}
         </View>
 
-        {/* HISTORY BUTTON (opens full-screen chart) */}
         {/* HISTORY BUTTON (opens full-screen chart) */}
         <View style={styles.historyButtonWrapper}>
           <TouchableOpacity
@@ -579,52 +739,77 @@ const SoberTimeScreen = () => {
           </Text>
 
           <View style={styles.optionsRow}>
-            <TouchableOpacity
-              onPress={handleSetToday}
-              activeOpacity={0.9}
-              disabled={savingReset}
+            <LiquidGlassView
+              interactive
+              effect="clear"
+              tintColor={
+                useToday ? "rgba(245,158,11,0.36)" : "rgba(15,23,42,0.6)"
+              }
+              colorScheme="system"
               style={[
                 styles.optionButton,
                 useToday && styles.optionButtonActive,
               ]}
             >
-              <Text
-                style={[styles.optionText, useToday && styles.optionTextActive]}
+              <TouchableOpacity
+                style={styles.optionTouchable}
+                onPress={handleSetToday}
+                activeOpacity={0.9}
+                disabled={savingReset}
               >
-                Starts today
-              </Text>
-              {isToday() && (
-                <Text style={styles.optionHint}>Today selected</Text>
-              )}
-            </TouchableOpacity>
+                <Text
+                  style={[
+                    styles.optionText,
+                    useToday && styles.optionTextActive,
+                  ]}
+                >
+                  Starts today
+                </Text>
+                {isToday() && (
+                  <Text style={styles.optionHint}>Today selected</Text>
+                )}
+              </TouchableOpacity>
+            </LiquidGlassView>
 
-            <TouchableOpacity
-              onPress={handlePickDatePress}
-              activeOpacity={0.9}
-              disabled={savingReset}
+            <LiquidGlassView
+              interactive
+              effect="clear"
+              tintColor={
+                !useToday || hasPendingCustomDate
+                  ? "rgba(245,158,11,0.36)"
+                  : "rgba(15,23,42,0.6)"
+              }
+              colorScheme="system"
               style={[
                 styles.optionButton,
+                styles.optionButtonLast,
                 !useToday && styles.optionButtonActive,
                 hasPendingCustomDate && styles.optionButtonPending,
-                styles.optionButtonLast,
               ]}
             >
-              <Text
-                style={[
-                  styles.optionText,
-                  !useToday && styles.optionTextActive,
-                ]}
+              <TouchableOpacity
+                style={styles.optionTouchable}
+                onPress={handlePickDatePress}
+                activeOpacity={0.9}
+                disabled={savingReset}
               >
-                {hasPendingCustomDate ? "Save date" : "Pick a date"}
-              </Text>
-              <Text style={styles.optionHint}>
-                {selectedDate
-                  ? hasPendingCustomDate
-                    ? `Tap again to save ${formatDate(selectedDate)}`
-                    : formatDate(selectedDate)
-                  : "Choose a past date"}
-              </Text>
-            </TouchableOpacity>
+                <Text
+                  style={[
+                    styles.optionText,
+                    !useToday && styles.optionTextActive,
+                  ]}
+                >
+                  {hasPendingCustomDate ? "Save date" : "Pick a date"}
+                </Text>
+                <Text style={styles.optionHint}>
+                  {selectedDate
+                    ? hasPendingCustomDate
+                      ? `Tap again to save ${formatDate(selectedDate)}`
+                      : formatDate(selectedDate)
+                    : "Choose a past date"}
+                </Text>
+              </TouchableOpacity>
+            </LiquidGlassView>
           </View>
 
           {showPicker && !useToday && Platform.OS === "ios" && (
@@ -688,7 +873,7 @@ const styles = StyleSheet.create({
   },
   content: {
     padding: 16,
-    paddingBottom: 0, // no extra bottom padding
+    paddingBottom: 0,
   },
   title: {
     fontSize: 24,
@@ -742,14 +927,34 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     marginBottom: 12,
   },
+  chipWrapper: {
+    flex: 1,
+    position: "relative",
+  },
+  chipAnimated: {
+    flex: 1,
+  },
+  chipHighlightBase: {
+    position: "absolute",
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    borderRadius: 999,
+    borderWidth: 1,
+    shadowOpacity: 0.9,
+    shadowRadius: 20,
+    shadowOffset: { width: 0, height: 12 },
+    elevation: 10,
+  },
   chip: {
     flex: 1,
     marginHorizontal: 4,
     paddingVertical: 10,
     borderRadius: 999,
     borderWidth: 1,
-    borderColor: "#1f2937",
-    backgroundColor: "#0b1220",
+    borderColor: "rgba(148,163,184,0.3)",
+    backgroundColor: "transparent",
     alignItems: "center",
   },
   chipValue: {
@@ -759,7 +964,7 @@ const styles = StyleSheet.create({
     marginBottom: 2,
   },
   chipLabel: {
-    color: "#6b7280",
+    color: "#9ca3af",
     fontSize: 11,
     letterSpacing: 1.2,
   },
@@ -787,7 +992,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "flex-end",
-    marginBottom: 10,
+    marginBottom: 8,
   },
   milestoneTitle: {
     color: "#f9fafb",
@@ -797,6 +1002,25 @@ const styles = StyleSheet.create({
   milestoneSubTitle: {
     color: "#6b7280",
     fontSize: 13,
+  },
+  avgRow: {
+    marginBottom: 8,
+  },
+  avgChip: {
+    alignSelf: "flex-start",
+    flexDirection: "row",
+    alignItems: "center",
+    paddingVertical: 6,
+    paddingHorizontal: 10,
+    borderRadius: 999,
+    borderWidth: 1,
+    borderColor: "rgba(251,191,36,0.6)",
+    backgroundColor: "transparent",
+  },
+  avgChipText: {
+    color: "#fef3c7",
+    fontSize: 12,
+    fontWeight: "600",
   },
   cardText: {
     color: "#9ca3af",
@@ -832,7 +1056,7 @@ const styles = StyleSheet.create({
   progressFill: {
     height: "100%",
     borderRadius: 999,
-    backgroundColor: "#2563eb",
+    backgroundColor: COLORS.accent,
   },
   milestoneGroup: {
     marginTop: 8,
@@ -852,14 +1076,13 @@ const styles = StyleSheet.create({
     paddingVertical: 6,
     paddingHorizontal: 10,
     borderRadius: 999,
-    backgroundColor: "#0b1220",
+    backgroundColor: "transparent",
     borderWidth: 1,
     borderColor: "#1f2937",
     marginRight: 6,
     marginBottom: 6,
   },
   milestoneBadgeNotified: {
-    backgroundColor: "#022c22",
     borderColor: "#059669",
   },
   milestoneBadgeDim: {
@@ -868,7 +1091,7 @@ const styles = StyleSheet.create({
     paddingVertical: 6,
     paddingHorizontal: 10,
     borderRadius: 999,
-    backgroundColor: "#020617",
+    backgroundColor: "transparent",
     borderWidth: 1,
     borderColor: "#111827",
     marginRight: 6,
@@ -935,13 +1158,15 @@ const styles = StyleSheet.create({
   },
   optionButton: {
     flex: 1,
-    paddingVertical: 12,
-    paddingHorizontal: 14,
     borderRadius: 14,
     borderWidth: 1,
     borderColor: "#1f2937",
-    backgroundColor: "#020617",
+    backgroundColor: "transparent",
     marginRight: 8,
+  },
+  optionTouchable: {
+    paddingVertical: 12,
+    paddingHorizontal: 14,
     alignItems: "center",
   },
   optionButtonLast: {
@@ -949,11 +1174,9 @@ const styles = StyleSheet.create({
   },
   optionButtonActive: {
     borderColor: "#F59E0B",
-    backgroundColor: "rgba(245, 158, 11, 0.1)",
   },
   optionButtonPending: {
     borderColor: "#F97316",
-    backgroundColor: "rgba(249, 115, 22, 0.16)",
   },
   optionText: {
     color: "#9ca3af",

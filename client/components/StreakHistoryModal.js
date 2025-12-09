@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import { LineChart } from "react-native-chart-kit";
 import { Ionicons } from "@expo/vector-icons";
+import { LiquidGlassView } from "@callstack/liquid-glass";
 
 const ACCENT = "#F59E0B";
 const BG = "#020617";
@@ -293,17 +294,22 @@ const StreakHistoryModal = ({
             </View>
 
             {/* Labels under chart */}
-            {/* Labels under chart */}
-            <View style={styles.labelsList}>
+            <View className="labels-list" style={styles.labelsList}>
               <View style={styles.breakdownHeader}>
                 <Text style={styles.listTitle}>Streak breakdown</Text>
                 {relapseAverage != null && (
-                  <View style={styles.averagePill}>
+                  <LiquidGlassView
+                    style={styles.averagePill}
+                    interactive
+                    effect="regular"
+                    tintColor="rgba(245,158,11,0.35)"
+                    colorScheme="system"
+                  >
                     <Text style={styles.averagePillLabel}>Avg relapse</Text>
                     <Text style={styles.averagePillValue}>
                       Day {relapseAverage}
                     </Text>
-                  </View>
+                  </LiquidGlassView>
                 )}
               </View>
 
@@ -485,9 +491,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 6,
     borderRadius: 12,
-    backgroundColor: "rgba(245, 158, 11, 0.15)",
     borderWidth: 1,
     borderColor: "rgba(245, 158, 11, 0.4)",
+    // no solid background so Liquid Glass shows
   },
   averagePillLabel: {
     color: "#fbbf24",
@@ -495,6 +501,7 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     textTransform: "uppercase",
     letterSpacing: 0.5,
+    textAlign: "center",
   },
   averagePillValue: {
     color: "#fefce8",
