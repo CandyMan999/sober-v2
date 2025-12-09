@@ -184,11 +184,11 @@ const MessageBubble = ({
                 ? [
                     styles.bubbleMention,
                     styles.bubbleMentionGlow,
-                    { shadowColor: bubbleColors.shadowColor || accentColor },
+                    { shadowColor: "rgba(255,255,255,0.95)" },
                     {
-                      borderColor: bubbleColors.borderColor || accentColor,
+                      borderColor: bubbleColors.borderColor || "#ffffff",
                       backgroundColor:
-                        bubbleColors.backgroundColor || "rgba(254,240,138,0.08)",
+                        bubbleColors.backgroundColor || "rgba(255,255,255,0.12)",
                     },
                   ]
                 : null,
@@ -433,17 +433,17 @@ const styles = StyleSheet.create({
     paddingTop: 0,
   },
   bubbleMention: {
-    shadowColor: "rgba(251,191,36,0.8)",
-    shadowOpacity: 0.95,
-    shadowRadius: 10,
+    shadowColor: "rgba(255,255,255,0.95)",
+    shadowOpacity: 1,
+    shadowRadius: 18,
     shadowOffset: { width: 0, height: 0 },
-    elevation: 7,
+    elevation: 14,
   },
   bubbleMentionGlow: {
-    borderWidth: 2,
-    shadowRadius: 14,
+    borderWidth: 3,
+    shadowRadius: 24,
     shadowOpacity: 1,
-    elevation: 10,
+    elevation: 18,
   },
   text: {
     fontSize: 14,
