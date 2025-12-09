@@ -72,7 +72,11 @@ const MessageBubble = ({
   const isMentioningMe = useMemo(() => {
     if (!currentUsername) return false;
     const content = message?.text || "";
-    return content.toLowerCase().includes(`@${currentUsername.toLowerCase()}`);
+    const mentionRegex = new RegExp(
+      `@${currentUsername.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}(?=\\b|[^A-Za-z0-9_])`,
+      "i"
+    );
+    return mentionRegex.test(content);
   }, [currentUsername, message?.text]);
 
   const renderTextWithMentions = useMemo(() => {
@@ -179,7 +183,13 @@ const MessageBubble = ({
               isMentioningMe && !isMine
                 ? [
                     styles.bubbleMention,
+                    styles.bubbleMentionGlow,
                     { shadowColor: bubbleColors.shadowColor || accentColor },
+                    {
+                      borderColor: bubbleColors.borderColor || accentColor,
+                      backgroundColor:
+                        bubbleColors.backgroundColor || "rgba(254,240,138,0.08)",
+                    },
                   ]
                 : null,
             ]}
@@ -428,6 +438,12 @@ const styles = StyleSheet.create({
     shadowRadius: 10,
     shadowOffset: { width: 0, height: 0 },
     elevation: 7,
+  },
+  bubbleMentionGlow: {
+    borderWidth: 2,
+    shadowRadius: 14,
+    shadowOpacity: 1,
+    elevation: 10,
   },
   text: {
     fontSize: 14,
