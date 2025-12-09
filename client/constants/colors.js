@@ -16,4 +16,5 @@ export const COLORS = {
   gradientStart: "#0B1A2A",
   gradientMid: "#102A43",
   gradientEnd: "#0EA5E9",
+  canyonBlue: "#38bdf8",
 };

@@ -555,6 +555,8 @@ export const GET_QUOTES_QUERY = `
         id
         username
         profilePicUrl
+        isFollowedByViewer
+        isBuddyWithViewer
       }
 
       likes {
