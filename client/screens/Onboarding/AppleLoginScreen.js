@@ -16,12 +16,16 @@ import {
 } from "react-native";
 import * as AppleAuthentication from "expo-apple-authentication";
 import * as Location from "expo-location";
+import * as Notifications from "expo-notifications"; // ✅ NEW
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { LinearGradient } from "expo-linear-gradient";
 import Avatar from "../../components/Avatar";
 
 import { useClient } from "../../client";
-import { APPLE_LOGIN_MUTATION, UPDATE_USER_PROFILE_MUTATION } from "../../GraphQL/mutations";
+import {
+  APPLE_LOGIN_MUTATION,
+  UPDATE_USER_PROFILE_MUTATION,
+} from "../../GraphQL/mutations";
 import { FETCH_ME_QUERY, RANDOM_USERS_QUERY } from "../../GraphQL/queries";
 import Context from "../../context";
 import LogoIcon from "../../assets/icon.png";
@@ -116,7 +120,32 @@ const AppleLoginScreen = ({ navigation }) => {
         return;
       }
 
-      dispatch({ type: "SET_USER", payload: me });
+      // ✅ NEW: Check if push notifications are enabled at OS level
+      try {
+        const notifSettings = await Notifications.getPermissionsAsync();
+        const hasPushPermission = notifSettings?.granted === true;
+
+        if (!hasPushPermission) {
+          // Force them back through AddUserName / notification onboarding
+          navigation.reset({
+            index: 0,
+            routes: [
+              {
+                name: "AddUserName",
+                params: {
+                  appleId,
+                  username: me.username || "",
+                  photoURI: me.profilePicUrl || null,
+                  pushToken: token,
+                },
+              },
+            ],
+          });
+          return;
+        }
+      } catch (e) {
+        console.log("Failed to check notification permissions:", e);
+      }
 
       const locationTrackingDisabled =
         me?.notificationSettings?.locationTrackingEnabled === false;
@@ -181,22 +210,28 @@ const AppleLoginScreen = ({ navigation }) => {
           getToken(),
         ]);
 
-        if (!storedAppleId || !token) return;
+        if (!storedAppleId) return;
 
         setLoading(true);
 
-        const data = await client.request(FETCH_ME_QUERY, {
+        const { fetchMe } = await client.request(FETCH_ME_QUERY, {
           appleId: storedAppleId,
           token,
         });
+
+        console.log("fetch me: ", fetchMe);
+
+        dispatch({ type: "SET_PROFILE_OVERVIEW", payload: fetchMe });
+        dispatch({ type: "SET_USER", payload: fetchMe });
 
         if (cancelled) return;
-
-        await routeFromProfile({
-          me: data?.fetchMe,
-          token,
-          appleId: storedAppleId,
-        });
+        if (!!fetchMe) {
+          await routeFromProfile({
+            me: fetchMe,
+            token,
+            appleId: storedAppleId,
+          });
+        }
       } catch (err) {
         console.log("Auto navigation check failed:", err);
       } finally {

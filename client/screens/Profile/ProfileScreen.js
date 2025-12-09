@@ -91,7 +91,12 @@ const SOCIAL_ICON_PROPS = {
     color: SOCIAL_ICON_COLOR,
     size: SOCIAL_ICON_SIZE,
   },
-  x: { Component: AntDesign, name: "x", color: SOCIAL_ICON_COLOR, size: SOCIAL_ICON_SIZE },
+  x: {
+    Component: AntDesign,
+    name: "x",
+    color: SOCIAL_ICON_COLOR,
+    size: SOCIAL_ICON_SIZE,
+  },
 };
 
 const ProfileScreen = ({ navigation }) => {
@@ -157,6 +162,8 @@ const ProfileScreen = ({ navigation }) => {
       (sum, quote) => sum + (quote?.likesCount || 0),
       0
     );
+
+    console.log("STATE: ", state);
 
     return {
       following: profileData?.followingCount ?? (following?.length || 0),

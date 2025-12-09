@@ -20,7 +20,12 @@ import {
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { BlurView } from "expo-blur";
-import { Feather, Ionicons, MaterialCommunityIcons, AntDesign } from "@expo/vector-icons";
+import {
+  Feather,
+  Ionicons,
+  MaterialCommunityIcons,
+  AntDesign,
+} from "@expo/vector-icons";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import { TabView } from "react-native-tab-view";
@@ -31,7 +36,10 @@ import { ContentPreviewModal } from "../../components";
 import Context from "../../context";
 import { useClient } from "../../client";
 import { getToken } from "../../utils/helpers";
-import { USER_POSTS_PAGINATED_QUERY, USER_PROFILE_QUERY } from "../../GraphQL/queries";
+import {
+  USER_POSTS_PAGINATED_QUERY,
+  USER_PROFILE_QUERY,
+} from "../../GraphQL/queries";
 import { useOpenSocial } from "../../hooks/useOpenSocial";
 import {
   FOLLOW_USER_MUTATION,
@@ -86,7 +94,12 @@ const SOCIAL_ICON_PROPS = {
     color: SOCIAL_ICON_COLOR,
     size: SOCIAL_ICON_SIZE,
   },
-  x: { Component: AntDesign, name: "x", color: SOCIAL_ICON_COLOR, size: SOCIAL_ICON_SIZE },
+  x: {
+    Component: AntDesign,
+    name: "x",
+    color: SOCIAL_ICON_COLOR,
+    size: SOCIAL_ICON_SIZE,
+  },
 };
 
 const parseDateValue = (value) => {
@@ -173,8 +186,7 @@ const UserProfileScreen = ({ route, navigation }) => {
 
   const counts = useMemo(
     () => ({
-      following:
-        profileData?.followingCount ?? (following?.length || 0),
+      following: profileData?.followingCount ?? (following?.length || 0),
       followers: profileData?.followersCount ?? (followers?.length || 0),
       buddies: profileData?.buddiesCount ?? (buddies?.length || 0),
     }),
@@ -215,7 +227,10 @@ const UserProfileScreen = ({ route, navigation }) => {
   const savedItems = useMemo(() => {
     const combined = [
       ...(savedPosts || []).map((post) => ({ ...post, __savedType: "POST" })),
-      ...(savedQuotes || []).map((quote) => ({ ...quote, __savedType: "QUOTE" })),
+      ...(savedQuotes || []).map((quote) => ({
+        ...quote,
+        __savedType: "QUOTE",
+      })),
     ];
 
     return combined.sort((a, b) => {
@@ -289,7 +304,9 @@ const UserProfileScreen = ({ route, navigation }) => {
   const mergePosts = useCallback(
     (incomingPosts, { append }) => {
       setPosts((prev) => {
-        const merged = dedupeById(append ? [...prev, ...incomingPosts] : incomingPosts);
+        const merged = dedupeById(
+          append ? [...prev, ...incomingPosts] : incomingPosts
+        );
         syncProfileOverviewPosts(merged);
         return merged;
       });
@@ -394,9 +411,12 @@ const UserProfileScreen = ({ route, navigation }) => {
     return `${sobrietyDays} ${label}`;
   }, [sobrietyDays]);
 
-
   const handleToggleFollow = useCallback(async () => {
-    if (!profileData?.id || profileData?.id === state?.user?.id || followPending)
+    if (
+      !profileData?.id ||
+      profileData?.id === state?.user?.id ||
+      followPending
+    )
       return;
 
     setFollowPending(true);
@@ -405,7 +425,10 @@ const UserProfileScreen = ({ route, navigation }) => {
       if (!token) return;
 
       if (isFollowed) {
-        await client.request(UNFOLLOW_USER_MUTATION, { token, userId: profileData.id });
+        await client.request(UNFOLLOW_USER_MUTATION, {
+          token,
+          userId: profileData.id,
+        });
         setProfileData((prev) =>
           prev
             ? {
@@ -427,7 +450,9 @@ const UserProfileScreen = ({ route, navigation }) => {
           Toast.show({
             type: "info",
             text1: "You're sober accountability buddies",
-            text2: `You can DM ${profileData?.username || "this member"} to keep each other on track.`,
+            text2: `You can DM ${
+              profileData?.username || "this member"
+            } to keep each other on track.`,
             position: "top",
             autoHide: true,
             visibilityTime: 5000,
@@ -611,14 +636,24 @@ const UserProfileScreen = ({ route, navigation }) => {
   };
 
   const applyPostPatch = (postId, updater) => {
-    setPosts((prev) => prev.map((post) => (post.id === postId ? updater(post) : post)));
-    setSavedPosts((prev) => prev.map((post) => (post.id === postId ? updater(post) : post)));
-    setPreviewItem((prev) => (prev && prev.id === postId ? updater(prev) : prev));
+    setPosts((prev) =>
+      prev.map((post) => (post.id === postId ? updater(post) : post))
+    );
+    setSavedPosts((prev) =>
+      prev.map((post) => (post.id === postId ? updater(post) : post))
+    );
+    setPreviewItem((prev) =>
+      prev && prev.id === postId ? updater(prev) : prev
+    );
   };
 
   const applyQuotePatch = (quoteId, updater) => {
-    setQuotes((prev) => prev.map((quote) => (quote.id === quoteId ? updater(quote) : quote)));
-    setPreviewItem((prev) => (prev && prev.id === quoteId ? updater(prev) : prev));
+    setQuotes((prev) =>
+      prev.map((quote) => (quote.id === quoteId ? updater(quote) : quote))
+    );
+    setPreviewItem((prev) =>
+      prev && prev.id === quoteId ? updater(prev) : prev
+    );
   };
 
   const syncProfileOverview = (nextSavedPosts, nextSavedQuotes) => {
@@ -673,14 +708,19 @@ const UserProfileScreen = ({ route, navigation }) => {
     const previousPreview = previewItem;
 
     applyPostPatch(postId, (post) => {
-      const filtered = (post.likes || []).filter((like) => like?.user?.id !== currentUserId);
+      const filtered = (post.likes || []).filter(
+        (like) => like?.user?.id !== currentUserId
+      );
       const nextLikes = currentlyLiked
         ? filtered
         : [...filtered, { id: `temp-like-${postId}`, user: optimisticUser }];
 
       return {
         ...post,
-        likesCount: Math.max(0, (post.likesCount || 0) + (currentlyLiked ? -1 : 1)),
+        likesCount: Math.max(
+          0,
+          (post.likesCount || 0) + (currentlyLiked ? -1 : 1)
+        ),
         likes: nextLikes,
       };
     });
@@ -696,8 +736,13 @@ const UserProfileScreen = ({ route, navigation }) => {
       if (payload) {
         applyPostPatch(postId, (post) => {
           const actorId = payload.like?.user?.id || currentUserId;
-          const filtered = (post.likes || []).filter((like) => like?.user?.id !== actorId);
-          const nextLikes = payload.liked && payload.like ? [...filtered, payload.like] : filtered;
+          const filtered = (post.likes || []).filter(
+            (like) => like?.user?.id !== actorId
+          );
+          const nextLikes =
+            payload.liked && payload.like
+              ? [...filtered, payload.like]
+              : filtered;
 
           return {
             ...post,
@@ -720,7 +765,8 @@ const UserProfileScreen = ({ route, navigation }) => {
     const token = await getToken();
     if (!token) return;
 
-    const existing = quotes.find((quote) => quote.id === quoteId) || previewItem;
+    const existing =
+      quotes.find((quote) => quote.id === quoteId) || previewItem;
     const currentlyLiked = (existing?.likes || []).some(
       (like) => like?.user?.id === currentUserId
     );
@@ -730,14 +776,19 @@ const UserProfileScreen = ({ route, navigation }) => {
     const previousPreview = previewItem;
 
     applyQuotePatch(quoteId, (quote) => {
-      const filtered = (quote.likes || []).filter((like) => like?.user?.id !== currentUserId);
+      const filtered = (quote.likes || []).filter(
+        (like) => like?.user?.id !== currentUserId
+      );
       const nextLikes = currentlyLiked
         ? filtered
         : [...filtered, { id: `temp-like-${quoteId}`, user: optimisticUser }];
 
       return {
         ...quote,
-        likesCount: Math.max(0, (quote.likesCount || 0) + (currentlyLiked ? -1 : 1)),
+        likesCount: Math.max(
+          0,
+          (quote.likesCount || 0) + (currentlyLiked ? -1 : 1)
+        ),
         likes: nextLikes,
       };
     });
@@ -753,8 +804,13 @@ const UserProfileScreen = ({ route, navigation }) => {
       if (payload) {
         applyQuotePatch(quoteId, (quote) => {
           const actorId = payload.like?.user?.id || currentUserId;
-          const filtered = (quote.likes || []).filter((like) => like?.user?.id !== actorId);
-          const nextLikes = payload.liked && payload.like ? [...filtered, payload.like] : filtered;
+          const filtered = (quote.likes || []).filter(
+            (like) => like?.user?.id !== actorId
+          );
+          const nextLikes =
+            payload.liked && payload.like
+              ? [...filtered, payload.like]
+              : filtered;
 
           return {
             ...quote,
@@ -844,7 +900,9 @@ const UserProfileScreen = ({ route, navigation }) => {
   const handleFlagForReview = async (postId, alreadyFlagged) => {
     if (!postId) return;
     if (alreadyFlagged) {
-      setPreviewItem((prev) => (prev && prev.id === postId ? { ...prev } : prev));
+      setPreviewItem((prev) =>
+        prev && prev.id === postId ? { ...prev } : prev
+      );
       return;
     }
 
@@ -855,7 +913,11 @@ const UserProfileScreen = ({ route, navigation }) => {
     const previousSaved = savedPosts;
     const previousPreview = previewItem;
 
-    applyPostPatch(postId, (post) => ({ ...post, review: true, flagged: true }));
+    applyPostPatch(postId, (post) => ({
+      ...post,
+      review: true,
+      flagged: true,
+    }));
 
     try {
       const data = await client.request(SET_POST_REVIEW_MUTATION, {
@@ -891,7 +953,10 @@ const UserProfileScreen = ({ route, navigation }) => {
           return;
         }
 
-        const data = await client.request(USER_PROFILE_QUERY, { token, userId });
+        const data = await client.request(USER_PROFILE_QUERY, {
+          token,
+          userId,
+        });
         const overview = data?.userProfile;
         if (!mounted) return;
 
@@ -905,7 +970,8 @@ const UserProfileScreen = ({ route, navigation }) => {
         setBuddies(overview?.user?.buddies || []);
         postCursorRef.current = overview?.postCursor || null;
         const overviewHasMore =
-          overview?.hasMorePosts ?? (overview?.posts || []).length >= PROFILE_PAGE_SIZE;
+          overview?.hasMorePosts ??
+          (overview?.posts || []).length >= PROFILE_PAGE_SIZE;
         setHasMorePosts(Boolean(overviewHasMore));
         fetchGuard(hasMorePostsRef, Boolean(overviewHasMore));
       } catch (err) {
@@ -1004,13 +1070,12 @@ const UserProfileScreen = ({ route, navigation }) => {
   const renderAvatarOverlay = () => {
     if (!isAvatarExpanded) return null;
 
-    const origin =
-      avatarLayout || {
-        x: layout.width / 2 - AVATAR_SIZE / 2,
-        y: layout.height * 0.16,
-        width: AVATAR_SIZE,
-        height: AVATAR_SIZE,
-      };
+    const origin = avatarLayout || {
+      x: layout.width / 2 - AVATAR_SIZE / 2,
+      y: layout.height * 0.16,
+      width: AVATAR_SIZE,
+      height: AVATAR_SIZE,
+    };
 
     const expandedSize = Math.min(layout.width, layout.height) * 0.72;
     const targetTop = Math.max(24, (layout.height - expandedSize) / 2);
@@ -1105,7 +1170,8 @@ const UserProfileScreen = ({ route, navigation }) => {
     const imageSource = thumbnail ? { uri: thumbnail } : null;
     const isFlagged = item.flagged;
     const views = getViewsCount(item);
-    const key = item?.id || `${thumbnail || "media"}-${saved ? "saved" : "post"}`;
+    const key =
+      item?.id || `${thumbnail || "media"}-${saved ? "saved" : "post"}`;
     const isDisabled = Boolean(isFlagged);
 
     return (
@@ -1113,7 +1179,9 @@ const UserProfileScreen = ({ route, navigation }) => {
         style={styles.tileWrapper}
         key={key}
         activeOpacity={isDisabled ? 1 : 0.85}
-        onPress={isDisabled ? undefined : () => openPreview(item, "POST", fromSaved)}
+        onPress={
+          isDisabled ? undefined : () => openPreview(item, "POST", fromSaved)
+        }
         disabled={isDisabled}
       >
         <View style={styles.tile}>
@@ -1399,173 +1467,178 @@ const UserProfileScreen = ({ route, navigation }) => {
                   {profileData?.username || "User"}
                 </Text>
               </View>
-            {profileData?.id !== state?.user?.id ? (
-              <View style={styles.profileActionsRow}>
-                {isBuddy ? (
-                  <TouchableOpacity
-                    style={styles.messageButton}
-                    onPress={handleOpenDirectMessage}
-                    activeOpacity={0.85}
-                  >
-                    <Ionicons
-                      name="chatbubbles"
-                      size={18}
-                      color="#0b1222"
-                      style={styles.messageIcon}
-                    />
-                    <Text style={styles.messageText}>Message</Text>
-                  </TouchableOpacity>
-                ) : null}
-                <TouchableOpacity
-                  style={[
-                    styles.followButton,
-                    isBuddy
-                      ? styles.buddyButton
-                      : isFollowed
-                      ? styles.followingButton
-                      : null,
-                  ]}
-                  onPress={handleToggleFollow}
-                  disabled={followPending}
-                >
-                  <View style={styles.followButtonContent}>
-                    <Ionicons
-                      name={
-                        isBuddy
-                          ? "people"
-                          : isFollowed
-                          ? "checkmark-circle-outline"
-                          : "person-add-outline"
-                      }
-                      size={18}
-                      color={
-                        isBuddy
-                          ? "#0b1222"
-                          : isFollowed
-                          ? "#e2e8f0"
-                          : "#0b1222"
-                      }
-                      style={styles.followButtonIcon}
-                    />
-                    <Text
-                      style={[
-                        styles.followButtonText,
-                        isBuddy
-                          ? styles.buddyButtonText
-                          : isFollowed
-                          ? styles.followingButtonText
-                          : null,
-                      ]}
+              {profileData?.id !== state?.user?.id ? (
+                <View style={styles.profileActionsRow}>
+                  {isBuddy ? (
+                    <TouchableOpacity
+                      style={styles.messageButton}
+                      onPress={handleOpenDirectMessage}
+                      activeOpacity={0.85}
                     >
-                      {followPending
-                        ? "..."
-                        : isBuddy
-                        ? "Buddies"
+                      <Ionicons
+                        name="chatbubbles"
+                        size={18}
+                        color="#0b1222"
+                        style={styles.messageIcon}
+                      />
+                      <Text style={styles.messageText}>Message</Text>
+                    </TouchableOpacity>
+                  ) : null}
+                  <TouchableOpacity
+                    style={[
+                      styles.followButton,
+                      isBuddy
+                        ? styles.buddyButton
                         : isFollowed
-                        ? "Following"
-                        : "Follow"}
-                    </Text>
-                  </View>
-                </TouchableOpacity>
-              </View>
-            ) : null}
+                        ? styles.followingButton
+                        : null,
+                    ]}
+                    onPress={handleToggleFollow}
+                    disabled={followPending}
+                  >
+                    <View style={styles.followButtonContent}>
+                      <Ionicons
+                        name={
+                          isBuddy
+                            ? "people"
+                            : isFollowed
+                            ? "checkmark-circle-outline"
+                            : "person-add-outline"
+                        }
+                        size={18}
+                        color={
+                          isBuddy
+                            ? "#0b1222"
+                            : isFollowed
+                            ? "#e2e8f0"
+                            : "#0b1222"
+                        }
+                        style={styles.followButtonIcon}
+                      />
+                      <Text
+                        style={[
+                          styles.followButtonText,
+                          isBuddy
+                            ? styles.buddyButtonText
+                            : isFollowed
+                            ? styles.followingButtonText
+                            : null,
+                        ]}
+                      >
+                        {followPending
+                          ? "..."
+                          : isBuddy
+                          ? "Buddies"
+                          : isFollowed
+                          ? "Following"
+                          : "Follow"}
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
+                </View>
+              ) : null}
+            </View>
+          </View>
+
+          {(distanceLabel ||
+            profileData?.closestCity?.name ||
+            sobrietyDuration) && (
+            <View style={styles.metaRow}>
+              {distanceLabel ? (
+                <View style={styles.distancePill}>
+                  <MaterialCommunityIcons
+                    name="map-marker-distance"
+                    size={18}
+                    color="#38bdf8"
+                    style={styles.distanceIcon}
+                  />
+                  <Text style={styles.distanceText}>{distanceLabel}</Text>
+                </View>
+              ) : null}
+              {profileData?.closestCity?.name ? (
+                <View style={styles.cityPill}>
+                  <Ionicons name="location" size={14} color="#e5e7eb" />
+                  <Text style={styles.cityText}>
+                    {profileData.closestCity.name}
+                  </Text>
+                </View>
+              ) : null}
+              {sobrietyDuration ? (
+                <View style={styles.sobrietyPill}>
+                  <MaterialCommunityIcons
+                    name="progress-clock"
+                    size={16}
+                    color="#f59e0b"
+                    style={styles.sobrietyIcon}
+                  />
+                  <Text
+                    style={styles.sobrietyText}
+                  >{`${sobrietyDuration} sober`}</Text>
+                </View>
+              ) : null}
+            </View>
+          )}
+
+          <View style={styles.metricsRow}>
+            <TouchableOpacity
+              style={styles.metric}
+              onPress={() => handleOpenConnections("Following")}
+            >
+              <Text style={styles.metricValue}>{counts.following}</Text>
+              <Text style={styles.metricLabel}>Following</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.metric}
+              onPress={() => handleOpenConnections("Followers")}
+            >
+              <Text style={styles.metricValue}>{counts.followers}</Text>
+              <Text style={styles.metricLabel}>Followers</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.metric}
+              onPress={() => handleOpenConnections("Buddies")}
+            >
+              <Text style={styles.metricValue}>{counts.buddies}</Text>
+              <Text style={styles.metricLabel}>Buddies</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.metric}
+              onPress={() => handleOpenConnections("Likes")}
+            >
+              <Text style={styles.metricValue}>{likesTotal}</Text>
+              <Text style={styles.metricLabel}>Likes</Text>
+            </TouchableOpacity>
+          </View>
+
+          <View style={styles.whyWrapper}>
+            <Text style={styles.whyQuoted}>
+              “
+              {profileData?.whyStatement ||
+                "This user hasn't shared their why yet."}
+              ”
+            </Text>
           </View>
         </View>
 
-        {(distanceLabel || profileData?.closestCity?.name || sobrietyDuration) && (
-          <View style={styles.metaRow}>
-            {distanceLabel ? (
-              <View style={styles.distancePill}>
-                <MaterialCommunityIcons
-                  name="map-marker-distance"
-                  size={18}
-                  color="#38bdf8"
-                  style={styles.distanceIcon}
-                />
-                <Text style={styles.distanceText}>{distanceLabel}</Text>
-              </View>
-            ) : null}
-            {profileData?.closestCity?.name ? (
-              <View style={styles.cityPill}>
-                <Ionicons name="location" size={14} color="#e5e7eb" />
-                <Text style={styles.cityText}>{profileData.closestCity.name}</Text>
-              </View>
-            ) : null}
-            {sobrietyDuration ? (
-              <View style={styles.sobrietyPill}>
-                <MaterialCommunityIcons
-                  name="progress-clock"
-                  size={16}
-                  color="#f59e0b"
-                  style={styles.sobrietyIcon}
-                />
-                <Text style={styles.sobrietyText}>{`${sobrietyDuration} sober`}</Text>
-              </View>
-            ) : null}
-          </View>
-        )}
+        {renderTabBar()}
 
-        <View style={styles.metricsRow}>
-          <TouchableOpacity
-            style={styles.metric}
-            onPress={() => handleOpenConnections("Following")}
-          >
-            <Text style={styles.metricValue}>{counts.following}</Text>
-            <Text style={styles.metricLabel}>Following</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.metric}
-            onPress={() => handleOpenConnections("Followers")}
-          >
-            <Text style={styles.metricValue}>{counts.followers}</Text>
-            <Text style={styles.metricLabel}>Followers</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.metric}
-            onPress={() => handleOpenConnections("Buddies")}
-          >
-            <Text style={styles.metricValue}>{counts.buddies}</Text>
-            <Text style={styles.metricLabel}>Buddies</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.metric}
-            onPress={() => handleOpenConnections("Likes")}
-          >
-            <Text style={styles.metricValue}>{likesTotal}</Text>
-            <Text style={styles.metricLabel}>Likes</Text>
-          </TouchableOpacity>
+        <View style={styles.tabWrapper}>
+          <TabView
+            navigationState={{ index: tabIndex, routes }}
+            renderScene={renderScene}
+            onIndexChange={setTabIndex}
+            initialLayout={{ width: layout.width }}
+            renderTabBar={() => null}
+            style={[styles.tabView, { height: gridHeight }]}
+            swipeEnabled
+            lazy={false}
+          />
+          {activeTab === "POSTS" && loadingMorePosts ? (
+            <View style={styles.loadMoreContainer}>
+              <ActivityIndicator size="small" color="#f59e0b" />
+            </View>
+          ) : null}
         </View>
-
-        <View style={styles.whyWrapper}>
-          <Text style={styles.whyQuoted}>
-            “
-            {profileData?.whyStatement ||
-              "This user hasn't shared their why yet."}
-            ”
-          </Text>
-        </View>
-
-      </View>
-
-      {renderTabBar()}
-
-      <View style={styles.tabWrapper}>
-        <TabView
-          navigationState={{ index: tabIndex, routes }}
-          renderScene={renderScene}
-          onIndexChange={setTabIndex}
-          initialLayout={{ width: layout.width }}
-          renderTabBar={() => null}
-          style={[styles.tabView, { height: gridHeight }]}
-          swipeEnabled
-          lazy={false}
-        />
-        {activeTab === "POSTS" && loadingMorePosts ? (
-          <View style={styles.loadMoreContainer}>
-            <ActivityIndicator size="small" color="#f59e0b" />
-          </View>
-        ) : null}
-      </View>
       </ScrollView>
 
       <ContentPreviewModal

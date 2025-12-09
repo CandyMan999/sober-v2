@@ -28,6 +28,7 @@ const {
   accentSoft,
   textPrimary,
   textSecondary,
+  border,
 } = COLORS;
 
 const AddSobrietyDateScreen = ({ navigation, route }) => {
@@ -59,6 +60,7 @@ const AddSobrietyDateScreen = ({ navigation, route }) => {
   };
 
   const handleDateChange = (event, date) => {
+    // DateTimePicker closes itself on Android
     if (Platform.OS === "android") {
       setShowPicker(false);
     }
@@ -124,9 +126,10 @@ const AddSobrietyDateScreen = ({ navigation, route }) => {
       style={styles.root}
     >
       <View style={styles.flex}>
+        {/* Header */}
         <View style={styles.header}>
           <View style={styles.headerRow}>
-            <Image source={LogoIcon} style={styles.logo} />
+            <Image source={LogoIcon} style={styles.logo} resizeMode="contain" />
             <View>
               <Text style={styles.appName}>
                 Sober <Text style={styles.appAccent}>Motivation</Text>
@@ -138,16 +141,18 @@ const AddSobrietyDateScreen = ({ navigation, route }) => {
           </View>
         </View>
 
+        {/* Card */}
         <View style={styles.cardContainer}>
           <View style={styles.card}>
-            <Text style={styles.sectionLabel}>Step 3 of 4</Text>
+            <Text style={styles.sectionLabel}>STEP 4 OF 4</Text>
 
             <Text style={styles.title}>
-              When did you <Text style={styles.titleAccent}>start</Text>?
+              When did you <Text style={styles.titleAccent}>start?</Text>
             </Text>
 
             <Text style={styles.helper}>
-              This helps us celebrate your milestones and track your progress.
+              This helps us celebrate your milestones and track your progress,
+              {username === "you" ? "" : ` ${username}`}.
             </Text>
 
             <View style={styles.optionsContainer}>
@@ -159,7 +164,9 @@ const AddSobrietyDateScreen = ({ navigation, route }) => {
                 onPress={() => {
                   setSelectedDate(new Date());
                   setUseToday(true);
+                  setShowPicker(false);
                 }}
+                activeOpacity={0.9}
               >
                 <Text
                   style={[
@@ -180,6 +187,7 @@ const AddSobrietyDateScreen = ({ navigation, route }) => {
                   setUseToday(false);
                   setShowPicker(true);
                 }}
+                activeOpacity={0.9}
               >
                 <Text
                   style={[
@@ -192,30 +200,42 @@ const AddSobrietyDateScreen = ({ navigation, route }) => {
               </TouchableOpacity>
             </View>
 
+            {/* Date picker */}
+            {showPicker && !useToday && (
+              <View style={styles.pickerWrapper}>
+                <DateTimePicker
+                  value={selectedDate}
+                  mode="date"
+                  display={Platform.OS === "ios" ? "spinner" : "default"}
+                  onChange={handleDateChange}
+                  maximumDate={new Date()}
+                  textColor={Platform.OS === "ios" ? "#FFFFFF" : undefined}
+                />
+              </View>
+            )}
+
+            {/* Error message */}
+            {error && (
+              <Text style={styles.errorText} numberOfLines={2}>
+                {error}
+              </Text>
+            )}
+
             <View style={styles.daysCounterWrapper}>
               <Text style={styles.daysCounter}>
                 {daysSober()} {daysSober() === 1 ? "day" : "days"} sober
               </Text>
             </View>
 
-            {showPicker && !useToday && Platform.OS === "ios" && (
-              <DateTimePicker
-                value={selectedDate}
-                mode="date"
-                display="spinner"
-                onChange={handleDateChange}
-                maximumDate={new Date()}
-                textColor="white"
-              />
-            )}
-
+            {/* Continue */}
             <TouchableOpacity
               style={styles.primaryButton}
               onPress={handleContinue}
               disabled={saving}
+              activeOpacity={saving ? 1 : 0.9}
             >
               <LinearGradient
-                colors={[accent, accentSoft]}
+                colors={saving ? ["#4B5563", "#6B7280"] : [accent, accentSoft]}
                 style={styles.primaryGradient}
               >
                 {saving ? (
@@ -226,6 +246,7 @@ const AddSobrietyDateScreen = ({ navigation, route }) => {
               </LinearGradient>
             </TouchableOpacity>
 
+            {/* Skip */}
             <TouchableOpacity style={styles.skipWrapper} onPress={handleSkip}>
               <Text style={styles.skipText}>Skip for now</Text>
             </TouchableOpacity>
@@ -237,41 +258,75 @@ const AddSobrietyDateScreen = ({ navigation, route }) => {
 };
 
 const styles = StyleSheet.create({
-  root: { flex: 1 },
-  flex: { flex: 1, paddingHorizontal: 24, paddingTop: 48 },
+  root: { flex: 1, backgroundColor: primaryBackground },
+  flex: {
+    flex: 1,
+    paddingHorizontal: 24,
+    paddingTop: 48,
+    paddingBottom: 32,
+  },
+
+  header: { marginBottom: 24 },
   headerRow: { flexDirection: "row", alignItems: "center" },
   logo: { width: 44, height: 44, borderRadius: 10, marginRight: 12 },
-  appName: { fontSize: 26, fontWeight: "800", color: textPrimary },
+  appName: {
+    fontSize: 26,
+    fontWeight: "800",
+    letterSpacing: 0.8,
+    color: textPrimary,
+  },
   appAccent: { color: accent },
-  tagline: { marginTop: 6, fontSize: 14, color: textSecondary },
+  tagline: { marginTop: 4, color: textSecondary, fontSize: 14 },
 
   cardContainer: { flex: 1, justifyContent: "center" },
   card: {
-    backgroundColor: cardBackground,
-    padding: 24,
     borderRadius: 24,
+    padding: 24,
+    backgroundColor: cardBackground,
     borderWidth: 1,
-    borderColor: "rgba(148,163,184,0.35)",
+    borderColor: border,
   },
 
-  optionsContainer: { flexDirection: "row", gap: 12 },
+  sectionLabel: {
+    fontSize: 12,
+    textTransform: "uppercase",
+    letterSpacing: 1.4,
+    color: textSecondary,
+    marginBottom: 12,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: "700",
+    color: textPrimary,
+    marginBottom: 8,
+  },
+  titleAccent: { color: accent },
+  helper: {
+    color: textSecondary,
+    fontSize: 14,
+    marginBottom: 20,
+  },
+
+  optionsContainer: {
+    flexDirection: "row",
+    gap: 12,
+    marginBottom: 12,
+  },
   optionButton: {
     flex: 1,
     paddingVertical: 14,
     borderRadius: 14,
     borderWidth: 1,
     borderColor: "rgba(55,65,81,0.9)",
-    backgroundColor: "rgba(15,23,42,0.5)",
+    backgroundColor: "rgba(15,23,42,0.7)",
     alignItems: "center",
   },
   optionButtonActive: {
     borderColor: accent,
-    backgroundColor: "rgba(245,158,11,0.15)",
+    backgroundColor: "rgba(245,158,11,0.16)",
   },
-
-  /** ✅ FIXED HERE **/
   optionButtonText: {
-    color: "#E5E7EB", // light text on dark
+    color: "#E5E7EB",
     fontSize: 15,
     fontWeight: "600",
   },
@@ -279,18 +334,47 @@ const styles = StyleSheet.create({
     color: accent,
   },
 
-  daysCounterWrapper: { marginVertical: 20, alignItems: "center" },
-  daysCounter: { fontSize: 32, color: accent, fontWeight: "700" },
+  pickerWrapper: {
+    marginTop: 4,
+    marginBottom: 8,
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: "rgba(55,65,81,0.7)",
+    backgroundColor: "#020617",
+    overflow: "hidden",
+  },
 
-  primaryButton: { marginTop: 12 },
+  errorText: {
+    marginTop: 6,
+    fontSize: 12,
+    color: "#F97373",
+  },
+
+  daysCounterWrapper: {
+    marginTop: 16,
+    marginBottom: 4,
+    alignItems: "center",
+  },
+  daysCounter: {
+    fontSize: 28,
+    color: accent,
+    fontWeight: "700",
+  },
+
+  primaryButton: {
+    marginTop: 16,
+    borderRadius: 999,
+    overflow: "hidden",
+  },
   primaryGradient: {
     paddingVertical: 14,
-    borderRadius: 999,
     alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 999,
   },
   primaryText: { color: "#111827", fontSize: 16, fontWeight: "700" },
 
-  skipWrapper: { marginTop: 10, alignItems: "center" },
+  skipWrapper: { marginTop: 12, alignItems: "center" },
   skipText: { color: "#9CA3AF", textDecorationLine: "underline" },
 });
 

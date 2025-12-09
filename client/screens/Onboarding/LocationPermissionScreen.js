@@ -27,12 +27,12 @@ import { getToken } from "../../utils/helpers";
 import { COLORS } from "../../constants/colors";
 import { AlertModal } from "../../components";
 import Context from "../../context";
+
 const {
   primaryBackground,
   cardBackground,
   accent,
   accentSoft,
-
   textPrimary,
   textSecondary,
 } = COLORS;
@@ -42,19 +42,35 @@ const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 const LocationPermissionScreen = ({ navigation, route }) => {
   const client = useClient();
   const { state, dispatch } = useContext(Context);
+
   const [loading, setLoading] = useState(false);
   const [checking, setChecking] = useState(true);
   const [reenablePromptVisible, setReenablePromptVisible] = useState(false);
+
   const shouldRequireReenable = route?.params?.requireReenable === true;
 
+  /**
+   * ✅ Single helper used everywhere to answer:
+   * "Does the OS currently consider this app to have ALWAYS/BACKGROUND location?"
+   */
   const hasAlwaysPermission = async () => {
-    const fg = await Location.getForegroundPermissionsAsync();
-    const bg = await Location.getBackgroundPermissionsAsync();
+    try {
+      const fg = await Location.getForegroundPermissionsAsync();
+      const bg = await Location.getBackgroundPermissionsAsync();
 
-    return (
-      bg.status === "granted" ||
-      (fg.status === "granted" && fg.scope === "always")
-    );
+      console.log("[Location] hasAlwaysPermission fg:", fg, "bg:", bg);
+
+      // Background granted is the main signal
+      if (bg.status === "granted") return true;
+
+      // Some iOS flows expose "always" via foreground scope
+      if (fg.status === "granted" && fg.scope === "always") return true;
+
+      return false;
+    } catch (e) {
+      console.log("[Location] hasAlwaysPermission failed", e);
+      return false;
+    }
   };
 
   const startMotionTrackingIfPermitted = async () => {
@@ -78,24 +94,17 @@ const LocationPermissionScreen = ({ navigation, route }) => {
   const updateLocationIfPermitted = async () => {
     try {
       const token = await getToken();
-
       if (!token) return;
 
       const fg = await Location.getForegroundPermissionsAsync();
-
-      if (fg.status !== "granted") {
-        return;
-      }
+      if (fg.status !== "granted") return;
 
       const position = await Location.getCurrentPositionAsync({
         accuracy: Location.Accuracy.Lowest,
       });
 
       const coords = position?.coords;
-
-      if (!coords?.latitude || !coords?.longitude) {
-        return;
-      }
+      if (!coords?.latitude || !coords?.longitude) return;
 
       await client.request(UPDATE_USER_PROFILE_MUTATION, {
         token,
@@ -139,15 +148,23 @@ const LocationPermissionScreen = ({ navigation, route }) => {
 
   useEffect(() => {
     checkPermissions();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const checkPermissions = async () => {
     try {
-      if (await hasAlwaysPermission()) {
+      const alreadyHasAlways = await hasAlwaysPermission();
+      console.log(
+        "[Location] checkPermissions -> alreadyHasAlways:",
+        alreadyHasAlways
+      );
+
+      if (alreadyHasAlways) {
         configureLocationTrackingClient({
           requestFn: client.request,
           getPushTokenFn: getToken,
         });
+
         if (shouldRequireReenable) {
           setChecking(false);
           setReenablePromptVisible(true);
@@ -178,12 +195,32 @@ const LocationPermissionScreen = ({ navigation, route }) => {
     });
   };
 
+  const onAlwaysGrantedFlow = async () => {
+    // Centralized success path when we know Always/Background is enabled
+    configureLocationTrackingClient({
+      requestFn: client.request,
+      getPushTokenFn: getToken,
+    });
+
+    const started = await startMotionTrackingIfPermitted();
+    if (started) {
+      await persistLocationTrackingPreference(true);
+      setReenablePromptVisible(false);
+    }
+
+    await routeToApp();
+  };
+
   const handlePermissionRequest = async () => {
     setLoading(true);
 
     try {
-      // Request both permissions in correct OS order
+      console.log("[Location] handlePermissionRequest start");
+
+      // 1. Foreground first
       const fg = await Location.requestForegroundPermissionsAsync();
+      console.log("[Location] requestForegroundPermissionsAsync ->", fg);
+
       if (fg.status !== "granted") {
         setLoading(false);
         return Alert.alert(
@@ -192,35 +229,37 @@ const LocationPermissionScreen = ({ navigation, route }) => {
         );
       }
 
+      // 2. Then background (Always)
       const bg = await Location.requestBackgroundPermissionsAsync();
+      console.log("[Location] requestBackgroundPermissionsAsync ->", bg);
 
-      const hasAlways =
-        bg.status === "granted" || (await hasAlwaysPermission());
-
-      if (!hasAlways) {
-        await delay(600);
-      }
-
-      const confirmedAlways =
-        hasAlways || (await hasAlwaysPermission());
-
-      if (confirmedAlways) {
-        configureLocationTrackingClient({
-          requestFn: client.request,
-          getPushTokenFn: getToken,
-        });
-        const started = await startMotionTrackingIfPermitted();
-        if (started) {
-          await persistLocationTrackingPreference(true);
-          setReenablePromptVisible(false);
-        }
-        await routeToApp();
+      // ✅ If the OS explicitly reports background as granted,
+      // trust this immediately and DO NOT show the Always warning.
+      if (bg.status === "granted") {
+        console.log(
+          "[Location] Background granted directly from request. Proceeding."
+        );
+        await onAlwaysGrantedFlow();
         return;
       }
 
+      // 3. Fallback sanity check (covers weird dev/iOS flows)
+      await delay(800); // give OS a moment to update state
+      const confirmedAlways = await hasAlwaysPermission();
+      console.log(
+        "[Location] confirmedAlways (post-request) ->",
+        confirmedAlways
+      );
+
+      if (confirmedAlways) {
+        await onAlwaysGrantedFlow();
+        return;
+      }
+
+      // ❗ At this point we're confident Always isn't enabled
       Alert.alert(
         "Always Allow needed",
-        "This is our best feature to help keep you sober — tap \"Always Allow\" so we can support you even when the app is closed.",
+        'This is our best feature to help keep you sober — tap "Always Allow" in your settings so we can support you even when the app is closed.',
         [
           { text: "Open Settings", onPress: openSettings },
           { text: "Skip", style: "cancel", onPress: routeToApp },
@@ -235,9 +274,13 @@ const LocationPermissionScreen = ({ navigation, route }) => {
   };
 
   const openSettings = async () => {
-    await Linking.openSettings();
-    // Re-check when returning from settings
-    setTimeout(checkPermissions, 2000);
+    try {
+      await Linking.openSettings();
+      // Re-check when returning from settings
+      setTimeout(checkPermissions, 2000);
+    } catch (e) {
+      console.log("Failed to open settings", e);
+    }
   };
 
   const skip = () => {
@@ -276,6 +319,7 @@ const LocationPermissionScreen = ({ navigation, route }) => {
         }}
         onCancel={skip}
       />
+
       <View style={styles.flex}>
         {/* Header */}
         <View style={styles.header}>
@@ -338,7 +382,6 @@ const LocationPermissionScreen = ({ navigation, route }) => {
           </View>
         </View>
       </View>
-
     </LinearGradient>
   );
 };

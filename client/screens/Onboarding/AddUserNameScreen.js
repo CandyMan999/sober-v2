@@ -26,6 +26,7 @@ import { useClient } from "../../client";
 import { UPDATE_USER_PROFILE_MUTATION } from "../../GraphQL/mutations";
 import { FETCH_ME_QUERY } from "../../GraphQL/queries";
 import { COLORS } from "../../constants/colors";
+
 const MIN_LEN = 3;
 const PUSH_TOKEN_KEY = "expoPushToken";
 const APPLE_ID_KEY = "appleUserId";
@@ -41,29 +42,33 @@ const {
 
 const UsernameScreen = ({ navigation, route }) => {
   const client = useClient();
-  const { dispatch } = useContext(Context);
+  const { state, dispatch } = useContext(Context);
 
-  const { accent, accentSoft } = COLORS;
+  const { accent: accentColor, accentSoft } = COLORS;
 
-  // 1 = notifications, 2 = username
+  const usernameFromParams = route?.params?.username || "";
+  const hasUsernameFromParams =
+    !!usernameFromParams && usernameFromParams.trim().length >= MIN_LEN;
+
+  // 1 = notifications, 2 = username (for new users only)
   const [step, setStep] = useState(1);
 
   const [notifLoading, setNotifLoading] = useState(false);
   const [notifStatus, setNotifStatus] = useState(null);
-  const [pushToken, setPushToken] = useState(null);
+  const [pushToken, setPushToken] = useState(route?.params?.pushToken || null);
   const [appleId, setAppleId] = useState(route?.params?.appleId || null);
   const [showNotifPointer, setShowNotifPointer] = useState(false);
   const notifArrowAnim = useRef(new Animated.Value(0)).current;
   const notifArrowBaseYOffset = useRef(
-    new Animated.Value(Platform.select({ ios: 92, android: 76, default: 84 }))
+    new Animated.Value(Platform.select({ ios: 85, android: 76, default: 84 }))
   ).current;
   const notifArrowBaseXOffset = Platform.select({
-    ios: 65,
+    ios: 75,
     android: 78,
     default: 86,
   });
 
-  const [username, setUsername] = useState("");
+  const [username, setUsername] = useState(usernameFromParams);
   const [saving, setSaving] = useState(false);
   const isValid = username.trim().length >= MIN_LEN;
 
@@ -123,24 +128,27 @@ const UsernameScreen = ({ navigation, route }) => {
     navigation.reset(config);
   };
 
-  // ------- helper: fetch "me" with a known token -------
+  // ------- helper: fetch "me" with a known token and route forward -------
   const fetchMeWithToken = async (token) => {
-    if (!token && !appleId) return;
+    if (!appleId) return;
 
     try {
       const data = await client.request(FETCH_ME_QUERY, { token, appleId });
       const me = data?.fetchMe;
 
-      // if we have a full user with username already
-      if (me?.username && me.username.trim().length >= MIN_LEN) {
+      if (me) {
         dispatch({ type: "SET_USER", payload: me });
+      }
 
+      // If we have a full username already, route to next onboarding step
+      if (me?.username && me.username.trim().length >= MIN_LEN) {
         const { status, scope } =
           await Location.getForegroundPermissionsAsync();
-
         const hasAlwaysPermission = status === "granted" && scope === "always";
 
-        if (hasAlwaysPermission && me.sobrietyStartAt && me.profilePic) {
+        const hasProfilePic = !!(me.profilePic || me.profilePicUrl);
+
+        if (hasAlwaysPermission && me.sobrietyStartAt && hasProfilePic) {
           await updateLocationIfGranted(token);
 
           safeNavigateReset({
@@ -152,12 +160,11 @@ const UsernameScreen = ({ navigation, route }) => {
 
         await updateLocationIfGranted(token);
 
-        // Otherwise route user to the correct next step
-        const nextRouteName = !me.profilePic
+        const nextRouteName = !hasProfilePic
           ? "AddPhoto"
           : !me.sobrietyStartAt
           ? "AddSobrietyDate"
-          : "LocationPermission"; // ← this is now enforced
+          : "LocationPermission";
 
         safeNavigateReset({
           index: 0,
@@ -166,35 +173,46 @@ const UsernameScreen = ({ navigation, route }) => {
               name: nextRouteName,
               params: {
                 username: me.username || username,
-                photoURI: me.profilePicUrl || null,
+                photoURI: me.profilePicUrl || me.profilePic?.url || null,
                 pushToken: token,
               },
             },
           ],
         });
-        return; // ⬅ important
+        return;
       }
 
-      // User exists but no username finalized yet → stay on this screen, step 2
-      if (me?.username) {
+      // User exists but no username finalized yet → for new users, show username step
+      if (!hasUsernameFromParams && me?.username) {
         setUsername(me.username);
       }
       await updateLocationIfGranted(token);
-      setStep(2);
+
+      if (!hasUsernameFromParams) {
+        setStep(2); // Only show username step if we *don't* already have username from params
+      } else {
+        // Returning user with username but backend still missing? Just send them to username step once
+        setStep(2);
+      }
     } catch (err) {
       console.log("Error fetching me with token:", err);
 
-      // On error just decide step based on notification permission
-      let { status } = await Notifications.getPermissionsAsync();
-      if (status === "granted") {
-        setStep(2);
+      // On error just decide step based on notification permission for new users
+      if (!hasUsernameFromParams) {
+        let { status } = await Notifications.getPermissionsAsync();
+        if (status === "granted") {
+          setStep(2);
+        } else {
+          setStep(1);
+        }
       } else {
+        // returning user: just let them see notifications step
         setStep(1);
       }
     }
   };
 
-  // ------- init flow: restore token or get it, THEN fetch me -------
+  // ------- init flow -------
   useEffect(() => {
     let cancelled = false;
 
@@ -203,40 +221,87 @@ const UsernameScreen = ({ navigation, route }) => {
         setInitializing(false);
         return;
       }
+
       try {
-        // 1) Try to restore token from storage
-        const storedToken = await AsyncStorage.getItem(PUSH_TOKEN_KEY);
+        // try to restore / consolidate token
+        let tokenToUse =
+          pushToken || (await AsyncStorage.getItem(PUSH_TOKEN_KEY));
 
-        if (cancelled) return;
+        // ✅ RETURNING USER FLOW:
+        // They already have a username from params; this screen is only for notification nag + routing.
+        if (hasUsernameFromParams) {
+          try {
+            const notifPerm = await Notifications.getPermissionsAsync();
+            const notifGranted = notifPerm?.status === "granted";
 
-        if (storedToken) {
-          setPushToken(storedToken);
-          await fetchMeWithToken(storedToken);
+            if (notifGranted && Device.isDevice && !tokenToUse) {
+              try {
+                const res = await Notifications.getExpoPushTokenAsync();
+                tokenToUse = res.data;
+                await AsyncStorage.setItem(PUSH_TOKEN_KEY, tokenToUse);
+              } catch (e) {
+                console.log(
+                  "Error getting push token (returning user init):",
+                  e
+                );
+              }
+            }
+
+            if (!cancelled) {
+              if (tokenToUse) {
+                setPushToken(tokenToUse);
+              }
+
+              if (notifGranted) {
+                await fetchMeWithToken(tokenToUse);
+                setInitializing(false);
+                return;
+              }
+
+              // Notifications not granted yet → show step 1 (notifications) only
+              setStep(1);
+              setInitializing(false);
+              return;
+            }
+          } catch (err) {
+            console.log("Returning user init notif check failed:", err);
+            setStep(1);
+            setInitializing(false);
+            return;
+          }
+        }
+
+        // ✅ NEW USER / NO USERNAME FLOW (original style)
+        if (tokenToUse) {
+          if (!cancelled) {
+            setPushToken(tokenToUse);
+            await fetchMeWithToken(tokenToUse);
+            setInitializing(false);
+          }
           return;
         }
 
-        // 2) No stored token yet → check notification permissions
         let { status } = await Notifications.getPermissionsAsync();
 
         if (status === "granted" && Device.isDevice) {
           try {
-            const tokenResult = await Notifications.getExpoPushTokenAsync();
-            const token = tokenResult.data;
-            console.log("📲 Got push token on init:", token);
+            const res = await Notifications.getExpoPushTokenAsync();
+            tokenToUse = res.data;
+            console.log("📲 Got push token on init:", tokenToUse);
 
-            if (cancelled) return;
-
-            setPushToken(token);
-            await AsyncStorage.setItem(PUSH_TOKEN_KEY, token);
-
-            await fetchMeWithToken(token);
+            if (!cancelled) {
+              setPushToken(tokenToUse);
+              await AsyncStorage.setItem(PUSH_TOKEN_KEY, tokenToUse);
+              await fetchMeWithToken(tokenToUse);
+              setInitializing(false);
+            }
             return;
-          } catch (err) {
-            console.log("Error getting push token on init:", err);
+          } catch (e) {
+            console.log("Error getting push token on init:", e);
           }
         }
 
-        // If we get here: no token yet, or not granted → show step 1
+        // If we get here: no token yet, or not granted → show notifications step
         setStep(1);
       } catch (err) {
         console.log("Error initializing UsernameScreen:", err);
@@ -251,7 +316,7 @@ const UsernameScreen = ({ navigation, route }) => {
     return () => {
       cancelled = true;
     };
-  }, [appleId, client, navigation]);
+  }, [appleId, client, navigation, hasUsernameFromParams, pushToken, username]);
 
   useEffect(() => {
     if (!showNotifPointer) return;
@@ -301,16 +366,27 @@ const UsernameScreen = ({ navigation, route }) => {
         if (status !== "granted") return;
 
         if (!Device.isDevice) {
-          setStep(2);
+          if (!hasUsernameFromParams) {
+            setStep(2);
+          }
           return;
         }
 
-        const tokenResult = await Notifications.getExpoPushTokenAsync();
-        const token = tokenResult.data;
-        setPushToken(token);
-        await AsyncStorage.setItem(PUSH_TOKEN_KEY, token);
-        await fetchMeWithToken(token);
-        setStep(2);
+        let tokenToUse =
+          pushToken || (await AsyncStorage.getItem(PUSH_TOKEN_KEY));
+
+        if (!tokenToUse) {
+          const tokenResult = await Notifications.getExpoPushTokenAsync();
+          tokenToUse = tokenResult.data;
+          setPushToken(tokenToUse);
+          await AsyncStorage.setItem(PUSH_TOKEN_KEY, tokenToUse);
+        }
+
+        await fetchMeWithToken(tokenToUse);
+
+        if (!hasUsernameFromParams) {
+          setStep(2);
+        }
       } catch (err) {
         console.log("Error refreshing notif permissions after settings:", err);
       }
@@ -333,7 +409,12 @@ const UsernameScreen = ({ navigation, route }) => {
           "Push notifications only work on a physical device."
         );
         setNotifStatus("denied");
-        setStep(2);
+        if (!hasUsernameFromParams) {
+          setStep(2);
+        } else {
+          // returning user: just move them along
+          await routeForwardAfterNotifDecision();
+        }
         setShowNotifPointer(false);
         return;
       }
@@ -353,7 +434,17 @@ const UsernameScreen = ({ navigation, route }) => {
           "You can turn them on later in Settings. We'll still support you.",
           [
             { text: "Open Settings", onPress: handleOpenNotificationSettings },
-            { text: "Continue", style: "cancel", onPress: () => setStep(2) },
+            {
+              text: "Continue",
+              style: "cancel",
+              onPress: async () => {
+                if (hasUsernameFromParams) {
+                  await routeForwardAfterNotifDecision();
+                } else {
+                  setStep(2);
+                }
+              },
+            },
           ]
         );
         setShowNotifPointer(false);
@@ -369,22 +460,73 @@ const UsernameScreen = ({ navigation, route }) => {
 
       setNotifStatus("granted");
       await fetchMeWithToken(token);
+
+      if (!hasUsernameFromParams) {
+        setStep(2);
+      }
     } catch (error) {
       console.log("Error enabling notifications:", error);
       Alert.alert(
         "Error",
         "Something went wrong while enabling notifications. You can try again later."
       );
-      setStep(2);
+      if (!hasUsernameFromParams) {
+        setStep(2);
+      } else {
+        await routeForwardAfterNotifDecision();
+      }
     } finally {
       setNotifLoading(false);
       setShowNotifPointer(false);
     }
   };
 
-  const handleSkipNotifications = () => {
+  // For users who already have username: after any notif decision, just move them on
+  const routeForwardAfterNotifDecision = async () => {
+    try {
+      const tokenToUse =
+        pushToken ||
+        route?.params?.pushToken ||
+        (await AsyncStorage.getItem(PUSH_TOKEN_KEY));
+
+      await fetchMeWithToken(tokenToUse);
+    } catch (e) {
+      console.log("routeForwardAfterNotifDecision error:", e);
+      // Worst case, just go to main app
+      safeNavigateReset({
+        index: 0,
+        routes: [{ name: "MainTabs" }],
+      });
+    }
+  };
+
+  const handleSkipNotifications = async () => {
     setNotifStatus("denied");
     setShowNotifPointer(false);
+
+    if (
+      state.profileOverview.username &&
+      !state.profileOverview.profilePicUrl
+    ) {
+      navigation.navigate("AddPhoto");
+    }
+
+    if (!state.profileOverview.sobrietyStartAt) {
+      navigation.navigate("AddSobrietyDate");
+    }
+    if (!state.profileOverview.notificationSettings.locationTrackingEnabled) {
+      navigation.navigate("LocationPermission");
+    } else if (
+      state.profileOverview.username &&
+      !!state.profileOverview.locationTrackingEnabled
+    ) {
+      navigation.reset({
+        index: 0,
+        routes: [{ name: "MainTabs" }],
+      });
+    }
+
+    // New users without username still see username step
     setStep(2);
   };
 
@@ -397,14 +539,6 @@ const UsernameScreen = ({ navigation, route }) => {
         "Please sign in with Apple to continue your onboarding."
       );
       navigation.replace("AppleLogin");
-      return;
-    }
-
-    if (!pushToken) {
-      Alert.alert(
-        "Missing device ID",
-        "We couldn't get your device token yet. Please enable notifications or restart the app."
-      );
       return;
     }
 
@@ -443,7 +577,9 @@ const UsernameScreen = ({ navigation, route }) => {
 
   const renderNotificationStep = () => (
     <View style={styles.card}>
-      <Text style={styles.sectionLabel}>Step 1 of 2</Text>
+      <Text style={styles.sectionLabel}>
+        {hasUsernameFromParams ? "Notifications" : "Step 1 of 2"}
+      </Text>
 
       <Text style={styles.title}>
         Turn on <Text style={styles.titleAccent}>notifications</Text>?
@@ -468,7 +604,9 @@ const UsernameScreen = ({ navigation, route }) => {
         disabled={notifLoading}
       >
         <LinearGradient
-          colors={notifLoading ? ["#4B5563", "#4B5563"] : [accent, accentSoft]}
+          colors={
+            notifLoading ? ["#4B5563", "#4B5563"] : [accentColor, accentSoft]
+          }
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
           style={styles.buttonGradient}
@@ -551,7 +689,9 @@ const UsernameScreen = ({ navigation, route }) => {
       >
         <LinearGradient
           colors={
-            !isValid || saving ? ["#4B5563", "#4B5563"] : [accent, accentSoft]
+            !isValid || saving
+              ? ["#4B5563", "#4B5563"]
+              : [accentColor, accentSoft]
           }
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
@@ -575,7 +715,7 @@ const UsernameScreen = ({ navigation, route }) => {
         style={styles.root}
       >
         <View style={[styles.flex, { justifyContent: "center" }]}>
-          <ActivityIndicator size="large" color={accent} />
+          <ActivityIndicator size="large" color={accentColor} />
         </View>
       </LinearGradient>
     );
@@ -607,7 +747,9 @@ const UsernameScreen = ({ navigation, route }) => {
         </View>
 
         {/* Card content */}
-        {step === 1 ? renderNotificationStep() : renderUsernameStep()}
+        {step === 1 || hasUsernameFromParams
+          ? renderNotificationStep()
+          : renderUsernameStep()}
 
         {/* Footer */}
         <View style={styles.footer}>
@@ -657,26 +799,22 @@ const styles = StyleSheet.create({
   },
   header: {
     marginBottom: 24,
-    alignItems: "flex-start", // ⬅ left-align the whole header block
+    alignItems: "flex-start",
   },
-
   headerRow: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "flex-start",
   },
-
   logo: {
     width: 44,
     height: 44,
     borderRadius: 10,
     marginRight: 12,
   },
-
   headerTextBlock: {
     flexShrink: 1,
   },
-
   appName: {
     fontSize: 26,
     fontWeight: "800",
@@ -684,18 +822,15 @@ const styles = StyleSheet.create({
     color: textPrimary,
     textAlign: "left",
   },
-
   tagline: {
     marginTop: 4,
     fontSize: 14,
     color: textSecondary,
     textAlign: "left",
   },
-
   appAccent: {
     color: accent,
   },
-
   card: {
     borderRadius: 24,
     padding: 24,
@@ -747,7 +882,6 @@ const styles = StyleSheet.create({
     color: "#F9FAFB",
     fontSize: 15,
   },
-
   validationText: {
     marginTop: 6,
     fontSize: 12,
