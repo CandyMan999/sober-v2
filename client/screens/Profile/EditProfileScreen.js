@@ -959,11 +959,12 @@ const EditProfileScreen = ({ navigation }) => {
       if (latestUser) {
         setUser(latestUser);
         dispatch({ type: "SET_USER", payload: { ...user, ...latestUser } });
+        dispatch({
+          type: "SET_PROFILE_OVERVIEW",
+          payload: { ...(state?.profileOverview || {}), user: latestUser },
+        });
         setSocialInputs({
-          instagram: normalizeSocialInput(
-            "instagram",
-            latestUser.social?.instagram
-          ),
+          instagram: normalizeSocialInput("instagram", latestUser.social?.instagram),
           tiktok: normalizeSocialInput("tiktok", latestUser.social?.tiktok),
           x: normalizeSocialInput("x", latestUser.social?.x),
         });

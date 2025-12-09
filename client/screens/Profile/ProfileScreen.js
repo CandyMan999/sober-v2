@@ -22,6 +22,7 @@ import {
 import { LinearGradient } from "expo-linear-gradient";
 import { BlurView } from "expo-blur";
 import { Feather, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+import AntDesign from "@expo/vector-icons/AntDesign";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import { TabView } from "react-native-tab-view";
@@ -51,10 +52,13 @@ import {
   mergeSavedList,
   removeSavedItem,
 } from "../../utils/saves";
+import { useOpenSocial } from "../../hooks/useOpenSocial";
 
 const AVATAR_SIZE = 110;
 const AnimatedBlurView = Animated.createAnimatedComponent(BlurView);
 const soberLogo = require("../../assets/icon.png");
+const SOCIAL_ICON_SIZE = 22;
+const SOCIAL_ICON_COLOR = "#e5e7eb";
 const PROFILE_PAGE_SIZE = 12;
 const LOAD_MORE_THRESHOLD = 360;
 const fetchGuard = (ref, value) => {
@@ -72,6 +76,22 @@ const dedupeById = (list = []) => {
     seen.add(id);
     return true;
   });
+};
+
+const SOCIAL_ICON_PROPS = {
+  instagram: {
+    Component: Ionicons,
+    name: "logo-instagram",
+    color: SOCIAL_ICON_COLOR,
+    size: SOCIAL_ICON_SIZE,
+  },
+  tiktok: {
+    Component: FontAwesome6,
+    name: "tiktok",
+    color: SOCIAL_ICON_COLOR,
+    size: SOCIAL_ICON_SIZE,
+  },
+  x: { Component: AntDesign, name: "x", color: SOCIAL_ICON_COLOR, size: SOCIAL_ICON_SIZE },
 };
 
 const ProfileScreen = ({ navigation }) => {
@@ -121,6 +141,7 @@ const ProfileScreen = ({ navigation }) => {
   const avatarImageRef = useRef(null);
   const currentUser = state?.user;
   const currentUserId = currentUser?.id;
+  const { openSocial } = useOpenSocial();
   const directRoomCount = useMemo(
     () => directRooms?.length || 0,
     [directRooms?.length]
@@ -157,6 +178,36 @@ const ProfileScreen = ({ navigation }) => {
   const isAdminUser = profileData?.username === "CandyMan🍭";
 
   const hasWhy = Boolean(profileData?.whyStatement?.trim());
+
+  const socialLinks = useMemo(() => {
+    const social = profileData?.social;
+    if (!social) return [];
+
+    const platforms = ["instagram", "tiktok", "x"];
+
+    return platforms
+      .map((platform) => {
+        const data = social[platform];
+        if (!data?.handle) return null;
+
+        const app = data.deeplink?.app || null;
+        const web = data.deeplink?.web || data.website || null;
+
+        if (!app && !web) return null;
+
+        return {
+          platform,
+          data: {
+            ...data,
+            deeplink: {
+              app: app || web,
+              web: web || app,
+            },
+          },
+        };
+      })
+      .filter(Boolean);
+  }, [profileData?.social]);
 
   useEffect(() => {
     const overviewCount =
@@ -1513,6 +1564,30 @@ const ProfileScreen = ({ navigation }) => {
         onScroll={handleScroll}
       >
         <View style={styles.topActionsRow}>
+          {socialLinks.length ? (
+            <View style={styles.socialIconsRow}>
+              {socialLinks.map(({ platform, data }) => {
+                const icon = SOCIAL_ICON_PROPS[platform];
+                const IconComponent = icon?.Component || Ionicons;
+                return (
+                  <TouchableOpacity
+                    key={platform}
+                    style={styles.socialIconButton}
+                    onPress={() => openSocial(platform, data)}
+                    activeOpacity={0.85}
+                  >
+                    <IconComponent
+                      name={icon?.name || "share-social"}
+                      size={icon?.size || 18}
+                      color={icon?.color || "#e5e7eb"}
+                    />
+                  </TouchableOpacity>
+                );
+              })}
+            </View>
+          ) : (
+            <View style={styles.topActionsSpacer} />
+          )}
           <TouchableOpacity
             style={styles.editIconButton}
             onPress={navigateToEditProfile}
@@ -1689,12 +1764,25 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     alignItems: "center",
     flexDirection: "row",
-    justifyContent: "flex-end",
+    justifyContent: "space-between",
+  },
+  topActionsSpacer: {
+    width: 1,
   },
   editIconButton: {
     padding: 10,
     borderRadius: 999,
     backgroundColor: "rgba(245,158,11,0.12)",
+  },
+  socialIconsRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 10,
+  },
+  socialIconButton: {
+    padding: 9,
+    borderRadius: 999,
+    backgroundColor: "rgba(255,255,255,0.06)",
   },
   metricIconWrapper: {
     position: "relative",
