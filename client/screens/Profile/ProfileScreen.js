@@ -629,6 +629,7 @@ const ProfileScreen = ({ navigation }) => {
   const handleNavigate = (screen) => {
     const commonParams = {
       username: profileData?.username,
+      userId: profileData?.id || state?.user?.id,
       profilePicUrl: profileData?.profilePicUrl,
     };
 
@@ -664,6 +665,8 @@ const ProfileScreen = ({ navigation }) => {
           likesTotal: counts.likes,
           posts: posts || [],
           quotes: quotes || [],
+          postCursor: postCursorRef.current,
+          hasMorePosts,
         });
         break;
       case "Notifications":

@@ -1,5 +1,6 @@
-import React, { useContext, useMemo, useState } from "react";
+import React, { useCallback, useContext, useMemo, useState } from "react";
 import {
+  ActivityIndicator,
   FlatList,
   Image,
   StyleSheet,
@@ -16,8 +17,11 @@ import Context from "../../context";
 import { ContentPreviewModal } from "../../components";
 import { useClient } from "../../client";
 import { TOGGLE_SAVE_MUTATION } from "../../GraphQL/mutations";
+import { USER_POSTS_PAGINATED_QUERY } from "../../GraphQL/queries";
 import { applySavedStateToContext, isItemSaved } from "../../utils/saves";
 import { getToken } from "../../utils/helpers";
+
+const PAGE_SIZE = 12;
 
 const parseDate = (timestamp) => {
   if (!timestamp) return null;
@@ -58,7 +62,10 @@ const LikesScreen = () => {
     posts = [],
     quotes = [],
     username,
+    userId,
     profilePicUrl,
+    postCursor: initialPostCursor = null,
+    hasMorePosts: initialHasMorePosts = false,
   } = route.params || {};
   const [previewVisible, setPreviewVisible] = useState(false);
   const [previewItem, setPreviewItem] = useState(null);
@@ -66,6 +73,9 @@ const LikesScreen = () => {
   const [previewMuted, setPreviewMuted] = useState(true);
   const [postItems, setPostItems] = useState(posts);
   const [quoteItems, setQuoteItems] = useState(quotes);
+  const [postCursor, setPostCursor] = useState(initialPostCursor);
+  const [hasMorePostPages, setHasMorePostPages] = useState(initialHasMorePosts);
+  const [loadingMore, setLoadingMore] = useState(false);
 
   const computedLikesTotal = useMemo(() => {
     const postLikes = postItems.reduce((sum, post) => sum + (post?.likesCount || 0), 0);
@@ -187,6 +197,39 @@ const LikesScreen = () => {
       : isItemSaved(state?.user?.savedQuotes, previewItem.id);
   }, [previewItem?.id, previewType, state?.user?.savedPosts, state?.user?.savedQuotes]);
 
+  const handleLoadMorePosts = useCallback(async () => {
+    if (!hasMorePostPages || loadingMore || !userId) return;
+
+    setLoadingMore(true);
+
+    try {
+      const token = await getToken();
+      if (!token) return;
+
+      const data = await client.request(USER_POSTS_PAGINATED_QUERY, {
+        token,
+        userId,
+        limit: PAGE_SIZE,
+        cursor: postCursor,
+      });
+
+      const nextPosts = data?.userPosts?.posts || [];
+      const nextCursor = data?.userPosts?.cursor || null;
+      const nextHasMore = Boolean(data?.userPosts?.hasMore);
+
+      if (nextPosts.length) {
+        setPostItems((prev) => [...prev, ...nextPosts]);
+      }
+
+      setPostCursor(nextCursor);
+      setHasMorePostPages(nextHasMore);
+    } catch (err) {
+      console.error("Failed to load more liked posts", err);
+    } finally {
+      setLoadingMore(false);
+    }
+  }, [client, hasMorePostPages, loadingMore, postCursor, userId]);
+
   const handleToggleSave = async (content, contentType = "POST") => {
     if (!content?.id) return;
 
@@ -296,11 +339,11 @@ const LikesScreen = () => {
             : `You've earned ${computedLikesTotal || likesTotal} likes across your posts and quotes.`}
         </Text>
 
-      {likedItems.length === 0 ? (
-        <View style={styles.emptyCard}>
-          <View style={styles.emptyIconWrapper}>
-            <Ionicons name="heart-circle" size={32} color="#f59e0b" />
-          </View>
+        {likedItems.length === 0 ? (
+          <View style={styles.emptyCard}>
+            <View style={styles.emptyIconWrapper}>
+              <Ionicons name="heart-circle" size={32} color="#f59e0b" />
+            </View>
             <Text style={styles.emptyTitle}>No likes to show</Text>
             <Text style={styles.emptyDescription}>
               Share updates and quotes to start collecting likes from the community.
@@ -313,6 +356,15 @@ const LikesScreen = () => {
             keyExtractor={(item) => item.id}
             contentContainerStyle={{ paddingVertical: 12, gap: 14 }}
             showsVerticalScrollIndicator={false}
+            onEndReached={handleLoadMorePosts}
+            onEndReachedThreshold={0.4}
+            ListFooterComponent={
+              loadingMore ? (
+                <View style={styles.footerLoader}>
+                  <ActivityIndicator size="small" color="#f59e0b" />
+                </View>
+              ) : null
+            }
           />
         )}
       </View>
@@ -429,6 +481,11 @@ const styles = StyleSheet.create({
     height: 180,
     borderRadius: 12,
     backgroundColor: "#111827",
+  },
+  footerLoader: {
+    paddingVertical: 12,
+    alignItems: "center",
+    justifyContent: "center",
   },
   emptyCard: {
     backgroundColor: "#0b1220",
