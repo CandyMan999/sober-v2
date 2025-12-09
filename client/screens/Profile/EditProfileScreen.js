@@ -14,6 +14,7 @@ import {
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { LinearGradient } from "expo-linear-gradient";
+import * as Location from "expo-location";
 import {
   Feather,
   Ionicons,
@@ -42,6 +43,11 @@ import {
 import { FETCH_ME_QUERY } from "../../GraphQL/queries";
 import { getToken } from "../../utils/helpers";
 import { COLORS } from "../../constants/colors";
+import {
+  configureLocationTrackingClient,
+  initSoberMotionTracking,
+  stopAllSoberLocationTracking,
+} from "../../utils/locationTracking";
 
 const {
   primaryBackground,
@@ -53,6 +59,8 @@ const {
   oceanBlue,
   nightBlue,
 } = COLORS;
+
+const GEOFENCE_TASK_NAME = "SM_GEOFENCE_TASK";
 
 const MIN_USERNAME_LENGTH = 3;
 const MAX_USERNAME_LENGTH = 13;
@@ -241,7 +249,14 @@ const DrunkPhotoTile = ({
   </PhotoTileBase>
 );
 
-const ToggleRow = ({ icon, label, value, onValueChange, activeColor }) => (
+const ToggleRow = ({
+  icon,
+  label,
+  value,
+  onValueChange,
+  activeColor,
+  disabled = false,
+}) => (
   <View style={styles.toggleRow}>
     <View style={styles.rowLeft}>
       {icon}
@@ -251,6 +266,7 @@ const ToggleRow = ({ icon, label, value, onValueChange, activeColor }) => (
       value={value}
       onValueChange={onValueChange}
       activeColor={activeColor}
+      disabled={disabled}
     />
   </View>
 );
@@ -297,6 +313,7 @@ const EditProfileScreen = ({ navigation }) => {
     defaultNotificationSettings
   );
   const [locationEnabled, setLocationEnabled] = useState(false);
+  const [locationToggleLoading, setLocationToggleLoading] = useState(false);
   const [notificationsOpen, setNotificationsOpen] = useState(false);
   const [savingNotificationKey, setSavingNotificationKey] = useState(null);
 
@@ -318,6 +335,36 @@ const EditProfileScreen = ({ navigation }) => {
       onConfirm: null,
       onCancel: null,
     });
+
+  const hasAlwaysLocationPermission = async () => {
+    const fg = await Location.getForegroundPermissionsAsync();
+    const bg = await Location.getBackgroundPermissionsAsync();
+
+    return (
+      bg.status === "granted" ||
+      (fg.status === "granted" && fg.scope === "always")
+    );
+  };
+
+  const syncLocationPermissionState = async () => {
+    try {
+      const hasPermission = await hasAlwaysLocationPermission();
+      const isTracking =
+        hasPermission &&
+        (await Location.hasStartedGeofencingAsync(GEOFENCE_TASK_NAME));
+
+      setLocationEnabled(isTracking);
+
+      if (isTracking) {
+        configureLocationTrackingClient({
+          requestFn: client.request,
+          getPushTokenFn: getToken,
+        });
+      }
+    } catch (err) {
+      console.log("Unable to sync location permission", err);
+    }
+  };
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -382,6 +429,10 @@ const EditProfileScreen = ({ navigation }) => {
       x: normalizeSocialInput("x", user.social?.x),
     });
   }, [user]);
+
+  useEffect(() => {
+    syncLocationPermissionState();
+  }, []);
 
   const showError = (message, title = "Heads up") => {
     setAlertState({
@@ -475,6 +526,97 @@ const EditProfileScreen = ({ navigation }) => {
     } finally {
       setSavingNotificationKey(null);
     }
+  };
+
+  const handleDisableLocationTracking = async () => {
+    setLocationToggleLoading(true);
+
+    try {
+      await stopAllSoberLocationTracking();
+      setLocationEnabled(false);
+    } catch (err) {
+      console.log("Unable to disable location tracking", err);
+      showError(
+        "We couldn't turn off location tracking right now. Please try again.",
+        "Location tracking"
+      );
+    } finally {
+      setLocationToggleLoading(false);
+      closeAlert();
+    }
+  };
+
+  const confirmDisableLocationTracking = () => {
+    setAlertState({
+      visible: true,
+      type: "confirm",
+      title: "Turn off sober motion?",
+      message:
+        "You're about to turn off the coolest feature that keeps you sober. We use smart geo-fencing to alert you and your buddies when you're near bars or liquor stores — turning this off won't save battery.",
+      confirmLabel: "Turn off",
+      cancelLabel: "Keep on",
+      onConfirm: handleDisableLocationTracking,
+      onCancel: () => {
+        setLocationEnabled(true);
+        closeAlert();
+      },
+    });
+  };
+
+  const handleEnableLocationTracking = async () => {
+    setLocationToggleLoading(true);
+
+    try {
+      const fg = await Location.requestForegroundPermissionsAsync();
+      if (fg.status !== "granted") {
+        setLocationEnabled(false);
+        showError(
+          "We need location access to keep you and your buddies aware.",
+          "Permission needed"
+        );
+        return;
+      }
+
+      const bg = await Location.requestBackgroundPermissionsAsync();
+      const hasAlways =
+        bg.status === "granted" || (await hasAlwaysLocationPermission());
+
+      if (!hasAlways) {
+        setLocationEnabled(false);
+        showError(
+          'Please choose "Always Allow" so we can alert you and your buddies when you are near bars or liquor stores.',
+          "Always allow background"
+        );
+        return;
+      }
+
+      configureLocationTrackingClient({
+        requestFn: client.request,
+        getPushTokenFn: getToken,
+      });
+
+      await initSoberMotionTracking();
+      setLocationEnabled(true);
+    } catch (err) {
+      console.log("Unable to enable location tracking", err);
+      setLocationEnabled(false);
+      showError(
+        "We couldn't update your location tracking right now. Please try again.",
+        "Location tracking"
+      );
+    } finally {
+      setLocationToggleLoading(false);
+    }
+  };
+
+  const handleLocationToggle = async (value) => {
+    if (locationToggleLoading) return;
+
+    if (!value) {
+      return confirmDisableLocationTracking();
+    }
+
+    await handleEnableLocationTracking();
   };
 
   const requestMediaPermission = async () => {
@@ -780,7 +922,7 @@ const EditProfileScreen = ({ navigation }) => {
     }
   };
 
-  const isBusy = loading || deletingAccount;
+  const isBusy = loading || deletingAccount || locationToggleLoading;
 
   return (
     <SafeAreaView style={styles.safeArea} edges={["top", "left", "right"]}>
@@ -1104,8 +1246,9 @@ const EditProfileScreen = ({ navigation }) => {
               icon={<Feather name="map-pin" size={18} color={oceanBlue} />}
               label="Location tracking"
               value={locationEnabled}
-              onValueChange={setLocationEnabled}
+              onValueChange={handleLocationToggle}
               activeColor={oceanBlue}
+              disabled={locationToggleLoading}
             />
             <Text style={styles.helperText}>
               We only use your location to catch when you might be hanging at a

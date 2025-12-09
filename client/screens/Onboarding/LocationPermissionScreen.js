@@ -32,6 +32,8 @@ const {
   textSecondary,
 } = COLORS;
 
+const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
 const LocationPermissionScreen = ({ navigation }) => {
   const client = useClient();
   const [loading, setLoading] = useState(false);
@@ -145,7 +147,17 @@ const LocationPermissionScreen = ({ navigation }) => {
 
       const bg = await Location.requestBackgroundPermissionsAsync();
 
-      if (bg.status === "granted" || (await hasAlwaysPermission())) {
+      const hasAlways =
+        bg.status === "granted" || (await hasAlwaysPermission());
+
+      if (!hasAlways) {
+        await delay(600);
+      }
+
+      const confirmedAlways =
+        hasAlways || (await hasAlwaysPermission());
+
+      if (confirmedAlways) {
         configureLocationTrackingClient({
           requestFn: client.request,
           getPushTokenFn: getToken,
