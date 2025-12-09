@@ -14,6 +14,7 @@ const ToggleSwitch = ({
   onValueChange,
   activeColor = COLORS.accent,
   disabled = false,
+  loading = false,
   hapticsEnabled = true,
   hapticStyle = Haptics.ImpactFeedbackStyle.Medium,
 }) => {
@@ -63,7 +64,7 @@ const ToggleSwitch = ({
   });
 
   const handlePress = () => {
-    if (disabled) return;
+    if (disabled || loading) return;
 
     if (hapticsEnabled) {
       Haptics.impactAsync(hapticStyle);
@@ -76,37 +77,50 @@ const ToggleSwitch = ({
     <TouchableOpacity
       activeOpacity={0.85}
       onPress={handlePress}
-      disabled={disabled}
+      disabled={disabled || loading}
       style={styles.touchable}
     >
-      <Animated.View
-        style={[
-          styles.track,
-          {
-            backgroundColor: trackColor,
-            borderColor: trackBorder,
-            opacity: disabled ? 0.6 : 1,
-          },
-        ]}
-      >
+      <View style={[styles.container, loading && styles.containerLoading]}>
         <Animated.View
           style={[
-            styles.thumb,
+            styles.track,
             {
-              transform: [{ translateX }, { scale: thumbScale }],
-              shadowOpacity,
-              shadowColor: activeColor,
+              backgroundColor: trackColor,
+              borderColor: trackBorder,
+              opacity: disabled || loading ? 0.6 : 1,
             },
           ]}
         >
-          <View style={styles.thumbInner} />
+          <Animated.View
+            style={[
+              styles.thumb,
+              {
+                transform: [{ translateX }, { scale: thumbScale }],
+                shadowOpacity,
+                shadowColor: activeColor,
+              },
+            ]}
+          >
+            <View style={styles.thumbInner} />
+          </Animated.View>
+          {loading ? (
+            <View style={styles.loadingOverlay}>
+              <View style={styles.loadingDot} />
+            </View>
+          ) : null}
         </Animated.View>
-      </Animated.View>
+      </View>
     </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    position: "relative",
+  },
+  containerLoading: {
+    opacity: 0.9,
+  },
   touchable: {
     paddingLeft: 8,
   },
@@ -135,6 +149,20 @@ const styles = StyleSheet.create({
     backgroundColor: "#f8fafc",
     borderWidth: 1,
     borderColor: "rgba(15,23,42,0.1)",
+  },
+  loadingOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "rgba(15,23,42,0.28)",
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: TRACK_HEIGHT / 2,
+  },
+  loadingDot: {
+    width: 10,
+    height: 10,
+    borderRadius: 8,
+    backgroundColor: "#e5e7eb",
+    opacity: 0.9,
   },
 });
 

@@ -256,6 +256,7 @@ const ToggleRow = ({
   onValueChange,
   activeColor,
   disabled = false,
+  loading = false,
 }) => (
   <View style={styles.toggleRow}>
     <View style={styles.rowLeft}>
@@ -266,7 +267,8 @@ const ToggleRow = ({
       value={value}
       onValueChange={onValueChange}
       activeColor={activeColor}
-      disabled={disabled}
+      disabled={disabled || loading}
+      loading={loading}
     />
   </View>
 );
@@ -922,7 +924,7 @@ const EditProfileScreen = ({ navigation }) => {
     }
   };
 
-  const isBusy = loading || deletingAccount || locationToggleLoading;
+  const isBusy = loading || deletingAccount;
 
   return (
     <SafeAreaView style={styles.safeArea} edges={["top", "left", "right"]}>
@@ -1249,6 +1251,7 @@ const EditProfileScreen = ({ navigation }) => {
               onValueChange={handleLocationToggle}
               activeColor={oceanBlue}
               disabled={locationToggleLoading}
+              loading={locationToggleLoading}
             />
             <Text style={styles.helperText}>
               We only use your location to catch when you might be hanging at a
