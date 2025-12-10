@@ -303,7 +303,7 @@ const EditProfileScreen = ({ navigation }) => {
   const [socialOpen, setSocialOpen] = useState(false);
 
   const defaultNotificationSettings = {
-    allPushEnabled: true,
+    allPushEnabled: false,
     otherUserMilestones: true,
     otherUserComments: true,
     followingPosts: true,
