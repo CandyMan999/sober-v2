@@ -13,6 +13,7 @@ import {
   Dimensions,
   FlatList,
   Modal,
+  Platform,
   Pressable,
   StyleSheet,
   Text,
@@ -24,6 +25,11 @@ import { useIsFocused } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import { BlurView } from "expo-blur";
 import { ResizeMode, Video } from "expo-av";
+import {
+  AdEventType,
+  InterstitialAd,
+  TestIds,
+} from "react-native-google-mobile-ads";
 import {
   CommunityFeedLayout,
   FeedLayout,
@@ -48,6 +54,17 @@ const tutorialImage = require("../../assets/swipe1.png");
 const { height: WINDOW_HEIGHT } = Dimensions.get("window");
 const PAGE_SIZE = 10;
 const SHEET_HEIGHT = Math.round(WINDOW_HEIGHT * 0.26);
+const AD_SLOT_FREQUENCY = 10;
+
+const INTERSTITIAL_AD_UNIT_ID =
+  process.env.EXPO_PUBLIC_INTERSTITIAL_AD_UNIT_ID ||
+  (__DEV__
+    ? TestIds.INTERSTITIAL
+    : Platform.select({
+        ios: "ca-app-pub-3940259679942544/5135589807",
+        android: "ca-app-pub-3940259679942544/1033173712",
+        default: TestIds.INTERSTITIAL,
+      }));
 
 const dedupeById = (list = []) => {
   const seen = new Set();
@@ -84,11 +101,25 @@ const CommunityScreen = () => {
   const [showFilterSheet, setShowFilterSheet] = useState(false);
   const [activeFilter, setActiveFilter] = useState(null);
   const [followLoadingIds, setFollowLoadingIds] = useState(new Set());
+  const [isAdShowing, setIsAdShowing] = useState(false);
+  const [isAdLoaded, setIsAdLoaded] = useState(false);
   const sheetAnim = useRef(new Animated.Value(0)).current;
   const fetchGenerationRef = useRef(0);
 
   const postsRef = useRef(posts);
   const followLoadingRef = useRef(followLoadingIds);
+  const adShownIndicesRef = useRef(new Set());
+  const pendingAdIndexRef = useRef(null);
+  const preAdMuteRef = useRef(false);
+
+  const interstitialAd = useMemo(
+    () =>
+      InterstitialAd.createForAdRequest(INTERSTITIAL_AD_UNIT_ID, {
+        requestNonPersonalizedAdsOnly: true,
+        keywords: ["sobriety", "recovery", "health"],
+      }),
+    []
+  );
 
   useEffect(() => {
     postsRef.current = posts;
@@ -100,6 +131,88 @@ const CommunityScreen = () => {
 
   const getPosts = useCallback(() => postsRef.current, []);
   const getFollowLoading = useCallback(() => followLoadingRef.current, []);
+
+  const showAdForIndex = useCallback(
+    (index) => {
+      adShownIndicesRef.current.add(index);
+      preAdMuteRef.current = isMuted;
+      setIsMuted(true);
+      setIsAdShowing(true);
+      setIsAdLoaded(false);
+
+      interstitialAd
+        .show()
+        .catch((err) => {
+          console.error("Failed to show interstitial ad", err);
+          setIsAdShowing(false);
+          setIsMuted(preAdMuteRef.current);
+          adShownIndicesRef.current.delete(index);
+          pendingAdIndexRef.current = null;
+          interstitialAd.load();
+        });
+    },
+    [interstitialAd, isMuted]
+  );
+
+  useEffect(() => {
+    const handleAdLoaded = () => {
+      setIsAdLoaded(true);
+
+      const pendingIndex = pendingAdIndexRef.current;
+      const isEligiblePending =
+        pendingIndex !== null &&
+        (pendingIndex + 1) % AD_SLOT_FREQUENCY === 0 &&
+        !adShownIndicesRef.current.has(pendingIndex);
+
+      if (isEligiblePending) {
+        pendingAdIndexRef.current = null;
+        showAdForIndex(pendingIndex);
+      }
+    };
+
+    const handleAdClosed = () => {
+      setIsAdShowing(false);
+      setIsAdLoaded(false);
+      setIsMuted(preAdMuteRef.current);
+      pendingAdIndexRef.current = null;
+      interstitialAd.load();
+    };
+
+    const handleAdError = (err) => {
+      console.error("Interstitial ad error", err);
+      setIsAdShowing(false);
+      setIsAdLoaded(false);
+      setIsMuted(preAdMuteRef.current);
+      pendingAdIndexRef.current = null;
+      interstitialAd.load();
+    };
+
+    const loadedListener = interstitialAd.addAdEventListener(
+      AdEventType.LOADED,
+      handleAdLoaded
+    );
+    const openedListener = interstitialAd.addAdEventListener(
+      AdEventType.OPENED,
+      () => setIsAdShowing(true)
+    );
+    const closedListener = interstitialAd.addAdEventListener(
+      AdEventType.CLOSED,
+      handleAdClosed
+    );
+    const errorListener = interstitialAd.addAdEventListener(
+      AdEventType.ERROR,
+      handleAdError
+    );
+
+    interstitialAd.load();
+
+    return () => {
+      loadedListener();
+      openedListener();
+      closedListener();
+      errorListener();
+    };
+  }, [interstitialAd, showAdForIndex]);
 
   const feedModel = useMemo(
     () =>
@@ -212,6 +325,8 @@ const CommunityScreen = () => {
           } else {
             setLoading(true);
           }
+          adShownIndicesRef.current = new Set();
+          pendingAdIndexRef.current = null;
         } else {
           setLoadingMore(true);
         }
@@ -320,8 +435,36 @@ const CommunityScreen = () => {
     setHasMore(true);
     setCursor(null);
     cursorRef.current = null;
+    pendingAdIndexRef.current = null;
+    adShownIndicesRef.current = new Set();
     fetchPosts(false, { isRefresh: true });
   };
+
+  const maybeShowInterstitial = useCallback(
+    (index) => {
+      if ((index + 1) % AD_SLOT_FREQUENCY !== 0) {
+        if (
+          pendingAdIndexRef.current !== null &&
+          pendingAdIndexRef.current !== index
+        ) {
+          pendingAdIndexRef.current = null;
+        }
+        return;
+      }
+
+      if (adShownIndicesRef.current.has(index)) return;
+
+      if (isAdLoaded) {
+        pendingAdIndexRef.current = null;
+        showAdForIndex(index);
+        return;
+      }
+
+      pendingAdIndexRef.current = index;
+      interstitialAd.load();
+    },
+    [isAdLoaded, interstitialAd, showAdForIndex]
+  );
 
   const handlePlaybackStatus = useCallback((index, status) => {
     if (!status) return;
@@ -367,16 +510,20 @@ const CommunityScreen = () => {
     setIsMuted(true);
   }, [isFocused]);
 
-  const onViewableItemsChanged = useRef(({ viewableItems }) => {
-    if (!viewableItems?.length) return;
-    const index = viewableItems[0].index ?? 0;
-    const nextRef = videoRefs.current[index];
-    if (nextRef?.replayAsync) {
-      nextRef.replayAsync();
-    }
-    setActiveIndex(index);
-    setFinishedMap((prev) => ({ ...prev, [index]: false }));
-  });
+  const onViewableItemsChanged = useCallback(
+    ({ viewableItems }) => {
+      if (!viewableItems?.length) return;
+      const index = viewableItems[0].index ?? 0;
+      const nextRef = videoRefs.current[index];
+      if (nextRef?.replayAsync) {
+        nextRef.replayAsync();
+      }
+      setActiveIndex(index);
+      setFinishedMap((prev) => ({ ...prev, [index]: false }));
+      maybeShowInterstitial(index);
+    },
+    [maybeShowInterstitial]
+  );
 
   const replayVideo = (index) => {
     const ref = videoRefs.current[index];
@@ -767,6 +914,7 @@ const CommunityScreen = () => {
         keyExtractor={(item) => item.id}
         renderItem={renderItem}
         pagingEnabled
+        scrollEnabled={!isAdShowing}
         keyboardShouldPersistTaps="always"
         contentInsetAdjustmentBehavior="never"
         showsVerticalScrollIndicator={false}
@@ -783,7 +931,7 @@ const CommunityScreen = () => {
           index,
         })}
         viewabilityConfig={{ viewAreaCoveragePercentThreshold: 80 }}
-        onViewableItemsChanged={onViewableItemsChanged.current}
+        onViewableItemsChanged={onViewableItemsChanged}
         onEndReachedThreshold={0.5}
         onEndReached={handleLoadMore}
         ListFooterComponent={() =>
