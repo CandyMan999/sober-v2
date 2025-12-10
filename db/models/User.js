@@ -158,6 +158,25 @@ const UserSchema = new mongoose.Schema(
       locationTrackingEnabled: { type: Boolean, default: true },
     },
 
+    plan: {
+      planType: {
+        type: String,
+        enum: ["Free", "Premium", "Unlimited"],
+        default: "Free",
+      },
+      withWorkBook: {
+        type: Boolean,
+        default: false,
+      },
+      withTherapy: {
+        type: Boolean,
+        default: false,
+      },
+      withAds: {
+        type: Boolean,
+        default: true,
+      },
+    },
     // Saved posts for quick access
     savedPosts: [
       {
@@ -210,7 +229,8 @@ UserSchema.methods.ensureChatRoomStyle = async function () {
 };
 
 UserSchema.statics.ensureChatRoomStyle = async function (userDoc) {
-  if (!userDoc || typeof userDoc.ensureChatRoomStyle !== "function") return null;
+  if (!userDoc || typeof userDoc.ensureChatRoomStyle !== "function")
+    return null;
   return userDoc.ensureChatRoomStyle();
 };
 
