@@ -11,6 +11,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   Keyboard,
+  Linking,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { LinearGradient } from "expo-linear-gradient";
@@ -327,6 +328,8 @@ const EditProfileScreen = ({ navigation }) => {
     title: "",
     message: "",
     type: "info",
+    confirmLabel: null,
+    cancelLabel: null,
     onConfirm: null,
     onCancel: null,
   });
@@ -337,9 +340,37 @@ const EditProfileScreen = ({ navigation }) => {
       title: "",
       message: "",
       type: "info",
+      confirmLabel: null,
+      cancelLabel: null,
       onConfirm: null,
       onCancel: null,
     });
+
+  const openAppSettings = async () => {
+    try {
+      await Linking.openSettings();
+    } catch (err) {
+      console.log("Failed to open app settings", err);
+    } finally {
+      closeAlert();
+    }
+  };
+
+  const showDeviceIdPrompt = (
+    message = "We need your device ID to continue.",
+    title = "Unable to update"
+  ) => {
+    setAlertState({
+      visible: true,
+      title,
+      message,
+      type: "confirm",
+      confirmLabel: "Open settings",
+      cancelLabel: "Close",
+      onConfirm: openAppSettings,
+      onCancel: closeAlert,
+    });
+  };
 
   const hasAlwaysLocationPermission = async () => {
     const fg = await Location.getForegroundPermissionsAsync();
@@ -470,7 +501,7 @@ const EditProfileScreen = ({ navigation }) => {
 
   const persistLocationTrackingSetting = async (enabled) => {
     if (!token) {
-      showError(
+      showDeviceIdPrompt(
         "We need your device ID to update your location setting. Please restart the app.",
         "Unable to update"
       );
@@ -513,7 +544,7 @@ const EditProfileScreen = ({ navigation }) => {
 
   const handleNotificationSettingChange = async (key, value) => {
     if (!token) {
-      showError(
+      showDeviceIdPrompt(
         "We need your device ID to update notifications. Please restart the app.",
         "Unable to update"
       );
@@ -687,7 +718,7 @@ const EditProfileScreen = ({ navigation }) => {
 
   const confirmDeleteProfile = async () => {
     if (!token) {
-      showError(
+      showDeviceIdPrompt(
         "We need your device ID to delete your profile. Please restart the app.",
         "Unable to delete"
       );
@@ -768,7 +799,7 @@ const EditProfileScreen = ({ navigation }) => {
   const pickImage = async (slot) => {
     const isProfile = slot === "PROFILE";
     if (!token) {
-      showError(
+      showDeviceIdPrompt(
         "We need your device ID to update photos. Please restart the app."
       );
       return;
@@ -818,7 +849,7 @@ const EditProfileScreen = ({ navigation }) => {
     const photoId = isProfile ? profileId : drunkId;
     if (!photoId || deletingSlot) return;
     if (!token) {
-      showError(
+      showDeviceIdPrompt(
         "We need your device ID to delete photos. Please restart the app."
       );
       return;
@@ -1369,6 +1400,8 @@ const EditProfileScreen = ({ navigation }) => {
         type={alertState.type || "info"}
         title={alertState.title}
         message={alertState.message}
+        confirmLabel={alertState.confirmLabel}
+        cancelLabel={alertState.cancelLabel}
         onConfirm={alertState.onConfirm || closeAlert}
         onCancel={alertState.onCancel || closeAlert}
       />
