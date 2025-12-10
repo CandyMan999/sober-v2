@@ -1,5 +1,5 @@
 const defaultNotificationSettings = {
-  allPushEnabled: true,
+  allPushEnabled: false,
   otherUserMilestones: true,
   otherUserComments: true,
   followingPosts: true,

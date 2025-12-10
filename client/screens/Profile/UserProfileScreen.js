@@ -35,7 +35,7 @@ import Avatar from "../../components/Avatar";
 import { ContentPreviewModal } from "../../components";
 import Context from "../../context";
 import { useClient } from "../../client";
-import { getToken } from "../../utils/helpers";
+import { getAuthContext } from "../../utils/helpers";
 import {
   USER_POSTS_PAGINATED_QUERY,
   USER_PROFILE_QUERY,
@@ -326,11 +326,12 @@ const UserProfileScreen = ({ route, navigation }) => {
       }
 
       try {
-        const token = await getToken();
-        if (!token) return;
+        const { token, appleId } = await getAuthContext();
+        if (!token && !appleId) return;
 
         const data = await client.request(USER_POSTS_PAGINATED_QUERY, {
           token,
+          appleId,
           userId,
           limit: PROFILE_PAGE_SIZE,
           cursor,
@@ -421,12 +422,13 @@ const UserProfileScreen = ({ route, navigation }) => {
 
     setFollowPending(true);
     try {
-      const token = await getToken();
-      if (!token) return;
+      const { token, appleId } = await getAuthContext();
+      if (!token && !appleId) return;
 
       if (isFollowed) {
         await client.request(UNFOLLOW_USER_MUTATION, {
           token,
+          appleId,
           userId: profileData.id,
         });
         setProfileData((prev) =>
@@ -442,6 +444,7 @@ const UserProfileScreen = ({ route, navigation }) => {
       } else {
         const data = await client.request(FOLLOW_USER_MUTATION, {
           token,
+          appleId,
           userId: profileData.id,
         });
         const isNowBuddy = Boolean(data?.followUser?.isBuddy);
@@ -690,8 +693,8 @@ const UserProfileScreen = ({ route, navigation }) => {
   const handleTogglePostLike = async (postId) => {
     if (!postId || !currentUserId) return;
 
-    const token = await getToken();
-    if (!token) return;
+    const { token, appleId } = await getAuthContext();
+    if (!token && !appleId) return;
 
     const existing =
       posts.find((post) => post.id === postId) ||
@@ -728,6 +731,7 @@ const UserProfileScreen = ({ route, navigation }) => {
     try {
       const data = await client.request(TOGGLE_LIKE_MUTATION, {
         token,
+        appleId,
         targetType: "POST",
         targetId: postId,
       });
@@ -762,8 +766,8 @@ const UserProfileScreen = ({ route, navigation }) => {
   const handleToggleQuoteLike = async (quoteId) => {
     if (!quoteId || !currentUserId) return;
 
-    const token = await getToken();
-    if (!token) return;
+    const { token, appleId } = await getAuthContext();
+    if (!token && !appleId) return;
 
     const existing =
       quotes.find((quote) => quote.id === quoteId) || previewItem;
@@ -796,6 +800,7 @@ const UserProfileScreen = ({ route, navigation }) => {
     try {
       const data = await client.request(TOGGLE_LIKE_MUTATION, {
         token,
+        appleId,
         targetType: "QUOTE",
         targetId: quoteId,
       });
@@ -829,8 +834,8 @@ const UserProfileScreen = ({ route, navigation }) => {
   const handleToggleSave = async (content, contentType = "POST") => {
     if (!content?.id) return;
 
-    const token = await getToken();
-    if (!token) return;
+    const { token, appleId } = await getAuthContext();
+    if (!token && !appleId) return;
 
     const isPost = contentType === "POST";
     const collection = isViewingSelf
@@ -883,6 +888,7 @@ const UserProfileScreen = ({ route, navigation }) => {
     try {
       const data = await client.request(TOGGLE_SAVE_MUTATION, {
         token,
+        appleId,
         targetType: contentType,
         targetId: content.id,
       });
@@ -906,8 +912,8 @@ const UserProfileScreen = ({ route, navigation }) => {
       return;
     }
 
-    const token = await getToken();
-    if (!token) return;
+    const { token, appleId } = await getAuthContext();
+    if (!token && !appleId) return;
 
     const previousPosts = posts;
     const previousSaved = savedPosts;
@@ -922,6 +928,7 @@ const UserProfileScreen = ({ route, navigation }) => {
     try {
       const data = await client.request(SET_POST_REVIEW_MUTATION, {
         token,
+        appleId,
         postId,
         review: true,
       });
@@ -947,14 +954,15 @@ const UserProfileScreen = ({ route, navigation }) => {
 
     const fetchProfile = async () => {
       try {
-        const token = await getToken();
-        if (!token || !userId) {
+        const { token, appleId } = await getAuthContext();
+        if ((!token && !appleId) || !userId) {
           if (mounted) setLoading(false);
           return;
         }
 
         const data = await client.request(USER_PROFILE_QUERY, {
           token,
+          appleId,
           userId,
         });
         const overview = data?.userProfile;

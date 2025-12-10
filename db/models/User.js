@@ -149,7 +149,7 @@ const UserSchema = new mongoose.Schema(
     ],
 
     notificationSettings: {
-      allPushEnabled: { type: Boolean, default: true },
+      allPushEnabled: { type: Boolean, default: false },
       otherUserMilestones: { type: Boolean, default: true },
       otherUserComments: { type: Boolean, default: true },
       followingPosts: { type: Boolean, default: true },

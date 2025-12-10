@@ -98,8 +98,8 @@ export const RANDOM_USERS_QUERY = `
 `;
 
 export const PROFILE_OVERVIEW_QUERY = `
-  query ProfileOverview($token: String!) {
-    profileOverview(token: $token) {
+  query ProfileOverview($token: String, $appleId: String) {
+    profileOverview(token: $token, appleId: $appleId) {
       user {
         id
         username
@@ -350,8 +350,8 @@ export const CLEAR_ALL_NOTIFICATIONS_MUTATION = `
 `;
 
 export const USER_PROFILE_QUERY = `
-  query UserProfile($token: String!, $userId: ID!) {
-    userProfile(token: $token, userId: $userId) {
+  query UserProfile($token: String, $appleId: String, $userId: ID!) {
+    userProfile(token: $token, appleId: $appleId, userId: $userId) {
       user {
         id
         username
@@ -504,8 +504,20 @@ export const USER_PROFILE_QUERY = `
 `;
 
 export const USER_POSTS_PAGINATED_QUERY = `
-  query UserPosts($token: String!, $userId: ID!, $limit: Int, $cursor: String) {
-    userPosts(token: $token, userId: $userId, limit: $limit, cursor: $cursor) {
+  query UserPosts(
+    $token: String
+    $appleId: String
+    $userId: ID!
+    $limit: Int
+    $cursor: String
+  ) {
+    userPosts(
+      token: $token
+      appleId: $appleId
+      userId: $userId
+      limit: $limit
+      cursor: $cursor
+    ) {
       hasMore
       cursor
       posts {

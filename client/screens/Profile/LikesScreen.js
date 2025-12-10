@@ -19,7 +19,7 @@ import { useClient } from "../../client";
 import { TOGGLE_SAVE_MUTATION } from "../../GraphQL/mutations";
 import { USER_POSTS_PAGINATED_QUERY } from "../../GraphQL/queries";
 import { applySavedStateToContext, isItemSaved } from "../../utils/saves";
-import { getToken } from "../../utils/helpers";
+import { getAuthContext } from "../../utils/helpers";
 
 const PAGE_SIZE = 12;
 
@@ -203,11 +203,12 @@ const LikesScreen = () => {
     setLoadingMore(true);
 
     try {
-      const token = await getToken();
-      if (!token) return;
+      const { token, appleId } = await getAuthContext();
+      if (!token && !appleId) return;
 
       const data = await client.request(USER_POSTS_PAGINATED_QUERY, {
         token,
+        appleId,
         userId,
         limit: PAGE_SIZE,
         cursor: postCursor,
@@ -233,8 +234,8 @@ const LikesScreen = () => {
   const handleToggleSave = async (content, contentType = "POST") => {
     if (!content?.id) return;
 
-    const token = await getToken();
-    if (!token) return;
+    const { token, appleId } = await getAuthContext();
+    if (!token && !appleId) return;
 
     const collection =
       contentType === "POST"
@@ -254,6 +255,7 @@ const LikesScreen = () => {
     try {
       const data = await client.request(TOGGLE_SAVE_MUTATION, {
         token,
+        appleId,
         targetType: contentType,
         targetId: content.id,
       });

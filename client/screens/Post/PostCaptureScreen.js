@@ -367,7 +367,6 @@ const PostCaptureScreen = ({ navigation }) => {
       setUploading(true);
 
       const info = await FileSystem.getInfoAsync(mediaUri, { size: true });
-      console.log("Picked file info:", info);
 
       if (!info.exists) {
         throw new Error("We couldn't find that file on your device.");
@@ -404,8 +403,6 @@ const PostCaptureScreen = ({ navigation }) => {
           text: caption?.trim?.() || null,
         }
       );
-
-      console.log("✅ Upload response:", response);
 
       const savedPost = isImage ? response?.sendImagePost : response?.sendPost;
 

@@ -30,8 +30,6 @@ const AddQuoteScreen = ({ navigation }) => {
   const { state } = useContext(Context);
   const user = state?.user;
 
-  console.log("user: ", user);
-
   const [text, setText] = useState("");
   const [submitting, setSubmitting] = useState(false);
 

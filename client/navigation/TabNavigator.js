@@ -26,7 +26,7 @@ import EditProfileScreen from "../screens/Profile/EditProfileScreen";
 import AddWhyScreen from "../screens/Profile/AddWhyScreen";
 import Context from "../context";
 import { useClient } from "../client";
-import { getToken } from "../utils/helpers";
+import { getAuthContext } from "../utils/helpers";
 import { PROFILE_OVERVIEW_QUERY, FETCH_ME_QUERY } from "../GraphQL/queries";
 import { COLORS } from "../constants/colors";
 
@@ -135,11 +135,12 @@ const TabNavigator = () => {
 
     const warmProfile = async () => {
       try {
-        const token = await getToken();
-        if (!token) return;
+        const { token, appleId } = await getAuthContext();
+        if (!token && !appleId) return;
 
         const overviewResponse = await client.request(PROFILE_OVERVIEW_QUERY, {
           token,
+          appleId,
         });
         const overview = overviewResponse?.profileOverview;
         if (overview && mounted) {
@@ -149,7 +150,10 @@ const TabNavigator = () => {
           }
         }
 
-        const meResponse = await client.request(FETCH_ME_QUERY, { token });
+        const meResponse = await client.request(FETCH_ME_QUERY, {
+          token,
+          appleId,
+        });
         if (meResponse?.fetchMe && mounted) {
           dispatch({ type: "SET_USER", payload: meResponse.fetchMe });
         }
