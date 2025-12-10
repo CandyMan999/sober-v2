@@ -10,13 +10,21 @@
     "development": {
       "extends": "base",
       "developmentClient": true,
-      "distribution": "internal"
+      "distribution": "internal",
+      "env": {
+        "EXPO_REVENUE_CAT_API_KEY": "test_EQtkFEGZhDmUBHmUBvOKQMJyLZX"
+      }
     },
     "preview": {
       "extends": "base",
       "distribution": "internal"
     },
     "production": {
+      "env": {
+        "EXPO_REVENUE_CAT_API_KEY": "test_EQtkFEGZhDmUBHmUBvOKQMJyLZX",
+        "EXPO_CF_ACCOUNT_HASH": "o9IMJdMAwk7ijgmm9FnmYg",
+        "EXPO_CF_VARIANT": "public"
+      },
       "extends": "base",
       "distribution": "store",
       "autoIncrement": true
