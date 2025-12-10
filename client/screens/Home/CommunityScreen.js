@@ -54,7 +54,7 @@ const tutorialImage = require("../../assets/swipe1.png");
 const { height: WINDOW_HEIGHT } = Dimensions.get("window");
 const PAGE_SIZE = 10;
 const SHEET_HEIGHT = Math.round(WINDOW_HEIGHT * 0.26);
-const AD_SLOT_FREQUENCY = 4;
+const AD_SLOT_FREQUENCY = 10;
 
 const INTERSTITIAL_AD_UNIT_ID =
   process.env.EXPO_PUBLIC_INTERSTITIAL_AD_UNIT_ID ||
@@ -110,6 +110,7 @@ const CommunityScreen = () => {
   const followLoadingRef = useRef(followLoadingIds);
   const adShownIndicesRef = useRef(new Set());
   const pendingAdIndexRef = useRef(null);
+  const preAdMuteRef = useRef(false);
 
   const interstitialAd = useMemo(
     () =>
@@ -134,6 +135,8 @@ const CommunityScreen = () => {
   const showAdForIndex = useCallback(
     (index) => {
       adShownIndicesRef.current.add(index);
+      preAdMuteRef.current = isMuted;
+      setIsMuted(true);
       setIsAdShowing(true);
       setIsAdLoaded(false);
 
@@ -142,12 +145,13 @@ const CommunityScreen = () => {
         .catch((err) => {
           console.error("Failed to show interstitial ad", err);
           setIsAdShowing(false);
+          setIsMuted(preAdMuteRef.current);
           adShownIndicesRef.current.delete(index);
           pendingAdIndexRef.current = null;
           interstitialAd.load();
         });
     },
-    [interstitialAd]
+    [interstitialAd, isMuted]
   );
 
   useEffect(() => {
@@ -169,6 +173,7 @@ const CommunityScreen = () => {
     const handleAdClosed = () => {
       setIsAdShowing(false);
       setIsAdLoaded(false);
+      setIsMuted(preAdMuteRef.current);
       pendingAdIndexRef.current = null;
       interstitialAd.load();
     };
@@ -177,6 +182,7 @@ const CommunityScreen = () => {
       console.error("Interstitial ad error", err);
       setIsAdShowing(false);
       setIsAdLoaded(false);
+      setIsMuted(preAdMuteRef.current);
       pendingAdIndexRef.current = null;
       interstitialAd.load();
     };
