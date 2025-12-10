@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useContext, useRef, useCallback } from "react";
+import React, {
+  useState,
+  useEffect,
+  useContext,
+  useRef,
+  useCallback,
+} from "react";
 import {
   View,
   Text,
@@ -102,29 +108,29 @@ const UsernameScreen = ({ navigation, route }) => {
       try {
         const { status } = await Location.getForegroundPermissionsAsync();
 
-      if (status !== "granted") {
-        return;
+        if (status !== "granted") {
+          return;
+        }
+
+        const position = await Location.getCurrentPositionAsync({
+          accuracy: Location.Accuracy.Lowest,
+        });
+
+        const coords = position?.coords;
+
+        if (!coords?.latitude || !coords?.longitude) {
+          return;
+        }
+
+        await client.request(UPDATE_USER_PROFILE_MUTATION, {
+          token,
+          appleId,
+          lat: coords.latitude,
+          long: coords.longitude,
+        });
+      } catch (err) {
+        console.log("Unable to refresh location:", err);
       }
-
-      const position = await Location.getCurrentPositionAsync({
-        accuracy: Location.Accuracy.Lowest,
-      });
-
-      const coords = position?.coords;
-
-      if (!coords?.latitude || !coords?.longitude) {
-        return;
-      }
-
-      await client.request(UPDATE_USER_PROFILE_MUTATION, {
-        token,
-        appleId,
-        lat: coords.latitude,
-        long: coords.longitude,
-      });
-    } catch (err) {
-      console.log("Unable to refresh location:", err);
-    }
     },
     [appleId, client]
   );
@@ -161,7 +167,8 @@ const UsernameScreen = ({ navigation, route }) => {
           if (me?.username && me.username.trim().length >= MIN_LEN) {
             const { status, scope } =
               await Location.getForegroundPermissionsAsync();
-            const hasAlwaysPermission = status === "granted" && scope === "always";
+            const hasAlwaysPermission =
+              status === "granted" && scope === "always";
 
             const hasProfilePic = !!(me.profilePic || me.profilePicUrl);
 
@@ -260,14 +267,20 @@ const UsernameScreen = ({ navigation, route }) => {
         await AsyncStorage.setItem(APPLE_ID_KEY, storedAppleId);
 
         let tokenToUse =
-          route?.params?.pushToken || (await AsyncStorage.getItem(PUSH_TOKEN_KEY));
+          route?.params?.pushToken ||
+          (await AsyncStorage.getItem(PUSH_TOKEN_KEY));
 
-        const { status: notifPermissionStatus } = await Notifications.getPermissionsAsync();
+        const { status: notifPermissionStatus } =
+          await Notifications.getPermissionsAsync();
         setNotifStatus(notifPermissionStatus);
 
         const needsNotificationPrompt = notifPermissionStatus !== "granted";
 
-        if (!tokenToUse && notifPermissionStatus === "granted" && Device.isDevice) {
+        if (
+          !tokenToUse &&
+          notifPermissionStatus === "granted" &&
+          Device.isDevice
+        ) {
           try {
             const res = await Notifications.getExpoPushTokenAsync();
             tokenToUse = res.data;
@@ -417,7 +430,6 @@ const UsernameScreen = ({ navigation, route }) => {
       }
 
       let { status } = await Notifications.getPermissionsAsync();
-      console.log("Notifications status:", status);
 
       if (status !== "granted") {
         const res = await Notifications.requestPermissionsAsync();
@@ -450,7 +462,6 @@ const UsernameScreen = ({ navigation, route }) => {
 
       const tokenResult = await Notifications.getExpoPushTokenAsync();
       const token = tokenResult.data;
-      console.log("📲 Expo push token:", token);
 
       setPushToken(token);
       await AsyncStorage.setItem(PUSH_TOKEN_KEY, token);
@@ -532,8 +543,6 @@ const UsernameScreen = ({ navigation, route }) => {
         appleId,
         username,
       };
-
-      console.log("✅ Updating profile with:", variables);
 
       const { updateUserProfile } = await client.request(
         UPDATE_USER_PROFILE_MUTATION,

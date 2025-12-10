@@ -219,8 +219,6 @@ const AppleLoginScreen = ({ navigation }) => {
           token,
         });
 
-        console.log("fetch me: ", fetchMe);
-
         dispatch({ type: "SET_PROFILE_OVERVIEW", payload: fetchMe });
         dispatch({ type: "SET_USER", payload: fetchMe });
 

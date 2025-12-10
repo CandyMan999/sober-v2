@@ -163,8 +163,6 @@ const ProfileScreen = ({ navigation }) => {
       0
     );
 
-    console.log("STATE: ", state);
-
     return {
       following: profileData?.followingCount ?? (following?.length || 0),
       followers: profileData?.followersCount ?? (followers?.length || 0),
