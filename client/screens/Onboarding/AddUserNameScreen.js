@@ -137,71 +137,73 @@ const UsernameScreen = ({ navigation, route }) => {
 
   // ------- helper: fetch "me" with a known token and route forward -------
   const fetchMeWithToken = useCallback(
-    async (token, appleIdOverride = appleId) => {
+    async (token, appleIdOverride = appleId, options = {}) => {
       const activeAppleId = appleIdOverride || appleId;
       if (!activeAppleId) return;
 
       const tokenToUse = token || pushToken || null;
 
-    try {
-      const data = await client.request(FETCH_ME_QUERY, {
-        token: tokenToUse,
-        appleId: activeAppleId,
-      });
-      const me = data?.fetchMe;
+      try {
+        const data = await client.request(FETCH_ME_QUERY, {
+          token: tokenToUse,
+          appleId: activeAppleId,
+        });
+        const me = data?.fetchMe;
 
-      if (me) {
-        dispatch({ type: "SET_USER", payload: me });
-      }
+        if (me) {
+          dispatch({ type: "SET_USER", payload: me });
+        }
 
-      if (me?.username && me.username.trim().length >= MIN_LEN) {
-        const { status, scope } =
-          await Location.getForegroundPermissionsAsync();
-        const hasAlwaysPermission = status === "granted" && scope === "always";
+        if (!options.skipRouting) {
+          if (me?.username && me.username.trim().length >= MIN_LEN) {
+            const { status, scope } =
+              await Location.getForegroundPermissionsAsync();
+            const hasAlwaysPermission = status === "granted" && scope === "always";
 
-        const hasProfilePic = !!(me.profilePic || me.profilePicUrl);
+            const hasProfilePic = !!(me.profilePic || me.profilePicUrl);
 
-        if (hasAlwaysPermission && me.sobrietyStartAt && hasProfilePic) {
-          await updateLocationIfGranted(tokenToUse);
+            if (hasAlwaysPermission && me.sobrietyStartAt && hasProfilePic) {
+              await updateLocationIfGranted(tokenToUse);
 
-          safeNavigateReset({
-            index: 0,
-            routes: [{ name: "MainTabs" }],
-          });
-          return;
+              safeNavigateReset({
+                index: 0,
+                routes: [{ name: "MainTabs" }],
+              });
+              return;
+            }
+
+            await updateLocationIfGranted(tokenToUse);
+
+            const nextRouteName = !hasProfilePic
+              ? "AddPhoto"
+              : !me.sobrietyStartAt
+              ? "AddSobrietyDate"
+              : "LocationPermission";
+
+            safeNavigateReset({
+              index: 0,
+              routes: [
+                {
+                  name: nextRouteName,
+                  params: {
+                    username: me.username || username,
+                    photoURI: me.profilePicUrl || me.profilePic?.url || null,
+                    pushToken: tokenToUse,
+                    appleId: activeAppleId,
+                  },
+                },
+              ],
+            });
+            return;
+          }
+        }
+
+        if (!hasUsernameFromParams && me?.username) {
+          setUsername(me.username);
         }
 
         await updateLocationIfGranted(tokenToUse);
-
-        const nextRouteName = !hasProfilePic
-          ? "AddPhoto"
-          : !me.sobrietyStartAt
-          ? "AddSobrietyDate"
-          : "LocationPermission";
-
-        safeNavigateReset({
-          index: 0,
-          routes: [
-            {
-              name: nextRouteName,
-              params: {
-                username: me.username || username,
-                photoURI: me.profilePicUrl || me.profilePic?.url || null,
-                pushToken: tokenToUse,
-                appleId: activeAppleId,
-              },
-            },
-          ],
-        });
-        return;
-      }
-
-      if (!hasUsernameFromParams && me?.username) {
-        setUsername(me.username);
-      }
-
-      await updateLocationIfGranted(tokenToUse);
-      setStep(hasUsernameFromParams ? 1 : 2);
+        setStep(hasUsernameFromParams ? 1 : 2);
       } catch (err) {
         console.log("Error fetching me with token:", err);
         setStep(hasUsernameFromParams ? 1 : 2);
@@ -241,16 +243,19 @@ const UsernameScreen = ({ navigation, route }) => {
         let tokenToUse =
           route?.params?.pushToken || (await AsyncStorage.getItem(PUSH_TOKEN_KEY));
 
-        if (!tokenToUse) {
-          const { status } = await Notifications.getPermissionsAsync();
-          if (status === "granted" && Device.isDevice) {
-            try {
-              const res = await Notifications.getExpoPushTokenAsync();
-              tokenToUse = res.data;
-              await AsyncStorage.setItem(PUSH_TOKEN_KEY, tokenToUse);
-            } catch (e) {
-              console.log("Error getting push token on init:", e);
-            }
+        const { status: notifPermissionStatus } = await Notifications.getPermissionsAsync();
+        setNotifStatus(notifPermissionStatus);
+
+        const needsNotificationPrompt =
+          notifPermissionStatus !== "granted" && !tokenToUse;
+
+        if (!tokenToUse && notifPermissionStatus === "granted" && Device.isDevice) {
+          try {
+            const res = await Notifications.getExpoPushTokenAsync();
+            tokenToUse = res.data;
+            await AsyncStorage.setItem(PUSH_TOKEN_KEY, tokenToUse);
+          } catch (e) {
+            console.log("Error getting push token on init:", e);
           }
         }
 
@@ -258,9 +263,13 @@ const UsernameScreen = ({ navigation, route }) => {
           setPushToken(tokenToUse);
         }
 
-        await fetchMeWithToken(tokenToUse, storedAppleId);
+        await fetchMeWithToken(tokenToUse, storedAppleId, {
+          skipRouting: needsNotificationPrompt,
+        });
 
-        if (!hasUsernameFromParams && !username) {
+        if (needsNotificationPrompt) {
+          setStep(1);
+        } else if (!hasUsernameFromParams && !username) {
           setStep(2);
         }
       } catch (err) {
@@ -471,26 +480,10 @@ const UsernameScreen = ({ navigation, route }) => {
     setNotifStatus("denied");
     setShowNotifPointer(false);
 
-    if (
-      state.profileOverview.username &&
-      !state.profileOverview.profilePicUrl
-    ) {
-      navigation.navigate("AddPhoto");
-    }
-
-    if (!state.profileOverview.sobrietyStartAt) {
-      navigation.navigate("AddSobrietyDate");
-    }
-    if (!state.profileOverview.notificationSettings.locationTrackingEnabled) {
-      navigation.navigate("LocationPermission");
-    } else if (
-      state.profileOverview.username &&
-      !!state.profileOverview.locationTrackingEnabled
-    ) {
-      navigation.reset({
-        index: 0,
-        routes: [{ name: "MainTabs" }],
-      });
+    // Returning users should immediately advance based on their saved profile
+    if (state.profileOverview?.username) {
+      await routeForwardAfterNotifDecision();
+      return;
     }
 
     // New users without username still see username step
