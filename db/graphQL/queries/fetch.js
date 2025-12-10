@@ -376,18 +376,31 @@ module.exports = {
 
   userPostsResolver: async (
     _,
-    { token, userId, limit: limitArg, cursor: cursorArg },
+    { token, appleId, userId, limit: limitArg, cursor: cursorArg },
     { currentUser }
   ) => {
-    if (!token) {
-      throw new AuthenticationError("Token is required");
+    const sanitizedAppleId = appleId?.trim();
+
+    if (!token && !sanitizedAppleId) {
+      throw new AuthenticationError("Token or Apple ID is required");
     }
 
     if (!userId) {
       throw new Error("userId is required");
     }
 
-    const viewer = currentUser || (await User.findOne({ token }));
+    let viewer = currentUser;
+
+    if (!viewer) {
+      if (sanitizedAppleId) {
+        viewer = await User.findOne({ appleId: sanitizedAppleId });
+      }
+
+      if (!viewer && token) {
+        viewer = await User.findOne({ token });
+      }
+    }
+
     if (!viewer) {
       throw new AuthenticationError("User not found");
     }
@@ -474,21 +487,33 @@ module.exports = {
     }
   },
 
-  profileOverviewResolver: async (_, { token }) => {
-    if (!token) {
-      throw new AuthenticationError("Token is required");
+  profileOverviewResolver: async (_, { token, appleId }) => {
+    const sanitizedAppleId = appleId?.trim();
+
+    if (!token && !sanitizedAppleId) {
+      throw new AuthenticationError("Token or Apple ID is required");
     }
 
-    const user = await User.findOne({ token }).populate([
+    let user = null;
+
+    if (sanitizedAppleId) {
+      user = await User.findOne({ appleId: sanitizedAppleId });
+    }
+
+    if (!user && token) {
+      user = await User.findOne({ token });
+    }
+
+    if (!user) {
+      throw new AuthenticationError("User not found");
+    }
+
+    await user.populate([
       "profilePic",
       "drunkPic",
       "savedPosts",
       "savedQuotes",
     ]);
-
-    if (!user) {
-      throw new AuthenticationError("User not found");
-    }
 
     await User.ensureChatRoomStyle(user);
 
@@ -538,17 +563,34 @@ module.exports = {
     };
   },
 
-  userProfileResolver: async (_, { token, userId }, { currentUser }) => {
-    if (!token) {
-      throw new AuthenticationError("Token is required");
+  userProfileResolver: async (
+    _,
+    { token, appleId, userId },
+    { currentUser }
+  ) => {
+    const sanitizedAppleId = appleId?.trim();
+
+    if (!token && !sanitizedAppleId) {
+      throw new AuthenticationError("Token or Apple ID is required");
     }
 
     if (!userId) {
       throw new Error("userId is required");
     }
 
-    const viewer =
-      currentUser || (await User.findOne({ token }).populate("profilePic"));
+    let viewer = currentUser;
+
+    if (!viewer) {
+      if (sanitizedAppleId) {
+        viewer = await User.findOne({ appleId: sanitizedAppleId }).populate(
+          "profilePic"
+        );
+      }
+
+      if (!viewer && token) {
+        viewer = await User.findOne({ token }).populate("profilePic");
+      }
+    }
 
     if (!viewer) {
       throw new AuthenticationError("User not found");

@@ -29,7 +29,7 @@ import { TabView } from "react-native-tab-view";
 
 import Context from "../../context";
 import { useClient } from "../../client";
-import { getToken } from "../../utils/helpers";
+import { getAuthContext } from "../../utils/helpers";
 import {
   PROFILE_OVERVIEW_QUERY,
   FETCH_ME_QUERY,
@@ -312,11 +312,12 @@ const ProfileScreen = ({ navigation }) => {
       }
 
       try {
-        const token = await getToken();
-        if (!token) return;
+        const { token, appleId } = await getAuthContext();
+        if (!token && !appleId) return;
 
         const data = await client.request(USER_POSTS_PAGINATED_QUERY, {
           token,
+          appleId,
           userId: targetUserId,
           limit: PROFILE_PAGE_SIZE,
           cursor,
@@ -353,7 +354,7 @@ const ProfileScreen = ({ navigation }) => {
   useEffect(() => {
     const fetchNotifications = async () => {
       try {
-        const token = await getToken();
+        const { token } = await getAuthContext();
         if (!token) return;
 
         const data = await client.request(USER_NOTIFICATIONS_QUERY, { token });
@@ -389,13 +390,16 @@ const ProfileScreen = ({ navigation }) => {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const token = await getToken();
-        if (!token) {
+        const { token, appleId } = await getAuthContext();
+        if (!token && !appleId) {
           setLoading(false);
           return;
         }
 
-        const data = await client.request(PROFILE_OVERVIEW_QUERY, { token });
+        const data = await client.request(PROFILE_OVERVIEW_QUERY, {
+          token,
+          appleId,
+        });
         const overview = data?.profileOverview;
         setProfileData(overview?.user || null);
         setPosts(overview?.posts || []);
@@ -419,7 +423,7 @@ const ProfileScreen = ({ navigation }) => {
           }
         }
 
-        const meData = await client.request(FETCH_ME_QUERY, { token });
+        const meData = await client.request(FETCH_ME_QUERY, { token, appleId });
         const me = meData?.fetchMe;
         if (me) {
           dispatch({ type: "SET_USER", payload: me });
@@ -444,7 +448,7 @@ const ProfileScreen = ({ navigation }) => {
     const loadAdminItems = async () => {
       try {
         setAdminLoading(true);
-        const token = await getToken();
+        const { token } = await getAuthContext();
         if (!token) return;
 
         const data = await client.request(ADMIN_REVIEW_ITEMS_QUERY, { token });
@@ -823,7 +827,7 @@ const ProfileScreen = ({ navigation }) => {
   const handleTogglePostLike = async (postId) => {
     if (!postId || !currentUserId) return;
 
-    const token = await getToken();
+    const { token } = await getAuthContext();
     if (!token) return;
 
     const existing =
@@ -895,7 +899,7 @@ const ProfileScreen = ({ navigation }) => {
   const handleToggleQuoteLike = async (quoteId) => {
     if (!quoteId || !currentUserId) return;
 
-    const token = await getToken();
+    const { token } = await getAuthContext();
     if (!token) return;
 
     const existing =
@@ -962,7 +966,7 @@ const ProfileScreen = ({ navigation }) => {
   const handleToggleSave = async (content, contentType = "POST") => {
     if (!content?.id) return;
 
-    const token = await getToken();
+    const { token } = await getAuthContext();
     if (!token) return;
 
     const isPost = contentType === "POST";
@@ -1024,7 +1028,7 @@ const ProfileScreen = ({ navigation }) => {
       return;
     }
 
-    const token = await getToken();
+    const { token } = await getAuthContext();
     if (!token) return;
 
     const previousPosts = posts;
@@ -1063,7 +1067,7 @@ const ProfileScreen = ({ navigation }) => {
   const handleAdminPostModeration = async (postId, approve) => {
     if (!postId) return;
 
-    const token = await getToken();
+    const { token } = await getAuthContext();
     if (!token) return;
 
     try {
@@ -1091,7 +1095,7 @@ const ProfileScreen = ({ navigation }) => {
   const handleAdminQuoteModeration = async (quoteId, approve) => {
     if (!quoteId) return;
 
-    const token = await getToken();
+    const { token } = await getAuthContext();
     if (!token) return;
 
     try {

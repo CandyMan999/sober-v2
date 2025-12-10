@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useRef } from "react";
+import React, { useState, useEffect, useContext, useRef, useCallback } from "react";
 import {
   View,
   Text,
@@ -94,9 +94,10 @@ const UsernameScreen = ({ navigation, route }) => {
     ensureAppleIdentity();
   }, [navigation, route?.params?.appleId]);
 
-  const updateLocationIfGranted = async (token) => {
-    try {
-      const { status } = await Location.getForegroundPermissionsAsync();
+  const updateLocationIfGranted = useCallback(
+    async (token) => {
+      try {
+        const { status } = await Location.getForegroundPermissionsAsync();
 
       if (status !== "granted") {
         return;
@@ -114,33 +115,45 @@ const UsernameScreen = ({ navigation, route }) => {
 
       await client.request(UPDATE_USER_PROFILE_MUTATION, {
         token,
+        appleId,
         lat: coords.latitude,
         long: coords.longitude,
       });
     } catch (err) {
       console.log("Unable to refresh location:", err);
     }
-  };
+    },
+    [appleId, client]
+  );
 
-  const safeNavigateReset = (config) => {
-    if (hasRoutedRef.current) return;
-    hasRoutedRef.current = true;
-    navigation.reset(config);
-  };
+  const safeNavigateReset = useCallback(
+    (config) => {
+      if (hasRoutedRef.current) return;
+      hasRoutedRef.current = true;
+      navigation.reset(config);
+    },
+    [navigation]
+  );
 
   // ------- helper: fetch "me" with a known token and route forward -------
-  const fetchMeWithToken = async (token) => {
-    if (!appleId) return;
+  const fetchMeWithToken = useCallback(
+    async (token, appleIdOverride = appleId) => {
+      const activeAppleId = appleIdOverride || appleId;
+      if (!activeAppleId) return;
+
+      const tokenToUse = token || pushToken || null;
 
     try {
-      const data = await client.request(FETCH_ME_QUERY, { token, appleId });
+      const data = await client.request(FETCH_ME_QUERY, {
+        token: tokenToUse,
+        appleId: activeAppleId,
+      });
       const me = data?.fetchMe;
 
       if (me) {
         dispatch({ type: "SET_USER", payload: me });
       }
 
-      // If we have a full username already, route to next onboarding step
       if (me?.username && me.username.trim().length >= MIN_LEN) {
         const { status, scope } =
           await Location.getForegroundPermissionsAsync();
@@ -149,7 +162,7 @@ const UsernameScreen = ({ navigation, route }) => {
         const hasProfilePic = !!(me.profilePic || me.profilePicUrl);
 
         if (hasAlwaysPermission && me.sobrietyStartAt && hasProfilePic) {
-          await updateLocationIfGranted(token);
+          await updateLocationIfGranted(tokenToUse);
 
           safeNavigateReset({
             index: 0,
@@ -158,7 +171,7 @@ const UsernameScreen = ({ navigation, route }) => {
           return;
         }
 
-        await updateLocationIfGranted(token);
+        await updateLocationIfGranted(tokenToUse);
 
         const nextRouteName = !hasProfilePic
           ? "AddPhoto"
@@ -174,7 +187,8 @@ const UsernameScreen = ({ navigation, route }) => {
               params: {
                 username: me.username || username,
                 photoURI: me.profilePicUrl || me.profilePic?.url || null,
-                pushToken: token,
+                pushToken: tokenToUse,
+                appleId: activeAppleId,
               },
             },
           ],
@@ -182,130 +196,76 @@ const UsernameScreen = ({ navigation, route }) => {
         return;
       }
 
-      // User exists but no username finalized yet → for new users, show username step
       if (!hasUsernameFromParams && me?.username) {
         setUsername(me.username);
       }
-      await updateLocationIfGranted(token);
 
-      if (!hasUsernameFromParams) {
-        setStep(2); // Only show username step if we *don't* already have username from params
-      } else {
-        // Returning user with username but backend still missing? Just send them to username step once
-        setStep(2);
+      await updateLocationIfGranted(tokenToUse);
+      setStep(hasUsernameFromParams ? 1 : 2);
+      } catch (err) {
+        console.log("Error fetching me with token:", err);
+        setStep(hasUsernameFromParams ? 1 : 2);
       }
-    } catch (err) {
-      console.log("Error fetching me with token:", err);
-
-      // On error just decide step based on notification permission for new users
-      if (!hasUsernameFromParams) {
-        let { status } = await Notifications.getPermissionsAsync();
-        if (status === "granted") {
-          setStep(2);
-        } else {
-          setStep(1);
-        }
-      } else {
-        // returning user: just let them see notifications step
-        setStep(1);
-      }
-    }
-  };
+    },
+    [
+      appleId,
+      dispatch,
+      hasUsernameFromParams,
+      navigation,
+      pushToken,
+      safeNavigateReset,
+      updateLocationIfGranted,
+      username,
+    ]
+  );
 
   // ------- init flow -------
   useEffect(() => {
     let cancelled = false;
 
     const init = async () => {
-      if (!appleId) {
-        setInitializing(false);
-        return;
-      }
-
       try {
-        // try to restore / consolidate token
-        let tokenToUse =
-          pushToken || (await AsyncStorage.getItem(PUSH_TOKEN_KEY));
+        const storedAppleId =
+          route?.params?.appleId || (await AsyncStorage.getItem(APPLE_ID_KEY));
 
-        // ✅ RETURNING USER FLOW:
-        // They already have a username from params; this screen is only for notification nag + routing.
-        if (hasUsernameFromParams) {
-          try {
-            const notifPerm = await Notifications.getPermissionsAsync();
-            const notifGranted = notifPerm?.status === "granted";
-
-            if (notifGranted && Device.isDevice && !tokenToUse) {
-              try {
-                const res = await Notifications.getExpoPushTokenAsync();
-                tokenToUse = res.data;
-                await AsyncStorage.setItem(PUSH_TOKEN_KEY, tokenToUse);
-              } catch (e) {
-                console.log(
-                  "Error getting push token (returning user init):",
-                  e
-                );
-              }
-            }
-
-            if (!cancelled) {
-              if (tokenToUse) {
-                setPushToken(tokenToUse);
-              }
-
-              if (notifGranted) {
-                await fetchMeWithToken(tokenToUse);
-                setInitializing(false);
-                return;
-              }
-
-              // Notifications not granted yet → show step 1 (notifications) only
-              setStep(1);
-              setInitializing(false);
-              return;
-            }
-          } catch (err) {
-            console.log("Returning user init notif check failed:", err);
-            setStep(1);
-            setInitializing(false);
-            return;
-          }
-        }
-
-        // ✅ NEW USER / NO USERNAME FLOW (original style)
-        if (tokenToUse) {
-          if (!cancelled) {
-            setPushToken(tokenToUse);
-            await fetchMeWithToken(tokenToUse);
-            setInitializing(false);
-          }
+        if (!storedAppleId) {
+          navigation.replace("AppleLogin");
           return;
         }
 
-        let { status } = await Notifications.getPermissionsAsync();
+        if (cancelled) return;
 
-        if (status === "granted" && Device.isDevice) {
-          try {
-            const res = await Notifications.getExpoPushTokenAsync();
-            tokenToUse = res.data;
-            console.log("📲 Got push token on init:", tokenToUse);
+        setAppleId(storedAppleId);
+        await AsyncStorage.setItem(APPLE_ID_KEY, storedAppleId);
 
-            if (!cancelled) {
-              setPushToken(tokenToUse);
+        let tokenToUse =
+          route?.params?.pushToken || (await AsyncStorage.getItem(PUSH_TOKEN_KEY));
+
+        if (!tokenToUse) {
+          const { status } = await Notifications.getPermissionsAsync();
+          if (status === "granted" && Device.isDevice) {
+            try {
+              const res = await Notifications.getExpoPushTokenAsync();
+              tokenToUse = res.data;
               await AsyncStorage.setItem(PUSH_TOKEN_KEY, tokenToUse);
-              await fetchMeWithToken(tokenToUse);
-              setInitializing(false);
+            } catch (e) {
+              console.log("Error getting push token on init:", e);
             }
-            return;
-          } catch (e) {
-            console.log("Error getting push token on init:", e);
           }
         }
 
-        // If we get here: no token yet, or not granted → show notifications step
-        setStep(1);
+        if (!cancelled && tokenToUse) {
+          setPushToken(tokenToUse);
+        }
+
+        await fetchMeWithToken(tokenToUse, storedAppleId);
+
+        if (!hasUsernameFromParams && !username) {
+          setStep(2);
+        }
       } catch (err) {
         console.log("Error initializing UsernameScreen:", err);
-        setStep(1);
+        setStep(hasUsernameFromParams ? 1 : 2);
       } finally {
         if (!cancelled) setInitializing(false);
       }
@@ -316,7 +276,14 @@ const UsernameScreen = ({ navigation, route }) => {
     return () => {
       cancelled = true;
     };
-  }, [appleId, client, navigation, hasUsernameFromParams, pushToken, username]);
+  }, [
+    fetchMeWithToken,
+    hasUsernameFromParams,
+    navigation,
+    route?.params?.appleId,
+    route?.params?.pushToken,
+    username,
+  ]);
 
   useEffect(() => {
     if (!showNotifPointer) return;

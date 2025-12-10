@@ -371,15 +371,20 @@ const typeDefs = gql`
       isMilestone: Boolean
     ): PostConnection!
     userPosts(
-      token: String!
+      token: String
+      appleId: String
       userId: ID!
       limit: Int
       cursor: String
     ): PostConnection!
     post(postId: ID!, token: String, includeFlagged: Boolean): Post
     quote(quoteId: ID!, token: String): Quote
-    profileOverview(token: String!): ProfileOverview!
-    userProfile(token: String!, userId: ID!): ProfileOverview!
+    profileOverview(token: String, appleId: String): ProfileOverview!
+    userProfile(
+      token: String
+      appleId: String
+      userId: ID!
+    ): ProfileOverview!
     getRooms: [Room!]
     getComments(roomId: ID!): [Comment!]
     myDirectRooms: [Room!]!
