@@ -24,6 +24,7 @@ import { CameraView, Camera } from "expo-camera";
 import { useVideoPlayer, VideoView } from "expo-video";
 import * as ImagePicker from "expo-image-picker";
 import * as FileSystem from "expo-file-system/legacy";
+import * as StoreReview from "expo-store-review";
 
 import { MaterialIcons, Feather } from "@expo/vector-icons";
 import { ReactNativeFile } from "extract-files";
@@ -44,7 +45,7 @@ const PostCaptureScreen = ({ navigation }) => {
   const cameraRef = useRef(null);
   const recordingStartRef = useRef(null); // track start time
   const client = useClient();
-  const { state } = useContext(Context);
+  const { state, dispatch } = useContext(Context);
   const isFocused = useIsFocused(); // know when this screen is actually visible
 
   const [hasPermission, setHasPermission] = useState(null);
@@ -419,6 +420,25 @@ const PostCaptureScreen = ({ navigation }) => {
         visibilityTime: 6000,
         topOffset: 80,
       });
+
+      const existingPosts = state?.profileOverview?.posts;
+      const newCount = Array.isArray(existingPosts)
+        ? existingPosts.length + 1
+        : null;
+
+      if (Array.isArray(existingPosts)) {
+        dispatch({
+          type: "SET_PROFILE_OVERVIEW",
+          payload: {
+            ...state.profileOverview,
+            posts: [savedPost, ...existingPosts],
+          },
+        });
+      }
+
+      if (newCount > 2 && (await StoreReview.isAvailableAsync())) {
+        StoreReview.requestReview();
+      }
 
       setMediaUri(null);
       setMediaType(null);
