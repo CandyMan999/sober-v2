@@ -23,7 +23,10 @@ import LogoIcon from "../../assets/icon.png";
 import { Ionicons } from "@expo/vector-icons";
 
 import { useClient } from "../../client";
-import { UPDATE_USER_PROFILE_MUTATION } from "../../GraphQL/mutations";
+import {
+  UPDATE_NOTIFICATION_SETTINGS_MUTATION,
+  UPDATE_USER_PROFILE_MUTATION,
+} from "../../GraphQL/mutations";
 import { FETCH_ME_QUERY } from "../../GraphQL/queries";
 import { COLORS } from "../../constants/colors";
 
@@ -221,6 +224,22 @@ const UsernameScreen = ({ navigation, route }) => {
     ]
   );
 
+  const persistNotificationOptIn = useCallback(
+    async (token) => {
+      if (!token) return;
+
+      try {
+        await client.request(UPDATE_NOTIFICATION_SETTINGS_MUTATION, {
+          token,
+          input: { allPushEnabled: true },
+        });
+      } catch (err) {
+        console.log("Unable to persist notification opt-in:", err);
+      }
+    },
+    [client]
+  );
+
   // ------- init flow -------
   useEffect(() => {
     let cancelled = false;
@@ -246,14 +265,14 @@ const UsernameScreen = ({ navigation, route }) => {
         const { status: notifPermissionStatus } = await Notifications.getPermissionsAsync();
         setNotifStatus(notifPermissionStatus);
 
-        const needsNotificationPrompt =
-          notifPermissionStatus !== "granted" && !tokenToUse;
+        const needsNotificationPrompt = notifPermissionStatus !== "granted";
 
         if (!tokenToUse && notifPermissionStatus === "granted" && Device.isDevice) {
           try {
             const res = await Notifications.getExpoPushTokenAsync();
             tokenToUse = res.data;
             await AsyncStorage.setItem(PUSH_TOKEN_KEY, tokenToUse);
+            await persistNotificationOptIn(tokenToUse);
           } catch (e) {
             console.log("Error getting push token on init:", e);
           }
@@ -289,6 +308,7 @@ const UsernameScreen = ({ navigation, route }) => {
     fetchMeWithToken,
     hasUsernameFromParams,
     navigation,
+    persistNotificationOptIn,
     route?.params?.appleId,
     route?.params?.pushToken,
     username,
@@ -358,6 +378,7 @@ const UsernameScreen = ({ navigation, route }) => {
           await AsyncStorage.setItem(PUSH_TOKEN_KEY, tokenToUse);
         }
 
+        await persistNotificationOptIn(tokenToUse);
         await fetchMeWithToken(tokenToUse);
 
         if (!hasUsernameFromParams) {
@@ -433,6 +454,7 @@ const UsernameScreen = ({ navigation, route }) => {
 
       setPushToken(token);
       await AsyncStorage.setItem(PUSH_TOKEN_KEY, token);
+      await persistNotificationOptIn(token);
 
       setNotifStatus("granted");
       await fetchMeWithToken(token);
