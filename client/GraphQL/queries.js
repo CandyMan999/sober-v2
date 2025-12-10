@@ -726,6 +726,7 @@ export const GET_ALL_POSTS = `
           name
         }
         createdAt
+        daysSober
         author {
           id
           username

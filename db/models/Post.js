@@ -39,6 +39,14 @@ const PostSchema = new mongoose.Schema(
       default: null,
     },
 
+    // Days sober (calculated from the author's sobrietyStartAt) at the time the
+    // post was created. Enables filtering/searching by sobriety milestones
+    // later on without recomputing historical values.
+    daysSober: {
+      type: Number,
+      default: null,
+    },
+
     flagged: {
       type: Boolean,
       default: false,
