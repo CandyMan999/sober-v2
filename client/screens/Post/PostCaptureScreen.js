@@ -25,7 +25,6 @@ import { useVideoPlayer, VideoView } from "expo-video";
 import * as ImagePicker from "expo-image-picker";
 import * as FileSystem from "expo-file-system/legacy";
 import * as StoreReview from "expo-store-review";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { MaterialIcons, Feather } from "@expo/vector-icons";
 import { ReactNativeFile } from "extract-files";
@@ -41,7 +40,6 @@ import Context from "../../context";
 
 const MAX_DURATION_SECONDS = 120; // target 2 min
 const RECORDING_QUALITY = "720p"; // slightly lower to help with upload reliability
-const POST_COUNT_KEY = "userPostCount";
 
 const PostCaptureScreen = ({ navigation }) => {
   const cameraRef = useRef(null);
@@ -423,17 +421,10 @@ const PostCaptureScreen = ({ navigation }) => {
         topOffset: 80,
       });
 
-      try {
-        const currentCountRaw = await AsyncStorage.getItem(POST_COUNT_KEY);
-        const currentCount = parseInt(currentCountRaw || "0", 10) || 0;
-        const newCount = currentCount + 1;
-        await AsyncStorage.setItem(POST_COUNT_KEY, newCount.toString());
-
-        if (newCount > 2 && (await StoreReview.isAvailableAsync())) {
-          StoreReview.requestReview();
-        }
-      } catch (countError) {
-        console.log("Error updating post count for review prompt:", countError);
+      const userPostCount = state?.user?.posts?.length || 0;
+      const newCount = userPostCount + 1;
+      if (newCount > 2 && (await StoreReview.isAvailableAsync())) {
+        StoreReview.requestReview();
       }
 
       setMediaUri(null);
