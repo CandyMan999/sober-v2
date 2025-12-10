@@ -45,7 +45,7 @@ const PostCaptureScreen = ({ navigation }) => {
   const cameraRef = useRef(null);
   const recordingStartRef = useRef(null); // track start time
   const client = useClient();
-  const { state } = useContext(Context);
+  const { state, dispatch } = useContext(Context);
   const isFocused = useIsFocused(); // know when this screen is actually visible
 
   const [hasPermission, setHasPermission] = useState(null);
@@ -421,8 +421,21 @@ const PostCaptureScreen = ({ navigation }) => {
         topOffset: 80,
       });
 
-      const userPostCount = state?.user?.posts?.length || 0;
-      const newCount = userPostCount + 1;
+      const existingPosts = state?.profileOverview?.posts;
+      const newCount = Array.isArray(existingPosts)
+        ? existingPosts.length + 1
+        : null;
+
+      if (Array.isArray(existingPosts)) {
+        dispatch({
+          type: "SET_PROFILE_OVERVIEW",
+          payload: {
+            ...state.profileOverview,
+            posts: [savedPost, ...existingPosts],
+          },
+        });
+      }
+
       if (newCount > 2 && (await StoreReview.isAvailableAsync())) {
         StoreReview.requestReview();
       }
