@@ -53,7 +53,10 @@ import {
   ensureSoberMotionTrackingSetup,
   configureLocationTrackingClient,
 } from "./utils/locationTracking";
-import { emitPaywallShown } from "./utils/paywallEvents";
+import {
+  addPaywallRequestListener,
+  emitPaywallShown,
+} from "./utils/paywallEvents";
 import { RevenueCatProvider, useRevenueCat } from "./RevenueCatContext";
 
 import Context from "./context";
@@ -136,7 +139,17 @@ function AppContent({ state, dispatch }) {
   const [navigationReady, setNavigationReady] = useState(false);
   const [paywallVisible, setPaywallVisible] = useState(false);
   const [paywallAcknowledged, setPaywallAcknowledged] = useState(false);
+  const [paywallSource, setPaywallSource] = useState(null);
   const { isPremium, initializing: revenueCatInitializing } = useRevenueCat();
+  const trialEndsAtString = currentUser?.trialEndsAt;
+  const trialEndsAt = trialEndsAtString ? new Date(trialEndsAtString) : null;
+  const isTrialExpired =
+    typeof currentUser?.isTrialExpired === "boolean"
+      ? currentUser.isTrialExpired
+      : trialEndsAt
+      ? trialEndsAt.getTime() <= Date.now()
+      : false;
+  const shouldForcePaywall = isTrialExpired && !isPremium;
   const locationTrackingAllowed =
     !!state?.user &&
     state?.user?.notificationSettings?.locationTrackingEnabled !== false;
@@ -507,7 +520,7 @@ function AppContent({ state, dispatch }) {
   const maybeShowPaywall = useCallback(() => {
     if (paywallAcknowledged) return;
     if (revenueCatInitializing) return;
-    if (isPremium) return;
+    if (!shouldForcePaywall) return;
 
     if (!navigationRef.isReady()) return;
 
@@ -516,8 +529,15 @@ function AppContent({ state, dispatch }) {
 
     if (!routeName || ONBOARDING_ROUTES.has(routeName)) return;
 
+    setPaywallSource("auto");
     setPaywallVisible(true);
-  }, [isPremium, paywallAcknowledged, revenueCatInitializing]);
+  }, [paywallAcknowledged, revenueCatInitializing, shouldForcePaywall]);
+
+  useEffect(() => {
+    if (shouldForcePaywall) {
+      setPaywallAcknowledged(false);
+    }
+  }, [shouldForcePaywall]);
 
   useEffect(() => {
     if (!navigationReady) return;
@@ -532,6 +552,7 @@ function AppContent({ state, dispatch }) {
     if (isPremium) {
       setPaywallVisible(false);
       setPaywallAcknowledged(true);
+      setPaywallSource(null);
     }
   }, [isPremium]);
 
@@ -539,6 +560,7 @@ function AppContent({ state, dispatch }) {
     if (!currentUser) {
       setPaywallAcknowledged(false);
       setPaywallVisible(false);
+      setPaywallSource(null);
     }
   }, [currentUser?.id]);
 
@@ -549,19 +571,33 @@ function AppContent({ state, dispatch }) {
     }
   }, [paywallVisible]);
 
-  const handleDismissPaywall = useCallback(() => {
-    setPaywallAcknowledged(true);
-    setPaywallVisible(false);
+  useEffect(() => {
+    const removeListener = addPaywallRequestListener(() => {
+      setPaywallSource("manual");
+      setPaywallVisible(true);
+    });
+
+    return removeListener;
   }, []);
+
+  const handleDismissPaywall = useCallback(() => {
+    if (paywallSource !== "manual" || shouldForcePaywall) {
+      setPaywallAcknowledged(true);
+    }
+    setPaywallVisible(false);
+    setPaywallSource(null);
+  }, [paywallSource, shouldForcePaywall]);
 
   const handleSelectPremium = useCallback(() => {
     setPaywallAcknowledged(true);
     setPaywallVisible(false);
+    setPaywallSource(null);
   }, []);
 
   const handleSelectFree = useCallback(() => {
     setPaywallAcknowledged(true);
     setPaywallVisible(false);
+    setPaywallSource(null);
   }, []);
 
   return (

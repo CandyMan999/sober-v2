@@ -26,6 +26,8 @@ const typeDefs = gql`
     milestonesNotified: [Int!]
     notificationSettings: NotificationSettings!
     timezone: String
+    trialEndsAt: String
+    isTrialExpired: Boolean
     createdAt: String
     updatedAt: String
     followersCount: Int!

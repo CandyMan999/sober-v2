@@ -1,6 +1,7 @@
 const { AuthenticationError } = require("apollo-server-express");
 const { User } = require("../../models");
 const { serializeUser } = require("../../utils/serializeUser");
+const { ensureTrialEndsAt } = require("../../utils/helpers");
 
 module.exports = {
   appleLoginResolver: async (_, { appleId, token }) => {
@@ -15,13 +16,12 @@ module.exports = {
 
       if (token) {
         // 1️⃣ Primary: find by token and attach appleId
-        user = user.findOne({ token });
-        if (
-          user.username === "SoberGuy999￼🍻" ||
-          user.username === "SoberOwl"
-        ) {
+        user = await User.findOne({ token });
+        if (user?.username === "SoberGuy999\u{FFFC}\u{1F37B}" || user?.username === "SoberOwl") {
           return serializeUser(user);
-        } else {
+        }
+
+        if (user) {
           user = await User.findOneAndUpdate(
             { token },
             { $set: { appleId: sanitizedAppleId } },
@@ -54,6 +54,7 @@ module.exports = {
         }
       }
 
+      await ensureTrialEndsAt(user);
       await user.populate([
         "profilePic",
         "drunkPic",

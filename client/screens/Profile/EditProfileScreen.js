@@ -50,6 +50,7 @@ import {
   stopAllSoberLocationTracking,
 } from "../../utils/locationTracking";
 import { useRevenueCat } from "../../RevenueCatContext";
+import { emitPaywallRequest } from "../../utils/paywallEvents";
 
 const {
   primaryBackground,
@@ -476,6 +477,10 @@ const EditProfileScreen = ({ navigation }) => {
         "Subscription"
       );
     }
+  };
+
+  const openUpgradePaywall = () => {
+    emitPaywallRequest();
   };
 
   const notificationCategoryMap = useMemo(
@@ -1335,6 +1340,39 @@ const EditProfileScreen = ({ navigation }) => {
               bar or liquor store so we can ping you and your sober buddies
               before you make any dumb decisions.
             </Text>
+            {!isPremium ? (
+              <TouchableOpacity
+                style={styles.upgradeButton}
+                activeOpacity={0.9}
+                onPress={openUpgradePaywall}
+              >
+                <LinearGradient
+                  colors={["rgba(126,34,206,0.9)", "rgba(14,165,233,0.88)"]}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 1 }}
+                  style={styles.upgradeInner}
+                >
+                  <View style={styles.upgradeContent}>
+                    <View style={styles.upgradeIconBadge}>
+                      <MaterialCommunityIcons
+                        name="crown-outline"
+                        size={16}
+                        color="#fdf2f8"
+                      />
+                    </View>
+                    <View style={styles.upgradeTextBlock}>
+                      <Text style={styles.upgradeTitle}>Upgrade to Premium</Text>
+                      <Text style={styles.upgradeSubtitle}>
+                        Unlock Owl coaching and remove ads after your trial.
+                      </Text>
+                    </View>
+                    <View style={styles.upgradeChevron}>
+                      <Feather name="arrow-up-right" size={16} color="#ecfeff" />
+                    </View>
+                  </View>
+                </LinearGradient>
+              </TouchableOpacity>
+            ) : null}
             {isPremium ? (
               <TouchableOpacity
                 style={styles.manageSubButton}
@@ -1654,6 +1692,54 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     borderBottomWidth: 1,
     borderBottomColor: border,
+  },
+  upgradeButton: {
+    marginTop: 14,
+    borderRadius: 14,
+    overflow: "hidden",
+  },
+  upgradeInner: {
+    borderRadius: 14,
+  },
+  upgradeContent: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingVertical: 12,
+    paddingHorizontal: 12,
+    gap: 12,
+  },
+  upgradeIconBadge: {
+    width: 32,
+    height: 32,
+    borderRadius: 999,
+    backgroundColor: "rgba(126,34,206,0.95)",
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 1,
+    borderColor: "rgba(233,213,255,0.8)",
+  },
+  upgradeTextBlock: {
+    flex: 1,
+  },
+  upgradeTitle: {
+    color: "#f8fafc",
+    fontWeight: "800",
+    fontSize: 14,
+  },
+  upgradeSubtitle: {
+    color: "#e0f2fe",
+    fontSize: 12,
+    marginTop: 2,
+  },
+  upgradeChevron: {
+    width: 28,
+    height: 28,
+    borderRadius: 12,
+    backgroundColor: "rgba(14,165,233,0.9)",
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 1,
+    borderColor: "rgba(125,211,252,0.9)",
   },
   manageSubButton: {
     marginTop: 14,
