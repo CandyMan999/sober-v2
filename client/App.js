@@ -513,6 +513,9 @@ export default function App() {
 
   const maybeShowPaywall = useCallback(() => {
     if (paywallAcknowledged) return;
+
+    if (!navigationRef.isReady()) return;
+
     const currentRoute = navigationRef.getCurrentRoute();
     const routeName = currentRoute?.name;
 
