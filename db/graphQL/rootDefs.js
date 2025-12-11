@@ -107,6 +107,8 @@ const typeDefs = gql`
     milestoneTag: String
     """Author's recorded sobriety day when the post was created."""
     daysSober: Int
+    """Deprecated legacy sobriety day field; prefer daysSober."""
+    soberDays: Int @deprecated(reason: "Use daysSober instead")
     likesCount: Int!
     commentsCount: Int!
     viewsCount: Int!

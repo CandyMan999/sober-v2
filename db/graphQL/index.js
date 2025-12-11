@@ -388,6 +388,10 @@ const resolvers = {
   Picture: {
     id: resolveId,
   },
+  Post: {
+    // Allow legacy "soberDays" data to satisfy the new daysSober field.
+    daysSober: (parent) => parent?.daysSober ?? parent?.soberDays ?? null,
+  },
 };
 
 module.exports = { typeDefs, resolvers };
