@@ -105,6 +105,7 @@ const typeDefs = gql`
     isMilestone: Boolean
     milestoneDays: Int
     milestoneTag: String
+    """Author's recorded sobriety day when the post was created."""
     daysSober: Int
     likesCount: Int!
     commentsCount: Int!
