@@ -12,6 +12,7 @@ function removeDuplicates(data) {
     "tanning",
     "tan",
     "nails",
+    "spa",
   ];
 
   // Your FULL blockNames list preserved exactly

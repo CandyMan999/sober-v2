@@ -1,0 +1,310 @@
+[
+  {
+    "type": "Liquor",
+    "name": "La Movida Night Club",
+    "lat": 35.3756163,
+    "long": -119.0010532,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Casablanca Nightclub",
+    "lat": 35.3758643,
+    "long": -119.0143996,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "VIP Lounge",
+    "lat": 35.3577944,
+    "long": -119.0622012,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Casa Tequila Lounge",
+    "lat": 35.3836422,
+    "long": -119.0545842,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "El Rancho Grande Night Club",
+    "lat": 35.3707224,
+    "long": -118.9670593,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "The Hideout",
+    "lat": 35.4025083,
+    "long": -119.093254,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Aura Lounge",
+    "lat": 35.3778169,
+    "long": -119.018502,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "El Montecito Club",
+    "lat": 35.3744747,
+    "long": -118.9940093,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "The Silver Fox Starlite Lounge",
+    "lat": 35.3754403,
+    "long": -119.0097302,
+    "gmapsCategory": "Cocktail bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "The Mint Bar",
+    "lat": 35.3760182,
+    "long": -119.0156796,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "El Pirulis Club",
+    "lat": 35.3779362,
+    "long": -118.9923406,
+    "gmapsCategory": "Karaoke bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Crash Lounge",
+    "lat": 35.3756097,
+    "long": -119.0198407,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Teaser Pleaser Club",
+    "lat": 35.3896514,
+    "long": -119.0436404,
+    "gmapsCategory": "Adult entertainment club"
+  },
+  {
+    "type": "Liquor",
+    "name": "My night club",
+    "lat": 35.3465335,
+    "long": -119.0025879,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Deja Vu Showgirls Bakersfield Strip Club",
+    "lat": 35.3878614,
+    "long": -119.0197219,
+    "gmapsCategory": "Adult entertainment club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Legends Lounge Event Center",
+    "lat": 35.3910963,
+    "long": -119.0891953,
+    "gmapsCategory": "Clubby dining, cocktails & karaoke"
+  },
+  {
+    "type": "Liquor",
+    "name": "Bellvedere Cocktail Lounge",
+    "lat": 35.3544742,
+    "long": -119.0383107,
+    "gmapsCategory": "Cocktail bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Wavie s Cocktails",
+    "lat": 35.368337,
+    "long": -118.9748149,
+    "gmapsCategory": "Cocktail bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Buco Bar",
+    "lat": 35.3978429,
+    "long": -119.1120751,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Sports Spirits",
+    "lat": 35.3339079,
+    "long": -119.075776,
+    "gmapsCategory": "Cocktail bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Casa de Kevin saco largo",
+    "lat": 35.3568505,
+    "long": -119.0690115,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Mexicali Restaurants",
+    "lat": 35.374886,
+    "long": -119.0091266,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "The Jazz spot",
+    "lat": 35.3411453,
+    "long": -119.0367995,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "The Padre Hotel",
+    "lat": 35.375551,
+    "long": -119.0216201,
+    "gmapsCategory": "Western-chic lodging with a nightclub"
+  },
+  {
+    "type": "Liquor",
+    "name": "Lone Oak Lounge",
+    "lat": 35.3838886,
+    "long": -119.120775,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Mariscos Uruapan",
+    "lat": 35.3734666,
+    "long": -118.9854796,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Just Wing It The Marketplace",
+    "lat": 35.3416598,
+    "long": -119.1034313,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "El Nuevo Noa Noa Club",
+    "lat": 35.2693955,
+    "long": -119.0026736,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Agave Grill Tequila",
+    "lat": 35.3588252,
+    "long": -119.0384629,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "The Stockyard Whiskey Bar",
+    "lat": 35.3824458,
+    "long": -119.023773,
+    "gmapsCategory": "The Stockyard Whiskey Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Old bando restaurant",
+    "lat": 35.4539034,
+    "long": -119.0825875,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "El Potrero Night Club",
+    "lat": 35.2092663,
+    "long": -118.8250451,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Foxtail Lounge Bakersfield",
+    "lat": 35.3780248,
+    "long": -119.0183303,
+    "gmapsCategory": "Cocktail bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Brix Lounge",
+    "lat": 35.387561,
+    "long": -119.1112865,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "J the Bakersfield Jazz workshop",
+    "lat": 35.3691218,
+    "long": -118.9720271,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Culichi Town",
+    "lat": 35.3189342,
+    "long": -119.0269632,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "birchfields",
+    "lat": 35.306782,
+    "long": -118.9928612,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Old River Monte Carlo",
+    "lat": 35.2673858,
+    "long": -119.1105336,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "The Phoenix At Sundale",
+    "lat": 35.3441609,
+    "long": -119.0701295,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Lengthwise Brewing Company",
+    "lat": 35.3136152,
+    "long": -119.0881108,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Buffalo Wild Wings",
+    "lat": 35.3037041,
+    "long": -119.0929599,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "A Royal Palace",
+    "lat": 35.3133991,
+    "long": -119.0773005,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Stella s Sandtrap",
+    "lat": 35.3756312,
+    "long": -118.9480833,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Vi s Cocktails",
+    "lat": 35.3833007,
+    "long": -119.1596334,
+    "gmapsCategory": "Bar"
+  }
+]

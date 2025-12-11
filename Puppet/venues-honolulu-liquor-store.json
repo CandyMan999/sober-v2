@@ -1,0 +1,702 @@
+[
+  {
+    "type": "Liquor",
+    "name": "Bev Mart",
+    "lat": 21.2879496,
+    "long": -157.8244636,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Xtreme mini mart",
+    "lat": 21.2754027,
+    "long": -157.8152917,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Vintage Wine Cellar",
+    "lat": 21.3055111,
+    "long": -157.8384675,
+    "gmapsCategory": "Wine store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Salt Lake Wines Spirits",
+    "lat": 21.3448801,
+    "long": -157.9139404,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Tamura s Fine Wine Liquors Waialae",
+    "lat": 21.2841948,
+    "long": -157.8012812,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Lucky Seven Liquor Grocery",
+    "lat": 21.2896964,
+    "long": -157.8388788,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Fujioka s Wine Times",
+    "lat": 21.2879565,
+    "long": -157.8150251,
+    "gmapsCategory": "Wine store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Young s Wine Spirits",
+    "lat": 21.3021402,
+    "long": -157.8426874,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "N K Wine Shop Inc",
+    "lat": 21.310979,
+    "long": -157.8629822,
+    "gmapsCategory": "Wine store"
+  },
+  {
+    "type": "Liquor",
+    "name": "ABC Stores ",
+    "lat": 21.2833968,
+    "long": -157.8369944,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "King s Mini Mart",
+    "lat": 21.2799149,
+    "long": -157.8259455,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Maunakea Liquor Grocery Inc",
+    "lat": 21.312832,
+    "long": -157.8616586,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "CJ Market",
+    "lat": 21.3121433,
+    "long": -157.8626139,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Gourmet Liquors",
+    "lat": 21.2925568,
+    "long": -157.8245395,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Xtreme Mini Mart",
+    "lat": 21.2935672,
+    "long": -157.8413651,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Aloha Liquor",
+    "lat": 21.2935866,
+    "long": -157.8401695,
+    "gmapsCategory": "Convenience store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Package Store",
+    "lat": 21.3498097,
+    "long": -157.9308777,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Amana Liquor, Inc ",
+    "lat": 21.2936318,
+    "long": -157.8401266,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Kinalau Mini Mart Liquor",
+    "lat": 21.3054693,
+    "long": -157.8498567,
+    "gmapsCategory": "Convenience store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Harry s Liquor Groceries",
+    "lat": 21.2951494,
+    "long": -157.8505752,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Makiki Liquor",
+    "lat": 21.30067,
+    "long": -157.83836,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Chinatown Liquors Inc",
+    "lat": 21.314359,
+    "long": -157.8606778,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "The Sake Shop",
+    "lat": 21.2994379,
+    "long": -157.8572297,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Campbell Stop Shop",
+    "lat": 21.2757665,
+    "long": -157.8126767,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "ABC Stores ",
+    "lat": 21.2730898,
+    "long": -157.8220592,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Pacific Liquor Grocery",
+    "lat": 21.3108019,
+    "long": -157.8601037,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "K S Market",
+    "lat": 21.3411832,
+    "long": -157.8798983,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Kakaako Spirits Smokes",
+    "lat": 21.2989286,
+    "long": -157.8557482,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "ABC Stores ",
+    "lat": 21.2813519,
+    "long": -157.8302871,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": " Liquors Grocery Gift Shp",
+    "lat": 21.2911531,
+    "long": -157.8220563,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Posh Enterprise",
+    "lat": 21.2772837,
+    "long": -157.8242958,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Village Bottle Shop Tasting Room Kaka ako",
+    "lat": 21.2982634,
+    "long": -157.8614536,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "ABC Stores ",
+    "lat": 21.2788164,
+    "long": -157.8294586,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "ABC Stores",
+    "lat": 21.2742639,
+    "long": -157.823997,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Sues Mini Mart",
+    "lat": 21.2944554,
+    "long": -157.8392764,
+    "gmapsCategory": "Convenience store"
+  },
+  {
+    "type": "Liquor",
+    "name": "ABC Stores ",
+    "lat": 21.2734184,
+    "long": -157.8235369,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Tony s Liquor Deli",
+    "lat": 21.3231343,
+    "long": -157.8909579,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Royal Mini Mart",
+    "lat": 21.2762955,
+    "long": -157.823645,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Grab N Go",
+    "lat": 21.2759476,
+    "long": -157.8230037,
+    "gmapsCategory": "Convenience store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Nimitz Mart",
+    "lat": 21.3359418,
+    "long": -157.9095373,
+    "gmapsCategory": "Convenience store"
+  },
+  {
+    "type": "Liquor",
+    "name": "RHS Royal Hawaii Spirits Distillery Bar Restaurant",
+    "lat": 21.3109564,
+    "long": -157.8629682,
+    "gmapsCategory": "RHS Royal Hawaii Spirits Distillery Bar Restaurant"
+  },
+  {
+    "type": "Liquor",
+    "name": "Safeway Liquor",
+    "lat": 21.3132888,
+    "long": -157.8578169,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "King s Market",
+    "lat": 21.325195,
+    "long": -157.8694092,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "ABC Stores ",
+    "lat": 21.2750236,
+    "long": -157.8244157,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Middle Street Market",
+    "lat": 21.340463,
+    "long": -157.879811,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Brix and Stones",
+    "lat": 21.2971069,
+    "long": -157.8523263,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Longs Drugs",
+    "lat": 21.2804474,
+    "long": -157.8302889,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Kaimuki Storeroom",
+    "lat": 21.2851204,
+    "long": -157.8032102,
+    "gmapsCategory": "Wine store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Airport Market",
+    "lat": 21.3355343,
+    "long": -157.9157997,
+    "gmapsCategory": "Convenience store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Safeway Liquor",
+    "lat": 21.3442817,
+    "long": -157.9137808,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Par Liquors",
+    "lat": 21.327345,
+    "long": -157.871,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Yobo Mart",
+    "lat": 21.3062232,
+    "long": -157.8420239,
+    "gmapsCategory": "Convenience store"
+  },
+  {
+    "type": "Liquor",
+    "name": "DFS Liquor Tobacco",
+    "lat": 21.331435,
+    "long": -157.9199082,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Thumbs Up Market",
+    "lat": 21.316596,
+    "long": -157.864427,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Waikiki Beach Market",
+    "lat": 21.2794623,
+    "long": -157.8254411,
+    "gmapsCategory": "Convenience store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Y Store Liquor Grocery",
+    "lat": 21.3362827,
+    "long": -157.8744838,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "ABC Store",
+    "lat": 21.2777987,
+    "long": -157.8242862,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Gulick Sjd Liquor Grocery",
+    "lat": 21.3362428,
+    "long": -157.8745171,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Number One Store",
+    "lat": 21.2911921,
+    "long": -157.7971112,
+    "gmapsCategory": "Grocery store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Hana Koa Brewing Co ",
+    "lat": 21.2972545,
+    "long": -157.8529052,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Longs Drugs",
+    "lat": 21.2770925,
+    "long": -157.7863744,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Hickam Shoppette",
+    "lat": 21.3368774,
+    "long": -157.9386871,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Whole Foods Market",
+    "lat": 21.294649,
+    "long": -157.8521087,
+    "gmapsCategory": "Grocery store"
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven ",
+    "lat": 21.3243528,
+    "long": -157.8825436,
+    "gmapsCategory": "Convenience store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Longs Drugs",
+    "lat": 21.2920696,
+    "long": -157.8448229,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Longs Drugs",
+    "lat": 21.2868798,
+    "long": -157.8076717,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Longs Drugs",
+    "lat": 21.3014591,
+    "long": -157.8476202,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Whole Foods Market",
+    "lat": 21.2773696,
+    "long": -157.7864675,
+    "gmapsCategory": "Grocery store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Sam s Club",
+    "lat": 21.2947684,
+    "long": -157.8441425,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Longs Drugs",
+    "lat": 21.312801,
+    "long": -157.8579506,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Longs Drugs",
+    "lat": 21.3078749,
+    "long": -157.8098602,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Tamura s Fine Wine Liquors Pearlridge",
+    "lat": 21.3838664,
+    "long": -157.9449002,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Longs Drugs",
+    "lat": 21.33638,
+    "long": -157.86777,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 21.3003113,
+    "long": -157.8434834,
+    "gmapsCategory": "Convenience store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Longs Drugs",
+    "lat": 21.3455362,
+    "long": -157.9135001,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 21.2983015,
+    "long": -157.8365331,
+    "gmapsCategory": "Convenience store"
+  },
+  {
+    "type": "Liquor",
+    "name": "JNJ Food Beverage Store",
+    "lat": 21.3794603,
+    "long": -157.9319594,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Waimalu Gourmet Liquor",
+    "lat": 21.3893844,
+    "long": -157.9537259,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Tamura s Fine Wine Liquors Aikahi",
+    "lat": 21.4234336,
+    "long": -157.7485415,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Bottleheads",
+    "lat": 21.3968611,
+    "long": -157.7420851,
+    "gmapsCategory": "Wine store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Oneawa Market",
+    "lat": 21.395413,
+    "long": -157.7447017,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "ABC Stores ",
+    "lat": 21.2717705,
+    "long": -157.8220249,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "OENO Winemaking",
+    "lat": 21.3970244,
+    "long": -157.769384,
+    "gmapsCategory": "Winery"
+  },
+  {
+    "type": "Liquor",
+    "name": "R Field Wine Co",
+    "lat": 21.3927119,
+    "long": -157.7439741,
+    "gmapsCategory": "Wine store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Keolu Market",
+    "lat": 21.3764431,
+    "long": -157.7292626,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Kainehe Liquor",
+    "lat": 21.3937066,
+    "long": -157.7450824,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Ewa Pantry",
+    "lat": 21.3189495,
+    "long": -158.0153004,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Longs Drugs",
+    "lat": 21.3826391,
+    "long": -157.9396469,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Longs Drugs",
+    "lat": 21.2780737,
+    "long": -157.7558464,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Road Runners Mini Market",
+    "lat": 21.3792917,
+    "long": -158.0247268,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "The Pump Liquor Waipahu",
+    "lat": 21.385256,
+    "long": -158.0023228,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Wine The Experience",
+    "lat": 21.2866974,
+    "long": -157.8133629,
+    "gmapsCategory": "Wine store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Kaneohe Market",
+    "lat": 21.4164679,
+    "long": -157.8009747,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Kilani Market",
+    "lat": 21.4994231,
+    "long": -158.0252469,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Nanko Fishing Supply",
+    "lat": 21.416778,
+    "long": -157.8051015,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Whole Foods Market",
+    "lat": 21.3938515,
+    "long": -157.7429669,
+    "gmapsCategory": "Grocery store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Hale iwa Bottle Shop",
+    "lat": 21.5814804,
+    "long": -158.1049193,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "The Hy Life Fine Wine Spirits",
+    "lat": 33.2170197,
+    "long": -96.7208365,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Brown Bottle",
+    "lat": 21.5739006,
+    "long": -158.1223194,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "My Liquor Zones",
+    "lat": 33.2139361,
+    "long": -96.7347931,
+    "gmapsCategory": "Liquor store"
+  }
+]

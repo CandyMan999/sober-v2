@@ -161,17 +161,34 @@ const UserSchema = new mongoose.Schema(
     plan: {
       planType: {
         type: String,
-        enum: ["Free", "Premium", "Unlimited"],
+        enum: [
+          "Free", // No active RC entitlements detected
+          "Premium", // RevenueCat entitlement: "premium"
+          "Unlimited", // Future higher-tier RC entitlement (e.g., "unlimited")
+        ],
         default: "Free",
       },
+
+      // =======================
+      // FUTURE à la carte items
+      // =======================
+
+      // Workbook purchase → maps to RC entitlement: "workbook"
+      // Product ID (future): com.sobermotivation.workbook
       withWorkBook: {
         type: Boolean,
         default: false,
       },
+
+      // Therapy add-on → maps to RC entitlement: "therapy"
+      // Product ID (future): com.sobermotivation.therapy.monthly
       withTherapy: {
         type: Boolean,
         default: false,
       },
+
+      // Ads toggle → likely controlled by planType === "Free"
+      // If Premium or Unlimited → withAds becomes false automatically
       withAds: {
         type: Boolean,
         default: true,

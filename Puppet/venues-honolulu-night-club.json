@@ -1,0 +1,996 @@
+[
+  {
+    "type": "Liquor",
+    "name": "Velvet Nightclub",
+    "lat": 21.2909222,
+    "long": -157.8369753,
+    "gmapsCategory": "Gay night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "The District",
+    "lat": 21.2934804,
+    "long": -157.845325,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Play Bar Night Club Waikiki",
+    "lat": 21.2794118,
+    "long": -157.8256535,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Kiki s Tiki Bar Night Club",
+    "lat": 21.2805011,
+    "long": -157.8295805,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Ki Club",
+    "lat": 21.2911257,
+    "long": -157.836186,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "NextDoor",
+    "lat": 21.3115136,
+    "long": -157.8625708,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Hawaii By Night Gentlemen s Club",
+    "lat": 21.2801123,
+    "long": -157.8282196,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Fyre by Night Shorefyre ",
+    "lat": 21.2783472,
+    "long": -157.8265997,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Ballarrinas Gentlemen s Club B",
+    "lat": 21.2910972,
+    "long": -157.8364668,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "In Between",
+    "lat": 21.2806776,
+    "long": -157.8298309,
+    "gmapsCategory": "Karaoke bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Mermaid",
+    "lat": 21.2816545,
+    "long": -157.8302684,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Bar ",
+    "lat": 21.311381,
+    "long": -157.8624682,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Secret",
+    "lat": 21.2970027,
+    "long": -157.8422393,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Dragon Upstairs",
+    "lat": 21.3110587,
+    "long": -157.8623892,
+    "gmapsCategory": "Karaoke bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Eve Ala Moana",
+    "lat": 21.2908104,
+    "long": -157.8417871,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Club NK",
+    "lat": 21.3273202,
+    "long": -157.8702753,
+    "gmapsCategory": "Club NK"
+  },
+  {
+    "type": "Liquor",
+    "name": "The Manifest",
+    "lat": 21.3115082,
+    "long": -157.8622659,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Salsamor",
+    "lat": 21.2935014,
+    "long": -157.8453126,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "BnB Nightlife",
+    "lat": 21.2943435,
+    "long": -157.8472217,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Lulu s Waikiki",
+    "lat": 21.2719238,
+    "long": -157.8226832,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Five O",
+    "lat": 21.3251541,
+    "long": -157.8754788,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "The Gatsby Hawai i",
+    "lat": 21.2989212,
+    "long": -157.8560238,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Surf Bar Waikiki",
+    "lat": 21.2750878,
+    "long": -157.8234055,
+    "gmapsCategory": "Cocktail bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Bside",
+    "lat": 21.2925945,
+    "long": -157.8526887,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "The Parlor",
+    "lat": 21.2934884,
+    "long": -157.8454388,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Scarlet Honolulu",
+    "lat": 21.310592,
+    "long": -157.8605513,
+    "gmapsCategory": "Gay bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Hula E s Bar Lei Stand",
+    "lat": 21.2718632,
+    "long": -157.8216669,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Bacchus Waikiki",
+    "lat": 21.2817573,
+    "long": -157.8283456,
+    "gmapsCategory": "Gay bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Blue Star",
+    "lat": 21.322769,
+    "long": -157.8751362,
+    "gmapsCategory": "Club Blue Star"
+  },
+  {
+    "type": "Liquor",
+    "name": "Club wave",
+    "lat": 21.3256454,
+    "long": -157.870697,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Boda Cafe",
+    "lat": 21.2944334,
+    "long": -157.8472675,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Hawaii s Luxury Lounge at Ground Level",
+    "lat": 21.2934495,
+    "long": -157.8411441,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Little Saigon",
+    "lat": 21.3117784,
+    "long": -157.8648374,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Paradise Lounge",
+    "lat": 21.2822075,
+    "long": -157.838295,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "The Republik",
+    "lat": 21.2936111,
+    "long": -157.8452778,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Femme Nu",
+    "lat": 21.2909363,
+    "long": -157.8384036,
+    "gmapsCategory": "Adult entertainment club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Blue Note Hawaii",
+    "lat": 21.2772447,
+    "long": -157.8270851,
+    "gmapsCategory": "Island outpost of the famed NY jazz club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Tapa s Waikiki",
+    "lat": 21.280341,
+    "long": -157.8266827,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Sundance",
+    "lat": 21.3008565,
+    "long": -157.8572987,
+    "gmapsCategory": "Adult entertainment club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Artistry Honolulu",
+    "lat": 21.2981199,
+    "long": -157.8587261,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "RumFire",
+    "lat": 21.2771047,
+    "long": -157.8302186,
+    "gmapsCategory": "\"The bartender Bobby made that experience an awesome memory for my party.\""
+  },
+  {
+    "type": "Liquor",
+    "name": "Wang Chung s Karaoke Bar",
+    "lat": 21.2762512,
+    "long": -157.8245438,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Splash",
+    "lat": 21.2988051,
+    "long": -157.8406313,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Bliss Lounge",
+    "lat": 21.3214015,
+    "long": -157.872423,
+    "gmapsCategory": "Karaoke bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Star Lite",
+    "lat": 21.323817,
+    "long": -157.8713841,
+    "gmapsCategory": "Cocktail bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Tikis Grill Bar",
+    "lat": 21.2721562,
+    "long": -157.8228507,
+    "gmapsCategory": "Tikis Grill & Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Club ",
+    "lat": 21.3243431,
+    "long": -157.8707017,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "USO Hawaii",
+    "lat": 21.3321523,
+    "long": -157.9197805,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Emerald City",
+    "lat": 21.3212069,
+    "long": -157.8736361,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Aura Lounge Hawaii C Bar Night Club",
+    "lat": 21.2935535,
+    "long": -157.8411755,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Lucky Honu",
+    "lat": 21.325069,
+    "long": -157.8756741,
+    "gmapsCategory": "Cocktail bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Hawaiian Airlines Premier Club",
+    "lat": 21.3332218,
+    "long": -157.9240789,
+    "gmapsCategory": "Hawaiian Airlines Premier Club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Air Park Karaoke Lounge",
+    "lat": 21.2941358,
+    "long": -157.8468183,
+    "gmapsCategory": "Karaoke bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "JCB Plaza Lounge",
+    "lat": 21.2791649,
+    "long": -157.8284761,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Brix and Stones",
+    "lat": 21.2971069,
+    "long": -157.8523263,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Earls Kitchen B Bar Waikiki",
+    "lat": 21.2784931,
+    "long": -157.8278853,
+    "gmapsCategory": "Earls Kitchen + Bar - Waikiki"
+  },
+  {
+    "type": "Liquor",
+    "name": "Traphouse Hawaii",
+    "lat": 21.2927179,
+    "long": -157.8520883,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Pepper Lamb Comedy",
+    "lat": 21.30025,
+    "long": -157.8446765,
+    "gmapsCategory": "Comedy club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Di s Karaoke",
+    "lat": 21.2996986,
+    "long": -157.8405614,
+    "gmapsCategory": "Karaoke bar"
+  },
+  {
+    "type": "Liquor",
+    "name": " E AF E A E E A E AE E ",
+    "lat": 21.2797944,
+    "long": -157.8282303,
+    "gmapsCategory": "Cabaret club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Lilac",
+    "lat": 21.324817,
+    "long": -157.875934,
+    "gmapsCategory": "Cocktail bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "ANA LOUNGE",
+    "lat": 21.3292496,
+    "long": -157.9236891,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Bobby s Karaoke Bar",
+    "lat": 21.2926852,
+    "long": -157.8371271,
+    "gmapsCategory": "Karaoke bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Chiko E s Tavern",
+    "lat": 21.294454,
+    "long": -157.830506,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": " th Ave Rock House",
+    "lat": 21.2844084,
+    "long": -157.8026015,
+    "gmapsCategory": "Karaoke bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Sakura Lounge F Admirals Club",
+    "lat": 21.3311615,
+    "long": -157.9199478,
+    "gmapsCategory": "Sakura Lounge / Admirals Club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Kingyo Karaoke Lounge",
+    "lat": 21.2948059,
+    "long": -157.8306806,
+    "gmapsCategory": "Karaoke bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Outrigger Canoe Club",
+    "lat": 21.2618772,
+    "long": -157.8211845,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "G S Studios",
+    "lat": 21.2807186,
+    "long": -157.8293479,
+    "gmapsCategory": "Karaoke bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "ANA Traveler s MAHALO LOUNGE",
+    "lat": 21.2792738,
+    "long": -157.8285349,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Tipsy Pig Bar Grill",
+    "lat": 21.2994074,
+    "long": -157.8422846,
+    "gmapsCategory": "Karaoke bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Rakuten Card Alamoana Lounge",
+    "lat": 21.2922802,
+    "long": -157.845857,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Hawaii Voice Karaoke",
+    "lat": 21.2974636,
+    "long": -157.8379301,
+    "gmapsCategory": "Karaoke bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Rakuten Card Waikiki Lounge",
+    "lat": 21.2788796,
+    "long": -157.8268617,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "IASS Hawaii Lounge Airside, Garden Court ",
+    "lat": 21.3308628,
+    "long": -157.9203388,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Mik s Bar and Bistro",
+    "lat": 21.277127,
+    "long": -157.8217848,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Rivals Sports Lounge",
+    "lat": 21.2809314,
+    "long": -157.8282165,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Pandora Cafe Karaoke FBar Grill",
+    "lat": 21.293626,
+    "long": -157.8414917,
+    "gmapsCategory": "Karaoke bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Amuse Wine Bar",
+    "lat": 21.2951927,
+    "long": -157.8462598,
+    "gmapsCategory": "Wine bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "USO Fort Shafter",
+    "lat": 21.3447763,
+    "long": -157.8827648,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Cafe Gangnam",
+    "lat": 21.2944423,
+    "long": -157.8414573,
+    "gmapsCategory": "Karaoke bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "M Nightclub",
+    "lat": 21.300826,
+    "long": -157.862648,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Addiction",
+    "lat": 21.2849527,
+    "long": -157.8391867,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Sakura Lounge Hale",
+    "lat": 21.3311191,
+    "long": -157.9232794,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Mogura",
+    "lat": 21.2811526,
+    "long": -157.8289938,
+    "gmapsCategory": "Karaoke bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "AfroBeats",
+    "lat": 21.2997652,
+    "long": -157.8569232,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "HookaHookah Lounge, Bar Restaurant",
+    "lat": 21.300908,
+    "long": -157.8437611,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "iSing Hawai i Karaoke Bar Grill",
+    "lat": 21.2971717,
+    "long": -157.8422232,
+    "gmapsCategory": "Karaoke bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Swell Restaurant and Pool Bar",
+    "lat": 21.2746557,
+    "long": -157.8232359,
+    "gmapsCategory": "Swell Restaurant and Pool Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Jam Station KVARTIRNIK",
+    "lat": 21.2670393,
+    "long": -157.8222549,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Smooth Jazz Jam Plaza",
+    "lat": 21.2990452,
+    "long": -157.817835,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "THE ROYAL LEAF",
+    "lat": 21.3116181,
+    "long": -157.8625163,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Camelot Restaurant Lounge",
+    "lat": 21.2971801,
+    "long": -157.8421325,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "ADEZ Steakhouse Lounge",
+    "lat": 21.2826303,
+    "long": -157.8138973,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "The Aloha Ha Comedy Club",
+    "lat": 21.2865775,
+    "long": -157.8337385,
+    "gmapsCategory": "Comedy club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Beer Lab HI Puck s Alley",
+    "lat": 21.2917685,
+    "long": -157.8212926,
+    "gmapsCategory": "\"Bartenders are friendly.\""
+  },
+  {
+    "type": "Liquor",
+    "name": "Leaning House Waikiki",
+    "lat": 21.2961045,
+    "long": -157.828734,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "The Veranda",
+    "lat": 21.271847,
+    "long": -157.773651,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Music Video Hawaii",
+    "lat": 21.2817866,
+    "long": -157.8015209,
+    "gmapsCategory": "Karaoke bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Pacific Marina Inn",
+    "lat": 21.3322493,
+    "long": -157.9006765,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Ruikasa uwu",
+    "lat": 21.3297771,
+    "long": -157.867798,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Reliable Vendors Co , Ltd ",
+    "lat": 21.281402,
+    "long": -157.796853,
+    "gmapsCategory": "Karaoke bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Hot Ash",
+    "lat": 21.3904062,
+    "long": -157.9622738,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Pure Hawaii Nightclub",
+    "lat": 21.3203481,
+    "long": -157.8714244,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Sabor Hawaii",
+    "lat": 21.294364,
+    "long": -157.853986,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Blind Ox",
+    "lat": 21.2826797,
+    "long": -157.8139228,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "USCG Hideaway Club",
+    "lat": 21.302179,
+    "long": -158.07018,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Manalo Lounge",
+    "lat": 21.3389228,
+    "long": -158.125516,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Wailana Pool Bar",
+    "lat": 21.3391257,
+    "long": -158.1247559,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Waterman",
+    "lat": 21.3393597,
+    "long": -158.1257641,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Kapolei Karaoke and Escape",
+    "lat": 21.3379247,
+    "long": -158.0778661,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Dr Mai Tai E s",
+    "lat": 21.3393599,
+    "long": -158.1257561,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Moani Island Bistro and Bar",
+    "lat": 21.3326252,
+    "long": -158.052525,
+    "gmapsCategory": "Moani Island Bistro and Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Ruby",
+    "lat": 21.3840204,
+    "long": -158.0031432,
+    "gmapsCategory": "Cocktail bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Blossom",
+    "lat": 21.3855483,
+    "long": -158.0071188,
+    "gmapsCategory": "Adult entertainment club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Bonita",
+    "lat": 21.381094,
+    "long": -157.9434929,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Whiskey Dix E Saloon",
+    "lat": 21.3783177,
+    "long": -157.9351401,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Acacia",
+    "lat": 21.3925323,
+    "long": -157.9677066,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Star Lounge",
+    "lat": 21.3816973,
+    "long": -158.0167324,
+    "gmapsCategory": "Cocktail bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Hangry Mama Bar Kitchen",
+    "lat": 21.3925953,
+    "long": -157.9678014,
+    "gmapsCategory": "Hangry Mama Bar & Kitchen"
+  },
+  {
+    "type": "Liquor",
+    "name": "Sunflower Lounge",
+    "lat": 21.3925353,
+    "long": -157.9676901,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Blue Tropix Bar",
+    "lat": 21.3817512,
+    "long": -157.9403346,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "The Shack Mililani",
+    "lat": 21.4572841,
+    "long": -158.0154966,
+    "gmapsCategory": "Sports bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "HMC Karaoke",
+    "lat": 21.382097,
+    "long": -157.944647,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Valor Hawaii",
+    "lat": 21.383523,
+    "long": -157.9403268,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "eight ",
+    "lat": 21.3942741,
+    "long": -157.9675918,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Chez Sports Bar Grill",
+    "lat": 21.3843724,
+    "long": -157.9456585,
+    "gmapsCategory": "Neon-lit pub with bands & local eats"
+  },
+  {
+    "type": "Liquor",
+    "name": "Spectrum Entertainment",
+    "lat": 21.3785725,
+    "long": -157.9330539,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Rudeboy Riddimz Entertainment",
+    "lat": 21.3974982,
+    "long": -157.9800755,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Sammy s Beach Bar and Grill",
+    "lat": 21.329776,
+    "long": -157.9234034,
+    "gmapsCategory": "Sammy's Beach Bar and Grill"
+  },
+  {
+    "type": "Liquor",
+    "name": "NooB Entertainment",
+    "lat": 21.3277606,
+    "long": -157.9999401,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Buffalo Wild Wings",
+    "lat": 21.3963153,
+    "long": -157.9761937,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Nancy s Kitchen",
+    "lat": 21.4127402,
+    "long": -157.9990194,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Kalama s Kuisine",
+    "lat": 21.3832743,
+    "long": -158.004295,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Chicken Brisket",
+    "lat": 21.396565,
+    "long": -157.9768592,
+    "gmapsCategory": "Barbecue"
+  },
+  {
+    "type": "Liquor",
+    "name": "Sunset Lanai",
+    "lat": 21.3839263,
+    "long": -157.9130783,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Buffalo Wild Wings",
+    "lat": 21.3257638,
+    "long": -158.0221404,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Mina s Fish House",
+    "lat": 21.3389859,
+    "long": -158.1255034,
+    "gmapsCategory": "\"Incredible vibe, good service, great drinks and cool bar scene.\""
+  },
+  {
+    "type": "Liquor",
+    "name": "Noe",
+    "lat": 21.3392497,
+    "long": -158.1258561,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "The LookOut Food Drink",
+    "lat": 21.3086823,
+    "long": -158.0408272,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Da Crawfish Crabshack",
+    "lat": 21.3374699,
+    "long": -158.0803278,
+    "gmapsCategory": "Casual Cajun seafood restaurant & bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Twilight Audio dba Low Voltage Contractors of Hawaii",
+    "lat": 21.3220855,
+    "long": -158.0904715,
+    "gmapsCategory": ""
+  }
+]

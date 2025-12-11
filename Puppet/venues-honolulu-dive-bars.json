@@ -1,0 +1,800 @@
+[
+  {
+    "type": "Bar",
+    "name": "Surf Bar Waikiki",
+    "lat": 21.2750878,
+    "long": -157.8234055,
+    "gmapsCategory": "Cocktail bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Honolulu Tavern",
+    "lat": 21.2799803,
+    "long": -157.8258231,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Suzie Wong s Hideaway",
+    "lat": 21.286357,
+    "long": -157.8341523,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Skull Crown Trading Co ",
+    "lat": 21.3120371,
+    "long": -157.8625773,
+    "gmapsCategory": "Tiki bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Arnold s Beach Bar",
+    "lat": 21.2812607,
+    "long": -157.8311401,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "In Between",
+    "lat": 21.2806776,
+    "long": -157.8298309,
+    "gmapsCategory": "Karaoke bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Koa Oasis Booze Shack",
+    "lat": 21.2786104,
+    "long": -157.8344642,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Anna O Brien s",
+    "lat": 21.2941974,
+    "long": -157.8240397,
+    "gmapsCategory": "Pub"
+  },
+  {
+    "type": "Bar",
+    "name": "EP bar",
+    "lat": 21.3117415,
+    "long": -157.8613563,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Proof Social Club",
+    "lat": 21.3109772,
+    "long": -157.8601379,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Black Shamrock Tavern",
+    "lat": 21.3104023,
+    "long": -157.8635687,
+    "gmapsCategory": "Irish pub"
+  },
+  {
+    "type": "Bar",
+    "name": "Cuckoo Coconuts",
+    "lat": 21.2799776,
+    "long": -157.8284408,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Vegas",
+    "lat": 21.3223126,
+    "long": -157.8769835,
+    "gmapsCategory": "Cocktail bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Hanks Cafe Honolulu",
+    "lat": 21.3109949,
+    "long": -157.862433,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": " Fat Fat Bar Grille",
+    "lat": 21.300483,
+    "long": -157.84057,
+    "gmapsCategory": "8 Fat Fat 8 Bar & Grille"
+  },
+  {
+    "type": "Bar",
+    "name": "The Social Honolulu",
+    "lat": 21.2934571,
+    "long": -157.8507377,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "D s Hideout Dart Bar",
+    "lat": 21.3258628,
+    "long": -157.870819,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Smith s Union Bar",
+    "lat": 21.311231,
+    "long": -157.8622312,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "The Nighthawk",
+    "lat": 21.3103621,
+    "long": -157.8626372,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Bar",
+    "name": "Red Bar",
+    "lat": 21.3110461,
+    "long": -157.8618455,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Chiko E s Tavern",
+    "lat": 21.294454,
+    "long": -157.830506,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Bevy",
+    "lat": 21.2988003,
+    "long": -157.8613781,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Underdogs Sports Bar Grill",
+    "lat": 21.323337,
+    "long": -157.877024,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "E J Lounge Operating Co Inc",
+    "lat": 21.2866541,
+    "long": -157.8341344,
+    "gmapsCategory": "Cocktail bar"
+  },
+  {
+    "type": "Bar",
+    "name": " th Ave Rock House",
+    "lat": 21.2844084,
+    "long": -157.8026015,
+    "gmapsCategory": "Karaoke bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Babby s bar",
+    "lat": 21.325079,
+    "long": -157.8802984,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": " th Puka Sports Lounge",
+    "lat": 21.3351039,
+    "long": -157.9427687,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Kelley O Neil s",
+    "lat": 21.2802495,
+    "long": -157.8293369,
+    "gmapsCategory": "Rollicking Irish pub with live music"
+  },
+  {
+    "type": "Bar",
+    "name": "Lulu s Waikiki",
+    "lat": 21.2719238,
+    "long": -157.8226832,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Bar ",
+    "lat": 21.311381,
+    "long": -157.8624682,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Irish Rose Saloon",
+    "lat": 21.286631,
+    "long": -157.83416,
+    "gmapsCategory": "Irish pub"
+  },
+  {
+    "type": "Bar",
+    "name": "The Gatsby Hawai i",
+    "lat": 21.2989212,
+    "long": -157.8560238,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "AnyPlace Cocktail Lounge",
+    "lat": 21.2955006,
+    "long": -157.8302087,
+    "gmapsCategory": "Sports bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Club wave",
+    "lat": 21.3256454,
+    "long": -157.870697,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Osoyami Bar and Grill",
+    "lat": 21.2949467,
+    "long": -157.8319873,
+    "gmapsCategory": "Osoyami Bar and Grill"
+  },
+  {
+    "type": "Bar",
+    "name": "The Sandbar",
+    "lat": 21.3501004,
+    "long": -157.9408425,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Golden tree lounge",
+    "lat": 21.32578,
+    "long": -157.8737192,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Tipsy Pig Bar Grill",
+    "lat": 21.2994074,
+    "long": -157.8422846,
+    "gmapsCategory": "Karaoke bar"
+  },
+  {
+    "type": "Bar",
+    "name": "The Side Pocket",
+    "lat": 21.3259878,
+    "long": -157.8710777,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Back Alley Cafe",
+    "lat": 21.2981,
+    "long": -157.8413083,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Bar",
+    "name": "Rivals Sports Lounge",
+    "lat": 21.2809314,
+    "long": -157.8282165,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "RB Sports Bar Grill Rock Bottom ",
+    "lat": 21.2925389,
+    "long": -157.8212954,
+    "gmapsCategory": "Lively pub for billiards, bites & music"
+  },
+  {
+    "type": "Bar",
+    "name": "Murphy s Bar Grill",
+    "lat": 21.310186,
+    "long": -157.8635252,
+    "gmapsCategory": "Festive pub for beer & fish 'n' chips"
+  },
+  {
+    "type": "Bar",
+    "name": "Yours Truly Cocktail Bar",
+    "lat": 21.3094538,
+    "long": -157.8598351,
+    "gmapsCategory": "Cocktail bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Blue Ribbon Bar Grill",
+    "lat": 21.2951869,
+    "long": -157.8320893,
+    "gmapsCategory": "Blue Ribbon Bar & Grill"
+  },
+  {
+    "type": "Bar",
+    "name": "Dragon Upstairs",
+    "lat": 21.3110587,
+    "long": -157.8623892,
+    "gmapsCategory": "Karaoke bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Hula E s Bar Lei Stand",
+    "lat": 21.2718632,
+    "long": -157.8216669,
+    "gmapsCategory": "Gay bar"
+  },
+  {
+    "type": "Bar",
+    "name": "The Tchin Tchin Bar",
+    "lat": 21.311436,
+    "long": -157.862572,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Lava Tube",
+    "lat": 21.2799255,
+    "long": -157.826464,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Blitz Sports Bar and Grill",
+    "lat": 21.2992636,
+    "long": -157.840282,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Lewers Lounge",
+    "lat": 21.2778745,
+    "long": -157.8323439,
+    "gmapsCategory": "Cocktail bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Tapa s Waikiki",
+    "lat": 21.280341,
+    "long": -157.8266827,
+    "gmapsCategory": "Gay bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Di s Karaoke",
+    "lat": 21.2996986,
+    "long": -157.8405614,
+    "gmapsCategory": "Karaoke bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Shanghai Bar",
+    "lat": 21.2793395,
+    "long": -157.8284789,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Club ",
+    "lat": 21.3243431,
+    "long": -157.8707017,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "La Mariana Sailing Club",
+    "lat": 21.3218483,
+    "long": -157.8931526,
+    "gmapsCategory": "Tiki bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Bliss Lounge",
+    "lat": 21.3214015,
+    "long": -157.872423,
+    "gmapsCategory": "Karaoke bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Cafe Anasia",
+    "lat": 21.2951431,
+    "long": -157.8264007,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Bar",
+    "name": "Soju Bang",
+    "lat": 21.2932194,
+    "long": -157.8370219,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Y s Sports Bar Grill",
+    "lat": 21.2955685,
+    "long": -157.8330075,
+    "gmapsCategory": "Y's Sports Bar & Grill"
+  },
+  {
+    "type": "Bar",
+    "name": "Harbor Pub Pizza",
+    "lat": 21.285199,
+    "long": -157.8396886,
+    "gmapsCategory": "Pub"
+  },
+  {
+    "type": "Bar",
+    "name": "Two Tides Bar",
+    "lat": 21.294649,
+    "long": -157.8521087,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Bubble Lounge",
+    "lat": 21.3273741,
+    "long": -157.8716259,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Wang Chung s Karaoke Bar",
+    "lat": 21.2762512,
+    "long": -157.8245438,
+    "gmapsCategory": "Gay bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Skybox Taphouse Sports Bar",
+    "lat": 21.2778633,
+    "long": -157.8270186,
+    "gmapsCategory": "Sports bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Aqua Lounge",
+    "lat": 21.3220608,
+    "long": -157.8767966,
+    "gmapsCategory": "Sports bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Club Lucky Honu",
+    "lat": 21.325069,
+    "long": -157.8756741,
+    "gmapsCategory": "Cocktail bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Cafe Duck Butt",
+    "lat": 21.2983929,
+    "long": -157.854248,
+    "gmapsCategory": "Karaoke bar with comfort food"
+  },
+  {
+    "type": "Bar",
+    "name": "Yard House",
+    "lat": 21.279084,
+    "long": -157.831264,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "The Edge of Waikiki",
+    "lat": 21.2770967,
+    "long": -157.8309578,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Side Street Inn On Da Strip",
+    "lat": 21.2788318,
+    "long": -157.8141062,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Bar",
+    "name": "Shinsho Tei",
+    "lat": 21.3162355,
+    "long": -157.8552341,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "PITCH SPORTS BAR",
+    "lat": 21.2982049,
+    "long": -157.8611601,
+    "gmapsCategory": "Sports bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Club Star Lite",
+    "lat": 21.323817,
+    "long": -157.8713841,
+    "gmapsCategory": "Cocktail bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Club NK",
+    "lat": 21.3273202,
+    "long": -157.8702753,
+    "gmapsCategory": "Club NK"
+  },
+  {
+    "type": "Bar",
+    "name": "Side Bar",
+    "lat": 21.3395651,
+    "long": -157.9299261,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Tropics Island Grill Ale House",
+    "lat": 21.2851401,
+    "long": -157.8380928,
+    "gmapsCategory": "Unfussy sports bar with many craft beers"
+  },
+  {
+    "type": "Bar",
+    "name": "Livestock Tavern",
+    "lat": 21.3116621,
+    "long": -157.8625478,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Bar",
+    "name": "Station Karaoke Pupu Cocktail Sports",
+    "lat": 21.3232069,
+    "long": -157.8726758,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Cafe Gangnam",
+    "lat": 21.2944423,
+    "long": -157.8414573,
+    "gmapsCategory": "Karaoke bar"
+  },
+  {
+    "type": "Bar",
+    "name": "TJ s Sports Bar Grill",
+    "lat": 21.3033221,
+    "long": -157.8551685,
+    "gmapsCategory": "TJ's Sports Bar & Grill"
+  },
+  {
+    "type": "Bar",
+    "name": "Club Splash",
+    "lat": 21.2988051,
+    "long": -157.8406313,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "HB Social Club C Hawaiian Brian s",
+    "lat": 21.2919158,
+    "long": -157.8375854,
+    "gmapsCategory": "HB Social Club | Hawaiian Brian's"
+  },
+  {
+    "type": "Bar",
+    "name": "Club Blue Star",
+    "lat": 21.322769,
+    "long": -157.8751362,
+    "gmapsCategory": "Club Blue Star"
+  },
+  {
+    "type": "Bar",
+    "name": "Play Bar Night Club Waikiki",
+    "lat": 21.2794118,
+    "long": -157.8256535,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "NextDoor",
+    "lat": 21.3115136,
+    "long": -157.8625708,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Club Lilac",
+    "lat": 21.324817,
+    "long": -157.875934,
+    "gmapsCategory": "Cocktail bar"
+  },
+  {
+    "type": "Bar",
+    "name": "ARISU Bar Grill",
+    "lat": 21.3270626,
+    "long": -157.8713684,
+    "gmapsCategory": "ARISU Bar & Grill"
+  },
+  {
+    "type": "Bar",
+    "name": "Champs Hawaii",
+    "lat": 21.2840226,
+    "long": -157.8018048,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Bar",
+    "name": "Bobby s Karaoke Bar",
+    "lat": 21.2926852,
+    "long": -157.8371271,
+    "gmapsCategory": "Karaoke bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Hinana Bar",
+    "lat": 21.2863676,
+    "long": -157.8401373,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Mystique Bar and Lounge",
+    "lat": 21.2943435,
+    "long": -157.8472217,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "The Surfing Pig Hawaii",
+    "lat": 21.2823856,
+    "long": -157.798714,
+    "gmapsCategory": "\"It has a really great atmosphere, bar downstairs and tables upstairs.\""
+  },
+  {
+    "type": "Bar",
+    "name": "The District",
+    "lat": 21.2934804,
+    "long": -157.845325,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Genius Lounge E Japanese Sake Bar Restaurant ",
+    "lat": 21.2812811,
+    "long": -157.8289182,
+    "gmapsCategory": "Chill bar with Japanese food & drinks"
+  },
+  {
+    "type": "Bar",
+    "name": "Whiskey Dix E Saloon",
+    "lat": 21.3783177,
+    "long": -157.9351401,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "The Parlor",
+    "lat": 21.2934884,
+    "long": -157.8454388,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Mulligan s Bar Grill",
+    "lat": 21.3486615,
+    "long": -157.8850961,
+    "gmapsCategory": "Mulligan's Bar & Grill"
+  },
+  {
+    "type": "Bar",
+    "name": "Mahina Sun E s",
+    "lat": 21.2818471,
+    "long": -157.8281603,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Blue Tropix Bar",
+    "lat": 21.3817512,
+    "long": -157.9403346,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Tapa Bar",
+    "lat": 21.2827414,
+    "long": -157.8367135,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Cafe Princess Pig",
+    "lat": 21.2994419,
+    "long": -157.8407452,
+    "gmapsCategory": "\"Cozy bar with friendly staff and great food!\""
+  },
+  {
+    "type": "Bar",
+    "name": "Tropics Bar Grill",
+    "lat": 21.2816523,
+    "long": -157.8375138,
+    "gmapsCategory": "Tropics Bar & Grill"
+  },
+  {
+    "type": "Bar",
+    "name": "Queensbreak Restaurant",
+    "lat": 21.2727848,
+    "long": -157.8229476,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Club Mermaid",
+    "lat": 21.2816545,
+    "long": -157.8302684,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Bar",
+    "name": "Chez Sports Bar Grill",
+    "lat": 21.3843724,
+    "long": -157.9456585,
+    "gmapsCategory": "Neon-lit pub with bands & local eats"
+  },
+  {
+    "type": "Bar",
+    "name": "Creekside",
+    "lat": 21.391144,
+    "long": -157.7430118,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Aloha Bistro",
+    "lat": 21.2789261,
+    "long": -157.8236021,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Bar",
+    "name": "Kailua Tavern",
+    "lat": 21.3961215,
+    "long": -157.7452778,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Uncle Troy s Bar and Grill",
+    "lat": 21.3926785,
+    "long": -157.9678258,
+    "gmapsCategory": "Uncle Troy's Bar and Grill"
+  },
+  {
+    "type": "Bar",
+    "name": "Kailua Palace",
+    "lat": 21.3961314,
+    "long": -157.7453101,
+    "gmapsCategory": "Cocktail bar"
+  },
+  {
+    "type": "Bar",
+    "name": "eight ",
+    "lat": 21.3942741,
+    "long": -157.9675918,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Mo Joe s Bar Grill",
+    "lat": 21.4157743,
+    "long": -157.8012685,
+    "gmapsCategory": "Mo Joe's Bar & Grill"
+  },
+  {
+    "type": "Bar",
+    "name": "Bar Leather Apron",
+    "lat": 21.3077962,
+    "long": -157.8635158,
+    "gmapsCategory": "Cocktail bar"
+  }
+]
