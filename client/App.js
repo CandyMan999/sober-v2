@@ -53,6 +53,7 @@ import {
   ensureSoberMotionTrackingSetup,
   configureLocationTrackingClient,
 } from "./utils/locationTracking";
+import { emitPaywallShown } from "./utils/paywallEvents";
 import { RevenueCatProvider, useRevenueCat } from "./RevenueCatContext";
 
 import Context from "./context";
@@ -540,6 +541,13 @@ function AppContent({ state, dispatch }) {
       setPaywallVisible(false);
     }
   }, [currentUser?.id]);
+
+  useEffect(() => {
+    if (paywallVisible) {
+      setPreviewMuted(true);
+      emitPaywallShown();
+    }
+  }, [paywallVisible]);
 
   const handleDismissPaywall = useCallback(() => {
     setPaywallAcknowledged(true);

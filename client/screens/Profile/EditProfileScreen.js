@@ -11,6 +11,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   Keyboard,
+  Linking,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { LinearGradient } from "expo-linear-gradient";
@@ -48,6 +49,7 @@ import {
   initSoberMotionTracking,
   stopAllSoberLocationTracking,
 } from "../../utils/locationTracking";
+import { useRevenueCat } from "../../RevenueCatContext";
 
 const {
   primaryBackground,
@@ -276,6 +278,7 @@ const ToggleRow = ({
 const EditProfileScreen = ({ navigation }) => {
   const client = useClient();
   const { state, dispatch } = useContext(Context);
+  const { isPremium } = useRevenueCat();
 
   const [token, setToken] = useState(null);
   const [user, setUser] = useState(state?.user || null);
@@ -455,6 +458,24 @@ const EditProfileScreen = ({ navigation }) => {
       onConfirm: closeAlert,
       onCancel: closeAlert,
     });
+  };
+
+  const openManageSubscriptions = async () => {
+    const subscriptionUrl = Platform.select({
+      ios: "https://apps.apple.com/account/subscriptions",
+      android: "https://play.google.com/store/account/subscriptions",
+      default: "https://apps.apple.com/account/subscriptions",
+    });
+
+    try {
+      await Linking.openURL(subscriptionUrl);
+    } catch (err) {
+      console.log("Unable to open subscription settings", err);
+      showError(
+        "We couldn't open your subscription settings. Please try again.",
+        "Subscription"
+      );
+    }
   };
 
   const notificationCategoryMap = useMemo(
@@ -1314,6 +1335,41 @@ const EditProfileScreen = ({ navigation }) => {
               bar or liquor store so we can ping you and your sober buddies
               before you make any dumb decisions.
             </Text>
+            {isPremium ? (
+              <TouchableOpacity
+                style={styles.manageSubButton}
+                activeOpacity={0.9}
+                onPress={openManageSubscriptions}
+              >
+                <LinearGradient
+                  colors={["rgba(16,185,129,0.9)", "rgba(59,130,246,0.85)"]}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 1 }}
+                  style={styles.manageSubInner}
+                >
+                  <View style={styles.manageSubContent}>
+                    <View style={styles.manageSubIconBadge}>
+                      <MaterialCommunityIcons
+                        name="account-cancel"
+                        size={16}
+                        color="#ecfeff"
+                      />
+                    </View>
+                    <View style={styles.manageSubTextBlock}>
+                      <Text style={styles.manageSubTitle}>
+                        Manage subscription
+                      </Text>
+                      <Text style={styles.manageSubSubtitle}>
+                        Cancel anytime in your app store
+                      </Text>
+                    </View>
+                    <View style={styles.manageSubChevron}>
+                      <Feather name="arrow-up-right" size={16} color="#ecfeff" />
+                    </View>
+                  </View>
+                </LinearGradient>
+              </TouchableOpacity>
+            ) : null}
             <TouchableOpacity
               style={styles.deleteProfileButton}
               activeOpacity={0.9}
@@ -1598,6 +1654,56 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     borderBottomWidth: 1,
     borderBottomColor: border,
+  },
+  manageSubButton: {
+    marginTop: 14,
+    borderRadius: 14,
+    overflow: "hidden",
+    borderWidth: 1,
+    borderColor: "rgba(34,197,94,0.4)",
+  },
+  manageSubInner: {
+    borderRadius: 14,
+    paddingVertical: 12,
+    paddingHorizontal: 12,
+  },
+  manageSubContent: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 12,
+  },
+  manageSubIconBadge: {
+    width: 32,
+    height: 32,
+    borderRadius: 999,
+    backgroundColor: "rgba(22,163,74,0.92)",
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 1,
+    borderColor: "rgba(134,239,172,0.9)",
+  },
+  manageSubTextBlock: {
+    flex: 1,
+  },
+  manageSubTitle: {
+    color: "#ecfeff",
+    fontWeight: "800",
+    fontSize: 14,
+  },
+  manageSubSubtitle: {
+    color: "#d1fae5",
+    fontSize: 12,
+    marginTop: 2,
+  },
+  manageSubChevron: {
+    width: 28,
+    height: 28,
+    borderRadius: 12,
+    backgroundColor: "rgba(22,163,74,0.85)",
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 1,
+    borderColor: "rgba(134,239,172,0.9)",
   },
   deleteProfileButton: {
     marginTop: 18,

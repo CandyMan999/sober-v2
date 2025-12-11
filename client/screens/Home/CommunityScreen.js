@@ -47,6 +47,8 @@ import { getToken } from "../../utils/helpers";
 import Context from "../../context";
 import FeedInteractionModel from "../../utils/feed/FeedInteractionModel";
 import { applySavedStateToContext, isItemSaved } from "../../utils/saves";
+import { addPaywallShowListener } from "../../utils/paywallEvents";
+import { useRevenueCat } from "../../RevenueCatContext";
 
 const TUTORIAL_SEEN_KEY = "community_tutorial_seen";
 const tutorialImage = require("../../assets/swipe1.png");
@@ -80,6 +82,7 @@ const CommunityScreen = () => {
   const client = useClient();
   const isFocused = useIsFocused();
   const { state, dispatch } = useContext(Context);
+  const { isPremium } = useRevenueCat();
   const currentUserId = state?.user?.id;
   const currentUser = state?.user;
   const [posts, setPosts] = useState([]);
@@ -111,6 +114,7 @@ const CommunityScreen = () => {
   const adShownIndicesRef = useRef(new Set());
   const pendingAdIndexRef = useRef(null);
   const preAdMuteRef = useRef(false);
+  const activeIndexRef = useRef(activeIndex);
 
   const interstitialAd = useMemo(
     () =>
@@ -128,6 +132,20 @@ const CommunityScreen = () => {
   useEffect(() => {
     followLoadingRef.current = followLoadingIds;
   }, [followLoadingIds]);
+
+  useEffect(() => {
+    const removePaywallListener = addPaywallShowListener(() => {
+      setIsMuted(true);
+      const activeRef = videoRefs.current[activeIndexRef.current];
+      activeRef?.pauseAsync?.();
+    });
+
+    return removePaywallListener;
+  }, []);
+
+  useEffect(() => {
+    activeIndexRef.current = activeIndex;
+  }, [activeIndex]);
 
   const getPosts = useCallback(() => postsRef.current, []);
   const getFollowLoading = useCallback(() => followLoadingRef.current, []);
@@ -213,6 +231,16 @@ const CommunityScreen = () => {
       errorListener();
     };
   }, [interstitialAd, showAdForIndex]);
+
+  useEffect(() => {
+    if (!isPremium) return;
+
+    setIsAdShowing(false);
+    setIsAdLoaded(false);
+    pendingAdIndexRef.current = null;
+    adShownIndicesRef.current = new Set();
+    setIsMuted((prev) => prev || preAdMuteRef.current);
+  }, [isPremium]);
 
   const feedModel = useMemo(
     () =>
@@ -442,6 +470,8 @@ const CommunityScreen = () => {
 
   const maybeShowInterstitial = useCallback(
     (index) => {
+      if (isPremium) return;
+
       if ((index + 1) % AD_SLOT_FREQUENCY !== 0) {
         if (
           pendingAdIndexRef.current !== null &&
@@ -463,7 +493,7 @@ const CommunityScreen = () => {
       pendingAdIndexRef.current = index;
       interstitialAd.load();
     },
-    [isAdLoaded, interstitialAd, showAdForIndex]
+    [interstitialAd, isAdLoaded, isPremium, showAdForIndex]
   );
 
   const handlePlaybackStatus = useCallback((index, status) => {
