@@ -7,7 +7,12 @@ const { width: SCREEN_WIDTH } = Dimensions.get("window");
 const ACCENT = "#fbbf24";
 const HOLD_DURATION = 1400;
 
-const QuickSobrietyBanner = ({ daysSober, shouldPlay = true, playKey }) => {
+const QuickSobrietyBanner = ({
+  daysSober,
+  username,
+  shouldPlay = true,
+  playKey,
+}) => {
   const slideAnim = useRef(new Animated.Value(-SCREEN_WIDTH)).current;
   const canUseGlass = isIOSLiquidGlassCapable();
 
@@ -37,10 +42,11 @@ const QuickSobrietyBanner = ({ daysSober, shouldPlay = true, playKey }) => {
 
   if (!daysSober) return null;
 
+  const bannerText = `${username || "Someone"} @ ${daysSober} sober`;
+
   const bannerContent = (
     <View style={styles.bannerContent} pointerEvents="none">
-      <Text style={styles.bannerLabel}>Sober</Text>
-      <Text style={styles.bannerValue}>Day {daysSober}</Text>
+      <Text style={styles.bannerValue}>{bannerText}</Text>
     </View>
   );
 
@@ -104,24 +110,14 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(15,23,42,0.85)",
   },
   bannerContent: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "center",
     alignItems: "center",
-    gap: 14,
-  },
-  bannerLabel: {
-    color: "#fef3c7",
-    textTransform: "uppercase",
-    letterSpacing: 1.2,
-    fontSize: 13,
-    fontWeight: "700",
   },
   bannerValue: {
     color: "#fff",
-    fontSize: 20,
-    fontWeight: "800",
-    flex: 1,
-    textAlign: "right",
+    fontSize: 18,
+    fontWeight: "700",
+    textAlign: "center",
   },
 });
 

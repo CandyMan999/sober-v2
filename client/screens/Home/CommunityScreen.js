@@ -451,6 +451,7 @@ const CommunityScreen = () => {
       {typeof item.daysSober === "number" && item.daysSober > 0 ? (
         <QuickSobrietyBanner
           daysSober={item.daysSober}
+          username={item.author?.username}
           shouldPlay={
             isFocused && activeIndex === index && !finishedMap[index] && !isUnderReview
           }
