@@ -1,0 +1,308 @@
+[
+  {
+    "type": "Liquor",
+    "name": "Copperhead Road Bar Nightclub",
+    "lat": 38.8789378,
+    "long": -104.7577566
+  },
+  {
+    "type": "Liquor",
+    "name": "Cowboys",
+    "lat": 38.8348643,
+    "long": -104.8231722
+  },
+  {
+    "type": "Liquor",
+    "name": "aqua nightclub cs",
+    "lat": 38.8484828,
+    "long": -104.7556542
+  },
+  {
+    "type": "Liquor",
+    "name": "Mansion",
+    "lat": 38.8347447,
+    "long": -104.823648
+  },
+  {
+    "type": "Liquor",
+    "name": "Blondie s",
+    "lat": 38.8349113,
+    "long": -104.8236694
+  },
+  {
+    "type": "Liquor",
+    "name": "El Huracan Night Club",
+    "lat": 38.7982487,
+    "long": -104.7584603
+  },
+  {
+    "type": "Liquor",
+    "name": "ICONS",
+    "lat": 38.8356017,
+    "long": -104.8244338
+  },
+  {
+    "type": "Liquor",
+    "name": "Club La Casota",
+    "lat": 38.8246997,
+    "long": -104.7809065
+  },
+  {
+    "type": "Liquor",
+    "name": "Club VIP",
+    "lat": 38.8826905,
+    "long": -104.7586311
+  },
+  {
+    "type": "Liquor",
+    "name": "Bloom Ultra Lounge",
+    "lat": 38.835847,
+    "long": -104.823658
+  },
+  {
+    "type": "Liquor",
+    "name": "The Lounge In the Village",
+    "lat": 38.8807907,
+    "long": -104.7545166
+  },
+  {
+    "type": "Liquor",
+    "name": "Artist Nightclub",
+    "lat": 38.8476065,
+    "long": -104.7762552
+  },
+  {
+    "type": "Liquor",
+    "name": "The Black Sheep",
+    "lat": 38.8373461,
+    "long": -104.7893111
+  },
+  {
+    "type": "Liquor",
+    "name": "Luxe Lounge",
+    "lat": 38.8468312,
+    "long": -104.7741383
+  },
+  {
+    "type": "Liquor",
+    "name": "Cobalt Club",
+    "lat": 38.8256733,
+    "long": -104.8224832
+  },
+  {
+    "type": "Liquor",
+    "name": "La Burla Bee",
+    "lat": 38.8355357,
+    "long": -104.8219348
+  },
+  {
+    "type": "Liquor",
+    "name": "Finish Line Lounge",
+    "lat": 38.8425812,
+    "long": -104.7936943
+  },
+  {
+    "type": "Liquor",
+    "name": "Louie Louie s Piano Bar",
+    "lat": 38.8260319,
+    "long": -104.82427
+  },
+  {
+    "type": "Liquor",
+    "name": "Farside Lounge",
+    "lat": 38.8245921,
+    "long": -104.747299
+  },
+  {
+    "type": "Liquor",
+    "name": "Rendezvous CIGAR COCKTAIL Lounge",
+    "lat": 38.8363443,
+    "long": -104.8236871
+  },
+  {
+    "type": "Liquor",
+    "name": "Wagon Wheel Nite Club CSC",
+    "lat": 38.8373653,
+    "long": -104.7867483
+  },
+  {
+    "type": "Liquor",
+    "name": "International Dance Club",
+    "lat": 38.8345881,
+    "long": -104.8681251
+  },
+  {
+    "type": "Liquor",
+    "name": "The Rocks Lounge",
+    "lat": 38.8795209,
+    "long": -104.868396
+  },
+  {
+    "type": "Liquor",
+    "name": "PEAK Union Station",
+    "lat": 38.866769,
+    "long": -104.7927098
+  },
+  {
+    "type": "Liquor",
+    "name": "Latin Quarters",
+    "lat": 38.8894739,
+    "long": -104.7592137
+  },
+  {
+    "type": "Liquor",
+    "name": "DejaVu Showgirls Colorado Springs Strip Club",
+    "lat": 38.7754013,
+    "long": -104.7880638
+  },
+  {
+    "type": "Liquor",
+    "name": "The Loft Music Venue",
+    "lat": 38.8475795,
+    "long": -104.8627828
+  },
+  {
+    "type": "Liquor",
+    "name": "Thunder and Buttons II",
+    "lat": 38.846514,
+    "long": -104.862074
+  },
+  {
+    "type": "Liquor",
+    "name": "Snooty Foxx",
+    "lat": 38.8404417,
+    "long": -104.7159362
+  },
+  {
+    "type": "Liquor",
+    "name": "Veterans MC Colorado Springs",
+    "lat": 38.8576059,
+    "long": -104.758522
+  },
+  {
+    "type": "Liquor",
+    "name": "The Nets",
+    "lat": 38.8359294,
+    "long": -104.7840957
+  },
+  {
+    "type": "Liquor",
+    "name": "Tokki",
+    "lat": 38.7905141,
+    "long": -104.8233981
+  },
+  {
+    "type": "Liquor",
+    "name": "The Whiskey Rose Dance Hall Saloon",
+    "lat": 38.9147087,
+    "long": -104.7859395
+  },
+  {
+    "type": "Liquor",
+    "name": "Benny s Restaurant Lounge",
+    "lat": 38.832622,
+    "long": -104.8352481
+  },
+  {
+    "type": "Liquor",
+    "name": "Fabulous TNT s Showclub",
+    "lat": 38.899531,
+    "long": -104.745537
+  },
+  {
+    "type": "Liquor",
+    "name": "Drip Queen Coffee",
+    "lat": 38.8764392,
+    "long": -104.8477649
+  },
+  {
+    "type": "Liquor",
+    "name": "Burrowing Owl",
+    "lat": 38.8044078,
+    "long": -104.8397919
+  },
+  {
+    "type": "Liquor",
+    "name": "Elevations Bar Grill",
+    "lat": 38.7849663,
+    "long": -104.8244978
+  },
+  {
+    "type": "Liquor",
+    "name": "Detour Lounge",
+    "lat": 38.7727317,
+    "long": -104.739479
+  },
+  {
+    "type": "Liquor",
+    "name": "Ohana Kava Bar",
+    "lat": 38.8397522,
+    "long": -104.8227075
+  },
+  {
+    "type": "Liquor",
+    "name": "Odyssey Gastropub",
+    "lat": 38.838719,
+    "long": -104.8230959
+  },
+  {
+    "type": "Liquor",
+    "name": "The Famous Steak House",
+    "lat": 38.8351513,
+    "long": -104.8232877
+  },
+  {
+    "type": "Liquor",
+    "name": "The Hause Collective",
+    "lat": 38.8436733,
+    "long": -104.7623802
+  },
+  {
+    "type": "Liquor",
+    "name": "Amarillo Cafe",
+    "lat": 38.8592539,
+    "long": -104.9192314
+  },
+  {
+    "type": "Liquor",
+    "name": "Speakeasy Vape Lounge Cannabis Club Dab Bar SEVL",
+    "lat": 38.8357673,
+    "long": -104.784202
+  },
+  {
+    "type": "Liquor",
+    "name": "Broadmoor Collesium",
+    "lat": 38.7849317,
+    "long": -104.8245567
+  },
+  {
+    "type": "Liquor",
+    "name": "Jon Eddy Productions",
+    "lat": 38.8400312,
+    "long": -104.822867
+  },
+  {
+    "type": "Liquor",
+    "name": " Elements Hookah Lounge LLC",
+    "lat": 38.8902214,
+    "long": -104.8179791
+  },
+  {
+    "type": "Liquor",
+    "name": "The lounge",
+    "lat": 38.77415,
+    "long": -104.7919136
+  },
+  {
+    "type": "Liquor",
+    "name": "Buddies Private Club",
+    "lat": 38.8810757,
+    "long": -104.7584684
+  },
+  {
+    "type": "Liquor",
+    "name": "Retro Lounge by The Orbit Lounge",
+    "lat": 38.8227458,
+    "long": -104.7600237
+  }
+]

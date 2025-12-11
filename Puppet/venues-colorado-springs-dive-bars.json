@@ -1,0 +1,644 @@
+[
+  {
+    "type": "Bar",
+    "name": "Thrashers Bar",
+    "lat": 38.8273434,
+    "long": -104.8187805
+  },
+  {
+    "type": "Bar",
+    "name": "Vultures",
+    "lat": 38.8372928,
+    "long": -104.79
+  },
+  {
+    "type": "Bar",
+    "name": "Shame Regret",
+    "lat": 38.836339,
+    "long": -104.824315
+  },
+  {
+    "type": "Bar",
+    "name": "Hatch Cover",
+    "lat": 38.7899818,
+    "long": -104.8234024
+  },
+  {
+    "type": "Bar",
+    "name": "Triple Nickel Tavern",
+    "lat": 38.8318207,
+    "long": -104.8177794
+  },
+  {
+    "type": "Bar",
+    "name": "Legends Brews Cues",
+    "lat": 38.7895462,
+    "long": -104.7617288
+  },
+  {
+    "type": "Bar",
+    "name": "O Furry s",
+    "lat": 38.8746277,
+    "long": -104.8083996
+  },
+  {
+    "type": "Bar",
+    "name": "The Archives Underground Libations",
+    "lat": 38.8332531,
+    "long": -104.8233037
+  },
+  {
+    "type": "Bar",
+    "name": "Golden Hour Bar",
+    "lat": 38.8334404,
+    "long": -104.8220691
+  },
+  {
+    "type": "Bar",
+    "name": "District Elleven",
+    "lat": 38.8374366,
+    "long": -104.8240203
+  },
+  {
+    "type": "Bar",
+    "name": "Knucklehead Tavern",
+    "lat": 38.793662,
+    "long": -104.7684081
+  },
+  {
+    "type": "Bar",
+    "name": "Alchemy",
+    "lat": 38.8485694,
+    "long": -104.865475
+  },
+  {
+    "type": "Bar",
+    "name": "Bloom E s Mill Hill Saloon",
+    "lat": 38.829442,
+    "long": -104.8595931
+  },
+  {
+    "type": "Bar",
+    "name": "Murphy s Tavern",
+    "lat": 38.8717313,
+    "long": -104.819387
+  },
+  {
+    "type": "Bar",
+    "name": "Cork Cask",
+    "lat": 38.8258257,
+    "long": -104.8246443
+  },
+  {
+    "type": "Bar",
+    "name": "Cocktails After Dusk",
+    "lat": 38.8369036,
+    "long": -104.8246105
+  },
+  {
+    "type": "Bar",
+    "name": "Solution Tavern",
+    "lat": 38.8785367,
+    "long": -104.7950049
+  },
+  {
+    "type": "Bar",
+    "name": "Willies a Neighborhood Bar",
+    "lat": 38.8584961,
+    "long": -104.773542
+  },
+  {
+    "type": "Bar",
+    "name": "Thunder and Buttons II",
+    "lat": 38.846514,
+    "long": -104.862074
+  },
+  {
+    "type": "Bar",
+    "name": "Tony s",
+    "lat": 38.8392346,
+    "long": -104.8236194
+  },
+  {
+    "type": "Bar",
+    "name": "The Robin Hood",
+    "lat": 38.8729966,
+    "long": -104.8200613
+  },
+  {
+    "type": "Bar",
+    "name": "PEAK Union Station",
+    "lat": 38.866769,
+    "long": -104.7927098
+  },
+  {
+    "type": "Bar",
+    "name": "Louie Louie s Piano Bar",
+    "lat": 38.8260319,
+    "long": -104.82427
+  },
+  {
+    "type": "Bar",
+    "name": "Supernova Bar and Arcade",
+    "lat": 38.8393814,
+    "long": -104.8226412
+  },
+  {
+    "type": "Bar",
+    "name": "Trainwreck",
+    "lat": 38.8229736,
+    "long": -104.8300804
+  },
+  {
+    "type": "Bar",
+    "name": "Skybox Lounge",
+    "lat": 38.8358346,
+    "long": -104.7900843
+  },
+  {
+    "type": "Bar",
+    "name": "Shrunken Head Tiki",
+    "lat": 38.835847,
+    "long": -104.823658
+  },
+  {
+    "type": "Bar",
+    "name": "Kelly O Brians Sports Bar",
+    "lat": 38.8371639,
+    "long": -104.7566333
+  },
+  {
+    "type": "Bar",
+    "name": "The Lounge In the Village",
+    "lat": 38.8807907,
+    "long": -104.7545166
+  },
+  {
+    "type": "Bar",
+    "name": "The Fifty Niner",
+    "lat": 38.8462677,
+    "long": -104.8619461
+  },
+  {
+    "type": "Bar",
+    "name": "Farside Lounge",
+    "lat": 38.8245921,
+    "long": -104.747299
+  },
+  {
+    "type": "Bar",
+    "name": "The Crooked Cue",
+    "lat": 38.835773,
+    "long": -104.823658
+  },
+  {
+    "type": "Bar",
+    "name": "Finish Line Lounge",
+    "lat": 38.8425812,
+    "long": -104.7936943
+  },
+  {
+    "type": "Bar",
+    "name": "The Public House",
+    "lat": 38.7884044,
+    "long": -104.820617
+  },
+  {
+    "type": "Bar",
+    "name": "Benny s Restaurant Lounge",
+    "lat": 38.832622,
+    "long": -104.8352481
+  },
+  {
+    "type": "Bar",
+    "name": " W",
+    "lat": 38.832564,
+    "long": -104.834588
+  },
+  {
+    "type": "Bar",
+    "name": "Lakeside Pool Cafe",
+    "lat": 38.7924537,
+    "long": -104.8529125
+  },
+  {
+    "type": "Bar",
+    "name": "Gasoline Alley",
+    "lat": 38.8350319,
+    "long": -104.8238075
+  },
+  {
+    "type": "Bar",
+    "name": "The Peak Tavern",
+    "lat": 38.8367608,
+    "long": -104.7913475
+  },
+  {
+    "type": "Bar",
+    "name": " ",
+    "lat": 38.831916,
+    "long": -104.8177831
+  },
+  {
+    "type": "Bar",
+    "name": "The Point Bar and Grill",
+    "lat": 38.8108551,
+    "long": -104.8405635
+  },
+  {
+    "type": "Bar",
+    "name": "O Leary s Pub",
+    "lat": 38.8475418,
+    "long": -104.737503
+  },
+  {
+    "type": "Bar",
+    "name": "Happy Tap",
+    "lat": 38.8067426,
+    "long": -104.8385719
+  },
+  {
+    "type": "Bar",
+    "name": "Golden Bee",
+    "lat": 38.7920573,
+    "long": -104.8478241
+  },
+  {
+    "type": "Bar",
+    "name": "The Public House at The Alexander",
+    "lat": 38.8769645,
+    "long": -104.8202362
+  },
+  {
+    "type": "Bar",
+    "name": "Royal Castle Lounge",
+    "lat": 38.8366508,
+    "long": -104.7848283
+  },
+  {
+    "type": "Bar",
+    "name": "Many s pool and bar",
+    "lat": 38.8249509,
+    "long": -104.781311
+  },
+  {
+    "type": "Bar",
+    "name": "Hotel Bar",
+    "lat": 38.7907263,
+    "long": -104.8504448
+  },
+  {
+    "type": "Bar",
+    "name": "Murray Street Darts",
+    "lat": 38.8415912,
+    "long": -104.7475838
+  },
+  {
+    "type": "Bar",
+    "name": "Rendezvous CIGAR COCKTAIL Lounge",
+    "lat": 38.8363443,
+    "long": -104.8236871
+  },
+  {
+    "type": "Bar",
+    "name": "Copperhead Road Bar Nightclub",
+    "lat": 38.8789378,
+    "long": -104.7577566
+  },
+  {
+    "type": "Bar",
+    "name": "Lumen Rooftop Social",
+    "lat": 38.8280738,
+    "long": -104.8240867
+  },
+  {
+    "type": "Bar",
+    "name": "Burrowing Owl",
+    "lat": 38.8044078,
+    "long": -104.8397919
+  },
+  {
+    "type": "Bar",
+    "name": "Rival Bar",
+    "lat": 38.8262748,
+    "long": -104.8241652
+  },
+  {
+    "type": "Bar",
+    "name": "Detour Lounge",
+    "lat": 38.7727317,
+    "long": -104.739479
+  },
+  {
+    "type": "Bar",
+    "name": "Time Out Sports Lounge Deli",
+    "lat": 38.780796,
+    "long": -104.75859
+  },
+  {
+    "type": "Bar",
+    "name": "Edelweiss German Restaurant",
+    "lat": 38.8098214,
+    "long": -104.8248947
+  },
+  {
+    "type": "Bar",
+    "name": "Devil or Angel Bar Grill",
+    "lat": 38.772426,
+    "long": -104.7660837
+  },
+  {
+    "type": "Bar",
+    "name": "Adam s Apple Lounge",
+    "lat": 38.8909988,
+    "long": -104.7662811
+  },
+  {
+    "type": "Bar",
+    "name": "Bottles Taps",
+    "lat": 38.9003537,
+    "long": -104.7670262
+  },
+  {
+    "type": "Bar",
+    "name": "Main Street Tavern",
+    "lat": 38.7679198,
+    "long": -104.7386524
+  },
+  {
+    "type": "Bar",
+    "name": "Skirted Heifer",
+    "lat": 38.8369722,
+    "long": -104.8235556
+  },
+  {
+    "type": "Bar",
+    "name": "The Green Line Grill",
+    "lat": 38.8272007,
+    "long": -104.818737
+  },
+  {
+    "type": "Bar",
+    "name": "Rasta Pasta",
+    "lat": 38.8398683,
+    "long": -104.8230013
+  },
+  {
+    "type": "Bar",
+    "name": "Armadillo Ranch",
+    "lat": 38.8592336,
+    "long": -104.9192402
+  },
+  {
+    "type": "Bar",
+    "name": "The Keg Lounge",
+    "lat": 38.8574943,
+    "long": -104.9155471
+  },
+  {
+    "type": "Bar",
+    "name": "Manitou Brewing Company",
+    "lat": 38.8571443,
+    "long": -104.9156684
+  },
+  {
+    "type": "Bar",
+    "name": "Pints Tavern",
+    "lat": 38.9026966,
+    "long": -104.7688408
+  },
+  {
+    "type": "Bar",
+    "name": "Paravicini s Italian Bistro",
+    "lat": 38.850139,
+    "long": -104.867159
+  },
+  {
+    "type": "Bar",
+    "name": "Allusion Cocktail Bar Powers ",
+    "lat": 38.8811854,
+    "long": -104.7167035
+  },
+  {
+    "type": "Bar",
+    "name": "Mo s Diner",
+    "lat": 38.8579828,
+    "long": -104.8921018
+  },
+  {
+    "type": "Bar",
+    "name": "WhirlyBall Colorado Springs",
+    "lat": 38.8532807,
+    "long": -104.7545667
+  },
+  {
+    "type": "Bar",
+    "name": "Coach s Sports Bar",
+    "lat": 38.8958435,
+    "long": -104.8366394
+  },
+  {
+    "type": "Bar",
+    "name": "Loonees Comedy Corner",
+    "lat": 38.8515469,
+    "long": -104.7564486
+  },
+  {
+    "type": "Bar",
+    "name": "T Byrds Tacos Tequila",
+    "lat": 38.8374397,
+    "long": -104.8235435
+  },
+  {
+    "type": "Bar",
+    "name": "Rhino s Sports Spirits",
+    "lat": 38.8943294,
+    "long": -104.7212898
+  },
+  {
+    "type": "Bar",
+    "name": "Margo s Vienna Station",
+    "lat": 38.8561575,
+    "long": -104.8804851
+  },
+  {
+    "type": "Bar",
+    "name": "Jim s Neighborhood Lounge",
+    "lat": 38.8585874,
+    "long": -104.7000222
+  },
+  {
+    "type": "Bar",
+    "name": "Rilea s Pub",
+    "lat": 38.9135288,
+    "long": -104.7765814
+  },
+  {
+    "type": "Bar",
+    "name": "Guthrie s Sports Bar Grill",
+    "lat": 38.9456431,
+    "long": -104.8029383
+  },
+  {
+    "type": "Bar",
+    "name": "The Purple Onion",
+    "lat": 38.858616,
+    "long": -104.7582632
+  },
+  {
+    "type": "Bar",
+    "name": "Bar Thirty Three",
+    "lat": 38.8329922,
+    "long": -104.8220274
+  },
+  {
+    "type": "Bar",
+    "name": "The Control Room",
+    "lat": 38.8954045,
+    "long": -104.7150489
+  },
+  {
+    "type": "Bar",
+    "name": "Single Barrel Bar And Grill",
+    "lat": 38.9098944,
+    "long": -104.7186516
+  },
+  {
+    "type": "Bar",
+    "name": "Border Burger Bar",
+    "lat": 38.8592433,
+    "long": -104.9181839
+  },
+  {
+    "type": "Bar",
+    "name": "Wyatt s Pub Grill",
+    "lat": 38.9227358,
+    "long": -104.8440452
+  },
+  {
+    "type": "Bar",
+    "name": "Cleats Bar Grill",
+    "lat": 38.927094,
+    "long": -104.8314591
+  },
+  {
+    "type": "Bar",
+    "name": "Dublin House Sports Bar and Grill",
+    "lat": 38.9242259,
+    "long": -104.7920003
+  },
+  {
+    "type": "Bar",
+    "name": "Overtime Sports Bar Grill",
+    "lat": 38.924752,
+    "long": -104.7743271
+  },
+  {
+    "type": "Bar",
+    "name": "The Blue Moose Tavern",
+    "lat": 38.9341014,
+    "long": -105.0150129
+  },
+  {
+    "type": "Bar",
+    "name": "Front Range Barbeque",
+    "lat": 38.8463258,
+    "long": -104.8606714
+  },
+  {
+    "type": "Bar",
+    "name": "Mountain Shadows Restaurant",
+    "lat": 38.8449043,
+    "long": -104.8593946
+  },
+  {
+    "type": "Bar",
+    "name": "Good Company Bar",
+    "lat": 38.9434921,
+    "long": -104.7739573
+  },
+  {
+    "type": "Bar",
+    "name": "Taco Star",
+    "lat": 38.8384972,
+    "long": -104.8181222
+  },
+  {
+    "type": "Bar",
+    "name": "C MON INN",
+    "lat": 38.6886775,
+    "long": -104.7053512
+  },
+  {
+    "type": "Bar",
+    "name": "The Boiler Room Tavern",
+    "lat": 38.7488117,
+    "long": -105.1768399
+  },
+  {
+    "type": "Bar",
+    "name": "Frankie s Bar Grill",
+    "lat": 38.8453421,
+    "long": -104.7199845
+  },
+  {
+    "type": "Bar",
+    "name": "Restaurant ",
+    "lat": 38.8231254,
+    "long": -104.8480137
+  },
+  {
+    "type": "Bar",
+    "name": "Colorado Pinball Pub",
+    "lat": 39.0937326,
+    "long": -104.8648941
+  },
+  {
+    "type": "Bar",
+    "name": "Palmer Lake Pub",
+    "lat": 39.0983294,
+    "long": -104.8768899
+  },
+  {
+    "type": "Bar",
+    "name": "The Chicken Coop",
+    "lat": 38.9995965,
+    "long": -104.7001533
+  },
+  {
+    "type": "Bar",
+    "name": "Ace Hi Tavern",
+    "lat": 39.7549393,
+    "long": -105.2211255
+  },
+  {
+    "type": "Bar",
+    "name": "Purple Toad Social Tap Grill",
+    "lat": 38.9702569,
+    "long": -104.6071281
+  },
+  {
+    "type": "Bar",
+    "name": "The Owl Bar",
+    "lat": 33.1301653,
+    "long": -96.826351
+  },
+  {
+    "type": "Bar",
+    "name": "Falcon s Bar Grill",
+    "lat": 38.9490387,
+    "long": -104.8053914
+  },
+  {
+    "type": "Bar",
+    "name": "ll Brothers Grill Bar",
+    "lat": 33.0914938,
+    "long": -96.803201
+  },
+  {
+    "type": "Bar",
+    "name": "Sidecar Social Frisco",
+    "lat": 33.1077444,
+    "long": -96.8270188
+  }
+]

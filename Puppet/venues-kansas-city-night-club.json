@@ -1,0 +1,578 @@
+[
+  {
+    "type": "Liquor",
+    "name": "Aura",
+    "lat": 39.0571844,
+    "long": -94.5863204
+  },
+  {
+    "type": "Liquor",
+    "name": "June s Night Club",
+    "lat": 39.0617654,
+    "long": -94.5902039
+  },
+  {
+    "type": "Liquor",
+    "name": "Lotus",
+    "lat": 39.0528946,
+    "long": -94.5908397
+  },
+  {
+    "type": "Liquor",
+    "name": "VooDoo Lounge",
+    "lat": 39.142517,
+    "long": -94.5434704
+  },
+  {
+    "type": "Liquor",
+    "name": "Throwback KC",
+    "lat": 39.052618,
+    "long": -94.5922628
+  },
+  {
+    "type": "Liquor",
+    "name": "BLVD Nights",
+    "lat": 39.0768714,
+    "long": -94.6013438
+  },
+  {
+    "type": "Liquor",
+    "name": "Mosaic",
+    "lat": 39.097892,
+    "long": -94.581933
+  },
+  {
+    "type": "Liquor",
+    "name": "Shark Bar",
+    "lat": 39.0979094,
+    "long": -94.5812915
+  },
+  {
+    "type": "Liquor",
+    "name": "CLUB PROOF",
+    "lat": 39.0770175,
+    "long": -94.601243
+  },
+  {
+    "type": "Liquor",
+    "name": "Howl at the Moon Kansas City",
+    "lat": 39.0981947,
+    "long": -94.5812997
+  },
+  {
+    "type": "Liquor",
+    "name": "Green Lady Lounge",
+    "lat": 39.0913572,
+    "long": -94.5811156
+  },
+  {
+    "type": "Liquor",
+    "name": "Black Dolphin",
+    "lat": 39.0911966,
+    "long": -94.581092
+  },
+  {
+    "type": "Liquor",
+    "name": "PBR Big Sky A Coors Banquet Bar",
+    "lat": 39.0978789,
+    "long": -94.5816438
+  },
+  {
+    "type": "Liquor",
+    "name": "Missie B s",
+    "lat": 39.0567673,
+    "long": -94.5959973
+  },
+  {
+    "type": "Liquor",
+    "name": "The Shady Lady",
+    "lat": 39.0990078,
+    "long": -94.549083
+  },
+  {
+    "type": "Liquor",
+    "name": "Laila Lounge",
+    "lat": 39.1041945,
+    "long": -94.6067625
+  },
+  {
+    "type": "Liquor",
+    "name": "Q Kansas City",
+    "lat": 39.0528608,
+    "long": -94.5917805
+  },
+  {
+    "type": "Liquor",
+    "name": "The Indie on Main",
+    "lat": 39.0986956,
+    "long": -94.5834057
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Sparks",
+    "lat": 39.0875256,
+    "long": -94.6462717
+  },
+  {
+    "type": "Liquor",
+    "name": "Tequila KC Bar",
+    "lat": 39.1008894,
+    "long": -94.6360984
+  },
+  {
+    "type": "Liquor",
+    "name": "Las Plebes",
+    "lat": 39.0984788,
+    "long": -94.5462045
+  },
+  {
+    "type": "Liquor",
+    "name": "Lonnie E s Reno Club",
+    "lat": 39.1006512,
+    "long": -94.5804788
+  },
+  {
+    "type": "Liquor",
+    "name": "Knuckleheads Garage",
+    "lat": 39.1207858,
+    "long": -94.5490236
+  },
+  {
+    "type": "Liquor",
+    "name": "miniBar",
+    "lat": 39.0575859,
+    "long": -94.5909905
+  },
+  {
+    "type": "Liquor",
+    "name": "The Phoenix",
+    "lat": 39.1047493,
+    "long": -94.5863166
+  },
+  {
+    "type": "Liquor",
+    "name": "Dj mystery man",
+    "lat": 39.1291896,
+    "long": -94.650547
+  },
+  {
+    "type": "Liquor",
+    "name": "Nereidas",
+    "lat": 39.0896771,
+    "long": -94.6159701
+  },
+  {
+    "type": "Liquor",
+    "name": "Woody E s KC",
+    "lat": 39.0596775,
+    "long": -94.590827
+  },
+  {
+    "type": "Liquor",
+    "name": "Bazooka s Showgirls",
+    "lat": 39.0927397,
+    "long": -94.5832488
+  },
+  {
+    "type": "Liquor",
+    "name": "The Ship",
+    "lat": 39.1022239,
+    "long": -94.5991923
+  },
+  {
+    "type": "Liquor",
+    "name": "In The Lowest Ferns",
+    "lat": 39.1014455,
+    "long": -94.6008886
+  },
+  {
+    "type": "Liquor",
+    "name": "The Blue Room",
+    "lat": 39.0913741,
+    "long": -94.563066
+  },
+  {
+    "type": "Liquor",
+    "name": "VOO Lounge",
+    "lat": 39.0996521,
+    "long": -94.584439
+  },
+  {
+    "type": "Liquor",
+    "name": "Forty Restaurant Lounge",
+    "lat": 39.048014,
+    "long": -94.5449136
+  },
+  {
+    "type": "Liquor",
+    "name": "THE BLACK BOX",
+    "lat": 39.1033055,
+    "long": -94.5969837
+  },
+  {
+    "type": "Liquor",
+    "name": "American Jazz Music At Kc",
+    "lat": 39.0910817,
+    "long": -94.5626532
+  },
+  {
+    "type": "Liquor",
+    "name": "Sherri s Executive Lounge",
+    "lat": 39.0576269,
+    "long": -94.6052959
+  },
+  {
+    "type": "Liquor",
+    "name": "Blanc Champagne Bar",
+    "lat": 39.0570232,
+    "long": -94.5857459
+  },
+  {
+    "type": "Liquor",
+    "name": "The Hi Dive Lounge",
+    "lat": 39.0570521,
+    "long": -94.6031786
+  },
+  {
+    "type": "Liquor",
+    "name": "The Blakk Co ",
+    "lat": 39.0726743,
+    "long": -94.5706639
+  },
+  {
+    "type": "Liquor",
+    "name": "Levee Bar Grill",
+    "lat": 39.0495121,
+    "long": -94.5871906
+  },
+  {
+    "type": "Liquor",
+    "name": "Offkey Karaoke Lounge Suites",
+    "lat": 39.052749,
+    "long": -94.5923884
+  },
+  {
+    "type": "Liquor",
+    "name": "Cafe ",
+    "lat": 39.0877057,
+    "long": -94.5886222
+  },
+  {
+    "type": "Liquor",
+    "name": "Palm Tree Club KC",
+    "lat": 39.0974047,
+    "long": -94.5830386
+  },
+  {
+    "type": "Liquor",
+    "name": "BARRACA",
+    "lat": 39.1014126,
+    "long": -94.6010487
+  },
+  {
+    "type": "Liquor",
+    "name": "Nytro Bar Grille",
+    "lat": 39.0481047,
+    "long": -94.5450618
+  },
+  {
+    "type": "Liquor",
+    "name": "Outlaw Cigar Brewery",
+    "lat": 39.1266212,
+    "long": -94.5768356
+  },
+  {
+    "type": "Liquor",
+    "name": "Funky Town KC",
+    "lat": 39.0114703,
+    "long": -94.4892655
+  },
+  {
+    "type": "Liquor",
+    "name": "Lounge ",
+    "lat": 39.1431463,
+    "long": -94.6780282
+  },
+  {
+    "type": "Liquor",
+    "name": "Hookah Sahara Sheesha Lounge",
+    "lat": 39.055522,
+    "long": -94.5905232
+  },
+  {
+    "type": "Liquor",
+    "name": "Birdies",
+    "lat": 39.0919788,
+    "long": -94.5855633
+  },
+  {
+    "type": "Liquor",
+    "name": "XR",
+    "lat": 39.0879384,
+    "long": -94.5872733
+  },
+  {
+    "type": "Liquor",
+    "name": "Mean Mule Distilling Co ",
+    "lat": 39.0920743,
+    "long": -94.5775589
+  },
+  {
+    "type": "Liquor",
+    "name": "Prime Social",
+    "lat": 39.043465,
+    "long": -94.59392
+  },
+  {
+    "type": "Liquor",
+    "name": "Sail Away Wine",
+    "lat": 39.1419019,
+    "long": -94.576906
+  },
+  {
+    "type": "Liquor",
+    "name": "Classic Blends Cigar Coffee Lounge",
+    "lat": 39.1465422,
+    "long": -94.5795516
+  },
+  {
+    "type": "Liquor",
+    "name": "El Paraiso Night Club Restaurant",
+    "lat": 39.0916252,
+    "long": -94.730267
+  },
+  {
+    "type": "Liquor",
+    "name": "Touche The Night Club",
+    "lat": 38.9392904,
+    "long": -94.6647621
+  },
+  {
+    "type": "Liquor",
+    "name": "Nine Zero One Rooftop Bar Lounge",
+    "lat": 39.0399272,
+    "long": -94.5984713
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Taqueray",
+    "lat": 39.0944211,
+    "long": -94.5180384
+  },
+  {
+    "type": "Liquor",
+    "name": "Dott Boss",
+    "lat": 39.1007512,
+    "long": -94.5845526
+  },
+  {
+    "type": "Liquor",
+    "name": " Club",
+    "lat": 39.0015669,
+    "long": -94.5569945
+  },
+  {
+    "type": "Liquor",
+    "name": "Klassic Guy Barber Lounge on th",
+    "lat": 39.1028134,
+    "long": -94.5843021
+  },
+  {
+    "type": "Liquor",
+    "name": "Puttery",
+    "lat": 39.0425571,
+    "long": -94.5942119
+  },
+  {
+    "type": "Liquor",
+    "name": "Music Theater Heritage MTH THEATER ",
+    "lat": 39.0831246,
+    "long": -94.5824401
+  },
+  {
+    "type": "Liquor",
+    "name": "Pure Ultra Lounge",
+    "lat": 38.9649321,
+    "long": -94.4272833
+  },
+  {
+    "type": "Liquor",
+    "name": "Solarium Lounge at The Fontaine",
+    "lat": 39.0398968,
+    "long": -94.5980663
+  },
+  {
+    "type": "Liquor",
+    "name": "La Terraza Bar and Grill",
+    "lat": 39.014379,
+    "long": -94.7129393
+  },
+  {
+    "type": "Liquor",
+    "name": "RENDEZVOUS LOUNGE",
+    "lat": 38.909957,
+    "long": -94.5220447
+  },
+  {
+    "type": "Liquor",
+    "name": "Club ",
+    "lat": 39.2401752,
+    "long": -94.4352732
+  },
+  {
+    "type": "Liquor",
+    "name": "Common Tiger",
+    "lat": 39.0225253,
+    "long": -94.6508672
+  },
+  {
+    "type": "Liquor",
+    "name": "Hi Frequency Lounge The HiF ",
+    "lat": 39.023828,
+    "long": -94.425745
+  },
+  {
+    "type": "Liquor",
+    "name": "Cerbera Gallery",
+    "lat": 39.0886586,
+    "long": -94.5846198
+  },
+  {
+    "type": "Liquor",
+    "name": "The SPOTT Night Club",
+    "lat": 39.0838799,
+    "long": -94.4816328
+  },
+  {
+    "type": "Liquor",
+    "name": "Chaz on the Plaza",
+    "lat": 39.0395889,
+    "long": -94.5913536
+  },
+  {
+    "type": "Liquor",
+    "name": "Peridot Entertainment Plaza",
+    "lat": 38.9990455,
+    "long": -94.4816693
+  },
+  {
+    "type": "Liquor",
+    "name": "Eddie V s Prime Seafood",
+    "lat": 39.0426462,
+    "long": -94.5953413
+  },
+  {
+    "type": "Liquor",
+    "name": "Rockstar Kansas City",
+    "lat": 39.1971216,
+    "long": -94.5868769
+  },
+  {
+    "type": "Liquor",
+    "name": "K C s Neighborhood Bar Grill",
+    "lat": 39.0434617,
+    "long": -94.7044152
+  },
+  {
+    "type": "Liquor",
+    "name": "Touche",
+    "lat": 39.0559254,
+    "long": -94.6120277
+  },
+  {
+    "type": "Liquor",
+    "name": "Horsefeather Social",
+    "lat": 39.0956159,
+    "long": -94.5850904
+  },
+  {
+    "type": "Liquor",
+    "name": "Avalon Ultra Lounge",
+    "lat": 39.1937599,
+    "long": -94.549756
+  },
+  {
+    "type": "Liquor",
+    "name": "WinterStone Golf Course",
+    "lat": 39.1271667,
+    "long": -94.3772735
+  },
+  {
+    "type": "Liquor",
+    "name": "Capitol Federal Sports Complex of Liberty",
+    "lat": 39.2024944,
+    "long": -94.3843834
+  },
+  {
+    "type": "Liquor",
+    "name": "Belvoir Winery and Inn",
+    "lat": 39.2277602,
+    "long": -94.4075072
+  },
+  {
+    "type": "Liquor",
+    "name": "Play It Again Sports Liberty, MO",
+    "lat": 39.2363119,
+    "long": -94.4363175
+  },
+  {
+    "type": "Liquor",
+    "name": "Veterans of Foreign Wars",
+    "lat": 39.1311523,
+    "long": -94.4237444
+  },
+  {
+    "type": "Liquor",
+    "name": "The Fish Market",
+    "lat": 39.200241,
+    "long": -94.3997259
+  },
+  {
+    "type": "Liquor",
+    "name": "Twisted Taters",
+    "lat": 39.239226,
+    "long": -94.427239
+  },
+  {
+    "type": "Liquor",
+    "name": "Jowler Creek Vineyard Winery",
+    "lat": 39.432613,
+    "long": -94.776649
+  },
+  {
+    "type": "Liquor",
+    "name": "Barley Vine",
+    "lat": 39.3703983,
+    "long": -94.7812549
+  },
+  {
+    "type": "Liquor",
+    "name": "Trex Mart ",
+    "lat": 39.3841077,
+    "long": -94.791072
+  },
+  {
+    "type": "Liquor",
+    "name": "Virtual Links Golf",
+    "lat": 39.369964,
+    "long": -94.781648
+  },
+  {
+    "type": "Liquor",
+    "name": "Country Cafe Tracy, MO ",
+    "lat": 39.3841033,
+    "long": -94.79109
+  },
+  {
+    "type": "Liquor",
+    "name": "Platte County Youth Football League",
+    "lat": 39.3996115,
+    "long": -94.7996688
+  },
+  {
+    "type": "Liquor",
+    "name": "Travelodge by Wyndham Airport Platte City",
+    "lat": 39.3705019,
+    "long": -94.7751411
+  }
+]

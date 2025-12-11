@@ -1,0 +1,686 @@
+[
+  {
+    "type": "Bar",
+    "name": "The Righteous Room",
+    "lat": 33.7733357,
+    "long": -84.3529566
+  },
+  {
+    "type": "Bar",
+    "name": "Smith s Olde Bar",
+    "lat": 33.7976384,
+    "long": -84.3688347
+  },
+  {
+    "type": "Bar",
+    "name": "Northside Tavern",
+    "lat": 33.7836386,
+    "long": -84.4120483
+  },
+  {
+    "type": "Bar",
+    "name": "The Star Community Bar",
+    "lat": 33.7662776,
+    "long": -84.3488881
+  },
+  {
+    "type": "Bar",
+    "name": "The Local",
+    "lat": 33.7740249,
+    "long": -84.3622819
+  },
+  {
+    "type": "Bar",
+    "name": "Manuel s Tavern",
+    "lat": 33.7707382,
+    "long": -84.3527686
+  },
+  {
+    "type": "Bar",
+    "name": "Strangers in Paradise",
+    "lat": 33.7312017,
+    "long": -84.4209248
+  },
+  {
+    "type": "Bar",
+    "name": "Moe s and Joe s",
+    "lat": 33.7828404,
+    "long": -84.3541341
+  },
+  {
+    "type": "Bar",
+    "name": "Euclid Avenue Yacht Club",
+    "lat": 33.7648462,
+    "long": -84.3502171
+  },
+  {
+    "type": "Bar",
+    "name": "Our Bar ATL",
+    "lat": 33.75422,
+    "long": -84.3764755
+  },
+  {
+    "type": "Bar",
+    "name": "Handlebar ATL",
+    "lat": 33.7544877,
+    "long": -84.3719889
+  },
+  {
+    "type": "Bar",
+    "name": "Eleventh Street Pub",
+    "lat": 33.7831379,
+    "long": -84.3876936
+  },
+  {
+    "type": "Bar",
+    "name": "Sidebar",
+    "lat": 33.7568101,
+    "long": -84.3898188
+  },
+  {
+    "type": "Bar",
+    "name": "The EARL",
+    "lat": 33.7409772,
+    "long": -84.3459049
+  },
+  {
+    "type": "Bar",
+    "name": "The Po Boy Shop Basement Bar",
+    "lat": 33.792673,
+    "long": -84.304419
+  },
+  {
+    "type": "Bar",
+    "name": "Dark Horse Tavern",
+    "lat": 33.776797,
+    "long": -84.3526088
+  },
+  {
+    "type": "Bar",
+    "name": " EAV",
+    "lat": 33.7399098,
+    "long": -84.3452619
+  },
+  {
+    "type": "Bar",
+    "name": "Little Vinyl Lounge",
+    "lat": 33.7663065,
+    "long": -84.3488213
+  },
+  {
+    "type": "Bar",
+    "name": "The Independent",
+    "lat": 33.7792262,
+    "long": -84.3671998
+  },
+  {
+    "type": "Bar",
+    "name": "Blind Willie s",
+    "lat": 33.7771225,
+    "long": -84.352684
+  },
+  {
+    "type": "Bar",
+    "name": "Laseter s Tavern",
+    "lat": 33.8724047,
+    "long": -84.4555734
+  },
+  {
+    "type": "Bar",
+    "name": "Vintage Tavern",
+    "lat": 33.8837642,
+    "long": -84.5148728
+  },
+  {
+    "type": "Bar",
+    "name": "Timbers Tavern",
+    "lat": 33.8725382,
+    "long": -84.5322815
+  },
+  {
+    "type": "Bar",
+    "name": "The Village Hideout",
+    "lat": 33.8843436,
+    "long": -84.5162465
+  },
+  {
+    "type": "Bar",
+    "name": "Doc s Food Spirits",
+    "lat": 33.887616,
+    "long": -84.47529
+  },
+  {
+    "type": "Bar",
+    "name": "Meehan s Public House Vinings",
+    "lat": 33.8649025,
+    "long": -84.4700754
+  },
+  {
+    "type": "Bar",
+    "name": "Atkins Park Tavern",
+    "lat": 33.884243,
+    "long": -84.5147719
+  },
+  {
+    "type": "Bar",
+    "name": "Padriac s",
+    "lat": 33.8644444,
+    "long": -84.4763889
+  },
+  {
+    "type": "Bar",
+    "name": "PST SZN Cocktail Lounge",
+    "lat": 33.8893949,
+    "long": -84.467516
+  },
+  {
+    "type": "Bar",
+    "name": "Classic Bars",
+    "lat": 33.8313124,
+    "long": -84.4619602
+  },
+  {
+    "type": "Bar",
+    "name": "Old Vinings Inn",
+    "lat": 33.8665389,
+    "long": -84.4658917
+  },
+  {
+    "type": "Bar",
+    "name": "Yard House",
+    "lat": 33.8894803,
+    "long": -84.4691552
+  },
+  {
+    "type": "Bar",
+    "name": "Monterrey Of Smyrna",
+    "lat": 33.872634,
+    "long": -84.530446
+  },
+  {
+    "type": "Bar",
+    "name": "Ideal Sportsbar",
+    "lat": 33.7028031,
+    "long": -84.3845994
+  },
+  {
+    "type": "Bar",
+    "name": "North Highland Pub",
+    "lat": 33.7667921,
+    "long": -84.3529479
+  },
+  {
+    "type": "Bar",
+    "name": "The Brewhouse Cafe",
+    "lat": 33.7651879,
+    "long": -84.3488655
+  },
+  {
+    "type": "Bar",
+    "name": "Thinking Man Tavern",
+    "lat": 33.7678131,
+    "long": -84.3045455
+  },
+  {
+    "type": "Bar",
+    "name": "Sister Louisa s Church of the Living Room Ping Pong Emporium",
+    "lat": 33.7544083,
+    "long": -84.3722854
+  },
+  {
+    "type": "Bar",
+    "name": "Manny s Grant Park",
+    "lat": 33.7456376,
+    "long": -84.3684567
+  },
+  {
+    "type": "Bar",
+    "name": "Milltown Arms Tavern",
+    "lat": 33.7496892,
+    "long": -84.3678495
+  },
+  {
+    "type": "Bar",
+    "name": "Trophy Room",
+    "lat": 33.7400386,
+    "long": -84.3450322
+  },
+  {
+    "type": "Bar",
+    "name": " Estoria",
+    "lat": 33.7520764,
+    "long": -84.3634325
+  },
+  {
+    "type": "Bar",
+    "name": "Oscar s Bar",
+    "lat": 33.7964333,
+    "long": -84.3707825
+  },
+  {
+    "type": "Bar",
+    "name": "Establishment",
+    "lat": 33.7869913,
+    "long": -84.3821205
+  },
+  {
+    "type": "Bar",
+    "name": "Gibney s Pub",
+    "lat": 33.7603573,
+    "long": -84.3862048
+  },
+  {
+    "type": "Bar",
+    "name": "Friends on Ponce",
+    "lat": 33.7740126,
+    "long": -84.3631701
+  },
+  {
+    "type": "Bar",
+    "name": "Kat s Cafe",
+    "lat": 33.781138,
+    "long": -84.38094
+  },
+  {
+    "type": "Bar",
+    "name": "Black Bear Tavern",
+    "lat": 33.8075037,
+    "long": -84.3935332
+  },
+  {
+    "type": "Bar",
+    "name": "Mr C s Bar Grill",
+    "lat": 33.8086649,
+    "long": -84.4125893
+  },
+  {
+    "type": "Bar",
+    "name": "Trackside Tavern",
+    "lat": 33.7711639,
+    "long": -84.2920303
+  },
+  {
+    "type": "Bar",
+    "name": "MoonShadow Tavern",
+    "lat": 33.8506248,
+    "long": -84.2190548
+  },
+  {
+    "type": "Bar",
+    "name": "Billy Bob s New Secrets",
+    "lat": 33.8505677,
+    "long": -84.2195425
+  },
+  {
+    "type": "Bar",
+    "name": "Maracas Bar",
+    "lat": 33.8810713,
+    "long": -84.2036689
+  },
+  {
+    "type": "Bar",
+    "name": "Brockett Pub House Grill",
+    "lat": 33.8190529,
+    "long": -84.2318551
+  },
+  {
+    "type": "Bar",
+    "name": "The Drink Lab",
+    "lat": 33.8664942,
+    "long": -84.1858524
+  },
+  {
+    "type": "Bar",
+    "name": "Will Henry s Tavern",
+    "lat": 33.841671,
+    "long": -84.1310575
+  },
+  {
+    "type": "Bar",
+    "name": "Bukanas Sports Bar",
+    "lat": 33.8899987,
+    "long": -84.1954808
+  },
+  {
+    "type": "Bar",
+    "name": "Ponce Sports Lounge",
+    "lat": 33.80395,
+    "long": -84.2468953
+  },
+  {
+    "type": "Bar",
+    "name": "Dugan s Restaurant Bar",
+    "lat": 33.8494824,
+    "long": -84.2553855
+  },
+  {
+    "type": "Bar",
+    "name": "Impulse Lounge and Karaoke",
+    "lat": 33.8832226,
+    "long": -84.192443
+  },
+  {
+    "type": "Bar",
+    "name": "Gossip Sports Bar Lounge",
+    "lat": 33.798739,
+    "long": -84.2143566
+  },
+  {
+    "type": "Bar",
+    "name": "Lucy Bar Restaurant",
+    "lat": 33.7853344,
+    "long": -84.2430036
+  },
+  {
+    "type": "Bar",
+    "name": "Blue Ribbon Grill",
+    "lat": 33.885933,
+    "long": -84.25639
+  },
+  {
+    "type": "Bar",
+    "name": "The BottleShip",
+    "lat": 33.8617408,
+    "long": -84.1867413
+  },
+  {
+    "type": "Bar",
+    "name": "Petty Bone",
+    "lat": 33.7448647,
+    "long": -84.1373158
+  },
+  {
+    "type": "Bar",
+    "name": "Dudley s Sports Bar and Grill",
+    "lat": 33.8248845,
+    "long": -84.1114746
+  },
+  {
+    "type": "Bar",
+    "name": "O Rileys",
+    "lat": 33.7591885,
+    "long": -84.2414707
+  },
+  {
+    "type": "Bar",
+    "name": " Sports Bar and Lounge",
+    "lat": 33.7630703,
+    "long": -84.1954683
+  },
+  {
+    "type": "Bar",
+    "name": "Chapter Room",
+    "lat": 33.9080407,
+    "long": -84.3796266
+  },
+  {
+    "type": "Bar",
+    "name": "The Ship Anchor Pub",
+    "lat": 33.918848,
+    "long": -84.3770603
+  },
+  {
+    "type": "Bar",
+    "name": "Red Door Tavern",
+    "lat": 33.841933,
+    "long": -84.3791705
+  },
+  {
+    "type": "Bar",
+    "name": "Elbow Room",
+    "lat": 33.8372784,
+    "long": -84.37925
+  },
+  {
+    "type": "Bar",
+    "name": "Lost Dog Tavern",
+    "lat": 33.8420292,
+    "long": -84.3791537
+  },
+  {
+    "type": "Bar",
+    "name": "Bat Ball Pub",
+    "lat": 33.8923759,
+    "long": -84.3254241
+  },
+  {
+    "type": "Bar",
+    "name": "Maya Speak Tiki",
+    "lat": 33.9253652,
+    "long": -84.3462737
+  },
+  {
+    "type": "Bar",
+    "name": "Johnny s Hideaway",
+    "lat": 33.8577533,
+    "long": -84.3808785
+  },
+  {
+    "type": "Bar",
+    "name": "King George Tavern",
+    "lat": 33.9226667,
+    "long": -84.3137979
+  },
+  {
+    "type": "Bar",
+    "name": "The Bird",
+    "lat": 33.931956,
+    "long": -84.3324065
+  },
+  {
+    "type": "Bar",
+    "name": "Moondogs",
+    "lat": 33.8408229,
+    "long": -84.3752913
+  },
+  {
+    "type": "Bar",
+    "name": "Dive Bar Buckhead",
+    "lat": 33.8420939,
+    "long": -84.3791501
+  },
+  {
+    "type": "Bar",
+    "name": "The Blind Pig Parlour Bar",
+    "lat": 33.8424254,
+    "long": -84.3830522
+  },
+  {
+    "type": "Bar",
+    "name": "Okay Anny s Cocktail Bar",
+    "lat": 33.9302875,
+    "long": -84.3436588
+  },
+  {
+    "type": "Bar",
+    "name": "Five Paces Inn",
+    "lat": 33.8414694,
+    "long": -84.3801434
+  },
+  {
+    "type": "Bar",
+    "name": "Gilly s Sports Bar",
+    "lat": 33.9235153,
+    "long": -84.3113098
+  },
+  {
+    "type": "Bar",
+    "name": "Battle and Brew Sandy Springs",
+    "lat": 33.917157,
+    "long": -84.380926
+  },
+  {
+    "type": "Bar",
+    "name": "W XYZ Bar",
+    "lat": 33.9298264,
+    "long": -84.359116
+  },
+  {
+    "type": "Bar",
+    "name": "The Barrel Room",
+    "lat": 33.9128236,
+    "long": -84.3424414
+  },
+  {
+    "type": "Bar",
+    "name": "Thos O Reilly s Public House",
+    "lat": 33.9207282,
+    "long": -84.383299
+  },
+  {
+    "type": "Bar",
+    "name": "SportsTime Bar Grille",
+    "lat": 33.9424929,
+    "long": -84.269673
+  },
+  {
+    "type": "Bar",
+    "name": "Churchills",
+    "lat": 33.8426252,
+    "long": -84.380388
+  },
+  {
+    "type": "Bar",
+    "name": "Bar Peri AC Hotel Atlanta Perimeter",
+    "lat": 33.9278528,
+    "long": -84.3418949
+  },
+  {
+    "type": "Bar",
+    "name": "Bench Warmers Sports Grill",
+    "lat": 33.8384166,
+    "long": -84.3107912
+  },
+  {
+    "type": "Bar",
+    "name": "Clay s Sports Cafe",
+    "lat": 33.9179936,
+    "long": -84.3770943
+  },
+  {
+    "type": "Bar",
+    "name": "The Bucket Shop Cafe",
+    "lat": 33.849357,
+    "long": -84.3608317
+  },
+  {
+    "type": "Bar",
+    "name": "Thirty",
+    "lat": 33.841001,
+    "long": -84.3803451
+  },
+  {
+    "type": "Bar",
+    "name": "BLUETOP Restaurant",
+    "lat": 33.8914727,
+    "long": -84.3017571
+  },
+  {
+    "type": "Bar",
+    "name": "Lips Drag Queen Show Palace, Restaurant Bar",
+    "lat": 33.8357141,
+    "long": -84.337152
+  },
+  {
+    "type": "Bar",
+    "name": "Downwind Restaurant and Lounge",
+    "lat": 33.8773296,
+    "long": -84.3043167
+  },
+  {
+    "type": "Bar",
+    "name": "Fado Irish Pub",
+    "lat": 33.8379478,
+    "long": -84.3785214
+  },
+  {
+    "type": "Bar",
+    "name": "La Dona Bar Restaurant",
+    "lat": 33.9105451,
+    "long": -84.3799145
+  },
+  {
+    "type": "Bar",
+    "name": "Peacock Alley Lounge",
+    "lat": 33.849835,
+    "long": -84.3667323
+  },
+  {
+    "type": "Bar",
+    "name": "Three Dollar Cafe Buckhead Chastain ",
+    "lat": 33.8772981,
+    "long": -84.3795103
+  },
+  {
+    "type": "Bar",
+    "name": "McCray s Tavern",
+    "lat": 33.8433102,
+    "long": -84.4909169
+  },
+  {
+    "type": "Bar",
+    "name": "The Whelan",
+    "lat": 33.7891454,
+    "long": -84.4261668
+  },
+  {
+    "type": "Bar",
+    "name": "Deja Vu Sports Bar Lounge",
+    "lat": 33.7638889,
+    "long": -84.439296
+  },
+  {
+    "type": "Bar",
+    "name": "Cover Sports Shows",
+    "lat": 33.7685668,
+    "long": -84.2524426
+  },
+  {
+    "type": "Bar",
+    "name": "Ranger Station",
+    "lat": 33.759638,
+    "long": -84.364239
+  },
+  {
+    "type": "Bar",
+    "name": "The Manchester Arms",
+    "lat": 33.6594574,
+    "long": -84.4448393
+  },
+  {
+    "type": "Bar",
+    "name": "Checkmate Restaurant",
+    "lat": 33.6239836,
+    "long": -84.4754273
+  },
+  {
+    "type": "Bar",
+    "name": "Wheels up Bar Grill behind Country Inn and Suites",
+    "lat": 33.6157335,
+    "long": -84.448649
+  },
+  {
+    "type": "Bar",
+    "name": "Madhouse Sports Bar Grill",
+    "lat": 33.6116288,
+    "long": -84.4712945
+  },
+  {
+    "type": "Bar",
+    "name": "Chairs Upstairs Bar and Restaurant",
+    "lat": 33.679275,
+    "long": -84.440453
+  },
+  {
+    "type": "Bar",
+    "name": "IceBar Lounge Restaurant",
+    "lat": 33.6061958,
+    "long": -84.4448896
+  },
+  {
+    "type": "Bar",
+    "name": "Grown and Sexy Tavern",
+    "lat": 33.6230592,
+    "long": -84.5021699
+  }
+]

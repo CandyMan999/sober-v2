@@ -1,0 +1,752 @@
+[
+  {
+    "type": "Liquor",
+    "name": "Peabody s Nightclub",
+    "lat": 36.849367,
+    "long": -75.9764243
+  },
+  {
+    "type": "Liquor",
+    "name": "Mermaids VB",
+    "lat": 36.8368997,
+    "long": -76.0234992
+  },
+  {
+    "type": "Liquor",
+    "name": "Krave",
+    "lat": 36.8449372,
+    "long": -75.9749465
+  },
+  {
+    "type": "Liquor",
+    "name": "Venue ",
+    "lat": 36.8456571,
+    "long": -76.0494539
+  },
+  {
+    "type": "Liquor",
+    "name": "Sky Bar",
+    "lat": 36.8588771,
+    "long": -75.9779186
+  },
+  {
+    "type": "Liquor",
+    "name": "Minx Gentlemens Club",
+    "lat": 36.826989,
+    "long": -76.0096009
+  },
+  {
+    "type": "Liquor",
+    "name": "BeachHouse ",
+    "lat": 36.8478048,
+    "long": -75.9751223
+  },
+  {
+    "type": "Liquor",
+    "name": "The Edge",
+    "lat": 36.8496113,
+    "long": -75.975606
+  },
+  {
+    "type": "Liquor",
+    "name": "Lunasea Key West Cafe",
+    "lat": 36.849984,
+    "long": -75.976131
+  },
+  {
+    "type": "Liquor",
+    "name": "Aqua Social",
+    "lat": 36.8363572,
+    "long": -75.9716072
+  },
+  {
+    "type": "Liquor",
+    "name": "Central Tapas Lounge",
+    "lat": 36.8454591,
+    "long": -76.0494289
+  },
+  {
+    "type": "Liquor",
+    "name": "Duck Dive Tavern",
+    "lat": 36.858971,
+    "long": -75.9814738
+  },
+  {
+    "type": "Liquor",
+    "name": "Family Fun Xperience Theatre",
+    "lat": 36.8442045,
+    "long": -75.974317
+  },
+  {
+    "type": "Liquor",
+    "name": "The Rainbow Cactus",
+    "lat": 36.823729,
+    "long": -76.0793021
+  },
+  {
+    "type": "Liquor",
+    "name": "Quemar",
+    "lat": 36.8535912,
+    "long": -75.9970215
+  },
+  {
+    "type": "Liquor",
+    "name": "Aura Lounge",
+    "lat": 36.80216,
+    "long": -76.086098
+  },
+  {
+    "type": "Liquor",
+    "name": "Montego Island Grill",
+    "lat": 36.812906,
+    "long": -76.071554
+  },
+  {
+    "type": "Liquor",
+    "name": "Broadway Nightclub",
+    "lat": 36.8554729,
+    "long": -76.2117103
+  },
+  {
+    "type": "Liquor",
+    "name": "Kascades Lounge",
+    "lat": 36.8339048,
+    "long": -76.1294775
+  },
+  {
+    "type": "Liquor",
+    "name": "OMEGA BAR",
+    "lat": 36.8713381,
+    "long": -76.1691338
+  },
+  {
+    "type": "Liquor",
+    "name": "The Ultra Lounge",
+    "lat": 36.8540179,
+    "long": -76.2015909
+  },
+  {
+    "type": "Liquor",
+    "name": "Bucketheads Beach Grill",
+    "lat": 36.9075827,
+    "long": -76.099248
+  },
+  {
+    "type": "Liquor",
+    "name": "The Banque Country Western",
+    "lat": 36.9148056,
+    "long": -76.2256669
+  },
+  {
+    "type": "Liquor",
+    "name": "Upscale Restaurant and Lounge",
+    "lat": 36.8108734,
+    "long": -76.2157673
+  },
+  {
+    "type": "Liquor",
+    "name": "The Wave",
+    "lat": 36.8826896,
+    "long": -76.2953163
+  },
+  {
+    "type": "Liquor",
+    "name": "La Grandota Broadway Latin Night Club",
+    "lat": 36.8553769,
+    "long": -76.2116484
+  },
+  {
+    "type": "Liquor",
+    "name": "Nightiest Club",
+    "lat": 36.8284589,
+    "long": -76.0602686
+  },
+  {
+    "type": "Liquor",
+    "name": "Minx",
+    "lat": 36.8474955,
+    "long": -75.9962724
+  },
+  {
+    "type": "Liquor",
+    "name": "The Boxx",
+    "lat": 36.8496779,
+    "long": -75.9756139
+  },
+  {
+    "type": "Liquor",
+    "name": "Luxx",
+    "lat": 36.8430105,
+    "long": -76.0473573
+  },
+  {
+    "type": "Liquor",
+    "name": "The Cave closed",
+    "lat": 36.8449804,
+    "long": -75.9749991
+  },
+  {
+    "type": "Liquor",
+    "name": "Scandals Live",
+    "lat": 36.8100922,
+    "long": -76.094311
+  },
+  {
+    "type": "Liquor",
+    "name": "Ready Room",
+    "lat": 36.7829504,
+    "long": -76.0488586
+  },
+  {
+    "type": "Liquor",
+    "name": "Dockers Karaoke Pub",
+    "lat": 36.8182372,
+    "long": -76.1220165
+  },
+  {
+    "type": "Liquor",
+    "name": "Grammy Karaoke Korean BBQ",
+    "lat": 36.8112628,
+    "long": -76.0730424
+  },
+  {
+    "type": "Liquor",
+    "name": "Buko Resto Bar",
+    "lat": 36.8011621,
+    "long": -76.1121546
+  },
+  {
+    "type": "Liquor",
+    "name": "Mike s Break Room",
+    "lat": 36.7845517,
+    "long": -76.1072357
+  },
+  {
+    "type": "Liquor",
+    "name": "The Lounge of Virginia Beach",
+    "lat": 36.7953632,
+    "long": -76.0926082
+  },
+  {
+    "type": "Liquor",
+    "name": "BeachStreet USA",
+    "lat": 36.8250072,
+    "long": -76.1282093
+  },
+  {
+    "type": "Liquor",
+    "name": "Footers Sports Pub",
+    "lat": 36.8123738,
+    "long": -76.1392859
+  },
+  {
+    "type": "Liquor",
+    "name": "Cheds Bar and Grill",
+    "lat": 36.812479,
+    "long": -76.1394113
+  },
+  {
+    "type": "Liquor",
+    "name": "Your Alibi s Bar and Grill",
+    "lat": 36.8088936,
+    "long": -76.0922472
+  },
+  {
+    "type": "Liquor",
+    "name": "Club De Porres",
+    "lat": 36.8350053,
+    "long": -76.3085908
+  },
+  {
+    "type": "Liquor",
+    "name": "Bugatti s Norfolk",
+    "lat": 36.849909,
+    "long": -76.2911338
+  },
+  {
+    "type": "Liquor",
+    "name": "THE EDGE",
+    "lat": 36.8874093,
+    "long": -76.3022167
+  },
+  {
+    "type": "Liquor",
+    "name": "J B s Gallery of Girls",
+    "lat": 36.7923148,
+    "long": -76.3296634
+  },
+  {
+    "type": "Liquor",
+    "name": "Headlights Gold Gentleman s Club",
+    "lat": 36.8137038,
+    "long": -76.3124276
+  },
+  {
+    "type": "Liquor",
+    "name": "PBR Norfolk A Coors Banquet Bar",
+    "lat": 36.8442717,
+    "long": -76.2905085
+  },
+  {
+    "type": "Liquor",
+    "name": "Truth Restaurant Lounge",
+    "lat": 36.8351783,
+    "long": -76.29953
+  },
+  {
+    "type": "Liquor",
+    "name": "Town Club Inc",
+    "lat": 36.8311142,
+    "long": -76.3418666
+  },
+  {
+    "type": "Liquor",
+    "name": "Eagles Nest Rockin Country Bar",
+    "lat": 36.791613,
+    "long": -76.237639
+  },
+  {
+    "type": "Liquor",
+    "name": "Headlights Gentlemen s Club",
+    "lat": 36.7922748,
+    "long": -76.3296655
+  },
+  {
+    "type": "Liquor",
+    "name": "Virginia Club",
+    "lat": 36.8488375,
+    "long": -76.2917083
+  },
+  {
+    "type": "Liquor",
+    "name": "Fantasy Lounge",
+    "lat": 36.8156493,
+    "long": -76.3543224
+  },
+  {
+    "type": "Liquor",
+    "name": "Krystal Cabaret",
+    "lat": 36.8074507,
+    "long": -76.3201466
+  },
+  {
+    "type": "Liquor",
+    "name": "Getaway gentleman club",
+    "lat": 36.8105076,
+    "long": -76.3162661
+  },
+  {
+    "type": "Liquor",
+    "name": "P J s th Hole",
+    "lat": 36.8845568,
+    "long": -76.2947676
+  },
+  {
+    "type": "Liquor",
+    "name": "The Club House",
+    "lat": 36.8681735,
+    "long": -76.2344116
+  },
+  {
+    "type": "Liquor",
+    "name": " th Zen",
+    "lat": 36.8787548,
+    "long": -76.3017782
+  },
+  {
+    "type": "Liquor",
+    "name": "Town Point Club",
+    "lat": 36.8461457,
+    "long": -76.2934774
+  },
+  {
+    "type": "Liquor",
+    "name": "Ukiyo VA",
+    "lat": 36.7993705,
+    "long": -76.3269322
+  },
+  {
+    "type": "Liquor",
+    "name": "JB s Gallery of Girls",
+    "lat": 36.7877422,
+    "long": -76.2597898
+  },
+  {
+    "type": "Liquor",
+    "name": "Circuit Social Arcade Bar Social",
+    "lat": 36.8495677,
+    "long": -76.2904428
+  },
+  {
+    "type": "Liquor",
+    "name": "The Harbor Club",
+    "lat": 36.844147,
+    "long": -76.291229
+  },
+  {
+    "type": "Liquor",
+    "name": "The Corner Bar and Lounge",
+    "lat": 36.7996337,
+    "long": -76.3261218
+  },
+  {
+    "type": "Liquor",
+    "name": "Tekila la yaroha",
+    "lat": 36.8500533,
+    "long": -76.2898752
+  },
+  {
+    "type": "Liquor",
+    "name": "Gershwin s",
+    "lat": 36.8505547,
+    "long": -76.2900178
+  },
+  {
+    "type": "Liquor",
+    "name": "Pure Diamonds",
+    "lat": 36.8156492,
+    "long": -76.3543162
+  },
+  {
+    "type": "Liquor",
+    "name": "D Arena",
+    "lat": 36.8060676,
+    "long": -76.3206586
+  },
+  {
+    "type": "Liquor",
+    "name": "Waterside District",
+    "lat": 36.8443931,
+    "long": -76.2911476
+  },
+  {
+    "type": "Liquor",
+    "name": "Blue Moon Taphouse",
+    "lat": 36.8446278,
+    "long": -76.2912734
+  },
+  {
+    "type": "Liquor",
+    "name": " F F B F F B La Yaroa F F C B Tropical Restaurant Lounge F F A F F B ",
+    "lat": 36.8859369,
+    "long": -76.2165769
+  },
+  {
+    "type": "Liquor",
+    "name": "Chicho s Backstage",
+    "lat": 36.8503281,
+    "long": -76.2900428
+  },
+  {
+    "type": "Liquor",
+    "name": "RiffHouse Pub",
+    "lat": 36.806055,
+    "long": -76.2770677
+  },
+  {
+    "type": "Liquor",
+    "name": "MJ s Tavern",
+    "lat": 36.8837122,
+    "long": -76.2817709
+  },
+  {
+    "type": "Liquor",
+    "name": "Nazef Char Grill Restaurant Lounge",
+    "lat": 36.8706282,
+    "long": -76.2968532
+  },
+  {
+    "type": "Liquor",
+    "name": "Ez Inn",
+    "lat": 36.880321,
+    "long": -76.2264307
+  },
+  {
+    "type": "Liquor",
+    "name": "Levels Lounge",
+    "lat": 36.8226636,
+    "long": -76.2307566
+  },
+  {
+    "type": "Liquor",
+    "name": "Jerry s Restaurant Lounge",
+    "lat": 36.8201147,
+    "long": -76.227245
+  },
+  {
+    "type": "Liquor",
+    "name": "Horus Hookah Lounge",
+    "lat": 36.8353825,
+    "long": -76.3075972
+  },
+  {
+    "type": "Liquor",
+    "name": " rd Precinct",
+    "lat": 36.8042362,
+    "long": -76.2756332
+  },
+  {
+    "type": "Liquor",
+    "name": "Longshots",
+    "lat": 36.8074281,
+    "long": -76.2217487
+  },
+  {
+    "type": "Liquor",
+    "name": "Premiere Hookah Lounge",
+    "lat": 36.7979254,
+    "long": -76.326087
+  },
+  {
+    "type": "Liquor",
+    "name": "Mazzika Hookah Lounge",
+    "lat": 36.88755,
+    "long": -76.2948041
+  },
+  {
+    "type": "Liquor",
+    "name": "Victory River Burger Bistro VRBB ",
+    "lat": 36.7939956,
+    "long": -76.3263182
+  },
+  {
+    "type": "Liquor",
+    "name": "Roger Browns Restaurant and Sports Bar",
+    "lat": 36.8357823,
+    "long": -76.2999831
+  },
+  {
+    "type": "Liquor",
+    "name": "the book club llc",
+    "lat": 36.8354694,
+    "long": -76.3046339
+  },
+  {
+    "type": "Liquor",
+    "name": "District",
+    "lat": 36.8332935,
+    "long": -76.3398948
+  },
+  {
+    "type": "Liquor",
+    "name": "MOJO BONES",
+    "lat": 36.8851242,
+    "long": -76.3001328
+  },
+  {
+    "type": "Liquor",
+    "name": "PIXELS Pints Bytes",
+    "lat": 36.8695774,
+    "long": -76.2918118
+  },
+  {
+    "type": "Liquor",
+    "name": "Magoo s Cigar Lounge",
+    "lat": 36.8460749,
+    "long": -76.2903444
+  },
+  {
+    "type": "Liquor",
+    "name": "The Birch",
+    "lat": 36.8646669,
+    "long": -76.3095405
+  },
+  {
+    "type": "Liquor",
+    "name": "Norfolk Waterside Marriott",
+    "lat": 36.8455935,
+    "long": -76.2908727
+  },
+  {
+    "type": "Liquor",
+    "name": "Toast",
+    "lat": 36.8717887,
+    "long": -76.2904423
+  },
+  {
+    "type": "Liquor",
+    "name": "Hypnotic s Restaurant and Lounge",
+    "lat": 36.7892023,
+    "long": -76.3320392
+  },
+  {
+    "type": "Liquor",
+    "name": "The Taphouse Grill",
+    "lat": 36.8720789,
+    "long": -76.2997633
+  },
+  {
+    "type": "Liquor",
+    "name": "The Public House",
+    "lat": 36.8655316,
+    "long": -76.2989877
+  },
+  {
+    "type": "Liquor",
+    "name": "Republic",
+    "lat": 36.8522212,
+    "long": -76.2894956
+  },
+  {
+    "type": "Liquor",
+    "name": "The Veil Brewing Co ",
+    "lat": 36.8712565,
+    "long": -76.2906989
+  },
+  {
+    "type": "Liquor",
+    "name": "Tap It Local",
+    "lat": 36.849162,
+    "long": -76.290746
+  },
+  {
+    "type": "Liquor",
+    "name": "Attucks Jazz Club",
+    "lat": 36.856745,
+    "long": -76.2784963
+  },
+  {
+    "type": "Liquor",
+    "name": "The Bier Garden",
+    "lat": 36.8354835,
+    "long": -76.302088
+  },
+  {
+    "type": "Liquor",
+    "name": "Griff s Restaurant Sports",
+    "lat": 36.835,
+    "long": -76.3027778
+  },
+  {
+    "type": "Liquor",
+    "name": "The Ghent E A Self Pour Gastropub E A Roof Top Bar Event Venue",
+    "lat": 36.8682559,
+    "long": -76.2890248
+  },
+  {
+    "type": "Liquor",
+    "name": "Venue ",
+    "lat": 36.7994029,
+    "long": -76.3268835
+  },
+  {
+    "type": "Liquor",
+    "name": "Colley Cantina",
+    "lat": 36.8669674,
+    "long": -76.2982774
+  },
+  {
+    "type": "Liquor",
+    "name": "Thyme On The River",
+    "lat": 36.8350551,
+    "long": -76.296684
+  },
+  {
+    "type": "Liquor",
+    "name": "Wave Church Norfolk",
+    "lat": 36.8502844,
+    "long": -76.2914224
+  },
+  {
+    "type": "Liquor",
+    "name": "Baron s Pub Restaurant",
+    "lat": 36.835508,
+    "long": -76.3024996
+  },
+  {
+    "type": "Liquor",
+    "name": "The Cantina",
+    "lat": 36.8350944,
+    "long": -76.3045883
+  },
+  {
+    "type": "Liquor",
+    "name": "Hell s Kitchen",
+    "lat": 36.8469422,
+    "long": -76.2918936
+  },
+  {
+    "type": "Liquor",
+    "name": "Longboards Olde Towne",
+    "lat": 36.8354472,
+    "long": -76.3021396
+  },
+  {
+    "type": "Liquor",
+    "name": "womens center",
+    "lat": 36.8354258,
+    "long": -76.2982742
+  },
+  {
+    "type": "Liquor",
+    "name": "Privilege",
+    "lat": 36.8344471,
+    "long": -76.3011002
+  },
+  {
+    "type": "Liquor",
+    "name": "Gosport Tavern",
+    "lat": 36.8354622,
+    "long": -76.3057037
+  },
+  {
+    "type": "Liquor",
+    "name": "The Back Latin Lifestyle",
+    "lat": 36.809943,
+    "long": -76.3675915
+  },
+  {
+    "type": "Liquor",
+    "name": "Levels Norfolk",
+    "lat": 36.9147355,
+    "long": -76.2489869
+  },
+  {
+    "type": "Liquor",
+    "name": "Cheetah s Go Go",
+    "lat": 36.9003149,
+    "long": -76.1793249
+  },
+  {
+    "type": "Liquor",
+    "name": "Poppa s Pub Restaurant",
+    "lat": 36.9049657,
+    "long": -76.1795943
+  },
+  {
+    "type": "Liquor",
+    "name": "Lola s Beach Cantina",
+    "lat": 36.9299719,
+    "long": -76.1929476
+  },
+  {
+    "type": "Liquor",
+    "name": "Session",
+    "lat": 36.9098798,
+    "long": -76.0753008
+  },
+  {
+    "type": "Liquor",
+    "name": "AJ Gator s Sports Bar Grill",
+    "lat": 36.9282994,
+    "long": -76.1922753
+  },
+  {
+    "type": "Liquor",
+    "name": "Brock Environmental Center Chesapeake Bay Foundation",
+    "lat": 36.9037987,
+    "long": -76.0975872
+  },
+  {
+    "type": "Liquor",
+    "name": "Headlights Granby Gentlemen E s Club",
+    "lat": 36.9169595,
+    "long": -76.2730091
+  },
+  {
+    "type": "Liquor",
+    "name": "Images Restaurant Entertainment",
+    "lat": 36.8004153,
+    "long": -76.3931415
+  }
+]

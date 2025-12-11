@@ -1,0 +1,344 @@
+[
+  {
+    "type": "Liquor",
+    "name": "Extasis Night Club",
+    "lat": 41.2126055,
+    "long": -95.9598378
+  },
+  {
+    "type": "Liquor",
+    "name": "L Street Lounge",
+    "lat": 41.2113086,
+    "long": -96.0610838
+  },
+  {
+    "type": "Liquor",
+    "name": "Rhythmz Lounge",
+    "lat": 41.2044791,
+    "long": -96.0831832
+  },
+  {
+    "type": "Liquor",
+    "name": "Clubhouse Lounge",
+    "lat": 41.2949802,
+    "long": -96.0530635
+  },
+  {
+    "type": "Liquor",
+    "name": "Laka Lono Rum Club",
+    "lat": 41.255651,
+    "long": -95.932287
+  },
+  {
+    "type": "Liquor",
+    "name": "Penthouse Lounge",
+    "lat": 41.2146224,
+    "long": -96.0435714
+  },
+  {
+    "type": "Liquor",
+    "name": "Bar ",
+    "lat": 41.2559032,
+    "long": -95.9329138
+  },
+  {
+    "type": "Liquor",
+    "name": "The Exchange",
+    "lat": 41.2614849,
+    "long": -95.9310819
+  },
+  {
+    "type": "Liquor",
+    "name": "Grown Folks Social Club ",
+    "lat": 41.2928414,
+    "long": -95.9467663
+  },
+  {
+    "type": "Liquor",
+    "name": "Reverb Lounge",
+    "lat": 41.2853495,
+    "long": -96.0086024
+  },
+  {
+    "type": "Liquor",
+    "name": "The Max",
+    "lat": 41.2541768,
+    "long": -95.9354898
+  },
+  {
+    "type": "Liquor",
+    "name": "HAVANA GARAGE",
+    "lat": 41.2555632,
+    "long": -95.9297177
+  },
+  {
+    "type": "Liquor",
+    "name": "American Dream",
+    "lat": 41.2199694,
+    "long": -96.0269672
+  },
+  {
+    "type": "Liquor",
+    "name": "Flixx Lounge Cabaret Show Bar",
+    "lat": 41.2496058,
+    "long": -95.9291411
+  },
+  {
+    "type": "Liquor",
+    "name": "Interlude Lounge",
+    "lat": 41.2481618,
+    "long": -96.0323951
+  },
+  {
+    "type": "Liquor",
+    "name": "My Place Lounge",
+    "lat": 41.2813797,
+    "long": -95.9463604
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Puravida",
+    "lat": 41.2338472,
+    "long": -95.9391976
+  },
+  {
+    "type": "Liquor",
+    "name": "The Reading Room",
+    "lat": 41.2574435,
+    "long": -95.9362241
+  },
+  {
+    "type": "Liquor",
+    "name": "Anna s Place",
+    "lat": 41.260018,
+    "long": -95.9402349
+  },
+  {
+    "type": "Liquor",
+    "name": " Club",
+    "lat": 41.2996995,
+    "long": -95.9476874
+  },
+  {
+    "type": "Liquor",
+    "name": "Red Lion Lounge",
+    "lat": 41.2579156,
+    "long": -95.9691791
+  },
+  {
+    "type": "Liquor",
+    "name": "The Bull Moose Bar",
+    "lat": 41.2418641,
+    "long": -95.9659369
+  },
+  {
+    "type": "Liquor",
+    "name": "Beer City",
+    "lat": 41.2123785,
+    "long": -95.9759602
+  },
+  {
+    "type": "Liquor",
+    "name": "Plaza De La Raza",
+    "lat": 41.209713,
+    "long": -95.9476084
+  },
+  {
+    "type": "Liquor",
+    "name": "Renos Karaoke",
+    "lat": 41.2576187,
+    "long": -95.9724766
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Omaha Gentlemen E s Club",
+    "lat": 41.2352224,
+    "long": -96.0997509
+  },
+  {
+    "type": "Liquor",
+    "name": "Winner ",
+    "lat": 41.2030906,
+    "long": -96.0230255
+  },
+  {
+    "type": "Liquor",
+    "name": "The Cottonwood Room",
+    "lat": 41.2576142,
+    "long": -95.9667042
+  },
+  {
+    "type": "Liquor",
+    "name": "CEDAR OMAHA",
+    "lat": 41.2496583,
+    "long": -96.0480139
+  },
+  {
+    "type": "Liquor",
+    "name": "Holiday Lounge",
+    "lat": 41.2604115,
+    "long": -96.0377543
+  },
+  {
+    "type": "Liquor",
+    "name": "Annie s Irish Pub",
+    "lat": 41.2614059,
+    "long": -95.9307937
+  },
+  {
+    "type": "Liquor",
+    "name": "Grant St Bar",
+    "lat": 41.2793766,
+    "long": -96.0518111
+  },
+  {
+    "type": "Liquor",
+    "name": "Burdock B Bitters",
+    "lat": 41.2614004,
+    "long": -95.929666
+  },
+  {
+    "type": "Liquor",
+    "name": "Nosh Restaurant and Wine Lounge",
+    "lat": 41.2599327,
+    "long": -95.9296569
+  },
+  {
+    "type": "Liquor",
+    "name": "Hookah ",
+    "lat": 41.2567329,
+    "long": -96.0250016
+  },
+  {
+    "type": "Liquor",
+    "name": "Kirk s Lounge",
+    "lat": 41.3063126,
+    "long": -95.9471386
+  },
+  {
+    "type": "Liquor",
+    "name": "Popcorn Cocktails",
+    "lat": 41.255617,
+    "long": -95.9313886
+  },
+  {
+    "type": "Liquor",
+    "name": "lessthanthree ",
+    "lat": 41.2855574,
+    "long": -96.0251714
+  },
+  {
+    "type": "Liquor",
+    "name": "Millenium Night Club",
+    "lat": 41.2060144,
+    "long": -96.1217687
+  },
+  {
+    "type": "Liquor",
+    "name": "Ralston Keno",
+    "lat": 41.2066086,
+    "long": -96.0245576
+  },
+  {
+    "type": "Liquor",
+    "name": "End Zone Lounge",
+    "lat": 41.2010345,
+    "long": -96.0448728
+  },
+  {
+    "type": "Liquor",
+    "name": "Barnone S L P productions",
+    "lat": 41.2398399,
+    "long": -96.0146369
+  },
+  {
+    "type": "Liquor",
+    "name": "Winchester Bar Grill",
+    "lat": 41.2055139,
+    "long": -96.0203714
+  },
+  {
+    "type": "Liquor",
+    "name": "Vida Lounge Restaurant",
+    "lat": 41.2261976,
+    "long": -96.0246441
+  },
+  {
+    "type": "Liquor",
+    "name": "Plank Provisions",
+    "lat": 41.2551442,
+    "long": -95.9321917
+  },
+  {
+    "type": "Liquor",
+    "name": "X Hale Hookah",
+    "lat": 41.262627,
+    "long": -96.0326056
+  },
+  {
+    "type": "Liquor",
+    "name": "Playhouse",
+    "lat": 41.1481424,
+    "long": -95.8196324
+  },
+  {
+    "type": "Liquor",
+    "name": "Stoli s Lounge",
+    "lat": 41.2655952,
+    "long": -96.0999462
+  },
+  {
+    "type": "Liquor",
+    "name": "Blue Sushi Sake Grill",
+    "lat": 41.2559129,
+    "long": -95.9321941
+  },
+  {
+    "type": "Liquor",
+    "name": "Goldeez Food Fun Spirits",
+    "lat": 41.308342,
+    "long": -96.075244
+  },
+  {
+    "type": "Liquor",
+    "name": "Krush Private Klub",
+    "lat": 41.2557401,
+    "long": -95.9348124
+  },
+  {
+    "type": "Liquor",
+    "name": "Club ",
+    "lat": 41.2037778,
+    "long": -96.1988077
+  },
+  {
+    "type": "Liquor",
+    "name": "DUSTY S LOUNGE",
+    "lat": 41.2626168,
+    "long": -95.8662443
+  },
+  {
+    "type": "Liquor",
+    "name": "Billy O s Lounge",
+    "lat": 41.3080233,
+    "long": -96.1375029
+  },
+  {
+    "type": "Liquor",
+    "name": "Rehab Lounge Nightclub",
+    "lat": 46.423669,
+    "long": -129.9427086
+  },
+  {
+    "type": "Liquor",
+    "name": "My Way Lounge",
+    "lat": 41.2809265,
+    "long": -96.0429487
+  },
+  {
+    "type": "Liquor",
+    "name": "Parliament Pub",
+    "lat": 41.2329184,
+    "long": -96.1787498
+  }
+]

@@ -170,6 +170,48 @@ function inPageScraper(options) {
       }
     }
 
+    function getCategoryFromCard(cardEl) {
+      if (!cardEl) return "";
+
+      // Grab all W4Efsd blocks in the card (these hold rating, category, address, hours, etc.)
+      var blocks = cardEl.querySelectorAll(".W4Efsd");
+      if (!blocks || !blocks.length) return "";
+
+      // Keywords that usually appear in the category
+      var categoryRegex =
+        /bar|pub|club|night club|nightclub|liquor|wine|spirit|store|supermarket|grocery|convenience/i;
+
+      // 1) Look for a clean short span that matches our category regex
+      for (var i = 0; i < blocks.length; i++) {
+        var spans = blocks[i].querySelectorAll("span span, span");
+        for (var j = 0; j < spans.length; j++) {
+          var txt = (spans[j].textContent || "").trim();
+          if (!txt) continue;
+
+          // Ignore obvious noise
+          if (/^\d+(\.\d+)?$/.test(txt)) continue; // pure numbers (ratings)
+          if (/\d+ reviews/i.test(txt)) continue;
+          if (txt.length > 40) continue; // too long for a category label
+
+          if (categoryRegex.test(txt)) {
+            return txt; // e.g. "Liquor store", "Bar", "Night club", etc.
+          }
+        }
+      }
+
+      // 2) Fallback: pull from innerText lines
+      var full = (cardEl.innerText || "").split("\n");
+      for (var k = 0; k < full.length; k++) {
+        var line = full[k].trim();
+        if (!line) continue;
+        if (categoryRegex.test(line)) {
+          return line;
+        }
+      }
+
+      return "";
+    }
+
     function reachedEndOfList() {
       var endEls = document.querySelectorAll(".m6QErb.XiKgde.tLjsW.eKbjU");
       for (var i = 0; i < endEls.length; i++) {
@@ -481,11 +523,15 @@ function inPageScraper(options) {
             continue;
           }
 
+          // 🔥 NEW: read Maps' own category text
+          var gmapsCategory = getCategoryFromCard(cardEl);
+
           list.push({
-            type: categoryType,
+            type: categoryType, // your high-level category (Bar/Liquor)
             name: name,
             lat: lat,
             long: longVal,
+            gmapsCategory: gmapsCategory, // ← extra field
           });
         }
 

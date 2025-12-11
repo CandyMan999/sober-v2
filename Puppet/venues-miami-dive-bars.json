@@ -1,0 +1,1628 @@
+[
+  {
+    "type": "Bar",
+    "name": "South Pointe Tavern",
+    "lat": 25.7682072,
+    "long": -80.1330218
+  },
+  {
+    "type": "Bar",
+    "name": "Lola bar",
+    "lat": 25.7773996,
+    "long": -80.1853003
+  },
+  {
+    "type": "Bar",
+    "name": "Brother s Keeper Bar",
+    "lat": 25.7923832,
+    "long": -80.1414469
+  },
+  {
+    "type": "Bar",
+    "name": "Mac s Club Deuce",
+    "lat": 25.7852177,
+    "long": -80.1314983
+  },
+  {
+    "type": "Bar",
+    "name": "Delirio Tiki Bar by Swizzle",
+    "lat": 25.7822088,
+    "long": -80.1315618
+  },
+  {
+    "type": "Bar",
+    "name": "Lost Weekend",
+    "lat": 25.7868536,
+    "long": -80.1310298
+  },
+  {
+    "type": "Bar",
+    "name": "Lost Boy Dry Goods",
+    "lat": 25.7744049,
+    "long": -80.1907103
+  },
+  {
+    "type": "Bar",
+    "name": "Mickey Burkes",
+    "lat": 25.7840237,
+    "long": -80.131949
+  },
+  {
+    "type": "Bar",
+    "name": "Bar Nancy",
+    "lat": 25.7656286,
+    "long": -80.2282647
+  },
+  {
+    "type": "Bar",
+    "name": "Bar Idol",
+    "lat": 25.7781394,
+    "long": -80.1335677
+  },
+  {
+    "type": "Bar",
+    "name": "Kaona, The Hidden Tiki Room",
+    "lat": 25.7908397,
+    "long": -80.1925165
+  },
+  {
+    "type": "Bar",
+    "name": "Over Under",
+    "lat": 25.774428,
+    "long": -80.190885
+  },
+  {
+    "type": "Bar",
+    "name": "Ted s Hideaway",
+    "lat": 25.7708011,
+    "long": -80.1334205
+  },
+  {
+    "type": "Bar",
+    "name": "Kill Your Idol",
+    "lat": 25.7868183,
+    "long": -80.1310807
+  },
+  {
+    "type": "Bar",
+    "name": "The Dead Flamingo",
+    "lat": 25.765383,
+    "long": -80.2231792
+  },
+  {
+    "type": "Bar",
+    "name": "Mama Tried",
+    "lat": 25.7753271,
+    "long": -80.1901118
+  },
+  {
+    "type": "Bar",
+    "name": "Miami Sound Bar",
+    "lat": 25.7728932,
+    "long": -80.1900424
+  },
+  {
+    "type": "Bar",
+    "name": "MiniBar Miami",
+    "lat": 25.7741927,
+    "long": -80.1361823
+  },
+  {
+    "type": "Bar",
+    "name": "Black Market Miami",
+    "lat": 25.77325,
+    "long": -80.190503
+  },
+  {
+    "type": "Bar",
+    "name": "The Wetlab",
+    "lat": 25.7317195,
+    "long": -80.1631353
+  },
+  {
+    "type": "Bar",
+    "name": "Gramps",
+    "lat": 25.7996051,
+    "long": -80.1982683
+  },
+  {
+    "type": "Bar",
+    "name": "Better Days",
+    "lat": 25.7684406,
+    "long": -80.1911656
+  },
+  {
+    "type": "Bar",
+    "name": "The ScapeGoat",
+    "lat": 25.7699204,
+    "long": -80.1343538
+  },
+  {
+    "type": "Bar",
+    "name": "The Corner",
+    "lat": 25.7845163,
+    "long": -80.1938269
+  },
+  {
+    "type": "Bar",
+    "name": "The Sylvester",
+    "lat": 25.8092309,
+    "long": -80.1954326
+  },
+  {
+    "type": "Bar",
+    "name": "Wet Willie s",
+    "lat": 25.7778588,
+    "long": -80.1313792
+  },
+  {
+    "type": "Bar",
+    "name": "Ray s Hometown Bar Miami",
+    "lat": 25.8045856,
+    "long": -80.1263421
+  },
+  {
+    "type": "Bar",
+    "name": "DOM S",
+    "lat": 25.7641516,
+    "long": -80.1923657
+  },
+  {
+    "type": "Bar",
+    "name": "Kush Brickell",
+    "lat": 25.7674986,
+    "long": -80.1936213
+  },
+  {
+    "type": "Bar",
+    "name": "The Auld Dubliner Irish Pub Kitchen",
+    "lat": 25.7752559,
+    "long": -80.1948382
+  },
+  {
+    "type": "Bar",
+    "name": "Sweet Liberty Drinks Supply Company",
+    "lat": 25.7960364,
+    "long": -80.1299925
+  },
+  {
+    "type": "Bar",
+    "name": "Dante s HiFi",
+    "lat": 25.8011268,
+    "long": -80.2036988
+  },
+  {
+    "type": "Bar",
+    "name": "Bleau Bar",
+    "lat": 25.8180133,
+    "long": -80.1222385
+  },
+  {
+    "type": "Bar",
+    "name": "RedBar Brickell",
+    "lat": 25.7643213,
+    "long": -80.1942229
+  },
+  {
+    "type": "Bar",
+    "name": "Capri Bar",
+    "lat": 25.7722498,
+    "long": -80.2233866
+  },
+  {
+    "type": "Bar",
+    "name": "Syndicate Wynwood",
+    "lat": 25.80045,
+    "long": -80.2029767
+  },
+  {
+    "type": "Bar",
+    "name": "Mike s At Venetia",
+    "lat": 25.7901426,
+    "long": -80.1857109
+  },
+  {
+    "type": "Bar",
+    "name": "Wasska Lounge",
+    "lat": 25.7756891,
+    "long": -80.1884865
+  },
+  {
+    "type": "Bar",
+    "name": "Barracuda Taphouse Grill",
+    "lat": 25.7277611,
+    "long": -80.2431793
+  },
+  {
+    "type": "Bar",
+    "name": "The Bar",
+    "lat": 25.7511558,
+    "long": -80.2582075
+  },
+  {
+    "type": "Bar",
+    "name": "Las Rosas",
+    "lat": 25.8034008,
+    "long": -80.2075047
+  },
+  {
+    "type": "Bar",
+    "name": "Blackbird Ordinary",
+    "lat": 25.7667169,
+    "long": -80.1951854
+  },
+  {
+    "type": "Bar",
+    "name": "Gramps Getaway",
+    "lat": 25.7451858,
+    "long": -80.1741014
+  },
+  {
+    "type": "Bar",
+    "name": "The Taurus Coconut Grove",
+    "lat": 25.7252843,
+    "long": -80.2450288
+  },
+  {
+    "type": "Bar",
+    "name": "Cucu s Nest Bar",
+    "lat": 25.7916053,
+    "long": -80.1300022
+  },
+  {
+    "type": "Bar",
+    "name": "Thank You Miami Cocina Beer House",
+    "lat": 25.7731522,
+    "long": -80.2232127
+  },
+  {
+    "type": "Bar",
+    "name": "Drift",
+    "lat": 25.7996352,
+    "long": -80.1271836
+  },
+  {
+    "type": "Bar",
+    "name": "Abbey Brewing Company",
+    "lat": 25.7890432,
+    "long": -80.1402919
+  },
+  {
+    "type": "Bar",
+    "name": "Sweet Caroline Karaoke Bar Brickell",
+    "lat": 25.7633226,
+    "long": -80.1945933
+  },
+  {
+    "type": "Bar",
+    "name": "Monterrey Bar",
+    "lat": 25.791928,
+    "long": -80.1490238
+  },
+  {
+    "type": "Bar",
+    "name": "SOS Bar",
+    "lat": 25.7992233,
+    "long": -80.1988017
+  },
+  {
+    "type": "Bar",
+    "name": "Zeke s Roadhouse",
+    "lat": 25.7907532,
+    "long": -80.134788
+  },
+  {
+    "type": "Bar",
+    "name": "Stage Wynwood",
+    "lat": 25.799316,
+    "long": -80.197414
+  },
+  {
+    "type": "Bar",
+    "name": "High Tide",
+    "lat": 25.792797,
+    "long": -80.1282653
+  },
+  {
+    "type": "Bar",
+    "name": "The Tavern American Restaurant in Miami Beach",
+    "lat": 25.810889,
+    "long": -80.123506
+  },
+  {
+    "type": "Bar",
+    "name": "Sandbar Sports Grill",
+    "lat": 25.7279478,
+    "long": -80.2430197
+  },
+  {
+    "type": "Bar",
+    "name": "Tobacco Road",
+    "lat": 25.7674823,
+    "long": -80.1947474
+  },
+  {
+    "type": "Bar",
+    "name": "Foxhole Bar",
+    "lat": 25.7862349,
+    "long": -80.1416028
+  },
+  {
+    "type": "Bar",
+    "name": "Finnegan s Way",
+    "lat": 25.7847198,
+    "long": -80.1300246
+  },
+  {
+    "type": "Bar",
+    "name": "The Pool Hall",
+    "lat": 25.7830185,
+    "long": -80.1981512
+  },
+  {
+    "type": "Bar",
+    "name": "Monty s Sunset South Beach",
+    "lat": 25.7716538,
+    "long": -80.1395683
+  },
+  {
+    "type": "Bar",
+    "name": "El Brindis Bar",
+    "lat": 25.7725509,
+    "long": -80.2230041
+  },
+  {
+    "type": "Bar",
+    "name": "Higher Ground",
+    "lat": 25.798431,
+    "long": -80.195585
+  },
+  {
+    "type": "Bar",
+    "name": "Bar Tentacion",
+    "lat": 25.7732035,
+    "long": -80.2207367
+  },
+  {
+    "type": "Bar",
+    "name": "Living Room",
+    "lat": 25.7977417,
+    "long": -80.1274805
+  },
+  {
+    "type": "Bar",
+    "name": "Bocas Grill Brickell",
+    "lat": 25.7555146,
+    "long": -80.2076048
+  },
+  {
+    "type": "Bar",
+    "name": "Red Bar Catalina",
+    "lat": 25.7931827,
+    "long": -80.130166
+  },
+  {
+    "type": "Bar",
+    "name": "That s Amore Restaurant",
+    "lat": 25.7759646,
+    "long": -80.1318302
+  },
+  {
+    "type": "Bar",
+    "name": "Liquor Lounge",
+    "lat": 25.7890604,
+    "long": -80.1304616
+  },
+  {
+    "type": "Bar",
+    "name": "Baires Grill Miami Beach",
+    "lat": 25.7979762,
+    "long": -80.1283558
+  },
+  {
+    "type": "Bar",
+    "name": "Segafredo L Originale",
+    "lat": 25.7902989,
+    "long": -80.1396958
+  },
+  {
+    "type": "Bar",
+    "name": "Fat Tuesday South Beach",
+    "lat": 25.7761572,
+    "long": -80.1323688
+  },
+  {
+    "type": "Bar",
+    "name": "Seven Seas Bar",
+    "lat": 25.7501131,
+    "long": -80.2875587
+  },
+  {
+    "type": "Bar",
+    "name": "Sunset Tavern",
+    "lat": 25.7037047,
+    "long": -80.2895718
+  },
+  {
+    "type": "Bar",
+    "name": "Beaches Bar And Grill",
+    "lat": 25.814345,
+    "long": -80.1226288
+  },
+  {
+    "type": "Bar",
+    "name": "Hive",
+    "lat": 25.7986997,
+    "long": -80.1994375
+  },
+  {
+    "type": "Bar",
+    "name": "Bar Gaythering",
+    "lat": 25.790553,
+    "long": -80.1440957
+  },
+  {
+    "type": "Bar",
+    "name": "Rakija Lounge",
+    "lat": 25.7823805,
+    "long": -80.1310823
+  },
+  {
+    "type": "Bar",
+    "name": "Fronton Bar",
+    "lat": 25.7734533,
+    "long": -80.2132305
+  },
+  {
+    "type": "Bar",
+    "name": "Cafeina Wynwood Event Venue in Miami",
+    "lat": 25.7996387,
+    "long": -80.2009749
+  },
+  {
+    "type": "Bar",
+    "name": "El Pub Restaurant",
+    "lat": 25.7655397,
+    "long": -80.2203024
+  },
+  {
+    "type": "Bar",
+    "name": "Fresa Lounge",
+    "lat": 25.7789974,
+    "long": -80.2670669
+  },
+  {
+    "type": "Bar",
+    "name": "Smoke Wynwood",
+    "lat": 25.7998859,
+    "long": -80.2009095
+  },
+  {
+    "type": "Bar",
+    "name": "Limonada Bar B Brunch",
+    "lat": 25.7787383,
+    "long": -80.1329031
+  },
+  {
+    "type": "Bar",
+    "name": "Churchill s Pub",
+    "lat": 25.8262547,
+    "long": -80.1917187
+  },
+  {
+    "type": "Bar",
+    "name": "Don Sombrero",
+    "lat": 25.7784207,
+    "long": -80.1323065
+  },
+  {
+    "type": "Bar",
+    "name": "Groovy s",
+    "lat": 25.7903357,
+    "long": -80.1385719
+  },
+  {
+    "type": "Bar",
+    "name": "Esquina Cubana C Cuban Restaurant Miami Beach",
+    "lat": 25.7772282,
+    "long": -80.1337477
+  },
+  {
+    "type": "Bar",
+    "name": "Nettuno Italian Seafood Oysters",
+    "lat": 25.7873277,
+    "long": -80.1320565
+  },
+  {
+    "type": "Bar",
+    "name": "SoBe Hookah",
+    "lat": 25.7925424,
+    "long": -80.130166
+  },
+  {
+    "type": "Bar",
+    "name": "Ceviches by Divino Miami Beach",
+    "lat": 25.8045989,
+    "long": -80.1251446
+  },
+  {
+    "type": "Bar",
+    "name": "Bayview Pool Bar",
+    "lat": 25.7642779,
+    "long": -80.188662
+  },
+  {
+    "type": "Bar",
+    "name": "Atlantis Cafe",
+    "lat": 25.7750289,
+    "long": -80.1939763
+  },
+  {
+    "type": "Bar",
+    "name": "Lolo s Surf Cantina",
+    "lat": 25.7705846,
+    "long": -80.1323535
+  },
+  {
+    "type": "Bar",
+    "name": "Bougainvillea s Old Florida Tavern",
+    "lat": 25.7038345,
+    "long": -80.287161
+  },
+  {
+    "type": "Bar",
+    "name": "Moreno s Cuba",
+    "lat": 25.7948384,
+    "long": -80.1296046
+  },
+  {
+    "type": "Bar",
+    "name": "Azucar NightClub",
+    "lat": 25.7481567,
+    "long": -80.2462107
+  },
+  {
+    "type": "Bar",
+    "name": "Havana C Lincoln Road",
+    "lat": 25.7907776,
+    "long": -80.1370248
+  },
+  {
+    "type": "Bar",
+    "name": "Fox s Lounge",
+    "lat": 25.7024501,
+    "long": -80.291533
+  },
+  {
+    "type": "Bar",
+    "name": "Queen Miami Beach",
+    "lat": 25.7755449,
+    "long": -80.1341187
+  },
+  {
+    "type": "Bar",
+    "name": "Talkin Tacos Brickell",
+    "lat": 25.7665203,
+    "long": -80.1951159
+  },
+  {
+    "type": "Bar",
+    "name": "Crab Du Jour Cajun Seafood Sports Bar",
+    "lat": 25.80792,
+    "long": -80.1943823
+  },
+  {
+    "type": "Bar",
+    "name": "Oh Mexico Lincoln Road",
+    "lat": 25.7902794,
+    "long": -80.1372321
+  },
+  {
+    "type": "Bar",
+    "name": "Manolo Rene Grill",
+    "lat": 25.7761222,
+    "long": -80.1887979
+  },
+  {
+    "type": "Bar",
+    "name": "LoKal",
+    "lat": 25.7277661,
+    "long": -80.2450801
+  },
+  {
+    "type": "Bar",
+    "name": "Dulce Vida Mexican Restaurant",
+    "lat": 25.7757505,
+    "long": -80.134777
+  },
+  {
+    "type": "Bar",
+    "name": "Bryson s Irish Pub",
+    "lat": 25.8088543,
+    "long": -80.289409
+  },
+  {
+    "type": "Bar",
+    "name": "Deco Divers Miami",
+    "lat": 25.7717234,
+    "long": -80.1392187
+  },
+  {
+    "type": "Bar",
+    "name": "B Side Wynwood",
+    "lat": 25.7993651,
+    "long": -80.1979458
+  },
+  {
+    "type": "Bar",
+    "name": "Mad Radio Miami",
+    "lat": 25.8462027,
+    "long": -80.1851332
+  },
+  {
+    "type": "Bar",
+    "name": "Naked Taco",
+    "lat": 25.7819684,
+    "long": -80.131199
+  },
+  {
+    "type": "Bar",
+    "name": "Playa Cafe",
+    "lat": 25.787893,
+    "long": -80.1316294
+  },
+  {
+    "type": "Bar",
+    "name": "Gaffer s Pub Smoking Allowed ",
+    "lat": 26.0493738,
+    "long": -80.2529758
+  },
+  {
+    "type": "Bar",
+    "name": "Cagney s House of Rock Saloon",
+    "lat": 26.0457962,
+    "long": -80.2534408
+  },
+  {
+    "type": "Bar",
+    "name": "Shanks Town Tavern",
+    "lat": 26.0632851,
+    "long": -80.2780282
+  },
+  {
+    "type": "Bar",
+    "name": "Sunswept Inn",
+    "lat": 26.0182784,
+    "long": -80.2490774
+  },
+  {
+    "type": "Bar",
+    "name": "Big Dawgs Sports Cafe",
+    "lat": 26.0142328,
+    "long": -80.278959
+  },
+  {
+    "type": "Bar",
+    "name": "Ye Olde Falcon Pub",
+    "lat": 26.084914,
+    "long": -80.2517474
+  },
+  {
+    "type": "Bar",
+    "name": " rd Space Kava",
+    "lat": 26.049494,
+    "long": -80.2528141
+  },
+  {
+    "type": "Bar",
+    "name": "The Brass Tap",
+    "lat": 26.0023839,
+    "long": -80.3371023
+  },
+  {
+    "type": "Bar",
+    "name": "Tin Cup Sports Bar Grill",
+    "lat": 26.059085,
+    "long": -80.270346
+  },
+  {
+    "type": "Bar",
+    "name": "The Pub Pembroke Pines",
+    "lat": 26.006057,
+    "long": -80.336517
+  },
+  {
+    "type": "Bar",
+    "name": "JP Mulligans",
+    "lat": 26.0231649,
+    "long": -80.3136081
+  },
+  {
+    "type": "Bar",
+    "name": "Jackie s P I Beer Wine",
+    "lat": 26.0238688,
+    "long": -80.2675886
+  },
+  {
+    "type": "Bar",
+    "name": "JT s Sports Bar Grill",
+    "lat": 26.019622,
+    "long": -80.2865297
+  },
+  {
+    "type": "Bar",
+    "name": "Carolina Ale House Weston",
+    "lat": 26.0863822,
+    "long": -80.3707113
+  },
+  {
+    "type": "Bar",
+    "name": "Billy s Pub Too",
+    "lat": 25.8901482,
+    "long": -80.1840632
+  },
+  {
+    "type": "Bar",
+    "name": "On the Rocks Bar",
+    "lat": 25.8562285,
+    "long": -80.1208429
+  },
+  {
+    "type": "Bar",
+    "name": "Original Sin Tavern",
+    "lat": 25.9428901,
+    "long": -80.1624524
+  },
+  {
+    "type": "Bar",
+    "name": "SOFF s Lounge",
+    "lat": 25.9601538,
+    "long": -80.1376468
+  },
+  {
+    "type": "Bar",
+    "name": "Bob s Your Uncle",
+    "lat": 25.8553395,
+    "long": -80.1283885
+  },
+  {
+    "type": "Bar",
+    "name": "Breezeway Bar",
+    "lat": 25.9815394,
+    "long": -80.1402171
+  },
+  {
+    "type": "Bar",
+    "name": "Klandestino lounge bar",
+    "lat": 25.8891331,
+    "long": -80.1651076
+  },
+  {
+    "type": "Bar",
+    "name": "Upper Deck Ale and Sports Grille",
+    "lat": 25.9852369,
+    "long": -80.1390868
+  },
+  {
+    "type": "Bar",
+    "name": "Bikini Bar",
+    "lat": 25.858699,
+    "long": -80.1207859
+  },
+  {
+    "type": "Bar",
+    "name": "The Club Miami",
+    "lat": 25.9047306,
+    "long": -80.2112872
+  },
+  {
+    "type": "Bar",
+    "name": "Round Table Sportsbar Lounge",
+    "lat": 25.8775895,
+    "long": -80.2100732
+  },
+  {
+    "type": "Bar",
+    "name": "Gonzo E s Kitchen",
+    "lat": 25.9429023,
+    "long": -80.1624384
+  },
+  {
+    "type": "Bar",
+    "name": "Thirsty s II",
+    "lat": 25.9840262,
+    "long": -80.1876001
+  },
+  {
+    "type": "Bar",
+    "name": "Donovan s Bar Grill Inc",
+    "lat": 25.8942756,
+    "long": -80.2113454
+  },
+  {
+    "type": "Bar",
+    "name": "South Beach Bar at Gulfstream Park",
+    "lat": 25.9772527,
+    "long": -80.1386192
+  },
+  {
+    "type": "Bar",
+    "name": "Styx Sports Bar And Grill",
+    "lat": 25.9170013,
+    "long": -80.1615085
+  },
+  {
+    "type": "Bar",
+    "name": "Tap Craft Kitchen Bar",
+    "lat": 25.958536,
+    "long": -80.1421478
+  },
+  {
+    "type": "Bar",
+    "name": "Vibehaus Kava Bar Lounge",
+    "lat": 25.9869662,
+    "long": -80.1475431
+  },
+  {
+    "type": "Bar",
+    "name": "Tap Beer Miami",
+    "lat": 25.9402257,
+    "long": -80.1505234
+  },
+  {
+    "type": "Bar",
+    "name": "Holy Moly Mia",
+    "lat": 25.9796214,
+    "long": -80.1185188
+  },
+  {
+    "type": "Bar",
+    "name": "Surf House Bar Grill",
+    "lat": 25.9617003,
+    "long": -80.1383875
+  },
+  {
+    "type": "Bar",
+    "name": "PlugIN Karaoke",
+    "lat": 25.9775785,
+    "long": -80.1398768
+  },
+  {
+    "type": "Bar",
+    "name": "Plunge Bar Grill",
+    "lat": 25.954474,
+    "long": -80.1197403
+  },
+  {
+    "type": "Bar",
+    "name": "Carousel Club",
+    "lat": 25.9792556,
+    "long": -80.1388384
+  },
+  {
+    "type": "Bar",
+    "name": "Henney Tyme Bar and Lounge",
+    "lat": 25.9843408,
+    "long": -80.1756034
+  },
+  {
+    "type": "Bar",
+    "name": "Duffy s Sports Grill",
+    "lat": 25.9307602,
+    "long": -80.1312565
+  },
+  {
+    "type": "Bar",
+    "name": "Hurley bar",
+    "lat": 25.9645372,
+    "long": -80.1251699
+  },
+  {
+    "type": "Bar",
+    "name": "Flanigan s Seafood Bar and Grill",
+    "lat": 25.8855704,
+    "long": -80.1237436
+  },
+  {
+    "type": "Bar",
+    "name": "Skye Rooftop Aventura",
+    "lat": 25.9732579,
+    "long": -80.1447738
+  },
+  {
+    "type": "Bar",
+    "name": "Kelsey s Lounge",
+    "lat": 25.9842994,
+    "long": -80.1736025
+  },
+  {
+    "type": "Bar",
+    "name": "Porterhouse Bar and Grill",
+    "lat": 25.9332727,
+    "long": -80.1220109
+  },
+  {
+    "type": "Bar",
+    "name": "Kim s Alley Bar",
+    "lat": 26.1367425,
+    "long": -80.1208881
+  },
+  {
+    "type": "Bar",
+    "name": "Original Fat Cats",
+    "lat": 26.1202963,
+    "long": -80.1466139
+  },
+  {
+    "type": "Bar",
+    "name": "Bimini Bay Bar",
+    "lat": 26.0856426,
+    "long": -80.1378234
+  },
+  {
+    "type": "Bar",
+    "name": "Poorhouse",
+    "lat": 26.1209615,
+    "long": -80.1462231
+  },
+  {
+    "type": "Bar",
+    "name": "Josie s Too",
+    "lat": 26.0621819,
+    "long": -80.1762057
+  },
+  {
+    "type": "Bar",
+    "name": "Village Well Pub",
+    "lat": 26.1013571,
+    "long": -80.1325497
+  },
+  {
+    "type": "Bar",
+    "name": "Streeters Bar",
+    "lat": 26.1605014,
+    "long": -80.1167907
+  },
+  {
+    "type": "Bar",
+    "name": "Freddie s Anchor Sports Grill",
+    "lat": 26.0931737,
+    "long": -80.1463909
+  },
+  {
+    "type": "Bar",
+    "name": "Laser Wolf",
+    "lat": 26.1348379,
+    "long": -80.1411552
+  },
+  {
+    "type": "Bar",
+    "name": "Wayside Inn",
+    "lat": 26.0538194,
+    "long": -80.1428
+  },
+  {
+    "type": "Bar",
+    "name": "Lucky s Tavern",
+    "lat": 26.1203588,
+    "long": -80.1461782
+  },
+  {
+    "type": "Bar",
+    "name": "The Corner Pub",
+    "lat": 26.152624,
+    "long": -80.146763
+  },
+  {
+    "type": "Bar",
+    "name": "Marina Sports Bar Grill Fort Lauderdale",
+    "lat": 26.086237,
+    "long": -80.173651
+  },
+  {
+    "type": "Bar",
+    "name": "Glitch Bar",
+    "lat": 26.1353327,
+    "long": -80.1391925
+  },
+  {
+    "type": "Bar",
+    "name": " Tiki Bar and grill",
+    "lat": 26.0862957,
+    "long": -80.2097721
+  },
+  {
+    "type": "Bar",
+    "name": "Booze Garden",
+    "lat": 26.1211504,
+    "long": -80.1458634
+  },
+  {
+    "type": "Bar",
+    "name": "Mona s",
+    "lat": 26.1367689,
+    "long": -80.1393353
+  },
+  {
+    "type": "Bar",
+    "name": "The New J Bar",
+    "lat": 26.1212089,
+    "long": -80.2600935
+  },
+  {
+    "type": "Bar",
+    "name": "Billy s Tavern",
+    "lat": 26.1013611,
+    "long": -80.2629389
+  },
+  {
+    "type": "Bar",
+    "name": "Big Dog Station",
+    "lat": 26.167259,
+    "long": -80.130866
+  },
+  {
+    "type": "Bar",
+    "name": "Kings Head British Pub Sunrise",
+    "lat": 26.1573366,
+    "long": -80.2568915
+  },
+  {
+    "type": "Bar",
+    "name": "Roxanne s Liquor Bar Kitchen",
+    "lat": 26.1342765,
+    "long": -80.1379607
+  },
+  {
+    "type": "Bar",
+    "name": "Scandals Saloon",
+    "lat": 26.1660709,
+    "long": -80.1387939
+  },
+  {
+    "type": "Bar",
+    "name": "Grumpy Gary s at Dockers",
+    "lat": 26.0588163,
+    "long": -80.1435722
+  },
+  {
+    "type": "Bar",
+    "name": "Cloud Bar and Grill",
+    "lat": 26.0450886,
+    "long": -80.2322289
+  },
+  {
+    "type": "Bar",
+    "name": "Apothecary A Cocktail Bar",
+    "lat": 26.1203128,
+    "long": -80.1471248
+  },
+  {
+    "type": "Bar",
+    "name": "Rookies Ale House",
+    "lat": 26.0627485,
+    "long": -80.1875915
+  },
+  {
+    "type": "Bar",
+    "name": "R D Sports Pub",
+    "lat": 26.1553371,
+    "long": -80.2371267
+  },
+  {
+    "type": "Bar",
+    "name": "East Acre Pub And Grub",
+    "lat": 26.121566,
+    "long": -80.218693
+  },
+  {
+    "type": "Bar",
+    "name": "Liquid Paradise",
+    "lat": 26.1498556,
+    "long": -80.2009958
+  },
+  {
+    "type": "Bar",
+    "name": "Black Jack s Rum Bar Grille",
+    "lat": 26.073718,
+    "long": -80.2320945
+  },
+  {
+    "type": "Bar",
+    "name": "Waxy s Irish Pub",
+    "lat": 26.1005893,
+    "long": -80.1319798
+  },
+  {
+    "type": "Bar",
+    "name": "Tap Craft Kitchen Bar Fort Lauderdale",
+    "lat": 26.1041028,
+    "long": -80.1431091
+  },
+  {
+    "type": "Bar",
+    "name": "Rhythm Vine",
+    "lat": 26.1265382,
+    "long": -80.1379773
+  },
+  {
+    "type": "Bar",
+    "name": "Kavana Kava Bar",
+    "lat": 26.0738942,
+    "long": -80.2318249
+  },
+  {
+    "type": "Bar",
+    "name": "Backyard",
+    "lat": 26.121147,
+    "long": -80.1462377
+  },
+  {
+    "type": "Bar",
+    "name": "Big Whiskey s Davie",
+    "lat": 26.0641693,
+    "long": -80.2539851
+  },
+  {
+    "type": "Bar",
+    "name": "Paradise Tiki of Dania Beach",
+    "lat": 26.0529028,
+    "long": -80.1555052
+  },
+  {
+    "type": "Bar",
+    "name": "Uncle Al s",
+    "lat": 26.0639632,
+    "long": -80.2565029
+  },
+  {
+    "type": "Bar",
+    "name": "PLAY Sporting Lounge",
+    "lat": 26.053127,
+    "long": -80.2100596
+  },
+  {
+    "type": "Bar",
+    "name": "American Social Bar Kitchen Fort Lauderdale",
+    "lat": 26.1193647,
+    "long": -80.1355132
+  },
+  {
+    "type": "Bar",
+    "name": "Kamp Kava",
+    "lat": 26.060738,
+    "long": -80.2090701
+  },
+  {
+    "type": "Bar",
+    "name": "The Wilder",
+    "lat": 26.1226304,
+    "long": -80.1359457
+  },
+  {
+    "type": "Bar",
+    "name": "Pool Bar Grill in Seminole Hard Rock Hollywood ",
+    "lat": 26.0510572,
+    "long": -80.2125098
+  },
+  {
+    "type": "Bar",
+    "name": "Davie Kava",
+    "lat": 26.1007862,
+    "long": -80.2601623
+  },
+  {
+    "type": "Bar",
+    "name": "Escumbala Sport Bar",
+    "lat": 26.1552343,
+    "long": -80.2371711
+  },
+  {
+    "type": "Bar",
+    "name": "Vinos on Las Olas",
+    "lat": 26.1193989,
+    "long": -80.1336306
+  },
+  {
+    "type": "Bar",
+    "name": "Geronimos Grill",
+    "lat": 26.0464685,
+    "long": -80.2484063
+  },
+  {
+    "type": "Bar",
+    "name": "karaoke knights",
+    "lat": 26.0458732,
+    "long": -80.2534223
+  },
+  {
+    "type": "Bar",
+    "name": "Hard Rock Sports Bar in Seminole Hard Rock Hollywood ",
+    "lat": 26.050636,
+    "long": -80.212425
+  },
+  {
+    "type": "Bar",
+    "name": "Southport Raw Bar Restaurant",
+    "lat": 26.1024882,
+    "long": -80.1303405
+  },
+  {
+    "type": "Bar",
+    "name": "Eagle Wilton Manors",
+    "lat": 26.156486,
+    "long": -80.138547
+  },
+  {
+    "type": "Bar",
+    "name": "Dicey Riley s Irish Pub",
+    "lat": 26.120655,
+    "long": -80.1462246
+  },
+  {
+    "type": "Bar",
+    "name": "Casita Latina Bar",
+    "lat": 26.1043434,
+    "long": -80.1988126
+  },
+  {
+    "type": "Bar",
+    "name": "GhostBar",
+    "lat": 26.0528948,
+    "long": -80.2066575
+  },
+  {
+    "type": "Bar",
+    "name": "Twin Peaks",
+    "lat": 26.0955045,
+    "long": -80.2502643
+  },
+  {
+    "type": "Bar",
+    "name": " Slammer",
+    "lat": 26.1370622,
+    "long": -80.1478304
+  },
+  {
+    "type": "Bar",
+    "name": "Center Bar in Seminole Hard Rock Hollywood ",
+    "lat": 26.0523196,
+    "long": -80.2121488
+  },
+  {
+    "type": "Bar",
+    "name": "Parrot Lounge",
+    "lat": 26.1372111,
+    "long": -80.1039498
+  },
+  {
+    "type": "Bar",
+    "name": "Hunters Beach Bar",
+    "lat": 26.1196253,
+    "long": -80.1054475
+  },
+  {
+    "type": "Bar",
+    "name": "Elbo Room",
+    "lat": 26.1194706,
+    "long": -80.1047304
+  },
+  {
+    "type": "Bar",
+    "name": "McSorley E s Beach Pub Rooftop",
+    "lat": 26.1365685,
+    "long": -80.1033056
+  },
+  {
+    "type": "Bar",
+    "name": "Liquid Remedy Bar",
+    "lat": 26.0276951,
+    "long": -80.1691042
+  },
+  {
+    "type": "Bar",
+    "name": "Anchor Bar",
+    "lat": 26.0325378,
+    "long": -80.2159666
+  },
+  {
+    "type": "Bar",
+    "name": "Boston Johnny s",
+    "lat": 26.030612,
+    "long": -80.1501861
+  },
+  {
+    "type": "Bar",
+    "name": "The Wreck Bar",
+    "lat": 26.1086561,
+    "long": -80.1064132
+  },
+  {
+    "type": "Bar",
+    "name": "Fountains Lounge Bar",
+    "lat": 26.1977359,
+    "long": -80.0967469
+  },
+  {
+    "type": "Bar",
+    "name": "Ocean Mist Pub Bar",
+    "lat": 26.1896721,
+    "long": -80.097164
+  },
+  {
+    "type": "Bar",
+    "name": "Bamboo Beach Tiki Bar Cafe",
+    "lat": 26.1778995,
+    "long": -80.0967117
+  },
+  {
+    "type": "Bar",
+    "name": "Briny Irish Pub",
+    "lat": 26.2316496,
+    "long": -80.0900341
+  },
+  {
+    "type": "Bar",
+    "name": "Hotel Tiki Bar",
+    "lat": 26.1817472,
+    "long": -80.097884
+  },
+  {
+    "type": "Bar",
+    "name": "Billy Jack s Shack",
+    "lat": 26.1897522,
+    "long": -80.0981061
+  },
+  {
+    "type": "Bar",
+    "name": "HIGH DIVE",
+    "lat": 26.2048266,
+    "long": -80.1093955
+  },
+  {
+    "type": "Bar",
+    "name": "Just More Tavern",
+    "lat": 26.1670312,
+    "long": -80.1020555
+  },
+  {
+    "type": "Bar",
+    "name": " Boardroom Bar",
+    "lat": 26.1686208,
+    "long": -80.1010232
+  },
+  {
+    "type": "Bar",
+    "name": "Hidden Speakeasy",
+    "lat": 26.1790017,
+    "long": -80.1190859
+  },
+  {
+    "type": "Bar",
+    "name": "Piper s Pub",
+    "lat": 26.2424294,
+    "long": -80.1008697
+  },
+  {
+    "type": "Bar",
+    "name": "Archie s Bar",
+    "lat": 26.167844,
+    "long": -80.101446
+  },
+  {
+    "type": "Bar",
+    "name": "Twice Removed",
+    "lat": 26.169366,
+    "long": -80.101817
+  },
+  {
+    "type": "Bar",
+    "name": "Barracuda Lounge",
+    "lat": 26.2223313,
+    "long": -80.0904839
+  },
+  {
+    "type": "Bar",
+    "name": "Kelly Brothers Irish Pub",
+    "lat": 26.1661825,
+    "long": -80.1171762
+  },
+  {
+    "type": "Bar",
+    "name": "Black Klover Kava",
+    "lat": 26.1825523,
+    "long": -80.1198196
+  },
+  {
+    "type": "Bar",
+    "name": "Delight Kava Bar",
+    "lat": 26.2314915,
+    "long": -80.1092806
+  },
+  {
+    "type": "Bar",
+    "name": "Divine Bar",
+    "lat": 26.1693787,
+    "long": -80.1010885
+  },
+  {
+    "type": "Bar",
+    "name": "FL s Bar Lounge",
+    "lat": 26.1688756,
+    "long": -80.1023977
+  },
+  {
+    "type": "Bar",
+    "name": "Logan s Beach Bar",
+    "lat": 26.0134498,
+    "long": -80.1156775
+  },
+  {
+    "type": "Bar",
+    "name": "Caribbean Resort Tiki Bar",
+    "lat": 26.0213852,
+    "long": -80.1154972
+  },
+  {
+    "type": "Bar",
+    "name": "Fat Tuesday Hollywood Beach",
+    "lat": 26.0196369,
+    "long": -80.1160972
+  },
+  {
+    "type": "Bar",
+    "name": " o Clock Somewhere Bar and Grill",
+    "lat": 26.0192874,
+    "long": -80.1172881
+  },
+  {
+    "type": "Bar",
+    "name": "McGowan s Oceanside Tiki Bar Restaurant",
+    "lat": 26.0143361,
+    "long": -80.1156861
+  },
+  {
+    "type": "Bar",
+    "name": "Bar Kaiju",
+    "lat": 25.85194,
+    "long": -80.1931731
+  },
+  {
+    "type": "Bar",
+    "name": "Bar La Rosa",
+    "lat": 25.8598856,
+    "long": -80.2829775
+  },
+  {
+    "type": "Bar",
+    "name": "Magic Sports Bar",
+    "lat": 25.8962582,
+    "long": -80.2623466
+  },
+  {
+    "type": "Bar",
+    "name": "Jama Nica Sport Bar",
+    "lat": 25.907809,
+    "long": -80.2119317
+  },
+  {
+    "type": "Bar",
+    "name": "Da Cave Miami",
+    "lat": 25.899329,
+    "long": -80.2110224
+  },
+  {
+    "type": "Bar",
+    "name": "Tropicana Bar",
+    "lat": 25.8470615,
+    "long": -80.2141348
+  },
+  {
+    "type": "Bar",
+    "name": "Happy s Stork Lounge and Liquor Store",
+    "lat": 25.8481016,
+    "long": -80.1518049
+  },
+  {
+    "type": "Bar",
+    "name": "Rinconcito pinare C B o",
+    "lat": 25.8486321,
+    "long": -80.2621739
+  },
+  {
+    "type": "Bar",
+    "name": "Bar",
+    "lat": 25.8718294,
+    "long": -80.2746252
+  },
+  {
+    "type": "Bar",
+    "name": "Octopus Garden Bar",
+    "lat": 26.0111719,
+    "long": -80.146692
+  },
+  {
+    "type": "Bar",
+    "name": "Sand Bar B Kitchen",
+    "lat": 25.8516401,
+    "long": -80.120591
+  },
+  {
+    "type": "Bar",
+    "name": "Norman s Tavern",
+    "lat": 25.8518251,
+    "long": -80.120647
+  },
+  {
+    "type": "Bar",
+    "name": "Rumors",
+    "lat": 25.8108465,
+    "long": -80.3681157
+  },
+  {
+    "type": "Bar",
+    "name": "Eddie s Place",
+    "lat": 25.7604475,
+    "long": -80.3998957
+  },
+  {
+    "type": "Bar",
+    "name": "Duffy s Tavern",
+    "lat": 25.7511845,
+    "long": -80.2875767
+  },
+  {
+    "type": "Bar",
+    "name": "WXYZ Bar Lounge",
+    "lat": 25.8032709,
+    "long": -80.3687909
+  },
+  {
+    "type": "Bar",
+    "name": "Kurva s Bar Grill",
+    "lat": 25.8413817,
+    "long": -80.3033947
+  },
+  {
+    "type": "Bar",
+    "name": "Maracaibo Club by Charles Rooftop Party and Restaurant",
+    "lat": 25.7749085,
+    "long": -80.3683625
+  },
+  {
+    "type": "Bar",
+    "name": "SideSix Whiskey Event Space",
+    "lat": 25.7957915,
+    "long": -80.3515092
+  },
+  {
+    "type": "Bar",
+    "name": "Twin Peaks",
+    "lat": 25.7907822,
+    "long": -80.3374556
+  },
+  {
+    "type": "Bar",
+    "name": "Sant C A Cocktail Lounge",
+    "lat": 25.7900371,
+    "long": -80.3763504
+  },
+  {
+    "type": "Bar",
+    "name": "Champions Florida",
+    "lat": 25.7859098,
+    "long": -80.3395843
+  },
+  {
+    "type": "Bar",
+    "name": "Doral Billiards Sports Bar",
+    "lat": 25.7962095,
+    "long": -80.3241496
+  },
+  {
+    "type": "Bar",
+    "name": "Raisin Bar",
+    "lat": 25.8458811,
+    "long": -80.3066726
+  }
+]

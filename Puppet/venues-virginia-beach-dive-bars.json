@@ -1,0 +1,710 @@
+[
+  {
+    "type": "Bar",
+    "name": "Duck Dive Tavern",
+    "lat": 36.858971,
+    "long": -75.9814738
+  },
+  {
+    "type": "Bar",
+    "name": "Just One More Bar and Grill",
+    "lat": 36.8417078,
+    "long": -76.0590407
+  },
+  {
+    "type": "Bar",
+    "name": "Judys Pub Eatery",
+    "lat": 36.8439396,
+    "long": -76.0491061
+  },
+  {
+    "type": "Bar",
+    "name": "South Beach Grill",
+    "lat": 36.8376959,
+    "long": -75.9974798
+  },
+  {
+    "type": "Bar",
+    "name": "Beachside Social",
+    "lat": 36.8559665,
+    "long": -75.9775219
+  },
+  {
+    "type": "Bar",
+    "name": "Scotty Quixx West",
+    "lat": 36.842438,
+    "long": -76.053103
+  },
+  {
+    "type": "Bar",
+    "name": "The Bunker Brewpub",
+    "lat": 36.8492106,
+    "long": -75.9763173
+  },
+  {
+    "type": "Bar",
+    "name": "Beach Pub",
+    "lat": 36.856718,
+    "long": -75.9908021
+  },
+  {
+    "type": "Bar",
+    "name": "Sandbar Surf Bar",
+    "lat": 36.8496503,
+    "long": -75.9756086
+  },
+  {
+    "type": "Bar",
+    "name": "Seaside Raw Bar",
+    "lat": 36.8486842,
+    "long": -75.9753491
+  },
+  {
+    "type": "Bar",
+    "name": "Scotty Quixx East",
+    "lat": 36.8489084,
+    "long": -75.9947479
+  },
+  {
+    "type": "Bar",
+    "name": "The Shack",
+    "lat": 36.8364599,
+    "long": -75.972124
+  },
+  {
+    "type": "Bar",
+    "name": "Kelly s Tavern",
+    "lat": 36.8491023,
+    "long": -76.0341407
+  },
+  {
+    "type": "Bar",
+    "name": "Murphy E s Irish Pub",
+    "lat": 36.8577936,
+    "long": -75.9791912
+  },
+  {
+    "type": "Bar",
+    "name": "Casey s Pub",
+    "lat": 36.8446454,
+    "long": -76.0689631
+  },
+  {
+    "type": "Bar",
+    "name": "Abbey Road Pub Restaurant Lucy s Sky Bar",
+    "lat": 36.8504028,
+    "long": -75.9760306
+  },
+  {
+    "type": "Bar",
+    "name": "Side Street Cantina",
+    "lat": 36.8395978,
+    "long": -75.9732201
+  },
+  {
+    "type": "Bar",
+    "name": "Hunt Room",
+    "lat": 36.8691719,
+    "long": -75.983518
+  },
+  {
+    "type": "Bar",
+    "name": "Lynnhaven Pub",
+    "lat": 36.9093857,
+    "long": -76.0703659
+  },
+  {
+    "type": "Bar",
+    "name": "Calypso Bar Grill",
+    "lat": 36.8397971,
+    "long": -75.9721316
+  },
+  {
+    "type": "Bar",
+    "name": "BeachHouse ",
+    "lat": 36.8478048,
+    "long": -75.9751223
+  },
+  {
+    "type": "Bar",
+    "name": "Tortugas Caf C A Tiki Bar",
+    "lat": 36.8624265,
+    "long": -75.9784425
+  },
+  {
+    "type": "Bar",
+    "name": "Repeal Bourbon Burgers",
+    "lat": 36.8500065,
+    "long": -75.9759015
+  },
+  {
+    "type": "Bar",
+    "name": "Barrel ",
+    "lat": 36.8446972,
+    "long": -75.9815399
+  },
+  {
+    "type": "Bar",
+    "name": "Ocean house",
+    "lat": 36.8505014,
+    "long": -75.9780679
+  },
+  {
+    "type": "Bar",
+    "name": "Big Sam s Inlet Cafe Raw Bar",
+    "lat": 36.8321318,
+    "long": -75.9741605
+  },
+  {
+    "type": "Bar",
+    "name": "Waterman s Surfside Grille",
+    "lat": 36.8336716,
+    "long": -75.9705927
+  },
+  {
+    "type": "Bar",
+    "name": "The Edge",
+    "lat": 36.8496113,
+    "long": -75.975606
+  },
+  {
+    "type": "Bar",
+    "name": "Nicks Bar Grill",
+    "lat": 36.8588145,
+    "long": -75.9824034
+  },
+  {
+    "type": "Bar",
+    "name": "Esoteric",
+    "lat": 36.8442638,
+    "long": -75.9795295
+  },
+  {
+    "type": "Bar",
+    "name": "The Atlantic on Pacific",
+    "lat": 36.8584572,
+    "long": -75.9794289
+  },
+  {
+    "type": "Bar",
+    "name": "Ocean ",
+    "lat": 36.8557113,
+    "long": -75.9769627
+  },
+  {
+    "type": "Bar",
+    "name": "Pacifica",
+    "lat": 36.8591618,
+    "long": -75.9800993
+  },
+  {
+    "type": "Bar",
+    "name": "Beach Bar at the Marriott",
+    "lat": 36.8696388,
+    "long": -75.9808358
+  },
+  {
+    "type": "Bar",
+    "name": "Tad s Deli",
+    "lat": 36.8375333,
+    "long": -75.9796775
+  },
+  {
+    "type": "Bar",
+    "name": "Central Tapas Lounge",
+    "lat": 36.8454591,
+    "long": -76.0494289
+  },
+  {
+    "type": "Bar",
+    "name": "Cabanas Seaside Bar Grill",
+    "lat": 36.8638299,
+    "long": -75.9788925
+  },
+  {
+    "type": "Bar",
+    "name": "Margarita Grill",
+    "lat": 36.8427691,
+    "long": -76.0496166
+  },
+  {
+    "type": "Bar",
+    "name": "OLD BEACH TAVERN",
+    "lat": 36.8438372,
+    "long": -76.0774561
+  },
+  {
+    "type": "Bar",
+    "name": "Parlays Local Tavern",
+    "lat": 36.7889962,
+    "long": -75.9993504
+  },
+  {
+    "type": "Bar",
+    "name": "H Bar",
+    "lat": 36.8558949,
+    "long": -75.9767882
+  },
+  {
+    "type": "Bar",
+    "name": "CP Shuckers Cafe Raw Bar",
+    "lat": 36.8525649,
+    "long": -75.977279
+  },
+  {
+    "type": "Bar",
+    "name": "Catch Fish House Bar",
+    "lat": 36.8592025,
+    "long": -75.9777478
+  },
+  {
+    "type": "Bar",
+    "name": "Ready Room",
+    "lat": 36.7829504,
+    "long": -76.0488586
+  },
+  {
+    "type": "Bar",
+    "name": "Capone s Bar Grill",
+    "lat": 36.8024818,
+    "long": -76.0869083
+  },
+  {
+    "type": "Bar",
+    "name": "Bayside Bar Grill",
+    "lat": 36.9097222,
+    "long": -76.0752778
+  },
+  {
+    "type": "Bar",
+    "name": "Blarney Stone Pub Virginia Beach, VA",
+    "lat": 36.8358814,
+    "long": -76.088169
+  },
+  {
+    "type": "Bar",
+    "name": "Inland Reef",
+    "lat": 36.795723,
+    "long": -76.1187902
+  },
+  {
+    "type": "Bar",
+    "name": "Clubhouse Bar Grill",
+    "lat": 36.7927715,
+    "long": -76.0793412
+  },
+  {
+    "type": "Bar",
+    "name": " Bar and Grill",
+    "lat": 36.7857553,
+    "long": -76.0017195
+  },
+  {
+    "type": "Bar",
+    "name": "Double D s Pub and Grub",
+    "lat": 36.8393949,
+    "long": -76.109215
+  },
+  {
+    "type": "Bar",
+    "name": "Tangos Tavern",
+    "lat": 36.862278,
+    "long": -76.135155
+  },
+  {
+    "type": "Bar",
+    "name": "Mike s Break Room",
+    "lat": 36.7845517,
+    "long": -76.1072357
+  },
+  {
+    "type": "Bar",
+    "name": "Froggie E s",
+    "lat": 36.9083669,
+    "long": -76.0991506
+  },
+  {
+    "type": "Bar",
+    "name": "Bucketheads Beach Grill",
+    "lat": 36.9075827,
+    "long": -76.099248
+  },
+  {
+    "type": "Bar",
+    "name": "Sneeky Pete s",
+    "lat": 36.8154033,
+    "long": -76.1435865
+  },
+  {
+    "type": "Bar",
+    "name": "Footers Sports Pub",
+    "lat": 36.8123738,
+    "long": -76.1392859
+  },
+  {
+    "type": "Bar",
+    "name": "Dockers Karaoke Pub",
+    "lat": 36.8182372,
+    "long": -76.1220165
+  },
+  {
+    "type": "Bar",
+    "name": "The Rainbow Cactus",
+    "lat": 36.823729,
+    "long": -76.0793021
+  },
+  {
+    "type": "Bar",
+    "name": "The Comfy Belly",
+    "lat": 36.8985284,
+    "long": -76.1381316
+  },
+  {
+    "type": "Bar",
+    "name": "Scandals Live",
+    "lat": 36.8100922,
+    "long": -76.094311
+  },
+  {
+    "type": "Bar",
+    "name": "Stooges Bar Grill",
+    "lat": 36.8196219,
+    "long": -76.1232406
+  },
+  {
+    "type": "Bar",
+    "name": "Hot Tuna",
+    "lat": 36.9118097,
+    "long": -76.0675789
+  },
+  {
+    "type": "Bar",
+    "name": "The Frog Sports Bar Grill",
+    "lat": 36.8446859,
+    "long": -76.14516
+  },
+  {
+    "type": "Bar",
+    "name": "Miss Kitty s Bar Grill",
+    "lat": 36.8560684,
+    "long": -76.1468475
+  },
+  {
+    "type": "Bar",
+    "name": "The Tailgate Sports Pub",
+    "lat": 36.8467841,
+    "long": -76.1291843
+  },
+  {
+    "type": "Bar",
+    "name": "New River Taphouse",
+    "lat": 36.8973532,
+    "long": -76.1379456
+  },
+  {
+    "type": "Bar",
+    "name": "Poppa s Pub Restaurant",
+    "lat": 36.9049657,
+    "long": -76.1795943
+  },
+  {
+    "type": "Bar",
+    "name": "Jax Place Sports Bar Grill",
+    "lat": 36.8272557,
+    "long": -76.1679234
+  },
+  {
+    "type": "Bar",
+    "name": "Norfleets Sports Bar and Grill",
+    "lat": 36.8519307,
+    "long": -76.1779762
+  },
+  {
+    "type": "Bar",
+    "name": "Chick s Oyster Bar",
+    "lat": 36.9051313,
+    "long": -76.0852893
+  },
+  {
+    "type": "Bar",
+    "name": "Bayside Inn Restaurant Lounge is now GOOD MUGS Bar Grill",
+    "lat": 36.9033162,
+    "long": -76.1356223
+  },
+  {
+    "type": "Bar",
+    "name": "Mel s Place",
+    "lat": 36.7947101,
+    "long": -76.1644051
+  },
+  {
+    "type": "Bar",
+    "name": "Green Parrot Grille",
+    "lat": 36.9150948,
+    "long": -76.125171
+  },
+  {
+    "type": "Bar",
+    "name": "The Square Whale",
+    "lat": 36.8673374,
+    "long": -75.9799831
+  },
+  {
+    "type": "Bar",
+    "name": "Pleasure House Brewing",
+    "lat": 36.9024269,
+    "long": -76.1357722
+  },
+  {
+    "type": "Bar",
+    "name": "Cheds Bar and Grill",
+    "lat": 36.812479,
+    "long": -76.1394113
+  },
+  {
+    "type": "Bar",
+    "name": "Starz Restaurant Lounge",
+    "lat": 36.838839,
+    "long": -76.115109
+  },
+  {
+    "type": "Bar",
+    "name": "Your Alibi s Bar and Grill",
+    "lat": 36.8088936,
+    "long": -76.0922472
+  },
+  {
+    "type": "Bar",
+    "name": "Yard House",
+    "lat": 36.8416187,
+    "long": -76.1364528
+  },
+  {
+    "type": "Bar",
+    "name": "Pungo Sports Bar Grill",
+    "lat": 36.7209124,
+    "long": -76.0181775
+  },
+  {
+    "type": "Bar",
+    "name": "J I Sports Pub",
+    "lat": 36.9019963,
+    "long": -76.1786021
+  },
+  {
+    "type": "Bar",
+    "name": "Civil Libation Bistro",
+    "lat": 36.7664855,
+    "long": -76.0155774
+  },
+  {
+    "type": "Bar",
+    "name": "Sharks Sports Bar Grill",
+    "lat": 36.9099704,
+    "long": -76.233209
+  },
+  {
+    "type": "Bar",
+    "name": "Haven Inn Bar Grill",
+    "lat": 36.839086,
+    "long": -76.209732
+  },
+  {
+    "type": "Bar",
+    "name": "Harbor Inn",
+    "lat": 36.9159812,
+    "long": -76.2409057
+  },
+  {
+    "type": "Bar",
+    "name": "RiffHouse Pub",
+    "lat": 36.806055,
+    "long": -76.2770677
+  },
+  {
+    "type": "Bar",
+    "name": "Longshots",
+    "lat": 36.8074281,
+    "long": -76.2217487
+  },
+  {
+    "type": "Bar",
+    "name": "East Beach Bar Grill",
+    "lat": 36.9313437,
+    "long": -76.1996442
+  },
+  {
+    "type": "Bar",
+    "name": "Eagles Nest Rockin Country Bar",
+    "lat": 36.791613,
+    "long": -76.237639
+  },
+  {
+    "type": "Bar",
+    "name": "Champs Sports Bar Grill",
+    "lat": 36.8835443,
+    "long": -76.1842607
+  },
+  {
+    "type": "Bar",
+    "name": "Hank s Pub",
+    "lat": 36.7783855,
+    "long": -76.2659593
+  },
+  {
+    "type": "Bar",
+    "name": "The Club House",
+    "lat": 36.8681735,
+    "long": -76.2344116
+  },
+  {
+    "type": "Bar",
+    "name": "Woody s Raw Bar Grill",
+    "lat": 36.7232784,
+    "long": -76.2403809
+  },
+  {
+    "type": "Bar",
+    "name": "Ez Inn",
+    "lat": 36.880321,
+    "long": -76.2264307
+  },
+  {
+    "type": "Bar",
+    "name": "T Zone Criollo",
+    "lat": 36.826386,
+    "long": -76.131748
+  },
+  {
+    "type": "Bar",
+    "name": "Grace O Malley s Irish Pub and Restaurant",
+    "lat": 36.8483686,
+    "long": -76.2914801
+  },
+  {
+    "type": "Bar",
+    "name": "TNT Sports Tavern",
+    "lat": 36.9164924,
+    "long": -76.2413711
+  },
+  {
+    "type": "Bar",
+    "name": "West Beach Tavern",
+    "lat": 36.8422546,
+    "long": -76.153511
+  },
+  {
+    "type": "Bar",
+    "name": "Cap n Ron s",
+    "lat": 36.9425344,
+    "long": -76.2454366
+  },
+  {
+    "type": "Bar",
+    "name": "Good Mugs Bar and Grill",
+    "lat": 36.9035211,
+    "long": -76.1354095
+  },
+  {
+    "type": "Bar",
+    "name": "The Taphouse Grill",
+    "lat": 36.8720789,
+    "long": -76.2997633
+  },
+  {
+    "type": "Bar",
+    "name": "MJ s Tavern",
+    "lat": 36.8837122,
+    "long": -76.2817709
+  },
+  {
+    "type": "Bar",
+    "name": "Baron s Pub Restaurant",
+    "lat": 36.835508,
+    "long": -76.3024996
+  },
+  {
+    "type": "Bar",
+    "name": "Tap It Local",
+    "lat": 36.849162,
+    "long": -76.290746
+  },
+  {
+    "type": "Bar",
+    "name": "Griff s Restaurant Sports",
+    "lat": 36.835,
+    "long": -76.3027778
+  },
+  {
+    "type": "Bar",
+    "name": "THE EDGE",
+    "lat": 36.8874093,
+    "long": -76.3022167
+  },
+  {
+    "type": "Bar",
+    "name": " rd Precinct",
+    "lat": 36.8042362,
+    "long": -76.2756332
+  },
+  {
+    "type": "Bar",
+    "name": "Baxter s Sports Lounge",
+    "lat": 36.8527699,
+    "long": -76.2889086
+  },
+  {
+    "type": "Bar",
+    "name": "The Corner Bar and Lounge",
+    "lat": 36.7996337,
+    "long": -76.3261218
+  },
+  {
+    "type": "Bar",
+    "name": "Roger Browns Restaurant and Sports Bar",
+    "lat": 36.8357823,
+    "long": -76.2999831
+  },
+  {
+    "type": "Bar",
+    "name": "The Wave",
+    "lat": 36.8826896,
+    "long": -76.2953163
+  },
+  {
+    "type": "Bar",
+    "name": "Truth Restaurant Lounge",
+    "lat": 36.8351783,
+    "long": -76.29953
+  },
+  {
+    "type": "Bar",
+    "name": "Hank s Filling Station",
+    "lat": 36.8838375,
+    "long": -76.2951367
+  },
+  {
+    "type": "Bar",
+    "name": "Blue Moon Taphouse",
+    "lat": 36.8446278,
+    "long": -76.2912734
+  },
+  {
+    "type": "Bar",
+    "name": "Island Bar Grille",
+    "lat": 36.8332758,
+    "long": -76.3407515
+  },
+  {
+    "type": "Bar",
+    "name": "T J Cullys Local Grille",
+    "lat": 36.8073825,
+    "long": -76.3731058
+  },
+  {
+    "type": "Bar",
+    "name": "Griff s Restaurant Sports Lounge",
+    "lat": 36.8154751,
+    "long": -76.3595888
+  }
+]

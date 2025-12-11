@@ -1,0 +1,770 @@
+[
+  {
+    "type": "Liquor",
+    "name": "Downtown Fine Spirits Wines",
+    "lat": 38.8319249,
+    "long": -104.81776
+  },
+  {
+    "type": "Liquor",
+    "name": "Cheers Liquor Mart",
+    "lat": 38.848543,
+    "long": -104.7750114
+  },
+  {
+    "type": "Liquor",
+    "name": "Coaltrain Fine Wine, Craft Beer Spirits",
+    "lat": 38.8513609,
+    "long": -104.8305742
+  },
+  {
+    "type": "Liquor",
+    "name": "Weber Street Liquor",
+    "lat": 38.8441151,
+    "long": -104.8195964
+  },
+  {
+    "type": "Liquor",
+    "name": "Twins Wine Liquor Janitell",
+    "lat": 38.7954051,
+    "long": -104.7884224
+  },
+  {
+    "type": "Liquor",
+    "name": "Sovereignty Wines",
+    "lat": 38.8054529,
+    "long": -104.8399534
+  },
+  {
+    "type": "Liquor",
+    "name": "Steins Vines",
+    "lat": 38.8777325,
+    "long": -104.8485991
+  },
+  {
+    "type": "Liquor",
+    "name": "JMB th Street Liquor",
+    "lat": 38.8268231,
+    "long": -104.8409661
+  },
+  {
+    "type": "Liquor",
+    "name": "Broadmoor Wine Spirits",
+    "lat": 38.7906368,
+    "long": -104.8244369
+  },
+  {
+    "type": "Liquor",
+    "name": "Old Colorado City Liquor",
+    "lat": 38.8384724,
+    "long": -104.8484395
+  },
+  {
+    "type": "Liquor",
+    "name": "Liquor Smoker City Drive Thru",
+    "lat": 38.8546602,
+    "long": -104.7570009
+  },
+  {
+    "type": "Liquor",
+    "name": "Galley Discount Liquor",
+    "lat": 38.846747,
+    "long": -104.7470993
+  },
+  {
+    "type": "Liquor",
+    "name": "Platte Ave Liquors",
+    "lat": 38.8372297,
+    "long": -104.8086025
+  },
+  {
+    "type": "Liquor",
+    "name": "Jacks Liquors",
+    "lat": 38.8570405,
+    "long": -104.8990793
+  },
+  {
+    "type": "Liquor",
+    "name": "Corks, Bottles Brews",
+    "lat": 38.8053398,
+    "long": -104.8215882
+  },
+  {
+    "type": "Liquor",
+    "name": "Cheyenne Trail Liquors",
+    "lat": 38.8085162,
+    "long": -104.8403535
+  },
+  {
+    "type": "Liquor",
+    "name": "Red Rock Liquors",
+    "lat": 38.8536385,
+    "long": -104.8737877
+  },
+  {
+    "type": "Liquor",
+    "name": "Coors Light Springs Liquors",
+    "lat": 38.8509451,
+    "long": -104.8691346
+  },
+  {
+    "type": "Liquor",
+    "name": "Sand Creek Liquors",
+    "lat": 38.812147,
+    "long": -104.7468914
+  },
+  {
+    "type": "Liquor",
+    "name": "Queen Liquor",
+    "lat": 38.8484969,
+    "long": -104.8473295
+  },
+  {
+    "type": "Liquor",
+    "name": "Oddone s Liquors",
+    "lat": 38.8394599,
+    "long": -104.7938969
+  },
+  {
+    "type": "Liquor",
+    "name": "LK Liquors",
+    "lat": 38.7910225,
+    "long": -104.7601839
+  },
+  {
+    "type": "Liquor",
+    "name": "The Oak Barrel",
+    "lat": 38.8069571,
+    "long": -104.8244827
+  },
+  {
+    "type": "Liquor",
+    "name": "Bob s Westside Liquors",
+    "lat": 38.8563174,
+    "long": -104.882688
+  },
+  {
+    "type": "Liquor",
+    "name": "Plaza Discount Liquors",
+    "lat": 38.8389143,
+    "long": -104.8596781
+  },
+  {
+    "type": "Liquor",
+    "name": "Village Liquor",
+    "lat": 38.8848168,
+    "long": -104.739572
+  },
+  {
+    "type": "Liquor",
+    "name": "Two Natives Liquor and Vapes",
+    "lat": 38.8546225,
+    "long": -104.7767488
+  },
+  {
+    "type": "Liquor",
+    "name": "Family Liquor",
+    "lat": 38.8383967,
+    "long": -104.7476725
+  },
+  {
+    "type": "Liquor",
+    "name": "J s Liquor",
+    "lat": 38.8742802,
+    "long": -104.8218737
+  },
+  {
+    "type": "Liquor",
+    "name": "Fillmore Liquor",
+    "lat": 38.8742982,
+    "long": -104.8100929
+  },
+  {
+    "type": "Liquor",
+    "name": "Jays Liquor Store",
+    "lat": 38.8742281,
+    "long": -104.8216298
+  },
+  {
+    "type": "Liquor",
+    "name": "Pikes Peak Park Liquor",
+    "lat": 38.8160117,
+    "long": -104.7789923
+  },
+  {
+    "type": "Liquor",
+    "name": "Frank Jack s Liquor",
+    "lat": 38.8563175,
+    "long": -104.8651683
+  },
+  {
+    "type": "Liquor",
+    "name": "Los Compadres Liquor Store ",
+    "lat": 38.8257516,
+    "long": -104.7552766
+  },
+  {
+    "type": "Liquor",
+    "name": "Academy Town Liquors",
+    "lat": 38.8490013,
+    "long": -104.7577068
+  },
+  {
+    "type": "Liquor",
+    "name": "Gin Mill Liquor",
+    "lat": 38.8384441,
+    "long": -104.7762568
+  },
+  {
+    "type": "Liquor",
+    "name": "South Nevada Liquors",
+    "lat": 38.8180103,
+    "long": -104.8221548
+  },
+  {
+    "type": "Liquor",
+    "name": "Bourbon Box Liquors",
+    "lat": 38.8250482,
+    "long": -104.7471279
+  },
+  {
+    "type": "Liquor",
+    "name": "Johnnies Liquor Store",
+    "lat": 38.808772,
+    "long": -104.822072
+  },
+  {
+    "type": "Liquor",
+    "name": "KS Liquor",
+    "lat": 38.8032078,
+    "long": -104.7584964
+  },
+  {
+    "type": "Liquor",
+    "name": "Angie s Liquor",
+    "lat": 38.8161031,
+    "long": -104.7658744
+  },
+  {
+    "type": "Liquor",
+    "name": "Mission point liquor",
+    "lat": 38.7877195,
+    "long": -104.7533998
+  },
+  {
+    "type": "Liquor",
+    "name": "G R Liquor",
+    "lat": 38.8674564,
+    "long": -104.7561575
+  },
+  {
+    "type": "Liquor",
+    "name": "Lots A Liquor",
+    "lat": 38.8658285,
+    "long": -104.8171091
+  },
+  {
+    "type": "Liquor",
+    "name": "Drive In Liquors",
+    "lat": 38.8365394,
+    "long": -104.8321008
+  },
+  {
+    "type": "Liquor",
+    "name": "Ruskin Liquor Drive thru",
+    "lat": 38.8259143,
+    "long": -104.7586057
+  },
+  {
+    "type": "Liquor",
+    "name": "Audubon Liquor Store",
+    "lat": 38.8668248,
+    "long": -104.792713
+  },
+  {
+    "type": "Liquor",
+    "name": "D S Liquors",
+    "lat": 38.7942897,
+    "long": -104.7674311
+  },
+  {
+    "type": "Liquor",
+    "name": "Circle Liquors",
+    "lat": 38.8242849,
+    "long": -104.7795381
+  },
+  {
+    "type": "Liquor",
+    "name": "Mesa Liquors",
+    "lat": 38.8068936,
+    "long": -104.777656
+  },
+  {
+    "type": "Liquor",
+    "name": "J D Discount Liquor",
+    "lat": 38.8474914,
+    "long": -104.7371847
+  },
+  {
+    "type": "Liquor",
+    "name": "Smoker King Tobacco and Liquor",
+    "lat": 38.8474528,
+    "long": -104.8510484
+  },
+  {
+    "type": "Liquor",
+    "name": "Veterans Liquor and Smokes",
+    "lat": 38.8177597,
+    "long": -104.7916699
+  },
+  {
+    "type": "Liquor",
+    "name": "Casa Amigos Liquor",
+    "lat": 38.873157,
+    "long": -104.7470668
+  },
+  {
+    "type": "Liquor",
+    "name": "Liquor Plus",
+    "lat": 38.8860596,
+    "long": -104.7604346
+  },
+  {
+    "type": "Liquor",
+    "name": "Bob s Liquors and Vape",
+    "lat": 38.8856691,
+    "long": -104.8123136
+  },
+  {
+    "type": "Liquor",
+    "name": "AC LIQUOR",
+    "lat": 38.7970111,
+    "long": -104.742227
+  },
+  {
+    "type": "Liquor",
+    "name": "Cheyenne Mountain Liquors",
+    "lat": 38.7772368,
+    "long": -104.8142121
+  },
+  {
+    "type": "Liquor",
+    "name": "Chungs Aspen Liquors",
+    "lat": 38.8314022,
+    "long": -104.7562042
+  },
+  {
+    "type": "Liquor",
+    "name": "El Rey Liquor LLC",
+    "lat": 38.8327081,
+    "long": -104.7604399
+  },
+  {
+    "type": "Liquor",
+    "name": " Thirsty Goats Liquor Store",
+    "lat": 38.8928866,
+    "long": -104.7548035
+  },
+  {
+    "type": "Liquor",
+    "name": "Schnapps Box Liquors",
+    "lat": 38.7970212,
+    "long": -104.7422092
+  },
+  {
+    "type": "Liquor",
+    "name": "American Spirit Liquor and Vape Shop",
+    "lat": 38.8880917,
+    "long": -104.8194652
+  },
+  {
+    "type": "Liquor",
+    "name": "Drekar Meadery",
+    "lat": 38.8456538,
+    "long": -104.7763733
+  },
+  {
+    "type": "Liquor",
+    "name": "BLUFFS WINE AND LIQUOR",
+    "lat": 38.8900182,
+    "long": -104.7601506
+  },
+  {
+    "type": "Liquor",
+    "name": "Astro liquors",
+    "lat": 38.7960905,
+    "long": -104.7565282
+  },
+  {
+    "type": "Liquor",
+    "name": "Chelton Liquors",
+    "lat": 38.8364943,
+    "long": -104.7672859
+  },
+  {
+    "type": "Liquor",
+    "name": "Powers Liquor Mart",
+    "lat": 38.8545456,
+    "long": -104.7184143
+  },
+  {
+    "type": "Liquor",
+    "name": "Veterans Liquor LLC",
+    "lat": 38.8930362,
+    "long": -104.7600149
+  },
+  {
+    "type": "Liquor",
+    "name": "Stratmoor Liquor",
+    "lat": 38.774273,
+    "long": -104.79171
+  },
+  {
+    "type": "Liquor",
+    "name": "Garden of the Gods Liquor",
+    "lat": 38.8963114,
+    "long": -104.8371183
+  },
+  {
+    "type": "Liquor",
+    "name": "Lechaim Liquor, N Academy Blvd, Colorado",
+    "lat": 38.8811366,
+    "long": -104.7576429
+  },
+  {
+    "type": "Liquor",
+    "name": "Freedom Liquor",
+    "lat": 38.8939307,
+    "long": -104.7233758
+  },
+  {
+    "type": "Liquor",
+    "name": "Manitou Liquors",
+    "lat": 38.860874,
+    "long": -104.920616
+  },
+  {
+    "type": "Liquor",
+    "name": "J K Liquor Vapes",
+    "lat": 38.8743253,
+    "long": -104.7221988
+  },
+  {
+    "type": "Liquor",
+    "name": "Beer Cave Liquor Store",
+    "lat": 38.8363914,
+    "long": -104.7672348
+  },
+  {
+    "type": "Liquor",
+    "name": "Applejack Wine Spirits",
+    "lat": 38.8785664,
+    "long": -104.7177333
+  },
+  {
+    "type": "Liquor",
+    "name": "Springs Liquor Outlet",
+    "lat": 38.8859939,
+    "long": -104.7147052
+  },
+  {
+    "type": "Liquor",
+    "name": "Sant C A Beer, Wine Liquor",
+    "lat": 38.8945776,
+    "long": -104.8502253
+  },
+  {
+    "type": "Liquor",
+    "name": "Lakeview Liquor Wine Spirits",
+    "lat": 38.8981926,
+    "long": -104.8184885
+  },
+  {
+    "type": "Liquor",
+    "name": "Jansen Liquors",
+    "lat": 38.8457862,
+    "long": -104.7200075
+  },
+  {
+    "type": "Liquor",
+    "name": "MK Wine Liquor Vapes",
+    "lat": 38.8696649,
+    "long": -104.7169275
+  },
+  {
+    "type": "Liquor",
+    "name": "Wine Liquor",
+    "lat": 38.8953993,
+    "long": -104.7581165
+  },
+  {
+    "type": "Liquor",
+    "name": "Barnes Liquor same day delivery normaly hour",
+    "lat": 38.8961848,
+    "long": -104.7376784
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 38.8481781,
+    "long": -104.8503771
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 38.8264492,
+    "long": -104.8212712
+  },
+  {
+    "type": "Liquor",
+    "name": "King Soopers",
+    "lat": 38.7904238,
+    "long": -104.7606495
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 38.8825931,
+    "long": -104.7580417
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 38.7989006,
+    "long": -104.8015073
+  },
+  {
+    "type": "Liquor",
+    "name": "QuikTrip",
+    "lat": 38.856982,
+    "long": -104.756976
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 38.8316809,
+    "long": -104.8399078
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 38.8084351,
+    "long": -104.8217727
+  },
+  {
+    "type": "Liquor",
+    "name": "Montana Liquors",
+    "lat": 38.767169,
+    "long": -104.8156244
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 38.806594,
+    "long": -104.7779378
+  },
+  {
+    "type": "Liquor",
+    "name": "Golden Liquors",
+    "lat": 38.9034456,
+    "long": -104.775807
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 38.838308,
+    "long": -104.8184214
+  },
+  {
+    "type": "Liquor",
+    "name": "Old Farm Wine Spirits",
+    "lat": 38.9059626,
+    "long": -104.7368868
+  },
+  {
+    "type": "Liquor",
+    "name": "R R Liquor and Vape",
+    "lat": 38.7682242,
+    "long": -104.7389977
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 38.8461431,
+    "long": -104.8205644
+  },
+  {
+    "type": "Liquor",
+    "name": "Security Discount Liquor",
+    "lat": 38.7543586,
+    "long": -104.7422264
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 38.852184,
+    "long": -104.8701809
+  },
+  {
+    "type": "Liquor",
+    "name": "Manitou Winery",
+    "lat": 38.8594387,
+    "long": -104.9181847
+  },
+  {
+    "type": "Liquor",
+    "name": "King Soopers",
+    "lat": 38.8488618,
+    "long": -104.8472098
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 38.8744613,
+    "long": -104.8261729
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 38.8391016,
+    "long": -104.8585266
+  },
+  {
+    "type": "Liquor",
+    "name": "Aries Liquor",
+    "lat": 38.8588881,
+    "long": -104.7001542
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 38.8387124,
+    "long": -104.7484707
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 38.8389271,
+    "long": -104.8479245
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 38.8743093,
+    "long": -104.8038312
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 38.8315595,
+    "long": -104.7567569
+  },
+  {
+    "type": "Liquor",
+    "name": "King Soopers",
+    "lat": 38.8772197,
+    "long": -104.8488888
+  },
+  {
+    "type": "Liquor",
+    "name": "Mountain Cellars and Vapes",
+    "lat": 38.9516928,
+    "long": -104.8003694
+  },
+  {
+    "type": "Liquor",
+    "name": "Twins Wine Liquor",
+    "lat": 38.9711939,
+    "long": -104.7421838
+  },
+  {
+    "type": "Liquor",
+    "name": "Old Ranch Liquor and Vapes",
+    "lat": 38.9841728,
+    "long": -104.7601318
+  },
+  {
+    "type": "Liquor",
+    "name": "Interquest Liquor",
+    "lat": 38.9901211,
+    "long": -104.8011653
+  },
+  {
+    "type": "Liquor",
+    "name": "Newton Wine and Spirits",
+    "lat": 39.0253476,
+    "long": -104.8153354
+  },
+  {
+    "type": "Liquor",
+    "name": "Colorado Liquor Outlet",
+    "lat": 38.944654,
+    "long": -104.796939
+  },
+  {
+    "type": "Liquor",
+    "name": "Payless Wine Spirits Vapes",
+    "lat": 38.9578887,
+    "long": -104.7667942
+  },
+  {
+    "type": "Liquor",
+    "name": "Black Forest Liquor Store",
+    "lat": 38.9976477,
+    "long": -104.7006786
+  },
+  {
+    "type": "Liquor",
+    "name": "Flying Horse Wine and Spirits",
+    "lat": 39.0296638,
+    "long": -104.7805044
+  },
+  {
+    "type": "Liquor",
+    "name": "Liquor",
+    "lat": 39.0253547,
+    "long": -104.8153547
+  },
+  {
+    "type": "Liquor",
+    "name": "Aria s Liquor Vapes",
+    "lat": 38.9547926,
+    "long": -104.7270048
+  },
+  {
+    "type": "Liquor",
+    "name": "Shops at Old Ranch",
+    "lat": 38.9842078,
+    "long": -104.7600668
+  },
+  {
+    "type": "Liquor",
+    "name": "Marketplace at Briargate",
+    "lat": 38.9647807,
+    "long": -104.7559944
+  },
+  {
+    "type": "Liquor",
+    "name": "Canyon Crest Wine, Liquor, Beer",
+    "lat": 38.903839,
+    "long": -104.856976
+  },
+  {
+    "type": "Liquor",
+    "name": "Tuscany Wine, Spirits, Vape",
+    "lat": 38.9214014,
+    "long": -104.7390692
+  },
+  {
+    "type": "Liquor",
+    "name": "Woodmen Wine Liquor",
+    "lat": 38.9387955,
+    "long": -104.7621687
+  },
+  {
+    "type": "Liquor",
+    "name": "Classic Liquor",
+    "lat": 38.9264776,
+    "long": -104.7958476
+  }
+]

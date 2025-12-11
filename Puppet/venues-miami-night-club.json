@@ -1,0 +1,656 @@
+[
+  {
+    "type": "Liquor",
+    "name": "Mango s Miami",
+    "lat": 25.7794405,
+    "long": -80.1312129
+  },
+  {
+    "type": "Liquor",
+    "name": "E EVEN MIAMI",
+    "lat": 25.7849684,
+    "long": -80.1935569
+  },
+  {
+    "type": "Liquor",
+    "name": "CLUB SPACE",
+    "lat": 25.7846546,
+    "long": -80.1931826
+  },
+  {
+    "type": "Liquor",
+    "name": "LIV Nightclub Miami",
+    "lat": 25.8180403,
+    "long": -80.1223972
+  },
+  {
+    "type": "Liquor",
+    "name": "Club M Miami",
+    "lat": 25.7834383,
+    "long": -80.132088
+  },
+  {
+    "type": "Liquor",
+    "name": "South Beach Nightclubs",
+    "lat": 25.7822088,
+    "long": -80.1315618
+  },
+  {
+    "type": "Liquor",
+    "name": "VIP South Beach Miami Nightlife Nightclub Party Packages",
+    "lat": 25.7880428,
+    "long": -80.1406918
+  },
+  {
+    "type": "Liquor",
+    "name": "Studio Nightclub",
+    "lat": 25.8089609,
+    "long": -80.2343056
+  },
+  {
+    "type": "Liquor",
+    "name": "El Palenque Night Club",
+    "lat": 25.7841438,
+    "long": -80.2310684
+  },
+  {
+    "type": "Liquor",
+    "name": "La Otra at Mad Wynwood",
+    "lat": 25.8000697,
+    "long": -80.1938269
+  },
+  {
+    "type": "Liquor",
+    "name": "Bellas Cabaret Miami Strip Club",
+    "lat": 25.8105394,
+    "long": -80.2628498
+  },
+  {
+    "type": "Liquor",
+    "name": "Voodoo Lounge Rooftop",
+    "lat": 25.7797441,
+    "long": -80.1309849
+  },
+  {
+    "type": "Liquor",
+    "name": "Nightclubs in Miami",
+    "lat": 25.7912253,
+    "long": -80.2077763
+  },
+  {
+    "type": "Liquor",
+    "name": "MODE Downtown Miami",
+    "lat": 25.7739243,
+    "long": -80.1938093
+  },
+  {
+    "type": "Liquor",
+    "name": "Elite Miami nightlife Ent",
+    "lat": 25.7754248,
+    "long": -80.135385
+  },
+  {
+    "type": "Liquor",
+    "name": "Blackbird Ordinary",
+    "lat": 25.7667169,
+    "long": -80.1951854
+  },
+  {
+    "type": "Liquor",
+    "name": "La Terraza Brickell",
+    "lat": 25.7684475,
+    "long": -80.1913487
+  },
+  {
+    "type": "Liquor",
+    "name": "La Victoria",
+    "lat": 25.81314,
+    "long": -80.194818
+  },
+  {
+    "type": "Liquor",
+    "name": "Azucar NightClub",
+    "lat": 25.7481567,
+    "long": -80.2462107
+  },
+  {
+    "type": "Liquor",
+    "name": "Mynt Lounge",
+    "lat": 25.7952537,
+    "long": -80.1290194
+  },
+  {
+    "type": "Liquor",
+    "name": "Cosanostra Miami",
+    "lat": 25.765438,
+    "long": -80.221063
+  },
+  {
+    "type": "Liquor",
+    "name": "BLUME Nightclub",
+    "lat": 25.760358,
+    "long": -80.193146
+  },
+  {
+    "type": "Liquor",
+    "name": "Vend C B me",
+    "lat": 25.777844,
+    "long": -80.133088
+  },
+  {
+    "type": "Liquor",
+    "name": "Electric Wynwood",
+    "lat": 25.799005,
+    "long": -80.1980329
+  },
+  {
+    "type": "Liquor",
+    "name": "Lost Nightclub",
+    "lat": 25.7881684,
+    "long": -80.1934755
+  },
+  {
+    "type": "Liquor",
+    "name": "TuCandela Bar",
+    "lat": 25.765293,
+    "long": -80.1924908
+  },
+  {
+    "type": "Liquor",
+    "name": "Night Out LLC Miami NightLife Concierge",
+    "lat": 25.8180133,
+    "long": -80.1222385
+  },
+  {
+    "type": "Liquor",
+    "name": "Coco Miami",
+    "lat": 25.8140153,
+    "long": -80.1953635
+  },
+  {
+    "type": "Liquor",
+    "name": "Party on the River",
+    "lat": 25.802893,
+    "long": -80.255086
+  },
+  {
+    "type": "Liquor",
+    "name": "Fresa Lounge",
+    "lat": 25.7789974,
+    "long": -80.2670669
+  },
+  {
+    "type": "Liquor",
+    "name": "Miami Bar Crawl C The Epic Group",
+    "lat": 25.7925424,
+    "long": -80.130166
+  },
+  {
+    "type": "Liquor",
+    "name": "Blue Martini",
+    "lat": 25.7652463,
+    "long": -80.1935109
+  },
+  {
+    "type": "Liquor",
+    "name": "Alfaro s",
+    "lat": 25.7655674,
+    "long": -80.2207037
+  },
+  {
+    "type": "Liquor",
+    "name": "RedBar Brickell",
+    "lat": 25.7643213,
+    "long": -80.1942229
+  },
+  {
+    "type": "Liquor",
+    "name": "Miami Beach Yacht Party Club",
+    "lat": 25.773784,
+    "long": -80.1327831
+  },
+  {
+    "type": "Liquor",
+    "name": "Do Not Sit On The Furniture",
+    "lat": 25.7893185,
+    "long": -80.1322955
+  },
+  {
+    "type": "Liquor",
+    "name": "Playpen Miami",
+    "lat": 25.808262,
+    "long": -80.259618
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Tipico Dominicano",
+    "lat": 25.8096116,
+    "long": -80.2186128
+  },
+  {
+    "type": "Liquor",
+    "name": "Domicile Miami",
+    "lat": 25.8038695,
+    "long": -80.2074963
+  },
+  {
+    "type": "Liquor",
+    "name": "The Loop",
+    "lat": 25.7845554,
+    "long": -80.1927154
+  },
+  {
+    "type": "Liquor",
+    "name": "El Patio Wynwood",
+    "lat": 25.7992943,
+    "long": -80.1982509
+  },
+  {
+    "type": "Liquor",
+    "name": "Rosa Sky",
+    "lat": 25.7668472,
+    "long": -80.196175
+  },
+  {
+    "type": "Liquor",
+    "name": "World Crawl Miami",
+    "lat": 25.7909385,
+    "long": -80.1323601
+  },
+  {
+    "type": "Liquor",
+    "name": "Bar Crawl Miami",
+    "lat": 25.79967,
+    "long": -80.19799
+  },
+  {
+    "type": "Liquor",
+    "name": "Promo Code Cruz",
+    "lat": 25.7844757,
+    "long": -80.1931356
+  },
+  {
+    "type": "Liquor",
+    "name": "Royale Society Hospitality",
+    "lat": 25.7737878,
+    "long": -80.1879712
+  },
+  {
+    "type": "Liquor",
+    "name": "BALL CHAIN",
+    "lat": 25.7658888,
+    "long": -80.2197755
+  },
+  {
+    "type": "Liquor",
+    "name": "Palace Bar Restaurant",
+    "lat": 25.7812258,
+    "long": -80.130653
+  },
+  {
+    "type": "Liquor",
+    "name": "Liquor Lounge",
+    "lat": 25.7890604,
+    "long": -80.1304616
+  },
+  {
+    "type": "Liquor",
+    "name": "GCSOBE C Miami Beach Lounge Hookah",
+    "lat": 25.7777475,
+    "long": -80.1332193
+  },
+  {
+    "type": "Liquor",
+    "name": "Maze Lounge",
+    "lat": 25.7714332,
+    "long": -80.187516
+  },
+  {
+    "type": "Liquor",
+    "name": "I Party Miami",
+    "lat": 25.7783513,
+    "long": -80.1874454
+  },
+  {
+    "type": "Liquor",
+    "name": "House of Bass",
+    "lat": 25.798853,
+    "long": -80.2049767
+  },
+  {
+    "type": "Liquor",
+    "name": "MR JONES",
+    "lat": 25.7904519,
+    "long": -80.1312291
+  },
+  {
+    "type": "Liquor",
+    "name": "the thmiami",
+    "lat": 25.808384,
+    "long": -80.195553
+  },
+  {
+    "type": "Liquor",
+    "name": "Booby Trap On The River",
+    "lat": 25.8027871,
+    "long": -80.2552131
+  },
+  {
+    "type": "Liquor",
+    "name": "Medium Cool Cocktail Lounge",
+    "lat": 25.7921705,
+    "long": -80.1300788
+  },
+  {
+    "type": "Liquor",
+    "name": "The Clevelander Bar",
+    "lat": 25.7807913,
+    "long": -80.1308582
+  },
+  {
+    "type": "Liquor",
+    "name": "Kill Your Idol",
+    "lat": 25.7868183,
+    "long": -80.1310807
+  },
+  {
+    "type": "Liquor",
+    "name": "Bacara Club",
+    "lat": 25.7988461,
+    "long": -80.1287499
+  },
+  {
+    "type": "Liquor",
+    "name": "Heaven",
+    "lat": 25.781509,
+    "long": -80.1306894
+  },
+  {
+    "type": "Liquor",
+    "name": "Quality Men Miami",
+    "lat": 25.7650812,
+    "long": -80.192944
+  },
+  {
+    "type": "Liquor",
+    "name": "Oasis Lounge and Hookah bar",
+    "lat": 25.7275869,
+    "long": -80.2414482
+  },
+  {
+    "type": "Liquor",
+    "name": "Mayami Wynwood",
+    "lat": 25.7993489,
+    "long": -80.1976577
+  },
+  {
+    "type": "Liquor",
+    "name": "Twist",
+    "lat": 25.7816788,
+    "long": -80.1322786
+  },
+  {
+    "type": "Liquor",
+    "name": "B C OLI Miami",
+    "lat": 25.7953697,
+    "long": -80.1294189
+  },
+  {
+    "type": "Liquor",
+    "name": "Sugar",
+    "lat": 25.7666353,
+    "long": -80.1925061
+  },
+  {
+    "type": "Liquor",
+    "name": "Miami Yacht Party and Miami Clubs",
+    "lat": 25.7794465,
+    "long": -80.1864291
+  },
+  {
+    "type": "Liquor",
+    "name": " Street Brickell",
+    "lat": 25.7661948,
+    "long": -80.1945784
+  },
+  {
+    "type": "Liquor",
+    "name": "MiniBar Miami",
+    "lat": 25.7741927,
+    "long": -80.1361823
+  },
+  {
+    "type": "Liquor",
+    "name": "Sobe VIPS",
+    "lat": 25.8140824,
+    "long": -80.127228
+  },
+  {
+    "type": "Liquor",
+    "name": "Paraiso Est C A reo",
+    "lat": 25.7872983,
+    "long": -80.1942873
+  },
+  {
+    "type": "Liquor",
+    "name": "HIGHBAR Pool B Bar B Sky",
+    "lat": 25.7819105,
+    "long": -80.1312129
+  },
+  {
+    "type": "Liquor",
+    "name": "Sweet Caroline Karaoke Bar Brickell",
+    "lat": 25.7633226,
+    "long": -80.1945933
+  },
+  {
+    "type": "Liquor",
+    "name": "Cucu s Nest Bar",
+    "lat": 25.7916053,
+    "long": -80.1300022
+  },
+  {
+    "type": "Liquor",
+    "name": "Guantanamera tropical caf C A and Lounge",
+    "lat": 25.7658509,
+    "long": -80.2190831
+  },
+  {
+    "type": "Liquor",
+    "name": "S Lounge",
+    "lat": 25.764997,
+    "long": -80.1903985
+  },
+  {
+    "type": "Liquor",
+    "name": "BOHO House Miami",
+    "lat": 25.7958276,
+    "long": -80.1924866
+  },
+  {
+    "type": "Liquor",
+    "name": "Sweet Liberty Drinks Supply Company",
+    "lat": 25.7960364,
+    "long": -80.1299925
+  },
+  {
+    "type": "Liquor",
+    "name": "Empire Social Lounge Brickell Location ",
+    "lat": 25.7632736,
+    "long": -80.1933283
+  },
+  {
+    "type": "Liquor",
+    "name": "The Living Room",
+    "lat": 25.8074372,
+    "long": -80.1235097
+  },
+  {
+    "type": "Liquor",
+    "name": "Salsa Mia",
+    "lat": 25.7794391,
+    "long": -80.1312227
+  },
+  {
+    "type": "Liquor",
+    "name": "Fonda sanpocho",
+    "lat": 25.7662369,
+    "long": -80.2095234
+  },
+  {
+    "type": "Liquor",
+    "name": "Mama Tried",
+    "lat": 25.7753271,
+    "long": -80.1901118
+  },
+  {
+    "type": "Liquor",
+    "name": "R House Wynwood",
+    "lat": 25.8026363,
+    "long": -80.1990194
+  },
+  {
+    "type": "Liquor",
+    "name": "Privilege Cocktail Lounge",
+    "lat": 25.7909612,
+    "long": -80.1311256
+  },
+  {
+    "type": "Liquor",
+    "name": "Barsecco",
+    "lat": 25.760387,
+    "long": -80.193307
+  },
+  {
+    "type": "Liquor",
+    "name": "South Pointe Tavern",
+    "lat": 25.7682072,
+    "long": -80.1330218
+  },
+  {
+    "type": "Liquor",
+    "name": "Miami Party Hostel",
+    "lat": 25.7797793,
+    "long": -80.1311089
+  },
+  {
+    "type": "Liquor",
+    "name": "The Commodore",
+    "lat": 25.7304034,
+    "long": -80.2377476
+  },
+  {
+    "type": "Liquor",
+    "name": "Bolivar Colombian Restaurant Bar Lounge",
+    "lat": 25.779079,
+    "long": -80.1329652
+  },
+  {
+    "type": "Liquor",
+    "name": "WunderBar",
+    "lat": 25.8119815,
+    "long": -80.1234754
+  },
+  {
+    "type": "Liquor",
+    "name": "Smoke Wynwood",
+    "lat": 25.7998859,
+    "long": -80.2009095
+  },
+  {
+    "type": "Liquor",
+    "name": "Bar Gaythering",
+    "lat": 25.790553,
+    "long": -80.1440957
+  },
+  {
+    "type": "Liquor",
+    "name": "SoBe Hookah Brickell",
+    "lat": 25.7651348,
+    "long": -80.1906257
+  },
+  {
+    "type": "Liquor",
+    "name": "Better Days",
+    "lat": 25.7684406,
+    "long": -80.1911656
+  },
+  {
+    "type": "Liquor",
+    "name": "Espa C B ola Cigar Bar Lounge",
+    "lat": 25.7870432,
+    "long": -80.1321061
+  },
+  {
+    "type": "Liquor",
+    "name": "Old Tom s Sports Bar Miami Springs",
+    "lat": 25.8082008,
+    "long": -80.2781295
+  },
+  {
+    "type": "Liquor",
+    "name": "AM to PM Miami",
+    "lat": 25.8273636,
+    "long": -80.1960218
+  },
+  {
+    "type": "Liquor",
+    "name": "Queen Miami Beach",
+    "lat": 25.7755449,
+    "long": -80.1341187
+  },
+  {
+    "type": "Liquor",
+    "name": "SoBe Hookah At Clevelander Sports Bar",
+    "lat": 25.7805496,
+    "long": -80.1308393
+  },
+  {
+    "type": "Liquor",
+    "name": "Tea Room",
+    "lat": 25.7666736,
+    "long": -80.1927482
+  },
+  {
+    "type": "Liquor",
+    "name": "Siboney Corporation",
+    "lat": 25.7635317,
+    "long": -80.2939826
+  },
+  {
+    "type": "Liquor",
+    "name": "STK Steakhouse",
+    "lat": 25.7984992,
+    "long": -80.1276134
+  },
+  {
+    "type": "Liquor",
+    "name": "South Beach Party Boats",
+    "lat": 25.7774617,
+    "long": -80.184257
+  },
+  {
+    "type": "Liquor",
+    "name": "LEVEL II",
+    "lat": 25.8103462,
+    "long": -80.3157506
+  },
+  {
+    "type": "Liquor",
+    "name": "Pharaoh Hookah Cigar Lounge",
+    "lat": 25.7652334,
+    "long": -80.2421032
+  },
+  {
+    "type": "Liquor",
+    "name": "Lvlone Night Club Lounge",
+    "lat": 25.7881427,
+    "long": -80.1935232
+  },
+  {
+    "type": "Liquor",
+    "name": "STORY",
+    "lat": 25.7705528,
+    "long": -80.1340421
+  }
+]

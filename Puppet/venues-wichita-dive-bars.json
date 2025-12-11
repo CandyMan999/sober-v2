@@ -1,0 +1,716 @@
+[
+  {
+    "type": "Bar",
+    "name": "The Dive Beach Bar",
+    "lat": 37.6858166,
+    "long": -97.323322,
+    "gmapsCategory": "Cocktail bar"
+  },
+  {
+    "type": "Bar",
+    "name": "The Deep End",
+    "lat": 37.6500952,
+    "long": -97.3295133,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Wine Dive B Kitchen Wichita",
+    "lat": 37.6868194,
+    "long": -97.2812611,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Lucky s Everyday",
+    "lat": 37.6858465,
+    "long": -97.3230305,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Shamrock Lounge",
+    "lat": 37.6841038,
+    "long": -97.3611803,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "The JukeBox",
+    "lat": 37.6694947,
+    "long": -97.3525799,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Barron s",
+    "lat": 37.6482819,
+    "long": -97.2799931,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Js Lounge",
+    "lat": 37.6933169,
+    "long": -97.3323637,
+    "gmapsCategory": "Gay bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Oliver s Lounge",
+    "lat": 37.6860062,
+    "long": -97.2811553,
+    "gmapsCategory": "Cocktail bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Caesar s Barroom",
+    "lat": 37.6943435,
+    "long": -97.3937603,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Cowboy Inn",
+    "lat": 37.6944852,
+    "long": -97.3757332,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Whiskey Dicks",
+    "lat": 37.6751855,
+    "long": -97.3532334,
+    "gmapsCategory": "Sports bar specializing in burgers"
+  },
+  {
+    "type": "Bar",
+    "name": "Harry s Uptown Bar Grill",
+    "lat": 37.6861417,
+    "long": -97.3001056,
+    "gmapsCategory": "Low-key fixture with pub grub & a patio"
+  },
+  {
+    "type": "Bar",
+    "name": "Snug Harbor",
+    "lat": 37.6724084,
+    "long": -97.27051,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Douglas Social",
+    "lat": 37.6865707,
+    "long": -97.3062706,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "The Triangle Club",
+    "lat": 37.6568437,
+    "long": -97.326734,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "CJ s Sports Bar and Grill",
+    "lat": 37.6642345,
+    "long": -97.2629467,
+    "gmapsCategory": "CJ's Sports Bar and Grill"
+  },
+  {
+    "type": "Bar",
+    "name": "Doug s Place",
+    "lat": 37.6652474,
+    "long": -97.3261732,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Kirby s",
+    "lat": 37.7152337,
+    "long": -97.2980295,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Oasis Lounge",
+    "lat": 37.6800288,
+    "long": -97.3911178,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Bar",
+    "name": "Brickyard",
+    "lat": 37.6872428,
+    "long": -97.328861,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Rhonda s Place",
+    "lat": 37.6636669,
+    "long": -97.2979661,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Dirty D s Bar Grill",
+    "lat": 37.6662193,
+    "long": -97.3533722,
+    "gmapsCategory": "Dirty D's Bar & Grill"
+  },
+  {
+    "type": "Bar",
+    "name": "The Stop",
+    "lat": 37.666363,
+    "long": -97.3261354,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "O Malley s Irish Pub",
+    "lat": 37.6364463,
+    "long": -97.3697412,
+    "gmapsCategory": "Irish pub"
+  },
+  {
+    "type": "Bar",
+    "name": "Dockum",
+    "lat": 37.6855964,
+    "long": -97.3354034,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Merle s Place",
+    "lat": 37.6893974,
+    "long": -97.3528423,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Bar",
+    "name": "Bubbles Champagne Bar",
+    "lat": 37.6858082,
+    "long": -97.3318828,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "A J s Music Room",
+    "lat": 37.6657415,
+    "long": -97.3705858,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "The Karaoke Room Bar and Grill",
+    "lat": 37.6364464,
+    "long": -97.3697417,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Quincy s Bar Grill",
+    "lat": 37.7206052,
+    "long": -97.3907762,
+    "gmapsCategory": "Quincy's Bar & Grill"
+  },
+  {
+    "type": "Bar",
+    "name": "John Barleycorn s",
+    "lat": 37.6863806,
+    "long": -97.3312131,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "R Friend s Club",
+    "lat": 37.6989822,
+    "long": -97.3902923,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Bar",
+    "name": "The Field House",
+    "lat": 37.715289,
+    "long": -97.290759,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Tropics Lounge",
+    "lat": 37.7318896,
+    "long": -97.3361438,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Frosty Mugs",
+    "lat": 37.6653318,
+    "long": -97.3261396,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Shot Time",
+    "lat": 37.6363992,
+    "long": -97.3552828,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Bar",
+    "name": "Mort E s Martini and Cigar Bar",
+    "lat": 37.68778,
+    "long": -97.3266199,
+    "gmapsCategory": "Cocktail bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Emerson Biggins",
+    "lat": 37.6862843,
+    "long": -97.3283421,
+    "gmapsCategory": "Sports bar"
+  },
+  {
+    "type": "Bar",
+    "name": "The Red Brick Room",
+    "lat": 37.6943511,
+    "long": -97.3935855,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Bar",
+    "name": "Vorshay E s Cocktail Lounge",
+    "lat": 37.6858619,
+    "long": -97.3334047,
+    "gmapsCategory": "Cocktail bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Champs ",
+    "lat": 37.6720727,
+    "long": -97.3524433,
+    "gmapsCategory": "Sports bar with pool tables & karaoke"
+  },
+  {
+    "type": "Bar",
+    "name": "Apparition Wichita",
+    "lat": 37.7212329,
+    "long": -97.2605656,
+    "gmapsCategory": "Cocktail bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Big s Bar Grill",
+    "lat": 37.6937498,
+    "long": -97.4229271,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "The Shadows",
+    "lat": 37.6716105,
+    "long": -97.4160933,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Revolution Lounge",
+    "lat": 37.6891006,
+    "long": -97.3277425,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "El Bar",
+    "lat": 37.6639993,
+    "long": -97.2623939,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Fireside Lounge",
+    "lat": 37.6804924,
+    "long": -97.3384558,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Vagabond Cafe",
+    "lat": 37.6842477,
+    "long": -97.3476039,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Headshots Arcade Bar Grill",
+    "lat": 37.7212826,
+    "long": -97.2607476,
+    "gmapsCategory": "Headshots Arcade Bar & Grill"
+  },
+  {
+    "type": "Bar",
+    "name": "Artichoke Sandwichbar Midtown",
+    "lat": 37.6979238,
+    "long": -97.3358633,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "XY Bar",
+    "lat": 37.689258,
+    "long": -97.3279017,
+    "gmapsCategory": "Gay bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Shooters",
+    "lat": 37.6430448,
+    "long": -97.3164725,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Bar s Open",
+    "lat": 37.6966286,
+    "long": -97.3413212,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Casey s Bar Grill",
+    "lat": 37.6347198,
+    "long": -97.2809753,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "O Briens Irish Pub",
+    "lat": 37.6788195,
+    "long": -97.2754998,
+    "gmapsCategory": "Irish pub"
+  },
+  {
+    "type": "Bar",
+    "name": "The Other Place",
+    "lat": 37.680119,
+    "long": -97.317561,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Side Pockets Restaurant Sports Bar",
+    "lat": 37.6734093,
+    "long": -97.4421496,
+    "gmapsCategory": "Sports bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Driftwood Lounge",
+    "lat": 37.6230871,
+    "long": -97.322205,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Ty s Diner",
+    "lat": 37.6879878,
+    "long": -97.3516102,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Bar",
+    "name": "Dusti s Place",
+    "lat": 37.6226841,
+    "long": -97.4237269,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Bar",
+    "name": "Mulligan s Pub",
+    "lat": 37.742511,
+    "long": -97.240161,
+    "gmapsCategory": "Mulligan's Pub"
+  },
+  {
+    "type": "Bar",
+    "name": "Larkspur C Bistro Bar",
+    "lat": 37.6863684,
+    "long": -97.3273117,
+    "gmapsCategory": "Larkspur | Bistro & Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Crummy s Sports Bar",
+    "lat": 37.695794,
+    "long": -97.4274527,
+    "gmapsCategory": "Sports bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Fat Ernie s Family Dining",
+    "lat": 37.641711,
+    "long": -97.316526,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Bar",
+    "name": "Southrock Billiards Sports Bar",
+    "lat": 37.6570549,
+    "long": -97.243782,
+    "gmapsCategory": "Sports bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Mortdecai s Tavern Eatery",
+    "lat": 37.6823169,
+    "long": -97.2064638,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Southeast Carry Out",
+    "lat": 37.666096,
+    "long": -97.280012,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Bar",
+    "name": "The Grinder Man",
+    "lat": 37.650191,
+    "long": -97.3324577,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Bar",
+    "name": "Sport Burger Drive In",
+    "lat": 37.6873803,
+    "long": -97.298789,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Bar",
+    "name": "Bourbon Street Bar Grill",
+    "lat": 37.6246039,
+    "long": -97.3530364,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Dudley s Irish Pub",
+    "lat": 37.7238642,
+    "long": -97.4421281,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Jerry s Bar Grill",
+    "lat": 37.6931071,
+    "long": -97.4415588,
+    "gmapsCategory": "Jerry's Bar & Grill"
+  },
+  {
+    "type": "Bar",
+    "name": "NuWAY Burgers",
+    "lat": 37.6841774,
+    "long": -97.3571297,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Bar",
+    "name": "Los Pinos",
+    "lat": 37.6837535,
+    "long": -97.3551624,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Bar",
+    "name": "Villar s Mexico Cafe",
+    "lat": 37.6593741,
+    "long": -97.2983146,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Bar",
+    "name": "Deano s Grill and Tapworks EAST",
+    "lat": 37.7216339,
+    "long": -97.2252185,
+    "gmapsCategory": "Sports bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Bill Mary s",
+    "lat": 37.6180828,
+    "long": -97.3346913,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Taqueria El Fogon",
+    "lat": 37.665312,
+    "long": -97.289914,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Bar",
+    "name": "Pasta Express",
+    "lat": 37.6649663,
+    "long": -97.2876243,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Bar",
+    "name": "AJs Sports Bar Grill",
+    "lat": 37.7401174,
+    "long": -97.242662,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "B C s Bar Grill",
+    "lat": 37.6147288,
+    "long": -97.3345666,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Thai House Restaurant",
+    "lat": 37.7010689,
+    "long": -97.3903198,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Bar",
+    "name": "Jumbo s Beef Brew",
+    "lat": 37.7509959,
+    "long": -97.2616654,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Fried Rice",
+    "lat": 37.6494435,
+    "long": -97.2786356,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Bar",
+    "name": "The Brass Taproom",
+    "lat": 37.6734245,
+    "long": -97.4421617,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Bionic Burger",
+    "lat": 37.6509778,
+    "long": -97.3703748,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Bar",
+    "name": "Alondra s Tacos",
+    "lat": 37.7232089,
+    "long": -97.3554225,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Bar",
+    "name": "Emerson Biggin s Sports Bar Grill",
+    "lat": 37.7248379,
+    "long": -97.461296,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Emperor s Japanese Grill",
+    "lat": 37.724771,
+    "long": -97.425662,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Bar",
+    "name": "Shenanigans",
+    "lat": 37.7962165,
+    "long": -97.3338042,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Pollo Express Mexican Restaurant Wichita",
+    "lat": 37.6510834,
+    "long": -97.3711989,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Bar",
+    "name": "Buster s Burger Joint",
+    "lat": 37.6228996,
+    "long": -97.3221789,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Bar",
+    "name": "Bionic Burger",
+    "lat": 37.6929667,
+    "long": -97.4257361,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Bar",
+    "name": "Peerless",
+    "lat": 37.6858202,
+    "long": -97.3268106,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Tacos Lopez",
+    "lat": 37.698315,
+    "long": -97.390198,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Bar",
+    "name": "Rico s Tacos El Torito",
+    "lat": 37.714622,
+    "long": -97.3348697,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Bar",
+    "name": "The Anchor",
+    "lat": 37.6858025,
+    "long": -97.3246443,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Bar",
+    "name": "Timbuktu Bar Grill",
+    "lat": 37.7083388,
+    "long": -97.1354938,
+    "gmapsCategory": "Timbuktu Bar & Grill"
+  },
+  {
+    "type": "Bar",
+    "name": "Uncle Sam s",
+    "lat": 37.5368907,
+    "long": -97.3335773,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "THE SHOP",
+    "lat": 37.5484886,
+    "long": -97.2705793,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "The Port Of Wichita",
+    "lat": 37.6653097,
+    "long": -97.2251015,
+    "gmapsCategory": "Bar"
+  }
+]

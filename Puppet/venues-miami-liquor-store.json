@@ -1,0 +1,686 @@
+[
+  {
+    "type": "Liquor",
+    "name": "Vintage Liquor Brickell",
+    "lat": 25.7600855,
+    "long": -80.2018561
+  },
+  {
+    "type": "Liquor",
+    "name": "Downtown Liquor Mart",
+    "lat": 25.7787951,
+    "long": -80.2060329
+  },
+  {
+    "type": "Liquor",
+    "name": "Ocean Liquor",
+    "lat": 25.779189,
+    "long": -80.131678
+  },
+  {
+    "type": "Liquor",
+    "name": "Vintage Liquor Midtown",
+    "lat": 25.807996,
+    "long": -80.192433
+  },
+  {
+    "type": "Liquor",
+    "name": "Miami Beach Liquors",
+    "lat": 25.7796659,
+    "long": -80.1404125
+  },
+  {
+    "type": "Liquor",
+    "name": "LIQUOR EMPORIUM DOWNTOWN",
+    "lat": 25.7814539,
+    "long": -80.2031371
+  },
+  {
+    "type": "Liquor",
+    "name": "GoPuff Liquor More Miami Beach",
+    "lat": 25.7867757,
+    "long": -80.1407364
+  },
+  {
+    "type": "Liquor",
+    "name": "Miami Liquors Jensen s Liquors ",
+    "lat": 25.7799733,
+    "long": -80.23089
+  },
+  {
+    "type": "Liquor",
+    "name": "JENNY S LIQUOR AND WINES ",
+    "lat": 25.8021263,
+    "long": -80.2320182
+  },
+  {
+    "type": "Liquor",
+    "name": "South Beach Liquor",
+    "lat": 25.775693,
+    "long": -80.132497
+  },
+  {
+    "type": "Liquor",
+    "name": "Liquor Mart ",
+    "lat": 25.8015145,
+    "long": -80.190739
+  },
+  {
+    "type": "Liquor",
+    "name": "El Gato Tuerto Liquor Store",
+    "lat": 25.7660274,
+    "long": -80.2022997
+  },
+  {
+    "type": "Liquor",
+    "name": "Jensen s Liquors ",
+    "lat": 25.7570879,
+    "long": -80.2388022
+  },
+  {
+    "type": "Liquor",
+    "name": "I Love Liquor",
+    "lat": 25.790276,
+    "long": -80.130335
+  },
+  {
+    "type": "Liquor",
+    "name": "Mega Wine Spirits",
+    "lat": 25.7790962,
+    "long": -80.2611085
+  },
+  {
+    "type": "Liquor",
+    "name": "Jensen s Liquors ",
+    "lat": 25.7883054,
+    "long": -80.2399073
+  },
+  {
+    "type": "Liquor",
+    "name": "Liquor Mart ",
+    "lat": 25.8091313,
+    "long": -80.2489375
+  },
+  {
+    "type": "Liquor",
+    "name": "Chandi Liquors F Liquor Downtown",
+    "lat": 25.7741814,
+    "long": -80.1893394
+  },
+  {
+    "type": "Liquor",
+    "name": "Miami Beach Liquor Store",
+    "lat": 25.7842875,
+    "long": -80.1316554
+  },
+  {
+    "type": "Liquor",
+    "name": "MB Liquor Wine Beer",
+    "lat": 25.8072689,
+    "long": -80.1871041
+  },
+  {
+    "type": "Liquor",
+    "name": "Triton Liquors Miami Beach",
+    "lat": 25.8047867,
+    "long": -80.125026
+  },
+  {
+    "type": "Liquor",
+    "name": "Brickell Wine Bank",
+    "lat": 25.7644876,
+    "long": -80.1900103
+  },
+  {
+    "type": "Liquor",
+    "name": "Gulf Liquors",
+    "lat": 25.7916208,
+    "long": -80.1410182
+  },
+  {
+    "type": "Liquor",
+    "name": "Jensen s Liquor ",
+    "lat": 25.7968047,
+    "long": -80.2235173
+  },
+  {
+    "type": "Liquor",
+    "name": "Riviera Liquors",
+    "lat": 25.8001561,
+    "long": -80.1269307
+  },
+  {
+    "type": "Liquor",
+    "name": "Tuto Sons Liquor",
+    "lat": 25.7819269,
+    "long": -80.1318623
+  },
+  {
+    "type": "Liquor",
+    "name": "Mora s Liquors Spirits ",
+    "lat": 25.7790821,
+    "long": -80.2473826
+  },
+  {
+    "type": "Liquor",
+    "name": "Jenny s Liquor and Wines ",
+    "lat": 25.795987,
+    "long": -80.240144
+  },
+  {
+    "type": "Liquor",
+    "name": "Portofino Wine Bank",
+    "lat": 25.768076,
+    "long": -80.1346437
+  },
+  {
+    "type": "Liquor",
+    "name": "M M Package Store",
+    "lat": 25.8155537,
+    "long": -80.265208
+  },
+  {
+    "type": "Liquor",
+    "name": "Big Daddy s Wine Liquors",
+    "lat": 25.7356951,
+    "long": -80.2378982
+  },
+  {
+    "type": "Liquor",
+    "name": "Surf Liquor",
+    "lat": 25.7755036,
+    "long": -80.1341517
+  },
+  {
+    "type": "Liquor",
+    "name": "Liquor Wine Depot",
+    "lat": 25.765766,
+    "long": -80.225632
+  },
+  {
+    "type": "Liquor",
+    "name": "Primo Fine Wine Spirits",
+    "lat": 25.7981962,
+    "long": -80.128325
+  },
+  {
+    "type": "Liquor",
+    "name": "Flagami Liquor Store",
+    "lat": 25.7793583,
+    "long": -80.2549925
+  },
+  {
+    "type": "Liquor",
+    "name": "Grove Liquors",
+    "lat": 25.7366356,
+    "long": -80.2444558
+  },
+  {
+    "type": "Liquor",
+    "name": "Jensen s Liquors",
+    "lat": 25.7879511,
+    "long": -80.2228359
+  },
+  {
+    "type": "Liquor",
+    "name": "Granada Liquors",
+    "lat": 25.7646028,
+    "long": -80.2750502
+  },
+  {
+    "type": "Liquor",
+    "name": "A LIQUORS",
+    "lat": 25.763644,
+    "long": -80.1933256
+  },
+  {
+    "type": "Liquor",
+    "name": "Edgewater Liquor",
+    "lat": 25.7998601,
+    "long": -80.1887288
+  },
+  {
+    "type": "Liquor",
+    "name": " Fingers Liquor Lounge",
+    "lat": 25.8154429,
+    "long": -80.2243793
+  },
+  {
+    "type": "Liquor",
+    "name": "Sobe Liquors",
+    "lat": 25.7893639,
+    "long": -80.141018
+  },
+  {
+    "type": "Liquor",
+    "name": "Mr Liquors ",
+    "lat": 25.7789714,
+    "long": -80.2671432
+  },
+  {
+    "type": "Liquor",
+    "name": "Primo Mini Market and Liquor",
+    "lat": 25.811463,
+    "long": -80.1230074
+  },
+  {
+    "type": "Liquor",
+    "name": "Chandi Liquors",
+    "lat": 25.7661298,
+    "long": -80.1935984
+  },
+  {
+    "type": "Liquor",
+    "name": "Miami Concorde Liquor Store",
+    "lat": 25.7480551,
+    "long": -80.2461326
+  },
+  {
+    "type": "Liquor",
+    "name": "Yaris Liquor Llc",
+    "lat": 25.8031378,
+    "long": -80.2238221
+  },
+  {
+    "type": "Liquor",
+    "name": "Top Shelf Liquors",
+    "lat": 25.7670011,
+    "long": -80.1976407
+  },
+  {
+    "type": "Liquor",
+    "name": "Total Wine More",
+    "lat": 25.7751341,
+    "long": -80.140076
+  },
+  {
+    "type": "Liquor",
+    "name": "Rare Collects Liquor Wine",
+    "lat": 25.8101211,
+    "long": -80.200852
+  },
+  {
+    "type": "Liquor",
+    "name": "I Love Liquor ",
+    "lat": 25.7918382,
+    "long": -80.1300679
+  },
+  {
+    "type": "Liquor",
+    "name": "Azul Spirits Wines",
+    "lat": 25.795398,
+    "long": -80.144109
+  },
+  {
+    "type": "Liquor",
+    "name": "Publix Liquors at Brickell Village",
+    "lat": 25.7611842,
+    "long": -80.1966835
+  },
+  {
+    "type": "Liquor",
+    "name": "Latin Liquor",
+    "lat": 25.774048,
+    "long": -80.2161079
+  },
+  {
+    "type": "Liquor",
+    "name": "CR Liquor ",
+    "lat": 25.7643913,
+    "long": -80.2599469
+  },
+  {
+    "type": "Liquor",
+    "name": "Aficionados Liquor Store Mixology Bar",
+    "lat": 25.7619053,
+    "long": -80.1903687
+  },
+  {
+    "type": "Liquor",
+    "name": "Winn Dixie Wine Spirits",
+    "lat": 25.7508994,
+    "long": -80.2481135
+  },
+  {
+    "type": "Liquor",
+    "name": "Mr D Wine Merchant",
+    "lat": 25.8053996,
+    "long": -80.207523
+  },
+  {
+    "type": "Liquor",
+    "name": "Liquor Dreams",
+    "lat": 25.7510581,
+    "long": -80.2599707
+  },
+  {
+    "type": "Liquor",
+    "name": "D Market Place Brickell Convenience Store",
+    "lat": 25.7689999,
+    "long": -80.191845
+  },
+  {
+    "type": "Liquor",
+    "name": "Bayside Liquor Store",
+    "lat": 25.7760286,
+    "long": -80.1887607
+  },
+  {
+    "type": "Liquor",
+    "name": " Liquors",
+    "lat": 25.7776175,
+    "long": -80.133659
+  },
+  {
+    "type": "Liquor",
+    "name": "World of Whiskey",
+    "lat": 25.7982084,
+    "long": -80.2735959
+  },
+  {
+    "type": "Liquor",
+    "name": "Jenson E s Liquor",
+    "lat": 25.7879442,
+    "long": -80.2228519
+  },
+  {
+    "type": "Liquor",
+    "name": "Maison MURA C Wine B Spirits",
+    "lat": 25.7712476,
+    "long": -80.188781
+  },
+  {
+    "type": "Liquor",
+    "name": " Fine Wine Spirits",
+    "lat": 25.7640135,
+    "long": -80.1975848
+  },
+  {
+    "type": "Liquor",
+    "name": "Liquor Bar",
+    "lat": 25.8080952,
+    "long": -80.1920726
+  },
+  {
+    "type": "Liquor",
+    "name": "City Liquors",
+    "lat": 25.7708259,
+    "long": -80.2808329
+  },
+  {
+    "type": "Liquor",
+    "name": "THE HOUSE OF LIQUOR ",
+    "lat": 25.7430749,
+    "long": -80.254194
+  },
+  {
+    "type": "Liquor",
+    "name": "Publix Liquors at Biscayne Shopping Center",
+    "lat": 25.7926352,
+    "long": -80.1893524
+  },
+  {
+    "type": "Liquor",
+    "name": "Liquor Emporium",
+    "lat": 25.822843,
+    "long": -80.2082444
+  },
+  {
+    "type": "Liquor",
+    "name": "Total Wine More",
+    "lat": 25.7404752,
+    "long": -80.2387391
+  },
+  {
+    "type": "Liquor",
+    "name": " Liquor Inc",
+    "lat": 25.787517,
+    "long": -80.1316238
+  },
+  {
+    "type": "Liquor",
+    "name": "Smile Now Wine Later",
+    "lat": 25.7927533,
+    "long": -80.1871142
+  },
+  {
+    "type": "Liquor",
+    "name": "Ring Liquor Corporation",
+    "lat": 25.773728,
+    "long": -80.2389751
+  },
+  {
+    "type": "Liquor",
+    "name": "Walgreens Liquor Store",
+    "lat": 25.7908849,
+    "long": -80.1293759
+  },
+  {
+    "type": "Liquor",
+    "name": "Airport Cafe Liquors",
+    "lat": 25.8084696,
+    "long": -80.2692225
+  },
+  {
+    "type": "Liquor",
+    "name": "Asturias Liquor Lounge",
+    "lat": 25.7715976,
+    "long": -80.271516
+  },
+  {
+    "type": "Liquor",
+    "name": "GB Liquor Store",
+    "lat": 25.8015184,
+    "long": -80.2049494
+  },
+  {
+    "type": "Liquor",
+    "name": "Wine Spirits Genius C Your Favorite Brands, Delivered ",
+    "lat": 25.7789354,
+    "long": -80.2671088
+  },
+  {
+    "type": "Liquor",
+    "name": "Mack Schuhle",
+    "lat": 25.7612274,
+    "long": -80.1910809
+  },
+  {
+    "type": "Liquor",
+    "name": "Clementine s Wine Gourmet",
+    "lat": 25.746783,
+    "long": -80.2588122
+  },
+  {
+    "type": "Liquor",
+    "name": " F Fingers Liquor",
+    "lat": 25.8098224,
+    "long": -80.2117615
+  },
+  {
+    "type": "Liquor",
+    "name": "XTRA LIQUORS",
+    "lat": 25.7719738,
+    "long": -80.2580831
+  },
+  {
+    "type": "Liquor",
+    "name": "Stop n Shop",
+    "lat": 25.7751111,
+    "long": -80.1901464
+  },
+  {
+    "type": "Liquor",
+    "name": "Chandi Liquors Wines and Spirits",
+    "lat": 25.8237,
+    "long": -80.1872656
+  },
+  {
+    "type": "Liquor",
+    "name": "Cana Wine",
+    "lat": 25.7518738,
+    "long": -80.2584747
+  },
+  {
+    "type": "Liquor",
+    "name": "Wolfe s WINE Shoppe",
+    "lat": 25.7493908,
+    "long": -80.2572298
+  },
+  {
+    "type": "Liquor",
+    "name": "Whole Foods Market",
+    "lat": 25.7719548,
+    "long": -80.1891315
+  },
+  {
+    "type": "Liquor",
+    "name": "El Gigante Liquor ",
+    "lat": 25.8227951,
+    "long": -80.2699184
+  },
+  {
+    "type": "Liquor",
+    "name": "Publix Super Market at Miami Central",
+    "lat": 25.7800441,
+    "long": -80.1977518
+  },
+  {
+    "type": "Liquor",
+    "name": "Jerome Liquor Store",
+    "lat": 25.7719556,
+    "long": -80.2580698
+  },
+  {
+    "type": "Liquor",
+    "name": "Liberty City Liquor Mart",
+    "lat": 25.8234598,
+    "long": -80.2247361
+  },
+  {
+    "type": "Liquor",
+    "name": "Milam s Market Coconut Grove",
+    "lat": 25.737034,
+    "long": -80.244452
+  },
+  {
+    "type": "Liquor",
+    "name": "Publix Super Market at Biscayne Shopping Center",
+    "lat": 25.7926126,
+    "long": -80.1894138
+  },
+  {
+    "type": "Liquor",
+    "name": "Crown Wine Spirits",
+    "lat": 25.707586,
+    "long": -80.284828
+  },
+  {
+    "type": "Liquor",
+    "name": "G S LIQUOR",
+    "lat": 25.8253705,
+    "long": -80.1974518
+  },
+  {
+    "type": "Liquor",
+    "name": "Publix Super Market at Brickell Village",
+    "lat": 25.7611628,
+    "long": -80.1966584
+  },
+  {
+    "type": "Liquor",
+    "name": "CVS",
+    "lat": 25.8130438,
+    "long": -80.123168
+  },
+  {
+    "type": "Liquor",
+    "name": "Gulf Liquors Wine",
+    "lat": 25.7085002,
+    "long": -80.2833635
+  },
+  {
+    "type": "Liquor",
+    "name": "Publix Super Market at Baypoint",
+    "lat": 25.8202227,
+    "long": -80.1881305
+  },
+  {
+    "type": "Liquor",
+    "name": "Vinonueva Fine Rare Wines",
+    "lat": 25.8235144,
+    "long": -80.1912606
+  },
+  {
+    "type": "Liquor",
+    "name": "Publix Super Market at River Landing",
+    "lat": 25.7853564,
+    "long": -80.2198837
+  },
+  {
+    "type": "Liquor",
+    "name": "Crown Wine Spirits",
+    "lat": 25.7348624,
+    "long": -80.2876427
+  },
+  {
+    "type": "Liquor",
+    "name": "Liberty City Liquors",
+    "lat": 25.8271877,
+    "long": -80.2245133
+  },
+  {
+    "type": "Liquor",
+    "name": "Crown Wine Spirits",
+    "lat": 25.7515183,
+    "long": -80.2877456
+  },
+  {
+    "type": "Liquor",
+    "name": "Publix Super Market at Mary Brickell Village",
+    "lat": 25.7652009,
+    "long": -80.1948842
+  },
+  {
+    "type": "Liquor",
+    "name": "CVS",
+    "lat": 25.7905514,
+    "long": -80.1309424
+  },
+  {
+    "type": "Liquor",
+    "name": "Trader Joe s",
+    "lat": 25.8066073,
+    "long": -80.1929554
+  },
+  {
+    "type": "Liquor",
+    "name": "Universal Liquors Jaac Liquors inc ",
+    "lat": 25.8100731,
+    "long": -80.2896427
+  },
+  {
+    "type": "Liquor",
+    "name": "Varadero Liquors",
+    "lat": 25.7799531,
+    "long": -80.2895129
+  },
+  {
+    "type": "Liquor",
+    "name": "Publix Super Market at Fifth Alton",
+    "lat": 25.7753452,
+    "long": -80.1399386
+  },
+  {
+    "type": "Liquor",
+    "name": "The Munch by Pump Munch",
+    "lat": 25.7255316,
+    "long": -80.2619481
+  },
+  {
+    "type": "Liquor",
+    "name": "SUNSET LIQUORS",
+    "lat": 25.703738,
+    "long": -80.289129
+  }
+]

@@ -1,0 +1,590 @@
+[
+  {
+    "type": "Liquor",
+    "name": "Ground Zero Nightclub",
+    "lat": 44.988983,
+    "long": -93.255091,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "REV Ultra Lounge",
+    "lat": 44.9770542,
+    "long": -93.275388,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Vanquish Nightclub",
+    "lat": 44.9816014,
+    "long": -93.2717812,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": " Club",
+    "lat": 45.0011513,
+    "long": -93.2629273,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "EME Antro Bar",
+    "lat": 44.9481836,
+    "long": -93.2694619,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Downtown Cabaret",
+    "lat": 44.9787863,
+    "long": -93.2677674,
+    "gmapsCategory": "Downtown Cabaret"
+  },
+  {
+    "type": "Liquor",
+    "name": "Mansion at Uptown",
+    "lat": 44.9498174,
+    "long": -93.2979407,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Gay s Minneapolis",
+    "lat": 44.980295,
+    "long": -93.2718708,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Roxy E s Cabaret",
+    "lat": 44.9699352,
+    "long": -93.2776244,
+    "gmapsCategory": "Cabaret club"
+  },
+  {
+    "type": "Liquor",
+    "name": "The Saloon",
+    "lat": 44.9766846,
+    "long": -93.2770049,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Underground",
+    "lat": 44.9948729,
+    "long": -93.2519824,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Deja Vu Showgirls Minneapolis",
+    "lat": 44.9848067,
+    "long": -93.273209,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "The Front Cafe",
+    "lat": 44.9890892,
+    "long": -93.2550888,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Dream Girls Strip Club",
+    "lat": 44.9799246,
+    "long": -93.2727167,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Reign Event Center",
+    "lat": 44.9498549,
+    "long": -93.2980208,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Bar Fly",
+    "lat": 44.977471,
+    "long": -93.2749335,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "The Seville Gentlemen s Club Minneapolis",
+    "lat": 44.978674,
+    "long": -93.276953,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Prohibition Bar",
+    "lat": 44.9743607,
+    "long": -93.2718859,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "The Bazemnt Lounge",
+    "lat": 44.9783527,
+    "long": -93.2610957,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "AVA",
+    "lat": 44.9857143,
+    "long": -93.2712062,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Vegas Lounge",
+    "lat": 44.9947617,
+    "long": -93.2489464,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Rumba",
+    "lat": 44.9812735,
+    "long": -93.2732689,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Living Room",
+    "lat": 44.9746365,
+    "long": -93.2718262,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Sneaky Pete s",
+    "lat": 44.9800663,
+    "long": -93.2729669,
+    "gmapsCategory": "Lively sports bar & club with pub grub"
+  },
+  {
+    "type": "Liquor",
+    "name": "Gold Room Restaurant Lounge",
+    "lat": 44.9790262,
+    "long": -93.2737717,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Dakota",
+    "lat": 44.9736976,
+    "long": -93.2753807,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Six Bar Lounge",
+    "lat": 44.97599,
+    "long": -93.268797,
+    "gmapsCategory": "Six15 Bar & Lounge"
+  },
+  {
+    "type": "Liquor",
+    "name": "Jimmy s Bar Lounge",
+    "lat": 45.0073544,
+    "long": -93.2617596,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "REVEAL Rooftop Bar and Lounge",
+    "lat": 44.9697803,
+    "long": -93.3441876,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Last Call Bar Grill",
+    "lat": 44.9804435,
+    "long": -93.2732918,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Conga Latin Bistro",
+    "lat": 44.9892834,
+    "long": -93.2534502,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Eagle CMPLS",
+    "lat": 44.978349,
+    "long": -93.260873,
+    "gmapsCategory": "Gay bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Gidi Bar Lounge Minneapolis",
+    "lat": 44.9816122,
+    "long": -93.2723182,
+    "gmapsCategory": "Gidi Bar & Lounge Minneapolis"
+  },
+  {
+    "type": "Liquor",
+    "name": "The Comedy Corner Underground",
+    "lat": 44.9883228,
+    "long": -93.254559,
+    "gmapsCategory": "Comedy club"
+  },
+  {
+    "type": "Liquor",
+    "name": "The Brass Rail Lounge",
+    "lat": 44.9799602,
+    "long": -93.2723441,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "The Fillmore Minneapolis",
+    "lat": 44.9841131,
+    "long": -93.2792175,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Vemos",
+    "lat": 44.984165,
+    "long": -93.2750145,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Queermunity MN",
+    "lat": 44.9472143,
+    "long": -93.2985032,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "LUSH Lounge Theater",
+    "lat": 44.9954138,
+    "long": -93.2477066,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Rooftop at Hewing Hotel",
+    "lat": 44.9849473,
+    "long": -93.2725834,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Fraternal Order of Eagles ",
+    "lat": 44.9571308,
+    "long": -93.2358223,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Varsity Theater",
+    "lat": 44.980755,
+    "long": -93.2368268,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Puttery",
+    "lat": 44.9821163,
+    "long": -93.2693942,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Mayslack s",
+    "lat": 45.0029347,
+    "long": -93.2617492,
+    "gmapsCategory": "Chill bar for jumbo sandwiches & beer"
+  },
+  {
+    "type": "Liquor",
+    "name": "Eat Street Crossing",
+    "lat": 44.9512428,
+    "long": -93.2773881,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "James Ballentine E CUptown E D VFW Post ",
+    "lat": 44.9494391,
+    "long": -93.2884337,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Hotbed Studios",
+    "lat": 45.0129953,
+    "long": -93.2572693,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Tantrum NightClub at Dulono E s Minneapolis",
+    "lat": 44.9819449,
+    "long": -93.2730673,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Liquid Nightclub",
+    "lat": 44.979956,
+    "long": -93.272612,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Milwaukee Road Restaurant Bar",
+    "lat": 44.9804672,
+    "long": -93.2630114,
+    "gmapsCategory": "Milwaukee Road Restaurant & Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Hunk O Mania Minneapolis",
+    "lat": 44.9563217,
+    "long": -93.2783417,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Dear Mama Studio",
+    "lat": 45.005288,
+    "long": -93.2792161,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Ray J s American Grill",
+    "lat": 44.9889164,
+    "long": -93.2529463,
+    "gmapsCategory": "Sports bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Rocking s plus",
+    "lat": 44.940667,
+    "long": -93.2231729,
+    "gmapsCategory": "Rock music club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Cancun Night Club",
+    "lat": 44.9906425,
+    "long": -93.1055306,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Nicollet Island Inn",
+    "lat": 44.9858771,
+    "long": -93.2605342,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "The Brownstone Jazz Club",
+    "lat": 44.9521695,
+    "long": -93.2985193,
+    "gmapsCategory": "The Brownstone Jazz Club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Dakota Valet Parking",
+    "lat": 44.973996,
+    "long": -93.2746583,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Tullibee",
+    "lat": 44.9848158,
+    "long": -93.2724051,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Mara Restaurant and Bar",
+    "lat": 44.9812469,
+    "long": -93.2696381,
+    "gmapsCategory": "Mara Restaurant and Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Columbus Night Club ",
+    "lat": 44.8597859,
+    "long": -93.2944482,
+    "gmapsCategory": "Columbus Night Club 9:00-2:00"
+  },
+  {
+    "type": "Liquor",
+    "name": "Lot ",
+    "lat": 44.9733791,
+    "long": -93.2768237,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "The Red Sea Ethiopian Restaurant",
+    "lat": 44.9707845,
+    "long": -93.2475252,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Lien Son Restaurant",
+    "lat": 44.9985972,
+    "long": -93.2413078,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Tiffany Sports Lounge",
+    "lat": 44.9180986,
+    "long": -93.1868385,
+    "gmapsCategory": "Sports bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Laugh Camp Comedy Club",
+    "lat": 44.9508131,
+    "long": -93.0938757,
+    "gmapsCategory": "Comedy club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Loring Nightclub Salsa Police",
+    "lat": 44.9804046,
+    "long": -93.2362072,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Kitty Cat Klub",
+    "lat": 44.9800579,
+    "long": -93.2364552,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Illusionari C Audio Visual Design",
+    "lat": 44.9913431,
+    "long": -93.2186533,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Bud Light Top Shelf Lounge",
+    "lat": 44.9449195,
+    "long": -93.1018138,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Camp Bar and Cabaret",
+    "lat": 44.950808,
+    "long": -93.0939278,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Celio",
+    "lat": 44.9872069,
+    "long": -93.2580867,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Minnesota Music Cafe",
+    "lat": 44.9564326,
+    "long": -93.0784947,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Escape Lounges",
+    "lat": 44.8843957,
+    "long": -93.2112441,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Hexagon Bar",
+    "lat": 44.955457,
+    "long": -93.2333883,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Royal Star Hookah",
+    "lat": 45.0424406,
+    "long": -93.2475469,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Flying Dutchman Distillery",
+    "lat": 44.8801579,
+    "long": -93.4113151,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Iron Exchange",
+    "lat": 45.0055224,
+    "long": -93.6488089,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Monie s",
+    "lat": 45.0039891,
+    "long": -93.6462814,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "McGarry s Pub",
+    "lat": 45.0074103,
+    "long": -93.6555623,
+    "gmapsCategory": "Homey Irish bar with classic pub grub"
+  },
+  {
+    "type": "Liquor",
+    "name": "DETOUR ",
+    "lat": 45.0552214,
+    "long": -93.6355786,
+    "gmapsCategory": "Modest bar & grill serving American grub"
+  },
+  {
+    "type": "Liquor",
+    "name": "Everly Farms Winery",
+    "lat": 44.9752036,
+    "long": -93.6888897,
+    "gmapsCategory": "Winery"
+  },
+  {
+    "type": "Liquor",
+    "name": "Choo Choo Restaurant Bar",
+    "lat": 45.0544083,
+    "long": -93.6366242,
+    "gmapsCategory": "Choo Choo Restaurant & Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Ox Yoke Inn",
+    "lat": 44.9826546,
+    "long": -93.7323227,
+    "gmapsCategory": ""
+  }
+]

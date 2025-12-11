@@ -1,0 +1,793 @@
+[
+  {
+    "type": "Bar",
+    "name": "The Starlite Bar",
+    "lat": 36.1476201,
+    "long": -95.9642716,
+    "gmapsCategory": "Cocktail bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Drake s Tavern",
+    "lat": 36.1404266,
+    "long": -95.9699707,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "The Whittier Bar",
+    "lat": 36.1599331,
+    "long": -95.9577968,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Bishop Quigley",
+    "lat": 36.1357209,
+    "long": -95.9836124,
+    "gmapsCategory": "Pub"
+  },
+  {
+    "type": "Bar",
+    "name": "Cellar Dweller",
+    "lat": 36.1479907,
+    "long": -95.9944041,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Tin Dog Saloon",
+    "lat": 36.1154706,
+    "long": -95.9396807,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "YBR Pub",
+    "lat": 36.1403845,
+    "long": -95.9523463,
+    "gmapsCategory": "Lesbian bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Caz s Pub",
+    "lat": 36.1588121,
+    "long": -95.9927776,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Buckaneer Bar",
+    "lat": 36.147084,
+    "long": -95.9406445,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Arnie s Bar",
+    "lat": 36.155687,
+    "long": -95.9871225,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Slo Ride Brookside",
+    "lat": 36.1030917,
+    "long": -95.9754719,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Bad Ass Renee s",
+    "lat": 36.119224,
+    "long": -95.905982,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Soundpony Lounge",
+    "lat": 36.160664,
+    "long": -95.9946087,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Orpha s Lounge",
+    "lat": 36.1516536,
+    "long": -95.9921877,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Rabbit Hole Bar and Grill",
+    "lat": 36.1563355,
+    "long": -95.9872085,
+    "gmapsCategory": "Rabbit Hole Bar and Grill"
+  },
+  {
+    "type": "Bar",
+    "name": "Lot No ",
+    "lat": 36.1523269,
+    "long": -95.9746038,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Valkyrie",
+    "lat": 36.1586392,
+    "long": -95.9930637,
+    "gmapsCategory": "Cocktail bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Four Seven Three ",
+    "lat": 36.1597173,
+    "long": -95.9597464,
+    "gmapsCategory": "Cocktail bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Saturn Room",
+    "lat": 36.1583952,
+    "long": -95.9946482,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Crystal Skull Bar",
+    "lat": 36.1502819,
+    "long": -95.9049119,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Roof Sixty Six Rooftop Bar",
+    "lat": 36.1567513,
+    "long": -95.9868344,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Centennial Lounge Bar",
+    "lat": 36.1530216,
+    "long": -95.9780528,
+    "gmapsCategory": "Centennial Lounge Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Empire Bar",
+    "lat": 36.139934,
+    "long": -95.975835,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "White Crow Tavern",
+    "lat": 36.1605085,
+    "long": -95.916475,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Another Round",
+    "lat": 36.1148127,
+    "long": -95.975513,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "The Colony",
+    "lat": 36.1220185,
+    "long": -95.9399501,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Ed s Hurricane Lounge",
+    "lat": 36.1475,
+    "long": -95.9419444,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "DD s Double Shots",
+    "lat": 36.1481915,
+    "long": -95.9081798,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "The Pump Bar Tulsa",
+    "lat": 36.1514355,
+    "long": -95.9585725,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Red River Saloon",
+    "lat": 36.161028,
+    "long": -95.9316473,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Sidecar Barley Wine Bar",
+    "lat": 36.1407751,
+    "long": -95.9713822,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Reds Bar",
+    "lat": 36.1561749,
+    "long": -95.9871501,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Mercury Lounge",
+    "lat": 36.1363399,
+    "long": -95.9848481,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Cabin Boys Brewpub",
+    "lat": 36.1590757,
+    "long": -95.9938652,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "SpeakEasy Lounge",
+    "lat": 36.1363023,
+    "long": -95.903994,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Retro Grill Bar",
+    "lat": 36.166172,
+    "long": -95.9757461,
+    "gmapsCategory": "Retro Grill & Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Tina s",
+    "lat": 36.1367626,
+    "long": -95.9853671,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Bar ",
+    "lat": 36.1573484,
+    "long": -95.9944168,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Bar Serra",
+    "lat": 36.1315191,
+    "long": -95.9650457,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Remi s Westside Tavern",
+    "lat": 36.1012349,
+    "long": -96.0303525,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "The Max Retropub",
+    "lat": 36.1563693,
+    "long": -95.9874111,
+    "gmapsCategory": "Pub"
+  },
+  {
+    "type": "Bar",
+    "name": "Keels Lounge",
+    "lat": 36.1767995,
+    "long": -95.9194259,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Golfers Bar",
+    "lat": 36.1643022,
+    "long": -95.9580297,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Double O Sports Bar",
+    "lat": 36.176873,
+    "long": -95.9638657,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Next Door Bar",
+    "lat": 36.1469166,
+    "long": -96.0662163,
+    "gmapsCategory": "Next Door Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "The Tulsan Bar",
+    "lat": 36.1560436,
+    "long": -95.9863154,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Brooke s On South Sheridan",
+    "lat": 36.1255035,
+    "long": -95.9051186,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Touch Down Club",
+    "lat": 36.1609853,
+    "long": -95.9189721,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Bounty Lounge",
+    "lat": 36.1192827,
+    "long": -95.902994,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "The Roost Sports Bar",
+    "lat": 36.1141295,
+    "long": -95.9759937,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Inner Circle Tulsa",
+    "lat": 36.1603875,
+    "long": -95.9951244,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Tulsa Eagle",
+    "lat": 36.1563889,
+    "long": -95.9738889,
+    "gmapsCategory": "Gay bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Bird Bottle",
+    "lat": 36.1180645,
+    "long": -95.9389327,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Bar",
+    "name": "Pearl Beach Brew Pub",
+    "lat": 36.1550576,
+    "long": -95.9758017,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Sharky s",
+    "lat": 36.1137645,
+    "long": -95.975492,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Bar",
+    "name": "Steve s Club",
+    "lat": 36.165996,
+    "long": -95.9041103,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Brook Alley",
+    "lat": 36.095213,
+    "long": -95.9761079,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Shady Keys",
+    "lat": 36.1561783,
+    "long": -95.9881371,
+    "gmapsCategory": "Live music bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Torchy s Side Pocket",
+    "lat": 36.1194421,
+    "long": -95.9067732,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "The Vanguard",
+    "lat": 36.1589659,
+    "long": -95.9941993,
+    "gmapsCategory": "\"Great bands, good sound, accessible to bands and bartenders.\""
+  },
+  {
+    "type": "Bar",
+    "name": "Deep Pockets Billiard Bar Bistro",
+    "lat": 36.1456552,
+    "long": -96.0793477,
+    "gmapsCategory": "Deep Pockets Billiard Bar & Bistro"
+  },
+  {
+    "type": "Bar",
+    "name": "The Blue Dome",
+    "lat": 36.1557212,
+    "long": -95.9870152,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Bar",
+    "name": "The Shrine",
+    "lat": 36.1359046,
+    "long": -95.9849417,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Bar",
+    "name": "Kendal s",
+    "lat": 36.1410354,
+    "long": -95.8997652,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "The Vault Restaurant",
+    "lat": 36.1506442,
+    "long": -95.9873986,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Bar",
+    "name": "Jumpin Js",
+    "lat": 36.0895818,
+    "long": -96.0112114,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "LAST CALL",
+    "lat": 36.1009598,
+    "long": -95.9038465,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Cimarron Bar",
+    "lat": 36.1260084,
+    "long": -95.8837608,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Casual Cocktail",
+    "lat": 36.1237571,
+    "long": -95.8857621,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Uncle Bently s",
+    "lat": 36.0924337,
+    "long": -95.9048882,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Town Pump Lounge",
+    "lat": 36.0905597,
+    "long": -95.8847301,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Bar",
+    "name": "Elephant Run",
+    "lat": 36.0918741,
+    "long": -95.9420866,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Bramble Breakfast Bar Downtown",
+    "lat": 36.152014,
+    "long": -95.975368,
+    "gmapsCategory": "Bramble Breakfast & Bar - Downtown"
+  },
+  {
+    "type": "Bar",
+    "name": "Bull and Bear Tavern",
+    "lat": 36.0806472,
+    "long": -95.958587,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Bleacher Bums Sports Bar",
+    "lat": 36.0902173,
+    "long": -95.9210037,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Blue Turtle Tavern",
+    "lat": 36.0711938,
+    "long": -95.9583604,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Brownie s Hamburger Stand",
+    "lat": 36.1321236,
+    "long": -95.9406415,
+    "gmapsCategory": "\"Decent smash grilled burgers, in a very simple vintage dive bar of a diner.\""
+  },
+  {
+    "type": "Bar",
+    "name": "Scotty s Lounge",
+    "lat": 36.0755854,
+    "long": -96.0279905,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Bar",
+    "name": "Lennie s Club Grill",
+    "lat": 36.0882911,
+    "long": -95.9387435,
+    "gmapsCategory": "Lennie's Club & Grill"
+  },
+  {
+    "type": "Bar",
+    "name": "Albatross Sporting Lounge",
+    "lat": 36.0772405,
+    "long": -95.9576476,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "The Market Pub",
+    "lat": 36.0910196,
+    "long": -95.8894162,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Tulsa Alumni Bar",
+    "lat": 36.1766924,
+    "long": -95.8965904,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Tacos Don Francisco",
+    "lat": 36.1481184,
+    "long": -95.9322319,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Bar",
+    "name": "Crawpappy s Bar and Grill",
+    "lat": 36.0885582,
+    "long": -95.9373445,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Spirit tavern",
+    "lat": 36.1178246,
+    "long": -95.8318605,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Westbound Club",
+    "lat": 36.0743073,
+    "long": -96.0284273,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Cheerz Pub",
+    "lat": 36.0864762,
+    "long": -95.8690402,
+    "gmapsCategory": "Pub"
+  },
+  {
+    "type": "Bar",
+    "name": "Mr Luckys Pub Grill",
+    "lat": 36.1040894,
+    "long": -95.8822586,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Mojito Bar",
+    "lat": 36.1467929,
+    "long": -95.8860508,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Life of Riley",
+    "lat": 36.1140178,
+    "long": -96.1185226,
+    "gmapsCategory": "Sports bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Jumbo s Hamburgers",
+    "lat": 36.1038428,
+    "long": -95.9026787,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Bar",
+    "name": "The Office on Main",
+    "lat": 36.1378685,
+    "long": -96.1100306,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "KnuckleRobbery Sams club food",
+    "lat": 36.1168032,
+    "long": -95.868952,
+    "gmapsCategory": "KnuckleRobbery Sams club food"
+  },
+  {
+    "type": "Bar",
+    "name": "Carousel Lounge",
+    "lat": 36.0954558,
+    "long": -95.8690917,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Sutures Bar Tulsa",
+    "lat": 36.0599689,
+    "long": -95.9209801,
+    "gmapsCategory": "Sutures Bar Tulsa"
+  },
+  {
+    "type": "Bar",
+    "name": "Four Aces Tavern",
+    "lat": 36.105746,
+    "long": -95.8535596,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Shot Happens",
+    "lat": 36.045062,
+    "long": -95.9398225,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Hop the Griffin Brew Pub and Wine Bar",
+    "lat": 36.0599897,
+    "long": -95.9212034,
+    "gmapsCategory": "Brewpub"
+  },
+  {
+    "type": "Bar",
+    "name": "Patrick s",
+    "lat": 36.0310041,
+    "long": -95.9031349,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Friendly Tavern",
+    "lat": 36.1185447,
+    "long": -95.8357546,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "The Big Easy",
+    "lat": 36.0675015,
+    "long": -95.9755417,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Bar",
+    "name": "Our Bar",
+    "lat": 36.1286741,
+    "long": -96.1494233,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "JJ s Liquor Bar and Grill",
+    "lat": 36.0895876,
+    "long": -96.0112071,
+    "gmapsCategory": "JJ's Liquor Bar and Grill"
+  },
+  {
+    "type": "Bar",
+    "name": "Breakroom Tavern",
+    "lat": 36.0345167,
+    "long": -95.9542517,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Magoos Sports Bar And Billiards",
+    "lat": 36.0912848,
+    "long": -95.8874622,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "No Place Sports Bar",
+    "lat": 36.1602685,
+    "long": -95.845537,
+    "gmapsCategory": "Sports bar"
+  },
+  {
+    "type": "Bar",
+    "name": "The Bar",
+    "lat": 36.0597472,
+    "long": -95.8841054,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Roosters Sports Bar Tulsa",
+    "lat": 36.0632411,
+    "long": -95.8884209,
+    "gmapsCategory": "Sports bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Golden Gate Restaurant",
+    "lat": 36.1245341,
+    "long": -95.9408539,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Bar",
+    "name": "Happy s Bar",
+    "lat": 36.1474869,
+    "long": -95.837331,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Midleton E s Bar and Grill",
+    "lat": 36.0468223,
+    "long": -95.8679616,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Smitty s Tavern",
+    "lat": 36.0224218,
+    "long": -95.9687552,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": " st Street Depot",
+    "lat": 36.0595398,
+    "long": -95.8690491,
+    "gmapsCategory": "\"Descent hole in the wall barwith good prices and typically good service\""
+  }
+]
