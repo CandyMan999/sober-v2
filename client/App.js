@@ -44,7 +44,7 @@ import LikesScreen from "./screens/Profile/LikesScreen";
 import NotificationsScreen from "./screens/Profile/NotificationsScreen";
 import DirectMessageScreen from "./screens/DirectMessage/DirectMessageScreen";
 import MessageListScreen from "./screens/DirectMessage/MessageListScreen";
-import { ContentPreviewModal } from "./components";
+import { ContentPreviewModal, PaywallModal } from "./components";
 import { POST_BY_ID_QUERY, QUOTE_BY_ID_QUERY } from "./GraphQL/queries";
 import { useClient } from "./client";
 import { TOGGLE_LIKE_MUTATION } from "./GraphQL/mutations";
@@ -59,6 +59,13 @@ import reducer from "./reducer";
 
 const Stack = createStackNavigator();
 const navigationRef = createNavigationContainerRef();
+const ONBOARDING_ROUTES = new Set([
+  "AppleLogin",
+  "AddUserName",
+  "AddPhoto",
+  "AddSobrietyDate",
+  "LocationPermission",
+]);
 
 // --- Apollo Client instance with subscriptions ---
 const httpLink = new HttpLink({ uri: GRAPHQL_URI });
@@ -114,6 +121,13 @@ Notifications.setNotificationHandler({
   }),
 });
 
+const isUserOlderThanOneDay = (user) => {
+  if (!user?.createdAt) return false;
+  const created = new Date(user.createdAt);
+  if (Number.isNaN(created.getTime())) return false;
+  return Date.now() - created.getTime() >= 24 * 60 * 60 * 1000;
+};
+
 export default function App() {
   // use your context default as initial state
   const initialState = useContext(Context);
@@ -128,6 +142,8 @@ export default function App() {
   const [previewMuted, setPreviewMuted] = useState(true);
   const [previewShowComments, setPreviewShowComments] = useState(false);
   const [navigationReady, setNavigationReady] = useState(false);
+  const [paywallVisible, setPaywallVisible] = useState(false);
+  const [paywallAcknowledged, setPaywallAcknowledged] = useState(false);
   const locationTrackingAllowed =
     !!state?.user &&
     state?.user?.notificationSettings?.locationTrackingEnabled !== false;
@@ -495,6 +511,44 @@ export default function App() {
     [currentUser, currentUserId, graphClient, previewContent]
   );
 
+  const maybeShowPaywall = useCallback(() => {
+    if (paywallAcknowledged) return;
+
+    if (!navigationRef.isReady()) return;
+
+    const currentRoute = navigationRef.getCurrentRoute();
+    const routeName = currentRoute?.name;
+
+    if (!routeName || ONBOARDING_ROUTES.has(routeName)) return;
+
+    if (isUserOlderThanOneDay(currentUser)) {
+      setPaywallVisible(true);
+    }
+  }, [currentUser, paywallAcknowledged]);
+
+  useEffect(() => {
+    if (!navigationReady) return;
+    maybeShowPaywall();
+  }, [maybeShowPaywall, navigationReady]);
+
+  useEffect(() => {
+    maybeShowPaywall();
+  }, [currentUser?.createdAt, maybeShowPaywall]);
+
+  const handleDismissPaywall = useCallback(() => {
+    setPaywallVisible(false);
+  }, []);
+
+  const handleSelectPremium = useCallback(() => {
+    setPaywallAcknowledged(true);
+    setPaywallVisible(false);
+  }, []);
+
+  const handleSelectFree = useCallback(() => {
+    setPaywallAcknowledged(true);
+    setPaywallVisible(false);
+  }, []);
+
   return (
     <ApolloProvider client={client}>
       <GestureHandlerRootView style={{ flex: 1 }}>
@@ -502,7 +556,11 @@ export default function App() {
           <Context.Provider value={{ state, dispatch }}>
             <NavigationContainer
               ref={navigationRef}
-              onReady={() => setNavigationReady(true)}
+              onReady={() => {
+                setNavigationReady(true);
+                maybeShowPaywall();
+              }}
+              onStateChange={maybeShowPaywall}
             >
               <>
                 <Stack.Navigator
@@ -601,6 +659,12 @@ export default function App() {
                   onFlagForReview={() => {}}
                   onToggleSave={() => {}}
                   onDelete={() => {}}
+                />
+                <PaywallModal
+                  visible={paywallVisible}
+                  onClose={handleDismissPaywall}
+                  onSelectPremium={handleSelectPremium}
+                  onSelectFree={handleSelectFree}
                 />
               </>
             </NavigationContainer>

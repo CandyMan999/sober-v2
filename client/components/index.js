@@ -10,3 +10,4 @@ export { default as LogoLoader } from "./LogoLoader";
 export { default as ToggleSwitch } from "./ToggleSwitch";
 export { default as Avatar } from "./Avatar";
 export { default as WatchAgainButton } from "./WatchAgainButton";
+export { default as PaywallModal } from "./PaywallModal";
