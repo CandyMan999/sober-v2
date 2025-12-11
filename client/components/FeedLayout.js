@@ -21,6 +21,7 @@ const FeedLayout = ({
   comments = [],
   postId,
   postCreatedAt,
+  daysSober,
   postAuthor,
   commentTargetType = "POST",
   commentTargetId,
@@ -82,11 +83,16 @@ const FeedLayout = ({
     setShowComments(initialShowComments);
   }, [initialShowComments]);
 
-  const displayName =
-    authorLabel ||
-    (postAuthor
-      ? `@${postAuthor?.username || postAuthor?.name || "Unknown"}`
-      : null);
+  const resolvedDaysSober =
+    typeof daysSober === "number" && daysSober >= 0 ? daysSober : 0;
+
+  const displayName = authorLabel
+    ? authorLabel
+    : (() => {
+        const baseName = postAuthor?.username || postAuthor?.name || "Unknown";
+        const dayLabel = resolvedDaysSober === 1 ? "day" : "days";
+        return `${baseName}@${resolvedDaysSober}${dayLabel}`;
+      })();
 
   const resolvedAvatarUrl =
     avatarUrl || postAuthor?.profilePicUrl || postAuthor?.profilePic?.url || null;
@@ -245,19 +251,22 @@ const FeedLayout = ({
       </View>
 
       {/* Right-side floating icons with counts */}
-      <FloatingActionIcons
-        likesCount={likesCount}
-        commentsCount={commentsCount}
-        onLikePress={onLikePress || (() => {})}
-        onCommentPress={handleCommentPress}
-        onMorePress={onMorePress || (() => {})}
-        showSoundToggle={showSoundToggle}
-        isMuted={isMuted}
-        onToggleSound={onToggleSound}
-        isLiked={isLiked}
-        onFilterPress={onFilterPress}
-        showFilter={showFilter}
-      />
+      <View style={styles.rightRail} pointerEvents="box-none">
+        <FloatingActionIcons
+          likesCount={likesCount}
+          commentsCount={commentsCount}
+          onLikePress={onLikePress || (() => {})}
+          onCommentPress={handleCommentPress}
+          onMorePress={onMorePress || (() => {})}
+          showSoundToggle={showSoundToggle}
+          isMuted={isMuted}
+          onToggleSound={onToggleSound}
+          isLiked={isLiked}
+          onFilterPress={onFilterPress}
+          showFilter={showFilter}
+          containerStyle={styles.iconStack}
+        />
+      </View>
 
       {/* Comment sheet (wire to actual comments later) */}
       <CommentSheet
@@ -300,6 +309,17 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
     height: "15%",
+  },
+  rightRail: {
+    position: "absolute",
+    right: 18,
+    bottom: 20,
+    alignItems: "center",
+  },
+  iconStack: {
+    position: "relative",
+    right: 0,
+    bottom: 0,
   },
   title: {
     color: "#fff",

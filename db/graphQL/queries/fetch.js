@@ -202,6 +202,8 @@ module.exports = {
       sortByClosest = false,
       mediaType,
       isMilestone,
+      minDaysSober,
+      maxDaysSober,
     } = args || {};
 
     const limit = Math.min(limitArg || 20, 50);
@@ -227,6 +229,18 @@ module.exports = {
         { milestoneTag: { $ne: null } },
         { milestoneDays: { $ne: null } },
       ];
+    }
+
+    if (minDaysSober != null || maxDaysSober != null) {
+      baseQuery.daysSober = {};
+
+      if (minDaysSober != null) {
+        baseQuery.daysSober.$gte = minDaysSober;
+      }
+
+      if (maxDaysSober != null) {
+        baseQuery.daysSober.$lte = maxDaysSober;
+      }
     }
 
     const earthRadiusMeters = 6_378_137;

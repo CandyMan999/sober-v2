@@ -318,6 +318,7 @@ const ensureMilestonePost = async (user, milestoneDays) => {
     flagged: false,
     likesCount: 0,
     commentsCount: 0,
+    daysSober: milestoneDays,
     isMilestone: true,
     milestoneDays,
     milestoneTag,

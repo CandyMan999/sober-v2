@@ -79,10 +79,14 @@ const typeDefs = rootDefs;
 
 // Reusable helper for likes
 const resolveLikes = (targetType) => async (parent) => {
+  const targetId = resolveId(parent);
+
+  if (!targetId) return [];
+
   try {
     const likes = await Like.find({
       targetType, // "QUOTE" or "POST"
-      targetId: parent.id,
+      targetId,
     })
       .populate("user")
       .exec();
@@ -211,6 +215,7 @@ const resolvers = {
 
       return postViews || videoViews || 0;
     },
+    daysSober: (parent) => parent?.daysSober ?? null,
   },
 
   Comment: {

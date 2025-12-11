@@ -26,6 +26,7 @@ const FloatingActionIcons = ({
   isLiked = false,
   onFilterPress,
   showFilter = true,
+  containerStyle,
 }) => {
   const heartScale = useRef(new Animated.Value(1)).current;
   const burstScale = useRef(new Animated.Value(0)).current;
@@ -118,7 +119,7 @@ const FloatingActionIcons = ({
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, containerStyle]}>
       {/* Filter */}
       {showFilter
         ? renderPill(

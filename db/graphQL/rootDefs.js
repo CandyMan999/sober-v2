@@ -105,6 +105,8 @@ const typeDefs = gql`
     isMilestone: Boolean
     milestoneDays: Int
     milestoneTag: String
+    """Author's recorded sobriety day when the post was created."""
+    daysSober: Int
     likesCount: Int!
     commentsCount: Int!
     viewsCount: Int!
@@ -369,6 +371,8 @@ const typeDefs = gql`
       sortByClosest: Boolean
       mediaType: PostMediaType
       isMilestone: Boolean
+      minDaysSober: Int
+      maxDaysSober: Int
     ): PostConnection!
     userPosts(
       token: String

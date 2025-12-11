@@ -92,6 +92,7 @@ const CommunityFeedLayout = ({
       comments={post.comments}
       postId={post.id}
       postCreatedAt={post.createdAt}
+      daysSober={post.daysSober}
       postAuthor={author}
       avatarUrl={avatarUrl}
       avatarSize={avatarSize}

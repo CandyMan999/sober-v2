@@ -18,6 +18,7 @@ const {
   NotificationIntents,
   createNotificationForUser,
 } = require("../../utils/notifications");
+const { calculateDaysSober } = require("../../utils/sobriety");
 // const {
 //   sendPushNotification,
 //   pushNotificationUserFlagged,
@@ -498,6 +499,12 @@ module.exports = {
         }
       }
 
+      const daysSoberAtPost = calculateDaysSober(
+        sender.sobrietyStartAt,
+        new Date(),
+        sender.timezone || "UTC"
+      );
+
       const newPost = await Post.create({
         author: senderID,
         text: text || null,
@@ -506,6 +513,7 @@ module.exports = {
         flagged: false,
         likesCount: 0,
         commentsCount: 0,
+        daysSober: daysSoberAtPost,
         ...postLocation,
         ...(geoLocation ? { location: geoLocation } : {}),
       });
