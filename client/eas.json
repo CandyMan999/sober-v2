@@ -12,7 +12,7 @@
       "developmentClient": true,
       "distribution": "internal",
       "env": {
-        "EXPO_REVENUE_CAT_API_KEY": "test_EQtkFEGZhDmUBHmUBvOKQMJyLZX"
+        "EXPO_REVENUE_CAT_API_KEY": "test_fJJrGKvUXfviALZExfzjypvqrzh"
       }
     },
     "preview": {
@@ -21,7 +21,7 @@
     },
     "production": {
       "env": {
-        "EXPO_REVENUE_CAT_API_KEY": "test_EQtkFEGZhDmUBHmUBvOKQMJyLZX",
+        "EXPO_REVENUE_CAT_API_KEY": "test_fJJrGKvUXfviALZExfzjypvqrzh",
         "EXPO_CF_ACCOUNT_HASH": "o9IMJdMAwk7ijgmm9FnmYg",
         "EXPO_CF_VARIANT": "public"
       },
