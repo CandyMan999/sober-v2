@@ -5,7 +5,6 @@ import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
 import Avatar from "./Avatar";
 import FloatingActionIcons from "./FloatingActionIcons";
-import SobrietyBadge from "./SobrietyBadge";
 import CommentSheet from "./CommentSheet";
 
 const ACCENT = "#F59E0B";
@@ -84,11 +83,16 @@ const FeedLayout = ({
     setShowComments(initialShowComments);
   }, [initialShowComments]);
 
-  const displayName =
-    authorLabel ||
-    (postAuthor
-      ? `@${postAuthor?.username || postAuthor?.name || "Unknown"}`
-      : null);
+  const resolvedDaysSober =
+    typeof daysSober === "number" && daysSober >= 0 ? daysSober : 0;
+
+  const displayName = authorLabel
+    ? authorLabel
+    : (() => {
+        const baseName = postAuthor?.username || postAuthor?.name || "Unknown";
+        const dayLabel = resolvedDaysSober === 1 ? "day" : "days";
+        return `${baseName}@${resolvedDaysSober}${dayLabel}`;
+      })();
 
   const resolvedAvatarUrl =
     avatarUrl || postAuthor?.profilePicUrl || postAuthor?.profilePic?.url || null;
@@ -248,9 +252,6 @@ const FeedLayout = ({
 
       {/* Right-side floating icons with counts */}
       <View style={styles.rightRail} pointerEvents="box-none">
-        <View style={styles.badgeSpacing} pointerEvents="box-none">
-          <SobrietyBadge daysSober={daysSober} />
-        </View>
         <FloatingActionIcons
           likesCount={likesCount}
           commentsCount={commentsCount}
@@ -314,9 +315,6 @@ const styles = StyleSheet.create({
     right: 18,
     bottom: 20,
     alignItems: "center",
-  },
-  badgeSpacing: {
-    marginBottom: 12,
   },
   iconStack: {
     position: "relative",
