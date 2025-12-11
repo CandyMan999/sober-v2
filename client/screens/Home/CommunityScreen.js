@@ -28,7 +28,6 @@ import {
   CommunityFeedLayout,
   FeedLayout,
   FilterSheet,
-  QuickSobrietyBanner,
   WatchAgainButton,
 } from "../../components";
 import { GET_ALL_POSTS } from "../../GraphQL/queries";
@@ -448,16 +447,6 @@ const CommunityScreen = () => {
         isMuted={isMuted}
         onPlaybackStatusUpdate={(status) => handlePlaybackStatus(index, status)}
       />
-      {typeof item.daysSober === "number" && item.daysSober > 0 ? (
-        <QuickSobrietyBanner
-          daysSober={item.daysSober}
-          username={item.author?.username}
-          shouldPlay={
-            isFocused && activeIndex === index && !finishedMap[index] && !isUnderReview
-          }
-          playKey={`${item.id}-${activeIndex === index}-${isUnderReview}`}
-        />
-      ) : null}
       {finishedMap[index] ? renderOverlay(index) : null}
     </Pressable>
   );

@@ -5,6 +5,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
 import Avatar from "./Avatar";
 import FloatingActionIcons from "./FloatingActionIcons";
+import SobrietyBadge from "./SobrietyBadge";
 import CommentSheet from "./CommentSheet";
 
 const ACCENT = "#F59E0B";
@@ -21,6 +22,7 @@ const FeedLayout = ({
   comments = [],
   postId,
   postCreatedAt,
+  daysSober,
   postAuthor,
   commentTargetType = "POST",
   commentTargetId,
@@ -245,19 +247,25 @@ const FeedLayout = ({
       </View>
 
       {/* Right-side floating icons with counts */}
-      <FloatingActionIcons
-        likesCount={likesCount}
-        commentsCount={commentsCount}
-        onLikePress={onLikePress || (() => {})}
-        onCommentPress={handleCommentPress}
-        onMorePress={onMorePress || (() => {})}
-        showSoundToggle={showSoundToggle}
-        isMuted={isMuted}
-        onToggleSound={onToggleSound}
-        isLiked={isLiked}
-        onFilterPress={onFilterPress}
-        showFilter={showFilter}
-      />
+      <View style={styles.rightRail} pointerEvents="box-none">
+        <View style={styles.badgeSpacing} pointerEvents="box-none">
+          <SobrietyBadge daysSober={daysSober} />
+        </View>
+        <FloatingActionIcons
+          likesCount={likesCount}
+          commentsCount={commentsCount}
+          onLikePress={onLikePress || (() => {})}
+          onCommentPress={handleCommentPress}
+          onMorePress={onMorePress || (() => {})}
+          showSoundToggle={showSoundToggle}
+          isMuted={isMuted}
+          onToggleSound={onToggleSound}
+          isLiked={isLiked}
+          onFilterPress={onFilterPress}
+          showFilter={showFilter}
+          containerStyle={styles.iconStack}
+        />
+      </View>
 
       {/* Comment sheet (wire to actual comments later) */}
       <CommentSheet
@@ -300,6 +308,20 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
     height: "15%",
+  },
+  rightRail: {
+    position: "absolute",
+    right: 18,
+    bottom: 20,
+    alignItems: "center",
+  },
+  badgeSpacing: {
+    marginBottom: 12,
+  },
+  iconStack: {
+    position: "relative",
+    right: 0,
+    bottom: 0,
   },
   title: {
     color: "#fff",

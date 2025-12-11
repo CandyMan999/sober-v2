@@ -11,3 +11,4 @@ export { default as ToggleSwitch } from "./ToggleSwitch";
 export { default as Avatar } from "./Avatar";
 export { default as WatchAgainButton } from "./WatchAgainButton";
 export { default as QuickSobrietyBanner } from "./QuickSobrietyBanner";
+export { default as SobrietyBadge } from "./SobrietyBadge";
