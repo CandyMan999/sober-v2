@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import {
   Animated,
   Easing,
@@ -14,6 +14,7 @@ import {
 import { BlurView } from "expo-blur";
 import { LinearGradient } from "expo-linear-gradient";
 import { COLORS } from "../constants/colors";
+import { useRevenueCat } from "../RevenueCatContext";
 
 const TERMS_OF_SERVICE_URL = "https://example.com/terms";
 
@@ -66,9 +67,77 @@ const PaywallModal = ({ visible, onClose, onSelectPremium, onSelectFree }) => {
     [height, slideAnim]
   );
 
+  const {
+    currentOffering,
+    purchasePackage,
+    restorePurchases,
+    isPremium,
+    initializing,
+  } = useRevenueCat();
+  const [processingId, setProcessingId] = useState(null);
+
+  const packages = useMemo(
+    () => currentOffering?.availablePackages || currentOffering?.packages || [],
+    [currentOffering]
+  );
+
+  const monthlyPackage = useMemo(
+    () => packages.find((p) => p.identifier === "$rc_monthly"),
+    [packages]
+  );
+
+  const annualPackage = useMemo(
+    () => packages.find((p) => p.identifier === "$rc_annual"),
+    [packages]
+  );
+
+  useEffect(() => {
+    if (!visible) return;
+    if (isPremium) {
+      onSelectPremium?.();
+    }
+  }, [isPremium, onSelectPremium, visible]);
+
   const handleOpenTerms = () => {
     Linking.openURL(TERMS_OF_SERVICE_URL).catch(() => {});
   };
+
+  const isActionDisabled = initializing || Boolean(processingId);
+
+  const handlePurchase = async (selectedPackage) => {
+    if (!selectedPackage || isActionDisabled) return;
+
+    try {
+      setProcessingId(selectedPackage.identifier);
+      await purchasePackage(selectedPackage);
+      onSelectPremium?.();
+    } catch (error) {
+      if (!error?.userCancelled) {
+        console.error("Purchase failed", error);
+      }
+    } finally {
+      setProcessingId(null);
+    }
+  };
+
+  const handleRestore = async () => {
+    if (isActionDisabled) return;
+
+    try {
+      setProcessingId("restore");
+      await restorePurchases();
+      onSelectPremium?.();
+    } catch (error) {
+      console.error("Restore purchases failed", error);
+    } finally {
+      setProcessingId(null);
+    }
+  };
+
+  const monthlyPrice =
+    monthlyPackage?.product?.priceString || monthlyPackage?.product?.price || "$1.99";
+  const annualPrice =
+    annualPackage?.product?.priceString || annualPackage?.product?.price || "$19.99";
 
   return (
     <Modal animationType="none" transparent visible={visible}>
@@ -122,20 +191,46 @@ const PaywallModal = ({ visible, onClose, onSelectPremium, onSelectFree }) => {
                 </Text>
               </View>
               <TouchableOpacity
-                style={[styles.button, styles.primaryButton]}
+                style={[
+                  styles.button,
+                  styles.primaryButton,
+                  (!monthlyPackage || isActionDisabled) && styles.disabledButton,
+                ]}
                 activeOpacity={0.9}
-                onPress={onSelectPremium}
+                onPress={() => handlePurchase(monthlyPackage)}
+                disabled={!monthlyPackage || isActionDisabled}
               >
-                <Text style={styles.primaryButtonText}>Go Premium — $1.99/mo</Text>
+                <Text style={styles.primaryButtonText}>
+                  Go Premium — {monthlyPrice}/mo
+                </Text>
               </TouchableOpacity>
               <TouchableOpacity
-                style={[styles.button, styles.secondaryButton]}
+                style={[
+                  styles.button,
+                  styles.secondaryButton,
+                  (!annualPackage || isActionDisabled) && styles.disabledButton,
+                ]}
+                activeOpacity={0.85}
+                onPress={() => handlePurchase(annualPackage)}
+                disabled={!annualPackage || isActionDisabled}
+              >
+                <Text style={styles.secondaryButtonText}>
+                  Best value — {annualPrice}/yr
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.button, styles.tertiaryButton]}
                 activeOpacity={0.85}
                 onPress={onSelectFree}
               >
-                <Text style={styles.secondaryButtonText}>
-                  Continue with ads (free)
-                </Text>
+                <Text style={styles.secondaryButtonText}>Continue with ads (free)</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={handleRestore}
+                activeOpacity={0.7}
+                disabled={isActionDisabled}
+              >
+                <Text style={styles.restoreText}>Restore purchases</Text>
               </TouchableOpacity>
               <TouchableOpacity onPress={onClose} activeOpacity={0.7}>
                 <Text style={styles.dismissText}>Maybe later</Text>
@@ -276,9 +371,23 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     fontSize: 14,
   },
+  tertiaryButton: {
+    borderWidth: 1,
+    borderColor: "#374151",
+    backgroundColor: "rgba(255,255,255,0.03)",
+  },
+  disabledButton: {
+    opacity: 0.6,
+  },
   dismissText: {
     color: COLORS.textSecondary,
     marginTop: 6,
+    fontSize: 13,
+    textDecorationLine: "underline",
+  },
+  restoreText: {
+    color: COLORS.textSecondary,
+    marginTop: 8,
     fontSize: 13,
     textDecorationLine: "underline",
   },

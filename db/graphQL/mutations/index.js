@@ -42,6 +42,7 @@ const {
   toggleNotificationCategoryResolver,
 } = require("./notifications");
 const { appleLoginResolver } = require("./appleLogin");
+const { changePlanResolver } = require("./changePlan");
 
 module.exports = {
   directUploadResolver,
@@ -81,4 +82,5 @@ module.exports = {
   toggleNotificationCategoryResolver,
   deleteAccountResolver,
   appleLoginResolver,
+  changePlanResolver,
 };

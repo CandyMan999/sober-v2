@@ -62,6 +62,12 @@ export const FETCH_ME_QUERY = `
         dailyPush
         locationTrackingEnabled
       }
+      plan {
+        planType
+        withAds
+        withTherapy
+        withWorkBook
+      }
       streaks{
        startAt
         endAt
