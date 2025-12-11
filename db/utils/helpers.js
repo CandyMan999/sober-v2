@@ -251,3 +251,36 @@ function removeDuplicates(data) {
 
   return newData;
 }
+
+function deg2rad(deg) {
+  return deg * (Math.PI / 180);
+}
+
+function getDistanceFromCoords(lat1, lng1, lat2, lng2) {
+  if (
+    typeof lat1 !== "number" ||
+    typeof lng1 !== "number" ||
+    typeof lat2 !== "number" ||
+    typeof lng2 !== "number"
+  ) {
+    return null;
+  }
+
+  const R = 6371; // Earth radius in km
+  const dLat = deg2rad(lat2 - lat1);
+  const dLng = deg2rad(lng2 - lng1);
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(deg2rad(lat1)) *
+      Math.cos(deg2rad(lat2)) *
+      Math.sin(dLng / 2) * Math.sin(dLng / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  const d = R * c; // Distance in km
+
+  return d * 0.621371; // Convert to miles
+}
+
+module.exports = {
+  removeDuplicates,
+  getDistanceFromCoords,
+};
