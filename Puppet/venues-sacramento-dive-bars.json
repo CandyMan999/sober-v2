@@ -1,0 +1,680 @@
+[
+  {
+    "type": "Bar",
+    "name": "Round Corner",
+    "lat": 38.565596,
+    "long": -121.4790481
+  },
+  {
+    "type": "Bar",
+    "name": "Socal s Tavern",
+    "lat": 38.5600653,
+    "long": -121.4427531
+  },
+  {
+    "type": "Bar",
+    "name": "Q Street Bar Grill",
+    "lat": 38.5689906,
+    "long": -121.4827061
+  },
+  {
+    "type": "Bar",
+    "name": "B Side",
+    "lat": 38.568443,
+    "long": -121.4911133
+  },
+  {
+    "type": "Bar",
+    "name": "Pine Cove Tavern",
+    "lat": 38.5788129,
+    "long": -121.4657692
+  },
+  {
+    "type": "Bar",
+    "name": "Flame Club",
+    "lat": 38.5651089,
+    "long": -121.4910843
+  },
+  {
+    "type": "Bar",
+    "name": "Dive Bar",
+    "lat": 38.5787144,
+    "long": -121.4933941
+  },
+  {
+    "type": "Bar",
+    "name": "The Snug",
+    "lat": 38.5693796,
+    "long": -121.4910672
+  },
+  {
+    "type": "Bar",
+    "name": "Old Tavern Bar Grill",
+    "lat": 38.5709065,
+    "long": -121.4827106
+  },
+  {
+    "type": "Bar",
+    "name": "Mother Lode Bar Deli",
+    "lat": 38.6084346,
+    "long": -121.4339378
+  },
+  {
+    "type": "Bar",
+    "name": "Hilltop Tavern Bar",
+    "lat": 38.561794,
+    "long": -121.4461852
+  },
+  {
+    "type": "Bar",
+    "name": "Night Cap",
+    "lat": 38.5771606,
+    "long": -121.4828846
+  },
+  {
+    "type": "Bar",
+    "name": "Elixir Bar Grill",
+    "lat": 38.5709013,
+    "long": -121.4971261
+  },
+  {
+    "type": "Bar",
+    "name": "The Zebra Club",
+    "lat": 38.5702147,
+    "long": -121.4839752
+  },
+  {
+    "type": "Bar",
+    "name": "Tallac Lounge",
+    "lat": 38.5386928,
+    "long": -121.4351447
+  },
+  {
+    "type": "Bar",
+    "name": "Bonn Lair",
+    "lat": 38.5709703,
+    "long": -121.4574464
+  },
+  {
+    "type": "Bar",
+    "name": "The Shady Lady Saloon",
+    "lat": 38.5701031,
+    "long": -121.4914456
+  },
+  {
+    "type": "Bar",
+    "name": "Streets Pub and Grub",
+    "lat": 38.5770242,
+    "long": -121.4823491
+  },
+  {
+    "type": "Bar",
+    "name": "Chargin s Bar Grill",
+    "lat": 38.5666125,
+    "long": -121.442847
+  },
+  {
+    "type": "Bar",
+    "name": "Mecca Club",
+    "lat": 38.5936791,
+    "long": -121.5452224
+  },
+  {
+    "type": "Bar",
+    "name": "Stingers",
+    "lat": 38.5574268,
+    "long": -121.4099041
+  },
+  {
+    "type": "Bar",
+    "name": "Cheaters Sports Bar",
+    "lat": 38.568174,
+    "long": -121.4646892
+  },
+  {
+    "type": "Bar",
+    "name": "Club Me",
+    "lat": 38.5669444,
+    "long": -121.4444444
+  },
+  {
+    "type": "Bar",
+    "name": "Club Raven",
+    "lat": 38.5720086,
+    "long": -121.4630052
+  },
+  {
+    "type": "Bar",
+    "name": "On the Y",
+    "lat": 38.5770535,
+    "long": -121.4017505
+  },
+  {
+    "type": "Bar",
+    "name": "Ten Ten Room",
+    "lat": 38.5799451,
+    "long": -121.4937997
+  },
+  {
+    "type": "Bar",
+    "name": "Tom s Watch Bar",
+    "lat": 38.5808011,
+    "long": -121.5006331
+  },
+  {
+    "type": "Bar",
+    "name": "The Jungle Bird",
+    "lat": 38.5744937,
+    "long": -121.4725992
+  },
+  {
+    "type": "Bar",
+    "name": "Tahoe Blue Ridge Bar",
+    "lat": 38.581166,
+    "long": -121.5000709
+  },
+  {
+    "type": "Bar",
+    "name": "Torch Club",
+    "lat": 38.5793498,
+    "long": -121.4864504
+  },
+  {
+    "type": "Bar",
+    "name": "Henry s Lounge",
+    "lat": 38.5711402,
+    "long": -121.4813766
+  },
+  {
+    "type": "Bar",
+    "name": "Last Stop Saloon",
+    "lat": 38.5836475,
+    "long": -121.5040051
+  },
+  {
+    "type": "Bar",
+    "name": "Pocket Club",
+    "lat": 38.5278205,
+    "long": -121.4956359
+  },
+  {
+    "type": "Bar",
+    "name": "Frank",
+    "lat": 38.5687099,
+    "long": -121.4886383
+  },
+  {
+    "type": "Bar",
+    "name": "The Back Door",
+    "lat": 38.5816196,
+    "long": -121.5055547
+  },
+  {
+    "type": "Bar",
+    "name": "Old Ironsides",
+    "lat": 38.570258,
+    "long": -121.4976836
+  },
+  {
+    "type": "Bar",
+    "name": "O Mally s Irish Pub F Josh",
+    "lat": 38.5817457,
+    "long": -121.5045458
+  },
+  {
+    "type": "Bar",
+    "name": "Vega s",
+    "lat": 38.5944432,
+    "long": -121.5438283
+  },
+  {
+    "type": "Bar",
+    "name": "The Mercantile Saloon",
+    "lat": 38.5743352,
+    "long": -121.481263
+  },
+  {
+    "type": "Bar",
+    "name": "The Golden Bear",
+    "lat": 38.5740316,
+    "long": -121.4754852
+  },
+  {
+    "type": "Bar",
+    "name": "Cheers Bar C West Sacramento",
+    "lat": 38.5790613,
+    "long": -121.5430794
+  },
+  {
+    "type": "Bar",
+    "name": "Clubhouse ",
+    "lat": 38.56795,
+    "long": -121.4334528
+  },
+  {
+    "type": "Bar",
+    "name": "Lighthouse Bar Grill",
+    "lat": 38.5795981,
+    "long": -121.53847
+  },
+  {
+    "type": "Bar",
+    "name": " Track",
+    "lat": 38.5695682,
+    "long": -121.4817021
+  },
+  {
+    "type": "Bar",
+    "name": "The Cabin",
+    "lat": 38.573709,
+    "long": -121.479443
+  },
+  {
+    "type": "Bar",
+    "name": "The Roost",
+    "lat": 38.570137,
+    "long": -121.4912736
+  },
+  {
+    "type": "Bar",
+    "name": "MoJo s Local Tap Kitchen",
+    "lat": 38.5798994,
+    "long": -121.4863308
+  },
+  {
+    "type": "Bar",
+    "name": "Streets of London Pub",
+    "lat": 38.553463,
+    "long": -121.537817
+  },
+  {
+    "type": "Bar",
+    "name": "Tack Room",
+    "lat": 38.5777234,
+    "long": -121.4843004
+  },
+  {
+    "type": "Bar",
+    "name": "Limelight Bar, Cafe Cardroom",
+    "lat": 38.5723163,
+    "long": -121.4656166
+  },
+  {
+    "type": "Bar",
+    "name": "Shipwrecked Paradise Island",
+    "lat": 38.572135,
+    "long": -121.4880303
+  },
+  {
+    "type": "Bar",
+    "name": "Locked Barrel",
+    "lat": 38.5801633,
+    "long": -121.4918433
+  },
+  {
+    "type": "Bar",
+    "name": "Blue Cue",
+    "lat": 38.5736721,
+    "long": -121.4694723
+  },
+  {
+    "type": "Bar",
+    "name": "Swiss Buda",
+    "lat": 38.5243583,
+    "long": -121.4846222
+  },
+  {
+    "type": "Bar",
+    "name": "Office",
+    "lat": 38.5861033,
+    "long": -121.4009035
+  },
+  {
+    "type": "Bar",
+    "name": "The Silver Lining Piano Bar and Performing Arts Lounge",
+    "lat": 38.5732542,
+    "long": -121.4876258
+  },
+  {
+    "type": "Bar",
+    "name": "Sean Finnegan s Pub",
+    "lat": 38.5822222,
+    "long": -121.5046773
+  },
+  {
+    "type": "Bar",
+    "name": "Kupros Craft House",
+    "lat": 38.5734472,
+    "long": -121.4795518
+  },
+  {
+    "type": "Bar",
+    "name": "The Trap",
+    "lat": 38.5154474,
+    "long": -121.5263239
+  },
+  {
+    "type": "Bar",
+    "name": "Coin Op Game Room",
+    "lat": 38.5792397,
+    "long": -121.4948205
+  },
+  {
+    "type": "Bar",
+    "name": "Maple Room Lounge",
+    "lat": 38.595624,
+    "long": -121.39866
+  },
+  {
+    "type": "Bar",
+    "name": "Kick n Mule Restaurant",
+    "lat": 38.5789622,
+    "long": -121.5496398
+  },
+  {
+    "type": "Bar",
+    "name": "The Alibi Bar",
+    "lat": 38.5765586,
+    "long": -121.4019313
+  },
+  {
+    "type": "Bar",
+    "name": "Berkley Bar",
+    "lat": 38.5749692,
+    "long": -121.4112718
+  },
+  {
+    "type": "Bar",
+    "name": "Honey and The Trapcat",
+    "lat": 38.5828042,
+    "long": -121.505507
+  },
+  {
+    "type": "Bar",
+    "name": "Long Shot",
+    "lat": 38.5962158,
+    "long": -121.3652075
+  },
+  {
+    "type": "Bar",
+    "name": "Firefly Lounge",
+    "lat": 38.5920453,
+    "long": -121.4020981
+  },
+  {
+    "type": "Bar",
+    "name": "The Press Club",
+    "lat": 38.5744896,
+    "long": -121.4791139
+  },
+  {
+    "type": "Bar",
+    "name": "Tomato Alley Free House",
+    "lat": 38.5664468,
+    "long": -121.490546
+  },
+  {
+    "type": "Bar",
+    "name": "Radclyffe s Restaurant Cocktail Bar",
+    "lat": 38.5807699,
+    "long": -121.4873405
+  },
+  {
+    "type": "Bar",
+    "name": "Stoney s Rockin Rodeo",
+    "lat": 38.6046575,
+    "long": -121.4616605
+  },
+  {
+    "type": "Bar",
+    "name": "The Depot",
+    "lat": 38.5757759,
+    "long": -121.4801044
+  },
+  {
+    "type": "Bar",
+    "name": "KBAR DOCO",
+    "lat": 38.579744,
+    "long": -121.4968701
+  },
+  {
+    "type": "Bar",
+    "name": "Brannan Manor Restaurant Spirits",
+    "lat": 38.5833239,
+    "long": -121.5050932
+  },
+  {
+    "type": "Bar",
+    "name": "Pied Piper Lounge",
+    "lat": 38.6107745,
+    "long": -121.3846952
+  },
+  {
+    "type": "Bar",
+    "name": "Trino s Lounge",
+    "lat": 38.5920639,
+    "long": -121.402092
+  },
+  {
+    "type": "Bar",
+    "name": "Smic s Restaurant Event Venue",
+    "lat": 38.5781683,
+    "long": -121.4905772
+  },
+  {
+    "type": "Bar",
+    "name": "The Blind Pig",
+    "lat": 38.6096965,
+    "long": -121.3543019
+  },
+  {
+    "type": "Bar",
+    "name": "Pitch and Fiddle",
+    "lat": 38.5630257,
+    "long": -121.3801042
+  },
+  {
+    "type": "Bar",
+    "name": "Brownie s Lounge",
+    "lat": 38.5203467,
+    "long": -121.5134182
+  },
+  {
+    "type": "Bar",
+    "name": "Interlude Cocktail Lounge",
+    "lat": 38.6182334,
+    "long": -121.3641164
+  },
+  {
+    "type": "Bar",
+    "name": "OUR MUSHROOM TAVERN",
+    "lat": 38.5463293,
+    "long": -121.3618913
+  },
+  {
+    "type": "Bar",
+    "name": "Lew s Club",
+    "lat": 38.690695,
+    "long": -121.456547
+  },
+  {
+    "type": "Bar",
+    "name": "The Cinder s Bar",
+    "lat": 38.6667044,
+    "long": -121.3392786
+  },
+  {
+    "type": "Bar",
+    "name": "Chambers Room",
+    "lat": 38.5815113,
+    "long": -121.4972363
+  },
+  {
+    "type": "Bar",
+    "name": "Jamie s Broadway Grille",
+    "lat": 38.5659137,
+    "long": -121.5076454
+  },
+  {
+    "type": "Bar",
+    "name": "Score Bar Lounge",
+    "lat": 38.4978457,
+    "long": -121.4597551
+  },
+  {
+    "type": "Bar",
+    "name": "Cedar Room",
+    "lat": 38.66041,
+    "long": -121.325709
+  },
+  {
+    "type": "Bar",
+    "name": "Harry s Lounge",
+    "lat": 38.6506869,
+    "long": -121.3582474
+  },
+  {
+    "type": "Bar",
+    "name": "Loree s Little Shack Greenback",
+    "lat": 38.6786111,
+    "long": -121.3030556
+  },
+  {
+    "type": "Bar",
+    "name": "R Spot Bar",
+    "lat": 38.6122854,
+    "long": -121.2919482
+  },
+  {
+    "type": "Bar",
+    "name": "Happy Bar Cocktails",
+    "lat": 38.5273911,
+    "long": -121.3353464
+  },
+  {
+    "type": "Bar",
+    "name": "Phat Chad s",
+    "lat": 38.7119167,
+    "long": -121.2914338
+  },
+  {
+    "type": "Bar",
+    "name": "Scotty s Hideaway",
+    "lat": 38.6788418,
+    "long": -121.2049518
+  },
+  {
+    "type": "Bar",
+    "name": "Chasers Bar",
+    "lat": 38.660156,
+    "long": -121.338775
+  },
+  {
+    "type": "Bar",
+    "name": "The Glass Turtle",
+    "lat": 38.7320313,
+    "long": -121.2714427
+  },
+  {
+    "type": "Bar",
+    "name": "West House Tavern Nightclub",
+    "lat": 38.7494403,
+    "long": -121.2843374
+  },
+  {
+    "type": "Bar",
+    "name": "Timeless Tavern",
+    "lat": 38.5770273,
+    "long": -121.4017641
+  },
+  {
+    "type": "Bar",
+    "name": "The Virgin Sturgeon Restaurant Marina",
+    "lat": 38.6047387,
+    "long": -121.5227489
+  },
+  {
+    "type": "Bar",
+    "name": "Stockman Club",
+    "lat": 38.6427488,
+    "long": -121.270329
+  },
+  {
+    "type": "Bar",
+    "name": "Bob s Club",
+    "lat": 38.409189,
+    "long": -121.3652234
+  },
+  {
+    "type": "Bar",
+    "name": "Shenanigans Kitchen Bar",
+    "lat": 38.6646139,
+    "long": -121.2915186
+  },
+  {
+    "type": "Bar",
+    "name": "Time Out Tavern",
+    "lat": 38.6363982,
+    "long": -121.3241622
+  },
+  {
+    "type": "Bar",
+    "name": "Spitzer s Walnut Room",
+    "lat": 38.4973983,
+    "long": -121.5095367
+  },
+  {
+    "type": "Bar",
+    "name": "Almond Tree Grill Lounge",
+    "lat": 38.7486111,
+    "long": -121.2694472
+  },
+  {
+    "type": "Bar",
+    "name": "House Divided",
+    "lat": 38.7512339,
+    "long": -121.2850689
+  },
+  {
+    "type": "Bar",
+    "name": "Kenny s Bar Grill",
+    "lat": 38.671195,
+    "long": -121.765131
+  },
+  {
+    "type": "Bar",
+    "name": "Babe s Lounge",
+    "lat": 38.4091299,
+    "long": -121.3662694
+  },
+  {
+    "type": "Bar",
+    "name": "San Juan Club",
+    "lat": 38.652323,
+    "long": -121.291432
+  },
+  {
+    "type": "Bar",
+    "name": "The Rio Pub",
+    "lat": 38.6904633,
+    "long": -121.4484524
+  },
+  {
+    "type": "Bar",
+    "name": "Suite Nine",
+    "lat": 38.6168705,
+    "long": -121.2742851
+  },
+  {
+    "type": "Bar",
+    "name": "Hay Tone s Hangout",
+    "lat": 38.3787178,
+    "long": -121.4542801
+  },
+  {
+    "type": "Bar",
+    "name": "Louie E s Cocktail Lounge",
+    "lat": 38.5813598,
+    "long": -121.3107147
+  }
+]

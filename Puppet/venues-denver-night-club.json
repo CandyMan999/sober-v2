@@ -1,0 +1,620 @@
+[
+  {
+    "type": "Liquor",
+    "name": "Night club",
+    "lat": 39.6958217,
+    "long": -105.0529361
+  },
+  {
+    "type": "Liquor",
+    "name": "The Black Box",
+    "lat": 39.7367669,
+    "long": -104.9830924
+  },
+  {
+    "type": "Liquor",
+    "name": "El Potrero Night Club",
+    "lat": 39.7076118,
+    "long": -104.9346309
+  },
+  {
+    "type": "Liquor",
+    "name": "Temple Nightclub Denver",
+    "lat": 39.7344587,
+    "long": -104.9872293
+  },
+  {
+    "type": "Liquor",
+    "name": "Milk Bar",
+    "lat": 39.7328271,
+    "long": -104.9880659
+  },
+  {
+    "type": "Liquor",
+    "name": "The Church Nightclub",
+    "lat": 39.7351256,
+    "long": -104.9858119
+  },
+  {
+    "type": "Liquor",
+    "name": "Shotgun Willie s",
+    "lat": 39.7076248,
+    "long": -104.9397067
+  },
+  {
+    "type": "Liquor",
+    "name": "Olympus Discotheque",
+    "lat": 39.7498999,
+    "long": -104.9871467
+  },
+  {
+    "type": "Liquor",
+    "name": "Bar Standard",
+    "lat": 39.732859,
+    "long": -104.987608
+  },
+  {
+    "type": "Liquor",
+    "name": "XSO Night Club",
+    "lat": 39.7433922,
+    "long": -104.9905163
+  },
+  {
+    "type": "Liquor",
+    "name": "El Fiesta Nightclub",
+    "lat": 39.7281508,
+    "long": -105.0521523
+  },
+  {
+    "type": "Liquor",
+    "name": "Scarlett s Cabaret Denver",
+    "lat": 39.7077573,
+    "long": -104.9353877
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Vinyl",
+    "lat": 39.7335446,
+    "long": -104.9871439
+  },
+  {
+    "type": "Liquor",
+    "name": "Marisela s Night Club",
+    "lat": 39.7707776,
+    "long": -105.0062884
+  },
+  {
+    "type": "Liquor",
+    "name": "LaRumba",
+    "lat": 39.7312707,
+    "long": -104.9891766
+  },
+  {
+    "type": "Liquor",
+    "name": "glow lounge",
+    "lat": 39.7403039,
+    "long": -104.9790125
+  },
+  {
+    "type": "Liquor",
+    "name": "Blue Ice",
+    "lat": 39.7170296,
+    "long": -104.9872213
+  },
+  {
+    "type": "Liquor",
+    "name": "The Gatsby Social Club",
+    "lat": 39.7512634,
+    "long": -104.9995167
+  },
+  {
+    "type": "Liquor",
+    "name": "Herb s Hideout",
+    "lat": 39.7538292,
+    "long": -104.991663
+  },
+  {
+    "type": "Liquor",
+    "name": "Tracks",
+    "lat": 39.767713,
+    "long": -104.974808
+  },
+  {
+    "type": "Liquor",
+    "name": "The Room",
+    "lat": 39.7344591,
+    "long": -104.9870662
+  },
+  {
+    "type": "Liquor",
+    "name": "La Pachanga",
+    "lat": 39.6974676,
+    "long": -105.0527368
+  },
+  {
+    "type": "Liquor",
+    "name": "Ultimo Nivel",
+    "lat": 39.6970515,
+    "long": -105.0520428
+  },
+  {
+    "type": "Liquor",
+    "name": "MDE Lounge",
+    "lat": 39.7159466,
+    "long": -104.9870326
+  },
+  {
+    "type": "Liquor",
+    "name": "Diamond Cabaret",
+    "lat": 39.7402899,
+    "long": -104.9945817
+  },
+  {
+    "type": "Liquor",
+    "name": "Phoenix Event Center",
+    "lat": 39.7264986,
+    "long": -105.0542436
+  },
+  {
+    "type": "Liquor",
+    "name": "X BAR",
+    "lat": 39.7402498,
+    "long": -104.9790098
+  },
+  {
+    "type": "Liquor",
+    "name": "Jaguar Room",
+    "lat": 39.7533338,
+    "long": -104.9940362
+  },
+  {
+    "type": "Liquor",
+    "name": "Chances Grill Denver",
+    "lat": 39.7486042,
+    "long": -104.9993798
+  },
+  {
+    "type": "Liquor",
+    "name": "Beacon RiNo",
+    "lat": 39.7609902,
+    "long": -104.9818521
+  },
+  {
+    "type": "Liquor",
+    "name": " VYBE",
+    "lat": 39.7326496,
+    "long": -104.9878214
+  },
+  {
+    "type": "Liquor",
+    "name": "Larimer Lounge",
+    "lat": 39.7599549,
+    "long": -104.9838407
+  },
+  {
+    "type": "Liquor",
+    "name": "Nocturne",
+    "lat": 39.7595964,
+    "long": -104.9843854
+  },
+  {
+    "type": "Liquor",
+    "name": "The Hive Nightclub",
+    "lat": 39.7339965,
+    "long": -104.9863833
+  },
+  {
+    "type": "Liquor",
+    "name": "Charlie s Denver",
+    "lat": 39.7397694,
+    "long": -104.9762033
+  },
+  {
+    "type": "Liquor",
+    "name": "El Flamingo Billiards",
+    "lat": 39.6957842,
+    "long": -105.0527921
+  },
+  {
+    "type": "Liquor",
+    "name": "Your Mom s House Denver",
+    "lat": 39.7367324,
+    "long": -104.9795145
+  },
+  {
+    "type": "Liquor",
+    "name": " Club",
+    "lat": 39.7548692,
+    "long": -104.9775804
+  },
+  {
+    "type": "Liquor",
+    "name": "Coco Bongos Denver",
+    "lat": 39.6879444,
+    "long": -104.9873
+  },
+  {
+    "type": "Liquor",
+    "name": "Lime Champa",
+    "lat": 39.7467301,
+    "long": -104.9934283
+  },
+  {
+    "type": "Liquor",
+    "name": "Sky lounge",
+    "lat": 39.7539077,
+    "long": -104.9954313
+  },
+  {
+    "type": "Liquor",
+    "name": "The Clocktower Cabaret",
+    "lat": 39.748099,
+    "long": -104.995687
+  },
+  {
+    "type": "Liquor",
+    "name": "Seven Grand",
+    "lat": 39.7534522,
+    "long": -104.9959658
+  },
+  {
+    "type": "Liquor",
+    "name": "The Horseshoe Lounge",
+    "lat": 39.74745,
+    "long": -104.9818801
+  },
+  {
+    "type": "Liquor",
+    "name": "Terreno Macizo",
+    "lat": 39.7822184,
+    "long": -105.0013224
+  },
+  {
+    "type": "Liquor",
+    "name": "Rick s Cabaret Denver",
+    "lat": 39.7447828,
+    "long": -104.9949144
+  },
+  {
+    "type": "Liquor",
+    "name": "Summit",
+    "lat": 39.7533806,
+    "long": -104.9952472
+  },
+  {
+    "type": "Liquor",
+    "name": "Orchid Denver",
+    "lat": 39.7486654,
+    "long": -104.9995833
+  },
+  {
+    "type": "Liquor",
+    "name": "Sugar Lounge",
+    "lat": 39.7767595,
+    "long": -105.025655
+  },
+  {
+    "type": "Liquor",
+    "name": "Li l Devils Lounge",
+    "lat": 39.711935,
+    "long": -104.9877733
+  },
+  {
+    "type": "Liquor",
+    "name": "Las Adelitas Night Club",
+    "lat": 39.740544,
+    "long": -104.857
+  },
+  {
+    "type": "Liquor",
+    "name": "Lost Lake Lounge",
+    "lat": 39.7399676,
+    "long": -104.9447294
+  },
+  {
+    "type": "Liquor",
+    "name": "Peaks Lounge",
+    "lat": 39.7434039,
+    "long": -104.9936239
+  },
+  {
+    "type": "Liquor",
+    "name": "La Rumba",
+    "lat": 39.7305949,
+    "long": -104.9885952
+  },
+  {
+    "type": "Liquor",
+    "name": "P S Lounge",
+    "lat": 39.739942,
+    "long": -104.9468177
+  },
+  {
+    "type": "Liquor",
+    "name": "The Refinery",
+    "lat": 39.7534349,
+    "long": -104.991456
+  },
+  {
+    "type": "Liquor",
+    "name": "Disco Pig",
+    "lat": 39.747519,
+    "long": -104.9992432
+  },
+  {
+    "type": "Liquor",
+    "name": "Two Moons Music Hall",
+    "lat": 39.7618262,
+    "long": -104.9807338
+  },
+  {
+    "type": "Liquor",
+    "name": "HQ",
+    "lat": 39.7154026,
+    "long": -104.9871601
+  },
+  {
+    "type": "Liquor",
+    "name": "Bedlam",
+    "lat": 39.7504703,
+    "long": -105.0007807
+  },
+  {
+    "type": "Liquor",
+    "name": "The Pearl",
+    "lat": 39.750846,
+    "long": -104.985339
+  },
+  {
+    "type": "Liquor",
+    "name": "Dazzle Denver",
+    "lat": 39.7456685,
+    "long": -104.9978614
+  },
+  {
+    "type": "Liquor",
+    "name": "Mockingbird",
+    "lat": 39.7601835,
+    "long": -104.983562
+  },
+  {
+    "type": "Liquor",
+    "name": "Flight Club Denver",
+    "lat": 39.7537544,
+    "long": -105.0029037
+  },
+  {
+    "type": "Liquor",
+    "name": "CoClubs",
+    "lat": 39.7349834,
+    "long": -104.9852497
+  },
+  {
+    "type": "Liquor",
+    "name": "The Retro Room Bar",
+    "lat": 39.7533593,
+    "long": -104.9918532
+  },
+  {
+    "type": "Liquor",
+    "name": "Cleopatra E s Bar",
+    "lat": 39.7115479,
+    "long": -105.0633674
+  },
+  {
+    "type": "Liquor",
+    "name": "Shepe s Sports Grill",
+    "lat": 39.7399148,
+    "long": -104.8972622
+  },
+  {
+    "type": "Liquor",
+    "name": "Babes Night Club",
+    "lat": 39.8493351,
+    "long": -105.0136197
+  },
+  {
+    "type": "Liquor",
+    "name": "La Chispa Nightclub LLC",
+    "lat": 39.8270132,
+    "long": -104.9169168
+  },
+  {
+    "type": "Liquor",
+    "name": "Lakeview Lounge",
+    "lat": 39.7509458,
+    "long": -105.0536479
+  },
+  {
+    "type": "Liquor",
+    "name": "Cruise Room",
+    "lat": 39.7522538,
+    "long": -104.9993332
+  },
+  {
+    "type": "Liquor",
+    "name": "Tight End Bar",
+    "lat": 39.7402418,
+    "long": -104.9694149
+  },
+  {
+    "type": "Liquor",
+    "name": "Golden Hour Wine Bar Social Club",
+    "lat": 39.7630924,
+    "long": -105.0110159
+  },
+  {
+    "type": "Liquor",
+    "name": "La Diabla Night Club and Lounge",
+    "lat": 39.7463576,
+    "long": -104.9954506
+  },
+  {
+    "type": "Liquor",
+    "name": "Tetra Private Lounge Garden",
+    "lat": 39.763604,
+    "long": -104.9809158
+  },
+  {
+    "type": "Liquor",
+    "name": "El Nuevo Original Nightclub",
+    "lat": 39.8309429,
+    "long": -105.0039446
+  },
+  {
+    "type": "Liquor",
+    "name": "Mozart s Denver",
+    "lat": 39.738815,
+    "long": -104.916393
+  },
+  {
+    "type": "Liquor",
+    "name": "Call Me Pearl",
+    "lat": 39.7552915,
+    "long": -104.9962719
+  },
+  {
+    "type": "Liquor",
+    "name": "Forest Room ",
+    "lat": 39.7577912,
+    "long": -105.0112783
+  },
+  {
+    "type": "Liquor",
+    "name": "Campus Lounge",
+    "lat": 39.703747,
+    "long": -104.959681
+  },
+  {
+    "type": "Liquor",
+    "name": "Death Co Denver",
+    "lat": 39.7572854,
+    "long": -104.9865039
+  },
+  {
+    "type": "Liquor",
+    "name": "Bar AC",
+    "lat": 39.7443551,
+    "long": -104.9939375
+  },
+  {
+    "type": "Liquor",
+    "name": "Dr Proctor s Bar and Grill Lounge ",
+    "lat": 39.6973305,
+    "long": -104.9375794
+  },
+  {
+    "type": "Liquor",
+    "name": "La Jarra Night Club",
+    "lat": 39.6976162,
+    "long": -104.8080732
+  },
+  {
+    "type": "Liquor",
+    "name": "Dierks Bentley s Whiskey Row Denver",
+    "lat": 39.7532393,
+    "long": -104.9936434
+  },
+  {
+    "type": "Liquor",
+    "name": "Alchemy Arts Events by The Fitch Foundation",
+    "lat": 39.7694736,
+    "long": -104.9795975
+  },
+  {
+    "type": "Liquor",
+    "name": "Inga s Alpine Tavern",
+    "lat": 39.7085047,
+    "long": -104.9273982
+  },
+  {
+    "type": "Liquor",
+    "name": "El Patio",
+    "lat": 39.7535469,
+    "long": -104.9938959
+  },
+  {
+    "type": "Liquor",
+    "name": "Candlelight Tavern",
+    "lat": 39.709632,
+    "long": -104.9806348
+  },
+  {
+    "type": "Liquor",
+    "name": "Garage Sale Bar",
+    "lat": 39.7481242,
+    "long": -104.9992138
+  },
+  {
+    "type": "Liquor",
+    "name": "Velvet Lasso",
+    "lat": 39.7630992,
+    "long": -105.0038631
+  },
+  {
+    "type": "Liquor",
+    "name": "Karma Music",
+    "lat": 39.7399964,
+    "long": -105.0588012
+  },
+  {
+    "type": "Liquor",
+    "name": "BBS Black Belt Salsa ThisIsSalsa com",
+    "lat": 39.76621,
+    "long": -105.0242859
+  },
+  {
+    "type": "Liquor",
+    "name": "STK Steakhouse",
+    "lat": 39.7494081,
+    "long": -104.9984684
+  },
+  {
+    "type": "Liquor",
+    "name": "Earls Kitchen B Bar",
+    "lat": 39.7436827,
+    "long": -104.9899836
+  },
+  {
+    "type": "Liquor",
+    "name": "PT s Centerfold Gentlemen s Club",
+    "lat": 39.6541078,
+    "long": -104.8685488
+  },
+  {
+    "type": "Liquor",
+    "name": " bottles bar lounge",
+    "lat": 39.745369,
+    "long": -104.9950637
+  },
+  {
+    "type": "Liquor",
+    "name": "The Shag Lounge",
+    "lat": 39.7453167,
+    "long": -104.9950528
+  },
+  {
+    "type": "Liquor",
+    "name": "NOVA",
+    "lat": 39.8000311,
+    "long": -104.9822857
+  },
+  {
+    "type": "Liquor",
+    "name": "Ritmo y sabor latino",
+    "lat": 39.6659232,
+    "long": -105.0242368
+  },
+  {
+    "type": "Liquor",
+    "name": "KavaDen",
+    "lat": 39.6538509,
+    "long": -105.0824879
+  },
+  {
+    "type": "Liquor",
+    "name": "Cazadores Bar",
+    "lat": 39.7395146,
+    "long": -104.8621005
+  }
+]

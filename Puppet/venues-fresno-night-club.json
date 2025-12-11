@@ -1,0 +1,296 @@
+[
+  {
+    "type": "Liquor",
+    "name": "Sunset Nightclub",
+    "lat": 36.7573949,
+    "long": -119.7985705
+  },
+  {
+    "type": "Liquor",
+    "name": "La Fiesta Bar Night Club",
+    "lat": 36.7293478,
+    "long": -119.7932018
+  },
+  {
+    "type": "Liquor",
+    "name": "El Prado",
+    "lat": 36.7499189,
+    "long": -119.8152697
+  },
+  {
+    "type": "Liquor",
+    "name": "El Mexico Night Club",
+    "lat": 36.7023734,
+    "long": -119.7910942
+  },
+  {
+    "type": "Liquor",
+    "name": "Aldo s Nightclub Restaurant",
+    "lat": 36.7501293,
+    "long": -119.8191931
+  },
+  {
+    "type": "Liquor",
+    "name": "City Lights Nightclub",
+    "lat": 36.7716123,
+    "long": -119.699792
+  },
+  {
+    "type": "Liquor",
+    "name": "Los Arcos Night Club Restaurant",
+    "lat": 36.7324034,
+    "long": -119.7983331
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Encore",
+    "lat": 36.7784023,
+    "long": -119.8001315
+  },
+  {
+    "type": "Liquor",
+    "name": "Mezcal Lounge",
+    "lat": 36.7380047,
+    "long": -119.7925426
+  },
+  {
+    "type": "Liquor",
+    "name": "El Molino Rojo",
+    "lat": 36.7501666,
+    "long": -119.7817803
+  },
+  {
+    "type": "Liquor",
+    "name": "The Bar",
+    "lat": 36.7996726,
+    "long": -119.7715463
+  },
+  {
+    "type": "Liquor",
+    "name": "Marlo s Club and Mexican Restaurant",
+    "lat": 36.7502594,
+    "long": -119.8080851
+  },
+  {
+    "type": "Liquor",
+    "name": "Fulton ",
+    "lat": 36.7437782,
+    "long": -119.8005388
+  },
+  {
+    "type": "Liquor",
+    "name": "El Vaquero Night Club Bar",
+    "lat": 36.6941305,
+    "long": -119.790632
+  },
+  {
+    "type": "Liquor",
+    "name": "Alibi",
+    "lat": 36.7502365,
+    "long": -119.7482628
+  },
+  {
+    "type": "Liquor",
+    "name": "Strummer s Bar Grill",
+    "lat": 36.7588806,
+    "long": -119.8002319
+  },
+  {
+    "type": "Liquor",
+    "name": "Intimo Bar Lounge",
+    "lat": 36.7515959,
+    "long": -119.8136133
+  },
+  {
+    "type": "Liquor",
+    "name": "MIA Nightclub",
+    "lat": 36.7575062,
+    "long": -119.8024545
+  },
+  {
+    "type": "Liquor",
+    "name": "Mint",
+    "lat": 36.7573876,
+    "long": -119.7986451
+  },
+  {
+    "type": "Liquor",
+    "name": "SWITCH LOUNGE AND NIGHTCLUB",
+    "lat": 36.8203739,
+    "long": -119.791815
+  },
+  {
+    "type": "Liquor",
+    "name": "Vibez Lounge",
+    "lat": 36.7575683,
+    "long": -119.8022625
+  },
+  {
+    "type": "Liquor",
+    "name": "Terrace tacos and dance",
+    "lat": 36.7731354,
+    "long": -119.8331408
+  },
+  {
+    "type": "Liquor",
+    "name": "Splash Bar Fresno",
+    "lat": 36.7573704,
+    "long": -119.8030953
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Latinoamericano",
+    "lat": 36.8080787,
+    "long": -119.8348651
+  },
+  {
+    "type": "Liquor",
+    "name": "The Red Lantern",
+    "lat": 36.7501609,
+    "long": -119.7446778
+  },
+  {
+    "type": "Liquor",
+    "name": "Club One Casino",
+    "lat": 36.789434,
+    "long": -119.7517492
+  },
+  {
+    "type": "Liquor",
+    "name": "Lucy s Lounge",
+    "lat": 36.7578575,
+    "long": -119.8027063
+  },
+  {
+    "type": "Liquor",
+    "name": "The Standard Restaurant Nightclub",
+    "lat": 36.8750887,
+    "long": -119.7777309
+  },
+  {
+    "type": "Liquor",
+    "name": "Golddiggers Gentlemens Club",
+    "lat": 36.6843092,
+    "long": -119.7421653
+  },
+  {
+    "type": "Liquor",
+    "name": "Skyline Club",
+    "lat": 36.8137236,
+    "long": -119.6995226
+  },
+  {
+    "type": "Liquor",
+    "name": "El Patio Club",
+    "lat": 36.7289873,
+    "long": -119.7929649
+  },
+  {
+    "type": "Liquor",
+    "name": "Hook Ladder Lounge",
+    "lat": 36.809238,
+    "long": -119.725399
+  },
+  {
+    "type": "Liquor",
+    "name": "Bobby Salazar s Taqueria",
+    "lat": 36.7578307,
+    "long": -119.8029008
+  },
+  {
+    "type": "Liquor",
+    "name": "Azara Supper Club",
+    "lat": 36.8750396,
+    "long": -119.7778567
+  },
+  {
+    "type": "Liquor",
+    "name": "Tellawi Lounge",
+    "lat": 36.822384,
+    "long": -119.8283201
+  },
+  {
+    "type": "Liquor",
+    "name": "Veni Vidi Vici",
+    "lat": 36.757041,
+    "long": -119.800052
+  },
+  {
+    "type": "Liquor",
+    "name": "Fresno City College Student Activities Department",
+    "lat": 36.7680972,
+    "long": -119.7971827
+  },
+  {
+    "type": "Liquor",
+    "name": "Ruby s",
+    "lat": 36.821124,
+    "long": -119.702222
+  },
+  {
+    "type": "Liquor",
+    "name": "She Rocks",
+    "lat": 36.8249957,
+    "long": -119.7010449
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Legends",
+    "lat": 36.778293,
+    "long": -119.8000962
+  },
+  {
+    "type": "Liquor",
+    "name": "Chuy s Night Club",
+    "lat": 36.7729739,
+    "long": -119.8346426
+  },
+  {
+    "type": "Liquor",
+    "name": "Rosa Avelda C B es",
+    "lat": 36.7261513,
+    "long": -119.8164184
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Armona",
+    "lat": 36.3158001,
+    "long": -119.7093956
+  },
+  {
+    "type": "Liquor",
+    "name": "Mike s Pizzeria Lounge",
+    "lat": 36.7799589,
+    "long": -119.8261807
+  },
+  {
+    "type": "Liquor",
+    "name": "Eden",
+    "lat": 36.8225047,
+    "long": -119.8253477
+  },
+  {
+    "type": "Liquor",
+    "name": "Madera",
+    "lat": 36.9823516,
+    "long": -120.0634965
+  },
+  {
+    "type": "Liquor",
+    "name": "M M bartender",
+    "lat": 36.7493324,
+    "long": -119.758439
+  },
+  {
+    "type": "Liquor",
+    "name": "Sahara Hookah Lounge",
+    "lat": 36.8236,
+    "long": -119.7835814
+  },
+  {
+    "type": "Liquor",
+    "name": "Melo Drivers Lounge",
+    "lat": 36.6487773,
+    "long": -119.7051695
+  }
+]

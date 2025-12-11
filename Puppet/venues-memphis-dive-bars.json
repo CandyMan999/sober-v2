@@ -1,0 +1,452 @@
+[
+  {
+    "type": "Bar",
+    "name": "Wild Bill s Juke Joint",
+    "lat": 35.1644536,
+    "long": -90.0046608
+  },
+  {
+    "type": "Bar",
+    "name": "Alex s Tavern",
+    "lat": 35.1582547,
+    "long": -90.0100701
+  },
+  {
+    "type": "Bar",
+    "name": "Zinnie s",
+    "lat": 35.1381428,
+    "long": -90.0048936
+  },
+  {
+    "type": "Bar",
+    "name": "Lamplighter Lounge",
+    "lat": 35.1382317,
+    "long": -90.0044846
+  },
+  {
+    "type": "Bar",
+    "name": "The Cove",
+    "lat": 35.1476953,
+    "long": -89.9741387
+  },
+  {
+    "type": "Bar",
+    "name": "Murphy s",
+    "lat": 35.1379204,
+    "long": -90.0083272
+  },
+  {
+    "type": "Bar",
+    "name": "Earnestine Hazel s",
+    "lat": 35.132959,
+    "long": -90.0592725
+  },
+  {
+    "type": "Bar",
+    "name": "Louis Connelly s Bar for Fun Times Friendship",
+    "lat": 35.1332694,
+    "long": -90.0166055
+  },
+  {
+    "type": "Bar",
+    "name": "Bar DKDC",
+    "lat": 35.1194215,
+    "long": -89.9908018
+  },
+  {
+    "type": "Bar",
+    "name": "Bardog Tavern",
+    "lat": 35.1443031,
+    "long": -90.0539765
+  },
+  {
+    "type": "Bar",
+    "name": "Canvas",
+    "lat": 35.1379115,
+    "long": -90.0032277
+  },
+  {
+    "type": "Bar",
+    "name": "Rock House Live Midtown",
+    "lat": 35.1379027,
+    "long": -89.9747255
+  },
+  {
+    "type": "Bar",
+    "name": "Eight Sand",
+    "lat": 35.1321461,
+    "long": -90.0594395
+  },
+  {
+    "type": "Bar",
+    "name": "Max s Sports Bar",
+    "lat": 35.1326055,
+    "long": -90.0584132
+  },
+  {
+    "type": "Bar",
+    "name": "Hi Tone",
+    "lat": 35.1464913,
+    "long": -90.0145696
+  },
+  {
+    "type": "Bar",
+    "name": "Bar Keough",
+    "lat": 35.1318666,
+    "long": -89.9907401
+  },
+  {
+    "type": "Bar",
+    "name": "Memphis Whistle",
+    "lat": 35.1193623,
+    "long": -89.9856928
+  },
+  {
+    "type": "Bar",
+    "name": "Beale Street Tap Room",
+    "lat": 35.1397815,
+    "long": -90.0523874
+  },
+  {
+    "type": "Bar",
+    "name": "Tin Roof",
+    "lat": 35.1393571,
+    "long": -90.0509107
+  },
+  {
+    "type": "Bar",
+    "name": "Club Handy",
+    "lat": 35.1395666,
+    "long": -90.0511979
+  },
+  {
+    "type": "Bar",
+    "name": "B SIDE Bar",
+    "lat": 35.137926,
+    "long": -90.009564
+  },
+  {
+    "type": "Bar",
+    "name": "DRUS Bar DRUS Place ",
+    "lat": 35.1386409,
+    "long": -90.0121359
+  },
+  {
+    "type": "Bar",
+    "name": "Silly Goose Lounge",
+    "lat": 35.1411209,
+    "long": -90.0539952
+  },
+  {
+    "type": "Bar",
+    "name": "Peoples on Beale",
+    "lat": 35.1393023,
+    "long": -90.0504316
+  },
+  {
+    "type": "Bar",
+    "name": "Bar Hustle",
+    "lat": 35.134439,
+    "long": -90.0590956
+  },
+  {
+    "type": "Bar",
+    "name": "Belle Tavern",
+    "lat": 35.1424364,
+    "long": -90.0531852
+  },
+  {
+    "type": "Bar",
+    "name": "Momma s",
+    "lat": 35.1243514,
+    "long": -90.06386
+  },
+  {
+    "type": "Bar",
+    "name": "Silky O Sullivan s",
+    "lat": 35.1393608,
+    "long": -90.0521553
+  },
+  {
+    "type": "Bar",
+    "name": "The Absinthe Room",
+    "lat": 35.1397856,
+    "long": -90.0523999
+  },
+  {
+    "type": "Bar",
+    "name": "Patio Bar",
+    "lat": 35.1393293,
+    "long": -90.0515434
+  },
+  {
+    "type": "Bar",
+    "name": "Celtic Crossing Irish Pub",
+    "lat": 35.1209562,
+    "long": -89.9913248
+  },
+  {
+    "type": "Bar",
+    "name": "Flying Saucer Draught Emporium",
+    "lat": 35.140943,
+    "long": -90.0532804
+  },
+  {
+    "type": "Bar",
+    "name": "Fat Tuesday Downtown Memphis",
+    "lat": 35.1448863,
+    "long": -90.0526735
+  },
+  {
+    "type": "Bar",
+    "name": "The Corner Bar at The Peabody Memphis",
+    "lat": 35.1417014,
+    "long": -90.0527091
+  },
+  {
+    "type": "Bar",
+    "name": "Art Bar at Crosstown Arts",
+    "lat": 35.151888,
+    "long": -90.013515
+  },
+  {
+    "type": "Bar",
+    "name": "The Green Beetle",
+    "lat": 35.1374684,
+    "long": -90.0571365
+  },
+  {
+    "type": "Bar",
+    "name": "Wet Willie s",
+    "lat": 35.1393832,
+    "long": -90.0512425
+  },
+  {
+    "type": "Bar",
+    "name": "The Blue Monkey",
+    "lat": 35.1372701,
+    "long": -89.9940901
+  },
+  {
+    "type": "Bar",
+    "name": "Blues Hall Juke Joint",
+    "lat": 35.1397803,
+    "long": -90.0519629
+  },
+  {
+    "type": "Bar",
+    "name": "Slider Inn",
+    "lat": 35.1316007,
+    "long": -89.99103
+  },
+  {
+    "type": "Bar",
+    "name": "Westy s",
+    "lat": 35.1542256,
+    "long": -90.0489577
+  },
+  {
+    "type": "Bar",
+    "name": "The Pumping Station",
+    "lat": 35.1441089,
+    "long": -90.0143188
+  },
+  {
+    "type": "Bar",
+    "name": "Infiniti Sports Bar Grill",
+    "lat": 35.1944521,
+    "long": -90.0072499
+  },
+  {
+    "type": "Bar",
+    "name": "High Point Pub",
+    "lat": 35.144814,
+    "long": -89.937614
+  },
+  {
+    "type": "Bar",
+    "name": "CJ s Blues Sports Bar",
+    "lat": 35.1466,
+    "long": -90.1452
+  },
+  {
+    "type": "Bar",
+    "name": "Huey s Midtown",
+    "lat": 35.137255,
+    "long": -89.9971255
+  },
+  {
+    "type": "Bar",
+    "name": "Side Street Grill",
+    "lat": 35.1356628,
+    "long": -89.9924104
+  },
+  {
+    "type": "Bar",
+    "name": "Club ",
+    "lat": 35.1399629,
+    "long": -90.0530112
+  },
+  {
+    "type": "Bar",
+    "name": "Getaway Sports Bar",
+    "lat": 35.0515785,
+    "long": -89.9090423
+  },
+  {
+    "type": "Bar",
+    "name": "King s Palace Cafe",
+    "lat": 35.1398342,
+    "long": -90.0525462
+  },
+  {
+    "type": "Bar",
+    "name": "Rocky s",
+    "lat": 35.112121,
+    "long": -89.9051074
+  },
+  {
+    "type": "Bar",
+    "name": "Hernando s Hideaway",
+    "lat": 35.0610671,
+    "long": -90.0246488
+  },
+  {
+    "type": "Bar",
+    "name": "Moon Lit Tavern",
+    "lat": 35.1492387,
+    "long": -89.8982401
+  },
+  {
+    "type": "Bar",
+    "name": "Bobcat Bar Grill",
+    "lat": 35.1156394,
+    "long": -89.904042
+  },
+  {
+    "type": "Bar",
+    "name": "Sabor Caribe",
+    "lat": 35.1416804,
+    "long": -90.0387627
+  },
+  {
+    "type": "Bar",
+    "name": "Ethel s OLD AIRPORT CLUB",
+    "lat": 35.1472355,
+    "long": -90.2287076
+  },
+  {
+    "type": "Bar",
+    "name": "Memphis Sports Pub",
+    "lat": 35.1070155,
+    "long": -89.8948455
+  },
+  {
+    "type": "Bar",
+    "name": "T J Mulligans",
+    "lat": 35.099754,
+    "long": -89.8398001
+  },
+  {
+    "type": "Bar",
+    "name": "BallHoggerz BBQ",
+    "lat": 35.1072072,
+    "long": -89.9847607
+  },
+  {
+    "type": "Bar",
+    "name": "Kwik Chek",
+    "lat": 35.1368726,
+    "long": -89.9943502
+  },
+  {
+    "type": "Bar",
+    "name": "Brookhaven Pub Grill",
+    "lat": 35.1118059,
+    "long": -89.8909489
+  },
+  {
+    "type": "Bar",
+    "name": "Cripple Creek",
+    "lat": 34.9944587,
+    "long": -89.8710361
+  },
+  {
+    "type": "Bar",
+    "name": "Lucky Cowboy",
+    "lat": 35.1356574,
+    "long": -90.0588108
+  },
+  {
+    "type": "Bar",
+    "name": "Hadley s Pub",
+    "lat": 35.2017537,
+    "long": -89.8369497
+  },
+  {
+    "type": "Bar",
+    "name": "Brewskis Sports Bar Grill",
+    "lat": 35.1867614,
+    "long": -89.8354132
+  },
+  {
+    "type": "Bar",
+    "name": "Paula Raiford s Disco",
+    "lat": 35.144391,
+    "long": -90.05139
+  },
+  {
+    "type": "Bar",
+    "name": "Neil s Music Room",
+    "lat": 35.0890915,
+    "long": -89.8726065
+  },
+  {
+    "type": "Bar",
+    "name": "Stage Lounge",
+    "lat": 35.204071,
+    "long": -89.8284606
+  },
+  {
+    "type": "Bar",
+    "name": "A R Bar B Que LLC",
+    "lat": 35.095953,
+    "long": -90.017663
+  },
+  {
+    "type": "Bar",
+    "name": "Tavern ",
+    "lat": 35.1527557,
+    "long": -89.7920761
+  },
+  {
+    "type": "Bar",
+    "name": "RockHouse Live Memphis",
+    "lat": 35.1826234,
+    "long": -89.8731489
+  },
+  {
+    "type": "Bar",
+    "name": "East End Grill",
+    "lat": 35.2040108,
+    "long": -89.8116811
+  },
+  {
+    "type": "Bar",
+    "name": "Sidecar Memphis",
+    "lat": 35.1853481,
+    "long": -89.8352405
+  },
+  {
+    "type": "Bar",
+    "name": "Wally Hatchets",
+    "lat": 35.19117,
+    "long": -89.8482002
+  },
+  {
+    "type": "Bar",
+    "name": "Big S Grill",
+    "lat": 35.1142916,
+    "long": -90.0157726
+  }
+]

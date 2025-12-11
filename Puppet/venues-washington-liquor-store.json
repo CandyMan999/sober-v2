@@ -1,0 +1,1616 @@
+[
+  {
+    "type": "Liquor",
+    "name": "Bourbon Concierge",
+    "lat": 38.904891,
+    "long": -77.057634
+  },
+  {
+    "type": "Liquor",
+    "name": "MacArthur Beverages",
+    "lat": 38.917815,
+    "long": -77.096337
+  },
+  {
+    "type": "Liquor",
+    "name": "Chuck s Liquors",
+    "lat": 38.9370418,
+    "long": -76.9601678
+  },
+  {
+    "type": "Liquor",
+    "name": "J B Liquors",
+    "lat": 38.9390629,
+    "long": -77.032921
+  },
+  {
+    "type": "Liquor",
+    "name": "Safeway Wine and Beer",
+    "lat": 38.9034643,
+    "long": -77.0184609
+  },
+  {
+    "type": "Liquor",
+    "name": "Davis Market",
+    "lat": 38.93828,
+    "long": -77.0243704
+  },
+  {
+    "type": "Liquor",
+    "name": "World Wine and Spirits",
+    "lat": 38.8793227,
+    "long": -76.9838536
+  },
+  {
+    "type": "Liquor",
+    "name": "Mac Market Deli Liquor",
+    "lat": 38.9267556,
+    "long": -77.1027728
+  },
+  {
+    "type": "Liquor",
+    "name": "Connecticut Ave Wine Liquor",
+    "lat": 38.9110028,
+    "long": -77.0438901
+  },
+  {
+    "type": "Liquor",
+    "name": "Downtown Liquors",
+    "lat": 38.937597,
+    "long": -77.033024
+  },
+  {
+    "type": "Liquor",
+    "name": "Barmy Wines Liquors Beer, Wine, Spirits",
+    "lat": 38.9036094,
+    "long": -77.0440912
+  },
+  {
+    "type": "Liquor",
+    "name": "District Liquors",
+    "lat": 38.9062067,
+    "long": -77.0268376
+  },
+  {
+    "type": "Liquor",
+    "name": "Angel s Share Wines and Liquors",
+    "lat": 38.9139356,
+    "long": -77.0221075
+  },
+  {
+    "type": "Liquor",
+    "name": "Party Time Liquors",
+    "lat": 38.9358465,
+    "long": -76.9616
+  },
+  {
+    "type": "Liquor",
+    "name": "Uncorked Wine Spirits",
+    "lat": 38.9035743,
+    "long": -77.0049474
+  },
+  {
+    "type": "Liquor",
+    "name": "Minnesota Liquors",
+    "lat": 38.8719226,
+    "long": -76.9734192
+  },
+  {
+    "type": "Liquor",
+    "name": "Hamilton Liquors",
+    "lat": 38.9531801,
+    "long": -77.0273705
+  },
+  {
+    "type": "Liquor",
+    "name": "Central Liquor",
+    "lat": 38.8962836,
+    "long": -77.0213741
+  },
+  {
+    "type": "Liquor",
+    "name": "S R Wine and Liquor",
+    "lat": 38.9030361,
+    "long": -77.0414515
+  },
+  {
+    "type": "Liquor",
+    "name": "Edgewood International Wines Spirits Liquor Store",
+    "lat": 38.9202984,
+    "long": -77.0004062
+  },
+  {
+    "type": "Liquor",
+    "name": "Imperial Wine And Spirits",
+    "lat": 38.8980522,
+    "long": -77.0282299
+  },
+  {
+    "type": "Liquor",
+    "name": "Daily Liquors",
+    "lat": 38.9048026,
+    "long": -77.0316501
+  },
+  {
+    "type": "Liquor",
+    "name": "Cap Liquors",
+    "lat": 38.8744927,
+    "long": -77.0093974
+  },
+  {
+    "type": "Liquor",
+    "name": "Southern Avenue Liquors",
+    "lat": 38.8690193,
+    "long": -76.9394415
+  },
+  {
+    "type": "Liquor",
+    "name": "Jefferson Liquors",
+    "lat": 38.954399,
+    "long": -77.027627
+  },
+  {
+    "type": "Liquor",
+    "name": "F Street Fine Wines and Spirits",
+    "lat": 38.8976665,
+    "long": -77.0249385
+  },
+  {
+    "type": "Liquor",
+    "name": "Classy Corks Wine Spirits",
+    "lat": 38.8777761,
+    "long": -76.9948035
+  },
+  {
+    "type": "Liquor",
+    "name": "Tenley Market Liquor",
+    "lat": 38.9451882,
+    "long": -77.0785165
+  },
+  {
+    "type": "Liquor",
+    "name": "Giant Liquor",
+    "lat": 38.9332454,
+    "long": -77.0240225
+  },
+  {
+    "type": "Liquor",
+    "name": "Rhode Island Liquors",
+    "lat": 38.9284353,
+    "long": -76.9783251
+  },
+  {
+    "type": "Liquor",
+    "name": "Queens Chapel Liquors",
+    "lat": 38.9506714,
+    "long": -76.9680046
+  },
+  {
+    "type": "Liquor",
+    "name": "Capitol Hill Wine Spirits",
+    "lat": 38.8864723,
+    "long": -77.0013248
+  },
+  {
+    "type": "Liquor",
+    "name": "Michigan Liquors",
+    "lat": 38.9381682,
+    "long": -76.9904774
+  },
+  {
+    "type": "Liquor",
+    "name": "Verified Spirits Fine Wines",
+    "lat": 38.9536906,
+    "long": -77.0825955
+  },
+  {
+    "type": "Liquor",
+    "name": "Greenway Liquors",
+    "lat": 38.8904727,
+    "long": -76.9529147
+  },
+  {
+    "type": "Liquor",
+    "name": "Sherry s Wine Spirits",
+    "lat": 38.9243698,
+    "long": -77.0515458
+  },
+  {
+    "type": "Liquor",
+    "name": "Benning Liquors",
+    "lat": 38.89591,
+    "long": -76.9557736
+  },
+  {
+    "type": "Liquor",
+    "name": "Hyattsville Spirits and Grill",
+    "lat": 38.9555565,
+    "long": -76.9635634
+  },
+  {
+    "type": "Liquor",
+    "name": "Capitol Fine Wine and Spirits",
+    "lat": 38.899953,
+    "long": -77.0000371
+  },
+  {
+    "type": "Liquor",
+    "name": "Lions Wine Spirits",
+    "lat": 38.9346243,
+    "long": -77.0243981
+  },
+  {
+    "type": "Liquor",
+    "name": "Sohal Wine Spirits",
+    "lat": 38.911892,
+    "long": -77.0120023
+  },
+  {
+    "type": "Liquor",
+    "name": "Modern Liquors",
+    "lat": 38.9058925,
+    "long": -77.024257
+  },
+  {
+    "type": "Liquor",
+    "name": "Hill Spirits Unlimited",
+    "lat": 38.8780822,
+    "long": -77.0076799
+  },
+  {
+    "type": "Liquor",
+    "name": "Best One Liquor Free Parking Lot",
+    "lat": 38.9135546,
+    "long": -77.0159622
+  },
+  {
+    "type": "Liquor",
+    "name": "K Beer and Wine",
+    "lat": 38.8629403,
+    "long": -77.0847102
+  },
+  {
+    "type": "Liquor",
+    "name": "S G Wine Liquors",
+    "lat": 38.9558247,
+    "long": -77.0277442
+  },
+  {
+    "type": "Liquor",
+    "name": "Exotic Wine and Liquors Store",
+    "lat": 38.9207489,
+    "long": -76.9944302
+  },
+  {
+    "type": "Liquor",
+    "name": "A W Liquor Store",
+    "lat": 38.9249218,
+    "long": -77.0228468
+  },
+  {
+    "type": "Liquor",
+    "name": "Washington Market Liquor Store",
+    "lat": 38.9055066,
+    "long": -77.0018664
+  },
+  {
+    "type": "Liquor",
+    "name": "Washington Wine Spirits",
+    "lat": 38.8958465,
+    "long": -77.0282871
+  },
+  {
+    "type": "Liquor",
+    "name": "Rose s Liquor",
+    "lat": 38.9016517,
+    "long": -76.982833
+  },
+  {
+    "type": "Liquor",
+    "name": "Bestway Liquors",
+    "lat": 38.9174249,
+    "long": -77.0316639
+  },
+  {
+    "type": "Liquor",
+    "name": "KOGOD LIQUORS",
+    "lat": 38.8959516,
+    "long": -77.0110091
+  },
+  {
+    "type": "Liquor",
+    "name": "ChinaTown Liquor",
+    "lat": 38.899624,
+    "long": -77.0202611
+  },
+  {
+    "type": "Liquor",
+    "name": "Pearson s Wine and Spirits",
+    "lat": 38.9218933,
+    "long": -77.0727601
+  },
+  {
+    "type": "Liquor",
+    "name": "Watergate Vintners Spirits",
+    "lat": 38.8991516,
+    "long": -77.0544782
+  },
+  {
+    "type": "Liquor",
+    "name": "Eye Street Cellars Fine Wine, Spirits, Beer",
+    "lat": 38.9015127,
+    "long": -77.0173794
+  },
+  {
+    "type": "Liquor",
+    "name": "Universal Wine Liquors",
+    "lat": 38.9146024,
+    "long": -77.0455579
+  },
+  {
+    "type": "Liquor",
+    "name": "Virginia ABC",
+    "lat": 38.884645,
+    "long": -77.0924941
+  },
+  {
+    "type": "Liquor",
+    "name": "Turnt Liquor",
+    "lat": 38.8697153,
+    "long": -76.9595921
+  },
+  {
+    "type": "Liquor",
+    "name": "LA Liquor Store",
+    "lat": 38.915923,
+    "long": -77.0238308
+  },
+  {
+    "type": "Liquor",
+    "name": "O Connor s Liquors",
+    "lat": 38.8761712,
+    "long": -76.965881
+  },
+  {
+    "type": "Liquor",
+    "name": " Wine and Spirits",
+    "lat": 38.9118084,
+    "long": -77.0015206
+  },
+  {
+    "type": "Liquor",
+    "name": "Potomac Wines Spirits",
+    "lat": 38.905033,
+    "long": -77.061311
+  },
+  {
+    "type": "Liquor",
+    "name": "Batch ",
+    "lat": 38.9134562,
+    "long": -77.032107
+  },
+  {
+    "type": "Liquor",
+    "name": "McReynold s Liquors",
+    "lat": 38.8981788,
+    "long": -77.0410299
+  },
+  {
+    "type": "Liquor",
+    "name": "Sammy s Liquors",
+    "lat": 38.9248632,
+    "long": -76.965144
+  },
+  {
+    "type": "Liquor",
+    "name": "Guilford Liquors",
+    "lat": 38.9131471,
+    "long": -77.0187155
+  },
+  {
+    "type": "Liquor",
+    "name": "AJ Liquors",
+    "lat": 38.9345654,
+    "long": -76.9501057
+  },
+  {
+    "type": "Liquor",
+    "name": "Barrel House Liquors",
+    "lat": 38.9085637,
+    "long": -77.0317011
+  },
+  {
+    "type": "Liquor",
+    "name": "S E Liquors Market",
+    "lat": 38.8878521,
+    "long": -76.9833753
+  },
+  {
+    "type": "Liquor",
+    "name": "Good Ole Reliable Liquors",
+    "lat": 38.9257766,
+    "long": -76.9822945
+  },
+  {
+    "type": "Liquor",
+    "name": "Bloomingdale Wine Spirits",
+    "lat": 38.9154043,
+    "long": -77.0124306
+  },
+  {
+    "type": "Liquor",
+    "name": "Riggs Liquors",
+    "lat": 38.958146,
+    "long": -77.0010664
+  },
+  {
+    "type": "Liquor",
+    "name": "Florida Liquors",
+    "lat": 38.919873,
+    "long": -77.03219
+  },
+  {
+    "type": "Liquor",
+    "name": "Virginia ABC",
+    "lat": 38.8984228,
+    "long": -77.1224557
+  },
+  {
+    "type": "Liquor",
+    "name": "Mac s Wine Liquor",
+    "lat": 38.9195788,
+    "long": -77.0003483
+  },
+  {
+    "type": "Liquor",
+    "name": "Northwest Liquors",
+    "lat": 38.9563458,
+    "long": -77.0162925
+  },
+  {
+    "type": "Liquor",
+    "name": "Virginia ABC",
+    "lat": 38.8630835,
+    "long": -77.0633534
+  },
+  {
+    "type": "Liquor",
+    "name": "Virginia ABC ",
+    "lat": 38.8926109,
+    "long": -77.0812799
+  },
+  {
+    "type": "Liquor",
+    "name": "AmLux Cafe, Beer Wine Spirits",
+    "lat": 38.9058761,
+    "long": -77.049858
+  },
+  {
+    "type": "Liquor",
+    "name": "Stop Shop Liquors",
+    "lat": 38.9337845,
+    "long": -76.9657185
+  },
+  {
+    "type": "Liquor",
+    "name": "J J Liquors",
+    "lat": 38.9202646,
+    "long": -76.9896825
+  },
+  {
+    "type": "Liquor",
+    "name": "State Liquors",
+    "lat": 38.90983,
+    "long": -77.04852
+  },
+  {
+    "type": "Liquor",
+    "name": "Fairfax Liquors",
+    "lat": 38.8649729,
+    "long": -76.9508619
+  },
+  {
+    "type": "Liquor",
+    "name": "AB Liquors",
+    "lat": 38.9226172,
+    "long": -77.0431057
+  },
+  {
+    "type": "Liquor",
+    "name": "Lee s Liquor Store",
+    "lat": 38.8737653,
+    "long": -76.9721148
+  },
+  {
+    "type": "Liquor",
+    "name": "DMV LIQUORS WINES and BEERS",
+    "lat": 38.8847396,
+    "long": -76.9969693
+  },
+  {
+    "type": "Liquor",
+    "name": "Union Liquors",
+    "lat": 38.866114,
+    "long": -76.9820616
+  },
+  {
+    "type": "Liquor",
+    "name": "Press Liquors",
+    "lat": 38.8968856,
+    "long": -77.0317113
+  },
+  {
+    "type": "Liquor",
+    "name": "Irving Wine and Spirits",
+    "lat": 38.928882,
+    "long": -77.037676
+  },
+  {
+    "type": "Liquor",
+    "name": "Congressional Liquor Deli",
+    "lat": 38.884819,
+    "long": -77.005579
+  },
+  {
+    "type": "Liquor",
+    "name": "Peacock Liquors",
+    "lat": 38.9169117,
+    "long": -76.9800853
+  },
+  {
+    "type": "Liquor",
+    "name": "Zoo Wine Spirits",
+    "lat": 38.9298028,
+    "long": -77.0554322
+  },
+  {
+    "type": "Liquor",
+    "name": "A Wines Liquor",
+    "lat": 38.9022879,
+    "long": -77.0328167
+  },
+  {
+    "type": "Liquor",
+    "name": "Bigvalu Liquor and wine",
+    "lat": 38.9293549,
+    "long": -76.9607504
+  },
+  {
+    "type": "Liquor",
+    "name": "Whelans Liquors",
+    "lat": 38.9374917,
+    "long": -76.9902409
+  },
+  {
+    "type": "Liquor",
+    "name": "The Bottle House Wine and Liquor Delivery",
+    "lat": 38.9330547,
+    "long": -77.0324102
+  },
+  {
+    "type": "Liquor",
+    "name": "Total Wine More",
+    "lat": 38.9598655,
+    "long": -77.0860065
+  },
+  {
+    "type": "Liquor",
+    "name": "H Street Fine Wines and Liquors",
+    "lat": 38.8999782,
+    "long": -77.018782
+  },
+  {
+    "type": "Liquor",
+    "name": "CLOUD LIQUOR",
+    "lat": 38.900376,
+    "long": -76.993117
+  },
+  {
+    "type": "Liquor",
+    "name": "Chat s Liquors on Capitol Hill",
+    "lat": 38.8825185,
+    "long": -76.9952676
+  },
+  {
+    "type": "Liquor",
+    "name": "Lucky Seven Liquor, Wine, and Spirits",
+    "lat": 38.9308336,
+    "long": -76.9729495
+  },
+  {
+    "type": "Liquor",
+    "name": "Sportsman s Wine Liquors",
+    "lat": 38.9321988,
+    "long": -77.0385314
+  },
+  {
+    "type": "Liquor",
+    "name": "Albert s Liquor Store",
+    "lat": 38.8846776,
+    "long": -76.9857333
+  },
+  {
+    "type": "Liquor",
+    "name": "Harry s Reserve",
+    "lat": 38.8790765,
+    "long": -77.0054586
+  },
+  {
+    "type": "Liquor",
+    "name": "Virginia ABC",
+    "lat": 38.8808293,
+    "long": -77.1074426
+  },
+  {
+    "type": "Liquor",
+    "name": "DC Wine Spirits",
+    "lat": 38.933045,
+    "long": -77.03242
+  },
+  {
+    "type": "Liquor",
+    "name": "Big Ben Liquor Store",
+    "lat": 38.9074833,
+    "long": -77.009341
+  },
+  {
+    "type": "Liquor",
+    "name": "Sylvia s Liquors",
+    "lat": 38.8991915,
+    "long": -76.9767482
+  },
+  {
+    "type": "Liquor",
+    "name": "Liquor on H",
+    "lat": 38.9004432,
+    "long": -76.9956105
+  },
+  {
+    "type": "Liquor",
+    "name": "Benmoll Liquors",
+    "lat": 38.9168446,
+    "long": -77.0386568
+  },
+  {
+    "type": "Liquor",
+    "name": "Jumbo Liquors",
+    "lat": 38.9003792,
+    "long": -76.99067
+  },
+  {
+    "type": "Liquor",
+    "name": "High Spirits",
+    "lat": 38.899971,
+    "long": -77.001844
+  },
+  {
+    "type": "Liquor",
+    "name": "Anju Mart Beer, Wine Vapes",
+    "lat": 38.8004217,
+    "long": -77.1855626
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 38.8322169,
+    "long": -77.1135938
+  },
+  {
+    "type": "Liquor",
+    "name": "Gemini Wine Company",
+    "lat": 38.8338858,
+    "long": -77.1967708
+  },
+  {
+    "type": "Liquor",
+    "name": "Virginia ABC",
+    "lat": 38.8287252,
+    "long": -77.0922872
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 38.7771588,
+    "long": -77.1944574
+  },
+  {
+    "type": "Liquor",
+    "name": "Virginia ABC",
+    "lat": 38.8741519,
+    "long": -77.2250703
+  },
+  {
+    "type": "Liquor",
+    "name": "Virginia ABC",
+    "lat": 38.7809253,
+    "long": -77.1895075
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 38.808048,
+    "long": -77.1320002
+  },
+  {
+    "type": "Liquor",
+    "name": "Virginia ABC",
+    "lat": 38.8487817,
+    "long": -77.1173809
+  },
+  {
+    "type": "Liquor",
+    "name": "Virginia ABC",
+    "lat": 38.8193885,
+    "long": -77.1407872
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 38.8604601,
+    "long": -77.0942026
+  },
+  {
+    "type": "Liquor",
+    "name": "Virginia ABC",
+    "lat": 38.87964,
+    "long": -77.1711941
+  },
+  {
+    "type": "Liquor",
+    "name": "Virginia ABC",
+    "lat": 38.8303127,
+    "long": -77.1932925
+  },
+  {
+    "type": "Liquor",
+    "name": "Virginia ABC ",
+    "lat": 38.8621329,
+    "long": -77.0876719
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 38.8558298,
+    "long": -77.111345
+  },
+  {
+    "type": "Liquor",
+    "name": "Virginia ABC",
+    "lat": 38.8130789,
+    "long": -77.1839572
+  },
+  {
+    "type": "Liquor",
+    "name": "Virginia ABC",
+    "lat": 38.8365896,
+    "long": -77.1549557
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 38.8486052,
+    "long": -77.0991029
+  },
+  {
+    "type": "Liquor",
+    "name": "Virginia ABC",
+    "lat": 38.8723703,
+    "long": -77.1525232
+  },
+  {
+    "type": "Liquor",
+    "name": "Total Wine More",
+    "lat": 38.820091,
+    "long": -77.141655
+  },
+  {
+    "type": "Liquor",
+    "name": "Virginia ABC",
+    "lat": 38.8649004,
+    "long": -77.1968963
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 38.8774691,
+    "long": -77.1226063
+  },
+  {
+    "type": "Liquor",
+    "name": "Virginia ABC",
+    "lat": 38.7713445,
+    "long": -77.138896
+  },
+  {
+    "type": "Liquor",
+    "name": "Total Wine More",
+    "lat": 38.8800116,
+    "long": -77.1150312
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 38.7810244,
+    "long": -77.1498196
+  },
+  {
+    "type": "Liquor",
+    "name": "Virginia ABC",
+    "lat": 38.7845284,
+    "long": -77.1224962
+  },
+  {
+    "type": "Liquor",
+    "name": "Total Wine More",
+    "lat": 38.7811884,
+    "long": -77.1836646
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 38.8793208,
+    "long": -77.1821033
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 38.8122926,
+    "long": -77.1251909
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 38.8674671,
+    "long": -77.1470558
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 38.782808,
+    "long": -77.1851447
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 38.7837697,
+    "long": -77.1210086
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 38.8542917,
+    "long": -77.1378654
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 38.8441879,
+    "long": -77.0977697
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 38.8180602,
+    "long": -77.1381575
+  },
+  {
+    "type": "Liquor",
+    "name": "Virginia ABC",
+    "lat": 38.8291225,
+    "long": -77.1094709
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 38.7824279,
+    "long": -77.147471
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 38.8796708,
+    "long": -77.090239
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 38.86545,
+    "long": -77.128146
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 38.8190206,
+    "long": -77.1437078
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 38.8625433,
+    "long": -77.0881444
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 38.8823853,
+    "long": -77.1115066
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 38.8326954,
+    "long": -77.1965462
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 38.875282,
+    "long": -77.2010606
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 38.8802369,
+    "long": -77.1724663
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 38.8352183,
+    "long": -77.1562338
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 38.8685454,
+    "long": -77.1742479
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 38.8822259,
+    "long": -77.1012484
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 38.8670371,
+    "long": -77.1941921
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 38.821785,
+    "long": -77.1615583
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 38.7735476,
+    "long": -77.1846923
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 38.8287485,
+    "long": -77.1097054
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 38.8506904,
+    "long": -77.123775
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 38.8104401,
+    "long": -77.2233017
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 38.8583951,
+    "long": -77.1004758
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 38.8331979,
+    "long": -77.2103136
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 38.8122358,
+    "long": -77.1838779
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 38.8272435,
+    "long": -77.0887104
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 38.8406369,
+    "long": -77.1208084
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 38.8115175,
+    "long": -77.1094357
+  },
+  {
+    "type": "Liquor",
+    "name": "Mobil Gas Station C Store",
+    "lat": 38.800353,
+    "long": -77.185481
+  },
+  {
+    "type": "Liquor",
+    "name": "CVS",
+    "lat": 38.7792944,
+    "long": -77.189861
+  },
+  {
+    "type": "Liquor",
+    "name": "CVS",
+    "lat": 38.8669065,
+    "long": -77.2264146
+  },
+  {
+    "type": "Liquor",
+    "name": "Trader Joe s",
+    "lat": 38.8510336,
+    "long": -77.1327867
+  },
+  {
+    "type": "Liquor",
+    "name": "CVS",
+    "lat": 38.8126551,
+    "long": -77.1190778
+  },
+  {
+    "type": "Liquor",
+    "name": "CVS",
+    "lat": 38.8295276,
+    "long": -77.1937162
+  },
+  {
+    "type": "Liquor",
+    "name": "One Stop Beer Wine",
+    "lat": 38.8480256,
+    "long": -77.1340167
+  },
+  {
+    "type": "Liquor",
+    "name": "Virginia ABC",
+    "lat": 38.7805081,
+    "long": -77.2366741
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 38.7788901,
+    "long": -77.2325895
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 38.7679635,
+    "long": -77.1199768
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 38.778359,
+    "long": -77.186793
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 38.8099135,
+    "long": -77.1366931
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 38.8430096,
+    "long": -77.1084896
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 38.8541701,
+    "long": -77.2221829
+  },
+  {
+    "type": "Liquor",
+    "name": "Pine Liquors",
+    "lat": 38.7629471,
+    "long": -77.0063777
+  },
+  {
+    "type": "Liquor",
+    "name": "Fort Washington Liquors",
+    "lat": 38.7516553,
+    "long": -76.9781525
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 38.7597739,
+    "long": -76.9957172
+  },
+  {
+    "type": "Liquor",
+    "name": "Brother Liquors",
+    "lat": 38.711791,
+    "long": -76.988166
+  },
+  {
+    "type": "Liquor",
+    "name": "Accokeek Liquors",
+    "lat": 38.6713594,
+    "long": -77.0090137
+  },
+  {
+    "type": "Liquor",
+    "name": "Silesia Liquors BEST STORE ",
+    "lat": 38.7424072,
+    "long": -76.9993426
+  },
+  {
+    "type": "Liquor",
+    "name": "Virginia ABC",
+    "lat": 38.776117,
+    "long": -77.0596486
+  },
+  {
+    "type": "Liquor",
+    "name": "Fifth of August",
+    "lat": 38.6705753,
+    "long": -77.0449327
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 38.7424855,
+    "long": -77.0569411
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 38.7544997,
+    "long": -76.9211588
+  },
+  {
+    "type": "Liquor",
+    "name": "Nuwave Liquors LLC",
+    "lat": 38.7264017,
+    "long": -76.993052
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 38.712469,
+    "long": -76.9893276
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 38.7633701,
+    "long": -77.0057954
+  },
+  {
+    "type": "Liquor",
+    "name": "Sunnybrook Tavern",
+    "lat": 38.766302,
+    "long": -76.995372
+  },
+  {
+    "type": "Liquor",
+    "name": "Waldorf Liquors and Check Cashing",
+    "lat": 38.6487349,
+    "long": -76.8855321
+  },
+  {
+    "type": "Liquor",
+    "name": "Baden Grocery BEER WINE",
+    "lat": 38.6602091,
+    "long": -76.7785274
+  },
+  {
+    "type": "Liquor",
+    "name": "Wine Liquor Depot",
+    "lat": 38.6705468,
+    "long": -76.8751669
+  },
+  {
+    "type": "Liquor",
+    "name": "Three Roads Liquors",
+    "lat": 38.7019331,
+    "long": -76.8750547
+  },
+  {
+    "type": "Liquor",
+    "name": "Pinefield Liquor",
+    "lat": 38.654659,
+    "long": -76.8762883
+  },
+  {
+    "type": "Liquor",
+    "name": "Big Mouth liquors with Drive thru and Money transfer service",
+    "lat": 38.6525443,
+    "long": -76.881884
+  },
+  {
+    "type": "Liquor",
+    "name": "Brandywine Liquors",
+    "lat": 38.6968347,
+    "long": -76.8496477
+  },
+  {
+    "type": "Liquor",
+    "name": "Bud s Liquor",
+    "lat": 38.6402,
+    "long": -76.893061
+  },
+  {
+    "type": "Liquor",
+    "name": "Commerce Liquors",
+    "lat": 38.6408039,
+    "long": -76.8984533
+  },
+  {
+    "type": "Liquor",
+    "name": "Whitney s Liquors",
+    "lat": 38.6490857,
+    "long": -76.8830111
+  },
+  {
+    "type": "Liquor",
+    "name": "Village Liquor",
+    "lat": 38.6174405,
+    "long": -76.8930875
+  },
+  {
+    "type": "Liquor",
+    "name": "Acton Liquor LLC",
+    "lat": 38.6425201,
+    "long": -76.8986566
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 38.6514352,
+    "long": -76.881523
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 38.6474492,
+    "long": -76.8889854
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 38.6646436,
+    "long": -76.8737626
+  },
+  {
+    "type": "Liquor",
+    "name": "Chesapeakewine Shop",
+    "lat": 38.6455152,
+    "long": -76.8923704
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 38.6752995,
+    "long": -76.8771076
+  },
+  {
+    "type": "Liquor",
+    "name": "Wegmans Wine Beer",
+    "lat": 38.742583,
+    "long": -77.161091
+  },
+  {
+    "type": "Liquor",
+    "name": "Virginia ABC",
+    "lat": 38.6488632,
+    "long": -77.2591877
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 38.7378034,
+    "long": -77.1889768
+  },
+  {
+    "type": "Liquor",
+    "name": "Virginia ABC",
+    "lat": 38.7023633,
+    "long": -77.2200035
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 38.6725219,
+    "long": -77.2612142
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 38.7381819,
+    "long": -77.1927503
+  },
+  {
+    "type": "Liquor",
+    "name": "Virginia ABC",
+    "lat": 38.7401611,
+    "long": -77.2131432
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 38.649919,
+    "long": -77.261083
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 38.6922329,
+    "long": -77.2179067
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 38.7023031,
+    "long": -77.2096962
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 38.6784935,
+    "long": -77.2581836
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 38.7478172,
+    "long": -77.144909
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 38.7430236,
+    "long": -77.2111894
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 38.6635304,
+    "long": -77.2542137
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 38.7055922,
+    "long": -77.2288912
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 38.715208,
+    "long": -77.2637156
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 38.7165942,
+    "long": -77.1318999
+  },
+  {
+    "type": "Liquor",
+    "name": "Manokeek Wine and Spirits",
+    "lat": 38.6591483,
+    "long": -77.0149129
+  },
+  {
+    "type": "Liquor",
+    "name": "Cheers Beer Wine Liquor",
+    "lat": 38.619203,
+    "long": -76.968462
+  },
+  {
+    "type": "Liquor",
+    "name": "Big B Liquors",
+    "lat": 38.6280518,
+    "long": -77.0700616
+  },
+  {
+    "type": "Liquor",
+    "name": "Country Place Liquor",
+    "lat": 38.6285194,
+    "long": -77.0722638
+  },
+  {
+    "type": "Liquor",
+    "name": "Berry Country Market",
+    "lat": 38.6152963,
+    "long": -77.0103172
+  },
+  {
+    "type": "Liquor",
+    "name": "ABC Liquor Store",
+    "lat": 38.2912624,
+    "long": -76.4953009
+  },
+  {
+    "type": "Liquor",
+    "name": "Lusby Liquors",
+    "lat": 38.3719066,
+    "long": -76.4413865
+  },
+  {
+    "type": "Liquor",
+    "name": "California Wine Spirits",
+    "lat": 38.3006415,
+    "long": -76.5209711
+  },
+  {
+    "type": "Liquor",
+    "name": "Early Bird Liquor Store",
+    "lat": 38.3218944,
+    "long": -76.5449376
+  },
+  {
+    "type": "Liquor",
+    "name": "Lex Liquor, Wine, Spirits new owners, new great prices ",
+    "lat": 38.2846956,
+    "long": -76.4778472
+  },
+  {
+    "type": "Liquor",
+    "name": "Patuxent Wine and Spirits",
+    "lat": 38.3736292,
+    "long": -76.4408968
+  },
+  {
+    "type": "Liquor",
+    "name": "Wildewood Wine Spirits",
+    "lat": 38.3088804,
+    "long": -76.5336712
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 38.2898731,
+    "long": -76.482832
+  },
+  {
+    "type": "Liquor",
+    "name": "Ranch Liquor",
+    "lat": 38.3745702,
+    "long": -76.4330847
+  },
+  {
+    "type": "Liquor",
+    "name": "Port of Call Wine and Spirits",
+    "lat": 38.3338164,
+    "long": -76.4653685
+  },
+  {
+    "type": "Liquor",
+    "name": "Jughead Liquor",
+    "lat": 38.2944516,
+    "long": -76.506482
+  },
+  {
+    "type": "Liquor",
+    "name": "Marketplace Wine and Spirits of SMC",
+    "lat": 38.3028166,
+    "long": -76.5238416
+  },
+  {
+    "type": "Liquor",
+    "name": "Twist Wine and Spirits",
+    "lat": 38.2896992,
+    "long": -76.4833724
+  },
+  {
+    "type": "Liquor",
+    "name": "First Colony Wine Spirits",
+    "lat": 38.297829,
+    "long": -76.5143618
+  },
+  {
+    "type": "Liquor",
+    "name": "TJ Liquors",
+    "lat": 38.2864781,
+    "long": -76.4837223
+  },
+  {
+    "type": "Liquor",
+    "name": "Sheetz",
+    "lat": 38.2906335,
+    "long": -76.4932573
+  },
+  {
+    "type": "Liquor",
+    "name": "Southern Liquor Store",
+    "lat": 38.3475926,
+    "long": -76.4589321
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 38.3351912,
+    "long": -76.4654204
+  },
+  {
+    "type": "Liquor",
+    "name": "Corner Liquors Store",
+    "lat": 38.2847547,
+    "long": -76.4778977
+  },
+  {
+    "type": "Liquor",
+    "name": "Mimi S liquors Gas station",
+    "lat": 38.3689988,
+    "long": -76.4369434
+  },
+  {
+    "type": "Liquor",
+    "name": " Liquors",
+    "lat": 38.2652338,
+    "long": -76.4566272
+  },
+  {
+    "type": "Liquor",
+    "name": "Corner Liquor",
+    "lat": 38.2633795,
+    "long": -76.4547637
+  },
+  {
+    "type": "Liquor",
+    "name": "County Liquors",
+    "lat": 38.2601476,
+    "long": -76.464477
+  },
+  {
+    "type": "Liquor",
+    "name": "Canopy Liquors",
+    "lat": 38.261344,
+    "long": -76.4628416
+  },
+  {
+    "type": "Liquor",
+    "name": "International Beverage Beer",
+    "lat": 38.2546107,
+    "long": -76.4805622
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 38.2492808,
+    "long": -76.4892295
+  },
+  {
+    "type": "Liquor",
+    "name": "Sign of the Whale",
+    "lat": 38.2683579,
+    "long": -76.4586575
+  },
+  {
+    "type": "Liquor",
+    "name": "ABC Lounge",
+    "lat": 38.2913208,
+    "long": -76.4953384
+  }
+]

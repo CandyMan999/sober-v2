@@ -1,0 +1,1148 @@
+[
+  {
+    "type": "Bar",
+    "name": "T bar",
+    "lat": 39.707695,
+    "long": -104.9397735
+  },
+  {
+    "type": "Bar",
+    "name": "TrashHawk Tavern",
+    "lat": 39.688673,
+    "long": -104.9878313
+  },
+  {
+    "type": "Bar",
+    "name": "The Horseshoe Lounge",
+    "lat": 39.74745,
+    "long": -104.9818801
+  },
+  {
+    "type": "Bar",
+    "name": "Dive Inn",
+    "lat": 39.6914512,
+    "long": -104.9871106
+  },
+  {
+    "type": "Bar",
+    "name": "Squire Lounge",
+    "lat": 39.739848,
+    "long": -104.96578
+  },
+  {
+    "type": "Bar",
+    "name": "P S Lounge",
+    "lat": 39.739942,
+    "long": -104.9468177
+  },
+  {
+    "type": "Bar",
+    "name": "Nob Hill Inn",
+    "lat": 39.7399149,
+    "long": -104.9816136
+  },
+  {
+    "type": "Bar",
+    "name": "Crow Bar",
+    "lat": 39.7764791,
+    "long": -105.0511407
+  },
+  {
+    "type": "Bar",
+    "name": "Sidecar Lounge Denver",
+    "lat": 39.7535426,
+    "long": -104.9916081
+  },
+  {
+    "type": "Bar",
+    "name": "Matchbox",
+    "lat": 39.7590575,
+    "long": -104.9849789
+  },
+  {
+    "type": "Bar",
+    "name": "Berkeley Inn",
+    "lat": 39.7700544,
+    "long": -105.0439034
+  },
+  {
+    "type": "Bar",
+    "name": "Bannock Street Garage",
+    "lat": 39.7324019,
+    "long": -104.9905777
+  },
+  {
+    "type": "Bar",
+    "name": "The Front Porch",
+    "lat": 39.7479354,
+    "long": -104.9979006
+  },
+  {
+    "type": "Bar",
+    "name": "R R Denver",
+    "lat": 39.7399746,
+    "long": -104.92952
+  },
+  {
+    "type": "Bar",
+    "name": "The Owl Saloon",
+    "lat": 39.739994,
+    "long": -104.9284726
+  },
+  {
+    "type": "Bar",
+    "name": "Williams Tavern",
+    "lat": 39.7433897,
+    "long": -104.9816443
+  },
+  {
+    "type": "Bar",
+    "name": "Pon Pon",
+    "lat": 39.7586583,
+    "long": -104.9866833
+  },
+  {
+    "type": "Bar",
+    "name": "Satellite Bar",
+    "lat": 39.7398806,
+    "long": -104.9831667
+  },
+  {
+    "type": "Bar",
+    "name": "Meadowlark Bar",
+    "lat": 39.7597397,
+    "long": -104.9842033
+  },
+  {
+    "type": "Bar",
+    "name": "Swanky s Vittles and Libations",
+    "lat": 39.7537667,
+    "long": -104.9946583
+  },
+  {
+    "type": "Bar",
+    "name": "Lincoln s Roadhouse",
+    "lat": 39.694672,
+    "long": -104.9809409
+  },
+  {
+    "type": "Bar",
+    "name": "Lot Music Bar",
+    "lat": 39.7528585,
+    "long": -105.0546912
+  },
+  {
+    "type": "Bar",
+    "name": "Candlelight Tavern",
+    "lat": 39.709632,
+    "long": -104.9806348
+  },
+  {
+    "type": "Bar",
+    "name": "Skylark Lounge",
+    "lat": 39.7137813,
+    "long": -104.9873047
+  },
+  {
+    "type": "Bar",
+    "name": "The High Lonesome",
+    "lat": 39.7643194,
+    "long": -105.0039222
+  },
+  {
+    "type": "Bar",
+    "name": "Embassy Tavern",
+    "lat": 39.7669938,
+    "long": -104.9748394
+  },
+  {
+    "type": "Bar",
+    "name": "Kentucky Inn",
+    "lat": 39.700442,
+    "long": -104.980139
+  },
+  {
+    "type": "Bar",
+    "name": "St Paul Tavern",
+    "lat": 39.7403169,
+    "long": -104.9508784
+  },
+  {
+    "type": "Bar",
+    "name": "Lakeview Lounge",
+    "lat": 39.7509458,
+    "long": -105.0536479
+  },
+  {
+    "type": "Bar",
+    "name": "Parkers",
+    "lat": 39.7405395,
+    "long": -104.9724884
+  },
+  {
+    "type": "Bar",
+    "name": "The Monkey Bar",
+    "lat": 39.7339706,
+    "long": -104.9985351
+  },
+  {
+    "type": "Bar",
+    "name": "Hi Dive",
+    "lat": 39.7163467,
+    "long": -104.9877853
+  },
+  {
+    "type": "Bar",
+    "name": "Icehouse Tavern",
+    "lat": 39.754346,
+    "long": -104.9979531
+  },
+  {
+    "type": "Bar",
+    "name": "Pub on Penn",
+    "lat": 39.7367753,
+    "long": -104.980827
+  },
+  {
+    "type": "Bar",
+    "name": "The Squeeze",
+    "lat": 39.7842559,
+    "long": -105.055264
+  },
+  {
+    "type": "Bar",
+    "name": "Bar ",
+    "lat": 39.7227805,
+    "long": -104.9871809
+  },
+  {
+    "type": "Bar",
+    "name": "Boogie Down Bar",
+    "lat": 39.6977646,
+    "long": -105.0523989
+  },
+  {
+    "type": "Bar",
+    "name": "Star Bar",
+    "lat": 39.7545448,
+    "long": -104.9908703
+  },
+  {
+    "type": "Bar",
+    "name": "RIVER",
+    "lat": 39.774268,
+    "long": -104.9776131
+  },
+  {
+    "type": "Bar",
+    "name": "The Saint Mary Bar",
+    "lat": 39.717718,
+    "long": -104.9871923
+  },
+  {
+    "type": "Bar",
+    "name": "Bar Nun Denver",
+    "lat": 39.7355795,
+    "long": -104.9825634
+  },
+  {
+    "type": "Bar",
+    "name": "Stardust Lounge",
+    "lat": 39.7915341,
+    "long": -105.0691316
+  },
+  {
+    "type": "Bar",
+    "name": "Milwaukee Street Tavern",
+    "lat": 39.719521,
+    "long": -104.952522
+  },
+  {
+    "type": "Bar",
+    "name": "Athmar Lounge",
+    "lat": 39.697147,
+    "long": -105.009196
+  },
+  {
+    "type": "Bar",
+    "name": "Don s Club Tavern",
+    "lat": 39.7258002,
+    "long": -104.9781849
+  },
+  {
+    "type": "Bar",
+    "name": "Sam s Bar Lounge",
+    "lat": 39.7008072,
+    "long": -104.9092568
+  },
+  {
+    "type": "Bar",
+    "name": "Lion s Lair",
+    "lat": 39.7398631,
+    "long": -104.9628082
+  },
+  {
+    "type": "Bar",
+    "name": "Highland Tavern",
+    "lat": 39.7645954,
+    "long": -105.0039339
+  },
+  {
+    "type": "Bar",
+    "name": "Rome s Saloon",
+    "lat": 39.6969276,
+    "long": -104.9963775
+  },
+  {
+    "type": "Bar",
+    "name": " Club",
+    "lat": 39.7548692,
+    "long": -104.9775804
+  },
+  {
+    "type": "Bar",
+    "name": "The Thin Man",
+    "lat": 39.7434443,
+    "long": -104.9630256
+  },
+  {
+    "type": "Bar",
+    "name": "Barfly",
+    "lat": 39.7408882,
+    "long": -105.0424996
+  },
+  {
+    "type": "Bar",
+    "name": "Pairadice",
+    "lat": 39.7503662,
+    "long": -104.98407
+  },
+  {
+    "type": "Bar",
+    "name": "Yacht Club",
+    "lat": 39.7683418,
+    "long": -104.9661101
+  },
+  {
+    "type": "Bar",
+    "name": "Lamp Post Inn",
+    "lat": 39.6965575,
+    "long": -105.0560395
+  },
+  {
+    "type": "Bar",
+    "name": "The Nearby Bar",
+    "lat": 39.7569024,
+    "long": -105.0089915
+  },
+  {
+    "type": "Bar",
+    "name": "Gold Point",
+    "lat": 39.7635194,
+    "long": -104.9786333
+  },
+  {
+    "type": "Bar",
+    "name": "Vesper Lounge",
+    "lat": 39.7274296,
+    "long": -104.9839623
+  },
+  {
+    "type": "Bar",
+    "name": "Rocky Top Tavern",
+    "lat": 39.7858479,
+    "long": -105.0348647
+  },
+  {
+    "type": "Bar",
+    "name": "The Bar Car",
+    "lat": 39.7294595,
+    "long": -104.9409307
+  },
+  {
+    "type": "Bar",
+    "name": " Spirits Tavern",
+    "lat": 39.7334634,
+    "long": -104.9814111
+  },
+  {
+    "type": "Bar",
+    "name": "Lost Lake Lounge",
+    "lat": 39.7399676,
+    "long": -104.9447294
+  },
+  {
+    "type": "Bar",
+    "name": "The Beer Depot",
+    "lat": 39.7695385,
+    "long": -105.0425056
+  },
+  {
+    "type": "Bar",
+    "name": "Mr A s",
+    "lat": 39.7726065,
+    "long": -104.9494223
+  },
+  {
+    "type": "Bar",
+    "name": "The Mill",
+    "lat": 39.7536111,
+    "long": -104.9919444
+  },
+  {
+    "type": "Bar",
+    "name": "Badgers Pub",
+    "lat": 39.715162,
+    "long": -104.9871957
+  },
+  {
+    "type": "Bar",
+    "name": "Pete s Satire Lounge",
+    "lat": 39.7398305,
+    "long": -104.9640466
+  },
+  {
+    "type": "Bar",
+    "name": "Fort Greene",
+    "lat": 39.7784427,
+    "long": -104.9831186
+  },
+  {
+    "type": "Bar",
+    "name": "Three Dogs Tavern",
+    "lat": 39.7620106,
+    "long": -105.0320535
+  },
+  {
+    "type": "Bar",
+    "name": "The Refinery",
+    "lat": 39.7534349,
+    "long": -104.991456
+  },
+  {
+    "type": "Bar",
+    "name": "Occidental",
+    "lat": 39.7619388,
+    "long": -105.0109184
+  },
+  {
+    "type": "Bar",
+    "name": "Coyote Ugly",
+    "lat": 39.743536,
+    "long": -104.9913186
+  },
+  {
+    "type": "Bar",
+    "name": "Mozart s Denver",
+    "lat": 39.738815,
+    "long": -104.916393
+  },
+  {
+    "type": "Bar",
+    "name": "The Devil E s Drink",
+    "lat": 39.7573556,
+    "long": -105.0083785
+  },
+  {
+    "type": "Bar",
+    "name": "Teller Bar",
+    "lat": 39.7473468,
+    "long": -104.9932062
+  },
+  {
+    "type": "Bar",
+    "name": "Goosetown Tavern BBQ",
+    "lat": 39.7399821,
+    "long": -104.9486049
+  },
+  {
+    "type": "Bar",
+    "name": "Skyline Pub",
+    "lat": 39.7482252,
+    "long": -105.0537217
+  },
+  {
+    "type": "Bar",
+    "name": "Timeo s Theater Bar",
+    "lat": 39.7316841,
+    "long": -104.998497
+  },
+  {
+    "type": "Bar",
+    "name": "Cleopatra E s Bar",
+    "lat": 39.7115479,
+    "long": -105.0633674
+  },
+  {
+    "type": "Bar",
+    "name": "Wally s Wisconsin Tavern",
+    "lat": 39.7484302,
+    "long": -105.0005057
+  },
+  {
+    "type": "Bar",
+    "name": "Scruffy Murphy s",
+    "lat": 39.7533104,
+    "long": -104.9919387
+  },
+  {
+    "type": "Bar",
+    "name": "BC s Sports Pub",
+    "lat": 39.6973002,
+    "long": -105.0685184
+  },
+  {
+    "type": "Bar",
+    "name": "My Brother s Bar",
+    "lat": 39.7562205,
+    "long": -105.0093141
+  },
+  {
+    "type": "Bar",
+    "name": "Union Lodge No ",
+    "lat": 39.746276,
+    "long": -104.994638
+  },
+  {
+    "type": "Bar",
+    "name": "Dr Proctor s Bar and Grill Lounge ",
+    "lat": 39.6973305,
+    "long": -104.9375794
+  },
+  {
+    "type": "Bar",
+    "name": "The Fainting Goat Pub",
+    "lat": 39.729968,
+    "long": -104.987174
+  },
+  {
+    "type": "Bar",
+    "name": "Dougherty s Restaurant Pub",
+    "lat": 39.7166617,
+    "long": -104.986981
+  },
+  {
+    "type": "Bar",
+    "name": "Jefferson Park Pub",
+    "lat": 39.7533262,
+    "long": -105.0237346
+  },
+  {
+    "type": "Bar",
+    "name": "Nallen s Irish Pub",
+    "lat": 39.7485387,
+    "long": -105.0002827
+  },
+  {
+    "type": "Bar",
+    "name": "The Electric Cure",
+    "lat": 39.7528912,
+    "long": -105.0551136
+  },
+  {
+    "type": "Bar",
+    "name": "Hell or High Water Tiki Bar",
+    "lat": 39.7498423,
+    "long": -104.9996194
+  },
+  {
+    "type": "Bar",
+    "name": "Nite Owl Sports Bar Grill",
+    "lat": 39.696922,
+    "long": -105.080131
+  },
+  {
+    "type": "Bar",
+    "name": "The Scapegoat",
+    "lat": 39.7694243,
+    "long": -105.0057242
+  },
+  {
+    "type": "Bar",
+    "name": "The DNVR Bar",
+    "lat": 39.7402661,
+    "long": -104.9600087
+  },
+  {
+    "type": "Bar",
+    "name": "Tom s Watch Bar Coors Field",
+    "lat": 39.7544854,
+    "long": -104.9967483
+  },
+  {
+    "type": "Bar",
+    "name": "Tarantula Billiards Bar Grill",
+    "lat": 39.7449248,
+    "long": -104.9939896
+  },
+  {
+    "type": "Bar",
+    "name": "Roosevelt",
+    "lat": 39.7479843,
+    "long": -104.9979624
+  },
+  {
+    "type": "Bar",
+    "name": "College Inn",
+    "lat": 39.7290908,
+    "long": -104.9357465
+  },
+  {
+    "type": "Bar",
+    "name": "Society Sports and Spirits",
+    "lat": 39.7490863,
+    "long": -105.0008233
+  },
+  {
+    "type": "Bar",
+    "name": "The Celtic on Market",
+    "lat": 39.7479417,
+    "long": -105.0003833
+  },
+  {
+    "type": "Bar",
+    "name": "Li l Devils Lounge",
+    "lat": 39.711935,
+    "long": -104.9877733
+  },
+  {
+    "type": "Bar",
+    "name": "The Crypt",
+    "lat": 39.743088,
+    "long": -104.968049
+  },
+  {
+    "type": "Bar",
+    "name": "Inga s Alpine Tavern",
+    "lat": 39.7085047,
+    "long": -104.9273982
+  },
+  {
+    "type": "Bar",
+    "name": "The British Bulldog",
+    "lat": 39.7501791,
+    "long": -104.9871033
+  },
+  {
+    "type": "Bar",
+    "name": "Velvet Banjo",
+    "lat": 39.740322,
+    "long": -104.9778304
+  },
+  {
+    "type": "Bar",
+    "name": "Spot Bar Grill",
+    "lat": 39.714851,
+    "long": -104.981259
+  },
+  {
+    "type": "Bar",
+    "name": "Campus Lounge",
+    "lat": 39.703747,
+    "long": -104.959681
+  },
+  {
+    "type": "Bar",
+    "name": "Will Call",
+    "lat": 39.7656556,
+    "long": -104.9854333
+  },
+  {
+    "type": "Bar",
+    "name": " VYBE",
+    "lat": 39.7326496,
+    "long": -104.9878214
+  },
+  {
+    "type": "Bar",
+    "name": "Zanzibar Billiards Club",
+    "lat": 39.7535052,
+    "long": -104.9916854
+  },
+  {
+    "type": "Bar",
+    "name": "Rino Country Club",
+    "lat": 39.7723054,
+    "long": -104.9748792
+  },
+  {
+    "type": "Bar",
+    "name": "Tight End Bar",
+    "lat": 39.7402418,
+    "long": -104.9694149
+  },
+  {
+    "type": "Bar",
+    "name": "Wild Corgi Pub",
+    "lat": 39.7369776,
+    "long": -104.9723043
+  },
+  {
+    "type": "Bar",
+    "name": "Dew Drop Inn",
+    "lat": 39.7435024,
+    "long": -104.9738192
+  },
+  {
+    "type": "Bar",
+    "name": "Dirty Laundry",
+    "lat": 39.7591629,
+    "long": -104.8946075
+  },
+  {
+    "type": "Bar",
+    "name": "East Fax Tap",
+    "lat": 39.7403596,
+    "long": -104.8950635
+  },
+  {
+    "type": "Bar",
+    "name": "The Cove",
+    "lat": 39.7104416,
+    "long": -105.1175559
+  },
+  {
+    "type": "Bar",
+    "name": "The Rusty Bucket Bar and Grill",
+    "lat": 39.6549569,
+    "long": -105.0819463
+  },
+  {
+    "type": "Bar",
+    "name": "Doghouse Tavern",
+    "lat": 39.654918,
+    "long": -105.0474652
+  },
+  {
+    "type": "Bar",
+    "name": "Fiddlesticks Bar Grill",
+    "lat": 39.6829099,
+    "long": -105.1195852
+  },
+  {
+    "type": "Bar",
+    "name": "Front Range Inn",
+    "lat": 39.6751469,
+    "long": -105.0847742
+  },
+  {
+    "type": "Bar",
+    "name": "THE HANGOVER",
+    "lat": 39.7287916,
+    "long": -105.0528419
+  },
+  {
+    "type": "Bar",
+    "name": "Landero E s Bar Landeros Bar",
+    "lat": 39.6827899,
+    "long": -105.0253096
+  },
+  {
+    "type": "Bar",
+    "name": "Longshot Restaurant and Lounge",
+    "lat": 39.6499624,
+    "long": -105.0257369
+  },
+  {
+    "type": "Bar",
+    "name": "Thirsty Bear Bar Grill",
+    "lat": 39.6690121,
+    "long": -105.1134217
+  },
+  {
+    "type": "Bar",
+    "name": "Monaghan s Bar and Grill",
+    "lat": 39.646019,
+    "long": -105.033566
+  },
+  {
+    "type": "Bar",
+    "name": "El Padrinito Bar",
+    "lat": 39.6916027,
+    "long": -105.0536692
+  },
+  {
+    "type": "Bar",
+    "name": "Greenfields Pool Sports Bar",
+    "lat": 39.6545617,
+    "long": -105.0836832
+  },
+  {
+    "type": "Bar",
+    "name": "Innsider Bar Grill",
+    "lat": 39.6516071,
+    "long": -105.0789223
+  },
+  {
+    "type": "Bar",
+    "name": "Ballmer Peak Distillery Green Mountain",
+    "lat": 39.7040147,
+    "long": -105.1394052
+  },
+  {
+    "type": "Bar",
+    "name": "Out Post Bar",
+    "lat": 39.8223456,
+    "long": -105.0348439
+  },
+  {
+    "type": "Bar",
+    "name": "Rockette Tavern",
+    "lat": 39.7777632,
+    "long": -105.1103995
+  },
+  {
+    "type": "Bar",
+    "name": "Twins Inn Tavern",
+    "lat": 39.7994538,
+    "long": -105.0538686
+  },
+  {
+    "type": "Bar",
+    "name": "Cheapskates Action Sports Bar",
+    "lat": 39.7994155,
+    "long": -105.0802383
+  },
+  {
+    "type": "Bar",
+    "name": " Volt Tavern",
+    "lat": 39.7990742,
+    "long": -105.080765
+  },
+  {
+    "type": "Bar",
+    "name": "Chaserz Bar and Grill",
+    "lat": 39.8410647,
+    "long": -105.0527734
+  },
+  {
+    "type": "Bar",
+    "name": "Rambling Rose",
+    "lat": 39.7779412,
+    "long": -105.11064
+  },
+  {
+    "type": "Bar",
+    "name": "Kiwis Sports Tavern",
+    "lat": 39.8491657,
+    "long": -105.0522187
+  },
+  {
+    "type": "Bar",
+    "name": "DiFeo s Tavern",
+    "lat": 39.7864543,
+    "long": -105.1376593
+  },
+  {
+    "type": "Bar",
+    "name": "Howie s Ralston Lounge",
+    "lat": 39.8135404,
+    "long": -105.1370432
+  },
+  {
+    "type": "Bar",
+    "name": "Sideways Sports Lounge",
+    "lat": 39.8556557,
+    "long": -105.0998925
+  },
+  {
+    "type": "Bar",
+    "name": "Odde s Lounge",
+    "lat": 39.8759324,
+    "long": -105.0964362
+  },
+  {
+    "type": "Bar",
+    "name": "Olde Town Social",
+    "lat": 39.7995091,
+    "long": -105.0824732
+  },
+  {
+    "type": "Bar",
+    "name": "Balloon Inn",
+    "lat": 39.81353,
+    "long": -105.0791507
+  },
+  {
+    "type": "Bar",
+    "name": "Jake s Roadhouse",
+    "lat": 39.8050695,
+    "long": -105.0669326
+  },
+  {
+    "type": "Bar",
+    "name": "Long Shots Bar Grill",
+    "lat": 39.7787578,
+    "long": -105.1374488
+  },
+  {
+    "type": "Bar",
+    "name": "Rockabillies",
+    "lat": 39.8136665,
+    "long": -105.1365439
+  },
+  {
+    "type": "Bar",
+    "name": "Olde Town Tavern and Grill",
+    "lat": 39.8022414,
+    "long": -105.0779574
+  },
+  {
+    "type": "Bar",
+    "name": "Wreck Room Underground",
+    "lat": 39.8760948,
+    "long": -105.0956826
+  },
+  {
+    "type": "Bar",
+    "name": "The Arvada Tavern",
+    "lat": 39.800495,
+    "long": -105.081577
+  },
+  {
+    "type": "Bar",
+    "name": "Hopper s Sports Grill",
+    "lat": 39.7852101,
+    "long": -105.1107061
+  },
+  {
+    "type": "Bar",
+    "name": "Hoffbrau",
+    "lat": 39.8613721,
+    "long": -105.0798947
+  },
+  {
+    "type": "Bar",
+    "name": "TBirds",
+    "lat": 39.7783893,
+    "long": -105.1053432
+  },
+  {
+    "type": "Bar",
+    "name": "The Bluegrass Lounge Olde Town",
+    "lat": 39.7995092,
+    "long": -105.0796143
+  },
+  {
+    "type": "Bar",
+    "name": "The Grandview Tavern and Grill",
+    "lat": 39.799622,
+    "long": -105.07993
+  },
+  {
+    "type": "Bar",
+    "name": "Marmalade Lounge and Boutique",
+    "lat": 39.7998834,
+    "long": -105.0818402
+  },
+  {
+    "type": "Bar",
+    "name": "Bout Time Pub Grub",
+    "lat": 39.842643,
+    "long": -105.0538229
+  },
+  {
+    "type": "Bar",
+    "name": "Arvada Beer Garden",
+    "lat": 39.8027235,
+    "long": -105.1005773
+  },
+  {
+    "type": "Bar",
+    "name": "Billy s Inn",
+    "lat": 39.7769705,
+    "long": -105.0349888
+  },
+  {
+    "type": "Bar",
+    "name": "Entertainment by Native Fire",
+    "lat": 39.6205135,
+    "long": -104.957934
+  },
+  {
+    "type": "Bar",
+    "name": "Jack E s Bar and Grill",
+    "lat": 39.8496472,
+    "long": -105.1556361
+  },
+  {
+    "type": "Bar",
+    "name": "Mc Carthy s Pub",
+    "lat": 40.1586285,
+    "long": -105.102221
+  },
+  {
+    "type": "Bar",
+    "name": " S Bar",
+    "lat": 40.1646619,
+    "long": -105.1028044
+  },
+  {
+    "type": "Bar",
+    "name": "Pharaoh E s American Grill and Billiards Main st Longmont",
+    "lat": 40.165547,
+    "long": -105.1020279
+  },
+  {
+    "type": "Bar",
+    "name": "West Side Tavern",
+    "lat": 40.1666676,
+    "long": -105.1155474
+  },
+  {
+    "type": "Bar",
+    "name": "Longs Peak Pub Taphouse",
+    "lat": 40.1709002,
+    "long": -105.1029528
+  },
+  {
+    "type": "Bar",
+    "name": "The Social Lounge",
+    "lat": 40.1347104,
+    "long": -105.1038321
+  },
+  {
+    "type": "Bar",
+    "name": "Red Zone",
+    "lat": 40.1688643,
+    "long": -105.1019841
+  },
+  {
+    "type": "Bar",
+    "name": "The Speakeasy",
+    "lat": 40.1641028,
+    "long": -105.1027333
+  },
+  {
+    "type": "Bar",
+    "name": "The Wheel House",
+    "lat": 40.1033821,
+    "long": -105.1728286
+  },
+  {
+    "type": "Bar",
+    "name": "Colorado Mountain Kava Company",
+    "lat": 40.1516801,
+    "long": -105.1036198
+  },
+  {
+    "type": "Bar",
+    "name": "Pumphouse Brewery",
+    "lat": 40.16876,
+    "long": -105.1020647
+  },
+  {
+    "type": "Bar",
+    "name": "Abbott Wallace Distilling",
+    "lat": 40.1655686,
+    "long": -105.1046392
+  },
+  {
+    "type": "Bar",
+    "name": "Niwot Tavern",
+    "lat": 40.1004387,
+    "long": -105.1683738
+  },
+  {
+    "type": "Bar",
+    "name": "Mike O Shays Restaurant Ale House",
+    "lat": 40.1678872,
+    "long": -105.1023241
+  },
+  {
+    "type": "Bar",
+    "name": "Oskar Blues Homemade Liquids and Solids",
+    "lat": 40.139159,
+    "long": -105.131515
+  },
+  {
+    "type": "Bar",
+    "name": "Johnson s Station",
+    "lat": 40.1341211,
+    "long": -105.1035581
+  },
+  {
+    "type": "Bar",
+    "name": "Quarters Bar BArcade",
+    "lat": 40.1672124,
+    "long": -105.1027447
+  },
+  {
+    "type": "Bar",
+    "name": "Dry Land Distillers",
+    "lat": 40.1681946,
+    "long": -105.1028127
+  },
+  {
+    "type": "Bar",
+    "name": "Winner s Circle, Inc ",
+    "lat": 40.1414989,
+    "long": -105.1292658
+  },
+  {
+    "type": "Bar",
+    "name": "The Roost",
+    "lat": 40.1683811,
+    "long": -105.1023012
+  },
+  {
+    "type": "Bar",
+    "name": "Kains Silver Bullet Saloon",
+    "lat": 39.9127592,
+    "long": -104.942969
+  },
+  {
+    "type": "Bar",
+    "name": "Lake Avenue Inn",
+    "lat": 39.9233381,
+    "long": -104.9616417
+  },
+  {
+    "type": "Bar",
+    "name": "Round Sports Tavern",
+    "lat": 39.8638496,
+    "long": -105.0189971
+  },
+  {
+    "type": "Bar",
+    "name": "Joe Palooka s",
+    "lat": 39.9155299,
+    "long": -104.9412345
+  },
+  {
+    "type": "Bar",
+    "name": "Trailside Saloon",
+    "lat": 39.8835555,
+    "long": -104.9393145
+  },
+  {
+    "type": "Bar",
+    "name": " Cheers ",
+    "lat": 39.9132573,
+    "long": -104.9764764
+  },
+  {
+    "type": "Bar",
+    "name": "Babes Night Club",
+    "lat": 39.8493351,
+    "long": -105.0136197
+  },
+  {
+    "type": "Bar",
+    "name": "Night Owl Lounge",
+    "lat": 39.9216865,
+    "long": -105.0922596
+  },
+  {
+    "type": "Bar",
+    "name": "Old Man Bar",
+    "lat": 39.9145134,
+    "long": -105.0435984
+  },
+  {
+    "type": "Bar",
+    "name": "Dillinger s Food Spirits",
+    "lat": 39.9860905,
+    "long": -105.1064406
+  }
+]

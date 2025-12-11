@@ -1,0 +1,1466 @@
+[
+  {
+    "type": "Liquor",
+    "name": "The Cowboy Palace",
+    "lat": 32.7336554,
+    "long": -97.3267002
+  },
+  {
+    "type": "Liquor",
+    "name": "Studio Eighty",
+    "lat": 32.7527519,
+    "long": -97.3333683
+  },
+  {
+    "type": "Liquor",
+    "name": "Insomnia Night Club",
+    "lat": 32.7956936,
+    "long": -97.307254
+  },
+  {
+    "type": "Liquor",
+    "name": "Big yumi",
+    "lat": 32.7424539,
+    "long": -97.3333352
+  },
+  {
+    "type": "Liquor",
+    "name": "Durango Club",
+    "lat": 32.8093562,
+    "long": -97.3512622
+  },
+  {
+    "type": "Liquor",
+    "name": "El Parian Night Club",
+    "lat": 32.8057121,
+    "long": -97.3260912
+  },
+  {
+    "type": "Liquor",
+    "name": "Old School Texas",
+    "lat": 32.7881298,
+    "long": -97.3855859
+  },
+  {
+    "type": "Liquor",
+    "name": "Ritzy",
+    "lat": 32.7601685,
+    "long": -97.2610321
+  },
+  {
+    "type": "Liquor",
+    "name": "LU LU S LOUNGE",
+    "lat": 32.7120041,
+    "long": -97.2625741
+  },
+  {
+    "type": "Liquor",
+    "name": "Luna Azul Night Club",
+    "lat": 32.7619227,
+    "long": -97.3255066
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Silk",
+    "lat": 32.7250072,
+    "long": -97.3186365
+  },
+  {
+    "type": "Liquor",
+    "name": "Berry Blues lounge",
+    "lat": 32.7058524,
+    "long": -97.3461915
+  },
+  {
+    "type": "Liquor",
+    "name": "The Spotlight at Sundance Square",
+    "lat": 32.754859,
+    "long": -97.332791
+  },
+  {
+    "type": "Liquor",
+    "name": "Hyena s Comedy Nightclub",
+    "lat": 32.7552507,
+    "long": -97.3303781
+  },
+  {
+    "type": "Liquor",
+    "name": "El Bukaras Night Club",
+    "lat": 32.7337471,
+    "long": -97.3266243
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Reflection",
+    "lat": 32.738162,
+    "long": -97.3303136
+  },
+  {
+    "type": "Liquor",
+    "name": "TEJANO NIGHT CLUB",
+    "lat": 32.7430557,
+    "long": -97.2889338
+  },
+  {
+    "type": "Liquor",
+    "name": "BAR ",
+    "lat": 32.7488899,
+    "long": -97.3589075
+  },
+  {
+    "type": "Liquor",
+    "name": "El Duranguense Night Club",
+    "lat": 32.6792413,
+    "long": -97.2698153
+  },
+  {
+    "type": "Liquor",
+    "name": "P R s",
+    "lat": 32.788553,
+    "long": -97.349304
+  },
+  {
+    "type": "Liquor",
+    "name": "Backstage Club",
+    "lat": 32.7459888,
+    "long": -97.3657771
+  },
+  {
+    "type": "Liquor",
+    "name": "Klopchik House",
+    "lat": 32.8098777,
+    "long": -97.2256116
+  },
+  {
+    "type": "Liquor",
+    "name": "Mr Luxx Fort Worth",
+    "lat": 32.7956247,
+    "long": -97.306475
+  },
+  {
+    "type": "Liquor",
+    "name": "the basement lounge",
+    "lat": 32.7269722,
+    "long": -97.4176922
+  },
+  {
+    "type": "Liquor",
+    "name": "SIETE",
+    "lat": 32.7481463,
+    "long": -97.3608982
+  },
+  {
+    "type": "Liquor",
+    "name": "Stagecoach Ballroom",
+    "lat": 32.7690315,
+    "long": -97.3095259
+  },
+  {
+    "type": "Liquor",
+    "name": "Rumors Lounge",
+    "lat": 32.8030705,
+    "long": -97.3510465
+  },
+  {
+    "type": "Liquor",
+    "name": "Cassidy s",
+    "lat": 32.8238182,
+    "long": -97.3142651
+  },
+  {
+    "type": "Liquor",
+    "name": "Scat Jazz Lounge",
+    "lat": 32.7540707,
+    "long": -97.331422
+  },
+  {
+    "type": "Liquor",
+    "name": "No Vacancy",
+    "lat": 32.7481952,
+    "long": -97.3570611
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Changes",
+    "lat": 32.7431425,
+    "long": -97.2876143
+  },
+  {
+    "type": "Liquor",
+    "name": "Club La Estrellita",
+    "lat": 32.7064573,
+    "long": -97.3267383
+  },
+  {
+    "type": "Liquor",
+    "name": "Luna Azul Mexican Bar Grill",
+    "lat": 32.7619432,
+    "long": -97.3254552
+  },
+  {
+    "type": "Liquor",
+    "name": "Silver Horse Lounge",
+    "lat": 32.7395473,
+    "long": -97.277576
+  },
+  {
+    "type": "Liquor",
+    "name": "El Mecate Club",
+    "lat": 32.6893627,
+    "long": -97.3320061
+  },
+  {
+    "type": "Liquor",
+    "name": "White Elephant Saloon",
+    "lat": 32.7886424,
+    "long": -97.348792
+  },
+  {
+    "type": "Liquor",
+    "name": "The Warehouse",
+    "lat": 32.7064895,
+    "long": -97.3130798
+  },
+  {
+    "type": "Liquor",
+    "name": "Bucks Wild",
+    "lat": 32.8362067,
+    "long": -97.3240538
+  },
+  {
+    "type": "Liquor",
+    "name": "Refinery ",
+    "lat": 32.7528201,
+    "long": -97.3302476
+  },
+  {
+    "type": "Liquor",
+    "name": "Bucks Cabaret",
+    "lat": 32.8250296,
+    "long": -97.3217621
+  },
+  {
+    "type": "Liquor",
+    "name": "CURFEW",
+    "lat": 32.7532064,
+    "long": -97.3330012
+  },
+  {
+    "type": "Liquor",
+    "name": "Showdown",
+    "lat": 32.7375409,
+    "long": -97.3935396
+  },
+  {
+    "type": "Liquor",
+    "name": "Liberty Lounge",
+    "lat": 32.7387829,
+    "long": -97.3296738
+  },
+  {
+    "type": "Liquor",
+    "name": "Filthy McNasty s Saloon",
+    "lat": 32.788996,
+    "long": -97.34985
+  },
+  {
+    "type": "Liquor",
+    "name": "Escapade Fort Worth",
+    "lat": 32.6637423,
+    "long": -97.2982048
+  },
+  {
+    "type": "Liquor",
+    "name": "Proper",
+    "lat": 32.7304869,
+    "long": -97.3294086
+  },
+  {
+    "type": "Liquor",
+    "name": "The Roxy Showgirls",
+    "lat": 32.8411895,
+    "long": -97.3379893
+  },
+  {
+    "type": "Liquor",
+    "name": "Ricks Cabaret Fort Worth",
+    "lat": 32.7331275,
+    "long": -97.439525
+  },
+  {
+    "type": "Liquor",
+    "name": "Lil Red s Longhorn Saloon",
+    "lat": 32.7886814,
+    "long": -97.3501788
+  },
+  {
+    "type": "Liquor",
+    "name": "The Archibald",
+    "lat": 32.7514037,
+    "long": -97.3304116
+  },
+  {
+    "type": "Liquor",
+    "name": "Grandma s Near Southside Fort Worth",
+    "lat": 32.7305066,
+    "long": -97.3321449
+  },
+  {
+    "type": "Liquor",
+    "name": "Eden Club DFW Night Club",
+    "lat": 32.8123315,
+    "long": -97.1317139
+  },
+  {
+    "type": "Liquor",
+    "name": "Club New Start Bar n Restaurant",
+    "lat": 32.6985703,
+    "long": -97.262612
+  },
+  {
+    "type": "Liquor",
+    "name": "Thompson s Bookstore Speakeasy",
+    "lat": 32.7514427,
+    "long": -97.330496
+  },
+  {
+    "type": "Liquor",
+    "name": " Club",
+    "lat": 32.7393124,
+    "long": -97.1187468
+  },
+  {
+    "type": "Liquor",
+    "name": " C tico Fort Worth",
+    "lat": 32.7867004,
+    "long": -97.3495005
+  },
+  {
+    "type": "Liquor",
+    "name": "A Great Notion",
+    "lat": 32.7395109,
+    "long": -97.4254357
+  },
+  {
+    "type": "Liquor",
+    "name": "BELICON NIGHTCLUB",
+    "lat": 32.7424815,
+    "long": -97.0515758
+  },
+  {
+    "type": "Liquor",
+    "name": "Las Nenas",
+    "lat": 32.6937628,
+    "long": -97.3320175
+  },
+  {
+    "type": "Liquor",
+    "name": "Guitars and Cadillacs",
+    "lat": 32.679098,
+    "long": -97.4169052
+  },
+  {
+    "type": "Liquor",
+    "name": "New Solution Club",
+    "lat": 32.7728964,
+    "long": -97.0609084
+  },
+  {
+    "type": "Liquor",
+    "name": "La Esquina Night Club",
+    "lat": 32.7430615,
+    "long": -96.7588333
+  },
+  {
+    "type": "Liquor",
+    "name": "Yupp s Karaoke Bar",
+    "lat": 32.6713069,
+    "long": -97.3828638
+  },
+  {
+    "type": "Liquor",
+    "name": "Sin City Lounge",
+    "lat": 32.6833524,
+    "long": -97.3197905
+  },
+  {
+    "type": "Liquor",
+    "name": "The Basement Bar",
+    "lat": 32.7887971,
+    "long": -97.3496162
+  },
+  {
+    "type": "Liquor",
+    "name": "Rogue s Gallery",
+    "lat": 32.7319525,
+    "long": -97.214991
+  },
+  {
+    "type": "Liquor",
+    "name": "Poag Mahone s",
+    "lat": 32.7519444,
+    "long": -97.355
+  },
+  {
+    "type": "Liquor",
+    "name": "Lounge",
+    "lat": 32.7587235,
+    "long": -97.3325526
+  },
+  {
+    "type": "Liquor",
+    "name": "Envy Nightclub",
+    "lat": 32.8675268,
+    "long": -96.906987
+  },
+  {
+    "type": "Liquor",
+    "name": "Celeste Ballroom",
+    "lat": 32.6739608,
+    "long": -97.3166982
+  },
+  {
+    "type": "Liquor",
+    "name": "Rokwood Nightclub and Bar",
+    "lat": 32.7774369,
+    "long": -96.806342
+  },
+  {
+    "type": "Liquor",
+    "name": "West Jax Cigars Spirits",
+    "lat": 32.7263038,
+    "long": -97.3440392
+  },
+  {
+    "type": "Liquor",
+    "name": "Escena Latin Nightclub",
+    "lat": 32.7851403,
+    "long": -96.7976921
+  },
+  {
+    "type": "Liquor",
+    "name": "La Frontera Night Club",
+    "lat": 32.8531025,
+    "long": -96.8789964
+  },
+  {
+    "type": "Liquor",
+    "name": "Hogan Alley",
+    "lat": 32.7516295,
+    "long": -97.3299264
+  },
+  {
+    "type": "Liquor",
+    "name": "Ojos Locos Sports Cantina South Fort Worth, TX ",
+    "lat": 32.6832675,
+    "long": -97.3198566
+  },
+  {
+    "type": "Liquor",
+    "name": "Ampersand",
+    "lat": 32.748069,
+    "long": -97.360729
+  },
+  {
+    "type": "Liquor",
+    "name": "Infliction Hall",
+    "lat": 32.8122962,
+    "long": -97.1314667
+  },
+  {
+    "type": "Liquor",
+    "name": "Blue Sushi Sake Grill",
+    "lat": 32.7510186,
+    "long": -97.3627631
+  },
+  {
+    "type": "Liquor",
+    "name": "Sideline Club",
+    "lat": 32.6096683,
+    "long": -97.3519648
+  },
+  {
+    "type": "Liquor",
+    "name": "Pandoras Mens Club South Fort Worth",
+    "lat": 32.6269109,
+    "long": -97.3207305
+  },
+  {
+    "type": "Liquor",
+    "name": "Flash Dancer Cabaret Fort Worth, TX",
+    "lat": 32.6187618,
+    "long": -97.3206979
+  },
+  {
+    "type": "Liquor",
+    "name": "Hoots Hall",
+    "lat": 32.5797124,
+    "long": -97.2494342
+  },
+  {
+    "type": "Liquor",
+    "name": "Cooter Brown s",
+    "lat": 32.5409917,
+    "long": -97.3084149
+  },
+  {
+    "type": "Liquor",
+    "name": "Makumba Sound",
+    "lat": 32.6396523,
+    "long": -97.2660214
+  },
+  {
+    "type": "Liquor",
+    "name": "The Club",
+    "lat": 32.5883846,
+    "long": -97.3505839
+  },
+  {
+    "type": "Liquor",
+    "name": "Carrol Night Club",
+    "lat": 32.7867456,
+    "long": -96.7624401
+  },
+  {
+    "type": "Liquor",
+    "name": "Old Rhythm",
+    "lat": 32.7588328,
+    "long": -96.7558794
+  },
+  {
+    "type": "Liquor",
+    "name": "The Vault ",
+    "lat": 32.7919932,
+    "long": -96.76824
+  },
+  {
+    "type": "Liquor",
+    "name": "the Aria",
+    "lat": 32.850992,
+    "long": -96.8054505
+  },
+  {
+    "type": "Liquor",
+    "name": "Station ",
+    "lat": 32.810535,
+    "long": -96.8110709
+  },
+  {
+    "type": "Liquor",
+    "name": "Six Ball",
+    "lat": 32.7549551,
+    "long": -96.7756773
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Rio Dallas",
+    "lat": 32.7191011,
+    "long": -96.8936133
+  },
+  {
+    "type": "Liquor",
+    "name": "GR ",
+    "lat": 32.7372675,
+    "long": -96.9167303
+  },
+  {
+    "type": "Liquor",
+    "name": "La Marea Walton",
+    "lat": 32.7384707,
+    "long": -96.9170496
+  },
+  {
+    "type": "Liquor",
+    "name": "El Pantera Private Sports Club",
+    "lat": 32.7788579,
+    "long": -96.9018071
+  },
+  {
+    "type": "Liquor",
+    "name": "Rodeo West Dallas",
+    "lat": 32.738314,
+    "long": -96.9175032
+  },
+  {
+    "type": "Liquor",
+    "name": "Secrets Dallas",
+    "lat": 32.7787942,
+    "long": -96.8966555
+  },
+  {
+    "type": "Liquor",
+    "name": "Habesha Club C Club Mechot",
+    "lat": 32.9149562,
+    "long": -96.6791464
+  },
+  {
+    "type": "Liquor",
+    "name": "Island Club Sports Bar",
+    "lat": 32.8423004,
+    "long": -96.6631469
+  },
+  {
+    "type": "Liquor",
+    "name": "Billiard Room",
+    "lat": 32.9155528,
+    "long": -96.6673491
+  },
+  {
+    "type": "Liquor",
+    "name": "Good Vibes Bar Grill",
+    "lat": 32.9325723,
+    "long": -96.6851329
+  },
+  {
+    "type": "Liquor",
+    "name": "Paradise Breeze",
+    "lat": 32.9179099,
+    "long": -96.6646044
+  },
+  {
+    "type": "Liquor",
+    "name": "Spearmint Rhino Gentlemen s Club Dallas North",
+    "lat": 32.8849411,
+    "long": -96.6947097
+  },
+  {
+    "type": "Liquor",
+    "name": "PT s Mens Club Dallas Strip",
+    "lat": 32.893218,
+    "long": -96.7010596
+  },
+  {
+    "type": "Liquor",
+    "name": "Blue Night",
+    "lat": 32.9177153,
+    "long": -96.6987399
+  },
+  {
+    "type": "Liquor",
+    "name": "Amor Lounge",
+    "lat": 32.9151026,
+    "long": -96.6987897
+  },
+  {
+    "type": "Liquor",
+    "name": "The Line Public House",
+    "lat": 32.9467757,
+    "long": -96.7116419
+  },
+  {
+    "type": "Liquor",
+    "name": "EMPIRE HOOKAH SPORTS LOUNGE",
+    "lat": 32.9619038,
+    "long": -96.839345
+  },
+  {
+    "type": "Liquor",
+    "name": "Memphis",
+    "lat": 32.9534506,
+    "long": -96.8242566
+  },
+  {
+    "type": "Liquor",
+    "name": "Topo E s Bar",
+    "lat": 32.9881464,
+    "long": -96.8830838
+  },
+  {
+    "type": "Liquor",
+    "name": "Teque C B os amigos",
+    "lat": 33.0068356,
+    "long": -96.8283969
+  },
+  {
+    "type": "Liquor",
+    "name": "CatsHouseDallas",
+    "lat": 32.9853523,
+    "long": -96.8415424
+  },
+  {
+    "type": "Liquor",
+    "name": "Circle Lounge Cafe",
+    "lat": 32.9963212,
+    "long": -96.8433737
+  },
+  {
+    "type": "Liquor",
+    "name": "Ekko Lounge",
+    "lat": 33.0093777,
+    "long": -96.8429308
+  },
+  {
+    "type": "Liquor",
+    "name": "The Alley Music House",
+    "lat": 32.9537521,
+    "long": -96.8267803
+  },
+  {
+    "type": "Liquor",
+    "name": "Al Amir Lebanese Restaurant Club",
+    "lat": 32.9536518,
+    "long": -96.8498153
+  },
+  {
+    "type": "Liquor",
+    "name": "Dallas Safari Club of",
+    "lat": 32.9243361,
+    "long": -96.7951422
+  },
+  {
+    "type": "Liquor",
+    "name": "The Oak Room Dallas",
+    "lat": 32.9592881,
+    "long": -96.8426888
+  },
+  {
+    "type": "Liquor",
+    "name": "This Is Pheezz Restaurant Lounge",
+    "lat": 32.9518225,
+    "long": -96.8211722
+  },
+  {
+    "type": "Liquor",
+    "name": "X Perience Restaurant Cocktails",
+    "lat": 32.9883579,
+    "long": -96.8542668
+  },
+  {
+    "type": "Liquor",
+    "name": "TK s Comedy",
+    "lat": 32.9505884,
+    "long": -96.817641
+  },
+  {
+    "type": "Liquor",
+    "name": "The Forum Pub",
+    "lat": 32.9560476,
+    "long": -96.7685303
+  },
+  {
+    "type": "Liquor",
+    "name": "Quiet Events Silent Disco",
+    "lat": 31.2906975,
+    "long": -97.372898
+  },
+  {
+    "type": "Liquor",
+    "name": "The Hideaway",
+    "lat": 32.9530562,
+    "long": -96.8029071
+  },
+  {
+    "type": "Liquor",
+    "name": "Gravity Dallas Grill Lounge",
+    "lat": 32.9908658,
+    "long": -96.8028331
+  },
+  {
+    "type": "Liquor",
+    "name": "Copper Penny",
+    "lat": 32.9710315,
+    "long": -96.8409659
+  },
+  {
+    "type": "Liquor",
+    "name": "BadRabbit",
+    "lat": 32.9026338,
+    "long": -96.7175341
+  },
+  {
+    "type": "Liquor",
+    "name": "Murphy s Mansion",
+    "lat": 32.900455,
+    "long": -96.720566
+  },
+  {
+    "type": "Liquor",
+    "name": "Ranch House Sachse",
+    "lat": 32.9899895,
+    "long": -96.573381
+  },
+  {
+    "type": "Liquor",
+    "name": "The Tipsy Chicken",
+    "lat": 32.9787245,
+    "long": -96.590813
+  },
+  {
+    "type": "Liquor",
+    "name": "Rockwall Squares",
+    "lat": 32.9283727,
+    "long": -96.4606128
+  },
+  {
+    "type": "Liquor",
+    "name": "Ramblin Rose",
+    "lat": 32.9576248,
+    "long": -96.5283514
+  },
+  {
+    "type": "Liquor",
+    "name": "Rowlett Dance Academy",
+    "lat": 32.9176123,
+    "long": -96.520394
+  },
+  {
+    "type": "Liquor",
+    "name": "Hang Time Sports Grill Bar",
+    "lat": 32.9206924,
+    "long": -96.5067291
+  },
+  {
+    "type": "Liquor",
+    "name": "The Brass Tap",
+    "lat": 32.9524598,
+    "long": -96.5740063
+  },
+  {
+    "type": "Liquor",
+    "name": "Buffalo Wild Wings",
+    "lat": 32.9025952,
+    "long": -96.4546104
+  },
+  {
+    "type": "Liquor",
+    "name": "Hookah House Wylie",
+    "lat": 33.0114925,
+    "long": -96.5818791
+  },
+  {
+    "type": "Liquor",
+    "name": "The Downing Bottles and Bites",
+    "lat": 32.930677,
+    "long": -96.4596112
+  },
+  {
+    "type": "Liquor",
+    "name": "Eldorado Fine Cigars",
+    "lat": 32.935644,
+    "long": -96.4604586
+  },
+  {
+    "type": "Liquor",
+    "name": "Sachse Ice House",
+    "lat": 32.9803641,
+    "long": -96.5883318
+  },
+  {
+    "type": "Liquor",
+    "name": "Sammy Lou s Home Cooking BBQ",
+    "lat": 32.9141677,
+    "long": -96.5231601
+  },
+  {
+    "type": "Liquor",
+    "name": "Pier ",
+    "lat": 32.9308774,
+    "long": -96.4583474
+  },
+  {
+    "type": "Liquor",
+    "name": "Bin ",
+    "lat": 32.933159,
+    "long": -96.459503
+  },
+  {
+    "type": "Liquor",
+    "name": "Super Shack Seafood Grill",
+    "lat": 32.9081095,
+    "long": -96.5643663
+  },
+  {
+    "type": "Liquor",
+    "name": "Buffalo Wild Wings GO ",
+    "lat": 32.9081354,
+    "long": -96.5721415
+  },
+  {
+    "type": "Liquor",
+    "name": "Amplified DFW LLC",
+    "lat": 32.7430719,
+    "long": -96.963595
+  },
+  {
+    "type": "Liquor",
+    "name": "Snuffer s Restaurant Bar",
+    "lat": 32.8960295,
+    "long": -96.4770294
+  },
+  {
+    "type": "Liquor",
+    "name": "Jimmy John s",
+    "lat": 33.006896,
+    "long": -96.549695
+  },
+  {
+    "type": "Liquor",
+    "name": "After hours Club De Dior",
+    "lat": 32.8008063,
+    "long": -96.680024
+  },
+  {
+    "type": "Liquor",
+    "name": "Voltage After Hours",
+    "lat": 32.801002,
+    "long": -96.6809021
+  },
+  {
+    "type": "Liquor",
+    "name": "PM Lounge",
+    "lat": 32.820907,
+    "long": -96.7848656
+  },
+  {
+    "type": "Liquor",
+    "name": "Candleroom",
+    "lat": 32.8203334,
+    "long": -96.7854334
+  },
+  {
+    "type": "Liquor",
+    "name": "New West",
+    "lat": 32.8548655,
+    "long": -96.7485137
+  },
+  {
+    "type": "Liquor",
+    "name": "Ibiza Lounge Dallas",
+    "lat": 32.8200816,
+    "long": -96.7842308
+  },
+  {
+    "type": "Liquor",
+    "name": "The Balcony Club",
+    "lat": 32.8121289,
+    "long": -96.7533346
+  },
+  {
+    "type": "Liquor",
+    "name": "Oasis after hours",
+    "lat": 32.7976944,
+    "long": -96.687191
+  },
+  {
+    "type": "Liquor",
+    "name": "XTC Dallas",
+    "lat": 32.8286678,
+    "long": -96.8717083
+  },
+  {
+    "type": "Liquor",
+    "name": "LC Lounge",
+    "lat": 32.7424718,
+    "long": -96.8267903
+  },
+  {
+    "type": "Liquor",
+    "name": "El Arbol",
+    "lat": 32.7923246,
+    "long": -96.9316943
+  },
+  {
+    "type": "Liquor",
+    "name": "Playhouse Dallas",
+    "lat": 32.7983471,
+    "long": -96.8064867
+  },
+  {
+    "type": "Liquor",
+    "name": "Havana",
+    "lat": 32.8112483,
+    "long": -96.811223
+  },
+  {
+    "type": "Liquor",
+    "name": "Thrive Nightclub",
+    "lat": 32.7807943,
+    "long": -96.8034875
+  },
+  {
+    "type": "Liquor",
+    "name": "Arco Iris Night Club",
+    "lat": 32.7430611,
+    "long": -96.8226527
+  },
+  {
+    "type": "Liquor",
+    "name": "T O s",
+    "lat": 32.7148392,
+    "long": -96.8114594
+  },
+  {
+    "type": "Liquor",
+    "name": "TownHouse",
+    "lat": 32.7867763,
+    "long": -96.7965429
+  },
+  {
+    "type": "Liquor",
+    "name": "CRUSH",
+    "lat": 32.8077843,
+    "long": -96.809619
+  },
+  {
+    "type": "Liquor",
+    "name": "Latinos Night Club",
+    "lat": 32.8126456,
+    "long": -96.8243365
+  },
+  {
+    "type": "Liquor",
+    "name": "Kaliente",
+    "lat": 32.8101634,
+    "long": -96.8207435
+  },
+  {
+    "type": "Liquor",
+    "name": "Silver City Cabaret",
+    "lat": 32.8201163,
+    "long": -96.8704946
+  },
+  {
+    "type": "Liquor",
+    "name": "TKila Club",
+    "lat": 32.8216964,
+    "long": -96.8541098
+  },
+  {
+    "type": "Liquor",
+    "name": "Taboo Lounge Dallas",
+    "lat": 32.79067,
+    "long": -96.8202899
+  },
+  {
+    "type": "Liquor",
+    "name": "Marty s Live",
+    "lat": 32.8074035,
+    "long": -96.8182024
+  },
+  {
+    "type": "Liquor",
+    "name": "Mr Luxx Dallas",
+    "lat": 32.8208788,
+    "long": -96.8883498
+  },
+  {
+    "type": "Liquor",
+    "name": "The Palms",
+    "lat": 32.8040997,
+    "long": -96.7990068
+  },
+  {
+    "type": "Liquor",
+    "name": "The Mining Company",
+    "lat": 32.8103938,
+    "long": -96.8107174
+  },
+  {
+    "type": "Liquor",
+    "name": "Sue Ellen s",
+    "lat": 32.8106225,
+    "long": -96.8115289
+  },
+  {
+    "type": "Liquor",
+    "name": "Round Up Saloon",
+    "lat": 32.8107179,
+    "long": -96.8102983
+  },
+  {
+    "type": "Liquor",
+    "name": "The Tipsy Alchemist",
+    "lat": 32.7940671,
+    "long": -96.8063545
+  },
+  {
+    "type": "Liquor",
+    "name": "Foundation Room Dallas",
+    "lat": 32.7851449,
+    "long": -96.8083694
+  },
+  {
+    "type": "Liquor",
+    "name": "Bar Eden Lounge at Paradiso",
+    "lat": 32.7474004,
+    "long": -96.8278015
+  },
+  {
+    "type": "Liquor",
+    "name": "The Tin Room",
+    "lat": 32.8185529,
+    "long": -96.8320898
+  },
+  {
+    "type": "Liquor",
+    "name": "The Echo Lounge Music Hall",
+    "lat": 32.7905621,
+    "long": -96.8144584
+  },
+  {
+    "type": "Liquor",
+    "name": "Birdies Golf Lounge",
+    "lat": 32.7879896,
+    "long": -96.8100795
+  },
+  {
+    "type": "Liquor",
+    "name": "Sunlightdiscomovil",
+    "lat": 32.8016165,
+    "long": -96.9231945
+  },
+  {
+    "type": "Liquor",
+    "name": "SILO Dallas",
+    "lat": 32.7976258,
+    "long": -96.829502
+  },
+  {
+    "type": "Liquor",
+    "name": "COMUNION",
+    "lat": 32.8236572,
+    "long": -96.8201346
+  },
+  {
+    "type": "Liquor",
+    "name": "The Oxford Rose Tavern Supper Club",
+    "lat": 32.7905734,
+    "long": -96.8048107
+  },
+  {
+    "type": "Liquor",
+    "name": "The nd Floor",
+    "lat": 32.7801777,
+    "long": -96.8000421
+  },
+  {
+    "type": "Liquor",
+    "name": "Mila",
+    "lat": 32.7986226,
+    "long": -96.8013795
+  },
+  {
+    "type": "Liquor",
+    "name": "The Pool Club",
+    "lat": 32.7969467,
+    "long": -96.8218754
+  },
+  {
+    "type": "Liquor",
+    "name": "Revelers Hall",
+    "lat": 32.7486675,
+    "long": -96.8281612
+  },
+  {
+    "type": "Liquor",
+    "name": "Tiny Victories",
+    "lat": 32.7497806,
+    "long": -96.8374028
+  },
+  {
+    "type": "Liquor",
+    "name": "TRUE Studio",
+    "lat": 32.7884517,
+    "long": -96.7991005
+  },
+  {
+    "type": "Liquor",
+    "name": "The Grapevine Bar",
+    "lat": 32.8152237,
+    "long": -96.8378847
+  },
+  {
+    "type": "Liquor",
+    "name": "Barbara s Pavilion",
+    "lat": 32.7425071,
+    "long": -96.8276767
+  },
+  {
+    "type": "Liquor",
+    "name": "Casablanca",
+    "lat": 32.7465685,
+    "long": -96.828072
+  },
+  {
+    "type": "Liquor",
+    "name": "Casanova Karaoke Lounges",
+    "lat": 32.7465321,
+    "long": -96.827732
+  },
+  {
+    "type": "Liquor",
+    "name": "Liquid Zoo",
+    "lat": 32.8074113,
+    "long": -96.8172276
+  },
+  {
+    "type": "Liquor",
+    "name": "Dallas Woody s",
+    "lat": 32.8112609,
+    "long": -96.8118998
+  },
+  {
+    "type": "Liquor",
+    "name": "Commons Club",
+    "lat": 32.7970132,
+    "long": -96.821736
+  },
+  {
+    "type": "Liquor",
+    "name": "JR s Bar Grill",
+    "lat": 32.8108542,
+    "long": -96.8112366
+  },
+  {
+    "type": "Liquor",
+    "name": "Ojos Locos Sports Cantina",
+    "lat": 32.7676761,
+    "long": -96.8990777
+  },
+  {
+    "type": "Liquor",
+    "name": "Beau Nash",
+    "lat": 32.7942233,
+    "long": -96.8040297
+  },
+  {
+    "type": "Liquor",
+    "name": "Babou s",
+    "lat": 32.7923436,
+    "long": -96.806245
+  },
+  {
+    "type": "Liquor",
+    "name": "Hero",
+    "lat": 32.7893868,
+    "long": -96.809644
+  },
+  {
+    "type": "Liquor",
+    "name": "The Kava Bar Oak Cliff",
+    "lat": 32.7433655,
+    "long": -96.8271006
+  },
+  {
+    "type": "Liquor",
+    "name": "HAM Promotions Dallas EDM",
+    "lat": 32.786714,
+    "long": -96.8226448
+  },
+  {
+    "type": "Liquor",
+    "name": "Quill Private Events",
+    "lat": 32.797109,
+    "long": -96.8191733
+  },
+  {
+    "type": "Liquor",
+    "name": "Bali Beach Club",
+    "lat": 32.7950612,
+    "long": -96.8035368
+  },
+  {
+    "type": "Liquor",
+    "name": "Ritz",
+    "lat": 32.7387583,
+    "long": -97.0368587
+  },
+  {
+    "type": "Liquor",
+    "name": "Escondido Night Club",
+    "lat": 32.7354487,
+    "long": -97.0554717
+  },
+  {
+    "type": "Liquor",
+    "name": "Sensation Lounge",
+    "lat": 32.7443411,
+    "long": -97.0416271
+  },
+  {
+    "type": "Liquor",
+    "name": "Zuri bar and Lounge",
+    "lat": 32.7401135,
+    "long": -97.0598855
+  },
+  {
+    "type": "Liquor",
+    "name": "Tu Chi E of Arlington",
+    "lat": 32.7078552,
+    "long": -97.0645599
+  },
+  {
+    "type": "Liquor",
+    "name": "Jack s Pour House",
+    "lat": 32.7209472,
+    "long": -97.0423771
+  },
+  {
+    "type": "Liquor",
+    "name": "Opera Supper Club",
+    "lat": 32.7810351,
+    "long": -96.792782
+  },
+  {
+    "type": "Liquor",
+    "name": "Mis Tragos Bar Grill",
+    "lat": 32.7194213,
+    "long": -97.0823135
+  },
+  {
+    "type": "Liquor",
+    "name": "Yo Love Cole Cigar Lounge",
+    "lat": 32.6686463,
+    "long": -97.0618394
+  },
+  {
+    "type": "Liquor",
+    "name": "Mary s Outpost Your TX Home Bar",
+    "lat": 32.7274279,
+    "long": -97.044502
+  },
+  {
+    "type": "Liquor",
+    "name": "Mr Froze Margarita",
+    "lat": 32.6077919,
+    "long": -97.0793762
+  },
+  {
+    "type": "Liquor",
+    "name": "Plaza Pub",
+    "lat": 32.7196512,
+    "long": -97.0799942
+  },
+  {
+    "type": "Liquor",
+    "name": "Pancho Villa Sport Bar",
+    "lat": 32.7349004,
+    "long": -97.0709406
+  },
+  {
+    "type": "Liquor",
+    "name": "Society s Lounge",
+    "lat": 32.7079514,
+    "long": -97.0653682
+  },
+  {
+    "type": "Liquor",
+    "name": "Jaicooze Sauna and Medspa",
+    "lat": 32.6615672,
+    "long": -96.9424504
+  },
+  {
+    "type": "Liquor",
+    "name": "Caves Lounge",
+    "lat": 32.7384812,
+    "long": -97.1171506
+  },
+  {
+    "type": "Liquor",
+    "name": "Maverick Club Lounge",
+    "lat": 32.7312261,
+    "long": -97.1078663
+  },
+  {
+    "type": "Liquor",
+    "name": "Sunshine Club",
+    "lat": 32.7389187,
+    "long": -97.117261
+  },
+  {
+    "type": "Liquor",
+    "name": "Showdown Saloon",
+    "lat": 32.7113037,
+    "long": -97.1135966
+  },
+  {
+    "type": "Liquor",
+    "name": "Milo s Bar",
+    "lat": 32.7391875,
+    "long": -97.1026726
+  },
+  {
+    "type": "Liquor",
+    "name": "The Spot Art Lounge",
+    "lat": 32.7091224,
+    "long": -97.1555888
+  },
+  {
+    "type": "Liquor",
+    "name": "Luxor Hookah Lounge Hurst",
+    "lat": 32.8223717,
+    "long": -97.196707
+  },
+  {
+    "type": "Liquor",
+    "name": "Cobra Club",
+    "lat": 32.8093455,
+    "long": -97.1724083
+  },
+  {
+    "type": "Liquor",
+    "name": "Red Room Lounge",
+    "lat": 32.7575807,
+    "long": -97.2379702
+  },
+  {
+    "type": "Liquor",
+    "name": "El Caballo Blanco",
+    "lat": 32.8032117,
+    "long": -97.3518557
+  },
+  {
+    "type": "Liquor",
+    "name": "Rodeo Exchange",
+    "lat": 32.788757,
+    "long": -97.351372
+  },
+  {
+    "type": "Liquor",
+    "name": "Madam Pearl s Dancehall Saloon",
+    "lat": 32.789115,
+    "long": -97.35181
+  },
+  {
+    "type": "Liquor",
+    "name": "Stockyard Armadillo",
+    "lat": 32.788988,
+    "long": -97.350057
+  },
+  {
+    "type": "Liquor",
+    "name": "El Tamaulipas Bar",
+    "lat": 32.8099387,
+    "long": -97.3511448
+  },
+  {
+    "type": "Liquor",
+    "name": "Starlight Lounge",
+    "lat": 32.7268625,
+    "long": -97.4402453
+  },
+  {
+    "type": "Liquor",
+    "name": "Pandoras Mens Club Lakeside Fort Worth",
+    "lat": 32.8209216,
+    "long": -97.4685856
+  },
+  {
+    "type": "Liquor",
+    "name": "Johnny B s",
+    "lat": 32.7069755,
+    "long": -97.4485094
+  },
+  {
+    "type": "Liquor",
+    "name": "McFly s Pub",
+    "lat": 32.7749503,
+    "long": -97.4149301
+  },
+  {
+    "type": "Liquor",
+    "name": "Lake Worth Cigar Lounge Public Private Lounges See Website For Details",
+    "lat": 32.8160104,
+    "long": -97.4340582
+  }
+]

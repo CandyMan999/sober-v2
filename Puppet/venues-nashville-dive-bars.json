@@ -1,0 +1,716 @@
+[
+  {
+    "type": "Bar",
+    "name": "Golden Pony",
+    "lat": 36.193835,
+    "long": -86.7533989
+  },
+  {
+    "type": "Bar",
+    "name": "Bobby s Idle Hour Tavern",
+    "lat": 36.1465377,
+    "long": -86.7933457
+  },
+  {
+    "type": "Bar",
+    "name": "Teddy s Tavern",
+    "lat": 36.1601833,
+    "long": -86.7780541
+  },
+  {
+    "type": "Bar",
+    "name": "Doc Holliday s Saloon",
+    "lat": 36.1623833,
+    "long": -86.7753487
+  },
+  {
+    "type": "Bar",
+    "name": "Wilburn Street Tavern",
+    "lat": 36.1855355,
+    "long": -86.767799
+  },
+  {
+    "type": "Bar",
+    "name": "The Underdog",
+    "lat": 36.2066171,
+    "long": -86.7360027
+  },
+  {
+    "type": "Bar",
+    "name": "The Bowery Vault",
+    "lat": 36.2028655,
+    "long": -86.7394058
+  },
+  {
+    "type": "Bar",
+    "name": "The Villager Tavern",
+    "lat": 36.1368111,
+    "long": -86.8010556
+  },
+  {
+    "type": "Bar",
+    "name": "Tin Roof",
+    "lat": 36.153189,
+    "long": -86.789934
+  },
+  {
+    "type": "Bar",
+    "name": "The Red Door Saloon Midtown",
+    "lat": 36.1506259,
+    "long": -86.7957885
+  },
+  {
+    "type": "Bar",
+    "name": "Layla s Honky Tonk",
+    "lat": 36.1608333,
+    "long": -86.7780556
+  },
+  {
+    "type": "Bar",
+    "name": "The Centennial",
+    "lat": 36.1627174,
+    "long": -86.8500659
+  },
+  {
+    "type": "Bar",
+    "name": "Elm Hill Tavern",
+    "lat": 36.1498292,
+    "long": -86.7005593
+  },
+  {
+    "type": "Bar",
+    "name": "Santa s Pub",
+    "lat": 36.1274383,
+    "long": -86.7672367
+  },
+  {
+    "type": "Bar",
+    "name": "Never Never",
+    "lat": 36.1424099,
+    "long": -86.7655238
+  },
+  {
+    "type": "Bar",
+    "name": "The Red Door Saloon East",
+    "lat": 36.1783234,
+    "long": -86.7500518
+  },
+  {
+    "type": "Bar",
+    "name": "Mickey s Tavern",
+    "lat": 36.2029207,
+    "long": -86.739131
+  },
+  {
+    "type": "Bar",
+    "name": "The End",
+    "lat": 36.1511064,
+    "long": -86.8038002
+  },
+  {
+    "type": "Bar",
+    "name": "Wilhagans",
+    "lat": 36.1349764,
+    "long": -86.7178905
+  },
+  {
+    "type": "Bar",
+    "name": "Bootleggers Inn",
+    "lat": 36.1615109,
+    "long": -86.7753046
+  },
+  {
+    "type": "Bar",
+    "name": "Beyond The Edge",
+    "lat": 36.1765477,
+    "long": -86.75041
+  },
+  {
+    "type": "Bar",
+    "name": "Cobra Nashville",
+    "lat": 36.1955993,
+    "long": -86.7431116
+  },
+  {
+    "type": "Bar",
+    "name": "Rosie s Twin Kegs",
+    "lat": 36.1107194,
+    "long": -86.7469
+  },
+  {
+    "type": "Bar",
+    "name": "Mother s Ruin",
+    "lat": 36.1760784,
+    "long": -86.7903733
+  },
+  {
+    "type": "Bar",
+    "name": "Bar Sovereign",
+    "lat": 36.1549894,
+    "long": -86.7744323
+  },
+  {
+    "type": "Bar",
+    "name": "Duke s",
+    "lat": 36.1779189,
+    "long": -86.7510787
+  },
+  {
+    "type": "Bar",
+    "name": "Lakeside Lounge",
+    "lat": 36.1756234,
+    "long": -86.7552974
+  },
+  {
+    "type": "Bar",
+    "name": "Fran s",
+    "lat": 36.2109673,
+    "long": -86.7658446
+  },
+  {
+    "type": "Bar",
+    "name": "Lucky s Star Bar",
+    "lat": 36.1399265,
+    "long": -86.76354
+  },
+  {
+    "type": "Bar",
+    "name": "Pearl Diver",
+    "lat": 36.1890897,
+    "long": -86.7463771
+  },
+  {
+    "type": "Bar",
+    "name": "Losers Bar Grill",
+    "lat": 36.1497217,
+    "long": -86.7967296
+  },
+  {
+    "type": "Bar",
+    "name": "No Quarter",
+    "lat": 36.1764041,
+    "long": -86.755249
+  },
+  {
+    "type": "Bar",
+    "name": "Springwater",
+    "lat": 36.146434,
+    "long": -86.812278
+  },
+  {
+    "type": "Bar",
+    "name": "Batters Box",
+    "lat": 36.1559887,
+    "long": -86.7679531
+  },
+  {
+    "type": "Bar",
+    "name": "MJs Chill Spot",
+    "lat": 36.1641691,
+    "long": -86.7781919
+  },
+  {
+    "type": "Bar",
+    "name": "Alley Taps",
+    "lat": 36.1634722,
+    "long": -86.77825
+  },
+  {
+    "type": "Bar",
+    "name": "Sidebar",
+    "lat": 36.1571623,
+    "long": -86.7726506
+  },
+  {
+    "type": "Bar",
+    "name": "Twilight Tavern",
+    "lat": 36.1514191,
+    "long": -86.8514927
+  },
+  {
+    "type": "Bar",
+    "name": "Coral Club",
+    "lat": 36.1828433,
+    "long": -86.7493881
+  },
+  {
+    "type": "Bar",
+    "name": "Schulman s",
+    "lat": 36.1888337,
+    "long": -86.7287934
+  },
+  {
+    "type": "Bar",
+    "name": "Friends in Low Places Bar Honky Tonk",
+    "lat": 36.1606953,
+    "long": -86.7775951
+  },
+  {
+    "type": "Bar",
+    "name": "Betty s Grill",
+    "lat": 36.1525009,
+    "long": -86.846098
+  },
+  {
+    "type": "Bar",
+    "name": "The Green Light Bar",
+    "lat": 36.1472146,
+    "long": -86.7804114
+  },
+  {
+    "type": "Bar",
+    "name": "Connie s Neighborhood Bar",
+    "lat": 36.1519112,
+    "long": -86.8048648
+  },
+  {
+    "type": "Bar",
+    "name": "Ernie s Boondock",
+    "lat": 36.1759746,
+    "long": -86.754602
+  },
+  {
+    "type": "Bar",
+    "name": "Gramps Garage",
+    "lat": 36.2033721,
+    "long": -86.7389068
+  },
+  {
+    "type": "Bar",
+    "name": "The Spot",
+    "lat": 36.1784111,
+    "long": -86.7503972
+  },
+  {
+    "type": "Bar",
+    "name": "Cross Eyed Critters Watering Hole",
+    "lat": 36.1514635,
+    "long": -86.7997599
+  },
+  {
+    "type": "Bar",
+    "name": "Riley Green s Duck Blind",
+    "lat": 36.1495944,
+    "long": -86.7968487
+  },
+  {
+    "type": "Bar",
+    "name": "The Lipstick Lounge",
+    "lat": 36.176962,
+    "long": -86.7457302
+  },
+  {
+    "type": "Bar",
+    "name": "Break Room Noble s Upstairs",
+    "lat": 36.1777176,
+    "long": -86.7519611
+  },
+  {
+    "type": "Bar",
+    "name": "The Lost Paddy Irish Pub and Restaurant",
+    "lat": 36.1365371,
+    "long": -86.7238688
+  },
+  {
+    "type": "Bar",
+    "name": "Skinny Dennis",
+    "lat": 36.1969277,
+    "long": -86.7423901
+  },
+  {
+    "type": "Bar",
+    "name": "Dino s Bar Grill",
+    "lat": 36.1811464,
+    "long": -86.7492939
+  },
+  {
+    "type": "Bar",
+    "name": "The Local Nashville",
+    "lat": 36.1458981,
+    "long": -86.8125998
+  },
+  {
+    "type": "Bar",
+    "name": "Frankie J s",
+    "lat": 36.1774403,
+    "long": -86.7906857
+  },
+  {
+    "type": "Bar",
+    "name": "Nations Bar and Grill",
+    "lat": 36.1556617,
+    "long": -86.8490558
+  },
+  {
+    "type": "Bar",
+    "name": "Roy s Tavern",
+    "lat": 36.2147379,
+    "long": -86.7307007
+  },
+  {
+    "type": "Bar",
+    "name": "Tiger Bar",
+    "lat": 36.2030947,
+    "long": -86.7390151
+  },
+  {
+    "type": "Bar",
+    "name": "Honky Tonk Hideaway Bar",
+    "lat": 36.1398467,
+    "long": -86.7593148
+  },
+  {
+    "type": "Bar",
+    "name": "Fleet Street Pub",
+    "lat": 36.1643694,
+    "long": -86.778515
+  },
+  {
+    "type": "Bar",
+    "name": "GoodTimes Full Service bar",
+    "lat": 36.1371162,
+    "long": -86.7616115
+  },
+  {
+    "type": "Bar",
+    "name": "Nudie s Honky Tonk",
+    "lat": 36.160693,
+    "long": -86.7774455
+  },
+  {
+    "type": "Bar",
+    "name": "Coyote Ugly Nashville",
+    "lat": 36.1636865,
+    "long": -86.7757861
+  },
+  {
+    "type": "Bar",
+    "name": "Urban Cowboy Public House",
+    "lat": 36.1773074,
+    "long": -86.741657
+  },
+  {
+    "type": "Bar",
+    "name": "Village Pub and Beer Garden",
+    "lat": 36.2044184,
+    "long": -86.7248064
+  },
+  {
+    "type": "Bar",
+    "name": "Sid Gold s Request Room",
+    "lat": 36.2082916,
+    "long": -86.7353862
+  },
+  {
+    "type": "Bar",
+    "name": "Pullman Standard Bar",
+    "lat": 36.1558674,
+    "long": -86.7831117
+  },
+  {
+    "type": "Bar",
+    "name": "Nashville Dive Bar Shuttle",
+    "lat": 36.1603094,
+    "long": -86.7620913
+  },
+  {
+    "type": "Bar",
+    "name": "Old Glory",
+    "lat": 36.1428851,
+    "long": -86.7915362
+  },
+  {
+    "type": "Bar",
+    "name": "Hubba Hubba Tiki Tonk",
+    "lat": 36.176485,
+    "long": -86.7552077
+  },
+  {
+    "type": "Bar",
+    "name": "Fins Bar Nashville",
+    "lat": 36.1555212,
+    "long": -86.7756842
+  },
+  {
+    "type": "Bar",
+    "name": "Neighbors of Sylvan Park",
+    "lat": 36.1407342,
+    "long": -86.8399866
+  },
+  {
+    "type": "Bar",
+    "name": "The Late Great",
+    "lat": 36.1517317,
+    "long": -86.7934446
+  },
+  {
+    "type": "Bar",
+    "name": "Robert s Western World",
+    "lat": 36.1609872,
+    "long": -86.7780462
+  },
+  {
+    "type": "Bar",
+    "name": "Bottle Cap",
+    "lat": 36.1260433,
+    "long": -86.7895587
+  },
+  {
+    "type": "Bar",
+    "name": "Broadway BrewPub Grub",
+    "lat": 36.1510986,
+    "long": -86.7968754
+  },
+  {
+    "type": "Bar",
+    "name": "Neighbors of Germantown",
+    "lat": 36.1745548,
+    "long": -86.7858104
+  },
+  {
+    "type": "Bar",
+    "name": "Inglewood Lounge",
+    "lat": 36.2168974,
+    "long": -86.7285329
+  },
+  {
+    "type": "Bar",
+    "name": "Lonnie s Western Room",
+    "lat": 36.1641279,
+    "long": -86.7781833
+  },
+  {
+    "type": "Bar",
+    "name": "H Cues Upstairs Poolroom",
+    "lat": 36.1386026,
+    "long": -86.8003583
+  },
+  {
+    "type": "Bar",
+    "name": "Bret s Basement Lounge",
+    "lat": 36.1014833,
+    "long": -86.739948
+  },
+  {
+    "type": "Bar",
+    "name": "Bobby s Garage",
+    "lat": 36.164501,
+    "long": -86.7790454
+  },
+  {
+    "type": "Bar",
+    "name": "Flavor s Bar",
+    "lat": 36.1529868,
+    "long": -86.7906645
+  },
+  {
+    "type": "Bar",
+    "name": "Sidecar Bar",
+    "lat": 36.1776501,
+    "long": -86.7908457
+  },
+  {
+    "type": "Bar",
+    "name": "Wild Beaver Saloon",
+    "lat": 36.1631253,
+    "long": -86.7768272
+  },
+  {
+    "type": "Bar",
+    "name": "Music City Bar Grill",
+    "lat": 36.2188727,
+    "long": -86.6980991
+  },
+  {
+    "type": "Bar",
+    "name": "plane jane",
+    "lat": 36.1954555,
+    "long": -86.7717418
+  },
+  {
+    "type": "Bar",
+    "name": "Lucky Bastard Saloon",
+    "lat": 36.1610733,
+    "long": -86.777612
+  },
+  {
+    "type": "Bar",
+    "name": " Club",
+    "lat": 36.0839541,
+    "long": -86.6898917
+  },
+  {
+    "type": "Bar",
+    "name": "Lowbar Nashville",
+    "lat": 36.1757213,
+    "long": -86.7556167
+  },
+  {
+    "type": "Bar",
+    "name": "The Dive Motel",
+    "lat": 36.1992419,
+    "long": -86.771036
+  },
+  {
+    "type": "Bar",
+    "name": "Daniela s Bar And Grill",
+    "lat": 36.1159265,
+    "long": -86.7198583
+  },
+  {
+    "type": "Bar",
+    "name": "Joe s Place",
+    "lat": 36.1047361,
+    "long": -86.8191
+  },
+  {
+    "type": "Bar",
+    "name": "Waymore s Guest House",
+    "lat": 36.175936,
+    "long": -86.757756
+  },
+  {
+    "type": "Bar",
+    "name": "Category ",
+    "lat": 36.1627656,
+    "long": -86.7751783
+  },
+  {
+    "type": "Bar",
+    "name": "The Corner Pub",
+    "lat": 36.1019156,
+    "long": -86.8181309
+  },
+  {
+    "type": "Bar",
+    "name": "Drifters Tennessee Barbeque BBQ Joint",
+    "lat": 36.1767429,
+    "long": -86.7507884
+  },
+  {
+    "type": "Bar",
+    "name": "Copa Cabana Bar and Grill",
+    "lat": 36.1436389,
+    "long": -86.874461
+  },
+  {
+    "type": "Bar",
+    "name": "Jack Brown s Beer Burger Joint Germantown",
+    "lat": 36.1759528,
+    "long": -86.7856083
+  },
+  {
+    "type": "Bar",
+    "name": "Printers Alley",
+    "lat": 36.1646491,
+    "long": -86.7787954
+  },
+  {
+    "type": "Bar",
+    "name": "The Donelson Pub",
+    "lat": 36.1502408,
+    "long": -86.665742
+  },
+  {
+    "type": "Bar",
+    "name": "Bikini Beach Bar",
+    "lat": 36.0865836,
+    "long": -86.6919249
+  },
+  {
+    "type": "Bar",
+    "name": "Canvas",
+    "lat": 36.1742966,
+    "long": -86.7497481
+  },
+  {
+    "type": "Bar",
+    "name": "BigShotz",
+    "lat": 36.1623246,
+    "long": -86.7757594
+  },
+  {
+    "type": "Bar",
+    "name": "Melrose Billiard Parlor",
+    "lat": 36.1220318,
+    "long": -86.7752649
+  },
+  {
+    "type": "Bar",
+    "name": "Greenhouse Bar",
+    "lat": 36.1044845,
+    "long": -86.8175964
+  },
+  {
+    "type": "Bar",
+    "name": "Carl s Corner",
+    "lat": 36.0914455,
+    "long": -86.7359708
+  },
+  {
+    "type": "Bar",
+    "name": "Dee s Country Cocktail Lounge",
+    "lat": 36.2488528,
+    "long": -86.7184893
+  },
+  {
+    "type": "Bar",
+    "name": "Midnight Oil",
+    "lat": 36.1616412,
+    "long": -86.8488302
+  },
+  {
+    "type": "Bar",
+    "name": "Cold Beer Entertainment Group",
+    "lat": 36.149722,
+    "long": -86.7967294
+  },
+  {
+    "type": "Bar",
+    "name": "Lucky s Bar Grill",
+    "lat": 36.1584995,
+    "long": -86.6345385
+  },
+  {
+    "type": "Bar",
+    "name": "Thirsty Turtle Sports Grill",
+    "lat": 36.0470222,
+    "long": -86.6743125
+  },
+  {
+    "type": "Bar",
+    "name": "The Other Place Sports Bar And Grill",
+    "lat": 36.0245469,
+    "long": -86.7124544
+  },
+  {
+    "type": "Bar",
+    "name": "TNTs Billiards Bar Grill",
+    "lat": 36.0467282,
+    "long": -86.6594751
+  },
+  {
+    "type": "Bar",
+    "name": "Sip Sound",
+    "lat": 36.0420252,
+    "long": -86.7767483
+  },
+  {
+    "type": "Bar",
+    "name": "Honky Tonks and Dive Bars",
+    "lat": 34.131111,
+    "long": -99.9230091
+  },
+  {
+    "type": "Bar",
+    "name": "Outlanders Southern Chicken",
+    "lat": 35.9627068,
+    "long": -86.6751831
+  },
+  {
+    "type": "Bar",
+    "name": "Judge Bean s BBQ",
+    "lat": 36.0334838,
+    "long": -86.7866678
+  }
+]

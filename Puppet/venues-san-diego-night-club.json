@@ -1,0 +1,788 @@
+[
+  {
+    "type": "Liquor",
+    "name": "SideBar Nightclub San Diego",
+    "lat": 32.7116509,
+    "long": -117.1594046
+  },
+  {
+    "type": "Liquor",
+    "name": "Spin Nightclub",
+    "lat": 32.7445721,
+    "long": -117.1881476
+  },
+  {
+    "type": "Liquor",
+    "name": "Til Two Club",
+    "lat": 32.7561967,
+    "long": -117.0924358
+  },
+  {
+    "type": "Liquor",
+    "name": "Onyx Room",
+    "lat": 32.7143742,
+    "long": -117.1603214
+  },
+  {
+    "type": "Liquor",
+    "name": "U ",
+    "lat": 32.7486229,
+    "long": -117.1272888
+  },
+  {
+    "type": "Liquor",
+    "name": "Parq Nightclub",
+    "lat": 32.7154634,
+    "long": -117.159096
+  },
+  {
+    "type": "Liquor",
+    "name": "RUMBA LOUNGE",
+    "lat": 32.7143351,
+    "long": -117.1604363
+  },
+  {
+    "type": "Liquor",
+    "name": "Bloom Nightclub",
+    "lat": 32.7147729,
+    "long": -117.1606295
+  },
+  {
+    "type": "Liquor",
+    "name": "Rich s",
+    "lat": 32.7482628,
+    "long": -117.1540341
+  },
+  {
+    "type": "Liquor",
+    "name": "F ix",
+    "lat": 32.713735,
+    "long": -117.1596867
+  },
+  {
+    "type": "Liquor",
+    "name": "Omert C A ",
+    "lat": 32.7134831,
+    "long": -117.1597891
+  },
+  {
+    "type": "Liquor",
+    "name": "Whistle Stop Bar",
+    "lat": 32.7293668,
+    "long": -117.1297497
+  },
+  {
+    "type": "Liquor",
+    "name": "Kensington Club",
+    "lat": 32.7631277,
+    "long": -117.1076768
+  },
+  {
+    "type": "Liquor",
+    "name": "EQ San Diego",
+    "lat": 32.7479839,
+    "long": -117.1520113
+  },
+  {
+    "type": "Liquor",
+    "name": "Sevilla Nightclub of San Diego",
+    "lat": 32.7089135,
+    "long": -117.1596936
+  },
+  {
+    "type": "Liquor",
+    "name": "San Diego Club Crawl",
+    "lat": 32.7119777,
+    "long": -117.1602902
+  },
+  {
+    "type": "Liquor",
+    "name": "Prohibition Lounge",
+    "lat": 32.7111155,
+    "long": -117.1603528
+  },
+  {
+    "type": "Liquor",
+    "name": "San Diego VIP Nightlife",
+    "lat": 32.7102979,
+    "long": -117.1509268
+  },
+  {
+    "type": "Liquor",
+    "name": "San Diego Bottle Service and VIP Events",
+    "lat": 32.7123618,
+    "long": -117.1589216
+  },
+  {
+    "type": "Liquor",
+    "name": "AIR CONDITIONED Lounge",
+    "lat": 32.7623879,
+    "long": -117.1300674
+  },
+  {
+    "type": "Liquor",
+    "name": "TORO",
+    "lat": 32.7124192,
+    "long": -117.1604057
+  },
+  {
+    "type": "Liquor",
+    "name": "The Tipsy Crow",
+    "lat": 32.7134696,
+    "long": -117.1603366
+  },
+  {
+    "type": "Liquor",
+    "name": "Phantom Lounge and Nightclub",
+    "lat": 32.71611,
+    "long": -117.1603134
+  },
+  {
+    "type": "Liquor",
+    "name": "Altitude Sky Lounge",
+    "lat": 32.7086154,
+    "long": -117.158506
+  },
+  {
+    "type": "Liquor",
+    "name": "Levinson Group Events and Promotions",
+    "lat": 32.7127229,
+    "long": -117.1594044
+  },
+  {
+    "type": "Liquor",
+    "name": "Whiskey Girl",
+    "lat": 32.7127448,
+    "long": -117.1602753
+  },
+  {
+    "type": "Liquor",
+    "name": "Discotech VIP Nightclub Dayclub Bottle Service Guest List Promoters",
+    "lat": 32.7101405,
+    "long": -117.1589384
+  },
+  {
+    "type": "Liquor",
+    "name": "Pacers San Diego",
+    "lat": 32.7505316,
+    "long": -117.2114866
+  },
+  {
+    "type": "Liquor",
+    "name": "Expose",
+    "lat": 32.7478682,
+    "long": -117.2024998
+  },
+  {
+    "type": "Liquor",
+    "name": "NOVA SD",
+    "lat": 32.7101458,
+    "long": -117.1595032
+  },
+  {
+    "type": "Liquor",
+    "name": "Mad House Comedy Club",
+    "lat": 32.7138011,
+    "long": -117.1608097
+  },
+  {
+    "type": "Liquor",
+    "name": "Club ",
+    "lat": 32.6694529,
+    "long": -117.1121124
+  },
+  {
+    "type": "Liquor",
+    "name": "The Hole San Diego",
+    "lat": 32.743608,
+    "long": -117.210639
+  },
+  {
+    "type": "Liquor",
+    "name": "Catalina Lounge",
+    "lat": 32.7440049,
+    "long": -117.2348946
+  },
+  {
+    "type": "Liquor",
+    "name": "SD Club Hop",
+    "lat": 32.715738,
+    "long": -117.1610838
+  },
+  {
+    "type": "Liquor",
+    "name": "Star Bar",
+    "lat": 32.7144168,
+    "long": -117.1607082
+  },
+  {
+    "type": "Liquor",
+    "name": "VYBZ Kitchen Lounge",
+    "lat": 32.714194,
+    "long": -117.1603429
+  },
+  {
+    "type": "Liquor",
+    "name": "Latitude Lounge C Soleil K",
+    "lat": 32.7084892,
+    "long": -117.1590103
+  },
+  {
+    "type": "Liquor",
+    "name": "Alibi",
+    "lat": 32.7482332,
+    "long": -117.1510616
+  },
+  {
+    "type": "Liquor",
+    "name": "Mina Lounge",
+    "lat": 32.7120334,
+    "long": -117.1593734
+  },
+  {
+    "type": "Liquor",
+    "name": "Cafe Sevilla of San Diego",
+    "lat": 32.7089347,
+    "long": -117.1599693
+  },
+  {
+    "type": "Liquor",
+    "name": "Gaslamplighter Karaoke Cocktail Bar",
+    "lat": 32.7116348,
+    "long": -117.1595439
+  },
+  {
+    "type": "Liquor",
+    "name": " at Hard Rock Hotel San Diego",
+    "lat": 32.7077666,
+    "long": -117.1596157
+  },
+  {
+    "type": "Liquor",
+    "name": "Polite Provisions",
+    "lat": 32.7627472,
+    "long": -117.1303853
+  },
+  {
+    "type": "Liquor",
+    "name": "The Lamplighter",
+    "lat": 32.7496994,
+    "long": -117.1710044
+  },
+  {
+    "type": "Liquor",
+    "name": "Vin de Syrah",
+    "lat": 32.7147898,
+    "long": -117.1600485
+  },
+  {
+    "type": "Liquor",
+    "name": "The Cordova Bar",
+    "lat": 32.7722303,
+    "long": -117.2019485
+  },
+  {
+    "type": "Liquor",
+    "name": "The Whiskey House",
+    "lat": 32.7097222,
+    "long": -117.1622417
+  },
+  {
+    "type": "Liquor",
+    "name": "FLOAT Rooftop Lounge",
+    "lat": 32.707739,
+    "long": -117.1599496
+  },
+  {
+    "type": "Liquor",
+    "name": "Pushkin Lounge Bar",
+    "lat": 32.7133365,
+    "long": -117.1594083
+  },
+  {
+    "type": "Liquor",
+    "name": "Park Rec",
+    "lat": 32.761383,
+    "long": -117.1466219
+  },
+  {
+    "type": "Liquor",
+    "name": "Paradise Lounge Grill San Diego s Best Sports Bar",
+    "lat": 32.7480812,
+    "long": -117.2026824
+  },
+  {
+    "type": "Liquor",
+    "name": "The Glampisphere The Air Conditioned Lounge",
+    "lat": 32.7623663,
+    "long": -117.1300141
+  },
+  {
+    "type": "Liquor",
+    "name": "barleymash",
+    "lat": 32.711697,
+    "long": -117.16042
+  },
+  {
+    "type": "Liquor",
+    "name": "Age Center",
+    "lat": 32.7122951,
+    "long": -117.158057
+  },
+  {
+    "type": "Liquor",
+    "name": "The Owl Lounge",
+    "lat": 32.7148192,
+    "long": -117.160686
+  },
+  {
+    "type": "Liquor",
+    "name": "United Club",
+    "lat": 32.7322441,
+    "long": -117.2047506
+  },
+  {
+    "type": "Liquor",
+    "name": "I Love Banda Fest",
+    "lat": 32.7255821,
+    "long": -117.1602465
+  },
+  {
+    "type": "Liquor",
+    "name": "The DOT Dying Of Thirst",
+    "lat": 32.686713,
+    "long": -117.116759
+  },
+  {
+    "type": "Liquor",
+    "name": "San Diego Nightlife Tours",
+    "lat": 32.6500408,
+    "long": -117.100461
+  },
+  {
+    "type": "Liquor",
+    "name": "Sfinx Productions",
+    "lat": 32.7175226,
+    "long": -117.1560246
+  },
+  {
+    "type": "Liquor",
+    "name": "The Lion s Share",
+    "lat": 32.7119496,
+    "long": -117.1689918
+  },
+  {
+    "type": "Liquor",
+    "name": "American Junkie",
+    "lat": 32.7121255,
+    "long": -117.1603707
+  },
+  {
+    "type": "Liquor",
+    "name": "Rock Venue",
+    "lat": 32.7302797,
+    "long": -117.1717626
+  },
+  {
+    "type": "Liquor",
+    "name": "The Observatory North Park",
+    "lat": 32.7480121,
+    "long": -117.1313006
+  },
+  {
+    "type": "Liquor",
+    "name": "counterpoint",
+    "lat": 32.7144054,
+    "long": -117.140468
+  },
+  {
+    "type": "Liquor",
+    "name": "PB Avenue",
+    "lat": 32.797929,
+    "long": -117.250644
+  },
+  {
+    "type": "Liquor",
+    "name": "Werewolf",
+    "lat": 32.7119428,
+    "long": -117.1607806
+  },
+  {
+    "type": "Liquor",
+    "name": "Candy Shop Topless Nightclub",
+    "lat": 32.8148327,
+    "long": -117.1517051
+  },
+  {
+    "type": "Liquor",
+    "name": "SOMA SAN DIEGO",
+    "lat": 32.7545903,
+    "long": -117.2089086
+  },
+  {
+    "type": "Liquor",
+    "name": "Bruno Souza",
+    "lat": 32.7593285,
+    "long": -117.1690477
+  },
+  {
+    "type": "Liquor",
+    "name": "Starlite",
+    "lat": 32.73645,
+    "long": -117.174989
+  },
+  {
+    "type": "Liquor",
+    "name": "SUNBURN Pool Lounge",
+    "lat": 32.7074026,
+    "long": -117.1593631
+  },
+  {
+    "type": "Liquor",
+    "name": "Hidden parking spot",
+    "lat": 32.7239585,
+    "long": -117.1706825
+  },
+  {
+    "type": "Liquor",
+    "name": "Blue Agave Night Club",
+    "lat": 32.7933487,
+    "long": -117.0985454
+  },
+  {
+    "type": "Liquor",
+    "name": "La Puerta",
+    "lat": 32.7112162,
+    "long": -117.1612498
+  },
+  {
+    "type": "Liquor",
+    "name": "La Fiesta Night Club",
+    "lat": 32.7947326,
+    "long": -116.9555767
+  },
+  {
+    "type": "Liquor",
+    "name": "The Clark Cabaret Bar",
+    "lat": 32.7599634,
+    "long": -117.1459149
+  },
+  {
+    "type": "Liquor",
+    "name": "STK Steakhouse",
+    "lat": 32.713822,
+    "long": -117.158789
+  },
+  {
+    "type": "Liquor",
+    "name": "TORCH San Diego",
+    "lat": 32.8107795,
+    "long": -117.1486262
+  },
+  {
+    "type": "Liquor",
+    "name": "La Boom",
+    "lat": 32.5952151,
+    "long": -117.068758
+  },
+  {
+    "type": "Liquor",
+    "name": "IMPE Bar",
+    "lat": 32.730198,
+    "long": -117.1599002
+  },
+  {
+    "type": "Liquor",
+    "name": "Over the Border",
+    "lat": 32.5951821,
+    "long": -117.0687539
+  },
+  {
+    "type": "Liquor",
+    "name": "The Pool House",
+    "lat": 32.709942,
+    "long": -117.1599075
+  },
+  {
+    "type": "Liquor",
+    "name": "Bay Club Bar Grill",
+    "lat": 32.7157098,
+    "long": -117.224613
+  },
+  {
+    "type": "Liquor",
+    "name": "insideOUT",
+    "lat": 32.7485748,
+    "long": -117.1486374
+  },
+  {
+    "type": "Liquor",
+    "name": "AKA San Diego",
+    "lat": 32.7117232,
+    "long": -117.1598845
+  },
+  {
+    "type": "Liquor",
+    "name": "K Paddock Lounge Sports Bar Restaurant San Diego, CA",
+    "lat": 32.700659,
+    "long": -117.1497291
+  },
+  {
+    "type": "Liquor",
+    "name": "American Comedy Co San Diego",
+    "lat": 32.713937,
+    "long": -117.1594675
+  },
+  {
+    "type": "Liquor",
+    "name": "Zama San Diego",
+    "lat": 32.7102629,
+    "long": -117.1598356
+  },
+  {
+    "type": "Liquor",
+    "name": "Kalu C BA Upscale Mexican Lounge",
+    "lat": 32.7108962,
+    "long": -117.160367
+  },
+  {
+    "type": "Liquor",
+    "name": "Gaslamp BBQ",
+    "lat": 32.710558,
+    "long": -117.1597464
+  },
+  {
+    "type": "Liquor",
+    "name": "La Puerta",
+    "lat": 32.7503533,
+    "long": -117.1716514
+  },
+  {
+    "type": "Liquor",
+    "name": "The Grant Grill",
+    "lat": 32.716123,
+    "long": -117.1613149
+  },
+  {
+    "type": "Liquor",
+    "name": "Caribe Restaurant Bar",
+    "lat": 32.6703012,
+    "long": -117.020978
+  },
+  {
+    "type": "Liquor",
+    "name": "Buka Nigerian Restaurant",
+    "lat": 32.749483,
+    "long": -117.1122769
+  },
+  {
+    "type": "Liquor",
+    "name": " CLUB BAR",
+    "lat": 32.6707601,
+    "long": -115.4988969
+  },
+  {
+    "type": "Liquor",
+    "name": " E CBerlin E D Night Club",
+    "lat": 32.6642307,
+    "long": -115.4868802
+  },
+  {
+    "type": "Liquor",
+    "name": "REPUBLIK Night Club",
+    "lat": 32.6463492,
+    "long": -115.4512565
+  },
+  {
+    "type": "Liquor",
+    "name": "Mirage Night Club",
+    "lat": 32.6601145,
+    "long": -115.4904263
+  },
+  {
+    "type": "Liquor",
+    "name": "La Mina",
+    "lat": 32.6591687,
+    "long": -115.4887614
+  },
+  {
+    "type": "Liquor",
+    "name": "LA CAGUAMERA",
+    "lat": 32.6460578,
+    "long": -115.4512504
+  },
+  {
+    "type": "Liquor",
+    "name": "Porkys Divine",
+    "lat": 32.6636076,
+    "long": -115.4864976
+  },
+  {
+    "type": "Liquor",
+    "name": "Taberna",
+    "lat": 32.6589117,
+    "long": -115.4898748
+  },
+  {
+    "type": "Liquor",
+    "name": "Millenium",
+    "lat": 32.6073115,
+    "long": -115.383302
+  },
+  {
+    "type": "Liquor",
+    "name": "Amnesia Mens Club",
+    "lat": 32.5889311,
+    "long": -115.4753227
+  },
+  {
+    "type": "Liquor",
+    "name": "Sport Bar De La Aviaci C B n Boys Toys ",
+    "lat": 32.6572059,
+    "long": -115.4490085
+  },
+  {
+    "type": "Liquor",
+    "name": "Hypnotic Club Social",
+    "lat": 32.6620154,
+    "long": -115.4557786
+  },
+  {
+    "type": "Liquor",
+    "name": "La Consentida Mxli",
+    "lat": 32.640269,
+    "long": -115.4499003
+  },
+  {
+    "type": "Liquor",
+    "name": "PINK SPORT BAR ZONA CENTRO",
+    "lat": 32.660209,
+    "long": -115.487736
+  },
+  {
+    "type": "Liquor",
+    "name": "BASH SOCIAL CLUB",
+    "lat": 32.6415043,
+    "long": -115.451374
+  },
+  {
+    "type": "Liquor",
+    "name": "Little Rock Antro",
+    "lat": 32.6221248,
+    "long": -115.4446222
+  },
+  {
+    "type": "Liquor",
+    "name": "Mother chapter street devils",
+    "lat": 32.6606903,
+    "long": -115.4384506
+  },
+  {
+    "type": "Liquor",
+    "name": "Casa Roma",
+    "lat": 32.6575836,
+    "long": -115.41604
+  },
+  {
+    "type": "Liquor",
+    "name": "El Establo",
+    "lat": 32.6250865,
+    "long": -115.4092838
+  },
+  {
+    "type": "Liquor",
+    "name": "MAsajes Paradise",
+    "lat": 32.6149766,
+    "long": -115.4407088
+  },
+  {
+    "type": "Liquor",
+    "name": "Torito s Ranch",
+    "lat": 32.4126768,
+    "long": -114.794414
+  },
+  {
+    "type": "Liquor",
+    "name": "EL SONORENSE",
+    "lat": 32.4455629,
+    "long": -114.7321952
+  },
+  {
+    "type": "Liquor",
+    "name": "Jard C ADn y Terraza Andrade",
+    "lat": 32.4225964,
+    "long": -114.7775654
+  },
+  {
+    "type": "Liquor",
+    "name": "Micheladas Pink",
+    "lat": 32.432163,
+    "long": -114.7371769
+  },
+  {
+    "type": "Liquor",
+    "name": "Patio ",
+    "lat": 32.4417203,
+    "long": -114.7870167
+  },
+  {
+    "type": "Liquor",
+    "name": "renta de casa",
+    "lat": 32.4513239,
+    "long": -114.758471
+  },
+  {
+    "type": "Liquor",
+    "name": "Tortas El ZACAS",
+    "lat": 32.4345608,
+    "long": -114.8049482
+  },
+  {
+    "type": "Liquor",
+    "name": "Daniel s pool",
+    "lat": 32.4539457,
+    "long": -114.7814377
+  },
+  {
+    "type": "Liquor",
+    "name": "Taberna",
+    "lat": 32.4413374,
+    "long": -114.7500197
+  },
+  {
+    "type": "Liquor",
+    "name": "Sal C B n yahoooo",
+    "lat": 32.4495608,
+    "long": -114.765416
+  },
+  {
+    "type": "Liquor",
+    "name": "Sal C B n Las lluvias",
+    "lat": 32.4155829,
+    "long": -114.7611118
+  },
+  {
+    "type": "Liquor",
+    "name": "MAE",
+    "lat": 32.4342181,
+    "long": -114.7439897
+  },
+  {
+    "type": "Liquor",
+    "name": "Kingdom Hall of Jehovah s Witnesses",
+    "lat": 32.4386735,
+    "long": -114.7709023
+  },
+  {
+    "type": "Liquor",
+    "name": "La Buchaca Del Rey",
+    "lat": 32.4605929,
+    "long": -114.7841706
+  },
+  {
+    "type": "Liquor",
+    "name": "Sal C B n",
+    "lat": 32.4119722,
+    "long": -114.7507951
+  }
+]

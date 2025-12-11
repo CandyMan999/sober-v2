@@ -1,0 +1,2528 @@
+[
+  {
+    "type": "Liquor",
+    "name": " Quick Stop Inc ",
+    "lat": 40.747358,
+    "long": -73.973765
+  },
+  {
+    "type": "Liquor",
+    "name": "Broadway Spirits",
+    "lat": 40.7150509,
+    "long": -74.0057761
+  },
+  {
+    "type": "Liquor",
+    "name": "West Street Wine Spirits",
+    "lat": 40.7083333,
+    "long": -74.015
+  },
+  {
+    "type": "Liquor",
+    "name": "Park Slope Wine Liquor",
+    "lat": 40.6658209,
+    "long": -73.9887222
+  },
+  {
+    "type": "Liquor",
+    "name": "Flatiron Wines Spirits",
+    "lat": 40.7380098,
+    "long": -73.9902333
+  },
+  {
+    "type": "Liquor",
+    "name": "Bk Wine Depot Corp ",
+    "lat": 40.6838327,
+    "long": -73.9898923
+  },
+  {
+    "type": "Liquor",
+    "name": "Times Square Wine Liquor",
+    "lat": 40.7589021,
+    "long": -73.9889633
+  },
+  {
+    "type": "Liquor",
+    "name": "BeerRightNow com",
+    "lat": 40.7264704,
+    "long": -73.9895799
+  },
+  {
+    "type": "Liquor",
+    "name": "Jersey Wines Spirits",
+    "lat": 40.7195101,
+    "long": -74.0471505
+  },
+  {
+    "type": "Liquor",
+    "name": "NRS Wine Liquor",
+    "lat": 40.7494052,
+    "long": -73.9957472
+  },
+  {
+    "type": "Liquor",
+    "name": "Amster Wine",
+    "lat": 40.755257,
+    "long": -73.9952588
+  },
+  {
+    "type": "Liquor",
+    "name": "Waterfront Wine Liquor",
+    "lat": 40.7165961,
+    "long": -74.0379843
+  },
+  {
+    "type": "Liquor",
+    "name": "Jersey City Super Buy Rite",
+    "lat": 40.7309819,
+    "long": -74.0422218
+  },
+  {
+    "type": "Liquor",
+    "name": "Herald Square Spirits",
+    "lat": 40.7471726,
+    "long": -73.9878008
+  },
+  {
+    "type": "Liquor",
+    "name": "Kent Wines Liquors",
+    "lat": 40.7094271,
+    "long": -73.9686426
+  },
+  {
+    "type": "Liquor",
+    "name": " Monroe Liquor Wine",
+    "lat": 40.6852575,
+    "long": -73.9507673
+  },
+  {
+    "type": "Liquor",
+    "name": "Garry s Wine Liquor",
+    "lat": 40.6812571,
+    "long": -73.9751152
+  },
+  {
+    "type": "Liquor",
+    "name": "The Manhattan Wine Shop",
+    "lat": 40.7518073,
+    "long": -73.9859113
+  },
+  {
+    "type": "Liquor",
+    "name": " East Wines and Spirits",
+    "lat": 40.7377511,
+    "long": -73.9800134
+  },
+  {
+    "type": "Liquor",
+    "name": "Franklin Wines Spirits",
+    "lat": 40.6773919,
+    "long": -73.9557152
+  },
+  {
+    "type": "Liquor",
+    "name": "Widow Jane Distillery",
+    "lat": 40.677357,
+    "long": -74.015387
+  },
+  {
+    "type": "Liquor",
+    "name": "Bottlerocket Wine Spirit",
+    "lat": 40.7395,
+    "long": -73.991858
+  },
+  {
+    "type": "Liquor",
+    "name": "Oak and Barrel Wine Spirits",
+    "lat": 40.7598203,
+    "long": -73.9657852
+  },
+  {
+    "type": "Liquor",
+    "name": "Crown Heights Wine Liquor",
+    "lat": 40.6702034,
+    "long": -73.9279277
+  },
+  {
+    "type": "Liquor",
+    "name": "Astor Wines Spirits",
+    "lat": 40.727962,
+    "long": -73.9927746
+  },
+  {
+    "type": "Liquor",
+    "name": "Schumer s Wine Liquors",
+    "lat": 40.7601093,
+    "long": -73.9728972
+  },
+  {
+    "type": "Liquor",
+    "name": "Wilson Liquors",
+    "lat": 40.7032925,
+    "long": -73.930601
+  },
+  {
+    "type": "Liquor",
+    "name": "Krauszer s Food Deli Liquor",
+    "lat": 40.793679,
+    "long": -74.069724
+  },
+  {
+    "type": "Liquor",
+    "name": "Midland Dairy, Liquor, Beer, Wine",
+    "lat": 40.768861,
+    "long": -74.1417926
+  },
+  {
+    "type": "Liquor",
+    "name": "Mew Bergen Wines Liquors",
+    "lat": 40.758966,
+    "long": -74.1517576
+  },
+  {
+    "type": "Liquor",
+    "name": "JB Liquors Convenience",
+    "lat": 40.7832414,
+    "long": -74.1371281
+  },
+  {
+    "type": "Liquor",
+    "name": "North Newark Wine Liquors",
+    "lat": 40.7673937,
+    "long": -74.1809824
+  },
+  {
+    "type": "Liquor",
+    "name": "Belleville Liquor",
+    "lat": 40.7965912,
+    "long": -74.1788321
+  },
+  {
+    "type": "Liquor",
+    "name": "Extra liquor wine",
+    "lat": 40.7486869,
+    "long": -74.1806366
+  },
+  {
+    "type": "Liquor",
+    "name": "Royal Liquors",
+    "lat": 40.7403423,
+    "long": -74.2005015
+  },
+  {
+    "type": "Liquor",
+    "name": "Wine Spirit Liquors",
+    "lat": 40.7760722,
+    "long": -74.1659472
+  },
+  {
+    "type": "Liquor",
+    "name": "Quality Liquors",
+    "lat": 40.7392411,
+    "long": -74.1948794
+  },
+  {
+    "type": "Liquor",
+    "name": "METRO WINE LIQUORS",
+    "lat": 40.8304209,
+    "long": -74.0931152
+  },
+  {
+    "type": "Liquor",
+    "name": "Riverside Liquors",
+    "lat": 40.8095062,
+    "long": -74.137374
+  },
+  {
+    "type": "Liquor",
+    "name": "Lucky Wine Liquors",
+    "lat": 40.788472,
+    "long": -74.144418
+  },
+  {
+    "type": "Liquor",
+    "name": "Lyndhurst Liquors",
+    "lat": 40.8085128,
+    "long": -74.1183955
+  },
+  {
+    "type": "Liquor",
+    "name": "Wood Ridge Wine and Liquor",
+    "lat": 40.8471623,
+    "long": -74.0821065
+  },
+  {
+    "type": "Liquor",
+    "name": "Liquor Mart",
+    "lat": 40.785333,
+    "long": -74.1353544
+  },
+  {
+    "type": "Liquor",
+    "name": "Express Liquors",
+    "lat": 40.7779618,
+    "long": -74.1771503
+  },
+  {
+    "type": "Liquor",
+    "name": "Kingdom Liquors",
+    "lat": 40.7727898,
+    "long": -74.1852653
+  },
+  {
+    "type": "Liquor",
+    "name": "Clifton Commons Spirits and Wine",
+    "lat": 40.8264951,
+    "long": -74.138685
+  },
+  {
+    "type": "Liquor",
+    "name": "Wine Spirits Express Liquor Warehouse",
+    "lat": 40.7479923,
+    "long": -74.186999
+  },
+  {
+    "type": "Liquor",
+    "name": "Total Wine More",
+    "lat": 40.793495,
+    "long": -74.256344
+  },
+  {
+    "type": "Liquor",
+    "name": "Liquor City",
+    "lat": 40.7971705,
+    "long": -74.1489838
+  },
+  {
+    "type": "Liquor",
+    "name": "Kearny s Wine Liquor Store",
+    "lat": 40.7799841,
+    "long": -74.1396875
+  },
+  {
+    "type": "Liquor",
+    "name": "Liquor Zone",
+    "lat": 40.7522152,
+    "long": -74.1708781
+  },
+  {
+    "type": "Liquor",
+    "name": "Capri Liquor East Rutherford",
+    "lat": 40.8331771,
+    "long": -74.0971524
+  },
+  {
+    "type": "Liquor",
+    "name": "Meadow Liquors",
+    "lat": 40.8037181,
+    "long": -74.1174062
+  },
+  {
+    "type": "Liquor",
+    "name": "Bloomfield Buy Rite LLC",
+    "lat": 40.7933533,
+    "long": -74.1997218
+  },
+  {
+    "type": "Liquor",
+    "name": "Kearny Plaza Discount Liquor",
+    "lat": 40.7597131,
+    "long": -74.1597094
+  },
+  {
+    "type": "Liquor",
+    "name": "Plaza Wine Liquors",
+    "lat": 40.7794091,
+    "long": -74.1881086
+  },
+  {
+    "type": "Liquor",
+    "name": "Sun Liquor And Grocery",
+    "lat": 40.7528075,
+    "long": -74.157003
+  },
+  {
+    "type": "Liquor",
+    "name": "Home Liquors",
+    "lat": 40.7530666,
+    "long": -74.1894316
+  },
+  {
+    "type": "Liquor",
+    "name": "Norfolk Liquors",
+    "lat": 40.7444041,
+    "long": -74.1839865
+  },
+  {
+    "type": "Liquor",
+    "name": "Wine Liquor Shop",
+    "lat": 40.8384968,
+    "long": -74.0912158
+  },
+  {
+    "type": "Liquor",
+    "name": "Rutherford Wine Shoppe",
+    "lat": 40.8243284,
+    "long": -74.1124286
+  },
+  {
+    "type": "Liquor",
+    "name": "Liquor Warehouse",
+    "lat": 40.7496972,
+    "long": -74.1641079
+  },
+  {
+    "type": "Liquor",
+    "name": "Harrison Discount Liquors",
+    "lat": 40.7498877,
+    "long": -74.1572266
+  },
+  {
+    "type": "Liquor",
+    "name": "Metro Liquors",
+    "lat": 40.8425044,
+    "long": -74.1061711
+  },
+  {
+    "type": "Liquor",
+    "name": "Bell Liquor Wine C Parking On site",
+    "lat": 40.7746648,
+    "long": -74.1859199
+  },
+  {
+    "type": "Liquor",
+    "name": "Allwood Liquor",
+    "lat": 40.8457671,
+    "long": -74.1605825
+  },
+  {
+    "type": "Liquor",
+    "name": "Litos Liquors",
+    "lat": 40.7462842,
+    "long": -74.1592765
+  },
+  {
+    "type": "Liquor",
+    "name": "Bottleneck Liquors",
+    "lat": 40.8459315,
+    "long": -74.163317
+  },
+  {
+    "type": "Liquor",
+    "name": "LIQUORAMA",
+    "lat": 40.7780556,
+    "long": -74.1316523
+  },
+  {
+    "type": "Liquor",
+    "name": "ShopRite Wines Spirits of Kearny",
+    "lat": 40.7567262,
+    "long": -74.1610065
+  },
+  {
+    "type": "Liquor",
+    "name": "Golden Beer Liquor",
+    "lat": 40.7473752,
+    "long": -74.1516437
+  },
+  {
+    "type": "Liquor",
+    "name": "World of Wine Liquor",
+    "lat": 40.8126348,
+    "long": -74.1233996
+  },
+  {
+    "type": "Liquor",
+    "name": "ShopRite Liquors, Wines Spirits of Wallington",
+    "lat": 40.845074,
+    "long": -74.107401
+  },
+  {
+    "type": "Liquor",
+    "name": " Plaza Wine Liquors",
+    "lat": 40.7569038,
+    "long": -74.1671835
+  },
+  {
+    "type": "Liquor",
+    "name": "Kings Wine Liquors",
+    "lat": 40.7694892,
+    "long": -74.1997945
+  },
+  {
+    "type": "Liquor",
+    "name": "Avenue Liquors Inc",
+    "lat": 40.760976,
+    "long": -74.177108
+  },
+  {
+    "type": "Liquor",
+    "name": "White Oak Liquors",
+    "lat": 40.7980202,
+    "long": -74.155041
+  },
+  {
+    "type": "Liquor",
+    "name": "The Liquor Shed",
+    "lat": 40.7993333,
+    "long": -74.1247914
+  },
+  {
+    "type": "Liquor",
+    "name": "Kelly s Liquor",
+    "lat": 40.8048743,
+    "long": -74.1451813
+  },
+  {
+    "type": "Liquor",
+    "name": "West End Wine Liquor",
+    "lat": 40.8357292,
+    "long": -74.1131975
+  },
+  {
+    "type": "Liquor",
+    "name": "T T Liquors",
+    "lat": 40.7756994,
+    "long": -74.1584329
+  },
+  {
+    "type": "Liquor",
+    "name": "Glen Ridge Bottle King Discount Wine, Beer Liquor",
+    "lat": 40.7972973,
+    "long": -74.2012811
+  },
+  {
+    "type": "Liquor",
+    "name": "Pioneer wine and liquor",
+    "lat": 40.803321,
+    "long": -74.1693566
+  },
+  {
+    "type": "Liquor",
+    "name": "Spirits of Kearny",
+    "lat": 40.765446,
+    "long": -74.147578
+  },
+  {
+    "type": "Liquor",
+    "name": "Rainbow Liquors",
+    "lat": 40.7806686,
+    "long": -74.1634277
+  },
+  {
+    "type": "Liquor",
+    "name": "Pueblo Liquor",
+    "lat": 40.7835051,
+    "long": -74.1623973
+  },
+  {
+    "type": "Liquor",
+    "name": "One Stop Wine Liquors",
+    "lat": 40.7976926,
+    "long": -74.1263607
+  },
+  {
+    "type": "Liquor",
+    "name": "New Om Liquors",
+    "lat": 40.775056,
+    "long": -74.1663134
+  },
+  {
+    "type": "Liquor",
+    "name": "Firehouse Liquor Store",
+    "lat": 40.7594677,
+    "long": -74.1872577
+  },
+  {
+    "type": "Liquor",
+    "name": "Berkeley Liquors Deli",
+    "lat": 40.7870879,
+    "long": -74.1869853
+  },
+  {
+    "type": "Liquor",
+    "name": "Archie s Liquors",
+    "lat": 40.8468514,
+    "long": -74.1267427
+  },
+  {
+    "type": "Liquor",
+    "name": "All Brothers Liquor",
+    "lat": 40.7467907,
+    "long": -74.1912888
+  },
+  {
+    "type": "Liquor",
+    "name": "Cobblestone Hill Liquor Store",
+    "lat": 40.8350717,
+    "long": -74.0869338
+  },
+  {
+    "type": "Liquor",
+    "name": "Home Wines Liquors",
+    "lat": 40.7811476,
+    "long": -74.1750689
+  },
+  {
+    "type": "Liquor",
+    "name": "All Stars liquors",
+    "lat": 40.7485324,
+    "long": -74.1953212
+  },
+  {
+    "type": "Liquor",
+    "name": "Wine Grand",
+    "lat": 40.8429268,
+    "long": -74.1008179
+  },
+  {
+    "type": "Liquor",
+    "name": "Edwin Liquor Store",
+    "lat": 40.7473004,
+    "long": -74.1984664
+  },
+  {
+    "type": "Liquor",
+    "name": "Raimo Wines Liquors",
+    "lat": 40.7864709,
+    "long": -74.1533393
+  },
+  {
+    "type": "Liquor",
+    "name": "Heller and Heller Liquors",
+    "lat": 40.7641589,
+    "long": -74.1947149
+  },
+  {
+    "type": "Liquor",
+    "name": "Lopez Liquors",
+    "lat": 40.7696316,
+    "long": -74.14593
+  },
+  {
+    "type": "Liquor",
+    "name": "BuyRite Liquor Kearny",
+    "lat": 40.7484138,
+    "long": -74.1351752
+  },
+  {
+    "type": "Liquor",
+    "name": "Saver s Club LIQUOR LOCKER",
+    "lat": 40.8049037,
+    "long": -74.1925089
+  },
+  {
+    "type": "Liquor",
+    "name": "CoolVines Newark",
+    "lat": 40.7404275,
+    "long": -74.170106
+  },
+  {
+    "type": "Liquor",
+    "name": "Village Wines",
+    "lat": 40.8269502,
+    "long": -74.1048245
+  },
+  {
+    "type": "Liquor",
+    "name": "Gigantes Liquors",
+    "lat": 40.7712111,
+    "long": -74.1620478
+  },
+  {
+    "type": "Liquor",
+    "name": "Stew Leonard s Wines Spirits of Clifton",
+    "lat": 40.8409352,
+    "long": -74.1580709
+  },
+  {
+    "type": "Liquor",
+    "name": "Broughton World of Liquor",
+    "lat": 40.8153838,
+    "long": -74.1862813
+  },
+  {
+    "type": "Liquor",
+    "name": "Steve s Liquors",
+    "lat": 40.7459111,
+    "long": -74.1593962
+  },
+  {
+    "type": "Liquor",
+    "name": "Cordes Wines Liquors",
+    "lat": 40.8061057,
+    "long": -74.1932542
+  },
+  {
+    "type": "Liquor",
+    "name": "Vasel s Deli Liquors",
+    "lat": 40.8489331,
+    "long": -74.1468316
+  },
+  {
+    "type": "Liquor",
+    "name": "Liquor Boss",
+    "lat": 40.7746135,
+    "long": -74.1428383
+  },
+  {
+    "type": "Liquor",
+    "name": "Wine Outlet",
+    "lat": 40.798565,
+    "long": -74.0649205
+  },
+  {
+    "type": "Liquor",
+    "name": "Heller FHeller",
+    "lat": 40.814716,
+    "long": -74.1625075
+  },
+  {
+    "type": "Liquor",
+    "name": "Cork Wine Spirits",
+    "lat": 40.7399712,
+    "long": -74.1558645
+  },
+  {
+    "type": "Liquor",
+    "name": "Shoppers Vineyard",
+    "lat": 40.846047,
+    "long": -74.1558104
+  },
+  {
+    "type": "Liquor",
+    "name": "Trimax Liquors Delivery",
+    "lat": 40.7531739,
+    "long": -74.1679699
+  },
+  {
+    "type": "Liquor",
+    "name": "Cork Barrel",
+    "lat": 40.8419532,
+    "long": -74.1343203
+  },
+  {
+    "type": "Liquor",
+    "name": "Mason s Cellar",
+    "lat": 40.8289943,
+    "long": -74.1025335
+  },
+  {
+    "type": "Liquor",
+    "name": "Nutley Wine Shop",
+    "lat": 40.8247985,
+    "long": -74.1534891
+  },
+  {
+    "type": "Liquor",
+    "name": "Gallagher s Wine Cheese Barn",
+    "lat": 40.7927963,
+    "long": -74.1971123
+  },
+  {
+    "type": "Liquor",
+    "name": "New Service Key Liquor Store",
+    "lat": 40.7594003,
+    "long": -74.1693573
+  },
+  {
+    "type": "Liquor",
+    "name": "Mira Sol Liquor",
+    "lat": 40.7545418,
+    "long": -74.149425
+  },
+  {
+    "type": "Liquor",
+    "name": "Krauszer s Food Liquor",
+    "lat": 40.8338679,
+    "long": -74.1804223
+  },
+  {
+    "type": "Liquor",
+    "name": "NUTLEY NEWS LIQUORS",
+    "lat": 40.8111161,
+    "long": -74.1504663
+  },
+  {
+    "type": "Liquor",
+    "name": "B Liquor Store",
+    "lat": 40.7751093,
+    "long": -74.163561
+  },
+  {
+    "type": "Liquor",
+    "name": "Liquor Lot",
+    "lat": 40.7973973,
+    "long": -74.1817392
+  },
+  {
+    "type": "Liquor",
+    "name": "Brookdale Wine Country",
+    "lat": 40.8281029,
+    "long": -74.1867806
+  },
+  {
+    "type": "Liquor",
+    "name": "Western Beverage Inc",
+    "lat": 40.831785,
+    "long": -74.1366209
+  },
+  {
+    "type": "Liquor",
+    "name": "Cedar Grove Liquors",
+    "lat": 40.8536956,
+    "long": -74.2289579
+  },
+  {
+    "type": "Liquor",
+    "name": "Little Falls Liquors",
+    "lat": 40.8845855,
+    "long": -74.2375847
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 40.8808877,
+    "long": -74.2421896
+  },
+  {
+    "type": "Liquor",
+    "name": "Sunrise Cellars Fine Wines Spirits",
+    "lat": 40.8428278,
+    "long": -74.2817986
+  },
+  {
+    "type": "Liquor",
+    "name": "Montville Wine Spirits",
+    "lat": 40.8763473,
+    "long": -74.3631345
+  },
+  {
+    "type": "Liquor",
+    "name": "Total Wine More",
+    "lat": 40.8959735,
+    "long": -74.2329837
+  },
+  {
+    "type": "Liquor",
+    "name": "Cedar Grove Wine Cellar",
+    "lat": 40.8475226,
+    "long": -74.2289926
+  },
+  {
+    "type": "Liquor",
+    "name": "Verona Wine Cellars",
+    "lat": 40.8285087,
+    "long": -74.2396515
+  },
+  {
+    "type": "Liquor",
+    "name": "Lincoln Center Liquors",
+    "lat": 40.9224852,
+    "long": -74.3019335
+  },
+  {
+    "type": "Liquor",
+    "name": "Lincoln Park Fine Wines Spirits",
+    "lat": 40.9253694,
+    "long": -74.3089113
+  },
+  {
+    "type": "Liquor",
+    "name": "Ridgedale Wines Liquors",
+    "lat": 40.8277869,
+    "long": -74.3560783
+  },
+  {
+    "type": "Liquor",
+    "name": "Wine Whiskey Country Pine Brook ",
+    "lat": 40.8592649,
+    "long": -74.337348
+  },
+  {
+    "type": "Liquor",
+    "name": "The Bottle Stop",
+    "lat": 40.834619,
+    "long": -74.27981
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 40.8269681,
+    "long": -74.3592795
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 40.8892588,
+    "long": -74.2486992
+  },
+  {
+    "type": "Liquor",
+    "name": "Fairfield Wine Cellar",
+    "lat": 40.8691825,
+    "long": -74.3102854
+  },
+  {
+    "type": "Liquor",
+    "name": "Wine Village",
+    "lat": 40.8408032,
+    "long": -74.2775429
+  },
+  {
+    "type": "Liquor",
+    "name": "Krauszers Liquor Locker",
+    "lat": 40.8325738,
+    "long": -74.2482614
+  },
+  {
+    "type": "Liquor",
+    "name": "Pilgrim Liquors",
+    "lat": 40.8340992,
+    "long": -74.2256298
+  },
+  {
+    "type": "Liquor",
+    "name": "The Wine Rack",
+    "lat": 40.8353697,
+    "long": -74.26312
+  },
+  {
+    "type": "Liquor",
+    "name": "Total Wine More",
+    "lat": 40.895974,
+    "long": -74.232984
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 40.9255481,
+    "long": -74.2690798
+  },
+  {
+    "type": "Liquor",
+    "name": "On The Rocks Liquor Store Bar",
+    "lat": 40.884371,
+    "long": -74.2450984
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 40.8455345,
+    "long": -74.2877321
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 40.8272462,
+    "long": -74.2377575
+  },
+  {
+    "type": "Liquor",
+    "name": "Wine Beverage Depot",
+    "lat": 40.8975441,
+    "long": -74.2367724
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 40.8703216,
+    "long": -74.3592553
+  },
+  {
+    "type": "Liquor",
+    "name": "Jersey Spirits",
+    "lat": 40.8616295,
+    "long": -74.3186202
+  },
+  {
+    "type": "Liquor",
+    "name": "ShopRite Wines Spirits of Morristown",
+    "lat": 40.8139551,
+    "long": -74.4692638
+  },
+  {
+    "type": "Liquor",
+    "name": "Hanover Wine, Liquor Beer",
+    "lat": 40.838341,
+    "long": -74.437336
+  },
+  {
+    "type": "Liquor",
+    "name": "Morris Wine and Liquor",
+    "lat": 40.8277063,
+    "long": -74.4797864
+  },
+  {
+    "type": "Liquor",
+    "name": "Florham Park Liquors",
+    "lat": 40.7906608,
+    "long": -74.3932571
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 40.8210097,
+    "long": -74.4492038
+  },
+  {
+    "type": "Liquor",
+    "name": "Four Seasons Wine Liquor",
+    "lat": 40.7966756,
+    "long": -74.4751839
+  },
+  {
+    "type": "Liquor",
+    "name": "Midtown Wine Merchants",
+    "lat": 40.804264,
+    "long": -74.482872
+  },
+  {
+    "type": "Liquor",
+    "name": "Rose City Liquor",
+    "lat": 40.7583453,
+    "long": -74.414083
+  },
+  {
+    "type": "Liquor",
+    "name": "Wine and Whiskey Country",
+    "lat": 40.8223995,
+    "long": -74.4898607
+  },
+  {
+    "type": "Liquor",
+    "name": "Gary s Wine Marketplace",
+    "lat": 40.7571933,
+    "long": -74.4128154
+  },
+  {
+    "type": "Liquor",
+    "name": "Speedwell Wine Liquor",
+    "lat": 40.8023385,
+    "long": -74.4822524
+  },
+  {
+    "type": "Liquor",
+    "name": "BuyRite Liquors of Chatham",
+    "lat": 40.7474712,
+    "long": -74.4313937
+  },
+  {
+    "type": "Liquor",
+    "name": "Cambridge Wines",
+    "lat": 40.8136466,
+    "long": -74.4728281
+  },
+  {
+    "type": "Liquor",
+    "name": "Main Street Wine Cellars",
+    "lat": 40.7500365,
+    "long": -74.3985765
+  },
+  {
+    "type": "Liquor",
+    "name": "Madison Wine Cellar",
+    "lat": 40.7592862,
+    "long": -74.4161214
+  },
+  {
+    "type": "Liquor",
+    "name": "Hickory Wine Cellar",
+    "lat": 40.7452592,
+    "long": -74.4306175
+  },
+  {
+    "type": "Liquor",
+    "name": "Super Saver of Morristown",
+    "lat": 40.8048786,
+    "long": -74.4823771
+  },
+  {
+    "type": "Liquor",
+    "name": "Chardonnay Wines Spirits",
+    "lat": 40.8004318,
+    "long": -74.4820248
+  },
+  {
+    "type": "Liquor",
+    "name": "Ram s Morristown Liquors Inc",
+    "lat": 40.800682,
+    "long": -74.4786519
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 40.7966089,
+    "long": -74.4758085
+  },
+  {
+    "type": "Liquor",
+    "name": "The Wine Rack",
+    "lat": 40.655108,
+    "long": -74.6209587
+  },
+  {
+    "type": "Liquor",
+    "name": "Peapack Fine Wines",
+    "lat": 40.7154353,
+    "long": -74.6592112
+  },
+  {
+    "type": "Liquor",
+    "name": "Ridge Fine Wines",
+    "lat": 40.6538165,
+    "long": -74.5303532
+  },
+  {
+    "type": "Liquor",
+    "name": "Adelphia Wine Market",
+    "lat": 40.718946,
+    "long": -74.563347
+  },
+  {
+    "type": "Liquor",
+    "name": "Gary s Wine Marketplace",
+    "lat": 40.7202457,
+    "long": -74.5638754
+  },
+  {
+    "type": "Liquor",
+    "name": "Select Vintage Wines",
+    "lat": 40.684124,
+    "long": -74.550372
+  },
+  {
+    "type": "Liquor",
+    "name": "The Country Store Delis, Wines Spirits",
+    "lat": 40.7411156,
+    "long": -74.5358222
+  },
+  {
+    "type": "Liquor",
+    "name": "Rockaway Wine Liquor",
+    "lat": 40.9008344,
+    "long": -74.5146266
+  },
+  {
+    "type": "Liquor",
+    "name": "Dover Liquors",
+    "lat": 40.8838969,
+    "long": -74.5589079
+  },
+  {
+    "type": "Liquor",
+    "name": "Midtown Liquor",
+    "lat": 40.9205193,
+    "long": -74.5124098
+  },
+  {
+    "type": "Liquor",
+    "name": "ShopRite Wines Spirits of Rockaway",
+    "lat": 40.8848778,
+    "long": -74.5357353
+  },
+  {
+    "type": "Liquor",
+    "name": "Liquor Factory Lake Hopatcong ",
+    "lat": 40.9582526,
+    "long": -74.5958811
+  },
+  {
+    "type": "Liquor",
+    "name": "Wharton Liquors",
+    "lat": 40.9001666,
+    "long": -74.5825818
+  },
+  {
+    "type": "Liquor",
+    "name": "The Wine Shoppe",
+    "lat": 40.9000974,
+    "long": -74.5826125
+  },
+  {
+    "type": "Liquor",
+    "name": "Thomas Liquors",
+    "lat": 40.8830893,
+    "long": -74.5569536
+  },
+  {
+    "type": "Liquor",
+    "name": "Randolph Liquors",
+    "lat": 40.8788468,
+    "long": -74.5399879
+  },
+  {
+    "type": "Liquor",
+    "name": "ShopRite Liquors of Wharton",
+    "lat": 40.9050796,
+    "long": -74.5701858
+  },
+  {
+    "type": "Liquor",
+    "name": "Liquor Factory Sparta ",
+    "lat": 41.0333085,
+    "long": -74.6375331
+  },
+  {
+    "type": "Liquor",
+    "name": "Burke s Wine Liquor",
+    "lat": 41.0362535,
+    "long": -74.6375006
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 41.040164,
+    "long": -74.6432526
+  },
+  {
+    "type": "Liquor",
+    "name": "Seplow s Liquors",
+    "lat": 41.0504825,
+    "long": -74.7497544
+  },
+  {
+    "type": "Liquor",
+    "name": "White Deer Liquor Store",
+    "lat": 41.0325624,
+    "long": -74.6401937
+  },
+  {
+    "type": "Liquor",
+    "name": "Liquor Factory Andover ",
+    "lat": 41.038384,
+    "long": -74.702525
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 41.1541232,
+    "long": -74.5760315
+  },
+  {
+    "type": "Liquor",
+    "name": "Wantage Liquors",
+    "lat": 41.1851236,
+    "long": -74.587421
+  },
+  {
+    "type": "Liquor",
+    "name": "Mac Lindy s Fine Wine and Spirits",
+    "lat": 41.195231,
+    "long": -74.483003
+  },
+  {
+    "type": "Liquor",
+    "name": "Woody s Liquor Shop",
+    "lat": 41.2039965,
+    "long": -74.6019936
+  },
+  {
+    "type": "Liquor",
+    "name": "Patrick s Wine Barn Craft Beer Outlet",
+    "lat": 41.2061383,
+    "long": -74.6053423
+  },
+  {
+    "type": "Liquor",
+    "name": "Highland General Store",
+    "lat": 41.165684,
+    "long": -74.47499
+  },
+  {
+    "type": "Liquor",
+    "name": "Market Place Deli and Liquors",
+    "lat": 41.1604309,
+    "long": -74.5796841
+  },
+  {
+    "type": "Liquor",
+    "name": "Chester Fine Wines Spirits",
+    "lat": 40.7806656,
+    "long": -74.6984976
+  },
+  {
+    "type": "Liquor",
+    "name": "Best Cellars Wine Spirits",
+    "lat": 40.8811073,
+    "long": -74.6449009
+  },
+  {
+    "type": "Liquor",
+    "name": "Sandy s Wine Spirits Budd Lake ",
+    "lat": 40.888565,
+    "long": -74.7242331
+  },
+  {
+    "type": "Liquor",
+    "name": "Shay E s Liquors of Flanders BUYRITE ",
+    "lat": 40.8322523,
+    "long": -74.7098019
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 40.8303467,
+    "long": -74.7094313
+  },
+  {
+    "type": "Liquor",
+    "name": "Kenvil Liquor Wine Food Store",
+    "lat": 40.8797801,
+    "long": -74.6241362
+  },
+  {
+    "type": "Liquor",
+    "name": "Ledgewood Bottle King Discount Wine, Beer Liquor",
+    "lat": 40.8713662,
+    "long": -74.6438288
+  },
+  {
+    "type": "Liquor",
+    "name": "Sandy s Wine and Spirits Flanders ",
+    "lat": 40.8325854,
+    "long": -74.7073864
+  },
+  {
+    "type": "Liquor",
+    "name": "Village Wine Liquors",
+    "lat": 40.7829943,
+    "long": -74.5882198
+  },
+  {
+    "type": "Liquor",
+    "name": "The Wooden Keg Wine spirits Shoppe",
+    "lat": 40.8008986,
+    "long": -74.4922681
+  },
+  {
+    "type": "Liquor",
+    "name": "Wine Cellar of Morristown",
+    "lat": 40.791994,
+    "long": -74.476329
+  },
+  {
+    "type": "Liquor",
+    "name": "Four Seasons Wine Liquor Kings",
+    "lat": 40.7907145,
+    "long": -74.475051
+  },
+  {
+    "type": "Liquor",
+    "name": " Degree Wine",
+    "lat": 40.7178302,
+    "long": -74.5698741
+  },
+  {
+    "type": "Liquor",
+    "name": "Chardonnay",
+    "lat": 40.7998967,
+    "long": -74.4698957
+  },
+  {
+    "type": "Liquor",
+    "name": "Amanti Vino",
+    "lat": 40.7950531,
+    "long": -74.4790503
+  },
+  {
+    "type": "Liquor",
+    "name": "John s Delicatessen",
+    "lat": 40.7975138,
+    "long": -74.4823506
+  },
+  {
+    "type": "Liquor",
+    "name": "Convenience Liquors",
+    "lat": 40.861795,
+    "long": -74.3876209
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 40.8784689,
+    "long": -74.3828698
+  },
+  {
+    "type": "Liquor",
+    "name": "Joe Canal s Discount Liquor Outlet",
+    "lat": 40.8618602,
+    "long": -74.3755879
+  },
+  {
+    "type": "Liquor",
+    "name": "L Town Liquors",
+    "lat": 40.8077507,
+    "long": -74.3126419
+  },
+  {
+    "type": "Liquor",
+    "name": "Greenhill Liquors",
+    "lat": 40.8597045,
+    "long": -74.4264171
+  },
+  {
+    "type": "Liquor",
+    "name": "Livingston Bottle King Discount Wine, Beer Liquor",
+    "lat": 40.7954698,
+    "long": -74.3396802
+  },
+  {
+    "type": "Liquor",
+    "name": "ShopRite Wines Spirits of Parsippany",
+    "lat": 40.8647411,
+    "long": -74.3766666
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 40.7868651,
+    "long": -74.3138969
+  },
+  {
+    "type": "Liquor",
+    "name": "Shoppers Discount Liquors",
+    "lat": 40.8812981,
+    "long": -74.3822917
+  },
+  {
+    "type": "Liquor",
+    "name": "Mountain Lakes Wine and Liquor",
+    "lat": 40.8857374,
+    "long": -74.4355817
+  },
+  {
+    "type": "Liquor",
+    "name": "On the Run",
+    "lat": 40.870451,
+    "long": -74.420642
+  },
+  {
+    "type": "Liquor",
+    "name": "Wine Legend Livingston, NJ",
+    "lat": 40.7979866,
+    "long": -74.3428359
+  },
+  {
+    "type": "Liquor",
+    "name": "Basket of Cheer II",
+    "lat": 40.8855692,
+    "long": -74.3812424
+  },
+  {
+    "type": "Liquor",
+    "name": "Denville Liquors",
+    "lat": 40.891757,
+    "long": -74.476662
+  },
+  {
+    "type": "Liquor",
+    "name": "Weis Discount Liquors",
+    "lat": 40.8640189,
+    "long": -74.5707264
+  },
+  {
+    "type": "Liquor",
+    "name": "Main Street Liquors",
+    "lat": 40.8878746,
+    "long": -74.5792325
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 40.893348,
+    "long": -74.481014
+  },
+  {
+    "type": "Liquor",
+    "name": "Partners Discount Liquors",
+    "lat": 40.8887572,
+    "long": -74.4801814
+  },
+  {
+    "type": "Liquor",
+    "name": "Sams Liquor Deli",
+    "lat": 40.89693,
+    "long": -74.5661159
+  },
+  {
+    "type": "Liquor",
+    "name": "Wine King",
+    "lat": 40.8752753,
+    "long": -74.5400369
+  },
+  {
+    "type": "Liquor",
+    "name": "Bottle Republic",
+    "lat": 40.8751365,
+    "long": -74.5401378
+  },
+  {
+    "type": "Liquor",
+    "name": "J T McQ s",
+    "lat": 40.8631776,
+    "long": -74.5726541
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 40.8792049,
+    "long": -74.5412704
+  },
+  {
+    "type": "Liquor",
+    "name": "Berkshire Bottle Shop",
+    "lat": 40.9434011,
+    "long": -74.5788356
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 40.8626694,
+    "long": -74.4692081
+  },
+  {
+    "type": "Liquor",
+    "name": "ShopRite of Rockaway",
+    "lat": 40.8844768,
+    "long": -74.5357886
+  },
+  {
+    "type": "Liquor",
+    "name": "Basket of Cheer Ltd",
+    "lat": 40.8880122,
+    "long": -74.5396683
+  },
+  {
+    "type": "Liquor",
+    "name": "L and L Deli Liquor Store",
+    "lat": 40.8797451,
+    "long": -74.6010572
+  },
+  {
+    "type": "Liquor",
+    "name": "La Finca Bar Celebrity Liquors",
+    "lat": 40.887887,
+    "long": -74.54435
+  },
+  {
+    "type": "Liquor",
+    "name": "Neighborhood Liquors Check Cashing",
+    "lat": 40.8856071,
+    "long": -74.5453914
+  },
+  {
+    "type": "Liquor",
+    "name": "Alex Liquor Deli",
+    "lat": 40.7505505,
+    "long": -74.1611728
+  },
+  {
+    "type": "Liquor",
+    "name": "Brick City Liquor",
+    "lat": 40.7239455,
+    "long": -74.1935838
+  },
+  {
+    "type": "Liquor",
+    "name": "Park Wine Liquor",
+    "lat": 40.7689719,
+    "long": -74.2091886
+  },
+  {
+    "type": "Liquor",
+    "name": "Brooklyn Liquors",
+    "lat": 40.6566615,
+    "long": -74.0134586
+  },
+  {
+    "type": "Liquor",
+    "name": "LIQUOR STORE ON TH AVENUE",
+    "lat": 40.7081177,
+    "long": -74.0143006
+  },
+  {
+    "type": "Liquor",
+    "name": "New Junction Liquors",
+    "lat": 40.7153098,
+    "long": -74.0680668
+  },
+  {
+    "type": "Liquor",
+    "name": "ShopRite Liquors of Jersey City",
+    "lat": 40.7228084,
+    "long": -74.039923
+  },
+  {
+    "type": "Liquor",
+    "name": "Delancey Wine",
+    "lat": 40.7161168,
+    "long": -73.9897508
+  },
+  {
+    "type": "Liquor",
+    "name": "Central Avenue Liquors",
+    "lat": 40.7418002,
+    "long": -74.0521463
+  },
+  {
+    "type": "Liquor",
+    "name": "East Houston St Wine Liquor",
+    "lat": 40.7215933,
+    "long": -73.9852992
+  },
+  {
+    "type": "Liquor",
+    "name": "The Palisade Fine Wine, Spirits and Beer",
+    "lat": 40.742539,
+    "long": -74.0455221
+  },
+  {
+    "type": "Liquor",
+    "name": "Communipaw Liquor",
+    "lat": 40.7196429,
+    "long": -74.0792332
+  },
+  {
+    "type": "Liquor",
+    "name": "J R Liquor Store",
+    "lat": 40.7069867,
+    "long": -74.0838077
+  },
+  {
+    "type": "Liquor",
+    "name": "Shawn Fine Wine Spirits",
+    "lat": 40.6727199,
+    "long": -73.9764028
+  },
+  {
+    "type": "Liquor",
+    "name": " Th Ave Finest Wine Liquor",
+    "lat": 40.6462997,
+    "long": -74.0130569
+  },
+  {
+    "type": "Liquor",
+    "name": "Webster Liquor",
+    "lat": 40.7386397,
+    "long": -74.0503365
+  },
+  {
+    "type": "Liquor",
+    "name": "G I Wine Spirits",
+    "lat": 40.6920314,
+    "long": -73.9869038
+  },
+  {
+    "type": "Liquor",
+    "name": "Fifth Avenue Liquors Inc ",
+    "lat": 40.6423789,
+    "long": -74.0135663
+  },
+  {
+    "type": "Liquor",
+    "name": "Boulevard Mart Liquors",
+    "lat": 40.7287588,
+    "long": -74.0694907
+  },
+  {
+    "type": "Liquor",
+    "name": "Liquors",
+    "lat": 40.722566,
+    "long": -74.047389
+  },
+  {
+    "type": "Liquor",
+    "name": "On The Rocks",
+    "lat": 40.6562853,
+    "long": -74.0026748
+  },
+  {
+    "type": "Liquor",
+    "name": "Seaport Wine Spirits",
+    "lat": 40.7097859,
+    "long": -74.007034
+  },
+  {
+    "type": "Liquor",
+    "name": "Five Star Liquor",
+    "lat": 40.744301,
+    "long": -74.04496
+  },
+  {
+    "type": "Liquor",
+    "name": "Warehouse Wines Spirits",
+    "lat": 40.7299182,
+    "long": -73.993174
+  },
+  {
+    "type": "Liquor",
+    "name": "Bergen Liquor Deli",
+    "lat": 40.7133334,
+    "long": -74.0815548
+  },
+  {
+    "type": "Liquor",
+    "name": "Liquor Up Wine Down",
+    "lat": 40.7365966,
+    "long": -73.9790447
+  },
+  {
+    "type": "Liquor",
+    "name": "Bottles Jersey City",
+    "lat": 40.720121,
+    "long": -74.08165
+  },
+  {
+    "type": "Liquor",
+    "name": "Mike s Liquor",
+    "lat": 40.682786,
+    "long": -73.979781
+  },
+  {
+    "type": "Liquor",
+    "name": "Heights Liquors",
+    "lat": 40.7448975,
+    "long": -74.0499741
+  },
+  {
+    "type": "Liquor",
+    "name": "Daniel s Wine and Liquor",
+    "lat": 40.737311,
+    "long": -74.032709
+  },
+  {
+    "type": "Liquor",
+    "name": "Liquors on Allen",
+    "lat": 40.7189583,
+    "long": -73.9908916
+  },
+  {
+    "type": "Liquor",
+    "name": "Montague Wine Spirits",
+    "lat": 40.6952257,
+    "long": -73.9963206
+  },
+  {
+    "type": "Liquor",
+    "name": "New Denny s Liquors",
+    "lat": 40.65772,
+    "long": -74.1969855
+  },
+  {
+    "type": "Liquor",
+    "name": "Liquor Gallery",
+    "lat": 40.6613259,
+    "long": -74.2329956
+  },
+  {
+    "type": "Liquor",
+    "name": "Second Street Liquors",
+    "lat": 40.6536495,
+    "long": -74.1825508
+  },
+  {
+    "type": "Liquor",
+    "name": "Liquor World",
+    "lat": 40.6577821,
+    "long": -74.2274245
+  },
+  {
+    "type": "Liquor",
+    "name": "Witty s Fine Wine Liquors",
+    "lat": 40.6054474,
+    "long": -74.2897593
+  },
+  {
+    "type": "Liquor",
+    "name": "Pointe Grande Liquor",
+    "lat": 40.6636394,
+    "long": -74.200923
+  },
+  {
+    "type": "Liquor",
+    "name": "Metro Liquors",
+    "lat": 40.625614,
+    "long": -74.272746
+  },
+  {
+    "type": "Liquor",
+    "name": "Total Wine More",
+    "lat": 40.6887883,
+    "long": -74.2993271
+  },
+  {
+    "type": "Liquor",
+    "name": "Providence Liquors Inc",
+    "lat": 40.6972273,
+    "long": -74.4047368
+  },
+  {
+    "type": "Liquor",
+    "name": "Park Beverage Fine Wine Spirits",
+    "lat": 40.6502778,
+    "long": -74.3961111
+  },
+  {
+    "type": "Liquor",
+    "name": "Milton s Wine Liquors",
+    "lat": 40.7105288,
+    "long": -74.3112676
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 40.6466542,
+    "long": -74.3645664
+  },
+  {
+    "type": "Liquor",
+    "name": "House of Wine Liquor Westfield",
+    "lat": 40.6515093,
+    "long": -74.3353316
+  },
+  {
+    "type": "Liquor",
+    "name": "Sunrise Cellars Fine Wines Spirits of Westfield",
+    "lat": 40.6499661,
+    "long": -74.3386849
+  },
+  {
+    "type": "Liquor",
+    "name": "Jersey Fine Wines",
+    "lat": 40.7054709,
+    "long": -74.4041036
+  },
+  {
+    "type": "Liquor",
+    "name": "Central Ave Wines Liquors",
+    "lat": 40.6453203,
+    "long": -74.3351652
+  },
+  {
+    "type": "Liquor",
+    "name": "Dittrick s Wines Liquors",
+    "lat": 40.6550338,
+    "long": -74.3142257
+  },
+  {
+    "type": "Liquor",
+    "name": "The Wine Rack",
+    "lat": 40.7248369,
+    "long": -74.3068008
+  },
+  {
+    "type": "Liquor",
+    "name": "Home Wines Liquors",
+    "lat": 40.6927151,
+    "long": -74.2982907
+  },
+  {
+    "type": "Liquor",
+    "name": "M M Liquor Store",
+    "lat": 40.7052175,
+    "long": -74.4059912
+  },
+  {
+    "type": "Liquor",
+    "name": "Liquor Vault",
+    "lat": 40.6525284,
+    "long": -74.3223152
+  },
+  {
+    "type": "Liquor",
+    "name": "Breen s Wines Liquors",
+    "lat": 40.6563705,
+    "long": -74.3040501
+  },
+  {
+    "type": "Liquor",
+    "name": "Beechwood Wine Liquors",
+    "lat": 40.717031,
+    "long": -74.3573981
+  },
+  {
+    "type": "Liquor",
+    "name": "Chatham Bottle King Discount Wine, Beer Liquor",
+    "lat": 40.7302778,
+    "long": -74.3819444
+  },
+  {
+    "type": "Liquor",
+    "name": "Larchmont Liquors",
+    "lat": 40.704616,
+    "long": -74.295355
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 40.6856231,
+    "long": -74.3211525
+  },
+  {
+    "type": "Liquor",
+    "name": "Kings Fine Wines Spirits",
+    "lat": 40.7126143,
+    "long": -74.3845838
+  },
+  {
+    "type": "Liquor",
+    "name": "Drinq Linq The Liquor Store Cranford",
+    "lat": 40.654438,
+    "long": -74.3062713
+  },
+  {
+    "type": "Liquor",
+    "name": "Kings Fine Wines Spirits",
+    "lat": 40.7223201,
+    "long": -74.3341297
+  },
+  {
+    "type": "Liquor",
+    "name": "The Wine Shop",
+    "lat": 40.7237387,
+    "long": -74.3069199
+  },
+  {
+    "type": "Liquor",
+    "name": "Krauszer s Food Liquor",
+    "lat": 40.7700566,
+    "long": -74.2448503
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 40.8061562,
+    "long": -74.2084569
+  },
+  {
+    "type": "Liquor",
+    "name": "Irvington Liquors",
+    "lat": 40.72404,
+    "long": -74.247296
+  },
+  {
+    "type": "Liquor",
+    "name": "BOOTLEGGER WINE SPIRIT BEER DEPOT",
+    "lat": 40.7601233,
+    "long": -74.2220788
+  },
+  {
+    "type": "Liquor",
+    "name": "Hawthorne Quality Liquors",
+    "lat": 40.7174367,
+    "long": -74.2078151
+  },
+  {
+    "type": "Liquor",
+    "name": "South End Liquors",
+    "lat": 40.797804,
+    "long": -74.219199
+  },
+  {
+    "type": "Liquor",
+    "name": "Express Liquors",
+    "lat": 40.7749815,
+    "long": -74.2380274
+  },
+  {
+    "type": "Liquor",
+    "name": "Ivy Plaza World of Liquor",
+    "lat": 40.736455,
+    "long": -74.2499601
+  },
+  {
+    "type": "Liquor",
+    "name": "South Orange Fine Wine and Spirits",
+    "lat": 40.7457207,
+    "long": -74.236848
+  },
+  {
+    "type": "Liquor",
+    "name": "Manny s Liquors",
+    "lat": 40.7363581,
+    "long": -74.2045719
+  },
+  {
+    "type": "Liquor",
+    "name": "Home Liquors",
+    "lat": 40.7303271,
+    "long": -74.2099911
+  },
+  {
+    "type": "Liquor",
+    "name": "Ralph s Liquors",
+    "lat": 40.7208546,
+    "long": -74.1889479
+  },
+  {
+    "type": "Liquor",
+    "name": "Chancellor Liquor",
+    "lat": 40.7141401,
+    "long": -74.2316988
+  },
+  {
+    "type": "Liquor",
+    "name": "Tony s Liquor",
+    "lat": 40.7212609,
+    "long": -74.1954083
+  },
+  {
+    "type": "Liquor",
+    "name": "Victory Wine Liquors",
+    "lat": 40.7579353,
+    "long": -74.2199357
+  },
+  {
+    "type": "Liquor",
+    "name": "Royal Liquors",
+    "lat": 40.733925,
+    "long": -74.2130134
+  },
+  {
+    "type": "Liquor",
+    "name": "Home Liquors",
+    "lat": 40.7452884,
+    "long": -74.2195684
+  },
+  {
+    "type": "Liquor",
+    "name": "East Orange Liquors",
+    "lat": 40.7620338,
+    "long": -74.2031514
+  },
+  {
+    "type": "Liquor",
+    "name": "Hillside Liquors",
+    "lat": 40.6955354,
+    "long": -74.2161125
+  },
+  {
+    "type": "Liquor",
+    "name": "Luis Liquors",
+    "lat": 40.698247,
+    "long": -74.232093
+  },
+  {
+    "type": "Liquor",
+    "name": "Liquor Cave Maplewood",
+    "lat": 40.721093,
+    "long": -74.2677294
+  },
+  {
+    "type": "Liquor",
+    "name": "New J D Liquors",
+    "lat": 40.780983,
+    "long": -74.2049291
+  },
+  {
+    "type": "Liquor",
+    "name": "Riverview Liquors Bar",
+    "lat": 40.883526,
+    "long": -74.1236748
+  },
+  {
+    "type": "Liquor",
+    "name": "Hackensack LIQUORS Beer Wine Spirits ",
+    "lat": 40.8642012,
+    "long": -74.0353928
+  },
+  {
+    "type": "Liquor",
+    "name": "Little Ferry Wine Liquor",
+    "lat": 40.8486336,
+    "long": -74.0399809
+  },
+  {
+    "type": "Liquor",
+    "name": "Dante s Liquor Wine",
+    "lat": 40.8601416,
+    "long": -74.1522077
+  },
+  {
+    "type": "Liquor",
+    "name": "Columbia Park Liquors",
+    "lat": 40.7759795,
+    "long": -74.0356319
+  },
+  {
+    "type": "Liquor",
+    "name": "Liquor Master",
+    "lat": 40.8641501,
+    "long": -74.0648364
+  },
+  {
+    "type": "Liquor",
+    "name": "Wine Liquor Depot, LLC ",
+    "lat": 40.8693805,
+    "long": -74.0488666
+  },
+  {
+    "type": "Liquor",
+    "name": "Lexington Liquors",
+    "lat": 40.875543,
+    "long": -74.1326782
+  },
+  {
+    "type": "Liquor",
+    "name": "Bottle Liquor Store",
+    "lat": 40.8789987,
+    "long": -74.1347744
+  },
+  {
+    "type": "Liquor",
+    "name": "ShopRite Wines Spirits of Clifton",
+    "lat": 40.8713896,
+    "long": -74.1547234
+  },
+  {
+    "type": "Liquor",
+    "name": "Clifton Wine Liquors",
+    "lat": 40.8789084,
+    "long": -74.1365603
+  },
+  {
+    "type": "Liquor",
+    "name": "Rye House Spirits Wine Beer",
+    "lat": 40.642373,
+    "long": -74.4058771
+  },
+  {
+    "type": "Liquor",
+    "name": "Vine Republic",
+    "lat": 40.6834965,
+    "long": -74.4419027
+  },
+  {
+    "type": "Liquor",
+    "name": "Trader Joe s",
+    "lat": 40.652225,
+    "long": -74.349995
+  },
+  {
+    "type": "Liquor",
+    "name": "Peterson s Wines Unlimited",
+    "lat": 40.64693,
+    "long": -74.362642
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 40.7291976,
+    "long": -74.3783345
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 40.6445778,
+    "long": -74.3351712
+  },
+  {
+    "type": "Liquor",
+    "name": "Best Cellars",
+    "lat": 40.7145223,
+    "long": -74.3566708
+  },
+  {
+    "type": "Liquor",
+    "name": "Wine Anthology",
+    "lat": 40.6569319,
+    "long": -74.4008513
+  },
+  {
+    "type": "Liquor",
+    "name": "The Wine Cellar",
+    "lat": 40.8263469,
+    "long": -74.5728786
+  },
+  {
+    "type": "Liquor",
+    "name": "Grove Liquor Shop",
+    "lat": 40.8159537,
+    "long": -74.2069127
+  },
+  {
+    "type": "Liquor",
+    "name": "Boonton liquor locker",
+    "lat": 40.9073633,
+    "long": -74.4251626
+  },
+  {
+    "type": "Liquor",
+    "name": "El Dorado Winehouse",
+    "lat": 40.8844491,
+    "long": -74.4615857
+  },
+  {
+    "type": "Liquor",
+    "name": "FINE WINE GOOD SPIRITS",
+    "lat": 40.7169185,
+    "long": -75.284308
+  },
+  {
+    "type": "Liquor",
+    "name": "Free Bridge Wine Spirits",
+    "lat": 40.691841,
+    "long": -75.2026052
+  },
+  {
+    "type": "Liquor",
+    "name": " Food Mart Gas Station",
+    "lat": 40.7175932,
+    "long": -75.1921792
+  },
+  {
+    "type": "Liquor",
+    "name": "Wegmans Wine Beer",
+    "lat": 40.711951,
+    "long": -75.282151
+  },
+  {
+    "type": "Liquor",
+    "name": "Sheetz",
+    "lat": 40.7073003,
+    "long": -75.2762291
+  },
+  {
+    "type": "Liquor",
+    "name": "Main Street Beer Liquor",
+    "lat": 40.6863349,
+    "long": -75.1931274
+  },
+  {
+    "type": "Liquor",
+    "name": "Friendly Food Mart",
+    "lat": 40.6852124,
+    "long": -75.236163
+  },
+  {
+    "type": "Liquor",
+    "name": "FINE WINE GOOD SPIRITS",
+    "lat": 40.6500514,
+    "long": -75.2971551
+  },
+  {
+    "type": "Liquor",
+    "name": "Fine Wine Good Spirits",
+    "lat": 40.6916719,
+    "long": -75.2055179
+  },
+  {
+    "type": "Liquor",
+    "name": "FINE WINE GOOD SPIRITS",
+    "lat": 40.712839,
+    "long": -75.220463
+  },
+  {
+    "type": "Liquor",
+    "name": "Chubby s Of South Side WineBeer KKC Store",
+    "lat": 40.6821238,
+    "long": -75.21021
+  },
+  {
+    "type": "Liquor",
+    "name": "Frank Dot s Beer Depot Inc",
+    "lat": 40.6941458,
+    "long": -75.2056759
+  },
+  {
+    "type": "Liquor",
+    "name": "Chubby s Food and Beer Store",
+    "lat": 40.721787,
+    "long": -75.225252
+  },
+  {
+    "type": "Liquor",
+    "name": "Boom A Rang Beverage",
+    "lat": 40.67575,
+    "long": -75.2482124
+  },
+  {
+    "type": "Liquor",
+    "name": "Jack s Market Tobacco Beer Shop",
+    "lat": 40.6908733,
+    "long": -75.2077224
+  },
+  {
+    "type": "Liquor",
+    "name": "Lu Co Tobacco, Beer Wine",
+    "lat": 40.6910965,
+    "long": -75.2073562
+  },
+  {
+    "type": "Liquor",
+    "name": "Easton Beverage",
+    "lat": 40.6945655,
+    "long": -75.2629948
+  },
+  {
+    "type": "Liquor",
+    "name": "Drew s Beverage Barn",
+    "lat": 40.6780211,
+    "long": -75.2465032
+  },
+  {
+    "type": "Liquor",
+    "name": "Beer Brothers",
+    "lat": 40.6907367,
+    "long": -75.2251876
+  },
+  {
+    "type": "Liquor",
+    "name": "Forks Beer Soda Store",
+    "lat": 40.7114399,
+    "long": -75.2207846
+  },
+  {
+    "type": "Liquor",
+    "name": "Sheetz",
+    "lat": 40.5610365,
+    "long": -75.4861834
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 40.6037516,
+    "long": -75.4728904
+  },
+  {
+    "type": "Liquor",
+    "name": "Fine Wine Good Spirits",
+    "lat": 40.6279354,
+    "long": -75.4186578
+  },
+  {
+    "type": "Liquor",
+    "name": "FINE WINE GOOD SPIRITS",
+    "lat": 40.5843217,
+    "long": -75.4608108
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 40.5910348,
+    "long": -75.4528164
+  },
+  {
+    "type": "Liquor",
+    "name": "Fine Wine Good Spirits",
+    "lat": 40.610409,
+    "long": -75.378044
+  },
+  {
+    "type": "Liquor",
+    "name": "Fine Wine Good Spirits",
+    "lat": 40.6408135,
+    "long": -75.4021688
+  },
+  {
+    "type": "Liquor",
+    "name": "FINE WINE GOOD SPIRITS",
+    "lat": 40.6442836,
+    "long": -75.49508
+  },
+  {
+    "type": "Liquor",
+    "name": "Fine Wine and Good Spirits",
+    "lat": 40.6391983,
+    "long": -75.4365013
+  },
+  {
+    "type": "Liquor",
+    "name": "FINE WINE GOOD SPIRITS",
+    "lat": 40.5581131,
+    "long": -75.4122456
+  },
+  {
+    "type": "Liquor",
+    "name": "FINE WINE GOOD SPIRITS",
+    "lat": 40.5575617,
+    "long": -75.4909353
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 40.5824789,
+    "long": -75.45689
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 40.6226642,
+    "long": -75.3750833
+  },
+  {
+    "type": "Liquor",
+    "name": "Jordan Park Beverage",
+    "lat": 40.6220475,
+    "long": -75.4815194
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 40.6210477,
+    "long": -75.4826728
+  },
+  {
+    "type": "Liquor",
+    "name": "Mariams",
+    "lat": 40.5979611,
+    "long": -75.4069047
+  },
+  {
+    "type": "Liquor",
+    "name": "JP Mart",
+    "lat": 40.6158684,
+    "long": -75.4605218
+  },
+  {
+    "type": "Liquor",
+    "name": "The Bottle Shop",
+    "lat": 40.6026381,
+    "long": -75.4691877
+  },
+  {
+    "type": "Liquor",
+    "name": "Abe s Six Pack Deli",
+    "lat": 40.6222479,
+    "long": -75.4007367
+  },
+  {
+    "type": "Liquor",
+    "name": "Ridge Beverage",
+    "lat": 40.6144444,
+    "long": -75.4616667
+  },
+  {
+    "type": "Liquor",
+    "name": "Wise Guys Beer Depot",
+    "lat": 40.6040363,
+    "long": -75.4595434
+  },
+  {
+    "type": "Liquor",
+    "name": "Union Beverages",
+    "lat": 40.6255421,
+    "long": -75.4210419
+  },
+  {
+    "type": "Liquor",
+    "name": "EZ Shoppe",
+    "lat": 40.5595992,
+    "long": -75.4884402
+  },
+  {
+    "type": "Liquor",
+    "name": "Jerry s",
+    "lat": 40.6277631,
+    "long": -75.418805
+  },
+  {
+    "type": "Liquor",
+    "name": "Abe s Cold Beer",
+    "lat": 40.6039338,
+    "long": -75.4911563
+  },
+  {
+    "type": "Liquor",
+    "name": "D S Beverage",
+    "lat": 40.5850521,
+    "long": -75.4589125
+  },
+  {
+    "type": "Liquor",
+    "name": "Tanczos Beverages Bethlehem",
+    "lat": 40.6417257,
+    "long": -75.3995666
+  },
+  {
+    "type": "Liquor",
+    "name": "FINE WINE GOOD SPIRITS",
+    "lat": 40.5830108,
+    "long": -75.5215122
+  },
+  {
+    "type": "Liquor",
+    "name": "Sheetz",
+    "lat": 40.555764,
+    "long": -75.606844
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 40.5759909,
+    "long": -75.6217849
+  },
+  {
+    "type": "Liquor",
+    "name": "Bear Swamp Beverage",
+    "lat": 40.517031,
+    "long": -75.5589347
+  },
+  {
+    "type": "Liquor",
+    "name": "FINE WINE GOOD SPIRITS",
+    "lat": 40.5639824,
+    "long": -75.566703
+  },
+  {
+    "type": "Liquor",
+    "name": "East Penn Plaza",
+    "lat": 40.5275039,
+    "long": -75.5101776
+  },
+  {
+    "type": "Liquor",
+    "name": "FINE WINE GOOD SPIRITS",
+    "lat": 40.552154,
+    "long": -75.59265
+  },
+  {
+    "type": "Liquor",
+    "name": "FINE WINE GOOD SPIRITS",
+    "lat": 40.527354,
+    "long": -75.509753
+  },
+  {
+    "type": "Liquor",
+    "name": "FINE WINE GOOD SPIRITS",
+    "lat": 40.518174,
+    "long": -75.560792
+  },
+  {
+    "type": "Liquor",
+    "name": "Iron Run Beverage",
+    "lat": 40.5855816,
+    "long": -75.6225457
+  },
+  {
+    "type": "Liquor",
+    "name": "Beverage Smoke",
+    "lat": 40.5552863,
+    "long": -75.5802812
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 40.5742555,
+    "long": -75.558228
+  },
+  {
+    "type": "Liquor",
+    "name": "Miers Brauerei Beer and Cigar",
+    "lat": 40.5523086,
+    "long": -75.5913985
+  },
+  {
+    "type": "Liquor",
+    "name": "Lehigh Mart",
+    "lat": 40.5130536,
+    "long": -75.5496811
+  },
+  {
+    "type": "Liquor",
+    "name": "Dorneyville Beverage",
+    "lat": 40.5789769,
+    "long": -75.5254128
+  }
+]

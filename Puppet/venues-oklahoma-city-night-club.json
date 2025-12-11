@@ -1,0 +1,506 @@
+[
+  {
+    "type": "Liquor",
+    "name": "La Movida Night Club",
+    "lat": 35.410622,
+    "long": -97.5474566
+  },
+  {
+    "type": "Liquor",
+    "name": "One Nightclub",
+    "lat": 35.4667007,
+    "long": -97.5100607
+  },
+  {
+    "type": "Liquor",
+    "name": "El ",
+    "lat": 35.4387516,
+    "long": -97.4836978
+  },
+  {
+    "type": "Liquor",
+    "name": "Se C B or Shots",
+    "lat": 35.4667561,
+    "long": -97.5064042
+  },
+  {
+    "type": "Liquor",
+    "name": "Pretty Please Social Room",
+    "lat": 35.4657885,
+    "long": -97.510194
+  },
+  {
+    "type": "Liquor",
+    "name": "Night Trips",
+    "lat": 35.4635891,
+    "long": -97.5965295
+  },
+  {
+    "type": "Liquor",
+    "name": "Las Locas Nightclub",
+    "lat": 35.4667326,
+    "long": -97.5067479
+  },
+  {
+    "type": "Liquor",
+    "name": "Zafary Night Club",
+    "lat": 35.4338216,
+    "long": -97.5812735
+  },
+  {
+    "type": "Liquor",
+    "name": "Don quixotes F the donkey",
+    "lat": 35.4987599,
+    "long": -97.5821275
+  },
+  {
+    "type": "Liquor",
+    "name": "Redneck Dance Hall",
+    "lat": 35.4589418,
+    "long": -97.604974
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Eden OKC",
+    "lat": 35.5119344,
+    "long": -97.5640898
+  },
+  {
+    "type": "Liquor",
+    "name": "The Tree Lounge",
+    "lat": 35.508136,
+    "long": -97.507506
+  },
+  {
+    "type": "Liquor",
+    "name": "Flux",
+    "lat": 35.4387275,
+    "long": -97.5165095
+  },
+  {
+    "type": "Liquor",
+    "name": "Angles",
+    "lat": 35.5116661,
+    "long": -97.548164
+  },
+  {
+    "type": "Liquor",
+    "name": "Hawaiian Don s",
+    "lat": 35.4789334,
+    "long": -97.5872666
+  },
+  {
+    "type": "Liquor",
+    "name": "Oak Room",
+    "lat": 35.4740156,
+    "long": -97.5262754
+  },
+  {
+    "type": "Liquor",
+    "name": "Michael Murphy s Dueling Piano Bar",
+    "lat": 35.4655321,
+    "long": -97.5097779
+  },
+  {
+    "type": "Liquor",
+    "name": "Los Amigos Bar",
+    "lat": 35.4752285,
+    "long": -97.5366828
+  },
+  {
+    "type": "Liquor",
+    "name": "Santos Nightlife",
+    "lat": 35.4655175,
+    "long": -97.5102581
+  },
+  {
+    "type": "Liquor",
+    "name": "Katt s Cove",
+    "lat": 35.4494707,
+    "long": -97.4818967
+  },
+  {
+    "type": "Liquor",
+    "name": "Tramps",
+    "lat": 35.5117422,
+    "long": -97.5494332
+  },
+  {
+    "type": "Liquor",
+    "name": "Hideaway Club",
+    "lat": 35.5107675,
+    "long": -97.6002678
+  },
+  {
+    "type": "Liquor",
+    "name": "Sweet Tooth",
+    "lat": 35.4661494,
+    "long": -97.5085652
+  },
+  {
+    "type": "Liquor",
+    "name": "Blue Note Lounge",
+    "lat": 35.4936469,
+    "long": -97.5154255
+  },
+  {
+    "type": "Liquor",
+    "name": " Lounge and Grill",
+    "lat": 35.4635899,
+    "long": -97.6044343
+  },
+  {
+    "type": "Liquor",
+    "name": "Yours Truly",
+    "lat": 35.4936072,
+    "long": -97.5179133
+  },
+  {
+    "type": "Liquor",
+    "name": "Grenadier Club",
+    "lat": 35.4922208,
+    "long": -97.4361746
+  },
+  {
+    "type": "Liquor",
+    "name": "RODEO WEST OKLAHOMA CITY",
+    "lat": 35.4690553,
+    "long": -97.6018542
+  },
+  {
+    "type": "Liquor",
+    "name": "Ultraviolet",
+    "lat": 35.4779329,
+    "long": -97.5210579
+  },
+  {
+    "type": "Liquor",
+    "name": "Groovy s",
+    "lat": 35.5295208,
+    "long": -97.5703908
+  },
+  {
+    "type": "Liquor",
+    "name": "Famous Restaurant Lounge",
+    "lat": 35.4943565,
+    "long": -97.5494779
+  },
+  {
+    "type": "Liquor",
+    "name": "Red Piano Lounge",
+    "lat": 35.4688742,
+    "long": -97.513764
+  },
+  {
+    "type": "Liquor",
+    "name": "Millennium Lounge",
+    "lat": 35.5190735,
+    "long": -97.5300339
+  },
+  {
+    "type": "Liquor",
+    "name": "The R J Lounge and Supper Club",
+    "lat": 35.477934,
+    "long": -97.518744
+  },
+  {
+    "type": "Liquor",
+    "name": "Secrets",
+    "lat": 35.4791924,
+    "long": -97.6173231
+  },
+  {
+    "type": "Liquor",
+    "name": "Queen Lounge OKC",
+    "lat": 35.492,
+    "long": -97.618123
+  },
+  {
+    "type": "Liquor",
+    "name": "Copacabana Club",
+    "lat": 35.4057699,
+    "long": -97.49701
+  },
+  {
+    "type": "Liquor",
+    "name": "Sipango Lounge",
+    "lat": 35.5148245,
+    "long": -97.5300452
+  },
+  {
+    "type": "Liquor",
+    "name": "Keshia s Kastle",
+    "lat": 35.4635253,
+    "long": -97.4256441
+  },
+  {
+    "type": "Liquor",
+    "name": "The SoundBar",
+    "lat": 35.4745049,
+    "long": -97.5138331
+  },
+  {
+    "type": "Liquor",
+    "name": "Cookie s on Western",
+    "lat": 35.4925921,
+    "long": -97.5297446
+  },
+  {
+    "type": "Liquor",
+    "name": "Broski Lounge",
+    "lat": 35.5215225,
+    "long": -97.530016
+  },
+  {
+    "type": "Liquor",
+    "name": "Shots On Rocks Lounge and Grill",
+    "lat": 35.4789531,
+    "long": -97.5136975
+  },
+  {
+    "type": "Liquor",
+    "name": "Twilight Club",
+    "lat": 35.41,
+    "long": -97.5487
+  },
+  {
+    "type": "Liquor",
+    "name": "Aria Lounge",
+    "lat": 35.4671662,
+    "long": -97.5149703
+  },
+  {
+    "type": "Liquor",
+    "name": "Platinum Nights",
+    "lat": 35.3897312,
+    "long": -97.5312819
+  },
+  {
+    "type": "Liquor",
+    "name": "Bamboo Lounge",
+    "lat": 35.4573106,
+    "long": -97.6175641
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Arriba",
+    "lat": 35.4919375,
+    "long": -97.618293
+  },
+  {
+    "type": "Liquor",
+    "name": "Landing Zone Dance Night Club C B Bar C B Diner",
+    "lat": 35.449324,
+    "long": -97.3775743
+  },
+  {
+    "type": "Liquor",
+    "name": "Hubbly Bubbly Lounge",
+    "lat": 35.499013,
+    "long": -97.533683
+  },
+  {
+    "type": "Liquor",
+    "name": "Kamp E s Lounge",
+    "lat": 35.4951828,
+    "long": -97.5340692
+  },
+  {
+    "type": "Liquor",
+    "name": "Alice Cocktail Lounge",
+    "lat": 35.493557,
+    "long": -97.517866
+  },
+  {
+    "type": "Liquor",
+    "name": "The Kobold Lounge",
+    "lat": 35.4928878,
+    "long": -97.5844083
+  },
+  {
+    "type": "Liquor",
+    "name": "Deja Vu Showgirls OKC Oklahoma Strip Club",
+    "lat": 35.4058811,
+    "long": -97.4845607
+  },
+  {
+    "type": "Liquor",
+    "name": "Edna s",
+    "lat": 35.523332,
+    "long": -97.5330099
+  },
+  {
+    "type": "Liquor",
+    "name": "Vaqueros Norte",
+    "lat": 35.4916528,
+    "long": -97.6183316
+  },
+  {
+    "type": "Liquor",
+    "name": "ENZONE OKC",
+    "lat": 35.3783111,
+    "long": -97.5289993
+  },
+  {
+    "type": "Liquor",
+    "name": "El Conejo Negro",
+    "lat": 35.466743,
+    "long": -97.5065788
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Keno",
+    "lat": 35.4622095,
+    "long": -97.6554669
+  },
+  {
+    "type": "Liquor",
+    "name": "Coast to Coast Club",
+    "lat": 35.4638595,
+    "long": -97.4228203
+  },
+  {
+    "type": "Liquor",
+    "name": "Alley Club",
+    "lat": 35.3848234,
+    "long": -97.4990412
+  },
+  {
+    "type": "Liquor",
+    "name": "Inferno Bar and Nightclub",
+    "lat": 35.203487,
+    "long": -97.4735815
+  },
+  {
+    "type": "Liquor",
+    "name": "Las Gatitas Gentlemen s Club",
+    "lat": 35.405885,
+    "long": -97.4774628
+  },
+  {
+    "type": "Liquor",
+    "name": " cigars llc",
+    "lat": 35.4935054,
+    "long": -97.4631845
+  },
+  {
+    "type": "Liquor",
+    "name": "Vast",
+    "lat": 35.4669456,
+    "long": -97.517715
+  },
+  {
+    "type": "Liquor",
+    "name": "Seoul Pocha EC C EC A B ED F AC EC B A ",
+    "lat": 35.4930114,
+    "long": -97.536572
+  },
+  {
+    "type": "Liquor",
+    "name": "The Gathering Loft",
+    "lat": 35.438659,
+    "long": -97.515877
+  },
+  {
+    "type": "Liquor",
+    "name": "Zodiac Club",
+    "lat": 35.5060956,
+    "long": -97.6184113
+  },
+  {
+    "type": "Liquor",
+    "name": "Lounge ",
+    "lat": 35.54584,
+    "long": -97.6115276
+  },
+  {
+    "type": "Liquor",
+    "name": "Cee Gee s Club",
+    "lat": 35.6510124,
+    "long": -97.4431812
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Bar Grill",
+    "lat": 35.532415,
+    "long": -97.4586522
+  },
+  {
+    "type": "Liquor",
+    "name": "Little Dick s Halfway Inn",
+    "lat": 35.3873016,
+    "long": -97.4772538
+  },
+  {
+    "type": "Liquor",
+    "name": "Shiloh Club",
+    "lat": 35.4499369,
+    "long": -97.3851763
+  },
+  {
+    "type": "Liquor",
+    "name": "Celebrity Club",
+    "lat": 35.4436709,
+    "long": -97.4063707
+  },
+  {
+    "type": "Liquor",
+    "name": "EMPIRE BILLIARD E A KITCHEN E A LOUNGE",
+    "lat": 35.4960272,
+    "long": -97.5335057
+  },
+  {
+    "type": "Liquor",
+    "name": "Catrice De Ann Boyce",
+    "lat": 35.4105372,
+    "long": -97.4139316
+  },
+  {
+    "type": "Liquor",
+    "name": "Gruperos De Gala",
+    "lat": 35.4349014,
+    "long": -97.5271461
+  },
+  {
+    "type": "Liquor",
+    "name": "Simple Simon s Pizza",
+    "lat": 36.1275552,
+    "long": -96.3530863
+  },
+  {
+    "type": "Liquor",
+    "name": "Steer Inn Restaurant",
+    "lat": 36.126252,
+    "long": -96.3397442
+  },
+  {
+    "type": "Liquor",
+    "name": "Keystone Harbor Marina",
+    "lat": 36.1327506,
+    "long": -96.3390686
+  },
+  {
+    "type": "Liquor",
+    "name": "Dollar General",
+    "lat": 36.1299028,
+    "long": -96.3645751
+  },
+  {
+    "type": "Liquor",
+    "name": "Dollar General",
+    "lat": 36.1305527,
+    "long": -96.2970664
+  },
+  {
+    "type": "Liquor",
+    "name": "Subway",
+    "lat": 36.1266164,
+    "long": -96.3553892
+  },
+  {
+    "type": "Liquor",
+    "name": "Harbor Grill",
+    "lat": 36.1327522,
+    "long": -96.3390684
+  }
+]

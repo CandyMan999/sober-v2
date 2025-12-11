@@ -1,0 +1,596 @@
+[
+  {
+    "type": "Bar",
+    "name": "Kolb Road Lounge",
+    "lat": 32.2073719,
+    "long": -110.8413457
+  },
+  {
+    "type": "Bar",
+    "name": "Territorial Bar",
+    "lat": 32.179206,
+    "long": -110.917317
+  },
+  {
+    "type": "Bar",
+    "name": "The Nugget",
+    "lat": 32.2546087,
+    "long": -110.9613974
+  },
+  {
+    "type": "Bar",
+    "name": "Louie s Pub",
+    "lat": 32.2642326,
+    "long": -110.9600067
+  },
+  {
+    "type": "Bar",
+    "name": "Saint Charles Tavern",
+    "lat": 32.201976,
+    "long": -110.965758
+  },
+  {
+    "type": "Bar",
+    "name": "Tommy E s Saloon",
+    "lat": 32.2571081,
+    "long": -110.9722933
+  },
+  {
+    "type": "Bar",
+    "name": "Silver Room",
+    "lat": 32.2135561,
+    "long": -110.9392695
+  },
+  {
+    "type": "Bar",
+    "name": "The Buffet Bar",
+    "lat": 32.2236486,
+    "long": -110.9628563
+  },
+  {
+    "type": "Bar",
+    "name": "Cowpony Bar",
+    "lat": 32.2449111,
+    "long": -110.8538056
+  },
+  {
+    "type": "Bar",
+    "name": "Monkey Bar",
+    "lat": 32.2075119,
+    "long": -110.8583526
+  },
+  {
+    "type": "Bar",
+    "name": "Wooden Nickel Tavern",
+    "lat": 32.1993161,
+    "long": -110.9269859
+  },
+  {
+    "type": "Bar",
+    "name": "Bay Horse Tavern",
+    "lat": 32.2501182,
+    "long": -110.9308716
+  },
+  {
+    "type": "Bar",
+    "name": "Liquor Barrel Saloon",
+    "lat": 32.2215056,
+    "long": -110.8437444
+  },
+  {
+    "type": "Bar",
+    "name": "Mint Bar",
+    "lat": 32.2500786,
+    "long": -110.9169797
+  },
+  {
+    "type": "Bar",
+    "name": "Nancy s Boondocks",
+    "lat": 32.2667498,
+    "long": -110.9607113
+  },
+  {
+    "type": "Bar",
+    "name": "Surly Wench Pub",
+    "lat": 32.2270928,
+    "long": -110.965383
+  },
+  {
+    "type": "Bar",
+    "name": "Brodies Dark Horse Tavern",
+    "lat": 32.2519856,
+    "long": -110.972226
+  },
+  {
+    "type": "Bar",
+    "name": "Chicago Bar",
+    "lat": 32.2358781,
+    "long": -110.8651987
+  },
+  {
+    "type": "Bar",
+    "name": "Just More",
+    "lat": 32.1926958,
+    "long": -110.8591845
+  },
+  {
+    "type": "Bar",
+    "name": "The Shelter Bar",
+    "lat": 32.2510117,
+    "long": -110.9042171
+  },
+  {
+    "type": "Bar",
+    "name": "Chatterbox",
+    "lat": 32.2032553,
+    "long": -110.9091614
+  },
+  {
+    "type": "Bar",
+    "name": "Hideout the Original",
+    "lat": 32.1873315,
+    "long": -111.0019283
+  },
+  {
+    "type": "Bar",
+    "name": "Mr Heads",
+    "lat": 32.2281389,
+    "long": -110.9658583
+  },
+  {
+    "type": "Bar",
+    "name": "Salty Dawg II",
+    "lat": 32.222652,
+    "long": -110.862018
+  },
+  {
+    "type": "Bar",
+    "name": "The Hut",
+    "lat": 32.225453,
+    "long": -110.966043
+  },
+  {
+    "type": "Bar",
+    "name": "Music Box Lounge",
+    "lat": 32.207057,
+    "long": -110.843512
+  },
+  {
+    "type": "Bar",
+    "name": "Red Garter Saloon Bar Grill",
+    "lat": 32.2362858,
+    "long": -110.9252069
+  },
+  {
+    "type": "Bar",
+    "name": "John Henry E s",
+    "lat": 32.2236845,
+    "long": -110.9688097
+  },
+  {
+    "type": "Bar",
+    "name": "Nancys Fort Lowell Pub",
+    "lat": 32.2642871,
+    "long": -110.9599507
+  },
+  {
+    "type": "Bar",
+    "name": "O E Malley E s Bar Grill",
+    "lat": 32.2248669,
+    "long": -110.9658776
+  },
+  {
+    "type": "Bar",
+    "name": "The Depot Bar",
+    "lat": 32.2654772,
+    "long": -110.9175597
+  },
+  {
+    "type": "Bar",
+    "name": "Tough Luck Club",
+    "lat": 32.2233921,
+    "long": -110.9696983
+  },
+  {
+    "type": "Bar",
+    "name": "Dirtbag s",
+    "lat": 32.235705,
+    "long": -110.9450369
+  },
+  {
+    "type": "Bar",
+    "name": "Congress Tap Room",
+    "lat": 32.2223387,
+    "long": -110.9665317
+  },
+  {
+    "type": "Bar",
+    "name": "Danny s Baboquivari Lounge",
+    "lat": 32.2647206,
+    "long": -110.9288619
+  },
+  {
+    "type": "Bar",
+    "name": "Che s Lounge",
+    "lat": 32.2262684,
+    "long": -110.9653976
+  },
+  {
+    "type": "Bar",
+    "name": "Bob Dobb s Bar Grill",
+    "lat": 32.228168,
+    "long": -110.935147
+  },
+  {
+    "type": "Bar",
+    "name": "Bar Passe",
+    "lat": 32.2268664,
+    "long": -110.9657263
+  },
+  {
+    "type": "Bar",
+    "name": "The Shanty",
+    "lat": 32.2240023,
+    "long": -110.9653659
+  },
+  {
+    "type": "Bar",
+    "name": "SideCar",
+    "lat": 32.2210724,
+    "long": -110.9275724
+  },
+  {
+    "type": "Bar",
+    "name": "Casa Film Bar",
+    "lat": 32.236459,
+    "long": -110.9291536
+  },
+  {
+    "type": "Bar",
+    "name": "Sky Bar Tucson",
+    "lat": 32.22869,
+    "long": -110.965276
+  },
+  {
+    "type": "Bar",
+    "name": "Murphys Public House",
+    "lat": 32.2195938,
+    "long": -110.8415107
+  },
+  {
+    "type": "Bar",
+    "name": "The Jackrabbit Lounge",
+    "lat": 32.2462502,
+    "long": -110.9778005
+  },
+  {
+    "type": "Bar",
+    "name": "The Frozen Cactus sports bar and restauraunt",
+    "lat": 32.236427,
+    "long": -110.8691784
+  },
+  {
+    "type": "Bar",
+    "name": "The Outlaw Bar Grill",
+    "lat": 32.279615,
+    "long": -110.993197
+  },
+  {
+    "type": "Bar",
+    "name": "Nevada Smith s Saloon",
+    "lat": 32.2608534,
+    "long": -110.9906714
+  },
+  {
+    "type": "Bar",
+    "name": "R Bar",
+    "lat": 32.2217307,
+    "long": -110.9662112
+  },
+  {
+    "type": "Bar",
+    "name": "Owls Club",
+    "lat": 32.2186311,
+    "long": -110.9698155
+  },
+  {
+    "type": "Bar",
+    "name": "The Neighborhood Bar OG",
+    "lat": 32.1995431,
+    "long": -110.9075142
+  },
+  {
+    "type": "Bar",
+    "name": "Buggy Wheel Bar and Grill",
+    "lat": 32.1485646,
+    "long": -110.9245484
+  },
+  {
+    "type": "Bar",
+    "name": "Midtown Tavern",
+    "lat": 32.2723197,
+    "long": -110.9602704
+  },
+  {
+    "type": "Bar",
+    "name": "Arnette Creek Watering Hole",
+    "lat": 32.2075902,
+    "long": -110.8383339
+  },
+  {
+    "type": "Bar",
+    "name": "Juniper Tucson",
+    "lat": 32.2218854,
+    "long": -110.9680507
+  },
+  {
+    "type": "Bar",
+    "name": "Bumsted s",
+    "lat": 32.23456,
+    "long": -110.9720392
+  },
+  {
+    "type": "Bar",
+    "name": "Margarita Bay",
+    "lat": 32.2069844,
+    "long": -110.8342624
+  },
+  {
+    "type": "Bar",
+    "name": "Shooter s Saloon",
+    "lat": 32.2728989,
+    "long": -110.9261188
+  },
+  {
+    "type": "Bar",
+    "name": "HighWire Tucson",
+    "lat": 32.2215827,
+    "long": -110.9679006
+  },
+  {
+    "type": "Bar",
+    "name": "The Edge A Tucson Bar",
+    "lat": 32.2910816,
+    "long": -110.9957785
+  },
+  {
+    "type": "Bar",
+    "name": "Westbound",
+    "lat": 32.2180285,
+    "long": -110.9844648
+  },
+  {
+    "type": "Bar",
+    "name": "The Rock",
+    "lat": 32.2234847,
+    "long": -110.9561586
+  },
+  {
+    "type": "Bar",
+    "name": "The Dugout Sports Bar Grill",
+    "lat": 32.2063666,
+    "long": -110.8878152
+  },
+  {
+    "type": "Bar",
+    "name": "Frog Firkin",
+    "lat": 32.2314328,
+    "long": -110.9582961
+  },
+  {
+    "type": "Bar",
+    "name": "Cobra Arcade Bar Tucson",
+    "lat": 32.2220663,
+    "long": -110.9699604
+  },
+  {
+    "type": "Bar",
+    "name": "Short Rest Tavern",
+    "lat": 32.2889383,
+    "long": -110.9758812
+  },
+  {
+    "type": "Bar",
+    "name": "M M Saloon",
+    "lat": 32.1529824,
+    "long": -110.9200071
+  },
+  {
+    "type": "Bar",
+    "name": "Tap Bottle",
+    "lat": 32.2266573,
+    "long": -110.9688279
+  },
+  {
+    "type": "Bar",
+    "name": "Lazy V",
+    "lat": 32.1449333,
+    "long": -111.0272695
+  },
+  {
+    "type": "Bar",
+    "name": "Kon Tiki Restaurant Lounge",
+    "lat": 32.222211,
+    "long": -110.893799
+  },
+  {
+    "type": "Bar",
+    "name": "Pockets Pool Pub",
+    "lat": 32.2083851,
+    "long": -110.858444
+  },
+  {
+    "type": "Bar",
+    "name": "Audubon Bar Patio",
+    "lat": 32.2422575,
+    "long": -110.9392541
+  },
+  {
+    "type": "Bar",
+    "name": "Elliott s on Congress",
+    "lat": 32.2221001,
+    "long": -110.9689639
+  },
+  {
+    "type": "Bar",
+    "name": "Venture N",
+    "lat": 32.2382529,
+    "long": -110.9691432
+  },
+  {
+    "type": "Bar",
+    "name": "Bashful Bandit Barbecue",
+    "lat": 32.2358947,
+    "long": -110.913547
+  },
+  {
+    "type": "Bar",
+    "name": "IBT s Bar B Food",
+    "lat": 32.2295507,
+    "long": -110.9654605
+  },
+  {
+    "type": "Bar",
+    "name": "Los Pochos Sports Bar",
+    "lat": 32.1468334,
+    "long": -110.9173656
+  },
+  {
+    "type": "Bar",
+    "name": "Brooklyn s Beer Burgers",
+    "lat": 32.1627465,
+    "long": -110.911622
+  },
+  {
+    "type": "Bar",
+    "name": "On The Rocks OTR ",
+    "lat": 32.2343781,
+    "long": -110.8229277
+  },
+  {
+    "type": "Bar",
+    "name": "Putney s Pitstop Sports Bar Grill",
+    "lat": 32.3172335,
+    "long": -110.9752271
+  },
+  {
+    "type": "Bar",
+    "name": "Bison Witches",
+    "lat": 32.2258491,
+    "long": -110.9654388
+  },
+  {
+    "type": "Bar",
+    "name": "Mulligans",
+    "lat": 32.1922098,
+    "long": -110.7912797
+  },
+  {
+    "type": "Bar",
+    "name": "Thirsty s Neighborhood Grill",
+    "lat": 32.2513047,
+    "long": -110.8227422
+  },
+  {
+    "type": "Bar",
+    "name": "Louies Cantina",
+    "lat": 32.2059138,
+    "long": -110.8208047
+  },
+  {
+    "type": "Bar",
+    "name": "Famous Sam s Sports Grill ",
+    "lat": 32.1627547,
+    "long": -110.9409507
+  },
+  {
+    "type": "Bar",
+    "name": "Old Father Inn",
+    "lat": 32.3380575,
+    "long": -111.0531172
+  },
+  {
+    "type": "Bar",
+    "name": "Eddie s",
+    "lat": 32.2053843,
+    "long": -110.8192623
+  },
+  {
+    "type": "Bar",
+    "name": "Famous Sam s",
+    "lat": 32.3064475,
+    "long": -111.009348
+  },
+  {
+    "type": "Bar",
+    "name": "Bojangles Night Club",
+    "lat": 32.1570191,
+    "long": -110.9663692
+  },
+  {
+    "type": "Bar",
+    "name": "Momo s on th",
+    "lat": 32.2276241,
+    "long": -110.9441568
+  },
+  {
+    "type": "Bar",
+    "name": "Lookout Bar and Grill",
+    "lat": 32.3426408,
+    "long": -110.964895
+  },
+  {
+    "type": "Bar",
+    "name": "Your Mom s House, Bar Grill",
+    "lat": 32.2191285,
+    "long": -110.8073327
+  },
+  {
+    "type": "Bar",
+    "name": "Amigos Burgers Beer",
+    "lat": 32.136079,
+    "long": -110.9618968
+  },
+  {
+    "type": "Bar",
+    "name": "Whiskey Roads",
+    "lat": 32.339386,
+    "long": -111.0153283
+  },
+  {
+    "type": "Bar",
+    "name": "Famous Sam s Sports Grill ",
+    "lat": 32.352626,
+    "long": -110.973266
+  },
+  {
+    "type": "Bar",
+    "name": "Falora Pizza",
+    "lat": 32.2212944,
+    "long": -110.9275889
+  },
+  {
+    "type": "Bar",
+    "name": "Aguila E s Hidaway The office bar and grill",
+    "lat": 33.4089594,
+    "long": -111.7891088
+  },
+  {
+    "type": "Bar",
+    "name": "The Red Light Lounge at the Downtown Clifton",
+    "lat": 32.2149342,
+    "long": -110.9696748
+  },
+  {
+    "type": "Bar",
+    "name": "Tumbleweed Lounge",
+    "lat": 32.4591667,
+    "long": -111.2177778
+  },
+  {
+    "type": "Bar",
+    "name": "Monsoons Tap Grill",
+    "lat": 32.3303032,
+    "long": -111.0468902
+  }
+]

@@ -1,0 +1,950 @@
+[
+  {
+    "type": "Liquor",
+    "name": "Rumpus Room",
+    "lat": 40.7229243,
+    "long": -73.9897168
+  },
+  {
+    "type": "Liquor",
+    "name": "Outer Heaven",
+    "lat": 40.7220384,
+    "long": -73.9924255
+  },
+  {
+    "type": "Liquor",
+    "name": "Velvet Rope NY",
+    "lat": 40.7396428,
+    "long": -74.0058707
+  },
+  {
+    "type": "Liquor",
+    "name": "Retroclubnyc",
+    "lat": 40.7551839,
+    "long": -73.9783971
+  },
+  {
+    "type": "Liquor",
+    "name": "Night Encounters New York",
+    "lat": 40.7578105,
+    "long": -73.9708219
+  },
+  {
+    "type": "Liquor",
+    "name": "TAO Downtown Nightclub",
+    "lat": 40.742308,
+    "long": -74.0040627
+  },
+  {
+    "type": "Liquor",
+    "name": "Paradise Club",
+    "lat": 40.7592701,
+    "long": -73.984144
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Rapture",
+    "lat": 40.7459835,
+    "long": -73.9920398
+  },
+  {
+    "type": "Liquor",
+    "name": "Now And Then NYC",
+    "lat": 40.7086144,
+    "long": -73.9367152
+  },
+  {
+    "type": "Liquor",
+    "name": "Loosie s Nightclub",
+    "lat": 40.7189569,
+    "long": -73.9944117
+  },
+  {
+    "type": "Liquor",
+    "name": "Original Sound Factory",
+    "lat": 40.7507275,
+    "long": -74.0038693
+  },
+  {
+    "type": "Liquor",
+    "name": "Friends and Lovers",
+    "lat": 40.678534,
+    "long": -73.958435
+  },
+  {
+    "type": "Liquor",
+    "name": "That Night Entertainment",
+    "lat": 40.7439233,
+    "long": -73.9881681
+  },
+  {
+    "type": "Liquor",
+    "name": "Level Nightclub",
+    "lat": 40.765076,
+    "long": -73.995986
+  },
+  {
+    "type": "Liquor",
+    "name": "Sugardaddy s Gentlemen s Club",
+    "lat": 40.7395023,
+    "long": -73.9426222
+  },
+  {
+    "type": "Liquor",
+    "name": "Mission NYC",
+    "lat": 40.7480006,
+    "long": -73.9947422
+  },
+  {
+    "type": "Liquor",
+    "name": "The Monster",
+    "lat": 40.7333573,
+    "long": -74.0023353
+  },
+  {
+    "type": "Liquor",
+    "name": "PHD Rooftop Lounge at Dream Downtown",
+    "lat": 40.7421711,
+    "long": -74.003522
+  },
+  {
+    "type": "Liquor",
+    "name": "The Rose Lounge",
+    "lat": 40.7072996,
+    "long": -73.9319196
+  },
+  {
+    "type": "Liquor",
+    "name": "Europa Club",
+    "lat": 40.7269353,
+    "long": -73.9529282
+  },
+  {
+    "type": "Liquor",
+    "name": "The Box",
+    "lat": 40.721883,
+    "long": -73.99221
+  },
+  {
+    "type": "Liquor",
+    "name": "Crystal",
+    "lat": 40.756603,
+    "long": -73.9693009
+  },
+  {
+    "type": "Liquor",
+    "name": "Marquee New York",
+    "lat": 40.7501197,
+    "long": -74.0027093
+  },
+  {
+    "type": "Liquor",
+    "name": "Copacabana Nightclub",
+    "lat": 40.7672228,
+    "long": -73.9953008
+  },
+  {
+    "type": "Liquor",
+    "name": "China Club",
+    "lat": 40.7601459,
+    "long": -73.9872596
+  },
+  {
+    "type": "Liquor",
+    "name": "Nebula",
+    "lat": 40.7549214,
+    "long": -73.9858076
+  },
+  {
+    "type": "Liquor",
+    "name": "Electric Room",
+    "lat": 40.7423311,
+    "long": -74.003479
+  },
+  {
+    "type": "Liquor",
+    "name": "Romanticos Gentlemen Night Club",
+    "lat": 40.7472184,
+    "long": -73.8892444
+  },
+  {
+    "type": "Liquor",
+    "name": "Night Club",
+    "lat": 40.7477778,
+    "long": -73.8844444
+  },
+  {
+    "type": "Liquor",
+    "name": "Jouvay Night Club",
+    "lat": 40.6961111,
+    "long": -73.8041667
+  },
+  {
+    "type": "Liquor",
+    "name": "Epic Lounge",
+    "lat": 40.6759189,
+    "long": -73.8159273
+  },
+  {
+    "type": "Liquor",
+    "name": "SL Lounge",
+    "lat": 40.74863,
+    "long": -73.86993
+  },
+  {
+    "type": "Liquor",
+    "name": "Amadeus Nightclub",
+    "lat": 40.7395533,
+    "long": -73.8843239
+  },
+  {
+    "type": "Liquor",
+    "name": "Elevate Sky Lounge",
+    "lat": 40.6876846,
+    "long": -73.8209495
+  },
+  {
+    "type": "Liquor",
+    "name": "Deja Vu Bar and Lounge ",
+    "lat": 40.692237,
+    "long": -73.7656876
+  },
+  {
+    "type": "Liquor",
+    "name": "Flamingo Restaurant and Lounge",
+    "lat": 40.7478578,
+    "long": -73.8806333
+  },
+  {
+    "type": "Liquor",
+    "name": "BLEND LOUNGE",
+    "lat": 40.6955354,
+    "long": -73.8206519
+  },
+  {
+    "type": "Liquor",
+    "name": "ZEN",
+    "lat": 40.6897683,
+    "long": -73.8271769
+  },
+  {
+    "type": "Liquor",
+    "name": "Kiss Entertainment",
+    "lat": 40.6987241,
+    "long": -73.8194013
+  },
+  {
+    "type": "Liquor",
+    "name": "M B Party Hall Inc",
+    "lat": 40.7010448,
+    "long": -73.8894236
+  },
+  {
+    "type": "Liquor",
+    "name": "UnderGround Lounge",
+    "lat": 40.6872581,
+    "long": -73.8204147
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Evolution",
+    "lat": 40.7473257,
+    "long": -73.888858
+  },
+  {
+    "type": "Liquor",
+    "name": "Tropix Bar Lounge",
+    "lat": 40.7302496,
+    "long": -73.86359
+  },
+  {
+    "type": "Liquor",
+    "name": "Impulse Lounge",
+    "lat": 40.6892608,
+    "long": -73.81602
+  },
+  {
+    "type": "Liquor",
+    "name": "Mingles",
+    "lat": 40.6925125,
+    "long": -73.816452
+  },
+  {
+    "type": "Liquor",
+    "name": "Onyx Lounge",
+    "lat": 40.6715304,
+    "long": -73.7850525
+  },
+  {
+    "type": "Liquor",
+    "name": "Lovell s Guiding Light",
+    "lat": 40.7064777,
+    "long": -73.807903
+  },
+  {
+    "type": "Liquor",
+    "name": "Zest Lounge",
+    "lat": 40.691064,
+    "long": -73.821126
+  },
+  {
+    "type": "Liquor",
+    "name": "Gemini s",
+    "lat": 40.6837852,
+    "long": -73.8339418
+  },
+  {
+    "type": "Liquor",
+    "name": "Festac Ultra Lounge",
+    "lat": 40.6756896,
+    "long": -73.890052
+  },
+  {
+    "type": "Liquor",
+    "name": "Jamaican",
+    "lat": 40.6967137,
+    "long": -73.7993696
+  },
+  {
+    "type": "Liquor",
+    "name": "Insomnia",
+    "lat": 40.6827701,
+    "long": -73.8141498
+  },
+  {
+    "type": "Liquor",
+    "name": "CASABLANCA NIGHTCLUB",
+    "lat": 40.747508,
+    "long": -73.88739
+  },
+  {
+    "type": "Liquor",
+    "name": "Uptop New York",
+    "lat": 40.7457243,
+    "long": -73.8896147
+  },
+  {
+    "type": "Liquor",
+    "name": "The New Vibe Lounge",
+    "lat": 40.6586714,
+    "long": -73.645132
+  },
+  {
+    "type": "Liquor",
+    "name": "Rooftop at Kaseys Kitchen Cocktails",
+    "lat": 40.656975,
+    "long": -73.6449287
+  },
+  {
+    "type": "Liquor",
+    "name": "Velvet Lounge",
+    "lat": 40.6632388,
+    "long": -73.6989393
+  },
+  {
+    "type": "Liquor",
+    "name": "Beach LIVE Music FLoungeArea",
+    "lat": 40.5941752,
+    "long": -73.7504633
+  },
+  {
+    "type": "Liquor",
+    "name": "Backstage",
+    "lat": 40.6301205,
+    "long": -73.7085237
+  },
+  {
+    "type": "Liquor",
+    "name": "Secrets NYC",
+    "lat": 40.6647053,
+    "long": -73.7346329
+  },
+  {
+    "type": "Liquor",
+    "name": "Lovell s Afterdark Bar and Lounge Inc ",
+    "lat": 40.6780459,
+    "long": -73.7452574
+  },
+  {
+    "type": "Liquor",
+    "name": "Coco Bongo LI Lounge",
+    "lat": 40.7363836,
+    "long": -73.495013
+  },
+  {
+    "type": "Liquor",
+    "name": "Winners Circle Nite Club",
+    "lat": 40.7491064,
+    "long": -73.5879749
+  },
+  {
+    "type": "Liquor",
+    "name": "Prestige Palace Lounge",
+    "lat": 40.6541643,
+    "long": -73.5819732
+  },
+  {
+    "type": "Liquor",
+    "name": "His And Hers Westbury",
+    "lat": 40.7582893,
+    "long": -73.5880355
+  },
+  {
+    "type": "Liquor",
+    "name": "Steel Event Space",
+    "lat": 40.749071,
+    "long": -73.587979
+  },
+  {
+    "type": "Liquor",
+    "name": "Vitality Lounge",
+    "lat": 40.7633822,
+    "long": -73.5180568
+  },
+  {
+    "type": "Liquor",
+    "name": "Mr Beery s",
+    "lat": 40.7256281,
+    "long": -73.4875391
+  },
+  {
+    "type": "Liquor",
+    "name": "Alllison Daniel Bispo",
+    "lat": 40.676099,
+    "long": -73.5308634
+  },
+  {
+    "type": "Liquor",
+    "name": "Mystique Hookah Lounge",
+    "lat": 40.7547482,
+    "long": -73.5604955
+  },
+  {
+    "type": "Liquor",
+    "name": "The Headliner Bar Grill",
+    "lat": 40.7594032,
+    "long": -73.538681
+  },
+  {
+    "type": "Liquor",
+    "name": "Nostalgia",
+    "lat": 40.7350107,
+    "long": -73.4955075
+  },
+  {
+    "type": "Liquor",
+    "name": "Billy Deans Showtime Cafe",
+    "lat": 40.6836292,
+    "long": -73.5405231
+  },
+  {
+    "type": "Liquor",
+    "name": "B Club",
+    "lat": 40.6225865,
+    "long": -73.998205
+  },
+  {
+    "type": "Liquor",
+    "name": "DSNY BK ",
+    "lat": 40.6501949,
+    "long": -74.0207398
+  },
+  {
+    "type": "Liquor",
+    "name": "The Circus",
+    "lat": 40.6107691,
+    "long": -73.9628735
+  },
+  {
+    "type": "Liquor",
+    "name": "Tulum Night Club",
+    "lat": 40.6534263,
+    "long": -74.0128135
+  },
+  {
+    "type": "Liquor",
+    "name": "Night Degree Suite Lounge",
+    "lat": 40.6364555,
+    "long": -74.0119171
+  },
+  {
+    "type": "Liquor",
+    "name": " B Rooftop C Lounge",
+    "lat": 40.6501203,
+    "long": -74.023536
+  },
+  {
+    "type": "Liquor",
+    "name": "Brighton bech",
+    "lat": 40.5732933,
+    "long": -73.9798107
+  },
+  {
+    "type": "Liquor",
+    "name": "Blue Mezcal Cocktail Bar Lounge",
+    "lat": 40.658614,
+    "long": -73.9966187
+  },
+  {
+    "type": "Liquor",
+    "name": "Luces de Navidad",
+    "lat": 40.6154043,
+    "long": -74.0161043
+  },
+  {
+    "type": "Liquor",
+    "name": "Vice Lounge",
+    "lat": 40.6056551,
+    "long": -73.9835091
+  },
+  {
+    "type": "Liquor",
+    "name": "Foxy Gentlemen s Club",
+    "lat": 40.5758182,
+    "long": -73.9798119
+  },
+  {
+    "type": "Liquor",
+    "name": "Cave",
+    "lat": 40.5956949,
+    "long": -73.9737374
+  },
+  {
+    "type": "Liquor",
+    "name": "Star Lounge bar",
+    "lat": 40.6119331,
+    "long": -73.97401
+  },
+  {
+    "type": "Liquor",
+    "name": "Living Room",
+    "lat": 40.596286,
+    "long": -73.977671
+  },
+  {
+    "type": "Liquor",
+    "name": "About Last Night",
+    "lat": 40.7077412,
+    "long": -73.9316422
+  },
+  {
+    "type": "Liquor",
+    "name": "Elsewhere",
+    "lat": 40.709474,
+    "long": -73.923322
+  },
+  {
+    "type": "Liquor",
+    "name": "House of Yes",
+    "lat": 40.7068,
+    "long": -73.9236
+  },
+  {
+    "type": "Liquor",
+    "name": "Deseos Lounge EST ",
+    "lat": 40.7444559,
+    "long": -73.9118047
+  },
+  {
+    "type": "Liquor",
+    "name": "The Onyx Room",
+    "lat": 40.7065797,
+    "long": -73.9233525
+  },
+  {
+    "type": "Liquor",
+    "name": "Rich Hall Lounge",
+    "lat": 40.637143,
+    "long": -73.89722
+  },
+  {
+    "type": "Liquor",
+    "name": "Mona Lounge",
+    "lat": 40.6627658,
+    "long": -73.9198548
+  },
+  {
+    "type": "Liquor",
+    "name": "Lot ",
+    "lat": 40.70697,
+    "long": -73.922629
+  },
+  {
+    "type": "Liquor",
+    "name": "All Nations",
+    "lat": 40.6461111,
+    "long": -73.9294444
+  },
+  {
+    "type": "Liquor",
+    "name": "BASEMENT NY",
+    "lat": 40.7155705,
+    "long": -73.9142198
+  },
+  {
+    "type": "Liquor",
+    "name": "SILO",
+    "lat": 40.7105086,
+    "long": -73.922873
+  },
+  {
+    "type": "Liquor",
+    "name": "Oasis New York Bar Lounge",
+    "lat": 40.6529528,
+    "long": -73.9205328
+  },
+  {
+    "type": "Liquor",
+    "name": "Studio ",
+    "lat": 40.7154391,
+    "long": -73.9342247
+  },
+  {
+    "type": "Liquor",
+    "name": "Knickerbocker Club",
+    "lat": 40.7658996,
+    "long": -73.9714354
+  },
+  {
+    "type": "Liquor",
+    "name": "La Boom",
+    "lat": 40.7538177,
+    "long": -73.9044642
+  },
+  {
+    "type": "Liquor",
+    "name": "Republic Latin Fusion Nightclub",
+    "lat": 40.7189734,
+    "long": -73.9548988
+  },
+  {
+    "type": "Liquor",
+    "name": "Six Lounge and Rooftop",
+    "lat": 40.7201981,
+    "long": -74.0443088
+  },
+  {
+    "type": "Liquor",
+    "name": "Moore s Place",
+    "lat": 40.7211532,
+    "long": -74.0703582
+  },
+  {
+    "type": "Liquor",
+    "name": "Menage Lounge",
+    "lat": 40.7200335,
+    "long": -74.0426348
+  },
+  {
+    "type": "Liquor",
+    "name": "Cherry s Lounge",
+    "lat": 40.703503,
+    "long": -74.087468
+  },
+  {
+    "type": "Liquor",
+    "name": "Room Bar Lounge",
+    "lat": 40.6815554,
+    "long": -74.1030135
+  },
+  {
+    "type": "Liquor",
+    "name": "Lucky Tavern",
+    "lat": 40.7229439,
+    "long": -74.0473585
+  },
+  {
+    "type": "Liquor",
+    "name": "The Ashford",
+    "lat": 40.7204381,
+    "long": -74.0441076
+  },
+  {
+    "type": "Liquor",
+    "name": "Marjay",
+    "lat": 40.7120258,
+    "long": -74.0630623
+  },
+  {
+    "type": "Liquor",
+    "name": "The District",
+    "lat": 40.7190634,
+    "long": -74.0333908
+  },
+  {
+    "type": "Liquor",
+    "name": "Fix Bar Lounge",
+    "lat": 40.7231443,
+    "long": -74.1506844
+  },
+  {
+    "type": "Liquor",
+    "name": "Emigrante Sports Bar",
+    "lat": 40.7229288,
+    "long": -74.1504549
+  },
+  {
+    "type": "Liquor",
+    "name": "SUBVERSION NYC",
+    "lat": 40.629167,
+    "long": -74.079839
+  },
+  {
+    "type": "Liquor",
+    "name": "Don t Tell Liv",
+    "lat": 40.7204962,
+    "long": -74.0435311
+  },
+  {
+    "type": "Liquor",
+    "name": "RoofTop at Exchange Place",
+    "lat": 40.7157003,
+    "long": -74.0337627
+  },
+  {
+    "type": "Liquor",
+    "name": "Sheba hookah lounge",
+    "lat": 40.6271123,
+    "long": -74.0239109
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Espana",
+    "lat": 40.7257506,
+    "long": -74.1621163
+  },
+  {
+    "type": "Liquor",
+    "name": "Delia s Lounge Restaurant",
+    "lat": 40.6188425,
+    "long": -74.0332942
+  },
+  {
+    "type": "Liquor",
+    "name": "Red Oak",
+    "lat": 40.6254492,
+    "long": -74.0300508
+  },
+  {
+    "type": "Liquor",
+    "name": "Fusion Lounge NY",
+    "lat": 40.7757687,
+    "long": -73.9029528
+  },
+  {
+    "type": "Liquor",
+    "name": "Code Astoria",
+    "lat": 40.7759575,
+    "long": -73.9026841
+  },
+  {
+    "type": "Liquor",
+    "name": "Bembe",
+    "lat": 40.7111048,
+    "long": -73.9651604
+  },
+  {
+    "type": "Liquor",
+    "name": "Azucar Night Club",
+    "lat": 40.7779136,
+    "long": -74.0243899
+  },
+  {
+    "type": "Liquor",
+    "name": "Rose Room Speakeasy",
+    "lat": 40.759426,
+    "long": -73.9913779
+  },
+  {
+    "type": "Liquor",
+    "name": "BarCode Entertainment Complex",
+    "lat": 40.6722951,
+    "long": -74.2131114
+  },
+  {
+    "type": "Liquor",
+    "name": "XL Nightlife",
+    "lat": 40.6703597,
+    "long": -74.2150478
+  },
+  {
+    "type": "Liquor",
+    "name": "Life discoteca",
+    "lat": 40.6631428,
+    "long": -74.2141494
+  },
+  {
+    "type": "Liquor",
+    "name": "Bamboleo",
+    "lat": 40.6485583,
+    "long": -74.1925728
+  },
+  {
+    "type": "Liquor",
+    "name": "Mister East",
+    "lat": 40.6378616,
+    "long": -74.2646718
+  },
+  {
+    "type": "Liquor",
+    "name": "The Underground at Carteret PAC",
+    "lat": 40.5764687,
+    "long": -74.2214676
+  },
+  {
+    "type": "Liquor",
+    "name": "Chupitos",
+    "lat": 40.6685614,
+    "long": -74.2173865
+  },
+  {
+    "type": "Liquor",
+    "name": "Dolce",
+    "lat": 40.6626815,
+    "long": -74.2147352
+  },
+  {
+    "type": "Liquor",
+    "name": "Invisible Room",
+    "lat": 40.661894,
+    "long": -74.2143971
+  },
+  {
+    "type": "Liquor",
+    "name": "Dream Upscale Lounge",
+    "lat": 40.6439832,
+    "long": -74.2377871
+  },
+  {
+    "type": "Liquor",
+    "name": "Kanela s Lounge, Tavern Banquet Hall",
+    "lat": 40.6684427,
+    "long": -74.2153302
+  },
+  {
+    "type": "Liquor",
+    "name": "Kucaramakara",
+    "lat": 40.647315,
+    "long": -74.1914462
+  },
+  {
+    "type": "Liquor",
+    "name": "Destino Lounge",
+    "lat": 40.6634853,
+    "long": -74.2335
+  },
+  {
+    "type": "Liquor",
+    "name": "Luna Lounge",
+    "lat": 40.6519922,
+    "long": -74.2368863
+  },
+  {
+    "type": "Liquor",
+    "name": "Taboo Mens Club",
+    "lat": 40.6481039,
+    "long": -74.2299891
+  },
+  {
+    "type": "Liquor",
+    "name": "Carnival Room",
+    "lat": 40.6719696,
+    "long": -74.2132463
+  },
+  {
+    "type": "Liquor",
+    "name": "Ch C C que s",
+    "lat": 40.64109,
+    "long": -74.2376128
+  },
+  {
+    "type": "Liquor",
+    "name": "Deli tijeras de oro",
+    "lat": 40.5795317,
+    "long": -74.1502007
+  },
+  {
+    "type": "Liquor",
+    "name": "Demasiado exclusive",
+    "lat": 40.6641205,
+    "long": -74.2039259
+  },
+  {
+    "type": "Liquor",
+    "name": "Pier ",
+    "lat": 40.6451059,
+    "long": -74.1898866
+  },
+  {
+    "type": "Liquor",
+    "name": "LE ROI LOUNGE AND BAR",
+    "lat": 40.6121301,
+    "long": -74.1589933
+  },
+  {
+    "type": "Liquor",
+    "name": "Terminal One Sports Bar",
+    "lat": 40.67266,
+    "long": -74.2009673
+  },
+  {
+    "type": "Liquor",
+    "name": "La Que Manda New Jersey",
+    "lat": 40.661894,
+    "long": -74.214397
+  },
+  {
+    "type": "Liquor",
+    "name": "Lourdes Oneida Unisex",
+    "lat": 40.655556,
+    "long": -74.2191019
+  },
+  {
+    "type": "Liquor",
+    "name": " Forty Six",
+    "lat": 40.6514934,
+    "long": -74.1817716
+  },
+  {
+    "type": "Liquor",
+    "name": "Rho Waterfront",
+    "lat": 40.2069028,
+    "long": -74.7648582
+  },
+  {
+    "type": "Liquor",
+    "name": "Infinity Lounge",
+    "lat": 40.2138318,
+    "long": -74.7490336
+  },
+  {
+    "type": "Liquor",
+    "name": "Al Lee s Bar And Lounge",
+    "lat": 40.2310646,
+    "long": -74.7446732
+  },
+  {
+    "type": "Liquor",
+    "name": "G T Bar Lounge",
+    "lat": 40.20899,
+    "long": -74.7562232
+  },
+  {
+    "type": "Liquor",
+    "name": "Capital Pub",
+    "lat": 40.2039787,
+    "long": -74.7408351
+  },
+  {
+    "type": "Liquor",
+    "name": "La Guira bar and restaurant",
+    "lat": 40.230022,
+    "long": -74.748165
+  },
+  {
+    "type": "Liquor",
+    "name": "The Buzz Bar Lounge",
+    "lat": 40.2396943,
+    "long": -74.7458694
+  }
+]

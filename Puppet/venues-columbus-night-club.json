@@ -1,0 +1,758 @@
+[
+  {
+    "type": "Liquor",
+    "name": "Bullwinkles",
+    "lat": 39.9984548,
+    "long": -83.0075673
+  },
+  {
+    "type": "Liquor",
+    "name": "Axis Nightclub",
+    "lat": 39.9780372,
+    "long": -83.0043592
+  },
+  {
+    "type": "Liquor",
+    "name": "Palmas Tropical Escape",
+    "lat": 39.9633457,
+    "long": -83.0005117
+  },
+  {
+    "type": "Liquor",
+    "name": "District West",
+    "lat": 39.9659767,
+    "long": -82.9956542
+  },
+  {
+    "type": "Liquor",
+    "name": "Pure Ultra Lounge",
+    "lat": 39.9807055,
+    "long": -82.9159161
+  },
+  {
+    "type": "Liquor",
+    "name": "The Forum",
+    "lat": 39.965247,
+    "long": -83.002033
+  },
+  {
+    "type": "Liquor",
+    "name": "Canabar",
+    "lat": 39.9674486,
+    "long": -82.978035
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Tropicana",
+    "lat": 39.949457,
+    "long": -82.9626498
+  },
+  {
+    "type": "Liquor",
+    "name": "Club ",
+    "lat": 39.9524544,
+    "long": -82.9935876
+  },
+  {
+    "type": "Liquor",
+    "name": "Taboa night club",
+    "lat": 39.9653188,
+    "long": -82.9998357
+  },
+  {
+    "type": "Liquor",
+    "name": "Bucks Platinum",
+    "lat": 40.0061795,
+    "long": -82.9128443
+  },
+  {
+    "type": "Liquor",
+    "name": "The Go Go",
+    "lat": 39.983117,
+    "long": -82.9994369
+  },
+  {
+    "type": "Liquor",
+    "name": "bodi columbus",
+    "lat": 39.9567064,
+    "long": -82.9960574
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Diversity",
+    "lat": 39.9444283,
+    "long": -82.9975389
+  },
+  {
+    "type": "Liquor",
+    "name": "Princeton Club",
+    "lat": 39.9495823,
+    "long": -83.0333398
+  },
+  {
+    "type": "Liquor",
+    "name": "Noir Lounge",
+    "lat": 39.9566494,
+    "long": -83.0002455
+  },
+  {
+    "type": "Liquor",
+    "name": "Good Night John Boy",
+    "lat": 39.9809915,
+    "long": -83.00404
+  },
+  {
+    "type": "Liquor",
+    "name": "Retro Lounge Columbus",
+    "lat": 39.9359019,
+    "long": -82.9112801
+  },
+  {
+    "type": "Liquor",
+    "name": "Sandpebble Lounge",
+    "lat": 39.9262716,
+    "long": -82.9654579
+  },
+  {
+    "type": "Liquor",
+    "name": "Sotto Terra at The Sanctuary",
+    "lat": 39.9740579,
+    "long": -83.0101785
+  },
+  {
+    "type": "Liquor",
+    "name": "Tremont Lounge",
+    "lat": 39.9476729,
+    "long": -82.9975064
+  },
+  {
+    "type": "Liquor",
+    "name": "PRIME ULTRA LOUNGE",
+    "lat": 39.952088,
+    "long": -82.9055041
+  },
+  {
+    "type": "Liquor",
+    "name": "Bossy Grrl s Pin Up Joint",
+    "lat": 40.0152619,
+    "long": -83.0114209
+  },
+  {
+    "type": "Liquor",
+    "name": "The Pent",
+    "lat": 39.9685121,
+    "long": -82.9685329
+  },
+  {
+    "type": "Liquor",
+    "name": "Dick s Den",
+    "lat": 40.0115589,
+    "long": -83.0107638
+  },
+  {
+    "type": "Liquor",
+    "name": "DUECENTO",
+    "lat": 39.9858945,
+    "long": -82.9997799
+  },
+  {
+    "type": "Liquor",
+    "name": "Ohana s Social Club",
+    "lat": 39.9173956,
+    "long": -82.9956305
+  },
+  {
+    "type": "Liquor",
+    "name": "Callahan s Columbus",
+    "lat": 39.9727444,
+    "long": -83.0040361
+  },
+  {
+    "type": "Liquor",
+    "name": "Park Street Tavern",
+    "lat": 39.972337,
+    "long": -83.0047721
+  },
+  {
+    "type": "Liquor",
+    "name": "Sous Sol",
+    "lat": 39.9599399,
+    "long": -83.0006753
+  },
+  {
+    "type": "Liquor",
+    "name": " S Club",
+    "lat": 39.9443121,
+    "long": -82.9894394
+  },
+  {
+    "type": "Liquor",
+    "name": "Blu Note Jazz Cafe",
+    "lat": 39.9570649,
+    "long": -82.9215194
+  },
+  {
+    "type": "Liquor",
+    "name": "ICON Jazz Lounge",
+    "lat": 39.9855129,
+    "long": -83.0053746
+  },
+  {
+    "type": "Liquor",
+    "name": "Ginger Rabbit Jazz Lounge",
+    "lat": 39.9769896,
+    "long": -83.0041736
+  },
+  {
+    "type": "Liquor",
+    "name": "La Boom Columbus",
+    "lat": 39.9436778,
+    "long": -83.1058158
+  },
+  {
+    "type": "Liquor",
+    "name": "Mysite ",
+    "lat": 39.9626253,
+    "long": -82.9813536
+  },
+  {
+    "type": "Liquor",
+    "name": "Blu Note on Town",
+    "lat": 39.9608604,
+    "long": -82.9859012
+  },
+  {
+    "type": "Liquor",
+    "name": "Eupouria You Pour ",
+    "lat": 39.9941307,
+    "long": -83.0062601
+  },
+  {
+    "type": "Liquor",
+    "name": "Mangos Bar, Hookah Restaurant",
+    "lat": 39.9879838,
+    "long": -83.0062927
+  },
+  {
+    "type": "Liquor",
+    "name": "Long street entertainment",
+    "lat": 39.9653524,
+    "long": -82.9998639
+  },
+  {
+    "type": "Liquor",
+    "name": "Dicoteta Columbus",
+    "lat": 39.9578997,
+    "long": -83.0002772
+  },
+  {
+    "type": "Liquor",
+    "name": "The Bluestone",
+    "lat": 39.9636162,
+    "long": -82.9849976
+  },
+  {
+    "type": "Liquor",
+    "name": "Lincoln Social Rooftop",
+    "lat": 39.9768141,
+    "long": -83.0037816
+  },
+  {
+    "type": "Liquor",
+    "name": "Spain Night Club",
+    "lat": 40.0927062,
+    "long": -82.9923185
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Bellagio",
+    "lat": 39.9419263,
+    "long": -82.8345274
+  },
+  {
+    "type": "Liquor",
+    "name": "Venue ",
+    "lat": 39.9853684,
+    "long": -83.0053441
+  },
+  {
+    "type": "Liquor",
+    "name": "The Social Club Lounge and Event Venue",
+    "lat": 39.9199444,
+    "long": -82.8783036
+  },
+  {
+    "type": "Liquor",
+    "name": "Ledo s Tavern",
+    "lat": 40.0154648,
+    "long": -83.0114605
+  },
+  {
+    "type": "Liquor",
+    "name": "Slammers",
+    "lat": 39.9658328,
+    "long": -82.9956271
+  },
+  {
+    "type": "Liquor",
+    "name": "Forty Deuce Burlesque Speakeasy",
+    "lat": 40.0546884,
+    "long": -82.9122715
+  },
+  {
+    "type": "Liquor",
+    "name": "Get Wright Lounge",
+    "lat": 39.9431218,
+    "long": -83.039705
+  },
+  {
+    "type": "Liquor",
+    "name": "Frebis Avenue Venue",
+    "lat": 39.9345974,
+    "long": -82.9694861
+  },
+  {
+    "type": "Liquor",
+    "name": "Lobby",
+    "lat": 39.9255164,
+    "long": -82.8782841
+  },
+  {
+    "type": "Liquor",
+    "name": "Montecristo House of Cigar",
+    "lat": 39.9869953,
+    "long": -83.0057471
+  },
+  {
+    "type": "Liquor",
+    "name": "FOMO Columbus",
+    "lat": 39.9663475,
+    "long": -82.9957216
+  },
+  {
+    "type": "Liquor",
+    "name": "Suit Guys Pizza Bar",
+    "lat": 39.9780782,
+    "long": -83.0039098
+  },
+  {
+    "type": "Liquor",
+    "name": "Den Mendez Rock Club",
+    "lat": 40.0136415,
+    "long": -83.0116415
+  },
+  {
+    "type": "Liquor",
+    "name": "Columbus Gold",
+    "lat": 40.065373,
+    "long": -83.0944518
+  },
+  {
+    "type": "Liquor",
+    "name": "Xclusive Elite",
+    "lat": 39.9400351,
+    "long": -82.8320412
+  },
+  {
+    "type": "Liquor",
+    "name": "Mandrake Rooftop",
+    "lat": 39.9786605,
+    "long": -83.0034484
+  },
+  {
+    "type": "Liquor",
+    "name": "Plaza Restaurant and Lounge",
+    "lat": 39.9601861,
+    "long": -82.9978839
+  },
+  {
+    "type": "Liquor",
+    "name": "Galla Park Social",
+    "lat": 39.9806473,
+    "long": -83.0039969
+  },
+  {
+    "type": "Liquor",
+    "name": "Novocaine Lounge",
+    "lat": 39.8834097,
+    "long": -83.094037
+  },
+  {
+    "type": "Liquor",
+    "name": "Butcher Rose",
+    "lat": 39.9623403,
+    "long": -82.9966195
+  },
+  {
+    "type": "Liquor",
+    "name": "House of Cigar",
+    "lat": 39.9117893,
+    "long": -82.9950886
+  },
+  {
+    "type": "Liquor",
+    "name": "Cove ",
+    "lat": 39.2821245,
+    "long": -84.4439673
+  },
+  {
+    "type": "Liquor",
+    "name": "Kings Lounge",
+    "lat": 40.0248118,
+    "long": -83.0136873
+  },
+  {
+    "type": "Liquor",
+    "name": "Dawghouse Pizza Bar",
+    "lat": 39.9236774,
+    "long": -82.9656215
+  },
+  {
+    "type": "Liquor",
+    "name": "Tara Hall",
+    "lat": 39.8847599,
+    "long": -83.1329664
+  },
+  {
+    "type": "Liquor",
+    "name": "Cento",
+    "lat": 39.9502525,
+    "long": -82.9957828
+  },
+  {
+    "type": "Liquor",
+    "name": "The Blackwell Inn Pfahl Conference Center",
+    "lat": 40.0046873,
+    "long": -83.0168672
+  },
+  {
+    "type": "Liquor",
+    "name": " E C Sports Grill Lounge E D E C Lounge E D",
+    "lat": 39.9092945,
+    "long": -82.8227839
+  },
+  {
+    "type": "Liquor",
+    "name": "Columbus Funny Bone",
+    "lat": 40.0505837,
+    "long": -82.9160907
+  },
+  {
+    "type": "Liquor",
+    "name": "Nike Sports Lounge",
+    "lat": 39.995552,
+    "long": -83.1532101
+  },
+  {
+    "type": "Liquor",
+    "name": "Zarlux Restaurant and Lounge",
+    "lat": 39.9390738,
+    "long": -82.8316878
+  },
+  {
+    "type": "Liquor",
+    "name": "Our Place",
+    "lat": 39.3096842,
+    "long": -84.2771774
+  },
+  {
+    "type": "Liquor",
+    "name": "Puckers",
+    "lat": 39.9538792,
+    "long": -82.8576716
+  },
+  {
+    "type": "Liquor",
+    "name": "Lit lounge Columbus",
+    "lat": 39.9022573,
+    "long": -82.9533986
+  },
+  {
+    "type": "Liquor",
+    "name": "Tobars Slice",
+    "lat": 39.9259202,
+    "long": -82.9905367
+  },
+  {
+    "type": "Liquor",
+    "name": "Ohio AMVETS Post ",
+    "lat": 39.9417796,
+    "long": -82.8321408
+  },
+  {
+    "type": "Liquor",
+    "name": "Rewind Lounge",
+    "lat": 39.9545857,
+    "long": -82.8667511
+  },
+  {
+    "type": "Liquor",
+    "name": "The Spot Bar",
+    "lat": 39.9419822,
+    "long": -82.8345522
+  },
+  {
+    "type": "Liquor",
+    "name": "The Crescent Lounge",
+    "lat": 40.0649798,
+    "long": -83.0564854
+  },
+  {
+    "type": "Liquor",
+    "name": "Vanity",
+    "lat": 40.0656279,
+    "long": -83.0948283
+  },
+  {
+    "type": "Liquor",
+    "name": "Private Dancer",
+    "lat": 39.991951,
+    "long": -83.0935229
+  },
+  {
+    "type": "Liquor",
+    "name": "The Roosevelt Room Bridge Park",
+    "lat": 40.1008799,
+    "long": -83.1091197
+  },
+  {
+    "type": "Liquor",
+    "name": "Rendezvous Lounge",
+    "lat": 40.0858304,
+    "long": -83.09288
+  },
+  {
+    "type": "Liquor",
+    "name": "Leap N Lizard s",
+    "lat": 40.0330603,
+    "long": -83.1423107
+  },
+  {
+    "type": "Liquor",
+    "name": "Bankshot Billiards Bar",
+    "lat": 40.0167644,
+    "long": -83.158274
+  },
+  {
+    "type": "Liquor",
+    "name": "The Barn on York",
+    "lat": 40.0165096,
+    "long": -82.6238192
+  },
+  {
+    "type": "Liquor",
+    "name": "Ziggy s Bar Grill, Inc ",
+    "lat": 40.0066451,
+    "long": -82.6620018
+  },
+  {
+    "type": "Liquor",
+    "name": "Wings Etc ",
+    "lat": 39.986671,
+    "long": -82.6795277
+  },
+  {
+    "type": "Liquor",
+    "name": "Denny s",
+    "lat": 39.9431536,
+    "long": -82.598845
+  },
+  {
+    "type": "Liquor",
+    "name": "Duchess",
+    "lat": 39.9459157,
+    "long": -82.6828497
+  },
+  {
+    "type": "Liquor",
+    "name": "Sheetz",
+    "lat": 39.9594669,
+    "long": -82.6832594
+  },
+  {
+    "type": "Liquor",
+    "name": "Flying J Travel Center",
+    "lat": 39.942894,
+    "long": -82.5989059
+  },
+  {
+    "type": "Liquor",
+    "name": "Donatos Pizza",
+    "lat": 40.0057866,
+    "long": -82.6619107
+  },
+  {
+    "type": "Liquor",
+    "name": "Love s Travel Stop",
+    "lat": 39.9449392,
+    "long": -82.6800196
+  },
+  {
+    "type": "Liquor",
+    "name": "Olde Towne Cafe and Inn LLC",
+    "lat": 39.9971446,
+    "long": -82.6748186
+  },
+  {
+    "type": "Liquor",
+    "name": "Puerto Vallarta",
+    "lat": 39.986092,
+    "long": -82.6804652
+  },
+  {
+    "type": "Liquor",
+    "name": "Nutcracker Family Restaurant",
+    "lat": 40.0028814,
+    "long": -82.6731953
+  },
+  {
+    "type": "Liquor",
+    "name": "Jersey Mike s Subs",
+    "lat": 40.0063907,
+    "long": -82.66295
+  },
+  {
+    "type": "Liquor",
+    "name": "Rusty s Wharf",
+    "lat": 39.9864178,
+    "long": -82.6795903
+  },
+  {
+    "type": "Liquor",
+    "name": "Wendy s",
+    "lat": 40.0029138,
+    "long": -82.6736436
+  },
+  {
+    "type": "Liquor",
+    "name": "Massey s Pizza",
+    "lat": 40.006516,
+    "long": -82.6625882
+  },
+  {
+    "type": "Liquor",
+    "name": "Kroger",
+    "lat": 40.0064564,
+    "long": -82.6640993
+  },
+  {
+    "type": "Liquor",
+    "name": "McDonald s",
+    "lat": 39.95157,
+    "long": -82.6838954
+  },
+  {
+    "type": "Liquor",
+    "name": "Capuano s Pizza House",
+    "lat": 40.0027778,
+    "long": -82.6719444
+  },
+  {
+    "type": "Liquor",
+    "name": "CVS",
+    "lat": 40.0050777,
+    "long": -82.6593996
+  },
+  {
+    "type": "Liquor",
+    "name": "Robey s Sports Pub Patio",
+    "lat": 39.9582805,
+    "long": -82.69413
+  },
+  {
+    "type": "Liquor",
+    "name": "Cumberland Trail Bar Grill",
+    "lat": 39.9694783,
+    "long": -82.6950432
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Oasis",
+    "lat": 39.956107,
+    "long": -82.9082332
+  },
+  {
+    "type": "Liquor",
+    "name": "Hereinafter Cocktail Tavern",
+    "lat": 39.9220482,
+    "long": -82.5145882
+  },
+  {
+    "type": "Liquor",
+    "name": "Fraternal Order of Eagles ",
+    "lat": 39.9276657,
+    "long": -82.5182037
+  },
+  {
+    "type": "Liquor",
+    "name": "Pilot Travel Center",
+    "lat": 39.9455624,
+    "long": -82.5362982
+  },
+  {
+    "type": "Liquor",
+    "name": "Lakebound Pizza",
+    "lat": 39.9048302,
+    "long": -82.5339295
+  },
+  {
+    "type": "Liquor",
+    "name": "Bob Evans",
+    "lat": 39.9389156,
+    "long": -82.5352805
+  },
+  {
+    "type": "Liquor",
+    "name": "Freddie s Inn",
+    "lat": 40.1742722,
+    "long": -82.4205542
+  },
+  {
+    "type": "Liquor",
+    "name": "Red Oak Pub and Restaurant",
+    "lat": 40.087278,
+    "long": -82.4290764
+  },
+  {
+    "type": "Liquor",
+    "name": "Fraternal Order of Eagles",
+    "lat": 40.0826187,
+    "long": -82.4102859
+  },
+  {
+    "type": "Liquor",
+    "name": "Licking Springs Country Club",
+    "lat": 40.114871,
+    "long": -82.4056382
+  },
+  {
+    "type": "Liquor",
+    "name": "Heath Eagles",
+    "lat": 40.0825969,
+    "long": -82.4106651
+  },
+  {
+    "type": "Liquor",
+    "name": "Roosters",
+    "lat": 40.086096,
+    "long": -82.427035
+  },
+  {
+    "type": "Liquor",
+    "name": "Planet Fitness",
+    "lat": 40.0847229,
+    "long": -82.4206432
+  },
+  {
+    "type": "Liquor",
+    "name": "Moo Moo Express Car Wash",
+    "lat": 40.0827378,
+    "long": -82.4272695
+  },
+  {
+    "type": "Liquor",
+    "name": "Ollie s Bargain Outlet",
+    "lat": 40.093605,
+    "long": -82.4248809
+  }
+]

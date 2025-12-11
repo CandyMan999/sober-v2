@@ -1,0 +1,806 @@
+[
+  {
+    "type": "Liquor",
+    "name": "Black Lodge",
+    "lat": 47.6229369,
+    "long": -122.329362
+  },
+  {
+    "type": "Liquor",
+    "name": "Havana Nightclub",
+    "lat": 47.6143841,
+    "long": -122.3190952
+  },
+  {
+    "type": "Liquor",
+    "name": "Sarajevo Nightclub",
+    "lat": 47.6124028,
+    "long": -122.3464398
+  },
+  {
+    "type": "Liquor",
+    "name": "Cherry",
+    "lat": 47.616985,
+    "long": -122.331098
+  },
+  {
+    "type": "Liquor",
+    "name": "The Cuff Complex",
+    "lat": 47.6151085,
+    "long": -122.3158566
+  },
+  {
+    "type": "Liquor",
+    "name": "Vue Lounge",
+    "lat": 47.6147048,
+    "long": -122.3464455
+  },
+  {
+    "type": "Liquor",
+    "name": "OHM Nightclub",
+    "lat": 47.6009908,
+    "long": -122.3318823
+  },
+  {
+    "type": "Liquor",
+    "name": "Ora Nightclub",
+    "lat": 47.6142745,
+    "long": -122.3473899
+  },
+  {
+    "type": "Liquor",
+    "name": "Xtadium",
+    "lat": 47.5995473,
+    "long": -122.3318565
+  },
+  {
+    "type": "Liquor",
+    "name": "The Devil s Triangle",
+    "lat": 47.6157605,
+    "long": -122.3381535
+  },
+  {
+    "type": "Liquor",
+    "name": "Trinity",
+    "lat": 47.6015323,
+    "long": -122.3333255
+  },
+  {
+    "type": "Liquor",
+    "name": "Q Nightclub",
+    "lat": 47.6137673,
+    "long": -122.3203508
+  },
+  {
+    "type": "Liquor",
+    "name": "Monkey Loft",
+    "lat": 47.5771852,
+    "long": -122.3346493
+  },
+  {
+    "type": "Liquor",
+    "name": "Supernova Seattle",
+    "lat": 47.5745961,
+    "long": -122.3335617
+  },
+  {
+    "type": "Liquor",
+    "name": "The Woods",
+    "lat": 47.6146205,
+    "long": -122.3180222
+  },
+  {
+    "type": "Liquor",
+    "name": "Cultura Seattle",
+    "lat": 47.6142741,
+    "long": -122.3198931
+  },
+  {
+    "type": "Liquor",
+    "name": "Dream Girls at SoDo",
+    "lat": 47.589242,
+    "long": -122.3339949
+  },
+  {
+    "type": "Liquor",
+    "name": "Neighbours Nightclub and Lounge",
+    "lat": 47.6144018,
+    "long": -122.3211896
+  },
+  {
+    "type": "Liquor",
+    "name": "Vice Seattle",
+    "lat": 47.6147659,
+    "long": -122.3282092
+  },
+  {
+    "type": "Liquor",
+    "name": "Cha Cha Lounge",
+    "lat": 47.6139436,
+    "long": -122.3187546
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Sur",
+    "lat": 47.5775356,
+    "long": -122.334701
+  },
+  {
+    "type": "Liquor",
+    "name": "The Mercury MachineWerks",
+    "lat": 47.6127055,
+    "long": -122.3189114
+  },
+  {
+    "type": "Liquor",
+    "name": "Massive",
+    "lat": 47.6150707,
+    "long": -122.3236751
+  },
+  {
+    "type": "Liquor",
+    "name": "Deja Vu Showgirls Seattle",
+    "lat": 47.6092438,
+    "long": -122.3400676
+  },
+  {
+    "type": "Liquor",
+    "name": "The Vertigo Club",
+    "lat": 47.5752812,
+    "long": -122.3346962
+  },
+  {
+    "type": "Liquor",
+    "name": "Keys on Main",
+    "lat": 47.616668,
+    "long": -122.3309923
+  },
+  {
+    "type": "Liquor",
+    "name": "Pony",
+    "lat": 47.6130773,
+    "long": -122.3157683
+  },
+  {
+    "type": "Liquor",
+    "name": "Red Lounge",
+    "lat": 47.6064481,
+    "long": -122.3159973
+  },
+  {
+    "type": "Liquor",
+    "name": "The vogue",
+    "lat": 47.6116018,
+    "long": -122.3430237
+  },
+  {
+    "type": "Liquor",
+    "name": "Eskandala Lat C ADn Night",
+    "lat": 47.5845187,
+    "long": -122.3339691
+  },
+  {
+    "type": "Liquor",
+    "name": "The Rendezvous",
+    "lat": 47.6147045,
+    "long": -122.3462084
+  },
+  {
+    "type": "Liquor",
+    "name": "Chop Suey",
+    "lat": 47.613694,
+    "long": -122.3144219
+  },
+  {
+    "type": "Liquor",
+    "name": "Lava Lounge former business ",
+    "lat": 47.6139792,
+    "long": -122.3450343
+  },
+  {
+    "type": "Liquor",
+    "name": "Skratch Lounge",
+    "lat": 47.6015499,
+    "long": -122.333332
+  },
+  {
+    "type": "Liquor",
+    "name": "Barboza",
+    "lat": 47.613811,
+    "long": -122.319664
+  },
+  {
+    "type": "Liquor",
+    "name": "Nectar Lounge",
+    "lat": 47.6523879,
+    "long": -122.3538607
+  },
+  {
+    "type": "Liquor",
+    "name": "Pennyroyal",
+    "lat": 47.61204,
+    "long": -122.34186
+  },
+  {
+    "type": "Liquor",
+    "name": "Funhouse",
+    "lat": 47.6188507,
+    "long": -122.3293685
+  },
+  {
+    "type": "Liquor",
+    "name": "Hula Hula",
+    "lat": 47.6179518,
+    "long": -122.3259331
+  },
+  {
+    "type": "Liquor",
+    "name": "Neumos",
+    "lat": 47.6139423,
+    "long": -122.31965
+  },
+  {
+    "type": "Liquor",
+    "name": "Chandelier Lounge",
+    "lat": 47.6225445,
+    "long": -122.3206066
+  },
+  {
+    "type": "Liquor",
+    "name": "JaRay E s Grill and Lounge",
+    "lat": 47.6120546,
+    "long": -122.3191423
+  },
+  {
+    "type": "Liquor",
+    "name": "Alley MIC",
+    "lat": 47.6104469,
+    "long": -122.342472
+  },
+  {
+    "type": "Liquor",
+    "name": "Union Seattle",
+    "lat": 47.6127063,
+    "long": -122.3188909
+  },
+  {
+    "type": "Liquor",
+    "name": "London Lounge Seattle",
+    "lat": 47.5745974,
+    "long": -122.3338968
+  },
+  {
+    "type": "Liquor",
+    "name": "Vermillion",
+    "lat": 47.6143814,
+    "long": -122.3179216
+  },
+  {
+    "type": "Liquor",
+    "name": "Urban Hookah Lounge",
+    "lat": 47.5871708,
+    "long": -122.3294322
+  },
+  {
+    "type": "Liquor",
+    "name": "Brose Wine Sprit",
+    "lat": 47.5654843,
+    "long": -122.2692484
+  },
+  {
+    "type": "Liquor",
+    "name": "Sonya s Seattle",
+    "lat": 47.6105853,
+    "long": -122.3420452
+  },
+  {
+    "type": "Liquor",
+    "name": "SPIN Seattle",
+    "lat": 47.6115518,
+    "long": -122.3351673
+  },
+  {
+    "type": "Liquor",
+    "name": "Crescent Lounge",
+    "lat": 47.6174352,
+    "long": -122.3263099
+  },
+  {
+    "type": "Liquor",
+    "name": "The Tin Lizzie Lounge",
+    "lat": 47.6249427,
+    "long": -122.3564529
+  },
+  {
+    "type": "Liquor",
+    "name": "Dimitriou s Jazz Alley",
+    "lat": 47.6148157,
+    "long": -122.339617
+  },
+  {
+    "type": "Liquor",
+    "name": "Obolus Room C Seattle Cigar Lounge",
+    "lat": 47.6378126,
+    "long": -122.3400568
+  },
+  {
+    "type": "Liquor",
+    "name": "Julia s on Broadway Le Faux Playhouse",
+    "lat": 47.6212394,
+    "long": -122.3206357
+  },
+  {
+    "type": "Liquor",
+    "name": "Rock Box",
+    "lat": 47.6155125,
+    "long": -122.3201969
+  },
+  {
+    "type": "Liquor",
+    "name": "Belmont",
+    "lat": 47.614258,
+    "long": -122.324763
+  },
+  {
+    "type": "Liquor",
+    "name": "The Royal Room Seattle",
+    "lat": 47.5569433,
+    "long": -122.2842401
+  },
+  {
+    "type": "Liquor",
+    "name": "Raygun Lounge",
+    "lat": 47.6150614,
+    "long": -122.325194
+  },
+  {
+    "type": "Liquor",
+    "name": "Revolver Bar",
+    "lat": 47.6181337,
+    "long": -122.3261384
+  },
+  {
+    "type": "Liquor",
+    "name": "Seattle Jazz Vespers",
+    "lat": 47.6120739,
+    "long": -122.3219562
+  },
+  {
+    "type": "Liquor",
+    "name": "Seattle Latin Night FNoche Latina",
+    "lat": 47.6143808,
+    "long": -122.3211302
+  },
+  {
+    "type": "Liquor",
+    "name": "Rob Roy",
+    "lat": 47.6147616,
+    "long": -122.3465852
+  },
+  {
+    "type": "Liquor",
+    "name": "Sol Liquor Lounge",
+    "lat": 47.6245732,
+    "long": -122.3255063
+  },
+  {
+    "type": "Liquor",
+    "name": "Bad Bar",
+    "lat": 47.6268868,
+    "long": -122.3478118
+  },
+  {
+    "type": "Liquor",
+    "name": "Provisions",
+    "lat": 47.6130748,
+    "long": -122.3443719
+  },
+  {
+    "type": "Liquor",
+    "name": " Fifth Bar B Lounge",
+    "lat": 47.6135765,
+    "long": -122.3383614
+  },
+  {
+    "type": "Liquor",
+    "name": "Medina Hookah Lounge",
+    "lat": 47.5960132,
+    "long": -122.3234776
+  },
+  {
+    "type": "Liquor",
+    "name": "Liberty",
+    "lat": 47.623578,
+    "long": -122.3128231
+  },
+  {
+    "type": "Liquor",
+    "name": "The NOOK",
+    "lat": 47.5837566,
+    "long": -122.3862221
+  },
+  {
+    "type": "Liquor",
+    "name": "Fog Room",
+    "lat": 47.611011,
+    "long": -122.3400304
+  },
+  {
+    "type": "Liquor",
+    "name": "The Rhino Room",
+    "lat": 47.6150745,
+    "long": -122.3183269
+  },
+  {
+    "type": "Liquor",
+    "name": "Vox Karaoke",
+    "lat": 47.5982203,
+    "long": -122.3259451
+  },
+  {
+    "type": "Liquor",
+    "name": "Baba Yaga",
+    "lat": 47.6010869,
+    "long": -122.3331464
+  },
+  {
+    "type": "Liquor",
+    "name": "CARAVEL HOOKAH LOUNGE",
+    "lat": 47.5968912,
+    "long": -122.3217713
+  },
+  {
+    "type": "Liquor",
+    "name": "Drift",
+    "lat": 47.618256,
+    "long": -122.3375095
+  },
+  {
+    "type": "Liquor",
+    "name": "Aladdin Hookah Lounge",
+    "lat": 47.6186269,
+    "long": -122.3296308
+  },
+  {
+    "type": "Liquor",
+    "name": "Sugar Hill",
+    "lat": 47.6153778,
+    "long": -122.3260567
+  },
+  {
+    "type": "Liquor",
+    "name": "Oliver s",
+    "lat": 47.6121914,
+    "long": -122.3381615
+  },
+  {
+    "type": "Liquor",
+    "name": "Shadowland",
+    "lat": 47.5629826,
+    "long": -122.3865779
+  },
+  {
+    "type": "Liquor",
+    "name": "Energy Bar",
+    "lat": 47.6586737,
+    "long": -122.3134769
+  },
+  {
+    "type": "Liquor",
+    "name": "Dead Line",
+    "lat": 47.6011901,
+    "long": -122.3339543
+  },
+  {
+    "type": "Liquor",
+    "name": "Corvus and Company",
+    "lat": 47.6243766,
+    "long": -122.321139
+  },
+  {
+    "type": "Liquor",
+    "name": "Mini Bar Seattle",
+    "lat": 47.6485151,
+    "long": -122.3432915
+  },
+  {
+    "type": "Liquor",
+    "name": "Tavern Law",
+    "lat": 47.613254,
+    "long": -122.316523
+  },
+  {
+    "type": "Liquor",
+    "name": "Sully s",
+    "lat": 47.634375,
+    "long": -122.3571778
+  },
+  {
+    "type": "Liquor",
+    "name": "Mask Tasker US",
+    "lat": 47.7314977,
+    "long": -122.3559296
+  },
+  {
+    "type": "Liquor",
+    "name": "Salsa Tropical Seattle",
+    "lat": 47.5775355,
+    "long": -122.334701
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Sapphire",
+    "lat": 47.4764091,
+    "long": -122.257721
+  },
+  {
+    "type": "Liquor",
+    "name": "Afterlife Seattle",
+    "lat": 47.6175858,
+    "long": -122.3265699
+  },
+  {
+    "type": "Liquor",
+    "name": "Bush Garden",
+    "lat": 47.5986604,
+    "long": -122.3229528
+  },
+  {
+    "type": "Liquor",
+    "name": "BOOMBOX BAR",
+    "lat": 47.517045,
+    "long": -122.3549036
+  },
+  {
+    "type": "Liquor",
+    "name": "Revelry Room",
+    "lat": 47.5615352,
+    "long": -122.3873347
+  },
+  {
+    "type": "Liquor",
+    "name": "Lumberyard Bar",
+    "lat": 47.5165235,
+    "long": -122.3548059
+  },
+  {
+    "type": "Liquor",
+    "name": "Three Lounge",
+    "lat": 47.5625537,
+    "long": -122.3818983
+  },
+  {
+    "type": "Liquor",
+    "name": "The Loc C B l Kitchen Bar",
+    "lat": 47.5317656,
+    "long": -122.3763605
+  },
+  {
+    "type": "Liquor",
+    "name": "The Void",
+    "lat": 47.5561024,
+    "long": -122.3865437
+  },
+  {
+    "type": "Liquor",
+    "name": "Bang Bar Thai Restaurant Lounge",
+    "lat": 47.5595874,
+    "long": -122.3864458
+  },
+  {
+    "type": "Liquor",
+    "name": "West Seattle Bowl",
+    "lat": 47.5625613,
+    "long": -122.3818992
+  },
+  {
+    "type": "Liquor",
+    "name": "Matador West Seattle",
+    "lat": 47.5614754,
+    "long": -122.3864491
+  },
+  {
+    "type": "Liquor",
+    "name": "Maharaja Cuisine of India",
+    "lat": 47.561596,
+    "long": -122.386359
+  },
+  {
+    "type": "Liquor",
+    "name": "Puerto Vallarta Mexican Restaurant Catering",
+    "lat": 47.5603196,
+    "long": -122.3871091
+  },
+  {
+    "type": "Liquor",
+    "name": "Injoy Entertainment",
+    "lat": 40.1350354,
+    "long": -117.5291677
+  },
+  {
+    "type": "Liquor",
+    "name": "DJ Baby Van Beezly",
+    "lat": 45.497263,
+    "long": -120.656118
+  },
+  {
+    "type": "Liquor",
+    "name": "Kittens Cabaret",
+    "lat": 47.5508263,
+    "long": -122.3291922
+  },
+  {
+    "type": "Liquor",
+    "name": "Showgirls",
+    "lat": 47.550747,
+    "long": -122.3293751
+  },
+  {
+    "type": "Liquor",
+    "name": "Lucky Dragonz Casino Club",
+    "lat": 47.4967865,
+    "long": -122.2464652
+  },
+  {
+    "type": "Liquor",
+    "name": "Club De Vida Saluda",
+    "lat": 47.4670067,
+    "long": -122.3369949
+  },
+  {
+    "type": "Liquor",
+    "name": "CLUB SINROCK",
+    "lat": 47.4664147,
+    "long": -122.2204304
+  },
+  {
+    "type": "Liquor",
+    "name": "Lighthouse Lounge",
+    "lat": 47.4020641,
+    "long": -122.3248272
+  },
+  {
+    "type": "Liquor",
+    "name": "Delta Sky Club Concourse A",
+    "lat": 47.4425716,
+    "long": -122.302609
+  },
+  {
+    "type": "Liquor",
+    "name": "Taurus Karaoke Lounge E E E B E BA A KTV",
+    "lat": 47.4387852,
+    "long": -122.2202255
+  },
+  {
+    "type": "Liquor",
+    "name": "The Playground Cabaret",
+    "lat": 47.683621,
+    "long": -122.377107
+  },
+  {
+    "type": "Liquor",
+    "name": "Hazlewood",
+    "lat": 47.6684875,
+    "long": -122.3867041
+  },
+  {
+    "type": "Liquor",
+    "name": "Shibuya HiFi",
+    "lat": 47.6645258,
+    "long": -122.379261
+  },
+  {
+    "type": "Liquor",
+    "name": "Egan s Ballard Jam House",
+    "lat": 47.6685242,
+    "long": -122.3792245
+  },
+  {
+    "type": "Liquor",
+    "name": "Shingletown Saloon",
+    "lat": 47.6688807,
+    "long": -122.382917
+  },
+  {
+    "type": "Liquor",
+    "name": "The Sunset Tavern",
+    "lat": 47.6681134,
+    "long": -122.3859886
+  },
+  {
+    "type": "Liquor",
+    "name": "Boxcar Ale House",
+    "lat": 47.6506141,
+    "long": -122.3823128
+  },
+  {
+    "type": "Liquor",
+    "name": "Waterwheel Lounge",
+    "lat": 47.6805858,
+    "long": -122.3763122
+  },
+  {
+    "type": "Liquor",
+    "name": "Bad Albert s Tap Grill",
+    "lat": 47.664599,
+    "long": -122.3808479
+  },
+  {
+    "type": "Liquor",
+    "name": "Conor Byrne Pub Cooperative ",
+    "lat": 47.6655311,
+    "long": -122.3818208
+  },
+  {
+    "type": "Liquor",
+    "name": "Tarasco Restaurant",
+    "lat": 47.6797181,
+    "long": -122.3748668
+  },
+  {
+    "type": "Liquor",
+    "name": "Fuego Restaurant Lounge Ballard",
+    "lat": 47.6683708,
+    "long": -122.3830932
+  },
+  {
+    "type": "Liquor",
+    "name": "Waltz etcetera",
+    "lat": 47.6763737,
+    "long": -122.3960559
+  },
+  {
+    "type": "Liquor",
+    "name": "Pink Salt Restaurant Lounge",
+    "lat": 47.6393731,
+    "long": -122.4005478
+  },
+  {
+    "type": "Liquor",
+    "name": "Sugars Cabaret",
+    "lat": 47.7043673,
+    "long": -122.3444036
+  },
+  {
+    "type": "Liquor",
+    "name": "Mermaid Lounge",
+    "lat": 47.6522413,
+    "long": -122.3554347
+  },
+  {
+    "type": "Liquor",
+    "name": "MoonLight Hookah lounge",
+    "lat": 47.6530545,
+    "long": -122.3571026
+  },
+  {
+    "type": "Liquor",
+    "name": "The Shanghai Room",
+    "lat": 47.6922971,
+    "long": -122.3550402
+  },
+  {
+    "type": "Liquor",
+    "name": "The Sitting Room",
+    "lat": 47.6258242,
+    "long": -122.358581
+  },
+  {
+    "type": "Liquor",
+    "name": "Rickshaw Restaurant Lounge",
+    "lat": 47.7052738,
+    "long": -122.3544897
+  },
+  {
+    "type": "Liquor",
+    "name": "Little Red Hen",
+    "lat": 47.6802105,
+    "long": -122.3248088
+  },
+  {
+    "type": "Liquor",
+    "name": "Darrell s Tavern",
+    "lat": 47.7606654,
+    "long": -122.346863
+  }
+]

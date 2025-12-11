@@ -1,0 +1,782 @@
+[
+  {
+    "type": "Liquor",
+    "name": "Down Nightclub Boston",
+    "lat": 42.3566811,
+    "long": -71.0526331
+  },
+  {
+    "type": "Liquor",
+    "name": "Legacy",
+    "lat": 42.3499097,
+    "long": -71.065855
+  },
+  {
+    "type": "Liquor",
+    "name": " Nightclub",
+    "lat": 42.3511995,
+    "long": -71.0641984
+  },
+  {
+    "type": "Liquor",
+    "name": "Xmortis",
+    "lat": 42.3638089,
+    "long": -71.1014227
+  },
+  {
+    "type": "Liquor",
+    "name": "Cosmopolitan Lounge",
+    "lat": 42.3787741,
+    "long": -71.0290349
+  },
+  {
+    "type": "Liquor",
+    "name": "Icon Nightclub",
+    "lat": 42.3506997,
+    "long": -71.0662734
+  },
+  {
+    "type": "Liquor",
+    "name": "Middlesex",
+    "lat": 42.3625209,
+    "long": -71.0984055
+  },
+  {
+    "type": "Liquor",
+    "name": "Pasha Entertainment",
+    "lat": 42.3507076,
+    "long": -71.0662922
+  },
+  {
+    "type": "Liquor",
+    "name": "The Grand Boston",
+    "lat": 42.3531349,
+    "long": -71.0474416
+  },
+  {
+    "type": "Liquor",
+    "name": "Venu Nightclub",
+    "lat": 42.3507576,
+    "long": -71.066195
+  },
+  {
+    "type": "Liquor",
+    "name": "Havana Club",
+    "lat": 42.3646327,
+    "long": -71.1043085
+  },
+  {
+    "type": "Liquor",
+    "name": "ManRay",
+    "lat": 42.3659897,
+    "long": -71.1031816
+  },
+  {
+    "type": "Liquor",
+    "name": "Owl Club",
+    "lat": 42.3715373,
+    "long": -71.1186655
+  },
+  {
+    "type": "Liquor",
+    "name": "Royale",
+    "lat": 42.3499921,
+    "long": -71.0655563
+  },
+  {
+    "type": "Liquor",
+    "name": "Lizard Lounge",
+    "lat": 42.3821184,
+    "long": -71.1193369
+  },
+  {
+    "type": "Liquor",
+    "name": "Candibar Boston",
+    "lat": 42.3500654,
+    "long": -71.0654299
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Distefano",
+    "lat": 42.3540394,
+    "long": -71.0596441
+  },
+  {
+    "type": "Liquor",
+    "name": "La Dolce Vita",
+    "lat": 42.3500656,
+    "long": -71.0655781
+  },
+  {
+    "type": "Liquor",
+    "name": "Middle East Restaurant and Club",
+    "lat": 42.3636722,
+    "long": -71.1015016
+  },
+  {
+    "type": "Liquor",
+    "name": "Oliver s Nightclub Cask",
+    "lat": 42.3474852,
+    "long": -71.0980416
+  },
+  {
+    "type": "Liquor",
+    "name": "The Alley Bar",
+    "lat": 42.3580273,
+    "long": -71.0588114
+  },
+  {
+    "type": "Liquor",
+    "name": "HAN",
+    "lat": 42.3509805,
+    "long": -71.1310421
+  },
+  {
+    "type": "Liquor",
+    "name": "Hava Nightclub",
+    "lat": 42.3507311,
+    "long": -71.0647252
+  },
+  {
+    "type": "Liquor",
+    "name": "Post Underground",
+    "lat": 42.3344237,
+    "long": -71.1228954
+  },
+  {
+    "type": "Liquor",
+    "name": "Wild Rover",
+    "lat": 42.3596333,
+    "long": -71.0539992
+  },
+  {
+    "type": "Liquor",
+    "name": "Alibi",
+    "lat": 42.3620354,
+    "long": -71.0703608
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Bosna",
+    "lat": 42.4053456,
+    "long": -71.047779
+  },
+  {
+    "type": "Liquor",
+    "name": "M C A moire Boston",
+    "lat": 42.3954293,
+    "long": -71.0681533
+  },
+  {
+    "type": "Liquor",
+    "name": "Howl at the Moon Boston",
+    "lat": 42.356652,
+    "long": -71.0525161
+  },
+  {
+    "type": "Liquor",
+    "name": "Sonia Live Music Venue",
+    "lat": 42.3635006,
+    "long": -71.1016204
+  },
+  {
+    "type": "Liquor",
+    "name": "Manomet Village",
+    "lat": 42.3374196,
+    "long": -71.0357803
+  },
+  {
+    "type": "Liquor",
+    "name": "dbar",
+    "lat": 42.3083109,
+    "long": -71.0580083
+  },
+  {
+    "type": "Liquor",
+    "name": "The Phoenix Landing",
+    "lat": 42.364117,
+    "long": -71.101918
+  },
+  {
+    "type": "Liquor",
+    "name": "Biff s Lounge",
+    "lat": 42.3077749,
+    "long": -71.0826071
+  },
+  {
+    "type": "Liquor",
+    "name": "Zuzu",
+    "lat": 42.3637732,
+    "long": -71.10144
+  },
+  {
+    "type": "Liquor",
+    "name": "Sissy K s",
+    "lat": 42.3595782,
+    "long": -71.0538118
+  },
+  {
+    "type": "Liquor",
+    "name": "BSMNT",
+    "lat": 42.3508419,
+    "long": -71.0656551
+  },
+  {
+    "type": "Liquor",
+    "name": "Park Square",
+    "lat": 42.3511513,
+    "long": -71.0679421
+  },
+  {
+    "type": "Liquor",
+    "name": "M Lounge",
+    "lat": 42.3603875,
+    "long": -71.0503594
+  },
+  {
+    "type": "Liquor",
+    "name": "Men in Motion Boston F New England Parties Revue Stripper Club",
+    "lat": 42.350672,
+    "long": -71.064718
+  },
+  {
+    "type": "Liquor",
+    "name": "The Greatest Bar",
+    "lat": 42.3645781,
+    "long": -71.0614196
+  },
+  {
+    "type": "Liquor",
+    "name": "Mariel Underground",
+    "lat": 42.3573463,
+    "long": -71.055773
+  },
+  {
+    "type": "Liquor",
+    "name": "Savvor Restaurant and Lounge",
+    "lat": 42.3505338,
+    "long": -71.0583828
+  },
+  {
+    "type": "Liquor",
+    "name": "Capiz Lounge",
+    "lat": 42.3481401,
+    "long": -71.0391131
+  },
+  {
+    "type": "Liquor",
+    "name": "Centerfolds Boston",
+    "lat": 42.3514331,
+    "long": -71.0633569
+  },
+  {
+    "type": "Liquor",
+    "name": "Wally s Cafe Jazz Club",
+    "lat": 42.3407074,
+    "long": -71.082233
+  },
+  {
+    "type": "Liquor",
+    "name": "ClubMer",
+    "lat": 42.3649236,
+    "long": -71.1039283
+  },
+  {
+    "type": "Liquor",
+    "name": "Jacques Cabaret",
+    "lat": 42.3499713,
+    "long": -71.0674396
+  },
+  {
+    "type": "Liquor",
+    "name": "La klave Rumba Latina",
+    "lat": 42.3610034,
+    "long": -71.0566946
+  },
+  {
+    "type": "Liquor",
+    "name": "The Cantab Lounge",
+    "lat": 42.3661153,
+    "long": -71.1053054
+  },
+  {
+    "type": "Liquor",
+    "name": "Guestlist Boston",
+    "lat": 42.3484872,
+    "long": -71.0826017
+  },
+  {
+    "type": "Liquor",
+    "name": " one Productions",
+    "lat": 42.3492275,
+    "long": -71.1528154
+  },
+  {
+    "type": "Liquor",
+    "name": "MIXX Nightlife",
+    "lat": 42.4432875,
+    "long": -71.0292968
+  },
+  {
+    "type": "Liquor",
+    "name": "AC Lounge at AC Hotel Boston North",
+    "lat": 42.4023081,
+    "long": -71.0816912
+  },
+  {
+    "type": "Liquor",
+    "name": "Spy Bar",
+    "lat": 42.3459092,
+    "long": -71.0709013
+  },
+  {
+    "type": "Liquor",
+    "name": "Lucky s Lounge",
+    "lat": 42.3502162,
+    "long": -71.0484495
+  },
+  {
+    "type": "Liquor",
+    "name": "Caveau",
+    "lat": 42.359083,
+    "long": -71.0600705
+  },
+  {
+    "type": "Liquor",
+    "name": "Silhouette Lounge",
+    "lat": 42.3531083,
+    "long": -71.1344083
+  },
+  {
+    "type": "Liquor",
+    "name": "New Years Boston",
+    "lat": 42.3525061,
+    "long": -71.1249016
+  },
+  {
+    "type": "Liquor",
+    "name": "Global Jazz Club",
+    "lat": 42.3520452,
+    "long": -71.0711798
+  },
+  {
+    "type": "Liquor",
+    "name": "Waterclub Marina Bay",
+    "lat": 42.2996432,
+    "long": -71.0284936
+  },
+  {
+    "type": "Liquor",
+    "name": "Bill s Bar Lounge",
+    "lat": 42.3473065,
+    "long": -71.0949833
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Passim",
+    "lat": 42.3742524,
+    "long": -71.1200383
+  },
+  {
+    "type": "Liquor",
+    "name": "Habibi s Lounge",
+    "lat": 42.3507716,
+    "long": -71.1309102
+  },
+  {
+    "type": "Liquor",
+    "name": "The White Bull Tavern",
+    "lat": 42.3606685,
+    "long": -71.0566288
+  },
+  {
+    "type": "Liquor",
+    "name": "Phat s Breezeway Restaurants Bar",
+    "lat": 42.3124723,
+    "long": -71.0800775
+  },
+  {
+    "type": "Liquor",
+    "name": "Regattabar",
+    "lat": 42.3724328,
+    "long": -71.1230172
+  },
+  {
+    "type": "Liquor",
+    "name": "Trophy Room",
+    "lat": 42.346924,
+    "long": -71.070646
+  },
+  {
+    "type": "Liquor",
+    "name": "Assembly Room",
+    "lat": 42.3147483,
+    "long": -71.104359
+  },
+  {
+    "type": "Liquor",
+    "name": "Scorpion Boston",
+    "lat": 42.3530398,
+    "long": -71.0475667
+  },
+  {
+    "type": "Liquor",
+    "name": "Lolita Back Bay",
+    "lat": 42.3506838,
+    "long": -71.0773765
+  },
+  {
+    "type": "Liquor",
+    "name": "Foundation Room Boston",
+    "lat": 42.3474866,
+    "long": -71.0954489
+  },
+  {
+    "type": "Liquor",
+    "name": "Lumina Lounge",
+    "lat": 42.4058212,
+    "long": -70.9916377
+  },
+  {
+    "type": "Liquor",
+    "name": "Saloon",
+    "lat": 42.3955158,
+    "long": -71.1217883
+  },
+  {
+    "type": "Liquor",
+    "name": "Macumba Latina",
+    "lat": 42.2682068,
+    "long": -71.0931137
+  },
+  {
+    "type": "Liquor",
+    "name": "Stanza Dei Sigari",
+    "lat": 42.3641556,
+    "long": -71.0543389
+  },
+  {
+    "type": "Liquor",
+    "name": "La Maquina del Sabor",
+    "lat": 42.4218948,
+    "long": -70.9851104
+  },
+  {
+    "type": "Liquor",
+    "name": "Chelsea Station Restaurant Bar Lounge",
+    "lat": 42.3944698,
+    "long": -71.0390588
+  },
+  {
+    "type": "Liquor",
+    "name": "Lithuanian Citizens Association",
+    "lat": 42.3377693,
+    "long": -71.0489625
+  },
+  {
+    "type": "Liquor",
+    "name": "Academy Boston",
+    "lat": 42.3726047,
+    "long": -71.1192827
+  },
+  {
+    "type": "Liquor",
+    "name": "SPIN Boston",
+    "lat": 42.3499329,
+    "long": -71.0503945
+  },
+  {
+    "type": "Liquor",
+    "name": "Wink and Nod",
+    "lat": 42.3466843,
+    "long": -71.0697871
+  },
+  {
+    "type": "Liquor",
+    "name": "Tangierino Lounge",
+    "lat": 42.3739191,
+    "long": -71.0626589
+  },
+  {
+    "type": "Liquor",
+    "name": "Bar ",
+    "lat": 42.3485013,
+    "long": -71.0771688
+  },
+  {
+    "type": "Liquor",
+    "name": "Fenway Johnnies",
+    "lat": 42.3462436,
+    "long": -71.0994023
+  },
+  {
+    "type": "Liquor",
+    "name": "Cactus Club Cafe",
+    "lat": 42.3506354,
+    "long": -71.0740118
+  },
+  {
+    "type": "Liquor",
+    "name": "Blend",
+    "lat": 42.305892,
+    "long": -71.0586264
+  },
+  {
+    "type": "Liquor",
+    "name": "Oceanside Events Center F Wonderland Ballroom",
+    "lat": 42.4141498,
+    "long": -70.9922504
+  },
+  {
+    "type": "Liquor",
+    "name": "Marcelino E s Seaport",
+    "lat": 42.3543021,
+    "long": -71.0480028
+  },
+  {
+    "type": "Liquor",
+    "name": "Earls Kitchen B Bar",
+    "lat": 42.395712,
+    "long": -71.0800187
+  },
+  {
+    "type": "Liquor",
+    "name": "The Lounge at FiRE BiCE",
+    "lat": 42.3509791,
+    "long": -71.0714584
+  },
+  {
+    "type": "Liquor",
+    "name": "Beehive Restaurant",
+    "lat": 42.3443899,
+    "long": -71.071473
+  },
+  {
+    "type": "Liquor",
+    "name": "NWOBHM For Life",
+    "lat": 42.3432924,
+    "long": -71.0873138
+  },
+  {
+    "type": "Liquor",
+    "name": "Trifecta",
+    "lat": 42.3458644,
+    "long": -71.0839883
+  },
+  {
+    "type": "Liquor",
+    "name": "Kushala Sip Lounge Cafe Bar",
+    "lat": 42.3904643,
+    "long": -71.0367275
+  },
+  {
+    "type": "Liquor",
+    "name": "Map Room Lounge",
+    "lat": 42.3497023,
+    "long": -71.0777995
+  },
+  {
+    "type": "Liquor",
+    "name": "Georgie s Wine Bar and Shop ",
+    "lat": 42.353907,
+    "long": -71.0577122
+  },
+  {
+    "type": "Liquor",
+    "name": "Charlie s Kitchen",
+    "lat": 42.372395,
+    "long": -71.121485
+  },
+  {
+    "type": "Liquor",
+    "name": "Tanjore Bar and Restaurant",
+    "lat": 42.3676867,
+    "long": -71.1078828
+  },
+  {
+    "type": "Liquor",
+    "name": "Golden Temple The E Room Bar",
+    "lat": 42.3388889,
+    "long": -71.1361111
+  },
+  {
+    "type": "Liquor",
+    "name": "Kay s Oasis Funtion Hall",
+    "lat": 42.2862985,
+    "long": -71.0911636
+  },
+  {
+    "type": "Liquor",
+    "name": "JazzUrbane Cafe",
+    "lat": 42.3301441,
+    "long": -71.0838242
+  },
+  {
+    "type": "Liquor",
+    "name": "Fishing Club",
+    "lat": 42.3298868,
+    "long": -71.1024206
+  },
+  {
+    "type": "Liquor",
+    "name": "American Airlines Admirals Club",
+    "lat": 42.3622057,
+    "long": -71.0198245
+  },
+  {
+    "type": "Liquor",
+    "name": "Seaside Club",
+    "lat": 41.9760735,
+    "long": -70.6969873
+  },
+  {
+    "type": "Liquor",
+    "name": "Old Colony Club",
+    "lat": 41.957678,
+    "long": -70.6658984
+  },
+  {
+    "type": "Liquor",
+    "name": "Plymouth G Pub",
+    "lat": 41.9431552,
+    "long": -70.7109717
+  },
+  {
+    "type": "Liquor",
+    "name": "Pillory Pub",
+    "lat": 41.9587041,
+    "long": -70.6628877
+  },
+  {
+    "type": "Liquor",
+    "name": "Sip at Wine Bar",
+    "lat": 41.9624314,
+    "long": -70.669219
+  },
+  {
+    "type": "Liquor",
+    "name": "Main Street Sports Bar and Grill",
+    "lat": 41.956519,
+    "long": -70.664228
+  },
+  {
+    "type": "Liquor",
+    "name": "Black Raspberry Pub",
+    "lat": 41.9785152,
+    "long": -70.6864517
+  },
+  {
+    "type": "Liquor",
+    "name": "Honey Baby",
+    "lat": 41.9583806,
+    "long": -70.6671215
+  },
+  {
+    "type": "Liquor",
+    "name": "The Galway Pub",
+    "lat": 41.9584426,
+    "long": -70.6679153
+  },
+  {
+    "type": "Liquor",
+    "name": "Brewster Bar",
+    "lat": 41.9567955,
+    "long": -70.6650377
+  },
+  {
+    "type": "Liquor",
+    "name": "Martini s Bar Grill",
+    "lat": 41.9581862,
+    "long": -70.6674072
+  },
+  {
+    "type": "Liquor",
+    "name": "British Beer Company",
+    "lat": 41.9567752,
+    "long": -70.6642541
+  },
+  {
+    "type": "Liquor",
+    "name": "Rio s Brazilian Steakhouse",
+    "lat": 41.9738462,
+    "long": -70.6845945
+  },
+  {
+    "type": "Liquor",
+    "name": "B Restaurant Bar",
+    "lat": 41.9710449,
+    "long": -70.7150019
+  },
+  {
+    "type": "Liquor",
+    "name": "JoeK Music Piano Bar at Toscana s Plymouth",
+    "lat": 41.9529594,
+    "long": -70.6597626
+  },
+  {
+    "type": "Liquor",
+    "name": "Chili s Grill Bar",
+    "lat": 41.949674,
+    "long": -70.715706
+  },
+  {
+    "type": "Liquor",
+    "name": " Restaurants",
+    "lat": 41.9342584,
+    "long": -70.659202
+  },
+  {
+    "type": "Liquor",
+    "name": "KKatie s Burger Bar Plymouth",
+    "lat": 41.959918,
+    "long": -70.6710778
+  },
+  {
+    "type": "Liquor",
+    "name": "New Tokyo Japanese Restaurant",
+    "lat": 41.9328185,
+    "long": -70.6592722
+  },
+  {
+    "type": "Liquor",
+    "name": "Cj s Bar Grille",
+    "lat": 41.9547448,
+    "long": -70.6648196
+  },
+  {
+    "type": "Liquor",
+    "name": "Jefes A Betta Bar Grille",
+    "lat": 41.978893,
+    "long": -70.6922123
+  },
+  {
+    "type": "Liquor",
+    "name": "The Tasty",
+    "lat": 41.958082,
+    "long": -70.667242
+  },
+  {
+    "type": "Liquor",
+    "name": " West Atlantic Steakhouse",
+    "lat": 41.9600766,
+    "long": -70.665969
+  },
+  {
+    "type": "Liquor",
+    "name": "Independent Fermentations Brewing Kombucha",
+    "lat": 41.9275019,
+    "long": -70.6450369
+  },
+  {
+    "type": "Liquor",
+    "name": "ThreeV Restaurant",
+    "lat": 41.9782497,
+    "long": -70.6874202
+  },
+  {
+    "type": "Liquor",
+    "name": " Grill Plymouth",
+    "lat": 41.9536367,
+    "long": -70.7111832
+  }
+]

@@ -1,0 +1,1514 @@
+[
+  {
+    "type": "Liquor",
+    "name": "Deep Eddy Cabaret",
+    "lat": 30.277883,
+    "long": -97.772559
+  },
+  {
+    "type": "Liquor",
+    "name": "Elysium",
+    "lat": 30.2676459,
+    "long": -97.7366485
+  },
+  {
+    "type": "Liquor",
+    "name": "Club ATX Nightclub and Lounge ",
+    "lat": 30.265966,
+    "long": -97.7383225
+  },
+  {
+    "type": "Liquor",
+    "name": "Kingdom",
+    "lat": 30.2672791,
+    "long": -97.7375539
+  },
+  {
+    "type": "Liquor",
+    "name": "Texas Club",
+    "lat": 30.212191,
+    "long": -97.729695
+  },
+  {
+    "type": "Liquor",
+    "name": "Flamingo Cantina",
+    "lat": 30.2664818,
+    "long": -97.7377464
+  },
+  {
+    "type": "Liquor",
+    "name": "Barbarella Austin",
+    "lat": 30.2670911,
+    "long": -97.7368338
+  },
+  {
+    "type": "Liquor",
+    "name": "The on Sixth",
+    "lat": 30.2670861,
+    "long": -97.7388013
+  },
+  {
+    "type": "Liquor",
+    "name": "Voodoo Room",
+    "lat": 30.2667535,
+    "long": -97.7386733
+  },
+  {
+    "type": "Liquor",
+    "name": "OK Corral Nightclub",
+    "lat": 30.225869,
+    "long": -97.771366
+  },
+  {
+    "type": "Liquor",
+    "name": "Antone s Nightclub",
+    "lat": 30.2660457,
+    "long": -97.7403947
+  },
+  {
+    "type": "Liquor",
+    "name": "Lit Lounge",
+    "lat": 30.2673854,
+    "long": -97.7409012
+  },
+  {
+    "type": "Liquor",
+    "name": "Touche",
+    "lat": 30.2667583,
+    "long": -97.7387417
+  },
+  {
+    "type": "Liquor",
+    "name": "The Continental Club",
+    "lat": 30.250506,
+    "long": -97.7490768
+  },
+  {
+    "type": "Liquor",
+    "name": "Palazio Gentlemen s Club",
+    "lat": 30.2192202,
+    "long": -97.7582624
+  },
+  {
+    "type": "Liquor",
+    "name": "Green Light Social",
+    "lat": 30.2703689,
+    "long": -97.7503908
+  },
+  {
+    "type": "Liquor",
+    "name": "C Boy s Heart Soul",
+    "lat": 30.2436389,
+    "long": -97.7521583
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Carnaval",
+    "lat": 30.2375032,
+    "long": -97.7267087
+  },
+  {
+    "type": "Liquor",
+    "name": "Mala Fama",
+    "lat": 30.2670288,
+    "long": -97.7383848
+  },
+  {
+    "type": "Liquor",
+    "name": "Coconut Club",
+    "lat": 30.2662955,
+    "long": -97.7451516
+  },
+  {
+    "type": "Liquor",
+    "name": " Club",
+    "lat": 30.2671624,
+    "long": -97.7400192
+  },
+  {
+    "type": "Liquor",
+    "name": "Mala Vida",
+    "lat": 30.2662562,
+    "long": -97.7355382
+  },
+  {
+    "type": "Liquor",
+    "name": "Mayfair Austin",
+    "lat": 30.269194,
+    "long": -97.7476628
+  },
+  {
+    "type": "Liquor",
+    "name": "The White Horse",
+    "lat": 30.2626209,
+    "long": -97.7269825
+  },
+  {
+    "type": "Liquor",
+    "name": "Las Diosas Men s Club",
+    "lat": 30.2342196,
+    "long": -97.6832161
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Bantu",
+    "lat": 30.266797,
+    "long": -97.7375645
+  },
+  {
+    "type": "Liquor",
+    "name": "Speakeasy",
+    "lat": 30.2668156,
+    "long": -97.743519
+  },
+  {
+    "type": "Liquor",
+    "name": "Deseo Nightclub",
+    "lat": 30.2661741,
+    "long": -97.7382667
+  },
+  {
+    "type": "Liquor",
+    "name": "The Continental Gallery",
+    "lat": 30.2506293,
+    "long": -97.7490872
+  },
+  {
+    "type": "Liquor",
+    "name": "XTC Cabaret Austin",
+    "lat": 30.3220149,
+    "long": -97.659811
+  },
+  {
+    "type": "Liquor",
+    "name": "Oilcan Harry E s",
+    "lat": 30.2665701,
+    "long": -97.74537
+  },
+  {
+    "type": "Liquor",
+    "name": "Deep Eddy Cabaret",
+    "lat": 30.2778835,
+    "long": -97.772559
+  },
+  {
+    "type": "Liquor",
+    "name": "Elephant Room",
+    "lat": 30.2656727,
+    "long": -97.7434921
+  },
+  {
+    "type": "Liquor",
+    "name": "The Iron Bear",
+    "lat": 30.2684429,
+    "long": -97.745511
+  },
+  {
+    "type": "Liquor",
+    "name": "Donn s Depot",
+    "lat": 30.2741122,
+    "long": -97.7633659
+  },
+  {
+    "type": "Liquor",
+    "name": "Firehouse Lounge",
+    "lat": 30.2681729,
+    "long": -97.7410806
+  },
+  {
+    "type": "Liquor",
+    "name": "The Betty",
+    "lat": 30.2694279,
+    "long": -97.7498903
+  },
+  {
+    "type": "Liquor",
+    "name": "Cedar Street Courtyard",
+    "lat": 30.2668628,
+    "long": -97.745295
+  },
+  {
+    "type": "Liquor",
+    "name": "Ego s",
+    "lat": 30.2563966,
+    "long": -97.7477873
+  },
+  {
+    "type": "Liquor",
+    "name": "Cielo Nightclub",
+    "lat": 30.266178,
+    "long": -97.7382435
+  },
+  {
+    "type": "Liquor",
+    "name": "The Aquarium on th",
+    "lat": 30.2669106,
+    "long": -97.7391248
+  },
+  {
+    "type": "Liquor",
+    "name": "Space Fox Bar",
+    "lat": 30.2697814,
+    "long": -97.7498535
+  },
+  {
+    "type": "Liquor",
+    "name": "ROMA",
+    "lat": 30.2642007,
+    "long": -97.7407452
+  },
+  {
+    "type": "Liquor",
+    "name": "The Volstead Lounge",
+    "lat": 30.2634408,
+    "long": -97.727265
+  },
+  {
+    "type": "Liquor",
+    "name": "El Nocturno Night Club",
+    "lat": 30.3443812,
+    "long": -97.7139279
+  },
+  {
+    "type": "Liquor",
+    "name": "TOATS ATX",
+    "lat": 30.2665382,
+    "long": -97.7455322
+  },
+  {
+    "type": "Liquor",
+    "name": "Lucky Lounge",
+    "lat": 30.2673544,
+    "long": -97.7453625
+  },
+  {
+    "type": "Liquor",
+    "name": "Wild Greg s Saloon Austin",
+    "lat": 30.267576,
+    "long": -97.740077
+  },
+  {
+    "type": "Liquor",
+    "name": "Highland Lounge",
+    "lat": 30.2670001,
+    "long": -97.7449168
+  },
+  {
+    "type": "Liquor",
+    "name": "The Highball",
+    "lat": 30.2562014,
+    "long": -97.7631672
+  },
+  {
+    "type": "Liquor",
+    "name": "new night productions",
+    "lat": 30.2297521,
+    "long": -97.7748009
+  },
+  {
+    "type": "Liquor",
+    "name": "Maggie Mae s",
+    "lat": 30.2670833,
+    "long": -97.7397361
+  },
+  {
+    "type": "Liquor",
+    "name": "Secret Society",
+    "lat": 30.2680338,
+    "long": -97.7432692
+  },
+  {
+    "type": "Liquor",
+    "name": "Warehouse Billiard Bar",
+    "lat": 30.2184149,
+    "long": -97.7577655
+  },
+  {
+    "type": "Liquor",
+    "name": "Space Siete",
+    "lat": 30.266983,
+    "long": -97.7361421
+  },
+  {
+    "type": "Liquor",
+    "name": "Site of The Armadillo WHQ",
+    "lat": 30.2582359,
+    "long": -97.7499653
+  },
+  {
+    "type": "Liquor",
+    "name": "Nivel Austin Entrance ",
+    "lat": 30.2670548,
+    "long": -97.7382882
+  },
+  {
+    "type": "Liquor",
+    "name": "Guero s Oak Garden",
+    "lat": 30.2494257,
+    "long": -97.7501158
+  },
+  {
+    "type": "Liquor",
+    "name": "Kitty Cohen s",
+    "lat": 30.2617903,
+    "long": -97.7164017
+  },
+  {
+    "type": "Liquor",
+    "name": "Discoteca Furia",
+    "lat": 30.2376423,
+    "long": -97.7263644
+  },
+  {
+    "type": "Liquor",
+    "name": "Parker Jazz Club",
+    "lat": 30.2662895,
+    "long": -97.7445544
+  },
+  {
+    "type": "Liquor",
+    "name": "Azul Rooftop",
+    "lat": 30.2666201,
+    "long": -97.7403752
+  },
+  {
+    "type": "Liquor",
+    "name": "Nica on th",
+    "lat": 30.2662467,
+    "long": -97.7445297
+  },
+  {
+    "type": "Liquor",
+    "name": "Crockett Center",
+    "lat": 30.2179031,
+    "long": -97.7964019
+  },
+  {
+    "type": "Liquor",
+    "name": "Edge Rooftop",
+    "lat": 30.2643966,
+    "long": -97.7438583
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Eternal",
+    "lat": 30.2664451,
+    "long": -97.7452139
+  },
+  {
+    "type": "Liquor",
+    "name": "Bare Cabaret Austin",
+    "lat": 30.3318668,
+    "long": -97.6245119
+  },
+  {
+    "type": "Liquor",
+    "name": "The Austin Eagle",
+    "lat": 30.3310056,
+    "long": -97.6667874
+  },
+  {
+    "type": "Liquor",
+    "name": "My Oh My",
+    "lat": 30.2648217,
+    "long": -97.7339934
+  },
+  {
+    "type": "Liquor",
+    "name": "Rodeo Night Club",
+    "lat": 30.364266,
+    "long": -97.6947157
+  },
+  {
+    "type": "Liquor",
+    "name": "Come and Take It Live",
+    "lat": 30.2408546,
+    "long": -97.7288765
+  },
+  {
+    "type": "Liquor",
+    "name": "Lucille Patio Lounge",
+    "lat": 30.2587306,
+    "long": -97.73855
+  },
+  {
+    "type": "Liquor",
+    "name": "Encore ATX",
+    "lat": 30.2692441,
+    "long": -97.7285581
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Caribe After Party",
+    "lat": 30.1967475,
+    "long": -97.7059041
+  },
+  {
+    "type": "Liquor",
+    "name": "Bar Moxy",
+    "lat": 30.2901676,
+    "long": -97.741649
+  },
+  {
+    "type": "Liquor",
+    "name": "Club El Tahur",
+    "lat": 30.3438292,
+    "long": -97.7041376
+  },
+  {
+    "type": "Liquor",
+    "name": "Ci Sports Bar Night Club",
+    "lat": 30.3662848,
+    "long": -97.7291287
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Latinos",
+    "lat": 30.3443586,
+    "long": -97.7139245
+  },
+  {
+    "type": "Liquor",
+    "name": "SKYHOUSE LOUNGE",
+    "lat": 30.2666965,
+    "long": -97.7438028
+  },
+  {
+    "type": "Liquor",
+    "name": "Alibi Social Bar",
+    "lat": 30.2662488,
+    "long": -97.7445914
+  },
+  {
+    "type": "Liquor",
+    "name": "Pantheon Lounge Nightclub",
+    "lat": 30.2280656,
+    "long": -97.6807981
+  },
+  {
+    "type": "Liquor",
+    "name": "Shenanigans Nightclub",
+    "lat": 30.4465722,
+    "long": -97.7789389
+  },
+  {
+    "type": "Liquor",
+    "name": "Austin Swing Syndicate",
+    "lat": 30.2878965,
+    "long": -97.7482072
+  },
+  {
+    "type": "Liquor",
+    "name": "XO Nightclub Hookah Lounge",
+    "lat": 30.3766471,
+    "long": -97.6731663
+  },
+  {
+    "type": "Liquor",
+    "name": "Kinfolk Cocktail Lounge Spirits Library",
+    "lat": 30.2640634,
+    "long": -97.7379309
+  },
+  {
+    "type": "Liquor",
+    "name": "Bebo s Lounge Night Club",
+    "lat": 30.4524267,
+    "long": -97.7809091
+  },
+  {
+    "type": "Liquor",
+    "name": "Barrel O Fun",
+    "lat": 30.2985492,
+    "long": -97.7045764
+  },
+  {
+    "type": "Liquor",
+    "name": "Lefty s Brick Bar",
+    "lat": 30.2617498,
+    "long": -97.7230275
+  },
+  {
+    "type": "Liquor",
+    "name": "Zanzibar",
+    "lat": 30.2628309,
+    "long": -97.7415705
+  },
+  {
+    "type": "Liquor",
+    "name": "La Condesa",
+    "lat": 30.2656391,
+    "long": -97.7477811
+  },
+  {
+    "type": "Liquor",
+    "name": "Devil May Care",
+    "lat": 30.2696472,
+    "long": -97.7474845
+  },
+  {
+    "type": "Liquor",
+    "name": "The Royale Room",
+    "lat": 30.2667947,
+    "long": -97.7409874
+  },
+  {
+    "type": "Liquor",
+    "name": "Live Oak",
+    "lat": 30.2615215,
+    "long": -97.7417551
+  },
+  {
+    "type": "Liquor",
+    "name": "Agave Club",
+    "lat": 30.4036222,
+    "long": -97.6369272
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Miami Austin",
+    "lat": 30.4497714,
+    "long": -97.6653726
+  },
+  {
+    "type": "Liquor",
+    "name": "Golden Ace Austin",
+    "lat": 30.2653848,
+    "long": -97.7486372
+  },
+  {
+    "type": "Liquor",
+    "name": "Paris lounge atx",
+    "lat": 30.3674523,
+    "long": -97.6952978
+  },
+  {
+    "type": "Liquor",
+    "name": "Inspired Movement Austin Salsa Classes",
+    "lat": 30.2203164,
+    "long": -97.764726
+  },
+  {
+    "type": "Liquor",
+    "name": "Purrfecto Cat Lounge",
+    "lat": 30.247724,
+    "long": -97.7745272
+  },
+  {
+    "type": "Liquor",
+    "name": "Codependent Cocktails B Coffee",
+    "lat": 30.2674559,
+    "long": -97.7507683
+  },
+  {
+    "type": "Liquor",
+    "name": "BarChi Sushi",
+    "lat": 30.2652839,
+    "long": -97.7455948
+  },
+  {
+    "type": "Liquor",
+    "name": "Victory East",
+    "lat": 30.269175,
+    "long": -97.728562
+  },
+  {
+    "type": "Liquor",
+    "name": "RIO",
+    "lat": 30.2700077,
+    "long": -97.7492213
+  },
+  {
+    "type": "Liquor",
+    "name": "Opa",
+    "lat": 30.2488889,
+    "long": -97.7694444
+  },
+  {
+    "type": "Liquor",
+    "name": "Verbena Food Drink",
+    "lat": 30.2699121,
+    "long": -97.7489064
+  },
+  {
+    "type": "Liquor",
+    "name": "Eddie V s Prime Seafood",
+    "lat": 30.2662488,
+    "long": -97.7406292
+  },
+  {
+    "type": "Liquor",
+    "name": "Dooby s Smoking Depot Vape Smoke THCA",
+    "lat": 30.259841,
+    "long": -97.759204
+  },
+  {
+    "type": "Liquor",
+    "name": "Bishop Studios Austin",
+    "lat": 30.2148379,
+    "long": -97.7773696
+  },
+  {
+    "type": "Liquor",
+    "name": " LIVE Nightclub and Venue",
+    "lat": 29.4380001,
+    "long": -98.4933979
+  },
+  {
+    "type": "Liquor",
+    "name": "Habesha Club C Club Mechot",
+    "lat": 32.9149562,
+    "long": -96.6791464
+  },
+  {
+    "type": "Liquor",
+    "name": "Austin central garage",
+    "lat": 30.2520273,
+    "long": -97.7015575
+  },
+  {
+    "type": "Liquor",
+    "name": "Elevate Night Club",
+    "lat": 26.2019367,
+    "long": -98.2379204
+  },
+  {
+    "type": "Liquor",
+    "name": "Load in Maggie Mae E s",
+    "lat": 30.2665247,
+    "long": -97.7399763
+  },
+  {
+    "type": "Liquor",
+    "name": "Bachata Lounge",
+    "lat": 29.9588642,
+    "long": -95.4772486
+  },
+  {
+    "type": "Liquor",
+    "name": "The Whiskey Girls Saloon",
+    "lat": 30.3609775,
+    "long": -97.5331745
+  },
+  {
+    "type": "Liquor",
+    "name": "Good Luck Grill",
+    "lat": 30.3738918,
+    "long": -97.528244
+  },
+  {
+    "type": "Liquor",
+    "name": "Casa Garcia s Manor",
+    "lat": 30.3508976,
+    "long": -97.5569697
+  },
+  {
+    "type": "Liquor",
+    "name": "Pho Yes",
+    "lat": 30.3498578,
+    "long": -97.5539461
+  },
+  {
+    "type": "Liquor",
+    "name": "ShadowGlen Golf Club",
+    "lat": 30.3531468,
+    "long": -97.5558337
+  },
+  {
+    "type": "Liquor",
+    "name": "Daddy Shack Golf",
+    "lat": 30.3622742,
+    "long": -97.5194224
+  },
+  {
+    "type": "Liquor",
+    "name": "Cafe Manor",
+    "lat": 30.3483263,
+    "long": -97.5584167
+  },
+  {
+    "type": "Liquor",
+    "name": "Wonder Bar",
+    "lat": 30.401483,
+    "long": -97.722765
+  },
+  {
+    "type": "Liquor",
+    "name": "Foxy s Cabaret Austin",
+    "lat": 30.4651085,
+    "long": -97.6698396
+  },
+  {
+    "type": "Liquor",
+    "name": "Perfect North Austin",
+    "lat": 30.4705991,
+    "long": -97.6738053
+  },
+  {
+    "type": "Liquor",
+    "name": "Scarlett s Rose Austin",
+    "lat": 30.478222,
+    "long": -97.671673
+  },
+  {
+    "type": "Liquor",
+    "name": "Bigshotz",
+    "lat": 30.4790992,
+    "long": -97.6781234
+  },
+  {
+    "type": "Liquor",
+    "name": "Azure Lounge",
+    "lat": 30.4290447,
+    "long": -97.7606587
+  },
+  {
+    "type": "Liquor",
+    "name": "Lobos VIP",
+    "lat": 30.3767416,
+    "long": -97.6730815
+  },
+  {
+    "type": "Liquor",
+    "name": "The Rose Room",
+    "lat": 30.4012519,
+    "long": -97.7229018
+  },
+  {
+    "type": "Liquor",
+    "name": "colette Austin",
+    "lat": 30.4315232,
+    "long": -97.6835014
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Bar Corona",
+    "lat": 30.3737983,
+    "long": -97.6905745
+  },
+  {
+    "type": "Liquor",
+    "name": "Parmer Lounge",
+    "lat": 30.4174098,
+    "long": -97.700066
+  },
+  {
+    "type": "Liquor",
+    "name": "Canary Roost",
+    "lat": 30.4004731,
+    "long": -97.7039135
+  },
+  {
+    "type": "Liquor",
+    "name": "Mavericks Dance Hall",
+    "lat": 30.4566767,
+    "long": -97.6612133
+  },
+  {
+    "type": "Liquor",
+    "name": "Desert Kings Hookah Lounge",
+    "lat": 30.4175319,
+    "long": -97.7455455
+  },
+  {
+    "type": "Liquor",
+    "name": "Last Call Pflugerville Neighborhood Bar",
+    "lat": 30.4552874,
+    "long": -97.6594295
+  },
+  {
+    "type": "Liquor",
+    "name": " C B Rooftop Patio Bar",
+    "lat": 30.4013556,
+    "long": -97.7228167
+  },
+  {
+    "type": "Liquor",
+    "name": "Africana hookah lounge",
+    "lat": 30.378609,
+    "long": -97.6809929
+  },
+  {
+    "type": "Liquor",
+    "name": "The Local Outpost",
+    "lat": 30.4461556,
+    "long": -97.7784356
+  },
+  {
+    "type": "Liquor",
+    "name": "The Hideout Pub",
+    "lat": 30.4124919,
+    "long": -97.7097726
+  },
+  {
+    "type": "Liquor",
+    "name": "Michelobos Sports Bar Restaurant Inc",
+    "lat": 30.3765044,
+    "long": -97.6728213
+  },
+  {
+    "type": "Liquor",
+    "name": "Parmer Lane Tavern",
+    "lat": 30.4153576,
+    "long": -97.6966553
+  },
+  {
+    "type": "Liquor",
+    "name": "Rick The Manager",
+    "lat": 30.4340724,
+    "long": -97.7721689
+  },
+  {
+    "type": "Liquor",
+    "name": "Zola Hookah Lounge",
+    "lat": 30.3822882,
+    "long": -97.7232122
+  },
+  {
+    "type": "Liquor",
+    "name": "Four Points",
+    "lat": 30.4479062,
+    "long": -97.7872136
+  },
+  {
+    "type": "Liquor",
+    "name": "Kung Fu Saloon",
+    "lat": 30.4008694,
+    "long": -97.722641
+  },
+  {
+    "type": "Liquor",
+    "name": " Degrees Daiquiri",
+    "lat": 30.4503798,
+    "long": -97.656018
+  },
+  {
+    "type": "Liquor",
+    "name": "Third Base",
+    "lat": 30.477819,
+    "long": -97.670199
+  },
+  {
+    "type": "Liquor",
+    "name": "The Mill",
+    "lat": 30.452471,
+    "long": -97.7814565
+  },
+  {
+    "type": "Liquor",
+    "name": "Dogwood Domain",
+    "lat": 30.4009879,
+    "long": -97.7230103
+  },
+  {
+    "type": "Liquor",
+    "name": "Prohibition ATX",
+    "lat": 30.4527857,
+    "long": -97.7810206
+  },
+  {
+    "type": "Liquor",
+    "name": "Bellas Bar ATX",
+    "lat": 30.45039,
+    "long": -97.6623984
+  },
+  {
+    "type": "Liquor",
+    "name": "Jack Ginger s",
+    "lat": 30.4012239,
+    "long": -97.7229163
+  },
+  {
+    "type": "Liquor",
+    "name": "WXYZ Bar",
+    "lat": 30.402766,
+    "long": -97.7237458
+  },
+  {
+    "type": "Liquor",
+    "name": "The Water Tank Vinyl Brews Coffee",
+    "lat": 30.435,
+    "long": -97.7669444
+  },
+  {
+    "type": "Liquor",
+    "name": "Vault Space Events",
+    "lat": 30.3936017,
+    "long": -97.7134088
+  },
+  {
+    "type": "Liquor",
+    "name": "Hidden Treasures Music Lounge",
+    "lat": 30.2359142,
+    "long": -97.8562774
+  },
+  {
+    "type": "Liquor",
+    "name": "Boomerz",
+    "lat": 30.2363393,
+    "long": -97.8562539
+  },
+  {
+    "type": "Liquor",
+    "name": "Stardust Club",
+    "lat": 30.1456356,
+    "long": -97.8343512
+  },
+  {
+    "type": "Liquor",
+    "name": " Rabbits",
+    "lat": 30.1989862,
+    "long": -97.8689827
+  },
+  {
+    "type": "Liquor",
+    "name": "Oak Hill Social Coffee Cocktails",
+    "lat": 30.2349693,
+    "long": -97.9115845
+  },
+  {
+    "type": "Liquor",
+    "name": "Hero Circle",
+    "lat": 30.2247105,
+    "long": -97.9530291
+  },
+  {
+    "type": "Liquor",
+    "name": "Impulso Dance",
+    "lat": 30.296114,
+    "long": -97.73297
+  },
+  {
+    "type": "Liquor",
+    "name": "Red Room Social Lounge",
+    "lat": 29.8831482,
+    "long": -97.9418222
+  },
+  {
+    "type": "Liquor",
+    "name": "Nephew s",
+    "lat": 29.8822999,
+    "long": -97.9415566
+  },
+  {
+    "type": "Liquor",
+    "name": "EDEN",
+    "lat": 29.8821855,
+    "long": -97.9427797
+  },
+  {
+    "type": "Liquor",
+    "name": "The Marc",
+    "lat": 29.8821251,
+    "long": -97.9405117
+  },
+  {
+    "type": "Liquor",
+    "name": "The Vault Bar F Sak C A Bistro Bar",
+    "lat": 29.8832683,
+    "long": -97.9415817
+  },
+  {
+    "type": "Liquor",
+    "name": "Freddy C s Lounge",
+    "lat": 29.883408,
+    "long": -97.9404023
+  },
+  {
+    "type": "Liquor",
+    "name": "Axis",
+    "lat": 29.8833719,
+    "long": -97.9399392
+  },
+  {
+    "type": "Liquor",
+    "name": "Chances R",
+    "lat": 29.8814595,
+    "long": -97.940029
+  },
+  {
+    "type": "Liquor",
+    "name": "I Don t Know Bar",
+    "lat": 29.8848457,
+    "long": -97.9249303
+  },
+  {
+    "type": "Liquor",
+    "name": "The Porch",
+    "lat": 29.8833046,
+    "long": -97.9405702
+  },
+  {
+    "type": "Liquor",
+    "name": "Mayloos",
+    "lat": 29.883047,
+    "long": -97.939755
+  },
+  {
+    "type": "Liquor",
+    "name": "Bayle E s",
+    "lat": 29.8820349,
+    "long": -97.94041
+  },
+  {
+    "type": "Liquor",
+    "name": "Shade Rooftop Patio Bar",
+    "lat": 29.8834863,
+    "long": -97.9407755
+  },
+  {
+    "type": "Liquor",
+    "name": "Rooftop On the Square",
+    "lat": 29.8816466,
+    "long": -97.9414322
+  },
+  {
+    "type": "Liquor",
+    "name": "Black Rabbit Saloon",
+    "lat": 29.8833033,
+    "long": -97.9407671
+  },
+  {
+    "type": "Liquor",
+    "name": "CLUB ESTRELLA",
+    "lat": 29.7927382,
+    "long": -97.9453679
+  },
+  {
+    "type": "Liquor",
+    "name": "Treff s Tavern",
+    "lat": 29.8927932,
+    "long": -97.9418709
+  },
+  {
+    "type": "Liquor",
+    "name": "The Davenport",
+    "lat": 29.8802997,
+    "long": -97.9412823
+  },
+  {
+    "type": "Liquor",
+    "name": "Cats Billiards",
+    "lat": 29.881385,
+    "long": -97.939602
+  },
+  {
+    "type": "Liquor",
+    "name": "Zelicks Icehouse",
+    "lat": 29.882775,
+    "long": -97.9454391
+  },
+  {
+    "type": "Liquor",
+    "name": "Veranda Rooftop Bar Patio",
+    "lat": 29.8833392,
+    "long": -97.9404699
+  },
+  {
+    "type": "Liquor",
+    "name": "Tejano Country Ballroom",
+    "lat": 29.793596,
+    "long": -97.9463298
+  },
+  {
+    "type": "Liquor",
+    "name": " Nightclub",
+    "lat": 29.4207868,
+    "long": -98.4782874
+  },
+  {
+    "type": "Liquor",
+    "name": "Manhattan Night Club",
+    "lat": 29.4815981,
+    "long": -98.5088168
+  },
+  {
+    "type": "Liquor",
+    "name": "Casas Nite Club",
+    "lat": 29.4288807,
+    "long": -98.5328362
+  },
+  {
+    "type": "Liquor",
+    "name": "Factory",
+    "lat": 29.4554048,
+    "long": -98.4995207
+  },
+  {
+    "type": "Liquor",
+    "name": "Merkaba",
+    "lat": 29.42528,
+    "long": -98.4889198
+  },
+  {
+    "type": "Liquor",
+    "name": "Bonham Exchange",
+    "lat": 29.4266557,
+    "long": -98.4842894
+  },
+  {
+    "type": "Liquor",
+    "name": "The Industry",
+    "lat": 29.510823,
+    "long": -98.549536
+  },
+  {
+    "type": "Liquor",
+    "name": "La Rancherita Night Club",
+    "lat": 29.4287926,
+    "long": -98.5696113
+  },
+  {
+    "type": "Liquor",
+    "name": "El Pantano Night Club",
+    "lat": 29.4337893,
+    "long": -98.4706315
+  },
+  {
+    "type": "Liquor",
+    "name": "Midtown Lounge SA",
+    "lat": 29.424899,
+    "long": -98.4648163
+  },
+  {
+    "type": "Liquor",
+    "name": "King Armadillo Night club Bar",
+    "lat": 29.4749015,
+    "long": -98.5376915
+  },
+  {
+    "type": "Liquor",
+    "name": "Infinity after hours club",
+    "lat": 29.437928,
+    "long": -98.493433
+  },
+  {
+    "type": "Liquor",
+    "name": "The Martini Club",
+    "lat": 29.5156291,
+    "long": -98.4929503
+  },
+  {
+    "type": "Liquor",
+    "name": "The Aztec Lounge",
+    "lat": 29.42452,
+    "long": -98.4909545
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Sirius",
+    "lat": 29.4246131,
+    "long": -98.4877294
+  },
+  {
+    "type": "Liquor",
+    "name": "Soundcheck, EL Volcan, Desperados",
+    "lat": 29.4688218,
+    "long": -98.5680356
+  },
+  {
+    "type": "Liquor",
+    "name": "The Mix",
+    "lat": 29.4489333,
+    "long": -98.488062
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Bar Nightclub",
+    "lat": 29.4257981,
+    "long": -98.4892628
+  },
+  {
+    "type": "Liquor",
+    "name": "Scarlett s Cabaret San Antonio",
+    "lat": 29.5206854,
+    "long": -98.4624365
+  },
+  {
+    "type": "Liquor",
+    "name": "club ",
+    "lat": 29.4467129,
+    "long": -98.4940673
+  },
+  {
+    "type": "Liquor",
+    "name": "WKND",
+    "lat": 29.4436004,
+    "long": -98.4939774
+  },
+  {
+    "type": "Liquor",
+    "name": "Heat",
+    "lat": 29.4429971,
+    "long": -98.4939881
+  },
+  {
+    "type": "Liquor",
+    "name": "Wav Room",
+    "lat": 29.4525765,
+    "long": -98.4846249
+  },
+  {
+    "type": "Liquor",
+    "name": "Brass Monkey",
+    "lat": 29.4502624,
+    "long": -98.4868548
+  },
+  {
+    "type": "Liquor",
+    "name": "Mala Fama Bar Nightclub",
+    "lat": 29.4255689,
+    "long": -98.489257
+  },
+  {
+    "type": "Liquor",
+    "name": "Be Kind Rewind",
+    "lat": 29.42421,
+    "long": -98.4873247
+  },
+  {
+    "type": "Liquor",
+    "name": "Sombras Night Club",
+    "lat": 29.4498152,
+    "long": -98.5240747
+  },
+  {
+    "type": "Liquor",
+    "name": "Commerce building",
+    "lat": 29.4239586,
+    "long": -98.4892777
+  },
+  {
+    "type": "Liquor",
+    "name": "Arjons",
+    "lat": 29.5189083,
+    "long": -98.4550052
+  },
+  {
+    "type": "Liquor",
+    "name": "Reggae Bar",
+    "lat": 29.4414772,
+    "long": -98.498859
+  },
+  {
+    "type": "Liquor",
+    "name": "lyons club",
+    "lat": 29.4390107,
+    "long": -98.5262053
+  },
+  {
+    "type": "Liquor",
+    "name": "Thirsty Camel Bar",
+    "lat": 29.4794764,
+    "long": -98.4923368
+  },
+  {
+    "type": "Liquor",
+    "name": "Martini Ranch",
+    "lat": 29.5114365,
+    "long": -98.5256802
+  },
+  {
+    "type": "Liquor",
+    "name": "The Lighthouse Neighborhood Lounge",
+    "lat": 29.4496535,
+    "long": -98.5274535
+  },
+  {
+    "type": "Liquor",
+    "name": "La Antigua Night Club",
+    "lat": 29.5207299,
+    "long": -98.4601735
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Nocturno",
+    "lat": 29.4881893,
+    "long": -98.4992834
+  },
+  {
+    "type": "Liquor",
+    "name": "Drink Texas Bar",
+    "lat": 29.4236229,
+    "long": -98.489826
+  },
+  {
+    "type": "Liquor",
+    "name": "Little Sister",
+    "lat": 29.439843,
+    "long": -98.4857975
+  },
+  {
+    "type": "Liquor",
+    "name": "I Don t Know Yet Lounge San Antonio",
+    "lat": 29.4852938,
+    "long": -98.5601688
+  },
+  {
+    "type": "Liquor",
+    "name": "SwayDC Night Club",
+    "lat": 29.5105432,
+    "long": -98.4669707
+  },
+  {
+    "type": "Liquor",
+    "name": "Gloria s Lounge",
+    "lat": 29.4278352,
+    "long": -98.4943406
+  },
+  {
+    "type": "Liquor",
+    "name": "Otherside Nightclub",
+    "lat": 29.4210962,
+    "long": -98.4793144
+  },
+  {
+    "type": "Liquor",
+    "name": "Alamo social pub",
+    "lat": 29.4242103,
+    "long": -98.4876736
+  },
+  {
+    "type": "Liquor",
+    "name": "Dads Karaoke",
+    "lat": 29.5135037,
+    "long": -98.535701
+  },
+  {
+    "type": "Liquor",
+    "name": "SATX Pipe Club",
+    "lat": 29.4296976,
+    "long": -98.4773163
+  },
+  {
+    "type": "Liquor",
+    "name": "OverTyme Sports Bar and Gril",
+    "lat": 29.525776,
+    "long": -98.5755105
+  },
+  {
+    "type": "Liquor",
+    "name": "The Rock Box",
+    "lat": 29.4252756,
+    "long": -98.478531
+  },
+  {
+    "type": "Liquor",
+    "name": "Game room",
+    "lat": 29.4877826,
+    "long": -98.5017072
+  },
+  {
+    "type": "Liquor",
+    "name": "River Sun",
+    "lat": 29.435471,
+    "long": -98.4813212
+  },
+  {
+    "type": "Liquor",
+    "name": "Jazz, TX",
+    "lat": 29.441936,
+    "long": -98.4804523
+  },
+  {
+    "type": "Liquor",
+    "name": "Fitzgerald s Bar Live Music Venue",
+    "lat": 29.5293622,
+    "long": -98.4993608
+  },
+  {
+    "type": "Liquor",
+    "name": "Alibis Sports Spirits",
+    "lat": 29.4220681,
+    "long": -98.4790667
+  },
+  {
+    "type": "Liquor",
+    "name": "Paramour At The Phipps",
+    "lat": 29.4354297,
+    "long": -98.4836034
+  },
+  {
+    "type": "Liquor",
+    "name": "Our Bar San Antonio",
+    "lat": 29.5106372,
+    "long": -98.5345458
+  },
+  {
+    "type": "Liquor",
+    "name": "Sparky s Pub",
+    "lat": 29.442381,
+    "long": -98.4939215
+  },
+  {
+    "type": "Liquor",
+    "name": "Aztec Theatre",
+    "lat": 29.4247856,
+    "long": -98.4910964
+  },
+  {
+    "type": "Liquor",
+    "name": "Venami",
+    "lat": 29.4482152,
+    "long": -98.5247996
+  },
+  {
+    "type": "Liquor",
+    "name": "St",
+    "lat": 29.4426895,
+    "long": -98.4938463
+  },
+  {
+    "type": "Liquor",
+    "name": "Veriede Luxury Lounge",
+    "lat": 29.5206252,
+    "long": -98.4601122
+  },
+  {
+    "type": "Liquor",
+    "name": "Stetson Helotes",
+    "lat": 29.5553252,
+    "long": -98.6701578
+  },
+  {
+    "type": "Liquor",
+    "name": "STEELY NEVADA S BAR LOUNGE",
+    "lat": 29.5083215,
+    "long": -98.6281655
+  },
+  {
+    "type": "Liquor",
+    "name": "Stetson Bar",
+    "lat": 29.50498,
+    "long": -98.661499
+  },
+  {
+    "type": "Liquor",
+    "name": "Deol Bar At Chase Hill",
+    "lat": 29.5889237,
+    "long": -98.6242107
+  },
+  {
+    "type": "Liquor",
+    "name": "George s Keep",
+    "lat": 29.6097917,
+    "long": -98.606352
+  },
+  {
+    "type": "Liquor",
+    "name": "The Bend Sports Bar",
+    "lat": 29.512453,
+    "long": -98.6314239
+  },
+  {
+    "type": "Liquor",
+    "name": "Helotes Country Club",
+    "lat": 29.5793349,
+    "long": -98.6923471
+  },
+  {
+    "type": "Liquor",
+    "name": "Studio Nightclub",
+    "lat": 29.4859498,
+    "long": -98.5947814
+  }
+]

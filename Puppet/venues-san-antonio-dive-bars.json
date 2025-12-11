@@ -1,0 +1,770 @@
+[
+  {
+    "type": "Bar",
+    "name": "Bruno s Dive Bar at B D Ice",
+    "lat": 29.4139404,
+    "long": -98.4906477
+  },
+  {
+    "type": "Bar",
+    "name": "Faust Tavern",
+    "lat": 29.4526817,
+    "long": -98.4852719
+  },
+  {
+    "type": "Bar",
+    "name": "Bond E s Rock Bar",
+    "lat": 29.4297374,
+    "long": -98.4931275
+  },
+  {
+    "type": "Bar",
+    "name": "Lowcountry",
+    "lat": 29.4179631,
+    "long": -98.4887591
+  },
+  {
+    "type": "Bar",
+    "name": "Alibis Sports Spirits",
+    "lat": 29.4220681,
+    "long": -98.4790667
+  },
+  {
+    "type": "Bar",
+    "name": "Joey s",
+    "lat": 29.448791,
+    "long": -98.488048
+  },
+  {
+    "type": "Bar",
+    "name": "The Base Line",
+    "lat": 29.4699462,
+    "long": -98.4387145
+  },
+  {
+    "type": "Bar",
+    "name": "The Lonesome Rose",
+    "lat": 29.4458566,
+    "long": -98.4859474
+  },
+  {
+    "type": "Bar",
+    "name": "Texan II",
+    "lat": 29.4271826,
+    "long": -98.4883845
+  },
+  {
+    "type": "Bar",
+    "name": "Billy s Bar ",
+    "lat": 29.3783933,
+    "long": -98.4326886
+  },
+  {
+    "type": "Bar",
+    "name": "El Luchador",
+    "lat": 29.396972,
+    "long": -98.4858772
+  },
+  {
+    "type": "Bar",
+    "name": " th bar and lounge",
+    "lat": 29.4244339,
+    "long": -98.4888503
+  },
+  {
+    "type": "Bar",
+    "name": "Pink Shark",
+    "lat": 29.4234593,
+    "long": -98.4894357
+  },
+  {
+    "type": "Bar",
+    "name": "Tony s Siesta",
+    "lat": 29.4307797,
+    "long": -98.4818993
+  },
+  {
+    "type": "Bar",
+    "name": "The Lighthouse Neighborhood Lounge",
+    "lat": 29.4496535,
+    "long": -98.5274535
+  },
+  {
+    "type": "Bar",
+    "name": "Jaime s Place",
+    "lat": 29.426661,
+    "long": -98.5117429
+  },
+  {
+    "type": "Bar",
+    "name": "Cowabunga Bar",
+    "lat": 29.4274313,
+    "long": -98.4881981
+  },
+  {
+    "type": "Bar",
+    "name": "My Brother s Bar",
+    "lat": 29.4323208,
+    "long": -98.4896502
+  },
+  {
+    "type": "Bar",
+    "name": "Bash Hideaway",
+    "lat": 29.4600668,
+    "long": -98.5577457
+  },
+  {
+    "type": "Bar",
+    "name": "On The Rocks Pub",
+    "lat": 29.4238716,
+    "long": -98.4876476
+  },
+  {
+    "type": "Bar",
+    "name": "Hi Tones",
+    "lat": 29.4471806,
+    "long": -98.4869
+  },
+  {
+    "type": "Bar",
+    "name": "Near Dark",
+    "lat": 29.4100851,
+    "long": -98.4867692
+  },
+  {
+    "type": "Bar",
+    "name": "Three Star Bar",
+    "lat": 29.4433676,
+    "long": -98.4746456
+  },
+  {
+    "type": "Bar",
+    "name": "Southtown ",
+    "lat": 29.4131259,
+    "long": -98.488287
+  },
+  {
+    "type": "Bar",
+    "name": "Squeeze Inn Sports Bar Club",
+    "lat": 29.3994855,
+    "long": -98.5581744
+  },
+  {
+    "type": "Bar",
+    "name": "Be Kind Rewind",
+    "lat": 29.42421,
+    "long": -98.4873247
+  },
+  {
+    "type": "Bar",
+    "name": "Drink Texas Bar",
+    "lat": 29.4236229,
+    "long": -98.489826
+  },
+  {
+    "type": "Bar",
+    "name": "Social Spot",
+    "lat": 29.4339875,
+    "long": -98.4805035
+  },
+  {
+    "type": "Bar",
+    "name": "The Hidden Treehouse",
+    "lat": 29.4842514,
+    "long": -98.4136232
+  },
+  {
+    "type": "Bar",
+    "name": "TBA",
+    "lat": 29.4513719,
+    "long": -98.4862296
+  },
+  {
+    "type": "Bar",
+    "name": "Tin Barn Saloon",
+    "lat": 29.4409914,
+    "long": -98.5097369
+  },
+  {
+    "type": "Bar",
+    "name": "Tubby s Tavern",
+    "lat": 29.3941323,
+    "long": -98.5493357
+  },
+  {
+    "type": "Bar",
+    "name": "Manny E s Corner Pocket LLC",
+    "lat": 29.389974,
+    "long": -98.5423037
+  },
+  {
+    "type": "Bar",
+    "name": "Dillo E s Video Bar",
+    "lat": 29.4247987,
+    "long": -98.4876302
+  },
+  {
+    "type": "Bar",
+    "name": "Bar ",
+    "lat": 29.4089557,
+    "long": -98.4952848
+  },
+  {
+    "type": "Bar",
+    "name": "Club Sirius",
+    "lat": 29.4246131,
+    "long": -98.4877294
+  },
+  {
+    "type": "Bar",
+    "name": "Splach",
+    "lat": 29.4041504,
+    "long": -98.5091069
+  },
+  {
+    "type": "Bar",
+    "name": "Eleven Sports Bar",
+    "lat": 29.3733025,
+    "long": -98.5040849
+  },
+  {
+    "type": "Bar",
+    "name": "Boxcar Bar",
+    "lat": 29.4316355,
+    "long": -98.4780463
+  },
+  {
+    "type": "Bar",
+    "name": "The other woman",
+    "lat": 29.3843823,
+    "long": -98.4604446
+  },
+  {
+    "type": "Bar",
+    "name": "The Amp Room",
+    "lat": 29.4485266,
+    "long": -98.4880145
+  },
+  {
+    "type": "Bar",
+    "name": "Thirsty Camel Bar",
+    "lat": 29.4794764,
+    "long": -98.4923368
+  },
+  {
+    "type": "Bar",
+    "name": "Knockout",
+    "lat": 29.4425333,
+    "long": -98.4938894
+  },
+  {
+    "type": "Bar",
+    "name": "Slim E s Sports Bar",
+    "lat": 29.3704763,
+    "long": -98.4729903
+  },
+  {
+    "type": "Bar",
+    "name": "The Broadway ",
+    "lat": 29.47292,
+    "long": -98.4624864
+  },
+  {
+    "type": "Bar",
+    "name": "Shady Lady Saloon",
+    "lat": 29.3629215,
+    "long": -98.4047901
+  },
+  {
+    "type": "Bar",
+    "name": " Place",
+    "lat": 29.4534703,
+    "long": -98.4995436
+  },
+  {
+    "type": "Bar",
+    "name": "Bar America",
+    "lat": 29.416713,
+    "long": -98.488768
+  },
+  {
+    "type": "Bar",
+    "name": "The Bang Bang Bar",
+    "lat": 29.4938269,
+    "long": -98.4998885
+  },
+  {
+    "type": "Bar",
+    "name": "Rathskeller Bar",
+    "lat": 29.4202334,
+    "long": -98.4913161
+  },
+  {
+    "type": "Bar",
+    "name": "Durty Nelly s Irish Pub",
+    "lat": 29.4227934,
+    "long": -98.4877348
+  },
+  {
+    "type": "Bar",
+    "name": "Coyote Ugly San Antonio",
+    "lat": 29.4241557,
+    "long": -98.4885554
+  },
+  {
+    "type": "Bar",
+    "name": "Bar Mon Ami",
+    "lat": 29.4718756,
+    "long": -98.4638128
+  },
+  {
+    "type": "Bar",
+    "name": "J B Bar",
+    "lat": 29.4479054,
+    "long": -98.5563162
+  },
+  {
+    "type": "Bar",
+    "name": "Sanchez Ice House ",
+    "lat": 29.4178067,
+    "long": -98.5018205
+  },
+  {
+    "type": "Bar",
+    "name": "R R Tavern",
+    "lat": 29.4924333,
+    "long": -98.5554279
+  },
+  {
+    "type": "Bar",
+    "name": "Whiskeys",
+    "lat": 29.490429,
+    "long": -98.5727695
+  },
+  {
+    "type": "Bar",
+    "name": "Hugman s Oasis",
+    "lat": 29.4249102,
+    "long": -98.4922428
+  },
+  {
+    "type": "Bar",
+    "name": "I Don t Know Yet Lounge San Antonio",
+    "lat": 29.4852938,
+    "long": -98.5601688
+  },
+  {
+    "type": "Bar",
+    "name": "Pecan Grove Drive Inn",
+    "lat": 29.387943,
+    "long": -98.485561
+  },
+  {
+    "type": "Bar",
+    "name": "Gloria s Lounge",
+    "lat": 29.4278352,
+    "long": -98.4943406
+  },
+  {
+    "type": "Bar",
+    "name": "Slackers",
+    "lat": 29.450658,
+    "long": -98.4865876
+  },
+  {
+    "type": "Bar",
+    "name": "Rumble",
+    "lat": 29.4487338,
+    "long": -98.4875885
+  },
+  {
+    "type": "Bar",
+    "name": "My Bar",
+    "lat": 29.4907008,
+    "long": -98.5724177
+  },
+  {
+    "type": "Bar",
+    "name": "Cobalt",
+    "lat": 29.4489163,
+    "long": -98.4916309
+  },
+  {
+    "type": "Bar",
+    "name": "Bar ",
+    "lat": 29.4267554,
+    "long": -98.491179
+  },
+  {
+    "type": "Bar",
+    "name": "Brooks Pub",
+    "lat": 29.3553539,
+    "long": -98.4339364
+  },
+  {
+    "type": "Bar",
+    "name": "Joe s Ice House",
+    "lat": 29.497196,
+    "long": -98.5261711
+  },
+  {
+    "type": "Bar",
+    "name": "The Steer Cocktails Beer",
+    "lat": 29.3570388,
+    "long": -98.4890753
+  },
+  {
+    "type": "Bar",
+    "name": "The Bar at Mixtli",
+    "lat": 29.4154612,
+    "long": -98.4888486
+  },
+  {
+    "type": "Bar",
+    "name": "Holy Diver Tiki Lounge",
+    "lat": 29.4472324,
+    "long": -98.4869056
+  },
+  {
+    "type": "Bar",
+    "name": "Cootey s Tavern",
+    "lat": 29.513726,
+    "long": -98.4805167
+  },
+  {
+    "type": "Bar",
+    "name": "Menger Bar",
+    "lat": 29.4249913,
+    "long": -98.4860638
+  },
+  {
+    "type": "Bar",
+    "name": "Oak Hills Tavern",
+    "lat": 29.5118426,
+    "long": -98.5675734
+  },
+  {
+    "type": "Bar",
+    "name": "Cupples Sports Bar",
+    "lat": 29.4132431,
+    "long": -98.5469335
+  },
+  {
+    "type": "Bar",
+    "name": "The lucky rabbit bar",
+    "lat": 29.4950663,
+    "long": -98.5352862
+  },
+  {
+    "type": "Bar",
+    "name": "The Pigpen Neighborhood Bar",
+    "lat": 29.4608436,
+    "long": -98.4661134
+  },
+  {
+    "type": "Bar",
+    "name": "J C s Cocktails place",
+    "lat": 29.4874439,
+    "long": -98.5966783
+  },
+  {
+    "type": "Bar",
+    "name": "Who s Who Cocktails",
+    "lat": 29.4945683,
+    "long": -98.5699062
+  },
+  {
+    "type": "Bar",
+    "name": "South Side Bar",
+    "lat": 29.3537755,
+    "long": -98.5661532
+  },
+  {
+    "type": "Bar",
+    "name": "Thirsty s SA",
+    "lat": 29.3347767,
+    "long": -98.4515062
+  },
+  {
+    "type": "Bar",
+    "name": "Nowhere Bar",
+    "lat": 29.4914819,
+    "long": -98.4396075
+  },
+  {
+    "type": "Bar",
+    "name": "Reggae Bar",
+    "lat": 29.4414772,
+    "long": -98.498859
+  },
+  {
+    "type": "Bar",
+    "name": "Park Bar",
+    "lat": 29.4420119,
+    "long": -98.4806799
+  },
+  {
+    "type": "Bar",
+    "name": "Hidden Tavern",
+    "lat": 29.5439542,
+    "long": -98.5120739
+  },
+  {
+    "type": "Bar",
+    "name": "What s It To Ya Lounge",
+    "lat": 29.4897517,
+    "long": -98.5985864
+  },
+  {
+    "type": "Bar",
+    "name": "Barcode",
+    "lat": 29.4166227,
+    "long": -98.5958806
+  },
+  {
+    "type": "Bar",
+    "name": "Who Knows Cocktails",
+    "lat": 29.4744629,
+    "long": -98.3790669
+  },
+  {
+    "type": "Bar",
+    "name": "J J s Tavern",
+    "lat": 29.3474758,
+    "long": -98.4585167
+  },
+  {
+    "type": "Bar",
+    "name": "Lions Sports Bar",
+    "lat": 29.4890766,
+    "long": -98.551567
+  },
+  {
+    "type": "Bar",
+    "name": "The Filling Station Tap Room",
+    "lat": 29.4174895,
+    "long": -98.4903884
+  },
+  {
+    "type": "Bar",
+    "name": "Smitty s Pub",
+    "lat": 29.5221688,
+    "long": -98.5663367
+  },
+  {
+    "type": "Bar",
+    "name": "The Thursty Turtle",
+    "lat": 29.5146662,
+    "long": -98.4388135
+  },
+  {
+    "type": "Bar",
+    "name": "Our Bar San Antonio",
+    "lat": 29.5106372,
+    "long": -98.5345458
+  },
+  {
+    "type": "Bar",
+    "name": "J R s Hideout",
+    "lat": 29.3902059,
+    "long": -98.5428308
+  },
+  {
+    "type": "Bar",
+    "name": "BAR FLYS",
+    "lat": 29.5181566,
+    "long": -98.4647886
+  },
+  {
+    "type": "Bar",
+    "name": "The Irish Pub",
+    "lat": 29.5277689,
+    "long": -98.5647152
+  },
+  {
+    "type": "Bar",
+    "name": "Lily s King s Lounge",
+    "lat": 29.3685983,
+    "long": -98.6007281
+  },
+  {
+    "type": "Bar",
+    "name": "Schooners",
+    "lat": 29.51685,
+    "long": -98.4471667
+  },
+  {
+    "type": "Bar",
+    "name": "Crazy Ape",
+    "lat": 29.5299329,
+    "long": -98.4951373
+  },
+  {
+    "type": "Bar",
+    "name": "Boozehounds",
+    "lat": 29.5175023,
+    "long": -98.4118367
+  },
+  {
+    "type": "Bar",
+    "name": "Easy Baby Underground",
+    "lat": 29.4466717,
+    "long": -98.4813463
+  },
+  {
+    "type": "Bar",
+    "name": " Bar",
+    "lat": 29.5641248,
+    "long": -98.4884053
+  },
+  {
+    "type": "Bar",
+    "name": "Texas T Pub",
+    "lat": 29.4272228,
+    "long": -98.4878605
+  },
+  {
+    "type": "Bar",
+    "name": "Sir Winston s Pub",
+    "lat": 29.518289,
+    "long": -98.448964
+  },
+  {
+    "type": "Bar",
+    "name": "Rocky s Tavern",
+    "lat": 29.5438288,
+    "long": -98.3682695
+  },
+  {
+    "type": "Bar",
+    "name": "Lu s Place",
+    "lat": 29.5022496,
+    "long": -98.4181011
+  },
+  {
+    "type": "Bar",
+    "name": "Marty s Cocktails",
+    "lat": 29.5289948,
+    "long": -98.4931218
+  },
+  {
+    "type": "Bar",
+    "name": "The Watering Hole",
+    "lat": 29.53054,
+    "long": -98.5765932
+  },
+  {
+    "type": "Bar",
+    "name": "Boneheadz Sports Pub",
+    "lat": 29.5279336,
+    "long": -98.5606549
+  },
+  {
+    "type": "Bar",
+    "name": "Safe House Drinkery",
+    "lat": 29.5166111,
+    "long": -98.5958362
+  },
+  {
+    "type": "Bar",
+    "name": "The Hangar Bar Grill",
+    "lat": 29.5115994,
+    "long": -98.4666292
+  },
+  {
+    "type": "Bar",
+    "name": "Bikinis Sports Bar",
+    "lat": 29.483644,
+    "long": -98.3921273
+  },
+  {
+    "type": "Bar",
+    "name": "Mitchell s Sports Bar",
+    "lat": 29.5383228,
+    "long": -98.5235178
+  },
+  {
+    "type": "Bar",
+    "name": "Varsity Inn",
+    "lat": 29.5696877,
+    "long": -97.9795463
+  },
+  {
+    "type": "Bar",
+    "name": "Carriganns",
+    "lat": 29.6151661,
+    "long": -97.9654835
+  },
+  {
+    "type": "Bar",
+    "name": "Seguin Bar Billiards",
+    "lat": 29.5695201,
+    "long": -97.9635858
+  },
+  {
+    "type": "Bar",
+    "name": "Off the Clock NB",
+    "lat": 29.6431828,
+    "long": -98.0742151
+  },
+  {
+    "type": "Bar",
+    "name": "The Deeply Rooted Bar",
+    "lat": 29.5943477,
+    "long": -98.0461601
+  },
+  {
+    "type": "Bar",
+    "name": "Boot Scootin",
+    "lat": 29.5883124,
+    "long": -98.0407167
+  },
+  {
+    "type": "Bar",
+    "name": "Cazadores Nightclub",
+    "lat": 29.5805086,
+    "long": -97.9751223
+  },
+  {
+    "type": "Bar",
+    "name": "Highwater Bar",
+    "lat": 29.5810239,
+    "long": -97.9636328
+  },
+  {
+    "type": "Bar",
+    "name": "The Wayside",
+    "lat": 29.57273,
+    "long": -97.9644585
+  },
+  {
+    "type": "Bar",
+    "name": "The Palms Lounge",
+    "lat": 29.6211071,
+    "long": -98.0637359
+  },
+  {
+    "type": "Bar",
+    "name": "Schultz Saloon",
+    "lat": 29.5693286,
+    "long": -97.9645123
+  },
+  {
+    "type": "Bar",
+    "name": "Jr Lounge",
+    "lat": 29.5807695,
+    "long": -97.9774049
+  },
+  {
+    "type": "Bar",
+    "name": "The ",
+    "lat": 29.5690657,
+    "long": -97.9644687
+  },
+  {
+    "type": "Bar",
+    "name": "MILLYS RITAS TO GO",
+    "lat": 29.580997,
+    "long": -97.9651467
+  }
+]

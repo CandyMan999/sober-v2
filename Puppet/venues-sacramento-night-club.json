@@ -1,0 +1,668 @@
+[
+  {
+    "type": "Liquor",
+    "name": "Harlow s",
+    "lat": 38.5738772,
+    "long": -121.4701937
+  },
+  {
+    "type": "Liquor",
+    "name": "Mix Downtown",
+    "lat": 38.5761503,
+    "long": -121.4864587
+  },
+  {
+    "type": "Liquor",
+    "name": "The Press Club",
+    "lat": 38.5744896,
+    "long": -121.4791139
+  },
+  {
+    "type": "Liquor",
+    "name": "Social Nightclub",
+    "lat": 38.5789467,
+    "long": -121.4937723
+  },
+  {
+    "type": "Liquor",
+    "name": "Logo",
+    "lat": 38.5815184,
+    "long": -121.4968224
+  },
+  {
+    "type": "Liquor",
+    "name": "Mango s Sacramento",
+    "lat": 38.5754505,
+    "long": -121.4806896
+  },
+  {
+    "type": "Liquor",
+    "name": "La Pantera Club De Sacramento",
+    "lat": 38.5291723,
+    "long": -121.4739325
+  },
+  {
+    "type": "Liquor",
+    "name": "The Flamingo House",
+    "lat": 38.5745331,
+    "long": -121.4757194
+  },
+  {
+    "type": "Liquor",
+    "name": "Faces Nightclub",
+    "lat": 38.5752177,
+    "long": -121.4802576
+  },
+  {
+    "type": "Liquor",
+    "name": "Badlands Sacramento",
+    "lat": 38.5756952,
+    "long": -121.4800265
+  },
+  {
+    "type": "Liquor",
+    "name": "On the Y",
+    "lat": 38.5770535,
+    "long": -121.4017505
+  },
+  {
+    "type": "Liquor",
+    "name": "La Kalle",
+    "lat": 38.5791794,
+    "long": -121.4865437
+  },
+  {
+    "type": "Liquor",
+    "name": "Vega s",
+    "lat": 38.5944432,
+    "long": -121.5438283
+  },
+  {
+    "type": "Liquor",
+    "name": "Old Ironsides",
+    "lat": 38.570258,
+    "long": -121.4976836
+  },
+  {
+    "type": "Liquor",
+    "name": "Tiger Restaurant Lounge",
+    "lat": 38.5799263,
+    "long": -121.4972115
+  },
+  {
+    "type": "Liquor",
+    "name": "HQ Gentlemen s Club Bar",
+    "lat": 38.5953778,
+    "long": -121.48839
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Raven",
+    "lat": 38.5720086,
+    "long": -121.4630052
+  },
+  {
+    "type": "Liquor",
+    "name": " Lounge",
+    "lat": 38.5815751,
+    "long": -121.4971856
+  },
+  {
+    "type": "Liquor",
+    "name": "The Depot",
+    "lat": 38.5757759,
+    "long": -121.4801044
+  },
+  {
+    "type": "Liquor",
+    "name": "The Mercantile Saloon",
+    "lat": 38.5743352,
+    "long": -121.481263
+  },
+  {
+    "type": "Liquor",
+    "name": "Archive Sacramento",
+    "lat": 38.5787127,
+    "long": -121.4931988
+  },
+  {
+    "type": "Liquor",
+    "name": "Laughs Unlimited Comedy Club and Lounge",
+    "lat": 38.5810181,
+    "long": -121.5063818
+  },
+  {
+    "type": "Liquor",
+    "name": "Torch Club",
+    "lat": 38.5793498,
+    "long": -121.4864504
+  },
+  {
+    "type": "Liquor",
+    "name": "Night Cap",
+    "lat": 38.5771606,
+    "long": -121.4828846
+  },
+  {
+    "type": "Liquor",
+    "name": "The Chelsea",
+    "lat": 38.5799778,
+    "long": -121.4934107
+  },
+  {
+    "type": "Liquor",
+    "name": "Firefly Lounge",
+    "lat": 38.5920453,
+    "long": -121.4020981
+  },
+  {
+    "type": "Liquor",
+    "name": "Dive Bar",
+    "lat": 38.5787144,
+    "long": -121.4933941
+  },
+  {
+    "type": "Liquor",
+    "name": "Clayton Club",
+    "lat": 38.5795501,
+    "long": -121.4984229
+  },
+  {
+    "type": "Liquor",
+    "name": "The Rooftop",
+    "lat": 38.5778203,
+    "long": -121.4846041
+  },
+  {
+    "type": "Liquor",
+    "name": "Smic s Restaurant Event Venue",
+    "lat": 38.5781683,
+    "long": -121.4905772
+  },
+  {
+    "type": "Liquor",
+    "name": "Trino s Lounge",
+    "lat": 38.5920639,
+    "long": -121.402092
+  },
+  {
+    "type": "Liquor",
+    "name": "Barwest",
+    "lat": 38.5737722,
+    "long": -121.4697944
+  },
+  {
+    "type": "Liquor",
+    "name": "Blue Cue",
+    "lat": 38.5736721,
+    "long": -121.4694723
+  },
+  {
+    "type": "Liquor",
+    "name": "Pocket Club",
+    "lat": 38.5278205,
+    "long": -121.4956359
+  },
+  {
+    "type": "Liquor",
+    "name": "The Green Room",
+    "lat": 38.5703717,
+    "long": -121.4554539
+  },
+  {
+    "type": "Liquor",
+    "name": "Cheers Bar C West Sacramento",
+    "lat": 38.5790613,
+    "long": -121.5430794
+  },
+  {
+    "type": "Liquor",
+    "name": "Paradise KTV",
+    "lat": 38.5082516,
+    "long": -121.4341663
+  },
+  {
+    "type": "Liquor",
+    "name": "reyu",
+    "lat": 38.6105356,
+    "long": -121.420652
+  },
+  {
+    "type": "Liquor",
+    "name": "Lighthouse Bar Grill",
+    "lat": 38.5795981,
+    "long": -121.53847
+  },
+  {
+    "type": "Liquor",
+    "name": "Ace of Spades",
+    "lat": 38.5698537,
+    "long": -121.4907402
+  },
+  {
+    "type": "Liquor",
+    "name": "Casa Blue Restaurant Nightclub",
+    "lat": 38.5786978,
+    "long": -121.4933038
+  },
+  {
+    "type": "Liquor",
+    "name": "Lew s Club",
+    "lat": 38.690695,
+    "long": -121.456547
+  },
+  {
+    "type": "Liquor",
+    "name": " Degrees Holding Co ",
+    "lat": 38.574558,
+    "long": -121.4836398
+  },
+  {
+    "type": "Liquor",
+    "name": "TAP Wine Lounge",
+    "lat": 38.6032497,
+    "long": -121.4656758
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Me",
+    "lat": 38.5669444,
+    "long": -121.4444444
+  },
+  {
+    "type": "Liquor",
+    "name": "District ",
+    "lat": 38.578706,
+    "long": -121.4931999
+  },
+  {
+    "type": "Liquor",
+    "name": "Amourath Patio",
+    "lat": 38.5774111,
+    "long": -121.4906501
+  },
+  {
+    "type": "Liquor",
+    "name": "Punch Line Sacramento",
+    "lat": 38.5956101,
+    "long": -121.4173541
+  },
+  {
+    "type": "Liquor",
+    "name": "Sacto By Night Lounge",
+    "lat": 38.4966394,
+    "long": -121.4491628
+  },
+  {
+    "type": "Liquor",
+    "name": "Steampunk Cigar Co ",
+    "lat": 38.583954,
+    "long": -121.499573
+  },
+  {
+    "type": "Liquor",
+    "name": "Cabello De Angel",
+    "lat": 38.6105831,
+    "long": -121.4170684
+  },
+  {
+    "type": "Liquor",
+    "name": "ONYX CLUB",
+    "lat": 38.7521048,
+    "long": -121.2858281
+  },
+  {
+    "type": "Liquor",
+    "name": "Image Lounge",
+    "lat": 38.5815854,
+    "long": -121.4971762
+  },
+  {
+    "type": "Liquor",
+    "name": "Sutter Lawn Tennis Club",
+    "lat": 38.5658362,
+    "long": -121.4553377
+  },
+  {
+    "type": "Liquor",
+    "name": "Rocky s Club",
+    "lat": 38.700991,
+    "long": -121.2900388
+  },
+  {
+    "type": "Liquor",
+    "name": "West House Tavern Nightclub",
+    "lat": 38.7494403,
+    "long": -121.2843374
+  },
+  {
+    "type": "Liquor",
+    "name": "Hatuey Cigars",
+    "lat": 38.5646232,
+    "long": -121.4907415
+  },
+  {
+    "type": "Liquor",
+    "name": "Chasers Bar",
+    "lat": 38.660156,
+    "long": -121.338775
+  },
+  {
+    "type": "Liquor",
+    "name": "Sky KTV",
+    "lat": 38.582981,
+    "long": -121.5055083
+  },
+  {
+    "type": "Liquor",
+    "name": "Jan s Lounge Orangevale, CA Entertainment Pub FSports Bar FNightclub",
+    "lat": 38.6778325,
+    "long": -121.2099587
+  },
+  {
+    "type": "Liquor",
+    "name": "Le Five Indoor Soccer West Sacramento",
+    "lat": 38.5659805,
+    "long": -121.5753008
+  },
+  {
+    "type": "Liquor",
+    "name": "Suite Nine",
+    "lat": 38.6168705,
+    "long": -121.2742851
+  },
+  {
+    "type": "Liquor",
+    "name": "Illusions Ultra Lounge",
+    "lat": 38.8405495,
+    "long": -121.3148597
+  },
+  {
+    "type": "Liquor",
+    "name": "The Blind Pig",
+    "lat": 38.6096965,
+    "long": -121.3543019
+  },
+  {
+    "type": "Liquor",
+    "name": "Park Restaurants",
+    "lat": 38.5767249,
+    "long": -121.4877912
+  },
+  {
+    "type": "Liquor",
+    "name": "Petra Greek",
+    "lat": 38.5763115,
+    "long": -121.4862012
+  },
+  {
+    "type": "Liquor",
+    "name": "Cafeteria L",
+    "lat": 38.5767528,
+    "long": -121.4875056
+  },
+  {
+    "type": "Liquor",
+    "name": "The Russ Room",
+    "lat": 38.5798204,
+    "long": -121.4969303
+  },
+  {
+    "type": "Liquor",
+    "name": "popupsac",
+    "lat": 38.6742293,
+    "long": -121.3825064
+  },
+  {
+    "type": "Liquor",
+    "name": "Eagle Boy Pizza",
+    "lat": 38.481985,
+    "long": -121.396888
+  },
+  {
+    "type": "Liquor",
+    "name": "San Juan Club",
+    "lat": 38.652323,
+    "long": -121.291432
+  },
+  {
+    "type": "Liquor",
+    "name": "KP Karaoke Dining",
+    "lat": 38.5965112,
+    "long": -121.283391
+  },
+  {
+    "type": "Liquor",
+    "name": "Gold Club Centerfolds Sacramento Strip Club",
+    "lat": 38.6135101,
+    "long": -121.2570033
+  },
+  {
+    "type": "Liquor",
+    "name": "Cedar Room",
+    "lat": 38.66041,
+    "long": -121.325709
+  },
+  {
+    "type": "Liquor",
+    "name": "Stockman Club",
+    "lat": 38.6427488,
+    "long": -121.270329
+  },
+  {
+    "type": "Liquor",
+    "name": "Babes Showgirls Sacramento Strip Club",
+    "lat": 38.6044592,
+    "long": -121.265072
+  },
+  {
+    "type": "Liquor",
+    "name": "R Spot Bar",
+    "lat": 38.6122854,
+    "long": -121.2919482
+  },
+  {
+    "type": "Liquor",
+    "name": "Players Pub",
+    "lat": 38.6397819,
+    "long": -121.2764739
+  },
+  {
+    "type": "Liquor",
+    "name": "The Boardwalk",
+    "lat": 38.6778684,
+    "long": -121.2015318
+  },
+  {
+    "type": "Liquor",
+    "name": "Scotty s Hideaway",
+    "lat": 38.6788418,
+    "long": -121.2049518
+  },
+  {
+    "type": "Liquor",
+    "name": "Shakers Bar",
+    "lat": 38.6746574,
+    "long": -121.293414
+  },
+  {
+    "type": "Liquor",
+    "name": "Sactown Swings",
+    "lat": 38.5110722,
+    "long": -121.5441567
+  },
+  {
+    "type": "Liquor",
+    "name": "Bump City Wine Co ",
+    "lat": 38.4234388,
+    "long": -121.5331298
+  },
+  {
+    "type": "Liquor",
+    "name": "Elevation Ten Winery",
+    "lat": 38.4230356,
+    "long": -121.5328794
+  },
+  {
+    "type": "Liquor",
+    "name": "Elks Lodge ",
+    "lat": 38.5108108,
+    "long": -121.5437587
+  },
+  {
+    "type": "Liquor",
+    "name": "Mountain Mike s Pizza",
+    "lat": 38.4866146,
+    "long": -121.5361566
+  },
+  {
+    "type": "Liquor",
+    "name": "Kirchhoff Family Wines Tasting Room",
+    "lat": 38.4230579,
+    "long": -121.5327434
+  },
+  {
+    "type": "Liquor",
+    "name": "Round Table Pizza",
+    "lat": 38.5077934,
+    "long": -121.5417893
+  },
+  {
+    "type": "Liquor",
+    "name": "Epidemic Ales",
+    "lat": 38.0099509,
+    "long": -122.0386709
+  },
+  {
+    "type": "Liquor",
+    "name": "Jack in the Box",
+    "lat": 38.0152782,
+    "long": -122.0002556
+  },
+  {
+    "type": "Liquor",
+    "name": "ampm",
+    "lat": 38.0200807,
+    "long": -121.9665169
+  },
+  {
+    "type": "Liquor",
+    "name": "JOBL",
+    "lat": 38.0076068,
+    "long": -122.0498651
+  },
+  {
+    "type": "Liquor",
+    "name": "ampm",
+    "lat": 38.0001278,
+    "long": -122.0506067
+  },
+  {
+    "type": "Liquor",
+    "name": "Martinez Gun Club",
+    "lat": 38.018286,
+    "long": -122.080594
+  },
+  {
+    "type": "Liquor",
+    "name": "Diablo Rod Gun Club",
+    "lat": 38.0230143,
+    "long": -121.995364
+  },
+  {
+    "type": "Liquor",
+    "name": "Diablo Creek Golf Course",
+    "lat": 38.0135874,
+    "long": -122.0236528
+  },
+  {
+    "type": "Liquor",
+    "name": "Mountain Mike s Pizza",
+    "lat": 38.0190633,
+    "long": -121.9646541
+  },
+  {
+    "type": "Liquor",
+    "name": "Nu Rays Bar",
+    "lat": 38.017628,
+    "long": -122.1354532
+  },
+  {
+    "type": "Liquor",
+    "name": "The Rellik Tavern",
+    "lat": 38.0502173,
+    "long": -122.1580973
+  },
+  {
+    "type": "Liquor",
+    "name": "Lakeman s",
+    "lat": 38.0372304,
+    "long": -122.2688982
+  },
+  {
+    "type": "Liquor",
+    "name": "Roxx On Main",
+    "lat": 38.0172502,
+    "long": -122.1371249
+  },
+  {
+    "type": "Liquor",
+    "name": "The Chill Benicia Wine Bar",
+    "lat": 38.0469421,
+    "long": -122.1603865
+  },
+  {
+    "type": "Liquor",
+    "name": "Rookies Sports Bar Grill",
+    "lat": 38.0471403,
+    "long": -122.1608377
+  },
+  {
+    "type": "Liquor",
+    "name": "The Warehouse Cafe",
+    "lat": 38.0464164,
+    "long": -122.1834727
+  },
+  {
+    "type": "Liquor",
+    "name": "Whiskey Lane",
+    "lat": 38.0180358,
+    "long": -122.1357498
+  },
+  {
+    "type": "Liquor",
+    "name": "Cullen s Tannery Pub Saloon",
+    "lat": 38.0461111,
+    "long": -122.1615405
+  },
+  {
+    "type": "Liquor",
+    "name": "BARREL AGED COCKTAIL BAR at BARRELISTA",
+    "lat": 38.0176059,
+    "long": -122.1357501
+  },
+  {
+    "type": "Liquor",
+    "name": "Brix Craft, Craft Cocktails Wine Artisan Pizza",
+    "lat": 38.0173441,
+    "long": -122.1361605
+  },
+  {
+    "type": "Liquor",
+    "name": "The Speakeasy at Baxters",
+    "lat": 38.046409,
+    "long": -122.160811
+  },
+  {
+    "type": "Liquor",
+    "name": "Lucca Bar Grill",
+    "lat": 38.0481382,
+    "long": -122.1600258
+  },
+  {
+    "type": "Liquor",
+    "name": "Martinez Yacht Club",
+    "lat": 38.0248749,
+    "long": -122.1361609
+  }
+]

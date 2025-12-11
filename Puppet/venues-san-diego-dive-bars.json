@@ -1,0 +1,686 @@
+[
+  {
+    "type": "Bar",
+    "name": "Black Cat Bar",
+    "lat": 32.7497928,
+    "long": -117.1034423
+  },
+  {
+    "type": "Bar",
+    "name": "Gilly s House of Cocktails",
+    "lat": 32.7555196,
+    "long": -117.1398528
+  },
+  {
+    "type": "Bar",
+    "name": "Live Wire",
+    "lat": 32.755032,
+    "long": -117.1423962
+  },
+  {
+    "type": "Bar",
+    "name": "Aero Club Bar",
+    "lat": 32.7381483,
+    "long": -117.176468
+  },
+  {
+    "type": "Bar",
+    "name": "Nunu s Tavern",
+    "lat": 32.7422612,
+    "long": -117.160133
+  },
+  {
+    "type": "Bar",
+    "name": "The Lancers",
+    "lat": 32.7623557,
+    "long": -117.1461184
+  },
+  {
+    "type": "Bar",
+    "name": "Lucy s Tavern",
+    "lat": 32.7511972,
+    "long": -117.2448906
+  },
+  {
+    "type": "Bar",
+    "name": "Club Marina",
+    "lat": 32.723436,
+    "long": -117.228975
+  },
+  {
+    "type": "Bar",
+    "name": "Part Time Lover",
+    "lat": 32.7479768,
+    "long": -117.1299444
+  },
+  {
+    "type": "Bar",
+    "name": "Cricket s Pub",
+    "lat": 32.754993,
+    "long": -117.1215057
+  },
+  {
+    "type": "Bar",
+    "name": "The Tower Bar",
+    "lat": 32.749397,
+    "long": -117.0918067
+  },
+  {
+    "type": "Bar",
+    "name": "The Reunion Pub",
+    "lat": 32.7451559,
+    "long": -117.2355261
+  },
+  {
+    "type": "Bar",
+    "name": "Sycamore Den",
+    "lat": 32.7632417,
+    "long": -117.1208944
+  },
+  {
+    "type": "Bar",
+    "name": "Whistle Stop Bar",
+    "lat": 32.7293668,
+    "long": -117.1297497
+  },
+  {
+    "type": "Bar",
+    "name": "Little Club",
+    "lat": 32.698267,
+    "long": -117.173007
+  },
+  {
+    "type": "Bar",
+    "name": "Triple Crown Pub",
+    "lat": 32.763189,
+    "long": -117.1244287
+  },
+  {
+    "type": "Bar",
+    "name": "Old Town Saloon",
+    "lat": 32.7526321,
+    "long": -117.1949078
+  },
+  {
+    "type": "Bar",
+    "name": "CJ s Lounge",
+    "lat": 32.7500669,
+    "long": -117.165543
+  },
+  {
+    "type": "Bar",
+    "name": "Alibi",
+    "lat": 32.7482332,
+    "long": -117.1510616
+  },
+  {
+    "type": "Bar",
+    "name": "Sidecar Bar",
+    "lat": 32.7719297,
+    "long": -117.202362
+  },
+  {
+    "type": "Bar",
+    "name": "SPACE",
+    "lat": 32.7550654,
+    "long": -117.1175327
+  },
+  {
+    "type": "Bar",
+    "name": "Rosie O Grady s",
+    "lat": 32.7635404,
+    "long": -117.1205389
+  },
+  {
+    "type": "Bar",
+    "name": "Tivoli Bar and Grill",
+    "lat": 32.7105823,
+    "long": -117.1589682
+  },
+  {
+    "type": "Bar",
+    "name": "Waterfront Bar Grill",
+    "lat": 32.7256314,
+    "long": -117.1702502
+  },
+  {
+    "type": "Bar",
+    "name": "Bluefoot Bar and Lounge",
+    "lat": 32.7412135,
+    "long": -117.1302442
+  },
+  {
+    "type": "Bar",
+    "name": "Star Bar",
+    "lat": 32.7144168,
+    "long": -117.1607082
+  },
+  {
+    "type": "Bar",
+    "name": "Logan Inn",
+    "lat": 32.6982019,
+    "long": -117.1401246
+  },
+  {
+    "type": "Bar",
+    "name": "Northside Tavern",
+    "lat": 32.7525858,
+    "long": -117.2463812
+  },
+  {
+    "type": "Bar",
+    "name": "Club ",
+    "lat": 32.6694529,
+    "long": -117.1121124
+  },
+  {
+    "type": "Bar",
+    "name": "Til Two Club",
+    "lat": 32.7561967,
+    "long": -117.0924358
+  },
+  {
+    "type": "Bar",
+    "name": "The Tipsy Crow",
+    "lat": 32.7134696,
+    "long": -117.1603366
+  },
+  {
+    "type": "Bar",
+    "name": "The Lamplighter",
+    "lat": 32.7496994,
+    "long": -117.1710044
+  },
+  {
+    "type": "Bar",
+    "name": "Catalina Lounge",
+    "lat": 32.7440049,
+    "long": -117.2348946
+  },
+  {
+    "type": "Bar",
+    "name": "Happy Medium",
+    "lat": 32.7504907,
+    "long": -117.1303812
+  },
+  {
+    "type": "Bar",
+    "name": "The Double Deuce",
+    "lat": 32.7137476,
+    "long": -117.1595305
+  },
+  {
+    "type": "Bar",
+    "name": "Chee Chee Club",
+    "lat": 32.7156164,
+    "long": -117.155967
+  },
+  {
+    "type": "Bar",
+    "name": "SRO Lounge",
+    "lat": 32.7242794,
+    "long": -117.1600921
+  },
+  {
+    "type": "Bar",
+    "name": "Time Out Sports Tavern",
+    "lat": 32.7158392,
+    "long": -117.1587262
+  },
+  {
+    "type": "Bar",
+    "name": "Cherrybomb",
+    "lat": 32.7287918,
+    "long": -117.1635819
+  },
+  {
+    "type": "Bar",
+    "name": "The Tilted Stick Bar Grill",
+    "lat": 32.751847,
+    "long": -117.245948
+  },
+  {
+    "type": "Bar",
+    "name": "Stoney s Bar Grill",
+    "lat": 32.66032,
+    "long": -117.1031729
+  },
+  {
+    "type": "Bar",
+    "name": "Paradise Lounge Grill San Diego s Best Sports Bar",
+    "lat": 32.7480812,
+    "long": -117.2026824
+  },
+  {
+    "type": "Bar",
+    "name": "False Idol",
+    "lat": 32.7207772,
+    "long": -117.1689308
+  },
+  {
+    "type": "Bar",
+    "name": "Gaslamp Tavern",
+    "lat": 32.7145014,
+    "long": -117.1603234
+  },
+  {
+    "type": "Bar",
+    "name": "The Avenue Sports Bar",
+    "lat": 32.7499753,
+    "long": -117.1201604
+  },
+  {
+    "type": "Bar",
+    "name": "Redwing Bar Grill",
+    "lat": 32.750652,
+    "long": -117.1304154
+  },
+  {
+    "type": "Bar",
+    "name": "Trailer Park After Dark",
+    "lat": 32.7142173,
+    "long": -117.1598757
+  },
+  {
+    "type": "Bar",
+    "name": "The Ould Sod",
+    "lat": 32.763031,
+    "long": -117.121231
+  },
+  {
+    "type": "Bar",
+    "name": "Danny s Palm Bar Grill",
+    "lat": 32.6861169,
+    "long": -117.1794398
+  },
+  {
+    "type": "Bar",
+    "name": "Number One Fifth Avenue",
+    "lat": 32.7477778,
+    "long": -117.1602778
+  },
+  {
+    "type": "Bar",
+    "name": "The Office Bar",
+    "lat": 32.7492131,
+    "long": -117.1302676
+  },
+  {
+    "type": "Bar",
+    "name": "The DOT Dying Of Thirst",
+    "lat": 32.686713,
+    "long": -117.116759
+  },
+  {
+    "type": "Bar",
+    "name": "Good bar",
+    "lat": 32.7309325,
+    "long": -117.2243258
+  },
+  {
+    "type": "Bar",
+    "name": "Harbor Town Pub",
+    "lat": 32.7215747,
+    "long": -117.2313491
+  },
+  {
+    "type": "Bar",
+    "name": "The Loft",
+    "lat": 32.7435851,
+    "long": -117.1605812
+  },
+  {
+    "type": "Bar",
+    "name": "Kensington Club",
+    "lat": 32.7631277,
+    "long": -117.1076768
+  },
+  {
+    "type": "Bar",
+    "name": "The Smoking Gun SD",
+    "lat": 32.7112976,
+    "long": -117.1593669
+  },
+  {
+    "type": "Bar",
+    "name": "Princess Pub Grille",
+    "lat": 32.7228561,
+    "long": -117.1681556
+  },
+  {
+    "type": "Bar",
+    "name": "Prohibition Lounge",
+    "lat": 32.7111155,
+    "long": -117.1603528
+  },
+  {
+    "type": "Bar",
+    "name": "Pacific Shores Cocktail Lounge",
+    "lat": 32.746054,
+    "long": -117.249968
+  },
+  {
+    "type": "Bar",
+    "name": "Patricks Gaslamp Pub",
+    "lat": 32.713734,
+    "long": -117.160564
+  },
+  {
+    "type": "Bar",
+    "name": "Taste Thirst",
+    "lat": 32.7128699,
+    "long": -117.1609345
+  },
+  {
+    "type": "Bar",
+    "name": "The Cordova Bar",
+    "lat": 32.7722303,
+    "long": -117.2019485
+  },
+  {
+    "type": "Bar",
+    "name": "Monkey Bar",
+    "lat": 32.7633058,
+    "long": -117.1676433
+  },
+  {
+    "type": "Bar",
+    "name": "Cheers",
+    "lat": 32.7622922,
+    "long": -117.1455909
+  },
+  {
+    "type": "Bar",
+    "name": "Desi s Bar Grill",
+    "lat": 32.7430086,
+    "long": -117.2099259
+  },
+  {
+    "type": "Bar",
+    "name": "The Rabbit Hole",
+    "lat": 32.7631057,
+    "long": -117.1210771
+  },
+  {
+    "type": "Bar",
+    "name": "Swan Bar",
+    "lat": 32.7627368,
+    "long": -117.1306712
+  },
+  {
+    "type": "Bar",
+    "name": "Stout Public House",
+    "lat": 32.7171503,
+    "long": -117.1591097
+  },
+  {
+    "type": "Bar",
+    "name": "Soda Bar",
+    "lat": 32.7550598,
+    "long": -117.11542
+  },
+  {
+    "type": "Bar",
+    "name": "Home Away",
+    "lat": 32.7478631,
+    "long": -117.1911315
+  },
+  {
+    "type": "Bar",
+    "name": "Neighborhood",
+    "lat": 32.712406,
+    "long": -117.157584
+  },
+  {
+    "type": "Bar",
+    "name": "Whiskey Girl",
+    "lat": 32.7127448,
+    "long": -117.1602753
+  },
+  {
+    "type": "Bar",
+    "name": "Bar One",
+    "lat": 32.7215373,
+    "long": -117.1685213
+  },
+  {
+    "type": "Bar",
+    "name": "The Banshee Bar",
+    "lat": 32.7550248,
+    "long": -117.1175062
+  },
+  {
+    "type": "Bar",
+    "name": "The High Dive",
+    "lat": 32.7791744,
+    "long": -117.2073135
+  },
+  {
+    "type": "Bar",
+    "name": "The Hole San Diego",
+    "lat": 32.743608,
+    "long": -117.210639
+  },
+  {
+    "type": "Bar",
+    "name": "Blarney Stone Pub",
+    "lat": 32.7106253,
+    "long": -117.1602755
+  },
+  {
+    "type": "Bar",
+    "name": "Room ",
+    "lat": 32.7141221,
+    "long": -117.1589954
+  },
+  {
+    "type": "Bar",
+    "name": "Noble Experiment",
+    "lat": 32.7124267,
+    "long": -117.1575869
+  },
+  {
+    "type": "Bar",
+    "name": "The Pennant",
+    "lat": 32.7655738,
+    "long": -117.2510962
+  },
+  {
+    "type": "Bar",
+    "name": "Seven Grand San Diego",
+    "lat": 32.7486155,
+    "long": -117.1286142
+  },
+  {
+    "type": "Bar",
+    "name": "Top Gun Bar",
+    "lat": 32.7116575,
+    "long": -117.1687098
+  },
+  {
+    "type": "Bar",
+    "name": "True North Tavern",
+    "lat": 32.7477155,
+    "long": -117.1299354
+  },
+  {
+    "type": "Bar",
+    "name": "The Whiskey House",
+    "lat": 32.7097222,
+    "long": -117.1622417
+  },
+  {
+    "type": "Bar",
+    "name": "Gaslamplighter Karaoke Cocktail Bar",
+    "lat": 32.7116348,
+    "long": -117.1595439
+  },
+  {
+    "type": "Bar",
+    "name": "Turf Supper Club",
+    "lat": 32.7173006,
+    "long": -117.1406071
+  },
+  {
+    "type": "Bar",
+    "name": "U ",
+    "lat": 32.7486229,
+    "long": -117.1272888
+  },
+  {
+    "type": "Bar",
+    "name": "The Deck at Moonshine Flats",
+    "lat": 32.7087935,
+    "long": -117.158905
+  },
+  {
+    "type": "Bar",
+    "name": "The Lion s Share",
+    "lat": 32.7119496,
+    "long": -117.1689918
+  },
+  {
+    "type": "Bar",
+    "name": "Coin Op Game Room",
+    "lat": 32.7135,
+    "long": -117.1590667
+  },
+  {
+    "type": "Bar",
+    "name": "AIR CONDITIONED Lounge",
+    "lat": 32.7623879,
+    "long": -117.1300674
+  },
+  {
+    "type": "Bar",
+    "name": "Chiquibaby s Bar",
+    "lat": 32.7048673,
+    "long": -117.1380143
+  },
+  {
+    "type": "Bar",
+    "name": "The Regal Beagle",
+    "lat": 32.7418837,
+    "long": -117.1796359
+  },
+  {
+    "type": "Bar",
+    "name": "Bub s at the Ballpark",
+    "lat": 32.7092589,
+    "long": -117.1581374
+  },
+  {
+    "type": "Bar",
+    "name": "McP s Irish Pub",
+    "lat": 32.684418,
+    "long": -117.178814
+  },
+  {
+    "type": "Bar",
+    "name": "Fernside",
+    "lat": 32.7263658,
+    "long": -117.1294582
+  },
+  {
+    "type": "Bar",
+    "name": "Point Break Cafe",
+    "lat": 32.7211111,
+    "long": -117.2288889
+  },
+  {
+    "type": "Bar",
+    "name": "Uptown Tavern",
+    "lat": 32.7487245,
+    "long": -117.1525954
+  },
+  {
+    "type": "Bar",
+    "name": "The Field Irish Pub",
+    "lat": 32.7110611,
+    "long": -117.1604207
+  },
+  {
+    "type": "Bar",
+    "name": "Park Rec",
+    "lat": 32.761383,
+    "long": -117.1466219
+  },
+  {
+    "type": "Bar",
+    "name": "American Junkie",
+    "lat": 32.7121255,
+    "long": -117.1603707
+  },
+  {
+    "type": "Bar",
+    "name": "The Harp",
+    "lat": 32.7461273,
+    "long": -117.2500811
+  },
+  {
+    "type": "Bar",
+    "name": "Craft Commerce",
+    "lat": 32.720743,
+    "long": -117.168963
+  },
+  {
+    "type": "Bar",
+    "name": "Tony s Martini Bar",
+    "lat": 32.747416,
+    "long": -117.2515827
+  },
+  {
+    "type": "Bar",
+    "name": "Beachcomber",
+    "lat": 32.7657333,
+    "long": -117.2510313
+  },
+  {
+    "type": "Bar",
+    "name": "Happy Does Bar",
+    "lat": 32.7089181,
+    "long": -117.1603716
+  },
+  {
+    "type": "Bar",
+    "name": "SideBar Nightclub San Diego",
+    "lat": 32.7116509,
+    "long": -117.1594046
+  },
+  {
+    "type": "Bar",
+    "name": "JT s Tavern",
+    "lat": 32.7811889,
+    "long": -117.1008879
+  },
+  {
+    "type": "Bar",
+    "name": "Starlite",
+    "lat": 32.73645,
+    "long": -117.174989
+  },
+  {
+    "type": "Bar",
+    "name": "The Rooftop by STK",
+    "lat": 32.7139599,
+    "long": -117.1590939
+  },
+  {
+    "type": "Bar",
+    "name": "Knotty Barrel",
+    "lat": 32.7116635,
+    "long": -117.156693
+  },
+  {
+    "type": "Bar",
+    "name": "The Shout House",
+    "lat": 32.7121034,
+    "long": -117.1609128
+  },
+  {
+    "type": "Bar",
+    "name": "Pal Joey s Cocktail Lounge",
+    "lat": 32.790896,
+    "long": -117.0810955
+  }
+]

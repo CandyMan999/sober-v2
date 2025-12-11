@@ -1,0 +1,554 @@
+[
+  {
+    "type": "Liquor",
+    "name": "Broadway",
+    "lat": 36.161607,
+    "long": -86.7748213
+  },
+  {
+    "type": "Liquor",
+    "name": "Dirty Little Secret",
+    "lat": 36.1643024,
+    "long": -86.7787819
+  },
+  {
+    "type": "Liquor",
+    "name": "LuLo SoundRoom",
+    "lat": 36.1469637,
+    "long": -86.7665559
+  },
+  {
+    "type": "Liquor",
+    "name": "La Danse Nashville Nightclub",
+    "lat": 36.1601937,
+    "long": -86.78258
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Premium Nashville TN",
+    "lat": 36.1332363,
+    "long": -86.7220841
+  },
+  {
+    "type": "Liquor",
+    "name": "The Eighth Room C Nashville s Premier Lounge Music Venue",
+    "lat": 36.131859,
+    "long": -86.7788757
+  },
+  {
+    "type": "Liquor",
+    "name": "Night We Met",
+    "lat": 36.1578159,
+    "long": -86.7880907
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Be Boo",
+    "lat": 36.1609387,
+    "long": -86.7765853
+  },
+  {
+    "type": "Liquor",
+    "name": "Flamingo Cocktail Club",
+    "lat": 36.1426809,
+    "long": -86.7683267
+  },
+  {
+    "type": "Liquor",
+    "name": "The Back Corner",
+    "lat": 36.1786161,
+    "long": -86.7906044
+  },
+  {
+    "type": "Liquor",
+    "name": "Vibes Bar Lounge",
+    "lat": 36.1461676,
+    "long": -86.812787
+  },
+  {
+    "type": "Liquor",
+    "name": "Second Fiddle",
+    "lat": 36.1608528,
+    "long": -86.7782
+  },
+  {
+    "type": "Liquor",
+    "name": "Play Dance Bar",
+    "lat": 36.156803,
+    "long": -86.793628
+  },
+  {
+    "type": "Liquor",
+    "name": "Fascination Street",
+    "lat": 36.1944945,
+    "long": -86.7429254
+  },
+  {
+    "type": "Liquor",
+    "name": "Vortex Nightclub",
+    "lat": 36.160959,
+    "long": -86.7846868
+  },
+  {
+    "type": "Liquor",
+    "name": "HUNNII POT BAR LOUNGE",
+    "lat": 36.1577406,
+    "long": -86.7944515
+  },
+  {
+    "type": "Liquor",
+    "name": "The Lipstick Lounge",
+    "lat": 36.176962,
+    "long": -86.7457302
+  },
+  {
+    "type": "Liquor",
+    "name": "Larry E s Bar Grill",
+    "lat": 36.1960769,
+    "long": -86.7765484
+  },
+  {
+    "type": "Liquor",
+    "name": "PBR Nashville",
+    "lat": 36.1629827,
+    "long": -86.7753746
+  },
+  {
+    "type": "Liquor",
+    "name": "EXIT FIN",
+    "lat": 36.1513996,
+    "long": -86.80434
+  },
+  {
+    "type": "Liquor",
+    "name": "The Basement",
+    "lat": 36.1370504,
+    "long": -86.778486
+  },
+  {
+    "type": "Liquor",
+    "name": "Blueprint Cocktail Club",
+    "lat": 36.1630641,
+    "long": -86.7779011
+  },
+  {
+    "type": "Liquor",
+    "name": "Tribe",
+    "lat": 36.1568684,
+    "long": -86.7931757
+  },
+  {
+    "type": "Liquor",
+    "name": "Zanies Comedy Night Club",
+    "lat": 36.1318814,
+    "long": -86.7791622
+  },
+  {
+    "type": "Liquor",
+    "name": "The Basement East",
+    "lat": 36.175686,
+    "long": -86.75559
+  },
+  {
+    "type": "Liquor",
+    "name": "Red Phone Booth",
+    "lat": 36.1600957,
+    "long": -86.7825723
+  },
+  {
+    "type": "Liquor",
+    "name": "Casa Grande Event Center",
+    "lat": 36.0210928,
+    "long": -86.5727997
+  },
+  {
+    "type": "Liquor",
+    "name": "Larry s Ultra Lounge",
+    "lat": 36.0757423,
+    "long": -86.6391619
+  },
+  {
+    "type": "Liquor",
+    "name": "starwoodlounge",
+    "lat": 36.0643657,
+    "long": -86.6307577
+  },
+  {
+    "type": "Liquor",
+    "name": "Betty Lou s Restaurant Lounge",
+    "lat": 36.0884465,
+    "long": -86.6080161
+  },
+  {
+    "type": "Liquor",
+    "name": "Los Agaveros Mexican grill and Bar",
+    "lat": 36.0199887,
+    "long": -86.5741039
+  },
+  {
+    "type": "Liquor",
+    "name": "Torch Cigar Lounge",
+    "lat": 36.0248021,
+    "long": -86.5844004
+  },
+  {
+    "type": "Liquor",
+    "name": "Soho Lounge",
+    "lat": 36.0729657,
+    "long": -86.6354184
+  },
+  {
+    "type": "Liquor",
+    "name": "Awedaddys Bar Grill",
+    "lat": 36.3472316,
+    "long": -86.4766834
+  },
+  {
+    "type": "Liquor",
+    "name": "Old Glory",
+    "lat": 36.3681395,
+    "long": -86.4404003
+  },
+  {
+    "type": "Liquor",
+    "name": "Jonathan E s Grille",
+    "lat": 36.364387,
+    "long": -86.441291
+  },
+  {
+    "type": "Liquor",
+    "name": "Fairvue Pizza Pub",
+    "lat": 36.359338,
+    "long": -86.4963479
+  },
+  {
+    "type": "Liquor",
+    "name": "Double Dogs",
+    "lat": 36.3562585,
+    "long": -86.504677
+  },
+  {
+    "type": "Liquor",
+    "name": "Mables Dining Room",
+    "lat": 36.3725,
+    "long": -86.4405556
+  },
+  {
+    "type": "Liquor",
+    "name": "Scoreboard at Cedar Creek",
+    "lat": 36.2733176,
+    "long": -86.5110635
+  },
+  {
+    "type": "Liquor",
+    "name": "Grasslands Club C Fairvue",
+    "lat": 36.3448592,
+    "long": -86.490109
+  },
+  {
+    "type": "Liquor",
+    "name": "Los Cantaritos Mexican Restaurant",
+    "lat": 36.3601731,
+    "long": -86.4952926
+  },
+  {
+    "type": "Liquor",
+    "name": "MOOYAH Burgers, Fries Shakes",
+    "lat": 36.3645728,
+    "long": -86.44437
+  },
+  {
+    "type": "Liquor",
+    "name": "Marco s Pizza",
+    "lat": 36.3679716,
+    "long": -86.4866143
+  },
+  {
+    "type": "Liquor",
+    "name": "Cedar Creek Yacht Club",
+    "lat": 36.2798676,
+    "long": -86.5032876
+  },
+  {
+    "type": "Liquor",
+    "name": "Cumberland Canteen",
+    "lat": 36.3356451,
+    "long": -86.4300791
+  },
+  {
+    "type": "Liquor",
+    "name": "Cafe ",
+    "lat": 36.3735246,
+    "long": -86.504351
+  },
+  {
+    "type": "Liquor",
+    "name": "Tootsies Orchid Lounge Nashville Airport",
+    "lat": 36.1299478,
+    "long": -86.6698479
+  },
+  {
+    "type": "Liquor",
+    "name": " Club",
+    "lat": 36.0839541,
+    "long": -86.6898917
+  },
+  {
+    "type": "Liquor",
+    "name": "Lavou lounge",
+    "lat": 36.08525,
+    "long": -86.6897558
+  },
+  {
+    "type": "Liquor",
+    "name": "CAE Bar and Lounge",
+    "lat": 36.136628,
+    "long": -86.7000328
+  },
+  {
+    "type": "Liquor",
+    "name": "Tavern ",
+    "lat": 36.4704475,
+    "long": -86.667633
+  },
+  {
+    "type": "Liquor",
+    "name": "All Seasons Sports Grill",
+    "lat": 36.4603295,
+    "long": -86.661696
+  },
+  {
+    "type": "Liquor",
+    "name": "Love s Travel Stop",
+    "lat": 36.4677778,
+    "long": -86.6872958
+  },
+  {
+    "type": "Liquor",
+    "name": "Fitness White House",
+    "lat": 36.4706016,
+    "long": -86.6788051
+  },
+  {
+    "type": "Liquor",
+    "name": "Waffle House",
+    "lat": 36.4694644,
+    "long": -86.6773388
+  },
+  {
+    "type": "Liquor",
+    "name": "Zaxbys Chicken Fingers Buffalo Wings",
+    "lat": 36.4697376,
+    "long": -86.6763682
+  },
+  {
+    "type": "Liquor",
+    "name": "Uncle John s American Diner",
+    "lat": 36.4097572,
+    "long": -86.6910493
+  },
+  {
+    "type": "Liquor",
+    "name": "Colorado Grill",
+    "lat": 36.4532077,
+    "long": -86.6724298
+  },
+  {
+    "type": "Liquor",
+    "name": "Arby s",
+    "lat": 36.4696855,
+    "long": -86.6786831
+  },
+  {
+    "type": "Liquor",
+    "name": "Wendy s",
+    "lat": 36.4693135,
+    "long": -86.6737282
+  },
+  {
+    "type": "Liquor",
+    "name": "Jersey Mike s Subs",
+    "lat": 36.4692023,
+    "long": -86.672232
+  },
+  {
+    "type": "Liquor",
+    "name": "Hiller Plumbing, Heating, Cooling Electrical",
+    "lat": 36.4118035,
+    "long": -86.6925493
+  },
+  {
+    "type": "Liquor",
+    "name": "Hardee s",
+    "lat": 36.4684319,
+    "long": -86.6782444
+  },
+  {
+    "type": "Liquor",
+    "name": "Walmart Supercenter",
+    "lat": 36.4729657,
+    "long": -86.6777362
+  },
+  {
+    "type": "Liquor",
+    "name": "Back Roads",
+    "lat": 36.490598,
+    "long": -86.879301
+  },
+  {
+    "type": "Liquor",
+    "name": "Mystic Picnic",
+    "lat": 36.5081294,
+    "long": -86.8853047
+  },
+  {
+    "type": "Liquor",
+    "name": "Depot Bar Grill",
+    "lat": 36.5042017,
+    "long": -86.8860904
+  },
+  {
+    "type": "Liquor",
+    "name": "O Charley s Restaurant Bar",
+    "lat": 36.4890731,
+    "long": -86.8792558
+  },
+  {
+    "type": "Liquor",
+    "name": "El Molcajete Springfield s Mexican Restaurant",
+    "lat": 36.4962264,
+    "long": -86.879032
+  },
+  {
+    "type": "Liquor",
+    "name": "Starbucks",
+    "lat": 36.49006,
+    "long": -86.88002
+  },
+  {
+    "type": "Liquor",
+    "name": "Waffle House",
+    "lat": 36.4943472,
+    "long": -86.8773669
+  },
+  {
+    "type": "Liquor",
+    "name": "Chick fil A",
+    "lat": 36.481335,
+    "long": -86.888519
+  },
+  {
+    "type": "Liquor",
+    "name": "Larry s Restaurant",
+    "lat": 36.501896,
+    "long": -86.884499
+  },
+  {
+    "type": "Liquor",
+    "name": "Jersey Mike s Subs",
+    "lat": 36.4940609,
+    "long": -86.8785227
+  },
+  {
+    "type": "Liquor",
+    "name": "Tropical Smoothie Cafe",
+    "lat": 36.4855954,
+    "long": -86.8638108
+  },
+  {
+    "type": "Liquor",
+    "name": "Hardee s",
+    "lat": 36.4954161,
+    "long": -86.8793364
+  },
+  {
+    "type": "Liquor",
+    "name": "Arby s",
+    "lat": 36.500744,
+    "long": -86.882442
+  },
+  {
+    "type": "Liquor",
+    "name": "Wendy s",
+    "lat": 36.5039223,
+    "long": -86.8807995
+  },
+  {
+    "type": "Liquor",
+    "name": "Burger King",
+    "lat": 36.4947616,
+    "long": -86.8780261
+  },
+  {
+    "type": "Liquor",
+    "name": "Walmart Supercenter",
+    "lat": 36.4837168,
+    "long": -86.8885073
+  },
+  {
+    "type": "Liquor",
+    "name": "Kroger",
+    "lat": 36.488605,
+    "long": -86.8634137
+  },
+  {
+    "type": "Liquor",
+    "name": "Harbor Freight",
+    "lat": 36.4937608,
+    "long": -86.8804511
+  },
+  {
+    "type": "Liquor",
+    "name": "Dollar Tree",
+    "lat": 36.4868692,
+    "long": -86.8625886
+  },
+  {
+    "type": "Liquor",
+    "name": "Dollar General",
+    "lat": 36.5319709,
+    "long": -86.8835678
+  },
+  {
+    "type": "Liquor",
+    "name": "Dynamic Country Club",
+    "lat": 36.5792587,
+    "long": -87.4622591
+  },
+  {
+    "type": "Liquor",
+    "name": "Arirang Lounge international karaoke club",
+    "lat": 36.6208763,
+    "long": -87.4307556
+  },
+  {
+    "type": "Liquor",
+    "name": "Lee s Lounge Social Club",
+    "lat": 36.6125923,
+    "long": -87.4300041
+  },
+  {
+    "type": "Liquor",
+    "name": "The Lyrics Lounge",
+    "lat": 36.5595631,
+    "long": -87.4004059
+  },
+  {
+    "type": "Liquor",
+    "name": "The Spott",
+    "lat": 36.5979746,
+    "long": -87.4200921
+  },
+  {
+    "type": "Liquor",
+    "name": "Mr Billy s Bar and Grill",
+    "lat": 36.5529038,
+    "long": -87.4196404
+  },
+  {
+    "type": "Liquor",
+    "name": "AJs Bar",
+    "lat": 36.5500765,
+    "long": -87.4012523
+  }
+]

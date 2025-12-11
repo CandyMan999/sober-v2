@@ -1,0 +1,782 @@
+[
+  {
+    "type": "Liquor",
+    "name": "La Hacienda Nightclub",
+    "lat": 36.1965883,
+    "long": -115.1137479
+  },
+  {
+    "type": "Liquor",
+    "name": "The Vegas Effect",
+    "lat": 36.1239821,
+    "long": -115.1835895
+  },
+  {
+    "type": "Liquor",
+    "name": "OMNIA Nightclub",
+    "lat": 36.1170243,
+    "long": -115.1741636
+  },
+  {
+    "type": "Liquor",
+    "name": "Bar latino El Rinc C B n Nayarita",
+    "lat": 36.196734,
+    "long": -115.121504
+  },
+  {
+    "type": "Liquor",
+    "name": "The Parlour at El Cortez",
+    "lat": 36.1689951,
+    "long": -115.1387065
+  },
+  {
+    "type": "Liquor",
+    "name": "Free Nightclub Dayclub Guest List Promotion",
+    "lat": 36.1276769,
+    "long": -115.1685847
+  },
+  {
+    "type": "Liquor",
+    "name": "Strip Club Concierge Las Vegas Downtown",
+    "lat": 36.1672081,
+    "long": -115.1438696
+  },
+  {
+    "type": "Liquor",
+    "name": "Party Naked Las Vegas Sea Mountain Nude day club night club",
+    "lat": 36.1308991,
+    "long": -115.1170705
+  },
+  {
+    "type": "Liquor",
+    "name": "Strip Club Plug LV",
+    "lat": 36.1445325,
+    "long": -115.1540345
+  },
+  {
+    "type": "Liquor",
+    "name": "Oddfellows",
+    "lat": 36.1698736,
+    "long": -115.1389956
+  },
+  {
+    "type": "Liquor",
+    "name": "Remix Lounge",
+    "lat": 36.1473845,
+    "long": -115.1566778
+  },
+  {
+    "type": "Liquor",
+    "name": "We Host Las Vegas",
+    "lat": 36.1599232,
+    "long": -115.1474235
+  },
+  {
+    "type": "Liquor",
+    "name": "Mango Tango Nightclub C Club Nocturno C Las Vegas",
+    "lat": 36.1488153,
+    "long": -115.2085433
+  },
+  {
+    "type": "Liquor",
+    "name": "Nightclub on Wheels Experience",
+    "lat": 36.1215861,
+    "long": -115.1583917
+  },
+  {
+    "type": "Liquor",
+    "name": "Drai s After Hours",
+    "lat": 36.1149043,
+    "long": -115.1722692
+  },
+  {
+    "type": "Liquor",
+    "name": "Zouk Nightclub",
+    "lat": 36.1321728,
+    "long": -115.1658786
+  },
+  {
+    "type": "Liquor",
+    "name": "Club EGO Afterhours",
+    "lat": 36.1444004,
+    "long": -115.1410877
+  },
+  {
+    "type": "Liquor",
+    "name": "Zuna Nightclub",
+    "lat": 36.1530106,
+    "long": -115.1089207
+  },
+  {
+    "type": "Liquor",
+    "name": "The Phoenix Bar Lounge",
+    "lat": 36.1439826,
+    "long": -115.1975576
+  },
+  {
+    "type": "Liquor",
+    "name": "Discopussy",
+    "lat": 36.169216,
+    "long": -115.139955
+  },
+  {
+    "type": "Liquor",
+    "name": "EBC at Night",
+    "lat": 36.129327,
+    "long": -115.1660518
+  },
+  {
+    "type": "Liquor",
+    "name": "Medusa Nightclub Cabaret",
+    "lat": 36.1293756,
+    "long": -115.1884528
+  },
+  {
+    "type": "Liquor",
+    "name": "Gold Spike",
+    "lat": 36.1708926,
+    "long": -115.1406007
+  },
+  {
+    "type": "Liquor",
+    "name": "El Firme Night Club",
+    "lat": 36.1952924,
+    "long": -115.0916489
+  },
+  {
+    "type": "Liquor",
+    "name": "CASBAR Lounge",
+    "lat": 36.1424717,
+    "long": -115.1567525
+  },
+  {
+    "type": "Liquor",
+    "name": "Las Adelitas",
+    "lat": 36.1960683,
+    "long": -115.1023381
+  },
+  {
+    "type": "Liquor",
+    "name": "Intrigue Nightclub",
+    "lat": 36.1268241,
+    "long": -115.1670961
+  },
+  {
+    "type": "Liquor",
+    "name": "Bauhaus Vegas Afterhours",
+    "lat": 36.1688958,
+    "long": -115.1375988
+  },
+  {
+    "type": "Liquor",
+    "name": "Raised By Wolves",
+    "lat": 36.1701761,
+    "long": -115.1404649
+  },
+  {
+    "type": "Liquor",
+    "name": "XS Nightclub",
+    "lat": 36.1270876,
+    "long": -115.1648273
+  },
+  {
+    "type": "Liquor",
+    "name": "Dino s Lounge",
+    "lat": 36.1524621,
+    "long": -115.1519182
+  },
+  {
+    "type": "Liquor",
+    "name": "Fun Hog Ranch",
+    "lat": 36.1209296,
+    "long": -115.1522292
+  },
+  {
+    "type": "Liquor",
+    "name": "ZAI Nightclub Las Vegas",
+    "lat": 36.1686384,
+    "long": -115.1375557
+  },
+  {
+    "type": "Liquor",
+    "name": "Drai s Beachclub Nightclub",
+    "lat": 36.1149241,
+    "long": -115.1723608
+  },
+  {
+    "type": "Liquor",
+    "name": "TAO Asian Bistro Nightclub",
+    "lat": 36.1226597,
+    "long": -115.1700866
+  },
+  {
+    "type": "Liquor",
+    "name": "La Jolla Nightclub",
+    "lat": 36.1143884,
+    "long": -115.1218981
+  },
+  {
+    "type": "Liquor",
+    "name": "Eden After Dark An Upscale Swingers Lifestyle Club",
+    "lat": 36.1318118,
+    "long": -115.1614073
+  },
+  {
+    "type": "Liquor",
+    "name": "Patio Nightclub",
+    "lat": 36.1853343,
+    "long": -115.2072005
+  },
+  {
+    "type": "Liquor",
+    "name": "Sapphire Las Vegas Gentlemen s Club",
+    "lat": 36.1347413,
+    "long": -115.171593
+  },
+  {
+    "type": "Liquor",
+    "name": "Fuego Lounge Sport Bar Grill",
+    "lat": 36.1287952,
+    "long": -115.0927285
+  },
+  {
+    "type": "Liquor",
+    "name": "Night Out Vegas",
+    "lat": 36.1110185,
+    "long": -115.1717551
+  },
+  {
+    "type": "Liquor",
+    "name": "Extra Lounge",
+    "lat": 36.1100778,
+    "long": -115.170914
+  },
+  {
+    "type": "Liquor",
+    "name": "The MINT Tavern",
+    "lat": 36.144203,
+    "long": -115.1618829
+  },
+  {
+    "type": "Liquor",
+    "name": "Mala Vida Latin Nights",
+    "lat": 36.142632,
+    "long": -115.1569838
+  },
+  {
+    "type": "Liquor",
+    "name": "Marquee Nightclub",
+    "lat": 36.1099372,
+    "long": -115.1754201
+  },
+  {
+    "type": "Liquor",
+    "name": "Chateau Nightclub",
+    "lat": 36.1123768,
+    "long": -115.1708831
+  },
+  {
+    "type": "Liquor",
+    "name": "Badlands Las Vegas",
+    "lat": 36.1433333,
+    "long": -115.1405556
+  },
+  {
+    "type": "Liquor",
+    "name": "Legacy Club",
+    "lat": 36.1722749,
+    "long": -115.1456448
+  },
+  {
+    "type": "Liquor",
+    "name": "Promoter Now Las Vegas Club Promoter Bottle Service",
+    "lat": 36.1245534,
+    "long": -115.181482
+  },
+  {
+    "type": "Liquor",
+    "name": "Spearmint Rhino Gentlemen s Club Las Vegas",
+    "lat": 36.1289282,
+    "long": -115.1783956
+  },
+  {
+    "type": "Liquor",
+    "name": "Luna Lounge",
+    "lat": 36.1312298,
+    "long": -115.1639259
+  },
+  {
+    "type": "Liquor",
+    "name": "The Back Door",
+    "lat": 36.159214,
+    "long": -115.133304
+  },
+  {
+    "type": "Liquor",
+    "name": "Honeys Las Vegas",
+    "lat": 36.1218824,
+    "long": -115.1894451
+  },
+  {
+    "type": "Liquor",
+    "name": "JEWEL Nightclub",
+    "lat": 36.1073485,
+    "long": -115.1765836
+  },
+  {
+    "type": "Liquor",
+    "name": "Troy Liquor Bar",
+    "lat": 36.1703058,
+    "long": -115.1448893
+  },
+  {
+    "type": "Liquor",
+    "name": "Classic Jewel",
+    "lat": 36.1642031,
+    "long": -115.1465621
+  },
+  {
+    "type": "Liquor",
+    "name": "Rain",
+    "lat": 36.114915,
+    "long": -115.1937332
+  },
+  {
+    "type": "Liquor",
+    "name": "CompGuestList",
+    "lat": 36.1113291,
+    "long": -115.1884536
+  },
+  {
+    "type": "Liquor",
+    "name": "Nightclub Experts lv",
+    "lat": 36.1120924,
+    "long": -115.1769541
+  },
+  {
+    "type": "Liquor",
+    "name": "Champagnes Cafe",
+    "lat": 36.1248612,
+    "long": -115.1377338
+  },
+  {
+    "type": "Liquor",
+    "name": "Peppermint Hippo",
+    "lat": 36.1521729,
+    "long": -115.151259
+  },
+  {
+    "type": "Liquor",
+    "name": "KAOS",
+    "lat": 36.1150323,
+    "long": -115.1936114
+  },
+  {
+    "type": "Liquor",
+    "name": "Carnaval Court Las Vegas",
+    "lat": 36.1187164,
+    "long": -115.1718524
+  },
+  {
+    "type": "Liquor",
+    "name": "Las Vegas Club Crawl C LA Epic Club Crawls",
+    "lat": 36.1052944,
+    "long": -115.17249
+  },
+  {
+    "type": "Liquor",
+    "name": "Electra Cocktail Club",
+    "lat": 36.1243671,
+    "long": -115.1684696
+  },
+  {
+    "type": "Liquor",
+    "name": "Hard Hat Lounge",
+    "lat": 36.1511262,
+    "long": -115.1599113
+  },
+  {
+    "type": "Liquor",
+    "name": "LIV Nightclub Las Vegas",
+    "lat": 36.1366292,
+    "long": -115.160224
+  },
+  {
+    "type": "Liquor",
+    "name": "minus ICEBAR",
+    "lat": 36.1215404,
+    "long": -115.1695318
+  },
+  {
+    "type": "Liquor",
+    "name": "Chicas Bonitas",
+    "lat": 36.1925198,
+    "long": -115.1320106
+  },
+  {
+    "type": "Liquor",
+    "name": "Commonwealth",
+    "lat": 36.1686442,
+    "long": -115.1398021
+  },
+  {
+    "type": "Liquor",
+    "name": "La Catrina Bar Grill",
+    "lat": 36.193929,
+    "long": -115.2065794
+  },
+  {
+    "type": "Liquor",
+    "name": "Treasures Gentlemen s Club Steakhouse",
+    "lat": 36.1399756,
+    "long": -115.1735149
+  },
+  {
+    "type": "Liquor",
+    "name": "The International Bar",
+    "lat": 36.1362611,
+    "long": -115.1512539
+  },
+  {
+    "type": "Liquor",
+    "name": "Little Darlings Las Vegas",
+    "lat": 36.1538348,
+    "long": -115.1614682
+  },
+  {
+    "type": "Liquor",
+    "name": "Gallery Night Club",
+    "lat": 36.1096949,
+    "long": -115.1701623
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Yamang",
+    "lat": 36.143506,
+    "long": -115.1434615
+  },
+  {
+    "type": "Liquor",
+    "name": "The Lounge at Harrah s Las Vegas",
+    "lat": 36.1192049,
+    "long": -115.1716435
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Tour Vegas",
+    "lat": 36.1074424,
+    "long": -115.1871096
+  },
+  {
+    "type": "Liquor",
+    "name": "The Indigo Lounge",
+    "lat": 36.1138614,
+    "long": -115.1693514
+  },
+  {
+    "type": "Liquor",
+    "name": "Tabu Ultra Lounge",
+    "lat": 36.1029162,
+    "long": -115.1697555
+  },
+  {
+    "type": "Liquor",
+    "name": "AZILO Las Vegas",
+    "lat": 36.1423694,
+    "long": -115.156034
+  },
+  {
+    "type": "Liquor",
+    "name": "Rockhouse",
+    "lat": 36.1227422,
+    "long": -115.1703586
+  },
+  {
+    "type": "Liquor",
+    "name": "Girl Collection TMT",
+    "lat": 36.1427354,
+    "long": -115.1691159
+  },
+  {
+    "type": "Liquor",
+    "name": "Sin City Club Crawl",
+    "lat": 36.1107901,
+    "long": -115.1714113
+  },
+  {
+    "type": "Liquor",
+    "name": "We All Scream",
+    "lat": 36.1687334,
+    "long": -115.1400711
+  },
+  {
+    "type": "Liquor",
+    "name": "LV Nightlife VIP",
+    "lat": 36.107726,
+    "long": -115.174541
+  },
+  {
+    "type": "Liquor",
+    "name": "Piranha Nightclub",
+    "lat": 36.1055315,
+    "long": -115.1516872
+  },
+  {
+    "type": "Liquor",
+    "name": "Palomino Las Vegas Gentlemen s Club",
+    "lat": 36.1932607,
+    "long": -115.1313079
+  },
+  {
+    "type": "Liquor",
+    "name": "Vista Cocktail Lounge",
+    "lat": 36.1171554,
+    "long": -115.1753254
+  },
+  {
+    "type": "Liquor",
+    "name": "Scores Las Vegas Gentleman s Club",
+    "lat": 36.135236,
+    "long": -115.1748081
+  },
+  {
+    "type": "Liquor",
+    "name": "Flight Club Las Vegas",
+    "lat": 36.1248556,
+    "long": -115.1685857
+  },
+  {
+    "type": "Liquor",
+    "name": "Hakkasan Nightclub",
+    "lat": 36.1014445,
+    "long": -115.1721459
+  },
+  {
+    "type": "Liquor",
+    "name": "Juliet Cocktail Room",
+    "lat": 36.1224082,
+    "long": -115.1695892
+  },
+  {
+    "type": "Liquor",
+    "name": "HUSH NIGHTCLUB",
+    "lat": 36.1056935,
+    "long": -115.1942678
+  },
+  {
+    "type": "Liquor",
+    "name": "Las Cari C B osas",
+    "lat": 36.1383704,
+    "long": -115.0921454
+  },
+  {
+    "type": "Liquor",
+    "name": "The Sand Dollar Downtown",
+    "lat": 36.1709921,
+    "long": -115.1470208
+  },
+  {
+    "type": "Liquor",
+    "name": "SEVEN ",
+    "lat": 36.1531541,
+    "long": -115.1552671
+  },
+  {
+    "type": "Liquor",
+    "name": "KAMU Ultra Karaoke",
+    "lat": 36.1242391,
+    "long": -115.1677835
+  },
+  {
+    "type": "Liquor",
+    "name": "Eastside Lounge",
+    "lat": 36.1289124,
+    "long": -115.1649838
+  },
+  {
+    "type": "Liquor",
+    "name": "Aria Casino Nightlife",
+    "lat": 36.1067374,
+    "long": -115.1754213
+  },
+  {
+    "type": "Liquor",
+    "name": "Old Vegas Tavern",
+    "lat": 36.1299863,
+    "long": -115.0905569
+  },
+  {
+    "type": "Liquor",
+    "name": "Jalisco Underground",
+    "lat": 36.133345,
+    "long": -115.165975
+  },
+  {
+    "type": "Liquor",
+    "name": "Clique Bar Lounge",
+    "lat": 36.109929,
+    "long": -115.175375
+  },
+  {
+    "type": "Liquor",
+    "name": "Nightlife Unlocked Your Key to VIP ",
+    "lat": 36.0431207,
+    "long": -115.2418895
+  },
+  {
+    "type": "Liquor",
+    "name": "Oiga Mire Vea Colombian Cuisine and Latin NightClub",
+    "lat": 36.143044,
+    "long": -115.207316
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Madrid",
+    "lat": 36.0613322,
+    "long": -115.0413823
+  },
+  {
+    "type": "Liquor",
+    "name": "GIMIK REPUBLIK",
+    "lat": 36.1242557,
+    "long": -115.2077691
+  },
+  {
+    "type": "Liquor",
+    "name": "Las Vegas Nightclub Crawl Unlock Las Vegas",
+    "lat": 36.0842535,
+    "long": -115.1942964
+  },
+  {
+    "type": "Liquor",
+    "name": " Lounge",
+    "lat": 36.2505836,
+    "long": -115.2451324
+  },
+  {
+    "type": "Liquor",
+    "name": "Town Center Lounge II",
+    "lat": 36.2180404,
+    "long": -115.1805419
+  },
+  {
+    "type": "Liquor",
+    "name": "Foothills Tavern",
+    "lat": 36.2244491,
+    "long": -115.1742401
+  },
+  {
+    "type": "Liquor",
+    "name": "The Hideaway Tavern",
+    "lat": 36.2200142,
+    "long": -115.2122643
+  },
+  {
+    "type": "Liquor",
+    "name": "Las Vegas Hawaiian Civic Club",
+    "lat": 36.2737796,
+    "long": -115.252873
+  },
+  {
+    "type": "Liquor",
+    "name": "Lucky s",
+    "lat": 36.2982124,
+    "long": -115.2707121
+  },
+  {
+    "type": "Liquor",
+    "name": "Northstar Bar and Grill",
+    "lat": 36.2541156,
+    "long": -115.1526478
+  },
+  {
+    "type": "Liquor",
+    "name": "Furnace",
+    "lat": 36.1715995,
+    "long": -115.1415715
+  },
+  {
+    "type": "Liquor",
+    "name": "Dotty s",
+    "lat": 36.1486247,
+    "long": -115.1015054
+  },
+  {
+    "type": "Liquor",
+    "name": "Dotty s Casino ",
+    "lat": 36.1867156,
+    "long": -115.1154301
+  },
+  {
+    "type": "Liquor",
+    "name": "City VIP Concierge Las Vegas VIP Services",
+    "lat": 36.1381511,
+    "long": -115.142016
+  },
+  {
+    "type": "Liquor",
+    "name": "Casa rigo",
+    "lat": 36.1809643,
+    "long": -115.1382709
+  },
+  {
+    "type": "Liquor",
+    "name": "SIN MC",
+    "lat": 36.2427998,
+    "long": -115.1023635
+  },
+  {
+    "type": "Liquor",
+    "name": "Chrome Showroom",
+    "lat": 36.2496576,
+    "long": -115.2452451
+  },
+  {
+    "type": "Liquor",
+    "name": "AH ",
+    "lat": 36.1077709,
+    "long": -115.150379
+  },
+  {
+    "type": "Liquor",
+    "name": "Rocks Lounge",
+    "lat": 36.1570227,
+    "long": -115.3330509
+  },
+  {
+    "type": "Liquor",
+    "name": "Keno Lounge",
+    "lat": 36.156485,
+    "long": -115.3335298
+  },
+  {
+    "type": "Liquor",
+    "name": "Onyx Bar",
+    "lat": 36.1551327,
+    "long": -115.334816
+  },
+  {
+    "type": "Liquor",
+    "name": "Rouge Room",
+    "lat": 36.1562196,
+    "long": -115.3337062
+  },
+  {
+    "type": "Liquor",
+    "name": "Lobby Bar",
+    "lat": 36.1559776,
+    "long": -115.3325971
+  },
+  {
+    "type": "Liquor",
+    "name": "Edge of Town Bar Grille",
+    "lat": 36.218891,
+    "long": -115.3254134
+  },
+  {
+    "type": "Liquor",
+    "name": "Red Rock Casino Race Sports Book",
+    "lat": 36.1567172,
+    "long": -115.3347838
+  }
+]

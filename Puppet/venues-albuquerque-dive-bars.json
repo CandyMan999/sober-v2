@@ -1,0 +1,614 @@
+[
+  {
+    "type": "Bar",
+    "name": "Sister",
+    "lat": 35.0847418,
+    "long": -106.6520716
+  },
+  {
+    "type": "Bar",
+    "name": "Rocksteady s Social Club",
+    "lat": 35.0791821,
+    "long": -106.5967127
+  },
+  {
+    "type": "Bar",
+    "name": "Teddy Roe s",
+    "lat": 35.0799821,
+    "long": -106.6088704
+  },
+  {
+    "type": "Bar",
+    "name": "The Copper Lounge",
+    "lat": 35.0815941,
+    "long": -106.6300319
+  },
+  {
+    "type": "Bar",
+    "name": "Leo s",
+    "lat": 35.1228529,
+    "long": -106.6543352
+  },
+  {
+    "type": "Bar",
+    "name": "Sunset Grille Bar",
+    "lat": 35.0876548,
+    "long": -106.5711691
+  },
+  {
+    "type": "Bar",
+    "name": "Bar Uno",
+    "lat": 35.0838953,
+    "long": -106.6491928
+  },
+  {
+    "type": "Bar",
+    "name": "Billy s Long Bar",
+    "lat": 35.1361515,
+    "long": -106.5860121
+  },
+  {
+    "type": "Bar",
+    "name": "Downtown Distillery",
+    "lat": 35.0843048,
+    "long": -106.6519546
+  },
+  {
+    "type": "Bar",
+    "name": "Fat Frank s",
+    "lat": 35.0801441,
+    "long": -106.6053772
+  },
+  {
+    "type": "Bar",
+    "name": "Louie s Pub Grill",
+    "lat": 35.1095299,
+    "long": -106.5816465
+  },
+  {
+    "type": "Bar",
+    "name": "Bourbon Boots",
+    "lat": 35.0846591,
+    "long": -106.6513843
+  },
+  {
+    "type": "Bar",
+    "name": "Dragon Horn Tavern",
+    "lat": 35.1150063,
+    "long": -106.5140551
+  },
+  {
+    "type": "Bar",
+    "name": "Momo Lounge",
+    "lat": 35.0950167,
+    "long": -106.6759587
+  },
+  {
+    "type": "Bar",
+    "name": "The First Turn Lounge",
+    "lat": 35.0778634,
+    "long": -106.5707334
+  },
+  {
+    "type": "Bar",
+    "name": "Founders Speakeasy",
+    "lat": 35.0848818,
+    "long": -106.6550894
+  },
+  {
+    "type": "Bar",
+    "name": "Apothecary Lounge",
+    "lat": 35.082377,
+    "long": -106.638079
+  },
+  {
+    "type": "Bar",
+    "name": "Los Conejos",
+    "lat": 35.0815569,
+    "long": -106.6299951
+  },
+  {
+    "type": "Bar",
+    "name": "Safe House Distilling Co ",
+    "lat": 35.0837379,
+    "long": -106.6548516
+  },
+  {
+    "type": "Bar",
+    "name": "Gecko s Nob Hill",
+    "lat": 35.0795009,
+    "long": -106.6053981
+  },
+  {
+    "type": "Bar",
+    "name": "The Taproom at Old Town",
+    "lat": 35.0984882,
+    "long": -106.670199
+  },
+  {
+    "type": "Bar",
+    "name": "Two Fools Tavern",
+    "lat": 35.0806533,
+    "long": -106.6089966
+  },
+  {
+    "type": "Bar",
+    "name": "Town Ranch",
+    "lat": 35.0976362,
+    "long": -106.6486109
+  },
+  {
+    "type": "Bar",
+    "name": "Backstage at Revel",
+    "lat": 35.1345479,
+    "long": -106.6160359
+  },
+  {
+    "type": "Bar",
+    "name": "Moonwalk Bar",
+    "lat": 35.0850973,
+    "long": -106.6530162
+  },
+  {
+    "type": "Bar",
+    "name": "Launchpad",
+    "lat": 35.0846639,
+    "long": -106.6548552
+  },
+  {
+    "type": "Bar",
+    "name": " Bar Lounge",
+    "lat": 35.0863318,
+    "long": -106.65082
+  },
+  {
+    "type": "Bar",
+    "name": "Billiard Palace",
+    "lat": 35.108084,
+    "long": -106.549107
+  },
+  {
+    "type": "Bar",
+    "name": "Insideout",
+    "lat": 35.0848527,
+    "long": -106.6549375
+  },
+  {
+    "type": "Bar",
+    "name": "Daydream Rum Bar",
+    "lat": 35.0809809,
+    "long": -106.6098294
+  },
+  {
+    "type": "Bar",
+    "name": "Anodyne Pool Hall",
+    "lat": 35.084902,
+    "long": -106.651936
+  },
+  {
+    "type": "Bar",
+    "name": "The Smoky Note Private Event Venue",
+    "lat": 35.0807243,
+    "long": -106.6093851
+  },
+  {
+    "type": "Bar",
+    "name": "Hausammann Brewhaus",
+    "lat": 35.0808835,
+    "long": -106.6241814
+  },
+  {
+    "type": "Bar",
+    "name": "Uptown Sports Bar",
+    "lat": 35.1040761,
+    "long": -106.571285
+  },
+  {
+    "type": "Bar",
+    "name": "Alien Brewpub",
+    "lat": 35.1041497,
+    "long": -106.571126
+  },
+  {
+    "type": "Bar",
+    "name": "Still Spirits Downtown",
+    "lat": 35.0925332,
+    "long": -106.6471651
+  },
+  {
+    "type": "Bar",
+    "name": "Happy Accidents",
+    "lat": 35.0806738,
+    "long": -106.608673
+  },
+  {
+    "type": "Bar",
+    "name": "ZEMA Vinyl Lounge",
+    "lat": 35.0797262,
+    "long": -106.6026162
+  },
+  {
+    "type": "Bar",
+    "name": "The Library Bar Grill",
+    "lat": 35.0841758,
+    "long": -106.6510375
+  },
+  {
+    "type": "Bar",
+    "name": "Side Effex",
+    "lat": 35.0845485,
+    "long": -106.6526096
+  },
+  {
+    "type": "Bar",
+    "name": "Hollow Spirits Distillery",
+    "lat": 35.0962933,
+    "long": -106.6452115
+  },
+  {
+    "type": "Bar",
+    "name": "Effingbar and Grill",
+    "lat": 35.1216051,
+    "long": -106.7036408
+  },
+  {
+    "type": "Bar",
+    "name": "Sidewinders Bar and Grill",
+    "lat": 35.0788486,
+    "long": -106.5974916
+  },
+  {
+    "type": "Bar",
+    "name": "QBar Lounge at Hotel Albuquerque",
+    "lat": 35.1001895,
+    "long": -106.669457
+  },
+  {
+    "type": "Bar",
+    "name": "El Vado Tap Room",
+    "lat": 35.0942846,
+    "long": -106.6771465
+  },
+  {
+    "type": "Bar",
+    "name": " th Street Tavern",
+    "lat": 35.110562,
+    "long": -106.6569966
+  },
+  {
+    "type": "Bar",
+    "name": "Albuquerque Press Club",
+    "lat": 35.0816543,
+    "long": -106.6390662
+  },
+  {
+    "type": "Bar",
+    "name": "Moonlight Lounge",
+    "lat": 35.084025,
+    "long": -106.6491002
+  },
+  {
+    "type": "Bar",
+    "name": "Bear Trap At Arroyo del Oso",
+    "lat": 35.1393377,
+    "long": -106.5688376
+  },
+  {
+    "type": "Bar",
+    "name": "Punky s Place Karaoke Lounge",
+    "lat": 35.1172856,
+    "long": -106.5325272
+  },
+  {
+    "type": "Bar",
+    "name": "Howie s Sports Page",
+    "lat": 35.1299556,
+    "long": -106.4997588
+  },
+  {
+    "type": "Bar",
+    "name": "Effex NightClub",
+    "lat": 35.0845658,
+    "long": -106.6526196
+  },
+  {
+    "type": "Bar",
+    "name": "DWTNR Downtowner Cocktail Bar Lounge",
+    "lat": 35.0855711,
+    "long": -106.6560037
+  },
+  {
+    "type": "Bar",
+    "name": "Mending Spirits Mobile Bar Co ",
+    "lat": 35.0612398,
+    "long": -106.6304227
+  },
+  {
+    "type": "Bar",
+    "name": "Stone Face Tavern",
+    "lat": 35.1760745,
+    "long": -106.5779763
+  },
+  {
+    "type": "Bar",
+    "name": "Spectators Sports Bar Grill",
+    "lat": 35.1464128,
+    "long": -106.5268459
+  },
+  {
+    "type": "Bar",
+    "name": "Horse Angel Tavern",
+    "lat": 35.1471827,
+    "long": -106.5253096
+  },
+  {
+    "type": "Bar",
+    "name": "Draft Day Sports Bar at Revel",
+    "lat": 35.1346529,
+    "long": -106.6160689
+  },
+  {
+    "type": "Bar",
+    "name": "The Full Package Packie s ",
+    "lat": 35.0848625,
+    "long": -106.6530618
+  },
+  {
+    "type": "Bar",
+    "name": "Twin Peaks",
+    "lat": 35.1464147,
+    "long": -106.5913385
+  },
+  {
+    "type": "Bar",
+    "name": "Fiesta s Restaurant",
+    "lat": 35.1305944,
+    "long": -106.6035993
+  },
+  {
+    "type": "Bar",
+    "name": "Savoy Bar Grill",
+    "lat": 35.1309608,
+    "long": -106.5200733
+  },
+  {
+    "type": "Bar",
+    "name": "High Noon Restaurant Saloon",
+    "lat": 35.0984211,
+    "long": -106.6695137
+  },
+  {
+    "type": "Bar",
+    "name": "Lucky Boy",
+    "lat": 35.0949611,
+    "long": -106.6051528
+  },
+  {
+    "type": "Bar",
+    "name": "Left Turn Distilling, Craft Cocktails Spirits ",
+    "lat": 35.1156816,
+    "long": -106.6133637
+  },
+  {
+    "type": "Bar",
+    "name": "Monte Carlo Liquors Steak House",
+    "lat": 35.08619,
+    "long": -106.683609
+  },
+  {
+    "type": "Bar",
+    "name": "Burritos Alinstante",
+    "lat": 35.0615891,
+    "long": -106.6457518
+  },
+  {
+    "type": "Bar",
+    "name": "Chile Chicken Nashville Hot Chicken",
+    "lat": 35.11692,
+    "long": -106.5336211
+  },
+  {
+    "type": "Bar",
+    "name": "Dave s Los Ranchos Lounge",
+    "lat": 35.1540713,
+    "long": -106.6396686
+  },
+  {
+    "type": "Bar",
+    "name": "Lobby Bar",
+    "lat": 35.1523069,
+    "long": -106.5857902
+  },
+  {
+    "type": "Bar",
+    "name": "Neighbors Westside Bar Grill",
+    "lat": 35.1076546,
+    "long": -106.7301661
+  },
+  {
+    "type": "Bar",
+    "name": "Cesar s",
+    "lat": 35.0871872,
+    "long": -106.5856173
+  },
+  {
+    "type": "Bar",
+    "name": "Hurricane s Cafe",
+    "lat": 35.0870516,
+    "long": -106.5962272
+  },
+  {
+    "type": "Bar",
+    "name": "Dog House Drive In",
+    "lat": 35.0875936,
+    "long": -106.6615821
+  },
+  {
+    "type": "Bar",
+    "name": "STORMING CRAB Albuquerque NM",
+    "lat": 35.1375223,
+    "long": -106.5871817
+  },
+  {
+    "type": "Bar",
+    "name": "Cervantes",
+    "lat": 35.058576,
+    "long": -106.577202
+  },
+  {
+    "type": "Bar",
+    "name": "The Tap",
+    "lat": 35.0780139,
+    "long": -106.7444491
+  },
+  {
+    "type": "Bar",
+    "name": "Sandia Bar",
+    "lat": 35.2243716,
+    "long": -106.6150781
+  },
+  {
+    "type": "Bar",
+    "name": "Stufy s",
+    "lat": 35.1226326,
+    "long": -106.6534965
+  },
+  {
+    "type": "Bar",
+    "name": "Acapulco Tacos Burritos",
+    "lat": 35.0675918,
+    "long": -106.5860217
+  },
+  {
+    "type": "Bar",
+    "name": "Acapulco Tacos Burritos",
+    "lat": 35.1156247,
+    "long": -106.5512658
+  },
+  {
+    "type": "Bar",
+    "name": "Silva s Saloon",
+    "lat": 35.3018143,
+    "long": -106.5505628
+  },
+  {
+    "type": "Bar",
+    "name": "Gino s New York Style Pizza",
+    "lat": 35.126052,
+    "long": -106.586075
+  },
+  {
+    "type": "Bar",
+    "name": "The Tap",
+    "lat": 35.1927332,
+    "long": -106.7259811
+  },
+  {
+    "type": "Bar",
+    "name": "Ruben s Grill Mexican Restaurant",
+    "lat": 35.1158581,
+    "long": -106.5322451
+  },
+  {
+    "type": "Bar",
+    "name": "El Paisa Taqueria",
+    "lat": 35.0686948,
+    "long": -106.6648476
+  },
+  {
+    "type": "Bar",
+    "name": "Vernon s Speakeasy",
+    "lat": 35.1604469,
+    "long": -106.6375232
+  },
+  {
+    "type": "Bar",
+    "name": "Taqueria Mexico",
+    "lat": 35.1100473,
+    "long": -106.645464
+  },
+  {
+    "type": "Bar",
+    "name": "El Sabor De Juarez",
+    "lat": 35.0586084,
+    "long": -106.6052424
+  },
+  {
+    "type": "Bar",
+    "name": "Giovanni s Pizzeria",
+    "lat": 35.0646165,
+    "long": -106.5780379
+  },
+  {
+    "type": "Bar",
+    "name": "Taqueria Mexicana",
+    "lat": 35.0902267,
+    "long": -106.6411408
+  },
+  {
+    "type": "Bar",
+    "name": "El Modelo Mexican Foods",
+    "lat": 35.068537,
+    "long": -106.6525865
+  },
+  {
+    "type": "Bar",
+    "name": "O Hare s Grille Pub",
+    "lat": 35.2404115,
+    "long": -106.658011
+  },
+  {
+    "type": "Bar",
+    "name": "Thai House",
+    "lat": 35.1012857,
+    "long": -106.6037928
+  },
+  {
+    "type": "Bar",
+    "name": "White Sands",
+    "lat": 46.423669,
+    "long": -129.9427086
+  },
+  {
+    "type": "Bar",
+    "name": "La Guelaguetza",
+    "lat": 35.0709915,
+    "long": -106.69944
+  },
+  {
+    "type": "Bar",
+    "name": "The Local Brewhouse",
+    "lat": 35.2531177,
+    "long": -106.6973706
+  },
+  {
+    "type": "Bar",
+    "name": "Duke s Bar Grill",
+    "lat": 35.1084649,
+    "long": -106.6224137
+  },
+  {
+    "type": "Bar",
+    "name": "Vintage ",
+    "lat": 35.1736883,
+    "long": -106.5575757
+  },
+  {
+    "type": "Bar",
+    "name": "Evangelo s",
+    "lat": 35.6874794,
+    "long": -105.9406589
+  },
+  {
+    "type": "Bar",
+    "name": "Billy s Pub",
+    "lat": 35.0902384,
+    "long": -106.514755
+  },
+  {
+    "type": "Bar",
+    "name": "Hops Dough Taproom",
+    "lat": 35.1574785,
+    "long": -106.680157
+  }
+]

@@ -1,0 +1,464 @@
+[
+  {
+    "type": "Liquor",
+    "name": "Chocolate Rose Lounge",
+    "lat": 43.0587976,
+    "long": -87.9698632
+  },
+  {
+    "type": "Liquor",
+    "name": "LaCage NiteClub",
+    "lat": 43.0229471,
+    "long": -87.9127968
+  },
+  {
+    "type": "Liquor",
+    "name": "Truth Lounge",
+    "lat": 43.0446611,
+    "long": -87.9146086
+  },
+  {
+    "type": "Liquor",
+    "name": "BrownStone Social Lounge",
+    "lat": 43.0368529,
+    "long": -87.9086169
+  },
+  {
+    "type": "Liquor",
+    "name": "HEX Night Club",
+    "lat": 43.0238436,
+    "long": -87.9171264
+  },
+  {
+    "type": "Liquor",
+    "name": "Tequila Night Club",
+    "lat": 43.0159161,
+    "long": -87.9340459
+  },
+  {
+    "type": "Liquor",
+    "name": "Lux on North C Hall Lounge",
+    "lat": 43.0607925,
+    "long": -87.9822822
+  },
+  {
+    "type": "Liquor",
+    "name": "Bodega",
+    "lat": 43.0381221,
+    "long": -87.9086941
+  },
+  {
+    "type": "Liquor",
+    "name": "MKE Nights Pub",
+    "lat": 43.0215674,
+    "long": -87.9621711
+  },
+  {
+    "type": "Liquor",
+    "name": "Freight ",
+    "lat": 43.022358,
+    "long": -87.9109871
+  },
+  {
+    "type": "Liquor",
+    "name": "Cantarito s Bar FPassion Night Club",
+    "lat": 43.0144951,
+    "long": -87.9355378
+  },
+  {
+    "type": "Liquor",
+    "name": "Savoy s Night Club",
+    "lat": 43.071394,
+    "long": -87.9172163
+  },
+  {
+    "type": "Liquor",
+    "name": "No ",
+    "lat": 43.0393842,
+    "long": -87.9063164
+  },
+  {
+    "type": "Liquor",
+    "name": "MADPLANET",
+    "lat": 43.0673917,
+    "long": -87.9042666
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Manhattan",
+    "lat": 43.0655224,
+    "long": -87.9157121
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Six Street",
+    "lat": 43.0063759,
+    "long": -87.9188751
+  },
+  {
+    "type": "Liquor",
+    "name": "Infinity Lounge",
+    "lat": 43.0795996,
+    "long": -87.9635727
+  },
+  {
+    "type": "Liquor",
+    "name": "Elevate MKE",
+    "lat": 43.0453345,
+    "long": -87.9115198
+  },
+  {
+    "type": "Liquor",
+    "name": "El Cama Club Dance Place S Greenfield",
+    "lat": 43.0171919,
+    "long": -87.9199231
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Brady",
+    "lat": 43.052776,
+    "long": -87.894284
+  },
+  {
+    "type": "Liquor",
+    "name": "Taylors",
+    "lat": 43.0410554,
+    "long": -87.9056833
+  },
+  {
+    "type": "Liquor",
+    "name": "ELMNT Lounge",
+    "lat": 43.0379,
+    "long": -87.9086871
+  },
+  {
+    "type": "Liquor",
+    "name": "Club ",
+    "lat": 43.0127906,
+    "long": -87.9256896
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Timbuktu",
+    "lat": 43.0676258,
+    "long": -87.904605
+  },
+  {
+    "type": "Liquor",
+    "name": "Rookies Lounge",
+    "lat": 43.0656873,
+    "long": -87.9293088
+  },
+  {
+    "type": "Liquor",
+    "name": "HiHat Lounge",
+    "lat": 43.05305,
+    "long": -87.8951402
+  },
+  {
+    "type": "Liquor",
+    "name": "Garfields FJewels ",
+    "lat": 43.0592947,
+    "long": -87.9173656
+  },
+  {
+    "type": "Liquor",
+    "name": "Set Apart Lounge",
+    "lat": 43.020351,
+    "long": -87.9872385
+  },
+  {
+    "type": "Liquor",
+    "name": "Room Seven",
+    "lat": 43.0406781,
+    "long": -87.9052374
+  },
+  {
+    "type": "Liquor",
+    "name": "LBJ Club",
+    "lat": 43.0434792,
+    "long": -87.9417191
+  },
+  {
+    "type": "Liquor",
+    "name": "La Pi C B a",
+    "lat": 43.0109375,
+    "long": -87.9142243
+  },
+  {
+    "type": "Liquor",
+    "name": "Bryant s Cocktail Lounge",
+    "lat": 43.0143397,
+    "long": -87.9228396
+  },
+  {
+    "type": "Liquor",
+    "name": "The Estate",
+    "lat": 43.0619123,
+    "long": -87.8858751
+  },
+  {
+    "type": "Liquor",
+    "name": "District on Water",
+    "lat": 43.0381512,
+    "long": -87.9088797
+  },
+  {
+    "type": "Liquor",
+    "name": "Harbor Room",
+    "lat": 43.0169565,
+    "long": -87.9106121
+  },
+  {
+    "type": "Liquor",
+    "name": "Shank Hall",
+    "lat": 43.0486641,
+    "long": -87.8962021
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Aura",
+    "lat": 43.0443365,
+    "long": -87.8998426
+  },
+  {
+    "type": "Liquor",
+    "name": "The Encore",
+    "lat": 43.0313611,
+    "long": -87.985257
+  },
+  {
+    "type": "Liquor",
+    "name": "RWB Milwaukee",
+    "lat": 43.0439361,
+    "long": -87.9140189
+  },
+  {
+    "type": "Liquor",
+    "name": "ElevenHundred Bar Lounge",
+    "lat": 43.0302135,
+    "long": -87.934859
+  },
+  {
+    "type": "Liquor",
+    "name": "Cheetah Club",
+    "lat": 43.1093809,
+    "long": -87.9561405
+  },
+  {
+    "type": "Liquor",
+    "name": "Caroline s",
+    "lat": 43.0271773,
+    "long": -87.912916
+  },
+  {
+    "type": "Liquor",
+    "name": "The High Note Karaoke Lounge",
+    "lat": 43.0385036,
+    "long": -87.9206026
+  },
+  {
+    "type": "Liquor",
+    "name": "The Outsider",
+    "lat": 43.0329663,
+    "long": -87.9067397
+  },
+  {
+    "type": "Liquor",
+    "name": "Amped A Bars Recreation Experience",
+    "lat": 43.0458638,
+    "long": -87.9234344
+  },
+  {
+    "type": "Liquor",
+    "name": "Bam Bam s Smoke Shop Hookah Lounge",
+    "lat": 43.0751731,
+    "long": -87.8776769
+  },
+  {
+    "type": "Liquor",
+    "name": "Finks",
+    "lat": 43.056055,
+    "long": -87.898274
+  },
+  {
+    "type": "Liquor",
+    "name": "KING HALL Venue Party Rental",
+    "lat": 43.0807643,
+    "long": -87.9178129
+  },
+  {
+    "type": "Liquor",
+    "name": "Victor s",
+    "lat": 43.0464047,
+    "long": -87.9031115
+  },
+  {
+    "type": "Liquor",
+    "name": "Tropic on Water",
+    "lat": 43.0367199,
+    "long": -87.9086929
+  },
+  {
+    "type": "Liquor",
+    "name": "S Lush Daiquiri Lounge Events",
+    "lat": 43.0446307,
+    "long": -87.9139099
+  },
+  {
+    "type": "Liquor",
+    "name": "Famous SmokeShop C Famous Cigar Bar C Full Liquor Smoking Lounge",
+    "lat": 43.0528066,
+    "long": -87.8964182
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Manhattan",
+    "lat": 43.0962205,
+    "long": -87.9765875
+  },
+  {
+    "type": "Liquor",
+    "name": "Sarge s Corner",
+    "lat": 43.0084707,
+    "long": -87.9805438
+  },
+  {
+    "type": "Liquor",
+    "name": "Club ",
+    "lat": 42.986607,
+    "long": -87.928991
+  },
+  {
+    "type": "Liquor",
+    "name": "Landmark Lanes",
+    "lat": 43.059687,
+    "long": -87.885641
+  },
+  {
+    "type": "Liquor",
+    "name": "Bar Fly",
+    "lat": 43.0250667,
+    "long": -87.9166961
+  },
+  {
+    "type": "Liquor",
+    "name": "Pitch s Lounge Restaurant",
+    "lat": 43.0545417,
+    "long": -87.8983465
+  },
+  {
+    "type": "Liquor",
+    "name": "Silk Exotic Platinum Gentlemen s Club",
+    "lat": 43.1199592,
+    "long": -88.0547289
+  },
+  {
+    "type": "Liquor",
+    "name": "Casablanca",
+    "lat": 43.053175,
+    "long": -87.902409
+  },
+  {
+    "type": "Liquor",
+    "name": "ManCave Milwaukee",
+    "lat": 43.0390805,
+    "long": -87.9061697
+  },
+  {
+    "type": "Liquor",
+    "name": "Colombia Tropical",
+    "lat": 43.013578,
+    "long": -87.9243679
+  },
+  {
+    "type": "Liquor",
+    "name": "Sailing Club at UWM",
+    "lat": 43.052019,
+    "long": -87.8857207
+  },
+  {
+    "type": "Liquor",
+    "name": "Evolve Nightclub",
+    "lat": 42.6097253,
+    "long": -88.4051177
+  },
+  {
+    "type": "Liquor",
+    "name": "Shots N Tequila Sports Bar F Tavern Greenfield",
+    "lat": 42.9504965,
+    "long": -87.9494795
+  },
+  {
+    "type": "Liquor",
+    "name": "JoJo s Martini Lounge",
+    "lat": 43.0356487,
+    "long": -88.0462595
+  },
+  {
+    "type": "Liquor",
+    "name": "Arabian Nights Hookah Lounge Milwaukee",
+    "lat": 42.9727604,
+    "long": -88.0087217
+  },
+  {
+    "type": "Liquor",
+    "name": "Uhle Tobacco Company C Milwaukee E s Finest Smoking Lounge",
+    "lat": 43.0389012,
+    "long": -87.910813
+  },
+  {
+    "type": "Liquor",
+    "name": "MKE VAPE",
+    "lat": 43.0528515,
+    "long": -87.8989495
+  },
+  {
+    "type": "Liquor",
+    "name": "Oaks Lounge Speakeasy ",
+    "lat": 42.9888007,
+    "long": -88.0552431
+  },
+  {
+    "type": "Liquor",
+    "name": "Shan Keter E s Place LLC",
+    "lat": 43.0483969,
+    "long": -87.9053682
+  },
+  {
+    "type": "Liquor",
+    "name": "Versace Nightlife",
+    "lat": 43.1117401,
+    "long": -87.9576416
+  },
+  {
+    "type": "Liquor",
+    "name": "Waterfall Lounge Events",
+    "lat": 43.0121882,
+    "long": -87.9106997
+  },
+  {
+    "type": "Liquor",
+    "name": "A E VYB",
+    "lat": 43.0604682,
+    "long": -87.9196183
+  },
+  {
+    "type": "Liquor",
+    "name": "TOM E S LOUNGE",
+    "lat": 43.0972937,
+    "long": -87.9465821
+  },
+  {
+    "type": "Liquor",
+    "name": "Le Rich Pour",
+    "lat": 43.0835492,
+    "long": -87.8878231
+  },
+  {
+    "type": "Liquor",
+    "name": "El Corillo Latino",
+    "lat": 43.014383,
+    "long": -87.9119704
+  }
+]

@@ -1,0 +1,800 @@
+[
+  {
+    "type": "Liquor",
+    "name": "King Boulevard Liquor",
+    "lat": 45.5487994,
+    "long": -122.661282
+  },
+  {
+    "type": "Liquor",
+    "name": "Tenth Avenue liquor",
+    "lat": 45.51834,
+    "long": -122.6831829
+  },
+  {
+    "type": "Liquor",
+    "name": " th Avenue Liquor",
+    "lat": 45.5113705,
+    "long": -122.6548727
+  },
+  {
+    "type": "Liquor",
+    "name": "Hawthorne Liquor Store",
+    "lat": 45.5117764,
+    "long": -122.6144336
+  },
+  {
+    "type": "Liquor",
+    "name": "Oregon Liquor Store",
+    "lat": 45.523575,
+    "long": -122.6968856
+  },
+  {
+    "type": "Liquor",
+    "name": "North By Northeast Liquor",
+    "lat": 45.5551088,
+    "long": -122.6668983
+  },
+  {
+    "type": "Liquor",
+    "name": "Portland Center Liquor",
+    "lat": 45.5083028,
+    "long": -122.6795153
+  },
+  {
+    "type": "Liquor",
+    "name": "Woodstock Spirits",
+    "lat": 45.4788131,
+    "long": -122.6178783
+  },
+  {
+    "type": "Liquor",
+    "name": "Sip City Spirits BWine BBeer Hillsdale ",
+    "lat": 45.4792056,
+    "long": -122.6944861
+  },
+  {
+    "type": "Liquor",
+    "name": "Hollywood Beverage",
+    "lat": 45.5304313,
+    "long": -122.6334784
+  },
+  {
+    "type": "Liquor",
+    "name": "Macadam Liquor",
+    "lat": 45.4791342,
+    "long": -122.6732185
+  },
+  {
+    "type": "Liquor",
+    "name": "Plaid Pantry",
+    "lat": 45.5130993,
+    "long": -122.685269
+  },
+  {
+    "type": "Liquor",
+    "name": "Raleigh Hills Liquor",
+    "lat": 45.4841369,
+    "long": -122.7550635
+  },
+  {
+    "type": "Liquor",
+    "name": "Pearl Specialty Market Spirits",
+    "lat": 45.5299482,
+    "long": -122.6809696
+  },
+  {
+    "type": "Liquor",
+    "name": "Powell Liquor Store",
+    "lat": 45.4972222,
+    "long": -122.6094444
+  },
+  {
+    "type": "Liquor",
+    "name": "Lloyd Center Liquor Store",
+    "lat": 45.5347377,
+    "long": -122.6567857
+  },
+  {
+    "type": "Liquor",
+    "name": "Liquor Garden",
+    "lat": 45.5484531,
+    "long": -122.6141173
+  },
+  {
+    "type": "Liquor",
+    "name": "Beaumont Liquor Store",
+    "lat": 45.5625969,
+    "long": -122.6300751
+  },
+  {
+    "type": "Liquor",
+    "name": "Rose City Liquor",
+    "lat": 45.5488009,
+    "long": -122.5882362
+  },
+  {
+    "type": "Liquor",
+    "name": "Cathedral Ridge Winery",
+    "lat": 45.275883,
+    "long": -123.01309
+  },
+  {
+    "type": "Liquor",
+    "name": "Total Wine More",
+    "lat": 45.657552,
+    "long": -122.59044
+  },
+  {
+    "type": "Liquor",
+    "name": "Plaid Pantry",
+    "lat": 45.508203,
+    "long": -122.6790906
+  },
+  {
+    "type": "Liquor",
+    "name": "Proof Wine Spirits",
+    "lat": 45.5347506,
+    "long": -122.6950522
+  },
+  {
+    "type": "Liquor",
+    "name": "Urbana Market Spirits",
+    "lat": 45.497497,
+    "long": -122.6695629
+  },
+  {
+    "type": "Liquor",
+    "name": "Bottle Shop",
+    "lat": 45.4896719,
+    "long": -122.5972014
+  },
+  {
+    "type": "Liquor",
+    "name": "Imperial Bottle Shop Taproom",
+    "lat": 45.5046898,
+    "long": -122.633732
+  },
+  {
+    "type": "Liquor",
+    "name": "McMenamins rd Ave Bottle Shop",
+    "lat": 45.5353583,
+    "long": -122.6986061
+  },
+  {
+    "type": "Liquor",
+    "name": "Plaid Pantry",
+    "lat": 45.5226441,
+    "long": -122.6458747
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 45.5347827,
+    "long": -122.6453229
+  },
+  {
+    "type": "Liquor",
+    "name": "Avalon Wine northwest wine com",
+    "lat": 45.5311356,
+    "long": -122.6325498
+  },
+  {
+    "type": "Liquor",
+    "name": "John s Marketplace Powell",
+    "lat": 45.4964386,
+    "long": -122.6270271
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 45.5153808,
+    "long": -122.6604098
+  },
+  {
+    "type": "Liquor",
+    "name": " th Mini Mart",
+    "lat": 45.5159102,
+    "long": -122.6233942
+  },
+  {
+    "type": "Liquor",
+    "name": "West Slope Liquor and Beverage",
+    "lat": 45.4991168,
+    "long": -122.7670874
+  },
+  {
+    "type": "Liquor",
+    "name": "Belmont Station",
+    "lat": 45.5190938,
+    "long": -122.6159696
+  },
+  {
+    "type": "Liquor",
+    "name": "Plaid Pantry",
+    "lat": 45.5261774,
+    "long": -122.6375585
+  },
+  {
+    "type": "Liquor",
+    "name": "Food Vibes Natural Wines",
+    "lat": 45.49254,
+    "long": -122.6016861
+  },
+  {
+    "type": "Liquor",
+    "name": "The Booze Barn",
+    "lat": 45.51673,
+    "long": -122.75285
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 45.5340642,
+    "long": -122.6623828
+  },
+  {
+    "type": "Liquor",
+    "name": "Bottles Cans",
+    "lat": 45.5659341,
+    "long": -122.6954371
+  },
+  {
+    "type": "Liquor",
+    "name": "GC Wines Local ",
+    "lat": 45.5476248,
+    "long": -122.6661263
+  },
+  {
+    "type": "Liquor",
+    "name": "Oregon Wines On Broadway",
+    "lat": 45.5204655,
+    "long": -122.6791875
+  },
+  {
+    "type": "Liquor",
+    "name": "Hop Haven",
+    "lat": 45.5348899,
+    "long": -122.6440475
+  },
+  {
+    "type": "Liquor",
+    "name": " Beer Wine Cider",
+    "lat": 45.5556968,
+    "long": -122.650521
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 45.5556806,
+    "long": -122.6014656
+  },
+  {
+    "type": "Liquor",
+    "name": "The Civic Taproom and Bottle Shop",
+    "lat": 45.5227794,
+    "long": -122.6903418
+  },
+  {
+    "type": "Liquor",
+    "name": "Westmoreland Liquor Store",
+    "lat": 45.4721164,
+    "long": -122.6488222
+  },
+  {
+    "type": "Liquor",
+    "name": "Beaumont Market",
+    "lat": 45.5481444,
+    "long": -122.6199778
+  },
+  {
+    "type": "Liquor",
+    "name": "Jae s Market",
+    "lat": 45.5167783,
+    "long": -122.6138399
+  },
+  {
+    "type": "Liquor",
+    "name": "Plaid Pantry",
+    "lat": 45.5441546,
+    "long": -122.5989911
+  },
+  {
+    "type": "Liquor",
+    "name": "New Deal Distillery and Bottle Shop",
+    "lat": 45.514198,
+    "long": -122.656456
+  },
+  {
+    "type": "Liquor",
+    "name": "Eastport Liquor Store",
+    "lat": 45.4989643,
+    "long": -122.5805011
+  },
+  {
+    "type": "Liquor",
+    "name": "Hawthorne Market",
+    "lat": 45.5117892,
+    "long": -122.6350034
+  },
+  {
+    "type": "Liquor",
+    "name": "Flor Wines",
+    "lat": 45.5266589,
+    "long": -122.6798634
+  },
+  {
+    "type": "Liquor",
+    "name": "Division Wines",
+    "lat": 45.504678,
+    "long": -122.6270812
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 45.4790008,
+    "long": -122.6090273
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 45.5387354,
+    "long": -122.7113521
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 45.4845626,
+    "long": -122.6379527
+  },
+  {
+    "type": "Liquor",
+    "name": "Vinopolis Wine Shop",
+    "lat": 45.5261548,
+    "long": -122.6877038
+  },
+  {
+    "type": "Liquor",
+    "name": "Woodstock Wine Deli Co",
+    "lat": 45.4790167,
+    "long": -122.6209735
+  },
+  {
+    "type": "Liquor",
+    "name": "Cellar Door",
+    "lat": 45.490275,
+    "long": -122.680005
+  },
+  {
+    "type": "Liquor",
+    "name": "Portland Wine Merchants",
+    "lat": 45.5121743,
+    "long": -122.6280942
+  },
+  {
+    "type": "Liquor",
+    "name": "Plaid Pantry",
+    "lat": 45.4789224,
+    "long": -122.6192009
+  },
+  {
+    "type": "Liquor",
+    "name": "Plaid Pantry",
+    "lat": 45.5624572,
+    "long": -122.6877191
+  },
+  {
+    "type": "Liquor",
+    "name": " th Market",
+    "lat": 45.5013654,
+    "long": -122.6109356
+  },
+  {
+    "type": "Liquor",
+    "name": "Go Bodega",
+    "lat": 45.4930693,
+    "long": -122.6393752
+  },
+  {
+    "type": "Liquor",
+    "name": "Alberta Street Wine Shop",
+    "lat": 45.5591932,
+    "long": -122.6427529
+  },
+  {
+    "type": "Liquor",
+    "name": "E R Wine Shop Inc ",
+    "lat": 45.4789768,
+    "long": -122.6731329
+  },
+  {
+    "type": "Liquor",
+    "name": "Plaid Pantry",
+    "lat": 45.5317448,
+    "long": -122.6299114
+  },
+  {
+    "type": "Liquor",
+    "name": "Mom and Pop Wine Shop",
+    "lat": 45.5470087,
+    "long": -122.5918551
+  },
+  {
+    "type": "Liquor",
+    "name": "Great Wine Buys",
+    "lat": 45.5352617,
+    "long": -122.6500894
+  },
+  {
+    "type": "Liquor",
+    "name": "Plaid Pantry",
+    "lat": 45.5166825,
+    "long": -122.6351267
+  },
+  {
+    "type": "Liquor",
+    "name": "Bridgetown Beerhouse",
+    "lat": 45.5522502,
+    "long": -122.6759763
+  },
+  {
+    "type": "Liquor",
+    "name": "Dockside Bottleworks Tobacco",
+    "lat": 45.5089556,
+    "long": -122.6738464
+  },
+  {
+    "type": "Liquor",
+    "name": "Taborly Wines",
+    "lat": 45.5118774,
+    "long": -122.6178992
+  },
+  {
+    "type": "Liquor",
+    "name": "Vino",
+    "lat": 45.5215851,
+    "long": -122.6374136
+  },
+  {
+    "type": "Liquor",
+    "name": "Liner Elsen Wine Merchants",
+    "lat": 45.5332149,
+    "long": -122.6973177
+  },
+  {
+    "type": "Liquor",
+    "name": "Pacific Victoria Wine Club",
+    "lat": 45.521423,
+    "long": -122.6625377
+  },
+  {
+    "type": "Liquor",
+    "name": "Saraveza",
+    "lat": 45.5624639,
+    "long": -122.6771945
+  },
+  {
+    "type": "Liquor",
+    "name": "Rose Market",
+    "lat": 45.5716237,
+    "long": -122.6611179
+  },
+  {
+    "type": "Liquor",
+    "name": "Pour Decisions PDX",
+    "lat": 45.4896444,
+    "long": -122.5971917
+  },
+  {
+    "type": "Liquor",
+    "name": "Beer",
+    "lat": 45.5191421,
+    "long": -122.6512892
+  },
+  {
+    "type": "Liquor",
+    "name": "Ora et Labora Wine Shop and Vinum Lounge Event Space",
+    "lat": 45.5512243,
+    "long": -122.6664653
+  },
+  {
+    "type": "Liquor",
+    "name": "Plaid Pantry",
+    "lat": 45.5261795,
+    "long": -122.594773
+  },
+  {
+    "type": "Liquor",
+    "name": "Kenton Liquor Beer Wine",
+    "lat": 45.5828108,
+    "long": -122.687265
+  },
+  {
+    "type": "Liquor",
+    "name": "Plaid Pantry",
+    "lat": 45.4788734,
+    "long": -122.6070714
+  },
+  {
+    "type": "Liquor",
+    "name": "Portland Wine Bar Winery Tasting Room",
+    "lat": 45.5182548,
+    "long": -122.6786917
+  },
+  {
+    "type": "Liquor",
+    "name": "Thirsty Portland",
+    "lat": 45.4808429,
+    "long": -122.5714028
+  },
+  {
+    "type": "Liquor",
+    "name": "Blackbird Wine Shop Wine Bar",
+    "lat": 45.5485253,
+    "long": -122.6188187
+  },
+  {
+    "type": "Liquor",
+    "name": "corksandforks",
+    "lat": 45.5366034,
+    "long": -122.689418
+  },
+  {
+    "type": "Liquor",
+    "name": "Plaid Pantry",
+    "lat": 45.4964734,
+    "long": -122.6307589
+  },
+  {
+    "type": "Liquor",
+    "name": "Pairings Portland Wine Shop Bar",
+    "lat": 45.5262582,
+    "long": -122.641712
+  },
+  {
+    "type": "Liquor",
+    "name": "The Old Portland Wine Bar",
+    "lat": 45.5336895,
+    "long": -122.6863563
+  },
+  {
+    "type": "Liquor",
+    "name": " ",
+    "lat": 45.52245,
+    "long": -122.64519
+  },
+  {
+    "type": "Liquor",
+    "name": "Jac B James Wine Co ",
+    "lat": 45.5146334,
+    "long": -122.6645739
+  },
+  {
+    "type": "Liquor",
+    "name": "Beaverton Liquor",
+    "lat": 45.4879,
+    "long": -122.795327
+  },
+  {
+    "type": "Liquor",
+    "name": "Kw grocery mart",
+    "lat": 45.5630394,
+    "long": -122.6180017
+  },
+  {
+    "type": "Liquor",
+    "name": "Ardor Natural Wines",
+    "lat": 45.5166614,
+    "long": -122.6185461
+  },
+  {
+    "type": "Liquor",
+    "name": "Frank Wine Bar",
+    "lat": 45.4961918,
+    "long": -122.6705973
+  },
+  {
+    "type": "Liquor",
+    "name": "Sunflower Sake",
+    "lat": 45.518605,
+    "long": -122.6642103
+  },
+  {
+    "type": "Liquor",
+    "name": " Liquor Store",
+    "lat": 45.517742,
+    "long": -122.5628598
+  },
+  {
+    "type": "Liquor",
+    "name": "NW Growlers",
+    "lat": 45.4791508,
+    "long": -122.6731978
+  },
+  {
+    "type": "Liquor",
+    "name": "John s Marketplace Multnomah",
+    "lat": 45.4673706,
+    "long": -122.713229
+  },
+  {
+    "type": "Liquor",
+    "name": "Barbur Liquor Store",
+    "lat": 45.454066,
+    "long": -122.7203883
+  },
+  {
+    "type": "Liquor",
+    "name": "CorksCru Wine Merchants",
+    "lat": 45.4890787,
+    "long": -122.6492997
+  },
+  {
+    "type": "Liquor",
+    "name": "St Johns Liquor Store",
+    "lat": 45.5918637,
+    "long": -122.7561585
+  },
+  {
+    "type": "Liquor",
+    "name": "Cedar Hills Liquor",
+    "lat": 45.4959826,
+    "long": -122.8084745
+  },
+  {
+    "type": "Liquor",
+    "name": "New Seasons Market Arbor Lodge",
+    "lat": 45.5690672,
+    "long": -122.6817334
+  },
+  {
+    "type": "Liquor",
+    "name": "Gateway Liquor Store",
+    "lat": 45.5333666,
+    "long": -122.556469
+  },
+  {
+    "type": "Liquor",
+    "name": "Bull Run Distillery",
+    "lat": 45.5335421,
+    "long": -122.6980947
+  },
+  {
+    "type": "Liquor",
+    "name": "Zupan s Markets Burnside",
+    "lat": 45.5230718,
+    "long": -122.6989348
+  },
+  {
+    "type": "Liquor",
+    "name": "New Seasons Market Hawthorne",
+    "lat": 45.5118474,
+    "long": -122.6207039
+  },
+  {
+    "type": "Liquor",
+    "name": "Proper Pint Taproom",
+    "lat": 45.4794333,
+    "long": -122.6088495
+  },
+  {
+    "type": "Liquor",
+    "name": "Cedar Mill Liquor Store",
+    "lat": 45.526886,
+    "long": -122.816077
+  },
+  {
+    "type": "Liquor",
+    "name": "New Seasons Market Seven Corners",
+    "lat": 45.5043871,
+    "long": -122.6461664
+  },
+  {
+    "type": "Liquor",
+    "name": "Black Rose Liquor Parkrose",
+    "lat": 45.5532681,
+    "long": -122.5363383
+  },
+  {
+    "type": "Liquor",
+    "name": "Plaid Pantry",
+    "lat": 45.5668229,
+    "long": -122.5380285
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 45.5534134,
+    "long": -122.5365936
+  },
+  {
+    "type": "Liquor",
+    "name": "BevMo ",
+    "lat": 45.617101,
+    "long": -122.508184
+  },
+  {
+    "type": "Liquor",
+    "name": "Plaid Pantry",
+    "lat": 45.5536379,
+    "long": -122.5199749
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 45.6236172,
+    "long": -122.5354106
+  },
+  {
+    "type": "Liquor",
+    "name": "Plaid Pantry",
+    "lat": 45.5492572,
+    "long": -122.496315
+  },
+  {
+    "type": "Liquor",
+    "name": "Global Liquor",
+    "lat": 45.678595,
+    "long": -122.5516157
+  },
+  {
+    "type": "Liquor",
+    "name": "Liquor Wine",
+    "lat": 45.6443871,
+    "long": -122.5983205
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 45.6775286,
+    "long": -122.5752026
+  },
+  {
+    "type": "Liquor",
+    "name": "Safeway Liquor",
+    "lat": 45.7151335,
+    "long": -122.6493973
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 45.7149032,
+    "long": -122.6520838
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 45.642231,
+    "long": -122.6140469
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 45.67839,
+    "long": -122.6251042
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 45.6523309,
+    "long": -122.602488
+  },
+  {
+    "type": "Liquor",
+    "name": "Safeway Liquor",
+    "lat": 45.6412169,
+    "long": -122.5570733
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 45.6937078,
+    "long": -122.5534034
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 45.6591926,
+    "long": -122.5575209
+  }
+]

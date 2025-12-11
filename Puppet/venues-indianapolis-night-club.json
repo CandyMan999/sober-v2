@@ -1,0 +1,578 @@
+[
+  {
+    "type": "Liquor",
+    "name": "The Patron Saint",
+    "lat": 39.7631219,
+    "long": -86.1584497
+  },
+  {
+    "type": "Liquor",
+    "name": "Howl at the Moon Indianapolis",
+    "lat": 39.7644058,
+    "long": -86.1574579
+  },
+  {
+    "type": "Liquor",
+    "name": "Ritz Lounge",
+    "lat": 39.8043679,
+    "long": -86.1878022
+  },
+  {
+    "type": "Liquor",
+    "name": "Cosmos Knights Club",
+    "lat": 39.8164322,
+    "long": -86.1594497
+  },
+  {
+    "type": "Liquor",
+    "name": "ICON Lounge",
+    "lat": 39.768569,
+    "long": -86.1550156
+  },
+  {
+    "type": "Liquor",
+    "name": "Living Room Lounge",
+    "lat": 39.7802118,
+    "long": -86.1559483
+  },
+  {
+    "type": "Liquor",
+    "name": "Metro",
+    "lat": 39.776507,
+    "long": -86.1466296
+  },
+  {
+    "type": "Liquor",
+    "name": "Helium Comedy Club",
+    "lat": 39.7644091,
+    "long": -86.1584286
+  },
+  {
+    "type": "Liquor",
+    "name": "New Fountain Lounge",
+    "lat": 39.8103163,
+    "long": -86.1745414
+  },
+  {
+    "type": "Liquor",
+    "name": "Morrison Lounge",
+    "lat": 39.765831,
+    "long": -86.157617
+  },
+  {
+    "type": "Liquor",
+    "name": "El Parral Night Club",
+    "lat": 39.8249906,
+    "long": -86.240687
+  },
+  {
+    "type": "Liquor",
+    "name": "Paradox Lounge",
+    "lat": 39.7523072,
+    "long": -86.1405162
+  },
+  {
+    "type": "Liquor",
+    "name": "Hovito lounge",
+    "lat": 39.7633251,
+    "long": -86.1585833
+  },
+  {
+    "type": "Liquor",
+    "name": "Egyptian Room at Old National Centre",
+    "lat": 39.7745541,
+    "long": -86.1507451
+  },
+  {
+    "type": "Liquor",
+    "name": "Lucas oil stadium",
+    "lat": 39.7645779,
+    "long": -86.1565003
+  },
+  {
+    "type": "Liquor",
+    "name": "Red Garter Gentleman s Club",
+    "lat": 39.7605452,
+    "long": -86.1599198
+  },
+  {
+    "type": "Liquor",
+    "name": "The Point Night Club",
+    "lat": 39.8177835,
+    "long": -86.0652468
+  },
+  {
+    "type": "Liquor",
+    "name": "Shi Kay Lounge",
+    "lat": 39.7882314,
+    "long": -86.0836377
+  },
+  {
+    "type": "Liquor",
+    "name": "Chispas Discotheque",
+    "lat": 39.8256159,
+    "long": -86.2387785
+  },
+  {
+    "type": "Liquor",
+    "name": "Triangle Civic Club",
+    "lat": 39.8179284,
+    "long": -86.0719256
+  },
+  {
+    "type": "Liquor",
+    "name": " Seconds Saloon",
+    "lat": 39.7677257,
+    "long": -86.2489917
+  },
+  {
+    "type": "Liquor",
+    "name": "BlankUS Luxury Lounge",
+    "lat": 39.7739525,
+    "long": -86.1451662
+  },
+  {
+    "type": "Liquor",
+    "name": "Georgia Street Rhythm and Blues",
+    "lat": 39.7644214,
+    "long": -86.158838
+  },
+  {
+    "type": "Liquor",
+    "name": "Flair",
+    "lat": 39.7657712,
+    "long": -86.1579233
+  },
+  {
+    "type": "Liquor",
+    "name": " Lounge",
+    "lat": 39.7648203,
+    "long": -86.1598208
+  },
+  {
+    "type": "Liquor",
+    "name": "Silk The Showclub",
+    "lat": 39.7148382,
+    "long": -86.1466263
+  },
+  {
+    "type": "Liquor",
+    "name": "VIP Lounge",
+    "lat": 39.825072,
+    "long": -86.0788199
+  },
+  {
+    "type": "Liquor",
+    "name": "Chatterbox Jazz Club",
+    "lat": 39.7732393,
+    "long": -86.1511822
+  },
+  {
+    "type": "Liquor",
+    "name": "The Rooftop Garden",
+    "lat": 39.7521667,
+    "long": -86.1395874
+  },
+  {
+    "type": "Liquor",
+    "name": "Wiseguy Lounge Mass Ave",
+    "lat": 39.7744286,
+    "long": -86.1494549
+  },
+  {
+    "type": "Liquor",
+    "name": "Brad s Brass Flamingo",
+    "lat": 39.7505379,
+    "long": -86.0949396
+  },
+  {
+    "type": "Liquor",
+    "name": "INVY Nightclub",
+    "lat": 39.7635549,
+    "long": -86.1579247
+  },
+  {
+    "type": "Liquor",
+    "name": "Nicky Blaine s Cocktail Lounge",
+    "lat": 39.7677695,
+    "long": -86.1582479
+  },
+  {
+    "type": "Liquor",
+    "name": "Dorman Street",
+    "lat": 39.7790799,
+    "long": -86.1388143
+  },
+  {
+    "type": "Liquor",
+    "name": "Premier Ultra Lounge",
+    "lat": 39.7778545,
+    "long": -85.9866006
+  },
+  {
+    "type": "Liquor",
+    "name": "Employee Lounge",
+    "lat": 39.7732999,
+    "long": -86.1722552
+  },
+  {
+    "type": "Liquor",
+    "name": "ELEVATE at Hotel Indy",
+    "lat": 39.7666747,
+    "long": -86.1547474
+  },
+  {
+    "type": "Liquor",
+    "name": "The Red Room",
+    "lat": 39.8709142,
+    "long": -86.1428015
+  },
+  {
+    "type": "Liquor",
+    "name": "Estereo Nightclub",
+    "lat": 39.9070527,
+    "long": -86.0584056
+  },
+  {
+    "type": "Liquor",
+    "name": "Ball Biscuit",
+    "lat": 39.7716607,
+    "long": -86.15344
+  },
+  {
+    "type": "Liquor",
+    "name": "Plat ",
+    "lat": 39.7617899,
+    "long": -86.1543299
+  },
+  {
+    "type": "Liquor",
+    "name": "No Name Lounge",
+    "lat": 39.7662717,
+    "long": -86.1637223
+  },
+  {
+    "type": "Liquor",
+    "name": "Burn by Rocky Patel Indianapolis",
+    "lat": 39.7654887,
+    "long": -86.1583317
+  },
+  {
+    "type": "Liquor",
+    "name": "Tick Tock Lounge",
+    "lat": 39.7815033,
+    "long": -86.1178434
+  },
+  {
+    "type": "Liquor",
+    "name": "PT s Showclub Indianapolis",
+    "lat": 39.8358516,
+    "long": -86.0297337
+  },
+  {
+    "type": "Liquor",
+    "name": "INFINITY PLACE",
+    "lat": 39.834356,
+    "long": -86.2392148
+  },
+  {
+    "type": "Liquor",
+    "name": "El Rincon De Susy",
+    "lat": 39.8081252,
+    "long": -86.0451242
+  },
+  {
+    "type": "Liquor",
+    "name": "The Jollof Buka",
+    "lat": 39.7654099,
+    "long": -86.2030834
+  },
+  {
+    "type": "Liquor",
+    "name": "Epic Ultra Lounge",
+    "lat": 39.9067061,
+    "long": -86.0570502
+  },
+  {
+    "type": "Liquor",
+    "name": "Sensu Nightclub",
+    "lat": 39.763545,
+    "long": -86.157713
+  },
+  {
+    "type": "Liquor",
+    "name": "Dancers Showclub",
+    "lat": 39.7357559,
+    "long": -86.3035413
+  },
+  {
+    "type": "Liquor",
+    "name": "Rock Lobster",
+    "lat": 39.8698581,
+    "long": -86.1440588
+  },
+  {
+    "type": "Liquor",
+    "name": "St Elmo Steak House",
+    "lat": 39.7648475,
+    "long": -86.1598029
+  },
+  {
+    "type": "Liquor",
+    "name": "FortyFive Degrees",
+    "lat": 39.7772822,
+    "long": -86.1454391
+  },
+  {
+    "type": "Liquor",
+    "name": "The Spot CBD lounge",
+    "lat": 39.72387,
+    "long": -86.083577
+  },
+  {
+    "type": "Liquor",
+    "name": "Sunset Strip",
+    "lat": 39.788275,
+    "long": -86.2007561
+  },
+  {
+    "type": "Liquor",
+    "name": "World Of Vapor",
+    "lat": 39.7705653,
+    "long": -86.0725346
+  },
+  {
+    "type": "Liquor",
+    "name": "Grand",
+    "lat": 39.8155412,
+    "long": -86.0745515
+  },
+  {
+    "type": "Liquor",
+    "name": "Cove ",
+    "lat": 39.2821245,
+    "long": -84.4439673
+  },
+  {
+    "type": "Liquor",
+    "name": "The Vogue Theatre",
+    "lat": 39.8692108,
+    "long": -86.1457447
+  },
+  {
+    "type": "Liquor",
+    "name": "All Stars Sports Lounge Grill",
+    "lat": 39.8549838,
+    "long": -86.2423009
+  },
+  {
+    "type": "Liquor",
+    "name": "John s Famous Stew",
+    "lat": 39.7526208,
+    "long": -86.177867
+  },
+  {
+    "type": "Liquor",
+    "name": "Alley Cat Lounge",
+    "lat": 39.8694278,
+    "long": -86.1446015
+  },
+  {
+    "type": "Liquor",
+    "name": "Ivape E Cigs INDY Fountain Square",
+    "lat": 39.7536163,
+    "long": -86.1412
+  },
+  {
+    "type": "Liquor",
+    "name": "The Jazz Kitchen",
+    "lat": 39.8508413,
+    "long": -86.1455825
+  },
+  {
+    "type": "Liquor",
+    "name": "Higher Life CBD Dispensary Smoke Shop",
+    "lat": 39.7533565,
+    "long": -86.1415974
+  },
+  {
+    "type": "Liquor",
+    "name": "Maru",
+    "lat": 39.8364822,
+    "long": -86.0252886
+  },
+  {
+    "type": "Liquor",
+    "name": "OTR LIVE",
+    "lat": 39.1091583,
+    "long": -84.5110472
+  },
+  {
+    "type": "Liquor",
+    "name": "Cantay House",
+    "lat": 39.7695397,
+    "long": -86.2541055
+  },
+  {
+    "type": "Liquor",
+    "name": "Our Place",
+    "lat": 39.3096842,
+    "long": -84.2771774
+  },
+  {
+    "type": "Liquor",
+    "name": "ARDEN INDY",
+    "lat": 39.7673574,
+    "long": -86.1584477
+  },
+  {
+    "type": "Liquor",
+    "name": "White Rabbit Cabaret",
+    "lat": 39.7525351,
+    "long": -86.1392019
+  },
+  {
+    "type": "Liquor",
+    "name": "M Club Lounge",
+    "lat": 39.7668805,
+    "long": -86.1675285
+  },
+  {
+    "type": "Liquor",
+    "name": "Tini",
+    "lat": 39.7766081,
+    "long": -86.1465096
+  },
+  {
+    "type": "Liquor",
+    "name": "Cross Ultra Lounge",
+    "lat": 39.7303615,
+    "long": -86.159084
+  },
+  {
+    "type": "Liquor",
+    "name": "Gregs Indy",
+    "lat": 39.7882956,
+    "long": -86.1526704
+  },
+  {
+    "type": "Liquor",
+    "name": "Melody Inn",
+    "lat": 39.8256067,
+    "long": -86.1595058
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Indianapolis",
+    "lat": 39.7761992,
+    "long": -86.1618586
+  },
+  {
+    "type": "Liquor",
+    "name": "ClubHouse ",
+    "lat": 39.7745549,
+    "long": -86.1253283
+  },
+  {
+    "type": "Liquor",
+    "name": "The New AJ s Lounge",
+    "lat": 39.7524416,
+    "long": -86.1594448
+  },
+  {
+    "type": "Liquor",
+    "name": "The Bemberg",
+    "lat": 39.775461,
+    "long": -86.1471134
+  },
+  {
+    "type": "Liquor",
+    "name": "Duke E s Indy",
+    "lat": 39.733572,
+    "long": -86.1686186
+  },
+  {
+    "type": "Liquor",
+    "name": " Entertainment",
+    "lat": 39.76652,
+    "long": -86.4412135
+  },
+  {
+    "type": "Liquor",
+    "name": "Arby s",
+    "lat": 40.1476971,
+    "long": -85.6748675
+  },
+  {
+    "type": "Liquor",
+    "name": "Wendy s",
+    "lat": 40.1474995,
+    "long": -85.6761047
+  },
+  {
+    "type": "Liquor",
+    "name": "Burger King",
+    "lat": 40.1494636,
+    "long": -85.6735714
+  },
+  {
+    "type": "Liquor",
+    "name": "Dollar Tree",
+    "lat": 40.132557,
+    "long": -85.6605914
+  },
+  {
+    "type": "Liquor",
+    "name": "Dollar General",
+    "lat": 40.1427759,
+    "long": -85.6762803
+  },
+  {
+    "type": "Liquor",
+    "name": "Subway",
+    "lat": 40.1388663,
+    "long": -85.6769965
+  },
+  {
+    "type": "Liquor",
+    "name": "Be Here Now DIY Music Venue Craft Brew Bar",
+    "lat": 40.1979009,
+    "long": -85.4046179
+  },
+  {
+    "type": "Liquor",
+    "name": "Wings Etc ",
+    "lat": 40.2176197,
+    "long": -85.4022033
+  },
+  {
+    "type": "Liquor",
+    "name": "Brothers Bar and Grill",
+    "lat": 40.1975194,
+    "long": -85.4047
+  },
+  {
+    "type": "Liquor",
+    "name": "Elm Street Brewing Company",
+    "lat": 40.1976809,
+    "long": -85.3830021
+  },
+  {
+    "type": "Liquor",
+    "name": "Chili s Grill Bar",
+    "lat": 40.218448,
+    "long": -85.395832
+  },
+  {
+    "type": "Liquor",
+    "name": "Puerto Vallarta",
+    "lat": 40.2214123,
+    "long": -85.4046009
+  },
+  {
+    "type": "Liquor",
+    "name": "Jimmy John s",
+    "lat": 40.1979387,
+    "long": -85.4055103
+  }
+]

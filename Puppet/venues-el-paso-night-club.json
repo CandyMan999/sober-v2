@@ -1,0 +1,830 @@
+[
+  {
+    "type": "Liquor",
+    "name": "EPIC",
+    "lat": 31.7620343,
+    "long": -106.4885061
+  },
+  {
+    "type": "Liquor",
+    "name": "Cactus Owl",
+    "lat": 31.7736854,
+    "long": -106.4647588
+  },
+  {
+    "type": "Liquor",
+    "name": "Teddy s Lounge",
+    "lat": 31.7795691,
+    "long": -106.3930173
+  },
+  {
+    "type": "Liquor",
+    "name": " ",
+    "lat": 31.7929317,
+    "long": -106.5096935
+  },
+  {
+    "type": "Liquor",
+    "name": "El After Social Club EPTX",
+    "lat": 31.7633236,
+    "long": -106.356819
+  },
+  {
+    "type": "Liquor",
+    "name": "Cuatro Ojos Bar",
+    "lat": 31.7752581,
+    "long": -106.4745687
+  },
+  {
+    "type": "Liquor",
+    "name": "Tangas Night Club",
+    "lat": 31.7363368,
+    "long": -106.4863236
+  },
+  {
+    "type": "Liquor",
+    "name": "Sun City Bar Events Center",
+    "lat": 31.774656,
+    "long": -106.389248
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Am C A rica",
+    "lat": 31.7349459,
+    "long": -106.4859082
+  },
+  {
+    "type": "Liquor",
+    "name": "Brunette Lounge",
+    "lat": 31.7583525,
+    "long": -106.4851815
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Belmar",
+    "lat": 31.7272231,
+    "long": -106.4704646
+  },
+  {
+    "type": "Liquor",
+    "name": "Vertigo Night Club",
+    "lat": 31.7409071,
+    "long": -106.4527583
+  },
+  {
+    "type": "Liquor",
+    "name": "MAKAVELIZ LOUNGE",
+    "lat": 31.819439,
+    "long": -106.4443488
+  },
+  {
+    "type": "Liquor",
+    "name": "OPIUM NIGHTCLUB",
+    "lat": 31.8149003,
+    "long": -106.5127901
+  },
+  {
+    "type": "Liquor",
+    "name": "Latin Quarters New York",
+    "lat": 31.7834157,
+    "long": -106.4493754
+  },
+  {
+    "type": "Liquor",
+    "name": "Disco Zoo",
+    "lat": 31.7442413,
+    "long": -106.4857991
+  },
+  {
+    "type": "Liquor",
+    "name": "Rep C BAblica de Ciudad Ju C A rez",
+    "lat": 31.7310442,
+    "long": -106.4120105
+  },
+  {
+    "type": "Liquor",
+    "name": "El ",
+    "lat": 31.8046342,
+    "long": -106.4617261
+  },
+  {
+    "type": "Liquor",
+    "name": "Paso Texas",
+    "lat": 31.7615448,
+    "long": -106.4832007
+  },
+  {
+    "type": "Liquor",
+    "name": " Nightlife",
+    "lat": 31.7574246,
+    "long": -106.4814934
+  },
+  {
+    "type": "Liquor",
+    "name": "Pek Nigth Club",
+    "lat": 31.7318335,
+    "long": -106.424115
+  },
+  {
+    "type": "Liquor",
+    "name": "Sarawak Disco",
+    "lat": 31.744217,
+    "long": -106.4860704
+  },
+  {
+    "type": "Liquor",
+    "name": "Briar Patch",
+    "lat": 31.7620096,
+    "long": -106.4883368
+  },
+  {
+    "type": "Liquor",
+    "name": "Horizon Nite Club",
+    "lat": 31.7880635,
+    "long": -106.4485876
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Black Pearl",
+    "lat": 31.7563002,
+    "long": -106.4932218
+  },
+  {
+    "type": "Liquor",
+    "name": "Fussion Nite Club LLC",
+    "lat": 31.8149722,
+    "long": -106.4444502
+  },
+  {
+    "type": "Liquor",
+    "name": "Hardpop",
+    "lat": 31.735863,
+    "long": -106.446499
+  },
+  {
+    "type": "Liquor",
+    "name": "Pi Bar",
+    "lat": 31.759593,
+    "long": -106.482083
+  },
+  {
+    "type": "Liquor",
+    "name": "Terraza las guacamayas",
+    "lat": 31.7557204,
+    "long": -106.5287677
+  },
+  {
+    "type": "Liquor",
+    "name": "Kyoshi Sound House",
+    "lat": 31.7776711,
+    "long": -106.5032974
+  },
+  {
+    "type": "Liquor",
+    "name": "Karaoke Restaurant Bar",
+    "lat": 31.7230257,
+    "long": -106.4215568
+  },
+  {
+    "type": "Liquor",
+    "name": "Church Bar",
+    "lat": 31.759822,
+    "long": -106.4871951
+  },
+  {
+    "type": "Liquor",
+    "name": "Bar Jocker Premier",
+    "lat": 31.7318065,
+    "long": -106.4512274
+  },
+  {
+    "type": "Liquor",
+    "name": "Escape Nightclub",
+    "lat": 31.7258093,
+    "long": -106.3176279
+  },
+  {
+    "type": "Liquor",
+    "name": "EUFORIA NIGHT CLUB",
+    "lat": 31.7392332,
+    "long": -106.4809849
+  },
+  {
+    "type": "Liquor",
+    "name": "Tequilas Discoteque",
+    "lat": 31.7222823,
+    "long": -106.320268
+  },
+  {
+    "type": "Liquor",
+    "name": "Euforia Night club",
+    "lat": 31.7506091,
+    "long": -106.526692
+  },
+  {
+    "type": "Liquor",
+    "name": "Eclipse Men C B s Club",
+    "lat": 31.7444247,
+    "long": -106.4516361
+  },
+  {
+    "type": "Liquor",
+    "name": "El Patron Sports Bar",
+    "lat": 31.7791723,
+    "long": -106.4210784
+  },
+  {
+    "type": "Liquor",
+    "name": "Big Mike s Place",
+    "lat": 31.8194965,
+    "long": -106.4444352
+  },
+  {
+    "type": "Liquor",
+    "name": "Cavas ",
+    "lat": 31.7388444,
+    "long": -106.4806388
+  },
+  {
+    "type": "Liquor",
+    "name": "Exxo",
+    "lat": 31.7425859,
+    "long": -106.485735
+  },
+  {
+    "type": "Liquor",
+    "name": "Sal C B n de baile LA NACIONAL",
+    "lat": 31.7402536,
+    "long": -106.4868559
+  },
+  {
+    "type": "Liquor",
+    "name": "CLANDE",
+    "lat": 31.7234262,
+    "long": -106.4219952
+  },
+  {
+    "type": "Liquor",
+    "name": "Monica s Nightclub",
+    "lat": 31.7959314,
+    "long": -106.3528532
+  },
+  {
+    "type": "Liquor",
+    "name": "Big Ben Ladies Bar",
+    "lat": 31.7285349,
+    "long": -106.4370674
+  },
+  {
+    "type": "Liquor",
+    "name": "Terraza El Rey ",
+    "lat": 31.7569883,
+    "long": -106.5236926
+  },
+  {
+    "type": "Liquor",
+    "name": "The Hemp Quarters Lounge",
+    "lat": 31.7775745,
+    "long": -106.5031349
+  },
+  {
+    "type": "Liquor",
+    "name": "Ojos Locos Sports Cantina El Paso, TX ",
+    "lat": 31.7828286,
+    "long": -106.3944116
+  },
+  {
+    "type": "Liquor",
+    "name": "New edge billar zone",
+    "lat": 31.7353095,
+    "long": -106.4741425
+  },
+  {
+    "type": "Liquor",
+    "name": "La Mina Bar Night Club",
+    "lat": 31.7736969,
+    "long": -106.464667
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Paralelo ",
+    "lat": 31.7360701,
+    "long": -106.4851903
+  },
+  {
+    "type": "Liquor",
+    "name": "Red VIP Bar and Grill",
+    "lat": 31.7285831,
+    "long": -106.4371399
+  },
+  {
+    "type": "Liquor",
+    "name": "H C F Night Club",
+    "lat": 31.7085023,
+    "long": -106.407246
+  },
+  {
+    "type": "Liquor",
+    "name": "Candies",
+    "lat": 31.7152874,
+    "long": -106.4229681
+  },
+  {
+    "type": "Liquor",
+    "name": "Bucks Cabaret El Paso",
+    "lat": 31.7307068,
+    "long": -106.3143704
+  },
+  {
+    "type": "Liquor",
+    "name": "sadsassa",
+    "lat": 31.7286307,
+    "long": -106.4243707
+  },
+  {
+    "type": "Liquor",
+    "name": "Sal C B n de Eventos Galeno",
+    "lat": 31.7452681,
+    "long": -106.4555507
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Pigallie",
+    "lat": 31.7409314,
+    "long": -106.4879171
+  },
+  {
+    "type": "Liquor",
+    "name": "Cesar C B s Palace Private Club",
+    "lat": 31.7393541,
+    "long": -106.4720407
+  },
+  {
+    "type": "Liquor",
+    "name": "Casa",
+    "lat": 31.7289978,
+    "long": -106.5198549
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Trebol",
+    "lat": 31.726998,
+    "long": -106.4705989
+  },
+  {
+    "type": "Liquor",
+    "name": "Touch Bar El Paso",
+    "lat": 31.7439019,
+    "long": -106.3159674
+  },
+  {
+    "type": "Liquor",
+    "name": "Silver Fox Classic",
+    "lat": 31.7323971,
+    "long": -106.4234605
+  },
+  {
+    "type": "Liquor",
+    "name": "StudioBar",
+    "lat": 31.7371236,
+    "long": -106.2940191
+  },
+  {
+    "type": "Liquor",
+    "name": "Funkmeyers Rec Room",
+    "lat": 31.753172,
+    "long": -106.3173929
+  },
+  {
+    "type": "Liquor",
+    "name": "NEXDOR Nightclub",
+    "lat": 31.7540017,
+    "long": -106.2775544
+  },
+  {
+    "type": "Liquor",
+    "name": "Proof Press",
+    "lat": 31.7867832,
+    "long": -106.50708
+  },
+  {
+    "type": "Liquor",
+    "name": "Andale Mexican Restaurant and Cantina",
+    "lat": 31.7658402,
+    "long": -106.3651468
+  },
+  {
+    "type": "Liquor",
+    "name": "Kirby cabarete",
+    "lat": 31.7293258,
+    "long": -106.515647
+  },
+  {
+    "type": "Liquor",
+    "name": "VITOLA S Cigars Whiskey Downtown",
+    "lat": 31.7593497,
+    "long": -106.4912411
+  },
+  {
+    "type": "Liquor",
+    "name": "Cari C B osas Nigth Club",
+    "lat": 31.6582762,
+    "long": -106.4288845
+  },
+  {
+    "type": "Liquor",
+    "name": "Jaimes Jimmys Restaurante Bar",
+    "lat": 31.7334241,
+    "long": -106.4473119
+  },
+  {
+    "type": "Liquor",
+    "name": "Sal C B n de eventos Los nogales ",
+    "lat": 31.7269417,
+    "long": -106.4570719
+  },
+  {
+    "type": "Liquor",
+    "name": "BAR B QUE",
+    "lat": 31.7388858,
+    "long": -106.479899
+  },
+  {
+    "type": "Liquor",
+    "name": "Iron Horse Saloon",
+    "lat": 31.8694235,
+    "long": -106.4262308
+  },
+  {
+    "type": "Liquor",
+    "name": "Sal C B n de fiestas confetti",
+    "lat": 31.7625436,
+    "long": -106.5119845
+  },
+  {
+    "type": "Liquor",
+    "name": "Set",
+    "lat": 31.7145834,
+    "long": -106.4113709
+  },
+  {
+    "type": "Liquor",
+    "name": "Afro Bar",
+    "lat": 31.6787968,
+    "long": -106.4248716
+  },
+  {
+    "type": "Liquor",
+    "name": " Pecados",
+    "lat": 31.7371399,
+    "long": -106.4813945
+  },
+  {
+    "type": "Liquor",
+    "name": " C BFKara o Ke F",
+    "lat": 31.7231873,
+    "long": -106.4218619
+  },
+  {
+    "type": "Liquor",
+    "name": "Nido de ratas",
+    "lat": 31.7297125,
+    "long": -106.5324832
+  },
+  {
+    "type": "Liquor",
+    "name": "Little Bit of Texas",
+    "lat": 31.8586306,
+    "long": -106.5857966
+  },
+  {
+    "type": "Liquor",
+    "name": "la mansion discoteque",
+    "lat": 31.7666732,
+    "long": -106.3168713
+  },
+  {
+    "type": "Liquor",
+    "name": "VIP Lounge",
+    "lat": 31.9034218,
+    "long": -106.4208676
+  },
+  {
+    "type": "Liquor",
+    "name": "El After Social Club",
+    "lat": 31.4624844,
+    "long": -106.1812093
+  },
+  {
+    "type": "Liquor",
+    "name": "El Eden",
+    "lat": 31.6582608,
+    "long": -106.4289027
+  },
+  {
+    "type": "Liquor",
+    "name": "La casa de Lalo el del Celica",
+    "lat": 31.7552635,
+    "long": -106.5280443
+  },
+  {
+    "type": "Liquor",
+    "name": "Chicas Locas El Paso",
+    "lat": 31.7379444,
+    "long": -106.3218681
+  },
+  {
+    "type": "Liquor",
+    "name": "Casa de Sam",
+    "lat": 31.7453025,
+    "long": -106.4428676
+  },
+  {
+    "type": "Liquor",
+    "name": "Ricky D s",
+    "lat": 31.7824211,
+    "long": -106.3258928
+  },
+  {
+    "type": "Liquor",
+    "name": "La cripta rock",
+    "lat": 31.739356,
+    "long": -106.4871724
+  },
+  {
+    "type": "Liquor",
+    "name": "Neto s Nieto s",
+    "lat": 31.7366165,
+    "long": -106.4836661
+  },
+  {
+    "type": "Liquor",
+    "name": "CANAYA",
+    "lat": 31.8294242,
+    "long": -106.525862
+  },
+  {
+    "type": "Liquor",
+    "name": "The Overpour",
+    "lat": 31.886636,
+    "long": -106.5694979
+  },
+  {
+    "type": "Liquor",
+    "name": "Graham s Corner",
+    "lat": 31.8281379,
+    "long": -106.5295171
+  },
+  {
+    "type": "Liquor",
+    "name": "Flip s Neighborhood Bar",
+    "lat": 31.8478122,
+    "long": -106.6116892
+  },
+  {
+    "type": "Liquor",
+    "name": "Four s Sports Bar and Grill",
+    "lat": 31.9080531,
+    "long": -106.5959726
+  },
+  {
+    "type": "Liquor",
+    "name": "Lloyd s Pub",
+    "lat": 31.832145,
+    "long": -106.531173
+  },
+  {
+    "type": "Liquor",
+    "name": "Tanyas Mens Club",
+    "lat": 31.6066426,
+    "long": -106.4661321
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Nocturno Oasis",
+    "lat": 31.6768953,
+    "long": -106.4603395
+  },
+  {
+    "type": "Liquor",
+    "name": "La placita Zaragoza",
+    "lat": 31.6616576,
+    "long": -106.4645653
+  },
+  {
+    "type": "Liquor",
+    "name": "Las locas",
+    "lat": 31.6082367,
+    "long": -106.523454
+  },
+  {
+    "type": "Liquor",
+    "name": "Cash Bar",
+    "lat": 31.6070199,
+    "long": -106.4665664
+  },
+  {
+    "type": "Liquor",
+    "name": "Hacienda San Judas Tadeo",
+    "lat": 31.6120657,
+    "long": -106.551476
+  },
+  {
+    "type": "Liquor",
+    "name": "AMBURGESAS EBA GRABAMOS LAS HORAS DEL DIA",
+    "lat": 31.618537,
+    "long": -106.4868518
+  },
+  {
+    "type": "Liquor",
+    "name": "Whiskey Dicks Inc",
+    "lat": 31.7497922,
+    "long": -106.3002462
+  },
+  {
+    "type": "Liquor",
+    "name": "Joseph s Lounge",
+    "lat": 31.7255535,
+    "long": -106.3418121
+  },
+  {
+    "type": "Liquor",
+    "name": "Werk Bar",
+    "lat": 31.7377746,
+    "long": -106.2935615
+  },
+  {
+    "type": "Liquor",
+    "name": "Diabla Bar",
+    "lat": 31.7374038,
+    "long": -106.2938749
+  },
+  {
+    "type": "Liquor",
+    "name": "Joker Night Club",
+    "lat": 31.7041775,
+    "long": -106.4032165
+  },
+  {
+    "type": "Liquor",
+    "name": "La numero Triunfo",
+    "lat": 31.7390041,
+    "long": -106.4287898
+  },
+  {
+    "type": "Liquor",
+    "name": "Oasis Bar",
+    "lat": 31.7714883,
+    "long": -106.421925
+  },
+  {
+    "type": "Liquor",
+    "name": "Crown and Eagle Bar Grill",
+    "lat": 31.7624756,
+    "long": -106.3198058
+  },
+  {
+    "type": "Liquor",
+    "name": "NOMAD Groove Rewind",
+    "lat": 31.7061584,
+    "long": -106.3889928
+  },
+  {
+    "type": "Liquor",
+    "name": "Bora Bora Jrz",
+    "lat": 31.6963804,
+    "long": -106.3563801
+  },
+  {
+    "type": "Liquor",
+    "name": "Kinda Classy Bar",
+    "lat": 31.783091,
+    "long": -106.322636
+  },
+  {
+    "type": "Liquor",
+    "name": "Tobal C A Bar Grill",
+    "lat": 31.7683449,
+    "long": -106.3054687
+  },
+  {
+    "type": "Liquor",
+    "name": "El Escandalo",
+    "lat": 31.7380084,
+    "long": -106.3723983
+  },
+  {
+    "type": "Liquor",
+    "name": "Cervecer C ADa VIP",
+    "lat": 31.6961418,
+    "long": -106.390728
+  },
+  {
+    "type": "Liquor",
+    "name": "PUNTO BACHILLERES ",
+    "lat": 31.7087093,
+    "long": -106.4096484
+  },
+  {
+    "type": "Liquor",
+    "name": "Mi Bar Cantina",
+    "lat": 31.7364339,
+    "long": -106.2945361
+  },
+  {
+    "type": "Liquor",
+    "name": "tutsi club",
+    "lat": 31.7276297,
+    "long": -106.4055071
+  },
+  {
+    "type": "Liquor",
+    "name": "Amadeus",
+    "lat": 31.7020415,
+    "long": -106.4162872
+  },
+  {
+    "type": "Liquor",
+    "name": "Timmy Z",
+    "lat": 31.7553379,
+    "long": -106.3273364
+  },
+  {
+    "type": "Liquor",
+    "name": "GRINGO THEORY PATIO BAR",
+    "lat": 31.801957,
+    "long": -106.2973734
+  },
+  {
+    "type": "Liquor",
+    "name": "TROYANAS GOLD NIGHTCLUB",
+    "lat": 31.7025641,
+    "long": -106.4014193
+  },
+  {
+    "type": "Liquor",
+    "name": "Clasicos Karaoke Bar ",
+    "lat": 31.6994353,
+    "long": -106.4253161
+  },
+  {
+    "type": "Liquor",
+    "name": "MIAMI Badult swim bar D",
+    "lat": 31.7503207,
+    "long": -106.3002415
+  },
+  {
+    "type": "Liquor",
+    "name": "El Paso Comic Strip",
+    "lat": 31.781575,
+    "long": -106.394802
+  },
+  {
+    "type": "Liquor",
+    "name": "Janis Campos Eliseos",
+    "lat": 31.7052242,
+    "long": -106.3890158
+  },
+  {
+    "type": "Liquor",
+    "name": "The Hive Java Lounge",
+    "lat": 31.7460059,
+    "long": -106.3024704
+  },
+  {
+    "type": "Liquor",
+    "name": "Shango club reggaeton",
+    "lat": 31.7228661,
+    "long": -106.4212867
+  },
+  {
+    "type": "Liquor",
+    "name": "F A D E LLC",
+    "lat": 31.7767295,
+    "long": -106.303032
+  },
+  {
+    "type": "Liquor",
+    "name": "Sal C B n de eventos Marsellas",
+    "lat": 31.6998179,
+    "long": -106.4250244
+  },
+  {
+    "type": "Liquor",
+    "name": "Candela discoteque",
+    "lat": 31.7027091,
+    "long": -106.401596
+  },
+  {
+    "type": "Liquor",
+    "name": "Springfield Bar",
+    "lat": 31.7147059,
+    "long": -106.4114822
+  },
+  {
+    "type": "Liquor",
+    "name": "Casa de Alan",
+    "lat": 31.6970699,
+    "long": -106.4289511
+  }
+]

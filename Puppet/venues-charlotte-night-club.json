@@ -1,0 +1,818 @@
+[
+  {
+    "type": "Liquor",
+    "name": "World",
+    "lat": 35.2392806,
+    "long": -80.8445667
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Mirage",
+    "lat": 35.238113,
+    "long": -80.8869224
+  },
+  {
+    "type": "Liquor",
+    "name": "Trio Charlotte",
+    "lat": 35.2188037,
+    "long": -80.861015
+  },
+  {
+    "type": "Liquor",
+    "name": "RSVP South End",
+    "lat": 35.2021325,
+    "long": -80.8711305
+  },
+  {
+    "type": "Liquor",
+    "name": "Tequila House Nightclub",
+    "lat": 35.2286111,
+    "long": -80.8425
+  },
+  {
+    "type": "Liquor",
+    "name": "Encore Nightclub Charlotte",
+    "lat": 35.2280142,
+    "long": -80.8390331
+  },
+  {
+    "type": "Liquor",
+    "name": "QC Social Lounge",
+    "lat": 35.2276453,
+    "long": -80.8391473
+  },
+  {
+    "type": "Liquor",
+    "name": "The Hive",
+    "lat": 35.2276822,
+    "long": -80.8391354
+  },
+  {
+    "type": "Liquor",
+    "name": "Dubai Night Club",
+    "lat": 35.187819,
+    "long": -80.757383
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Royale",
+    "lat": 35.2651069,
+    "long": -80.8803677
+  },
+  {
+    "type": "Liquor",
+    "name": "Bassment Charlotte",
+    "lat": 35.2133738,
+    "long": -80.8434093
+  },
+  {
+    "type": "Liquor",
+    "name": "The Scorpio",
+    "lat": 35.2022511,
+    "long": -80.8712364
+  },
+  {
+    "type": "Liquor",
+    "name": "Mansion Nights Club",
+    "lat": 35.2194443,
+    "long": -80.8136654
+  },
+  {
+    "type": "Liquor",
+    "name": "Imperial",
+    "lat": 35.2278179,
+    "long": -80.8392493
+  },
+  {
+    "type": "Liquor",
+    "name": "Privilege Night Club",
+    "lat": 35.2230574,
+    "long": -80.8420569
+  },
+  {
+    "type": "Liquor",
+    "name": "Safari Lux Lounge",
+    "lat": 35.1894022,
+    "long": -80.762168
+  },
+  {
+    "type": "Liquor",
+    "name": "Skyline Nightz",
+    "lat": 35.2028561,
+    "long": -80.7592437
+  },
+  {
+    "type": "Liquor",
+    "name": "El Centenario Night Club",
+    "lat": 35.266518,
+    "long": -80.767445
+  },
+  {
+    "type": "Liquor",
+    "name": "Argon",
+    "lat": 35.178932,
+    "long": -80.876785
+  },
+  {
+    "type": "Liquor",
+    "name": "ELNOA NOA NIGHTCLUB",
+    "lat": 35.2567476,
+    "long": -80.79395
+  },
+  {
+    "type": "Liquor",
+    "name": "Chasers Charlotte Noda",
+    "lat": 35.2407707,
+    "long": -80.7973412
+  },
+  {
+    "type": "Liquor",
+    "name": "Lynn s Dance Club",
+    "lat": 35.1790121,
+    "long": -80.8899562
+  },
+  {
+    "type": "Liquor",
+    "name": "Las Munecas NIGHT CLUB",
+    "lat": 35.2139794,
+    "long": -80.7722318
+  },
+  {
+    "type": "Liquor",
+    "name": "Zona Rosa Charlotte",
+    "lat": 35.2026725,
+    "long": -80.8710697
+  },
+  {
+    "type": "Liquor",
+    "name": "Coyote Joe s",
+    "lat": 35.2275902,
+    "long": -80.9159687
+  },
+  {
+    "type": "Liquor",
+    "name": "Paper Doll Lounge",
+    "lat": 35.2237273,
+    "long": -80.8938356
+  },
+  {
+    "type": "Liquor",
+    "name": "Flirt Night Club",
+    "lat": 35.2295699,
+    "long": -80.9190951
+  },
+  {
+    "type": "Liquor",
+    "name": "Lust ultra lounge",
+    "lat": 35.246311,
+    "long": -80.8300377
+  },
+  {
+    "type": "Liquor",
+    "name": "The Nile is now Club Nile ",
+    "lat": 35.2923793,
+    "long": -80.7976514
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Onyx Charlotte",
+    "lat": 35.1697243,
+    "long": -80.8784921
+  },
+  {
+    "type": "Liquor",
+    "name": "Explict Bistro Lounge",
+    "lat": 35.2393301,
+    "long": -80.8451309
+  },
+  {
+    "type": "Liquor",
+    "name": "Tilt on Trade",
+    "lat": 35.227771,
+    "long": -80.8439587
+  },
+  {
+    "type": "Liquor",
+    "name": "VOLTAGE SPORTS BAR AND LOUNGE INC",
+    "lat": 35.1953288,
+    "long": -80.877023
+  },
+  {
+    "type": "Liquor",
+    "name": "The Comedy Zone",
+    "lat": 35.23925,
+    "long": -80.84481
+  },
+  {
+    "type": "Liquor",
+    "name": "Leather Lace Southend",
+    "lat": 35.2080765,
+    "long": -80.860071
+  },
+  {
+    "type": "Liquor",
+    "name": "Building Blocks Entertainment",
+    "lat": 35.2551847,
+    "long": -80.8297644
+  },
+  {
+    "type": "Liquor",
+    "name": "Middle C Jazz",
+    "lat": 35.2227112,
+    "long": -80.8430876
+  },
+  {
+    "type": "Liquor",
+    "name": "Dream CLT",
+    "lat": 35.222143,
+    "long": -80.8541213
+  },
+  {
+    "type": "Liquor",
+    "name": "Legacy Lounge Clt",
+    "lat": 35.2588684,
+    "long": -80.787443
+  },
+  {
+    "type": "Liquor",
+    "name": "City Lights Rooftop",
+    "lat": 35.2173378,
+    "long": -80.8387591
+  },
+  {
+    "type": "Liquor",
+    "name": "The Side Room",
+    "lat": 35.2538913,
+    "long": -80.7915616
+  },
+  {
+    "type": "Liquor",
+    "name": "The Evening Muse",
+    "lat": 35.2477153,
+    "long": -80.8048093
+  },
+  {
+    "type": "Liquor",
+    "name": "Crazy Horse Showclub of Charlotte",
+    "lat": 35.1873129,
+    "long": -80.7585298
+  },
+  {
+    "type": "Liquor",
+    "name": "Sophia s Lounge",
+    "lat": 35.2284016,
+    "long": -80.8426896
+  },
+  {
+    "type": "Liquor",
+    "name": "Aura Rooftop",
+    "lat": 35.2227282,
+    "long": -80.8479621
+  },
+  {
+    "type": "Liquor",
+    "name": "Mooney s Lounge",
+    "lat": 35.2532706,
+    "long": -80.8260454
+  },
+  {
+    "type": "Liquor",
+    "name": "Starlight on nd",
+    "lat": 35.2379114,
+    "long": -80.8199988
+  },
+  {
+    "type": "Liquor",
+    "name": "The Palace",
+    "lat": 35.2282322,
+    "long": -80.846666
+  },
+  {
+    "type": "Liquor",
+    "name": "Noda ",
+    "lat": 35.247284,
+    "long": -80.805606
+  },
+  {
+    "type": "Liquor",
+    "name": "Infused Charlotte",
+    "lat": 35.22292,
+    "long": -80.83339
+  },
+  {
+    "type": "Liquor",
+    "name": "Bliss Nightlife Charlotte",
+    "lat": 35.2768912,
+    "long": -80.9373191
+  },
+  {
+    "type": "Liquor",
+    "name": "Members Only Tasting Room Social",
+    "lat": 35.2196905,
+    "long": -80.8009872
+  },
+  {
+    "type": "Liquor",
+    "name": "Ten Sports Bar Lounge",
+    "lat": 35.2297797,
+    "long": -80.8479337
+  },
+  {
+    "type": "Liquor",
+    "name": "Taboo Lounge Hookah Bar",
+    "lat": 35.2320775,
+    "long": -80.8484573
+  },
+  {
+    "type": "Liquor",
+    "name": " Social",
+    "lat": 35.2219456,
+    "long": -80.8427131
+  },
+  {
+    "type": "Liquor",
+    "name": "A Lounge clt",
+    "lat": 35.2312744,
+    "long": -80.836849
+  },
+  {
+    "type": "Liquor",
+    "name": "Somewhere CLT",
+    "lat": 35.2369763,
+    "long": -80.8021905
+  },
+  {
+    "type": "Liquor",
+    "name": "AC Lounge",
+    "lat": 35.2253877,
+    "long": -80.8413335
+  },
+  {
+    "type": "Liquor",
+    "name": "The Underground",
+    "lat": 35.2397891,
+    "long": -80.84598
+  },
+  {
+    "type": "Liquor",
+    "name": " st Ward Social",
+    "lat": 35.2295183,
+    "long": -80.8371053
+  },
+  {
+    "type": "Liquor",
+    "name": "Red th",
+    "lat": 35.2015151,
+    "long": -80.8436965
+  },
+  {
+    "type": "Liquor",
+    "name": "Crave Dessert Bar",
+    "lat": 35.2318603,
+    "long": -80.8455554
+  },
+  {
+    "type": "Liquor",
+    "name": "The Vine CLT E Shisha Cocktail Lounge",
+    "lat": 35.2260326,
+    "long": -80.8362003
+  },
+  {
+    "type": "Liquor",
+    "name": "Gold Club of Charlotte",
+    "lat": 35.1634488,
+    "long": -80.8785847
+  },
+  {
+    "type": "Liquor",
+    "name": "OROSOKO Sound Bar",
+    "lat": 35.2183582,
+    "long": -80.8558505
+  },
+  {
+    "type": "Liquor",
+    "name": "Woodshed Bar",
+    "lat": 35.2422275,
+    "long": -80.934047
+  },
+  {
+    "type": "Liquor",
+    "name": "Dahlia E s Charlotte",
+    "lat": 35.22766,
+    "long": -80.8413145
+  },
+  {
+    "type": "Liquor",
+    "name": "Marbellas Night Club",
+    "lat": 35.21739,
+    "long": -80.780002
+  },
+  {
+    "type": "Liquor",
+    "name": "Nuvole Rooftop TwentyTwo",
+    "lat": 35.225354,
+    "long": -80.841327
+  },
+  {
+    "type": "Liquor",
+    "name": "Elsewhere Cocktail Bar",
+    "lat": 35.2114718,
+    "long": -80.8604231
+  },
+  {
+    "type": "Liquor",
+    "name": "The Peace Pipe",
+    "lat": 35.1814878,
+    "long": -80.8841219
+  },
+  {
+    "type": "Liquor",
+    "name": "Soul Gastrolounge",
+    "lat": 35.2517669,
+    "long": -80.7924597
+  },
+  {
+    "type": "Liquor",
+    "name": "Playground Clt",
+    "lat": 35.2769251,
+    "long": -80.9372574
+  },
+  {
+    "type": "Liquor",
+    "name": "Canteen at Camp North End",
+    "lat": 35.2477559,
+    "long": -80.8334588
+  },
+  {
+    "type": "Liquor",
+    "name": "Kanna Collective Lounge Coffee Bar",
+    "lat": 35.212123,
+    "long": -80.861374
+  },
+  {
+    "type": "Liquor",
+    "name": "Istanbul Hookah Lounge",
+    "lat": 35.2259128,
+    "long": -80.8466669
+  },
+  {
+    "type": "Liquor",
+    "name": "Fizz",
+    "lat": 35.138951,
+    "long": -80.7406832
+  },
+  {
+    "type": "Liquor",
+    "name": "TCB Hundred Bar Grill",
+    "lat": 35.2999682,
+    "long": -80.8073978
+  },
+  {
+    "type": "Liquor",
+    "name": "Starlight Lounge Night club",
+    "lat": 35.128121,
+    "long": -80.8747049
+  },
+  {
+    "type": "Liquor",
+    "name": "Rio Ultra Lounge",
+    "lat": 35.3490415,
+    "long": -80.8438146
+  },
+  {
+    "type": "Liquor",
+    "name": "The Cellar at Duckworth s",
+    "lat": 35.2292585,
+    "long": -80.8397251
+  },
+  {
+    "type": "Liquor",
+    "name": "Eighty Eights Coffee Cocktails",
+    "lat": 35.2537135,
+    "long": -80.790182
+  },
+  {
+    "type": "Liquor",
+    "name": "The Vintage Whiskey Cigar Bar of Charlotte",
+    "lat": 35.210586,
+    "long": -80.8579981
+  },
+  {
+    "type": "Liquor",
+    "name": "Merchant and Trade",
+    "lat": 35.2264352,
+    "long": -80.8464038
+  },
+  {
+    "type": "Liquor",
+    "name": "Infinity Live",
+    "lat": 35.3491053,
+    "long": -80.8430118
+  },
+  {
+    "type": "Liquor",
+    "name": "Luna Lounge Llc",
+    "lat": 35.2299241,
+    "long": -80.8373082
+  },
+  {
+    "type": "Liquor",
+    "name": "Park lanez",
+    "lat": 35.1704602,
+    "long": -80.8479254
+  },
+  {
+    "type": "Liquor",
+    "name": "Touch C A Restaurant Lounge",
+    "lat": 35.2192827,
+    "long": -80.8023694
+  },
+  {
+    "type": "Liquor",
+    "name": "IBM Dr",
+    "lat": 35.1961713,
+    "long": -80.8373464
+  },
+  {
+    "type": "Liquor",
+    "name": "Tailgators Sports Grill",
+    "lat": 35.2554958,
+    "long": -80.45273
+  },
+  {
+    "type": "Liquor",
+    "name": "The Local Room",
+    "lat": 35.2580296,
+    "long": -80.4243672
+  },
+  {
+    "type": "Liquor",
+    "name": "El Vaquero",
+    "lat": 35.2561107,
+    "long": -80.4596612
+  },
+  {
+    "type": "Liquor",
+    "name": "Speedway",
+    "lat": 35.2511172,
+    "long": -80.5016422
+  },
+  {
+    "type": "Liquor",
+    "name": " North Family Restaurant",
+    "lat": 35.2651167,
+    "long": -80.4248222
+  },
+  {
+    "type": "Liquor",
+    "name": "Mi Casa Family Restaurant",
+    "lat": 35.235255,
+    "long": -80.506459
+  },
+  {
+    "type": "Liquor",
+    "name": "Red Bridge Golf Club",
+    "lat": 35.261117,
+    "long": -80.457318
+  },
+  {
+    "type": "Liquor",
+    "name": "D Anna s Kitchen",
+    "lat": 35.2541099,
+    "long": -80.5007653
+  },
+  {
+    "type": "Liquor",
+    "name": "Wendy s",
+    "lat": 35.2608725,
+    "long": -80.4239908
+  },
+  {
+    "type": "Liquor",
+    "name": "Wayside Family Restaurant",
+    "lat": 35.2347222,
+    "long": -80.4230556
+  },
+  {
+    "type": "Liquor",
+    "name": "Pizza and Beyond",
+    "lat": 35.2556512,
+    "long": -80.4597405
+  },
+  {
+    "type": "Liquor",
+    "name": "Walmart Supercenter",
+    "lat": 35.2564424,
+    "long": -80.4571621
+  },
+  {
+    "type": "Liquor",
+    "name": "Burger King",
+    "lat": 35.254308,
+    "long": -80.45485
+  },
+  {
+    "type": "Liquor",
+    "name": "Food Lion",
+    "lat": 35.2553795,
+    "long": -80.4380375
+  },
+  {
+    "type": "Liquor",
+    "name": "The Club House Bites and Booze",
+    "lat": 35.0263546,
+    "long": -80.8388601
+  },
+  {
+    "type": "Liquor",
+    "name": "Bradshaw Social House",
+    "lat": 35.0534937,
+    "long": -80.812961
+  },
+  {
+    "type": "Liquor",
+    "name": "Bonnie Clyde E s Lounge",
+    "lat": 35.0623839,
+    "long": -80.7716189
+  },
+  {
+    "type": "Liquor",
+    "name": "DB s Tavern",
+    "lat": 35.0387588,
+    "long": -80.7932634
+  },
+  {
+    "type": "Liquor",
+    "name": "The Lodge A Sportsman s Grill",
+    "lat": 35.10648,
+    "long": -80.807582
+  },
+  {
+    "type": "Liquor",
+    "name": "Hickory Tavern",
+    "lat": 35.0534568,
+    "long": -80.7707919
+  },
+  {
+    "type": "Liquor",
+    "name": "Carolina Ale House Charlotte Waverly",
+    "lat": 35.0514882,
+    "long": -80.7676231
+  },
+  {
+    "type": "Liquor",
+    "name": "Buffalo Wild Wings",
+    "lat": 35.0642715,
+    "long": -80.7713848
+  },
+  {
+    "type": "Liquor",
+    "name": "The Club at Longview",
+    "lat": 35.0286467,
+    "long": -80.7912185
+  },
+  {
+    "type": "Liquor",
+    "name": "Tap and Vine Stonecrest",
+    "lat": 35.0611938,
+    "long": -80.8171998
+  },
+  {
+    "type": "Liquor",
+    "name": "Steady Eddy s Pumphouse",
+    "lat": 35.0930248,
+    "long": -80.7018166
+  },
+  {
+    "type": "Liquor",
+    "name": "Duckworth s Grill Taphouse",
+    "lat": 35.0539704,
+    "long": -80.7734576
+  },
+  {
+    "type": "Liquor",
+    "name": "Arooji s Wine Room",
+    "lat": 35.0620834,
+    "long": -80.7730387
+  },
+  {
+    "type": "Liquor",
+    "name": "Foxcroft Food Wine Waverly",
+    "lat": 35.0510112,
+    "long": -80.7673256
+  },
+  {
+    "type": "Liquor",
+    "name": "Country Club of the Carolinas",
+    "lat": 35.004823,
+    "long": -80.826933
+  },
+  {
+    "type": "Liquor",
+    "name": "Link Pin Arboretum",
+    "lat": 35.0958513,
+    "long": -80.7799807
+  },
+  {
+    "type": "Liquor",
+    "name": "Providence Country Club",
+    "lat": 35.0404494,
+    "long": -80.7804823
+  },
+  {
+    "type": "Liquor",
+    "name": "Vintner Wine Market",
+    "lat": 35.0960072,
+    "long": -80.7803074
+  },
+  {
+    "type": "Liquor",
+    "name": "Havana Lounge Charlotte",
+    "lat": 35.1167015,
+    "long": -80.9626481
+  },
+  {
+    "type": "Liquor",
+    "name": "The Men s Club of Charlotte",
+    "lat": 35.1606939,
+    "long": -80.8862616
+  },
+  {
+    "type": "Liquor",
+    "name": "Euphoria VI",
+    "lat": 35.2013331,
+    "long": -80.7252636
+  },
+  {
+    "type": "Liquor",
+    "name": "After Nine Bar and Lounge",
+    "lat": 35.2032874,
+    "long": -80.7494485
+  },
+  {
+    "type": "Liquor",
+    "name": "Tassels Cabaret",
+    "lat": 35.1053436,
+    "long": -80.6840926
+  },
+  {
+    "type": "Liquor",
+    "name": "Shep s Bar Grill",
+    "lat": 35.1793154,
+    "long": -80.6443898
+  },
+  {
+    "type": "Liquor",
+    "name": "The Rock Lounge by Heir Co LLC",
+    "lat": 35.1825962,
+    "long": -80.6548882
+  },
+  {
+    "type": "Liquor",
+    "name": "Rack em Pub Billiards",
+    "lat": 35.1343279,
+    "long": -80.7089583
+  },
+  {
+    "type": "Liquor",
+    "name": "Cafeteria",
+    "lat": 35.1981571,
+    "long": -80.6919186
+  },
+  {
+    "type": "Liquor",
+    "name": "Karaoke Commander",
+    "lat": 34.2920456,
+    "long": -79.86097
+  },
+  {
+    "type": "Liquor",
+    "name": "Aura HiFi",
+    "lat": 35.333639,
+    "long": -80.71605
+  },
+  {
+    "type": "Liquor",
+    "name": "Vanessa Bookings",
+    "lat": 35.2822426,
+    "long": -80.7466667
+  },
+  {
+    "type": "Liquor",
+    "name": "King Tut Bar Hookah Lounge",
+    "lat": 35.306227,
+    "long": -80.721729
+  },
+  {
+    "type": "Liquor",
+    "name": "Red th",
+    "lat": 35.3288405,
+    "long": -80.7385797
+  },
+  {
+    "type": "Liquor",
+    "name": "Sky Box Club",
+    "lat": 35.317215,
+    "long": -80.739129
+  }
+]

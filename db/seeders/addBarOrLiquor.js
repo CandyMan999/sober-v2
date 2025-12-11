@@ -1,9 +1,55 @@
 const mongoose = require("mongoose");
+const fs = require("fs");
+const path = require("path");
 const { Venue, City } = require("../models");
-const { data } = require("./barsAndLiquor"); // add data to this file whenever you want to add new bars or liqour stores.
+const { data: manualSeedData = [] } = require("./barsAndLiquor");
 require("dotenv").config();
 
 const { removeDuplicates, getDistanceFromCoords } = require("../utils/helpers");
+
+// 📂 Folder where runMap.js and all venues-*.json files live
+const SCRAPED_DIR = path.join(__dirname, "..", "..", "Puppet");
+
+// Load all venues from every `venues-*.json` file in SCRAPED_DIR
+function loadScrapedVenues() {
+  if (!fs.existsSync(SCRAPED_DIR)) {
+    console.log(`⚠️ SCRAPED_DIR does not exist (${SCRAPED_DIR}).`);
+    return [];
+  }
+
+  const files = fs
+    .readdirSync(SCRAPED_DIR)
+    .filter((f) => f.startsWith("venues-") && f.endsWith(".json"));
+
+  if (!files.length) {
+    console.log(`⚠️ No venues-*.json files found in ${SCRAPED_DIR}.`);
+    return [];
+  }
+
+  let all = [];
+
+  for (const file of files) {
+    const fullPath = path.join(SCRAPED_DIR, file);
+    try {
+      const raw = fs.readFileSync(fullPath, "utf8");
+      const json = JSON.parse(raw);
+
+      if (Array.isArray(json)) {
+        all = all.concat(json);
+        console.log(`📥 Loaded ${json.length} venues from ${file}`);
+      } else {
+        console.warn(`⚠️ Skipping ${file}: JSON root is not an array.`);
+      }
+    } catch (err) {
+      console.error(`❌ Error reading/parsing ${file}:`, err.message);
+    }
+  }
+
+  console.log(
+    `✅ Loaded a total of ${all.length} venues from ${files.length} scraped files.`
+  );
+  return all;
+}
 
 const addNewBars = async () => {
   await mongoose
@@ -13,23 +59,6 @@ const addNewBars = async () => {
     })
     .then(() => console.log("DB connected"))
     .catch((err) => console.log(err));
-
-  //Example of seedData structure
-  // {
-  //   type: "Liquor",
-  //   name: "Mead's Retail Liquor Store",
-  //   lat: 38.3698483,
-  //   long: -97.6830878,
-  // },
-  // {
-  //   type: "Liquor",
-  //   name: "Top Hat Retail Liquor Inc ",
-  //   lat: 39.1174572,
-  //   long: -94.7642906,
-  // },
-  // { type: "Liquor", name: "Bing Brothers", lat: 37.236013, long: -96.996784 }
-
-  let seedData = data; //put seed data, don't forget to make sure type is "Bar" or "Liqour"
 
   // helper: find closest city
   const findClosestCity = async (lat, long) => {
@@ -69,20 +98,35 @@ const addNewBars = async () => {
   let resumeIndex = 0;
 
   try {
+    // 🔹 Load all scraped JSON + manual bars/liquor data
+    let seedData = [...manualSeedData, ...loadScrapedVenues()];
+
+    console.log(
+      `🧮 Combined manualSeedData (${manualSeedData.length}) + scraped venues → ${seedData.length} total before dedupe.`
+    );
+
+    // Remove duplicates by your helper
     seedData = await removeDuplicates(seedData);
+    console.log(`✅ After removeDuplicates: ${seedData.length} venues.`);
 
     for (let i = 0; i < seedData.length; i++) {
-      resumeIndex = i; // track progress in case you still want the catch logic
+      resumeIndex = i; // track progress for resume logic
 
       const { lat, long, name, type } = seedData[i];
 
-      // --- DUPLICATE CHECK HERE ---
+      if (typeof lat !== "number" || typeof long !== "number") {
+        console.log(
+          `⚠️ Skipping [index ${i}] "${name}" due to invalid coords: lat=${lat}, long=${long}`
+        );
+        continue;
+      }
+
       const existingVenue = await isDuplicateVenue(lat, long);
       if (existingVenue) {
         console.log(
-          `Skipping duplicate [index ${i}]: "${name}" has same coords as existing venue "${existingVenue.name}" (lat: ${lat}, long: ${long})`
+          `⏭  Skipping duplicate [index ${i}]: "${name}" has same coords as existing venue "${existingVenue.name}" (lat: ${lat}, long: ${long})`
         );
-        continue; // skip creating / linking to city
+        continue;
       }
 
       const { cityId } = await findClosestCity(lat, long);
@@ -90,7 +134,7 @@ const addNewBars = async () => {
 
       if (!city) {
         console.log(
-          `No city found for venue [index ${i}] "${name}" (lat: ${lat}, long: ${long}). Skipping.`
+          `⚠️ No city found for venue [index ${i}] "${name}" (lat: ${lat}, long: ${long}). Skipping.`
         );
         continue;
       }
@@ -108,25 +152,35 @@ const addNewBars = async () => {
         { $push: { bars: venue } },
         { new: true }
       );
-
-      console.log(`Created venue [index ${i}]: ${venue.name} in ${city.name}`);
+      console.log(
+        `🍺 Created venue [${i}] (${type}) → "${venue.name}" in ${city.name}`
+      );
     }
   } catch (error) {
     console.error("Error while seeding venues:", error);
 
-    // optional: if you *really* want to try to resume from where it crashed:
+    // optional: resume logic
     try {
-      console.log(`Attempting to resume from index ${resumeIndex}...`);
+      console.log(`🔁 Attempting to resume from index ${resumeIndex}...`);
+
+      let seedData = [...manualSeedData, ...loadScrapedVenues()];
 
       seedData = await removeDuplicates(seedData);
 
       for (let i = resumeIndex; i < seedData.length; i++) {
         const { lat, long, name, type } = seedData[i];
 
+        if (typeof lat !== "number" || typeof long !== "number") {
+          console.log(
+            `⚠️ Skipping [index ${i}] "${name}" due to invalid coords: lat=${lat}, long=${long}`
+          );
+          continue;
+        }
+
         const existingVenue = await isDuplicateVenue(lat, long);
         if (existingVenue) {
           console.log(
-            `Skipping duplicate [index ${i}]: "${name}" has same coords as existing venue "${existingVenue.name}" (lat: ${lat}, long: ${long})`
+            `⏭  Skipping duplicate [index ${i}]: "${name}" has same coords as existing venue "${existingVenue.name}" (lat: ${lat}, long: ${long})`
           );
           continue;
         }
@@ -136,7 +190,7 @@ const addNewBars = async () => {
 
         if (!city) {
           console.log(
-            `No city found for venue [index ${i}] "${name}" (lat: ${lat}, long: ${long}). Skipping.`
+            `⚠️ No city found for venue [index ${i}] "${name}" (lat: ${lat}, long: ${long}). Skipping.`
           );
           continue;
         }
@@ -156,11 +210,11 @@ const addNewBars = async () => {
         );
 
         console.log(
-          `Created venue [index ${i}]: ${venue.name} in ${city.name} (resume)`
+          `✅ Created venue [index ${i}]: ${venue.name} in ${city.name} (resume)`
         );
       }
     } catch (resumeError) {
-      console.error("Error while resuming venue seed:", resumeError);
+      console.error("❌ Error while resuming venue seed:", resumeError);
     }
   } finally {
     await mongoose.disconnect();

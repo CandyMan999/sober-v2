@@ -1,0 +1,362 @@
+[
+  {
+    "type": "Liquor",
+    "name": "Posh Nightclub",
+    "lat": 35.0847087,
+    "long": -106.6518935
+  },
+  {
+    "type": "Liquor",
+    "name": "Effex NightClub",
+    "lat": 35.0845658,
+    "long": -106.6526196
+  },
+  {
+    "type": "Liquor",
+    "name": "Albuquerque Press Club",
+    "lat": 35.0816543,
+    "long": -106.6390662
+  },
+  {
+    "type": "Liquor",
+    "name": " Nightclub",
+    "lat": 35.0847102,
+    "long": -106.6517257
+  },
+  {
+    "type": "Liquor",
+    "name": "Sidewinders Ranch",
+    "lat": 35.0787731,
+    "long": -106.5973044
+  },
+  {
+    "type": "Liquor",
+    "name": "Leo s",
+    "lat": 35.1228529,
+    "long": -106.6543352
+  },
+  {
+    "type": "Liquor",
+    "name": "Dr Nefario s Laboratory",
+    "lat": 35.1162848,
+    "long": -106.604428
+  },
+  {
+    "type": "Liquor",
+    "name": "PRIZM",
+    "lat": 35.0835857,
+    "long": -106.6499332
+  },
+  {
+    "type": "Liquor",
+    "name": "Central Cabana",
+    "lat": 35.0751945,
+    "long": -106.5585443
+  },
+  {
+    "type": "Liquor",
+    "name": "Rocksteady s Social Club",
+    "lat": 35.0791821,
+    "long": -106.5967127
+  },
+  {
+    "type": "Liquor",
+    "name": "Backstage at Revel",
+    "lat": 35.1345479,
+    "long": -106.6160359
+  },
+  {
+    "type": "Liquor",
+    "name": "Adios Mama",
+    "lat": 35.129993,
+    "long": -106.5701578
+  },
+  {
+    "type": "Liquor",
+    "name": "The Library Bar Grill",
+    "lat": 35.0841758,
+    "long": -106.6510375
+  },
+  {
+    "type": "Liquor",
+    "name": "The Copper Lounge",
+    "lat": 35.0815941,
+    "long": -106.6300319
+  },
+  {
+    "type": "Liquor",
+    "name": "Red District",
+    "lat": 35.0848217,
+    "long": -106.6516893
+  },
+  {
+    "type": "Liquor",
+    "name": "The Dirty Bourbon",
+    "lat": 35.1295294,
+    "long": -106.531713
+  },
+  {
+    "type": "Liquor",
+    "name": "Outpost Performance Space",
+    "lat": 35.0784575,
+    "long": -106.6218989
+  },
+  {
+    "type": "Liquor",
+    "name": "Ambrosia",
+    "lat": 35.0876268,
+    "long": -106.5916575
+  },
+  {
+    "type": "Liquor",
+    "name": "The First Turn Lounge",
+    "lat": 35.0778634,
+    "long": -106.5707334
+  },
+  {
+    "type": "Liquor",
+    "name": "Sunset Grille Bar",
+    "lat": 35.0876548,
+    "long": -106.5711691
+  },
+  {
+    "type": "Liquor",
+    "name": "QBar Lounge at Hotel Albuquerque",
+    "lat": 35.1001895,
+    "long": -106.669457
+  },
+  {
+    "type": "Liquor",
+    "name": "Moonlight Lounge",
+    "lat": 35.084025,
+    "long": -106.6491002
+  },
+  {
+    "type": "Liquor",
+    "name": "Solo Club Inc",
+    "lat": 35.1153377,
+    "long": -106.6162377
+  },
+  {
+    "type": "Liquor",
+    "name": "Cananas",
+    "lat": 35.0690816,
+    "long": -106.5038272
+  },
+  {
+    "type": "Liquor",
+    "name": "Revel",
+    "lat": 35.1347699,
+    "long": -106.6161348
+  },
+  {
+    "type": "Liquor",
+    "name": "Ojos Locos Sports Cantina Albuquerque, NM ",
+    "lat": 35.1000943,
+    "long": -106.5698079
+  },
+  {
+    "type": "Liquor",
+    "name": "Side Effex",
+    "lat": 35.0845485,
+    "long": -106.6526096
+  },
+  {
+    "type": "Liquor",
+    "name": "Hyena s Comedy Nightclub",
+    "lat": 35.0979224,
+    "long": -106.5639874
+  },
+  {
+    "type": "Liquor",
+    "name": "TD s North Showclub",
+    "lat": 35.1453976,
+    "long": -106.5900405
+  },
+  {
+    "type": "Liquor",
+    "name": "Fuzzy Bunny",
+    "lat": 35.0850859,
+    "long": -106.653373
+  },
+  {
+    "type": "Liquor",
+    "name": "Fiesta s Restaurant",
+    "lat": 35.1305944,
+    "long": -106.6035993
+  },
+  {
+    "type": "Liquor",
+    "name": "Canvas Artistry",
+    "lat": 35.0842603,
+    "long": -106.6475304
+  },
+  {
+    "type": "Liquor",
+    "name": "Enchanted Botanicals Nob Hill Cannabis Dispensary Lounge",
+    "lat": 35.080308,
+    "long": -106.6062434
+  },
+  {
+    "type": "Liquor",
+    "name": "Historic Lobo Theater Event Center",
+    "lat": 35.0808699,
+    "long": -106.6113686
+  },
+  {
+    "type": "Liquor",
+    "name": "ABQ Grill",
+    "lat": 35.1101524,
+    "long": -106.5679058
+  },
+  {
+    "type": "Liquor",
+    "name": "Stoned Desert Dispensary, Consumption Lounge Cafe",
+    "lat": 35.0662991,
+    "long": -106.5866223
+  },
+  {
+    "type": "Liquor",
+    "name": "Tablao Flamenco Albuquerque",
+    "lat": 35.0994278,
+    "long": -106.669126
+  },
+  {
+    "type": "Liquor",
+    "name": "Oak Ivy",
+    "lat": 35.0808923,
+    "long": -106.6104387
+  },
+  {
+    "type": "Liquor",
+    "name": "Monte s Cigars Pipe Tobacco",
+    "lat": 35.1238788,
+    "long": -106.5860876
+  },
+  {
+    "type": "Liquor",
+    "name": "Round Bowling Arcade Coronado Center",
+    "lat": 35.1065227,
+    "long": -106.5756004
+  },
+  {
+    "type": "Liquor",
+    "name": "AMC Albuquerque ",
+    "lat": 35.0213196,
+    "long": -106.7111642
+  },
+  {
+    "type": "Liquor",
+    "name": "Planet Fitness",
+    "lat": 35.0226093,
+    "long": -106.7130952
+  },
+  {
+    "type": "Liquor",
+    "name": "Albuquerque City Limits Restaurant",
+    "lat": 35.0287546,
+    "long": -106.714915
+  },
+  {
+    "type": "Liquor",
+    "name": "Denny s",
+    "lat": 35.026788,
+    "long": -106.707664
+  },
+  {
+    "type": "Liquor",
+    "name": "Allsup s Convenience Store",
+    "lat": 35.0363,
+    "long": -106.7128908
+  },
+  {
+    "type": "Liquor",
+    "name": "Gold Street Pizza Brew SV",
+    "lat": 35.028672,
+    "long": -106.714332
+  },
+  {
+    "type": "Liquor",
+    "name": "Sanchez Tacos ",
+    "lat": 35.0121434,
+    "long": -106.7158033
+  },
+  {
+    "type": "Liquor",
+    "name": "Carl s Jr ",
+    "lat": 35.064436,
+    "long": -106.7846541
+  },
+  {
+    "type": "Liquor",
+    "name": "Domino s Pizza",
+    "lat": 35.0553688,
+    "long": -106.738084
+  },
+  {
+    "type": "Liquor",
+    "name": "Whataburger",
+    "lat": 35.0232015,
+    "long": -106.7138845
+  },
+  {
+    "type": "Liquor",
+    "name": "Love s Travel Stop",
+    "lat": 35.0644333,
+    "long": -106.784736
+  },
+  {
+    "type": "Liquor",
+    "name": "Circle K",
+    "lat": 35.0552897,
+    "long": -106.7434597
+  },
+  {
+    "type": "Liquor",
+    "name": "Walmart Supercenter",
+    "lat": 35.0262102,
+    "long": -106.7107486
+  },
+  {
+    "type": "Liquor",
+    "name": "McDonald s",
+    "lat": 35.0236509,
+    "long": -106.7138094
+  },
+  {
+    "type": "Liquor",
+    "name": "Sonic Drive In",
+    "lat": 35.035945,
+    "long": -106.7130114
+  },
+  {
+    "type": "Liquor",
+    "name": "Walmart Neighborhood Market",
+    "lat": 35.0548744,
+    "long": -106.7393035
+  },
+  {
+    "type": "Liquor",
+    "name": "Tropical Smoothie Cafe",
+    "lat": 35.0233187,
+    "long": -106.7129192
+  },
+  {
+    "type": "Liquor",
+    "name": "Dollar Tree",
+    "lat": 35.0286446,
+    "long": -106.7160344
+  },
+  {
+    "type": "Liquor",
+    "name": "Dollar General",
+    "lat": 35.0528956,
+    "long": -106.7073881
+  },
+  {
+    "type": "Liquor",
+    "name": "Walgreens",
+    "lat": 35.0436795,
+    "long": -106.7379492
+  }
+]

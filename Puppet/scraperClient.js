@@ -1,196 +1,147 @@
-// scraperClient.js
-// Export a single function that runs INSIDE the browser.
-module.exports = function runScraperClient() {
-  (function () {
-    // ---------- UI SETUP ----------
-    function ensureScraperUI() {
-      let panel = document.getElementById("scraper-panel");
-      if (!panel) {
-        panel = document.createElement("div");
-        panel.id = "scraper-panel";
-        panel.style.position = "fixed";
-        panel.style.bottom = "10px";
-        panel.style.right = "10px";
-        panel.style.zIndex = "999999";
-        panel.style.width = "320px";
-        panel.style.maxHeight = "260px";
-        panel.style.background = "rgba(0,0,0,0.85)";
-        panel.style.color = "#0f0";
-        panel.style.fontFamily = "monospace";
-        panel.style.fontSize = "11px";
-        panel.style.borderRadius = "6px";
-        panel.style.boxShadow = "0 0 8px rgba(0,0,0,0.6)";
-        panel.style.display = "flex";
-        panel.style.flexDirection = "column";
-        panel.style.overflow = "hidden";
-        panel.style.border = "1px solid #333";
+// runMap.js
+// For ONE city: cycle through 3 categories, inject scraperClient,
+// wait for Stop Scraper, then save a file per category.
 
-        const header = document.createElement("div");
-        header.style.display = "flex";
-        header.style.alignItems = "center";
-        header.style.justifyContent = "space-between";
-        header.style.padding = "4px 6px";
-        header.style.borderBottom = "1px solid #333";
-        header.style.background = "#111";
+const fs = require("fs");
+const path = require("path");
+const puppeteer = require("puppeteer");
+const { CITIES } = require("./citiesList");
+const runScraperClient = require("./scraperClient");
 
-        const title = document.createElement("span");
-        title.textContent = "Venue Scraper";
-        title.style.color = "#fff";
-        title.style.fontSize = "11px";
+// Which city by index (from your giant CITIES array)
+const ACTIVE_CITY_INDEX = 0; // 0 = New York, 8 = Dallas, etc.
 
-        const stopBtn = document.createElement("button");
-        stopBtn.id = "scraper-stop-btn";
-        stopBtn.textContent = "Stop Scraper";
-        stopBtn.style.fontSize = "11px";
-        stopBtn.style.padding = "2px 6px";
-        stopBtn.style.cursor = "pointer";
-        stopBtn.style.border = "1px solid #a00";
-        stopBtn.style.borderRadius = "4px";
-        stopBtn.style.background = "#800";
-        stopBtn.style.color = "#fff";
+// 3 categories + type + slug for filenames
+const SEARCH_CATEGORIES = [
+  { label: "Dive Bars", type: "Bar", slug: "dive-bars" },
+  { label: "Liquor Store", type: "Liquor", slug: "liquor-store" },
+  { label: "Night Club", type: "Liquor", slug: "night-club" },
+];
 
-        header.appendChild(title);
-        header.appendChild(stopBtn);
+const ZOOM_LEVEL = 13.02;
 
-        const logBox = document.createElement("pre");
-        logBox.id = "scraper-logs";
-        logBox.style.margin = "0";
-        logBox.style.padding = "4px 6px";
-        logBox.style.whiteSpace = "pre-wrap";
-        logBox.style.overflowY = "auto";
-        logBox.style.flex = "1";
+const sleep = (ms) => new Promise((res) => setTimeout(res, ms));
 
-        panel.appendChild(header);
-        panel.appendChild(logBox);
-        document.body.appendChild(panel);
-      }
+function slugifyCity(name) {
+  return name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
 
-      function log(message) {
-        const logBox = document.getElementById("scraper-logs");
-        const ts = new Date().toISOString().split("T")[1].split(".")[0];
-        const line = `[${ts}] ${message}\n`;
-        if (logBox) {
-          logBox.textContent += line;
-          logBox.scrollTop = logBox.scrollHeight;
-        }
-        console.log("[SCRAPER]", message);
-      }
+// a tiny dedupe pass on Node side as an extra safety net
+function dedupeVenues(venues) {
+  const map = new Map();
+  for (const v of venues || []) {
+    if (typeof v.lat !== "number" || typeof v.long !== "number") continue;
+    const key = `${v.type}|${v.name}|${v.lat.toFixed(6)},${v.long.toFixed(6)}`;
+    if (!map.has(key)) map.set(key, v);
+  }
+  return Array.from(map.values());
+}
 
-      function onStop(cb) {
-        const btn = document.getElementById("scraper-stop-btn");
-        if (!btn) return;
-        btn.onclick = cb;
-      }
-
-      return { log, onStop };
+(async () => {
+  try {
+    const city = CITIES[ACTIVE_CITY_INDEX];
+    if (!city) {
+      throw new Error(
+        `No city at index ${ACTIVE_CITY_INDEX}. Check your citiesList.js.`
+      );
     }
 
-    const ui = ensureScraperUI();
+    const { city: cityName, latitude, longitude } = city;
+    const citySlug = slugifyCity(cityName);
 
-    // ---------- SCRAPER ----------
-    let intervalObj;
-    const runScraper = async () => {
-      const collection = document.getElementsByClassName("Nv2PK THOPZb CpccDe");
-      let oldList = [];
+    console.log(`🏙  Active city: ${cityName} (${latitude}, ${longitude})`);
 
-      const removeDuplicates = async (data) => {
-        let newData = [];
-        const notBar = [
-          "nail",
-          "beauty",
-          "salon",
-          "blow",
-          "lash",
-          "tanning",
-          "tan",
-          "nails",
-        ];
+    const browser = await puppeteer.launch({
+      headless: false,
+      defaultViewport: { width: 1400, height: 900 },
+    });
 
-        for (let i = 0; i < data.length; i++) {
-          let notBarFound = false;
-          const name = data[i].name.split(" ");
-          await name.map(async (word) => {
-            await notBar.map((j) => {
-              if (j === word.toLowerCase()) {
-                notBarFound = true;
-              }
-            });
-          });
+    const page = await browser.newPage();
 
-          if (notBarFound) continue;
+    for (const category of SEARCH_CATEGORIES) {
+      const { label, type: categoryType, slug } = category;
 
-          if (
-            await newData.every(
-              (obj) => obj.lat !== data[i].lat && obj.long !== data[i].long
-            )
-          ) {
-            newData = [...newData, data[i]];
-          }
-        }
+      // e.g. "Dive Bars" -> "%22Dive+Bars%22"
+      const encodedQuery = encodeURIComponent(`"${label}"`).replace(
+        /%20/g,
+        "+"
+      );
 
-        return newData;
-      };
+      const url = `https://www.google.com/maps/search/${encodedQuery}/@${latitude},${longitude},${ZOOM_LEVEL}z`;
 
-      let list = [];
-      let finished = false;
+      console.log(
+        `\n🔎 Starting category "${label}" (type=${categoryType}) for ${cityName}`
+      );
+      console.log("   URL:", url);
 
-      ui.onStop(async () => {
-        if (finished) return;
-        ui.log("Stop button clicked; stopping scraper");
-        finished = true;
-        clearInterval(intervalObj);
-
-        const data = await removeDuplicates(list);
-        ui.log(`Final count: ${data.length}`);
-        console.log("FINAL DATA:", data);
-        console.log("FINAL JSON:", JSON.stringify(data));
+      await page.goto(url, {
+        waitUntil: "domcontentloaded",
+        timeout: 60000,
       });
 
-      const scrollDown = async () => {
-        if (finished) {
-          ui.log("finished");
-          clearInterval(intervalObj);
-          return;
+      console.log("⏳ Waiting for Maps UI + some results to load...");
+      await sleep(6000);
+
+      try {
+        await page.waitForSelector(".Nv2PK.THOPZb.CpccDe", { timeout: 10000 });
+        console.log("✅ Detected at least one result card.");
+      } catch (e) {
+        console.log("⚠️ No cards detected yet; scraper will still run.");
+      }
+
+      // reset flags from any previous category
+      await page.evaluate(() => {
+        window.__SCRAPER_DONE__ = false;
+        window.__SCRAPER_RESULTS__ = null;
+      });
+
+      console.log("🧪 Injecting scraperClient for this category...");
+      await page.evaluate(runScraperClient, categoryType);
+
+      console.log(
+        "✅ Scraper injected. It will auto-scroll + pan in a spiral.\n" +
+          '👉 When you are satisfied, click "Stop Scraper" in the panel.\n'
+      );
+
+      // Poll for completion when you hit Stop
+      let done = false;
+      let collected = [];
+      while (!done) {
+        const status = await page.evaluate(() => ({
+          done: !!window.__SCRAPER_DONE__,
+          data: window.__SCRAPER_RESULTS__,
+        }));
+
+        if (status.done && Array.isArray(status.data)) {
+          done = true;
+          collected = status.data;
+          break;
         }
 
-        ui.log("scrapping");
+        console.log(
+          "  ⏳ Waiting for scraper to finish (click Stop Scraper when ready)..."
+        );
+        await sleep(5000);
+      }
 
-        const data = await removeDuplicates(list);
+      const deduped = dedupeVenues(collected);
+      const fileName = `venues-${citySlug}-${slug}.json`;
+      const filePath = path.join(__dirname, fileName);
 
-        if (data.length > oldList.length) {
-          ui.log(`New unique venues: ${data.length}`);
-          console.log(data);
-          oldList = data;
-        }
+      fs.writeFileSync(filePath, JSON.stringify(deduped, null, 2));
+      console.log(
+        `💾 Saved ${deduped.length} venues for ${cityName} / ${label} → ${filePath}`
+      );
+    }
 
-        for (let i = 0; i < collection.length; i++) {
-          const cardEl = collection[i];
-          const html = cardEl.innerHTML;
-          const parts = html.split("href=");
-          if (parts.length < 2) continue;
-
-          const url = parts[1];
-          if (!url || !url.length) continue;
-
-          const name = await url
-            .split("/place")[1]
-            .split("/")[1]
-            .replace(/[^\s,a-zA-Z']+/gi, " ");
-
-          const location = await url.split("!3d")[1].split("!");
-          const lat = await Number(location[0]);
-          const long = await Number(location[1].split("4d")[1]);
-
-          const type = "Liquor";
-
-          list.push({ type, name, lat, long });
-        }
-      };
-
-      ui.log("Scraper started. Scroll, then click Stop Scraper.");
-      intervalObj = setInterval(scrollDown, 1000);
-    };
-
-    runScraper();
-  })();
-};
+    console.log("\n🎉 All categories done for this city.");
+    // You can close the browser or leave it open to inspect:
+    // await browser.close();
+  } catch (err) {
+    console.error("❌ Error in runMap.js:", err);
+    process.exit(1);
+  }
+})();

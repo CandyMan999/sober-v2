@@ -1,0 +1,608 @@
+[
+  {
+    "type": "Liquor",
+    "name": "Howl at the Moon Louisville",
+    "lat": 38.2521402,
+    "long": -85.7580885
+  },
+  {
+    "type": "Liquor",
+    "name": "The Palm Room",
+    "lat": 38.2567581,
+    "long": -85.7810448
+  },
+  {
+    "type": "Liquor",
+    "name": "Coles s Place",
+    "lat": 38.2436237,
+    "long": -85.8024374
+  },
+  {
+    "type": "Liquor",
+    "name": "Play Louisville",
+    "lat": 38.2563506,
+    "long": -85.7304889
+  },
+  {
+    "type": "Liquor",
+    "name": "Jerry Green and Friends",
+    "lat": 38.245345,
+    "long": -85.754212
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Louisville",
+    "lat": 38.2102979,
+    "long": -85.7871062
+  },
+  {
+    "type": "Liquor",
+    "name": "The Lounge",
+    "lat": 38.2532643,
+    "long": -85.7530918
+  },
+  {
+    "type": "Liquor",
+    "name": "The Hub",
+    "lat": 38.2379955,
+    "long": -85.719304
+  },
+  {
+    "type": "Liquor",
+    "name": "PT s Showclub Louisville",
+    "lat": 38.2547231,
+    "long": -85.7490917
+  },
+  {
+    "type": "Liquor",
+    "name": "Elks Club",
+    "lat": 38.2430819,
+    "long": -85.7620207
+  },
+  {
+    "type": "Liquor",
+    "name": "Da Frog",
+    "lat": 38.2692652,
+    "long": -85.8350043
+  },
+  {
+    "type": "Liquor",
+    "name": "Stevie Ray s Blues Bar",
+    "lat": 38.2554937,
+    "long": -85.7487361
+  },
+  {
+    "type": "Liquor",
+    "name": " Pipers Club",
+    "lat": 38.2532318,
+    "long": -85.797766
+  },
+  {
+    "type": "Liquor",
+    "name": "PBR Louisville A Cowboy Bar",
+    "lat": 38.2521004,
+    "long": -85.7576622
+  },
+  {
+    "type": "Liquor",
+    "name": "The Majestic",
+    "lat": 38.262208,
+    "long": -85.7752321
+  },
+  {
+    "type": "Liquor",
+    "name": "Midnight Club",
+    "lat": 38.2471708,
+    "long": -85.7577874
+  },
+  {
+    "type": "Liquor",
+    "name": "Chill Bar Highlands",
+    "lat": 38.2381741,
+    "long": -85.7200569
+  },
+  {
+    "type": "Liquor",
+    "name": "Galaxie",
+    "lat": 38.2531154,
+    "long": -85.7387107
+  },
+  {
+    "type": "Liquor",
+    "name": "TRIBE",
+    "lat": 38.2516193,
+    "long": -85.7559298
+  },
+  {
+    "type": "Liquor",
+    "name": " th street live",
+    "lat": 38.2519519,
+    "long": -85.7574735
+  },
+  {
+    "type": "Liquor",
+    "name": "Wild Horse Saloon Gentleman s Club",
+    "lat": 38.2079142,
+    "long": -85.7878315
+  },
+  {
+    "type": "Liquor",
+    "name": "Central Bar Lounge",
+    "lat": 38.2144288,
+    "long": -85.7827463
+  },
+  {
+    "type": "Liquor",
+    "name": "Jimmy Can t Dance",
+    "lat": 38.2531344,
+    "long": -85.7387659
+  },
+  {
+    "type": "Liquor",
+    "name": "Louisville Riverwalk",
+    "lat": 38.2526647,
+    "long": -85.7584557
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Cedar Bar",
+    "lat": 38.2564989,
+    "long": -85.7942753
+  },
+  {
+    "type": "Liquor",
+    "name": "Thorobred Lounge",
+    "lat": 38.1968336,
+    "long": -85.7994313
+  },
+  {
+    "type": "Liquor",
+    "name": "Amp Louisville",
+    "lat": 38.2445829,
+    "long": -85.7344392
+  },
+  {
+    "type": "Liquor",
+    "name": "The Bernheim Car Club",
+    "lat": 38.2199745,
+    "long": -85.7873306
+  },
+  {
+    "type": "Liquor",
+    "name": "Cha Cha s Club Karaoke",
+    "lat": 38.2841372,
+    "long": -85.7355313
+  },
+  {
+    "type": "Liquor",
+    "name": "Jockey Silks Bourbon Bar",
+    "lat": 38.2580016,
+    "long": -85.7570272
+  },
+  {
+    "type": "Liquor",
+    "name": "Suga Land Gentleman s Club",
+    "lat": 38.19938,
+    "long": -85.7960732
+  },
+  {
+    "type": "Liquor",
+    "name": "The GR C CV Sports Bar Lounge",
+    "lat": 38.255134,
+    "long": -85.758146
+  },
+  {
+    "type": "Liquor",
+    "name": "Premier Latin Sin Club",
+    "lat": 38.1984726,
+    "long": -85.7984129
+  },
+  {
+    "type": "Liquor",
+    "name": "Highlands Tap Room",
+    "lat": 38.2386891,
+    "long": -85.7219696
+  },
+  {
+    "type": "Liquor",
+    "name": "Mercury Ballroom",
+    "lat": 38.2484695,
+    "long": -85.7578164
+  },
+  {
+    "type": "Liquor",
+    "name": "Akikos Karaoke Club",
+    "lat": 38.2380784,
+    "long": -85.7198852
+  },
+  {
+    "type": "Liquor",
+    "name": "Levee Bourbon Lounge",
+    "lat": 38.2815115,
+    "long": -85.698596
+  },
+  {
+    "type": "Liquor",
+    "name": "Habana blues Night Life",
+    "lat": 38.1616072,
+    "long": -85.7001702
+  },
+  {
+    "type": "Liquor",
+    "name": "Smokeasy The Private Lounge",
+    "lat": 38.2493536,
+    "long": -85.7597154
+  },
+  {
+    "type": "Liquor",
+    "name": "Beyond the Sun Modern Restaurant and Lounge",
+    "lat": 38.2399234,
+    "long": -85.7231942
+  },
+  {
+    "type": "Liquor",
+    "name": "Louisville Palace Theatre",
+    "lat": 38.2480633,
+    "long": -85.7578437
+  },
+  {
+    "type": "Liquor",
+    "name": "Miki s Karaoke Bar",
+    "lat": 38.253244,
+    "long": -85.7048108
+  },
+  {
+    "type": "Liquor",
+    "name": "Coconut Beach",
+    "lat": 38.2062846,
+    "long": -85.7562167
+  },
+  {
+    "type": "Liquor",
+    "name": "The Deuce",
+    "lat": 38.19299,
+    "long": -85.7283304
+  },
+  {
+    "type": "Liquor",
+    "name": "Pussycat Lounge",
+    "lat": 38.1749362,
+    "long": -85.6878622
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Liv Louisville",
+    "lat": 38.2532818,
+    "long": -85.7531824
+  },
+  {
+    "type": "Liquor",
+    "name": "Vivir De Noche Night Club",
+    "lat": 38.1516513,
+    "long": -85.7657553
+  },
+  {
+    "type": "Liquor",
+    "name": "The Bay Cigar Lounge LLC",
+    "lat": 38.3029417,
+    "long": -85.7650225
+  },
+  {
+    "type": "Liquor",
+    "name": "Switchboard",
+    "lat": 38.2424319,
+    "long": -85.7264195
+  },
+  {
+    "type": "Liquor",
+    "name": "Vernon Lanes",
+    "lat": 38.2589225,
+    "long": -85.7222747
+  },
+  {
+    "type": "Liquor",
+    "name": "The Pink Rose Luxury Gentlemen s Club",
+    "lat": 38.1615969,
+    "long": -85.7001609
+  },
+  {
+    "type": "Liquor",
+    "name": "American Legion Post ",
+    "lat": 38.1447406,
+    "long": -85.8715248
+  },
+  {
+    "type": "Liquor",
+    "name": "Cove ",
+    "lat": 39.2821245,
+    "long": -84.4439673
+  },
+  {
+    "type": "Liquor",
+    "name": "Loyal Order of Moose",
+    "lat": 38.1819639,
+    "long": -85.6370045
+  },
+  {
+    "type": "Liquor",
+    "name": "AA Tattoo Art Barber Shop",
+    "lat": 38.3031885,
+    "long": -85.7245132
+  },
+  {
+    "type": "Liquor",
+    "name": "Hot Legs Lounge",
+    "lat": 38.0584388,
+    "long": -85.8882971
+  },
+  {
+    "type": "Liquor",
+    "name": "Olympus Gaming Lounge",
+    "lat": 38.1764093,
+    "long": -85.8272948
+  },
+  {
+    "type": "Liquor",
+    "name": "Baxter s Bar Grill",
+    "lat": 38.2410305,
+    "long": -85.7251425
+  },
+  {
+    "type": "Liquor",
+    "name": "Soundance Karaoke",
+    "lat": 38.2125512,
+    "long": -85.7861251
+  },
+  {
+    "type": "Liquor",
+    "name": "El Parral Night Club",
+    "lat": 39.8249906,
+    "long": -86.240687
+  },
+  {
+    "type": "Liquor",
+    "name": "Our Place",
+    "lat": 39.3096842,
+    "long": -84.2771774
+  },
+  {
+    "type": "Liquor",
+    "name": "Volt Lounge Bar",
+    "lat": 38.1796412,
+    "long": -85.9020661
+  },
+  {
+    "type": "Liquor",
+    "name": "Howl at the Moon Indianapolis",
+    "lat": 39.7644058,
+    "long": -86.1574579
+  },
+  {
+    "type": "Liquor",
+    "name": "The Red Room",
+    "lat": 39.8709142,
+    "long": -86.1428015
+  },
+  {
+    "type": "Liquor",
+    "name": "Envy Nightclub",
+    "lat": 32.8675268,
+    "long": -96.906987
+  },
+  {
+    "type": "Liquor",
+    "name": "La Esquina Night Club",
+    "lat": 32.7430615,
+    "long": -96.7588333
+  },
+  {
+    "type": "Liquor",
+    "name": "Mr Pitiful s OTR",
+    "lat": 39.1104846,
+    "long": -84.5122647
+  },
+  {
+    "type": "Liquor",
+    "name": "Habesha Club C Club Mechot",
+    "lat": 32.9149562,
+    "long": -96.6791464
+  },
+  {
+    "type": "Liquor",
+    "name": "Tulua Nightclub and Cocktail Bar",
+    "lat": 39.1057723,
+    "long": -84.515542
+  },
+  {
+    "type": "Liquor",
+    "name": "Old Rhythm",
+    "lat": 32.7588328,
+    "long": -96.7558794
+  },
+  {
+    "type": "Liquor",
+    "name": "Thrive Nightclub",
+    "lat": 32.7807943,
+    "long": -96.8034875
+  },
+  {
+    "type": "Liquor",
+    "name": "Opera Supper Club",
+    "lat": 32.7810351,
+    "long": -96.792782
+  },
+  {
+    "type": "Liquor",
+    "name": "Chispas Discotheque",
+    "lat": 39.8256159,
+    "long": -86.2387785
+  },
+  {
+    "type": "Liquor",
+    "name": "Bourbon Raw",
+    "lat": 38.2518447,
+    "long": -85.7577659
+  },
+  {
+    "type": "Liquor",
+    "name": "Electric Cowboy",
+    "lat": 38.1354002,
+    "long": -85.8439048
+  },
+  {
+    "type": "Liquor",
+    "name": "Krush Restaurant Lounge Billiards",
+    "lat": 38.1667903,
+    "long": -85.6803023
+  },
+  {
+    "type": "Liquor",
+    "name": "MG E s Prime Time Bar and Event Center",
+    "lat": 38.1406706,
+    "long": -85.888134
+  },
+  {
+    "type": "Liquor",
+    "name": "Spears Spirits",
+    "lat": 38.1794119,
+    "long": -85.9057274
+  },
+  {
+    "type": "Liquor",
+    "name": " Entertainment",
+    "lat": 38.1887245,
+    "long": -85.6760015
+  },
+  {
+    "type": "Liquor",
+    "name": "Foxys Gentlemens Club",
+    "lat": 38.1970954,
+    "long": -85.794154
+  },
+  {
+    "type": "Liquor",
+    "name": "Zanzabar",
+    "lat": 38.2173803,
+    "long": -85.7461605
+  },
+  {
+    "type": "Liquor",
+    "name": "Main Street Bourbon And Ale House",
+    "lat": 38.4078694,
+    "long": -85.3767576
+  },
+  {
+    "type": "Liquor",
+    "name": "Planet Fitness",
+    "lat": 38.4123208,
+    "long": -85.3805271
+  },
+  {
+    "type": "Liquor",
+    "name": "One Nineteen West Main",
+    "lat": 38.4072912,
+    "long": -85.3796008
+  },
+  {
+    "type": "Liquor",
+    "name": "Cattleman s Roadhouse",
+    "lat": 38.3967555,
+    "long": -85.3750955
+  },
+  {
+    "type": "Liquor",
+    "name": "Super by Wyndham La Grange KY",
+    "lat": 38.4020242,
+    "long": -85.3726714
+  },
+  {
+    "type": "Liquor",
+    "name": "Wendy s",
+    "lat": 38.3967663,
+    "long": -85.3705225
+  },
+  {
+    "type": "Liquor",
+    "name": "Cracker Barrel Old Country Store",
+    "lat": 38.40189,
+    "long": -85.3742271
+  },
+  {
+    "type": "Liquor",
+    "name": "James T Beaumont Community Center",
+    "lat": 38.4076985,
+    "long": -85.3819128
+  },
+  {
+    "type": "Liquor",
+    "name": "Burger King",
+    "lat": 38.3984534,
+    "long": -85.3712979
+  },
+  {
+    "type": "Liquor",
+    "name": "Walmart Supercenter",
+    "lat": 38.3947205,
+    "long": -85.3725587
+  },
+  {
+    "type": "Liquor",
+    "name": "Best Western Ashbury Inn",
+    "lat": 38.3962399,
+    "long": -85.3717518
+  },
+  {
+    "type": "Liquor",
+    "name": "Pilot Travel Center",
+    "lat": 38.4575464,
+    "long": -85.2993684
+  },
+  {
+    "type": "Liquor",
+    "name": "Circle K",
+    "lat": 38.4145788,
+    "long": -85.3796425
+  },
+  {
+    "type": "Liquor",
+    "name": "Pilot Travel Center",
+    "lat": 38.4544402,
+    "long": -85.2972028
+  },
+  {
+    "type": "Liquor",
+    "name": "Arby s",
+    "lat": 38.404564,
+    "long": -85.378196
+  },
+  {
+    "type": "Liquor",
+    "name": "Hometown Pizza La Grange",
+    "lat": 38.4052941,
+    "long": -85.3773435
+  },
+  {
+    "type": "Liquor",
+    "name": "Dollar Tree",
+    "lat": 38.4031209,
+    "long": -85.3791848
+  },
+  {
+    "type": "Liquor",
+    "name": "Dollar General",
+    "lat": 38.395409,
+    "long": -85.36982
+  },
+  {
+    "type": "Liquor",
+    "name": "Dollar General",
+    "lat": 38.4620527,
+    "long": -85.3030791
+  },
+  {
+    "type": "Liquor",
+    "name": "Walgreens",
+    "lat": 38.3982579,
+    "long": -85.3703731
+  }
+]

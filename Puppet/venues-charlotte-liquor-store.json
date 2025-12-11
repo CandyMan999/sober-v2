@@ -1,0 +1,968 @@
+[
+  {
+    "type": "Liquor",
+    "name": "ABC Store",
+    "lat": 35.2201121,
+    "long": -80.8156377
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 35.2781178,
+    "long": -80.8348863
+  },
+  {
+    "type": "Liquor",
+    "name": "Sip City Market Bottle Shop",
+    "lat": 35.2218828,
+    "long": -80.8224051
+  },
+  {
+    "type": "Liquor",
+    "name": "Mecklenburg County ABC Store ",
+    "lat": 35.2164766,
+    "long": -80.8559897
+  },
+  {
+    "type": "Liquor",
+    "name": "Mecklenburg County ABC Store ",
+    "lat": 35.2578809,
+    "long": -80.7866994
+  },
+  {
+    "type": "Liquor",
+    "name": "Mecklenburg County ABC Store ",
+    "lat": 35.1733819,
+    "long": -80.850635
+  },
+  {
+    "type": "Liquor",
+    "name": "Mecklenburg County ABC Store ",
+    "lat": 35.24357,
+    "long": -80.8334335
+  },
+  {
+    "type": "Liquor",
+    "name": "Mecklenburg County ABC Store ",
+    "lat": 35.220442,
+    "long": -80.8157893
+  },
+  {
+    "type": "Liquor",
+    "name": "Mecklenburg County ABC Store ",
+    "lat": 35.1854629,
+    "long": -80.7588155
+  },
+  {
+    "type": "Liquor",
+    "name": "Mecklenburg County ABC Store ",
+    "lat": 35.2143514,
+    "long": -80.8319296
+  },
+  {
+    "type": "Liquor",
+    "name": "Mecklenburg County ABC Store ",
+    "lat": 35.223864,
+    "long": -80.8894067
+  },
+  {
+    "type": "Liquor",
+    "name": "Mecklenburg County ABC Store ",
+    "lat": 35.2655883,
+    "long": -80.8808977
+  },
+  {
+    "type": "Liquor",
+    "name": "Mecklenburg County ABC Store ",
+    "lat": 35.177001,
+    "long": -80.7997541
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 35.2262287,
+    "long": -80.8480896
+  },
+  {
+    "type": "Liquor",
+    "name": "Tip Top Daily Market",
+    "lat": 35.2370228,
+    "long": -80.8007637
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 35.2198294,
+    "long": -80.8070624
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 35.2019782,
+    "long": -80.8650643
+  },
+  {
+    "type": "Liquor",
+    "name": "Bart s Mart",
+    "lat": 35.214257,
+    "long": -80.782244
+  },
+  {
+    "type": "Liquor",
+    "name": "Total Wine More",
+    "lat": 35.1717349,
+    "long": -80.8477616
+  },
+  {
+    "type": "Liquor",
+    "name": "Wine Shop",
+    "lat": 35.1960163,
+    "long": -80.8269402
+  },
+  {
+    "type": "Liquor",
+    "name": "Crafty Beer Guys Uptown",
+    "lat": 35.225721,
+    "long": -80.846666
+  },
+  {
+    "type": "Liquor",
+    "name": "Bloom Bottle",
+    "lat": 35.2278599,
+    "long": -80.8212879
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 35.1717493,
+    "long": -80.8505363
+  },
+  {
+    "type": "Liquor",
+    "name": "Bond Street Wines",
+    "lat": 35.2016892,
+    "long": -80.824522
+  },
+  {
+    "type": "Liquor",
+    "name": "Bulldog Taproom FSocial Club",
+    "lat": 35.2177013,
+    "long": -80.8570816
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 35.1986023,
+    "long": -80.8857276
+  },
+  {
+    "type": "Liquor",
+    "name": "Pop the Top Craft Beer Shop",
+    "lat": 35.2130512,
+    "long": -80.8592459
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 35.2315807,
+    "long": -80.8709007
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 35.2172792,
+    "long": -80.7936528
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 35.2369414,
+    "long": -80.803129
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 35.2767298,
+    "long": -80.7659969
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 35.2175593,
+    "long": -80.781078
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 35.2550599,
+    "long": -80.801355
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 35.1907914,
+    "long": -80.7982894
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 35.233328,
+    "long": -80.8495342
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 35.2298823,
+    "long": -80.9252249
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 35.2780584,
+    "long": -80.8946742
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 35.1898392,
+    "long": -80.9300926
+  },
+  {
+    "type": "Liquor",
+    "name": "Overstreet Market",
+    "lat": 35.2237933,
+    "long": -80.8447221
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 35.2029803,
+    "long": -80.7995594
+  },
+  {
+    "type": "Liquor",
+    "name": "NoDa Company Store",
+    "lat": 35.2469894,
+    "long": -80.8044153
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 35.2004404,
+    "long": -80.7782935
+  },
+  {
+    "type": "Liquor",
+    "name": "The Wine Vault Elizabeth",
+    "lat": 35.2161991,
+    "long": -80.8220931
+  },
+  {
+    "type": "Liquor",
+    "name": "The Hop Shop",
+    "lat": 35.220194,
+    "long": -80.8170381
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 35.2246699,
+    "long": -80.8903955
+  },
+  {
+    "type": "Liquor",
+    "name": "Mecklenburg County ABC Board Warehouse and MXB ",
+    "lat": 35.254592,
+    "long": -80.8070049
+  },
+  {
+    "type": "Liquor",
+    "name": "Vin Master",
+    "lat": 35.2093437,
+    "long": -80.8609296
+  },
+  {
+    "type": "Liquor",
+    "name": "Hidden Wine",
+    "lat": 35.2261749,
+    "long": -80.841491
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 35.1846115,
+    "long": -80.7592881
+  },
+  {
+    "type": "Liquor",
+    "name": "Assorted Table Wine Shop",
+    "lat": 35.2274401,
+    "long": -80.8383508
+  },
+  {
+    "type": "Liquor",
+    "name": "BuyliquorUSA",
+    "lat": 35.2322465,
+    "long": -80.8978664
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 35.2792289,
+    "long": -80.8059525
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 35.1701277,
+    "long": -80.9031661
+  },
+  {
+    "type": "Liquor",
+    "name": "QuikTrip",
+    "lat": 35.1792609,
+    "long": -80.8820466
+  },
+  {
+    "type": "Liquor",
+    "name": "Salud Beer Shop",
+    "lat": 35.2477965,
+    "long": -80.8040937
+  },
+  {
+    "type": "Liquor",
+    "name": "QuikTrip",
+    "lat": 35.267268,
+    "long": -80.88154
+  },
+  {
+    "type": "Liquor",
+    "name": "QuikTrip",
+    "lat": 35.2237467,
+    "long": -80.8904717
+  },
+  {
+    "type": "Liquor",
+    "name": "QuikTrip",
+    "lat": 35.2398988,
+    "long": -80.8349355
+  },
+  {
+    "type": "Liquor",
+    "name": "QuikTrip",
+    "lat": 35.2101543,
+    "long": -80.7563255
+  },
+  {
+    "type": "Liquor",
+    "name": "QuikTrip",
+    "lat": 35.195087,
+    "long": -80.8736831
+  },
+  {
+    "type": "Liquor",
+    "name": "QuikTrip",
+    "lat": 35.2629651,
+    "long": -80.7706545
+  },
+  {
+    "type": "Liquor",
+    "name": "QuikTrip",
+    "lat": 35.2119571,
+    "long": -80.7825932
+  },
+  {
+    "type": "Liquor",
+    "name": "Great Wagon Road Distilling Company",
+    "lat": 35.2493346,
+    "long": -80.796451
+  },
+  {
+    "type": "Liquor",
+    "name": "Frank E s Beer Shop",
+    "lat": 35.2079757,
+    "long": -80.7909312
+  },
+  {
+    "type": "Liquor",
+    "name": "TIMES ",
+    "lat": 35.243988,
+    "long": -80.938021
+  },
+  {
+    "type": "Liquor",
+    "name": "Petit Philippe Fine Wine",
+    "lat": 35.1764408,
+    "long": -80.8506228
+  },
+  {
+    "type": "Liquor",
+    "name": "QuikTrip",
+    "lat": 35.2781445,
+    "long": -80.8086623
+  },
+  {
+    "type": "Liquor",
+    "name": "Craft Tasting Room and Growler Shop",
+    "lat": 35.220089,
+    "long": -80.8568842
+  },
+  {
+    "type": "Liquor",
+    "name": "Mecklenburg County ABC Store ",
+    "lat": 35.2025219,
+    "long": -80.7366311
+  },
+  {
+    "type": "Liquor",
+    "name": "Foxcroft Food Wine Dilworth",
+    "lat": 35.2025908,
+    "long": -80.8452025
+  },
+  {
+    "type": "Liquor",
+    "name": "Trader Joe s",
+    "lat": 35.2119714,
+    "long": -80.8352499
+  },
+  {
+    "type": "Liquor",
+    "name": "Publix Super Market at Shops at Southline",
+    "lat": 35.2064349,
+    "long": -80.8623201
+  },
+  {
+    "type": "Liquor",
+    "name": "Brawley s Beverage",
+    "lat": 35.1675324,
+    "long": -80.8507956
+  },
+  {
+    "type": "Liquor",
+    "name": "New York Butcher Shoppe Wine Bar",
+    "lat": 35.1970292,
+    "long": -80.8519472
+  },
+  {
+    "type": "Liquor",
+    "name": "Mecklenburg County ABC Store ",
+    "lat": 35.1539228,
+    "long": -80.8251234
+  },
+  {
+    "type": "Liquor",
+    "name": "Triple C Brewing Company",
+    "lat": 35.2012678,
+    "long": -80.8695459
+  },
+  {
+    "type": "Liquor",
+    "name": "The Bohemian A Wine Bar",
+    "lat": 35.221096,
+    "long": -80.813652
+  },
+  {
+    "type": "Liquor",
+    "name": "Common Market SouthEnd",
+    "lat": 35.2103963,
+    "long": -80.8636397
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 35.2461035,
+    "long": -80.9361745
+  },
+  {
+    "type": "Liquor",
+    "name": "Publix Super Market at Cotswold",
+    "lat": 35.1778201,
+    "long": -80.7997387
+  },
+  {
+    "type": "Liquor",
+    "name": "MiXah Co ",
+    "lat": 35.290904,
+    "long": -80.8321347
+  },
+  {
+    "type": "Liquor",
+    "name": "Rhino Market Deli",
+    "lat": 35.2296555,
+    "long": -80.8657128
+  },
+  {
+    "type": "Liquor",
+    "name": "Mecklenburg County ABC Store ",
+    "lat": 35.3060707,
+    "long": -80.8562146
+  },
+  {
+    "type": "Liquor",
+    "name": "Mecklenburg County ABC Store ",
+    "lat": 35.1445772,
+    "long": -80.9304805
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 35.2430819,
+    "long": -80.7804207
+  },
+  {
+    "type": "Liquor",
+    "name": "Whole Foods Market",
+    "lat": 35.2211196,
+    "long": -80.8461879
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 35.2738119,
+    "long": -80.8849279
+  },
+  {
+    "type": "Liquor",
+    "name": "Mecklenburg County ABC Store Mixed Beverage Only Not General Public",
+    "lat": 35.1626879,
+    "long": -80.7411455
+  },
+  {
+    "type": "Liquor",
+    "name": "Mecklenburg County ABC Store ",
+    "lat": 35.3077259,
+    "long": -80.7202075
+  },
+  {
+    "type": "Liquor",
+    "name": "Primefish Cellar",
+    "lat": 35.1708266,
+    "long": -80.8073042
+  },
+  {
+    "type": "Liquor",
+    "name": "The Auto Pour",
+    "lat": 35.1680814,
+    "long": -80.8748743
+  },
+  {
+    "type": "Liquor",
+    "name": "Reid s Fine Foods Restaurant Wine Bar",
+    "lat": 35.1743653,
+    "long": -80.8395037
+  },
+  {
+    "type": "Liquor",
+    "name": "Hi Energy Grocery",
+    "lat": 35.2655967,
+    "long": -80.8820781
+  },
+  {
+    "type": "Liquor",
+    "name": "The Hobbyist",
+    "lat": 35.2385921,
+    "long": -80.8160866
+  },
+  {
+    "type": "Liquor",
+    "name": "CBG Draft Services",
+    "lat": 35.2667078,
+    "long": -80.8185308
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 35.2375562,
+    "long": -80.9393925
+  },
+  {
+    "type": "Liquor",
+    "name": "Total Wine More",
+    "lat": 35.3725446,
+    "long": -80.7168434
+  },
+  {
+    "type": "Liquor",
+    "name": "Total Wine More",
+    "lat": 35.06342,
+    "long": -80.7725362
+  },
+  {
+    "type": "Liquor",
+    "name": "winestore Southpark",
+    "lat": 35.1570413,
+    "long": -80.8240184
+  },
+  {
+    "type": "Liquor",
+    "name": "The Market at th Street",
+    "lat": 35.227739,
+    "long": -80.8380467
+  },
+  {
+    "type": "Liquor",
+    "name": "Mecklenburg County ABC Store ",
+    "lat": 35.1076039,
+    "long": -80.8822003
+  },
+  {
+    "type": "Liquor",
+    "name": "Mecklenburg County ABC Store ",
+    "lat": 35.3272977,
+    "long": -80.945152
+  },
+  {
+    "type": "Liquor",
+    "name": "Common Market Plaza Midwood",
+    "lat": 35.218945,
+    "long": -80.811739
+  },
+  {
+    "type": "Liquor",
+    "name": "Total Wine More",
+    "lat": 35.10123,
+    "long": -80.9868
+  },
+  {
+    "type": "Liquor",
+    "name": "Mecklenburg County ABC Store ",
+    "lat": 35.1315368,
+    "long": -80.7125511
+  },
+  {
+    "type": "Liquor",
+    "name": "Mecklenburg County ABC Store ",
+    "lat": 35.3337112,
+    "long": -80.7905712
+  },
+  {
+    "type": "Liquor",
+    "name": "Mecklenburg County ABC Store ",
+    "lat": 35.3700333,
+    "long": -80.7848334
+  },
+  {
+    "type": "Liquor",
+    "name": "Mecklenburg County ABC Store ",
+    "lat": 35.1713669,
+    "long": -80.6621251
+  },
+  {
+    "type": "Liquor",
+    "name": "Mecklenburg County ABC Store ",
+    "lat": 35.095782,
+    "long": -80.7873099
+  },
+  {
+    "type": "Liquor",
+    "name": "Common Market Oakwold",
+    "lat": 35.1938934,
+    "long": -80.7856606
+  },
+  {
+    "type": "Liquor",
+    "name": "The Wine Vault",
+    "lat": 35.310627,
+    "long": -80.749285
+  },
+  {
+    "type": "Liquor",
+    "name": "Southern Spirits World s nd Best Liquor Store Beer, Wine, THC, Liquor Store ",
+    "lat": 35.008877,
+    "long": -80.8542983
+  },
+  {
+    "type": "Liquor",
+    "name": "State Line Beverage Warehouse",
+    "lat": 35.0886984,
+    "long": -80.9208774
+  },
+  {
+    "type": "Liquor",
+    "name": "Mecklenburg County ABC Store ",
+    "lat": 35.2840701,
+    "long": -80.673187
+  },
+  {
+    "type": "Liquor",
+    "name": "Mecklenburg County ABC Store ",
+    "lat": 35.0992821,
+    "long": -80.9903159
+  },
+  {
+    "type": "Liquor",
+    "name": "Frugal MacDoogal Beverage Warehouse",
+    "lat": 35.0959602,
+    "long": -80.9340869
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 35.1152488,
+    "long": -80.9260685
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 35.1448489,
+    "long": -80.9284421
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 35.1721391,
+    "long": -80.9599717
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 35.1048356,
+    "long": -80.9852997
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 35.1359962,
+    "long": -80.8915452
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 35.1292311,
+    "long": -80.9414621
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 35.0873507,
+    "long": -80.8460253
+  },
+  {
+    "type": "Liquor",
+    "name": "Stateline Elite",
+    "lat": 35.0039222,
+    "long": -80.8544472
+  },
+  {
+    "type": "Liquor",
+    "name": "Good Times ABC Discount Liquor",
+    "lat": 35.006346,
+    "long": -80.89853
+  },
+  {
+    "type": "Liquor",
+    "name": "Mecklenburg County ABC Store ",
+    "lat": 35.0553787,
+    "long": -80.7684887
+  },
+  {
+    "type": "Liquor",
+    "name": "Abc Liquor Wine",
+    "lat": 34.9703233,
+    "long": -81.000372
+  },
+  {
+    "type": "Liquor",
+    "name": "Abc Package Store",
+    "lat": 34.9315668,
+    "long": -81.0574062
+  },
+  {
+    "type": "Liquor",
+    "name": "O Darby s Liquor Barn",
+    "lat": 34.9526539,
+    "long": -81.0627811
+  },
+  {
+    "type": "Liquor",
+    "name": "Albright Spirits",
+    "lat": 34.9133694,
+    "long": -81.0079522
+  },
+  {
+    "type": "Liquor",
+    "name": "Express Beverage",
+    "lat": 34.9762438,
+    "long": -80.9977532
+  },
+  {
+    "type": "Liquor",
+    "name": "Rock Hill Liquors",
+    "lat": 34.9315596,
+    "long": -81.057419
+  },
+  {
+    "type": "Liquor",
+    "name": "Albright ABC",
+    "lat": 34.9182236,
+    "long": -81.0005181
+  },
+  {
+    "type": "Liquor",
+    "name": "Mc Daniel s Liquor Store",
+    "lat": 34.9167123,
+    "long": -81.0278063
+  },
+  {
+    "type": "Liquor",
+    "name": "River Rock Liquor",
+    "lat": 34.981152,
+    "long": -80.9790186
+  },
+  {
+    "type": "Liquor",
+    "name": "O Darby s Liquor Barn",
+    "lat": 34.9773872,
+    "long": -80.992262
+  },
+  {
+    "type": "Liquor",
+    "name": "O Darby s Liquor Barn",
+    "lat": 34.9405868,
+    "long": -80.9622186
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 34.9797929,
+    "long": -80.9787137
+  },
+  {
+    "type": "Liquor",
+    "name": "Albright ABC",
+    "lat": 34.9390781,
+    "long": -81.0401287
+  },
+  {
+    "type": "Liquor",
+    "name": "Hammond Liquor Store",
+    "lat": 35.0063091,
+    "long": -80.9446874
+  },
+  {
+    "type": "Liquor",
+    "name": "Brand s Party Shop",
+    "lat": 34.9540499,
+    "long": -81.0151338
+  },
+  {
+    "type": "Liquor",
+    "name": "Discount Liquor",
+    "lat": 35.0067135,
+    "long": -80.9310825
+  },
+  {
+    "type": "Liquor",
+    "name": "Southern Rock Liquors",
+    "lat": 34.9517932,
+    "long": -80.996859
+  },
+  {
+    "type": "Liquor",
+    "name": "Food Lion Liquor Store",
+    "lat": 34.9581567,
+    "long": -81.0457303
+  },
+  {
+    "type": "Liquor",
+    "name": "Love s liquor store",
+    "lat": 34.9620433,
+    "long": -81.0016505
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 34.9434267,
+    "long": -81.0317303
+  },
+  {
+    "type": "Liquor",
+    "name": "little giant ABC liquor store",
+    "lat": 34.9764828,
+    "long": -81.0249927
+  },
+  {
+    "type": "Liquor",
+    "name": "QuikTrip",
+    "lat": 34.9760468,
+    "long": -80.9933652
+  },
+  {
+    "type": "Liquor",
+    "name": "Bottoms Up Premier Spirits Boutique",
+    "lat": 34.9648498,
+    "long": -80.996949
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 34.9581652,
+    "long": -81.0092925
+  },
+  {
+    "type": "Liquor",
+    "name": "Circle K",
+    "lat": 34.9715886,
+    "long": -80.9908238
+  },
+  {
+    "type": "Liquor",
+    "name": "Ramky Liquor ABC Store",
+    "lat": 34.916733,
+    "long": -81.0013139
+  },
+  {
+    "type": "Liquor",
+    "name": "O Darby s Liquor Barn",
+    "lat": 34.9408352,
+    "long": -80.9620935
+  },
+  {
+    "type": "Liquor",
+    "name": "Main Street Bottle Shop",
+    "lat": 34.9251858,
+    "long": -81.0261845
+  },
+  {
+    "type": "Liquor",
+    "name": "Sam s Club",
+    "lat": 34.9385107,
+    "long": -80.9584393
+  },
+  {
+    "type": "Liquor",
+    "name": "Ramky Food Mart",
+    "lat": 34.9167144,
+    "long": -81.0012914
+  },
+  {
+    "type": "Liquor",
+    "name": "QuikTrip",
+    "lat": 34.9768584,
+    "long": -81.0567265
+  },
+  {
+    "type": "Liquor",
+    "name": "Albright Discount Beverage",
+    "lat": 34.9132866,
+    "long": -81.0080339
+  },
+  {
+    "type": "Liquor",
+    "name": "Grapevine Riverwalk",
+    "lat": 34.9833944,
+    "long": -80.9724277
+  },
+  {
+    "type": "Liquor",
+    "name": "QuikTrip",
+    "lat": 34.9328518,
+    "long": -81.0575817
+  },
+  {
+    "type": "Liquor",
+    "name": "Saluda Discount Food Beverages",
+    "lat": 34.9182635,
+    "long": -81.0264947
+  }
+]

@@ -1,0 +1,908 @@
+[
+  {
+    "type": "Liquor",
+    "name": "Club Mula Baltimore",
+    "lat": 39.289883,
+    "long": -76.6095682
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Bellissimo",
+    "lat": 39.2878557,
+    "long": -76.6013668
+  },
+  {
+    "type": "Liquor",
+    "name": "Gentlemen Ten",
+    "lat": 39.2947208,
+    "long": -76.651402
+  },
+  {
+    "type": "Liquor",
+    "name": "Euphoria Night Club",
+    "lat": 39.2787576,
+    "long": -76.5541203
+  },
+  {
+    "type": "Liquor",
+    "name": "Club ",
+    "lat": 39.3094586,
+    "long": -76.6166652
+  },
+  {
+    "type": "Liquor",
+    "name": "Melba s Place",
+    "lat": 39.3269219,
+    "long": -76.6098094
+  },
+  {
+    "type": "Liquor",
+    "name": "The x ",
+    "lat": 39.2769987,
+    "long": -76.6138609
+  },
+  {
+    "type": "Liquor",
+    "name": "Mirage Nightclub in Baltimore",
+    "lat": 39.2891357,
+    "long": -76.6211539
+  },
+  {
+    "type": "Liquor",
+    "name": "The Place Lounge",
+    "lat": 39.2946846,
+    "long": -76.6207121
+  },
+  {
+    "type": "Liquor",
+    "name": "Mosaic",
+    "lat": 39.2897127,
+    "long": -76.6072964
+  },
+  {
+    "type": "Liquor",
+    "name": "Greenmount Lounge",
+    "lat": 39.3053489,
+    "long": -76.6084499
+  },
+  {
+    "type": "Liquor",
+    "name": "Safari Club",
+    "lat": 39.2801231,
+    "long": -76.5469266
+  },
+  {
+    "type": "Liquor",
+    "name": "Caton Castle",
+    "lat": 39.2851237,
+    "long": -76.6734094
+  },
+  {
+    "type": "Liquor",
+    "name": "Bambou Venue",
+    "lat": 39.2906023,
+    "long": -76.66054
+  },
+  {
+    "type": "Liquor",
+    "name": "Oxygen Ultra Lounge",
+    "lat": 39.2891964,
+    "long": -76.6124009
+  },
+  {
+    "type": "Liquor",
+    "name": "Select Lounge",
+    "lat": 39.2944576,
+    "long": -76.6223627
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Okapi",
+    "lat": 39.2848363,
+    "long": -76.6519455
+  },
+  {
+    "type": "Liquor",
+    "name": "Kenny B s Blue Marlin",
+    "lat": 39.270625,
+    "long": -76.5264995
+  },
+  {
+    "type": "Liquor",
+    "name": "Two Spot Bar Lounge",
+    "lat": 39.2882646,
+    "long": -76.6545409
+  },
+  {
+    "type": "Liquor",
+    "name": "The Depot",
+    "lat": 39.3096203,
+    "long": -76.6166757
+  },
+  {
+    "type": "Liquor",
+    "name": "The Rockwell",
+    "lat": 39.2833422,
+    "long": -76.593579
+  },
+  {
+    "type": "Liquor",
+    "name": "Haven Place Go Go Bar",
+    "lat": 39.2964791,
+    "long": -76.5632333
+  },
+  {
+    "type": "Liquor",
+    "name": "Baltimore Eagle",
+    "lat": 39.3130497,
+    "long": -76.6168083
+  },
+  {
+    "type": "Liquor",
+    "name": "Odyssey Lounge",
+    "lat": 39.3053577,
+    "long": -76.6401539
+  },
+  {
+    "type": "Liquor",
+    "name": "Night Shift Baltimore",
+    "lat": 39.2721643,
+    "long": -76.5537485
+  },
+  {
+    "type": "Liquor",
+    "name": "Byzantio Cafe",
+    "lat": 39.2872244,
+    "long": -76.5567416
+  },
+  {
+    "type": "Liquor",
+    "name": "The Mansion Night Club Restaurant",
+    "lat": 39.2891532,
+    "long": -76.6212846
+  },
+  {
+    "type": "Liquor",
+    "name": "Ziascos",
+    "lat": 39.2887844,
+    "long": -76.5988507
+  },
+  {
+    "type": "Liquor",
+    "name": "Dream mega lounge",
+    "lat": 39.2891718,
+    "long": -76.6125377
+  },
+  {
+    "type": "Liquor",
+    "name": "Annex Lounge",
+    "lat": 39.3102726,
+    "long": -76.6180347
+  },
+  {
+    "type": "Liquor",
+    "name": "Club International",
+    "lat": 39.287645,
+    "long": -76.6537846
+  },
+  {
+    "type": "Liquor",
+    "name": "Keystone corner",
+    "lat": 39.2905487,
+    "long": -76.6104105
+  },
+  {
+    "type": "Liquor",
+    "name": "Bottoms up",
+    "lat": 39.289545,
+    "long": -76.6095336
+  },
+  {
+    "type": "Liquor",
+    "name": "Bula Hookah Lounge",
+    "lat": 39.3427006,
+    "long": -76.5447049
+  },
+  {
+    "type": "Liquor",
+    "name": "Oasis",
+    "lat": 39.2895499,
+    "long": -76.609476
+  },
+  {
+    "type": "Liquor",
+    "name": "Kitty s Lounge",
+    "lat": 39.3274953,
+    "long": -76.6095597
+  },
+  {
+    "type": "Liquor",
+    "name": "Angels Rock Bar Baltimore",
+    "lat": 39.2896946,
+    "long": -76.6070227
+  },
+  {
+    "type": "Liquor",
+    "name": "Power Plant Live ",
+    "lat": 39.2891146,
+    "long": -76.6073893
+  },
+  {
+    "type": "Liquor",
+    "name": "Truth Lounge",
+    "lat": 39.3305104,
+    "long": -76.5621286
+  },
+  {
+    "type": "Liquor",
+    "name": "The Mile House",
+    "lat": 39.3450693,
+    "long": -76.6869563
+  },
+  {
+    "type": "Liquor",
+    "name": "Medusa Restaurant Lounge",
+    "lat": 39.2891125,
+    "long": -76.6211402
+  },
+  {
+    "type": "Liquor",
+    "name": "Trio Restaurant Lounge",
+    "lat": 39.2913453,
+    "long": -76.5641315
+  },
+  {
+    "type": "Liquor",
+    "name": "Odell E s Nightclub",
+    "lat": 39.3106863,
+    "long": -76.6158164
+  },
+  {
+    "type": "Liquor",
+    "name": "Ritz Cabaret Gentlemen s Club",
+    "lat": 39.2853583,
+    "long": -76.5938241
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Charles",
+    "lat": 39.3095271,
+    "long": -76.61674
+  },
+  {
+    "type": "Liquor",
+    "name": "Big Joe s Love Nest",
+    "lat": 39.294695,
+    "long": -76.6645829
+  },
+  {
+    "type": "Liquor",
+    "name": "Ottobar",
+    "lat": 39.318881,
+    "long": -76.6195818
+  },
+  {
+    "type": "Liquor",
+    "name": "Fantasies Nightclub",
+    "lat": 39.2170436,
+    "long": -76.588033
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Pussycat",
+    "lat": 39.2896446,
+    "long": -76.609671
+  },
+  {
+    "type": "Liquor",
+    "name": "Jake s Place",
+    "lat": 39.3034822,
+    "long": -76.5838172
+  },
+  {
+    "type": "Liquor",
+    "name": "Luxury La esquina del Movimiento",
+    "lat": 39.2868559,
+    "long": -76.5582333
+  },
+  {
+    "type": "Liquor",
+    "name": "The VIP SECTION Music Recording Studio and Barbershop FSalon",
+    "lat": 39.2520669,
+    "long": -76.6639816
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Bar",
+    "lat": 39.3030312,
+    "long": -76.6438334
+  },
+  {
+    "type": "Liquor",
+    "name": "Richie s Lounge",
+    "lat": 39.288514,
+    "long": -76.6424896
+  },
+  {
+    "type": "Liquor",
+    "name": "B Side Cocktail Lounge",
+    "lat": 39.2972911,
+    "long": -76.6172284
+  },
+  {
+    "type": "Liquor",
+    "name": "The Birdhouse Studio",
+    "lat": 39.3016823,
+    "long": -76.5403416
+  },
+  {
+    "type": "Liquor",
+    "name": "The Ruby Slipper",
+    "lat": 39.2892488,
+    "long": -76.5686035
+  },
+  {
+    "type": "Liquor",
+    "name": "The Horse You Came In On Saloon",
+    "lat": 39.2814991,
+    "long": -76.5941621
+  },
+  {
+    "type": "Liquor",
+    "name": "The Garden Rooftop",
+    "lat": 39.2943794,
+    "long": -76.6222048
+  },
+  {
+    "type": "Liquor",
+    "name": "The Two O Clock Club",
+    "lat": 39.2898803,
+    "long": -76.6096155
+  },
+  {
+    "type": "Liquor",
+    "name": "The Vibe Vibe Nation Studios ",
+    "lat": 39.2931253,
+    "long": -76.6116211
+  },
+  {
+    "type": "Liquor",
+    "name": "Who Know E z Restaurant Lounge",
+    "lat": 39.3132818,
+    "long": -76.6179147
+  },
+  {
+    "type": "Liquor",
+    "name": "Garrison Lounge",
+    "lat": 39.3107977,
+    "long": -76.6745351
+  },
+  {
+    "type": "Liquor",
+    "name": "Lust",
+    "lat": 39.2898629,
+    "long": -76.6098196
+  },
+  {
+    "type": "Liquor",
+    "name": "Leon s Backroom Bar",
+    "lat": 39.3016525,
+    "long": -76.6191641
+  },
+  {
+    "type": "Liquor",
+    "name": "Club ",
+    "lat": 39.3121127,
+    "long": -76.5270644
+  },
+  {
+    "type": "Liquor",
+    "name": "Keystone Korner Baltimore",
+    "lat": 39.2824558,
+    "long": -76.5978671
+  },
+  {
+    "type": "Liquor",
+    "name": "Playbook Sports Bar Lounge",
+    "lat": 39.2812614,
+    "long": -76.5344467
+  },
+  {
+    "type": "Liquor",
+    "name": "Root City Kava Bar Lounge Kava Kratom",
+    "lat": 39.3006132,
+    "long": -76.6172402
+  },
+  {
+    "type": "Liquor",
+    "name": "Eubie Blake National Jazz Institute and Cultural Center",
+    "lat": 39.2996608,
+    "long": -76.6198354
+  },
+  {
+    "type": "Liquor",
+    "name": "Chuck s New Johnson s Lounge",
+    "lat": 39.2946791,
+    "long": -76.6505558
+  },
+  {
+    "type": "Liquor",
+    "name": "The Owl Bar",
+    "lat": 39.3021234,
+    "long": -76.6153327
+  },
+  {
+    "type": "Liquor",
+    "name": "WALT S INN",
+    "lat": 39.2802056,
+    "long": -76.5709778
+  },
+  {
+    "type": "Liquor",
+    "name": "The BeeGee s Lounge",
+    "lat": 39.3418012,
+    "long": -76.5710418
+  },
+  {
+    "type": "Liquor",
+    "name": "Blue Caribbean Bar Lounge",
+    "lat": 39.3502044,
+    "long": -76.6809947
+  },
+  {
+    "type": "Liquor",
+    "name": "PBR Baltimore",
+    "lat": 39.289722,
+    "long": -76.6068633
+  },
+  {
+    "type": "Liquor",
+    "name": "The Ibis Lounge",
+    "lat": 39.3575549,
+    "long": -76.5572189
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Harem",
+    "lat": 39.2895874,
+    "long": -76.6092004
+  },
+  {
+    "type": "Liquor",
+    "name": "Circus Bar",
+    "lat": 39.2895893,
+    "long": -76.6091234
+  },
+  {
+    "type": "Liquor",
+    "name": "The Dream Factory",
+    "lat": 39.2784934,
+    "long": -76.612377
+  },
+  {
+    "type": "Liquor",
+    "name": "The Millstream Inn",
+    "lat": 39.3068596,
+    "long": -76.712007
+  },
+  {
+    "type": "Liquor",
+    "name": "Explorers Restaurant Lounge",
+    "lat": 39.2827695,
+    "long": -76.6134047
+  },
+  {
+    "type": "Liquor",
+    "name": "The Original Cancun Cantina",
+    "lat": 39.1594749,
+    "long": -76.6823925
+  },
+  {
+    "type": "Liquor",
+    "name": "Poe s Comedy Cabaret Baltimore Comedy Club",
+    "lat": 39.2897519,
+    "long": -76.6161248
+  },
+  {
+    "type": "Liquor",
+    "name": "Prime Nightclub",
+    "lat": 39.3970063,
+    "long": -76.4047353
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Baltimore Liquor and Bar",
+    "lat": 39.3200813,
+    "long": -76.5103098
+  },
+  {
+    "type": "Liquor",
+    "name": "Loyalty Ultra Lounge",
+    "lat": 39.3600903,
+    "long": -76.7764037
+  },
+  {
+    "type": "Liquor",
+    "name": "Tabu Social Club",
+    "lat": 39.2860021,
+    "long": -76.7518998
+  },
+  {
+    "type": "Liquor",
+    "name": "Sip herb",
+    "lat": 39.3493336,
+    "long": -76.6772039
+  },
+  {
+    "type": "Liquor",
+    "name": "Poe s Tower",
+    "lat": 39.2837745,
+    "long": -76.585203
+  },
+  {
+    "type": "Liquor",
+    "name": "The House of Chiefs restaurant lounge",
+    "lat": 39.3443587,
+    "long": -76.6093205
+  },
+  {
+    "type": "Liquor",
+    "name": "Cowboy Row Saloon Chophouse",
+    "lat": 39.2804608,
+    "long": -76.5751384
+  },
+  {
+    "type": "Liquor",
+    "name": "The Reservoir",
+    "lat": 39.3995879,
+    "long": -76.6023907
+  },
+  {
+    "type": "Liquor",
+    "name": "El Pueblito Restaurant Bar",
+    "lat": 39.2495441,
+    "long": -76.6388345
+  },
+  {
+    "type": "Liquor",
+    "name": "Towson Nights Hookah Lounge",
+    "lat": 39.4009858,
+    "long": -76.6045655
+  },
+  {
+    "type": "Liquor",
+    "name": "Noir Restaurant Lounge",
+    "lat": 39.3598233,
+    "long": -76.6102576
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Timehri",
+    "lat": 38.9215319,
+    "long": -77.0419358
+  },
+  {
+    "type": "Liquor",
+    "name": "Triple nines",
+    "lat": 39.2489878,
+    "long": -76.6374807
+  },
+  {
+    "type": "Liquor",
+    "name": "Legends Lounge",
+    "lat": 39.2733383,
+    "long": -76.6275588
+  },
+  {
+    "type": "Liquor",
+    "name": "Hollins Place",
+    "lat": 39.2877969,
+    "long": -76.6358216
+  },
+  {
+    "type": "Liquor",
+    "name": "uncle Bnephewlounge",
+    "lat": 39.3121294,
+    "long": -76.609354
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Ouzo Entertainment",
+    "lat": 39.4434692,
+    "long": -76.6207996
+  },
+  {
+    "type": "Liquor",
+    "name": "Silks Sports Bar",
+    "lat": 39.4018775,
+    "long": -76.6033101
+  },
+  {
+    "type": "Liquor",
+    "name": "The Rec Room",
+    "lat": 39.4010217,
+    "long": -76.6020473
+  },
+  {
+    "type": "Liquor",
+    "name": "C R Pub",
+    "lat": 39.4004377,
+    "long": -76.6031416
+  },
+  {
+    "type": "Liquor",
+    "name": "Top Hat Sports Bar Grill",
+    "lat": 39.4003176,
+    "long": -76.5448538
+  },
+  {
+    "type": "Liquor",
+    "name": "The Recher",
+    "lat": 39.4009392,
+    "long": -76.6021096
+  },
+  {
+    "type": "Liquor",
+    "name": "Hightopps Backstage Grille",
+    "lat": 39.4491836,
+    "long": -76.6303743
+  },
+  {
+    "type": "Liquor",
+    "name": "CVP Towson C Charles Village Pub Patio C Sports Bar Events",
+    "lat": 39.400476,
+    "long": -76.6039579
+  },
+  {
+    "type": "Liquor",
+    "name": "The Brass Tap",
+    "lat": 39.4042658,
+    "long": -76.5990278
+  },
+  {
+    "type": "Liquor",
+    "name": "The Kent House Irish Pub",
+    "lat": 39.4006848,
+    "long": -76.6020676
+  },
+  {
+    "type": "Liquor",
+    "name": "ATM Machine at TORRENT LOUNGE",
+    "lat": 39.4009472,
+    "long": -76.6020479
+  },
+  {
+    "type": "Liquor",
+    "name": "Barley s Backyard Uptown",
+    "lat": 39.3997433,
+    "long": -76.602365
+  },
+  {
+    "type": "Liquor",
+    "name": "Liquid Lib s",
+    "lat": 39.4519717,
+    "long": -76.6395748
+  },
+  {
+    "type": "Liquor",
+    "name": "Charm City Jazz",
+    "lat": 39.4533261,
+    "long": -76.6417605
+  },
+  {
+    "type": "Liquor",
+    "name": "Wits End Saloon",
+    "lat": 39.453419,
+    "long": -76.641163
+  },
+  {
+    "type": "Liquor",
+    "name": "Ashland Cafe",
+    "lat": 39.4817572,
+    "long": -76.6444301
+  },
+  {
+    "type": "Liquor",
+    "name": "An Poitin Stil",
+    "lat": 39.4505429,
+    "long": -76.6301393
+  },
+  {
+    "type": "Liquor",
+    "name": "Pearlstone C Retreat Center Immersive Experiences",
+    "lat": 39.5180351,
+    "long": -76.8460721
+  },
+  {
+    "type": "Liquor",
+    "name": "Basignani Winery",
+    "lat": 39.5563575,
+    "long": -76.7481422
+  },
+  {
+    "type": "Liquor",
+    "name": "Wendy s",
+    "lat": 39.5962705,
+    "long": -76.8462659
+  },
+  {
+    "type": "Liquor",
+    "name": "Dunkin ",
+    "lat": 39.544444,
+    "long": -76.8383155
+  },
+  {
+    "type": "Liquor",
+    "name": "Char E d Barbecue",
+    "lat": 39.5500577,
+    "long": -76.8388567
+  },
+  {
+    "type": "Liquor",
+    "name": "Genova s To Go",
+    "lat": 39.5948165,
+    "long": -76.8441695
+  },
+  {
+    "type": "Liquor",
+    "name": "Illiano s J P Restaurant",
+    "lat": 39.6002866,
+    "long": -76.847839
+  },
+  {
+    "type": "Liquor",
+    "name": "Clarksburg Tavern",
+    "lat": 39.2386399,
+    "long": -77.2786256
+  },
+  {
+    "type": "Liquor",
+    "name": "Hornets Nest Grille",
+    "lat": 39.28809,
+    "long": -77.203909
+  },
+  {
+    "type": "Liquor",
+    "name": "Clarks Lodge",
+    "lat": 39.2287073,
+    "long": -77.2503759
+  },
+  {
+    "type": "Liquor",
+    "name": "Quincy E s Uptown Bar and Grill",
+    "lat": 39.289067,
+    "long": -77.2033373
+  },
+  {
+    "type": "Liquor",
+    "name": "Starbucks",
+    "lat": 39.28653,
+    "long": -77.20809
+  },
+  {
+    "type": "Liquor",
+    "name": "Starbucks",
+    "lat": 39.22812,
+    "long": -77.28583
+  },
+  {
+    "type": "Liquor",
+    "name": "Anytime Fitness Damascus",
+    "lat": 39.2886098,
+    "long": -77.2025464
+  },
+  {
+    "type": "Liquor",
+    "name": "Manhattan Pizza Clarksburg",
+    "lat": 39.237709,
+    "long": -77.2767171
+  },
+  {
+    "type": "Liquor",
+    "name": "The Club",
+    "lat": 39.1793351,
+    "long": -76.6650995
+  },
+  {
+    "type": "Liquor",
+    "name": "Marshall Airport USO Lounge",
+    "lat": 39.1808315,
+    "long": -76.6681065
+  },
+  {
+    "type": "Liquor",
+    "name": "Chesapeake Club",
+    "lat": 39.1823971,
+    "long": -76.6685672
+  },
+  {
+    "type": "Liquor",
+    "name": "Hammerjacks",
+    "lat": 39.2763562,
+    "long": -76.6258591
+  },
+  {
+    "type": "Liquor",
+    "name": "Myste Lounge",
+    "lat": 39.1052848,
+    "long": -76.8460418
+  },
+  {
+    "type": "Liquor",
+    "name": "Nottingham s Tavern",
+    "lat": 39.190152,
+    "long": -76.814922
+  },
+  {
+    "type": "Liquor",
+    "name": "Love and Lust Presents",
+    "lat": 39.1038641,
+    "long": -76.8671057
+  },
+  {
+    "type": "Liquor",
+    "name": "Skyvibe Restaurant and Lounge",
+    "lat": 39.1050151,
+    "long": -76.8463974
+  },
+  {
+    "type": "Liquor",
+    "name": "Cecil s Bar",
+    "lat": 39.1029869,
+    "long": -76.8433661
+  },
+  {
+    "type": "Liquor",
+    "name": "Triple Nines Bar and Billiards",
+    "lat": 39.1797174,
+    "long": -76.7711017
+  },
+  {
+    "type": "Liquor",
+    "name": "Oversea Distillery and Bar",
+    "lat": 39.1744958,
+    "long": -76.8347687
+  },
+  {
+    "type": "Liquor",
+    "name": "Epic Nights LLC",
+    "lat": 39.2786889,
+    "long": -76.6277558
+  },
+  {
+    "type": "Liquor",
+    "name": "Bar Elite",
+    "lat": 39.2742055,
+    "long": -76.6292112
+  },
+  {
+    "type": "Liquor",
+    "name": "Tempo Lounge",
+    "lat": 39.3002693,
+    "long": -76.4376604
+  },
+  {
+    "type": "Liquor",
+    "name": "Silver Dome Lounge",
+    "lat": 39.3076439,
+    "long": -76.4313453
+  },
+  {
+    "type": "Liquor",
+    "name": "Mixers",
+    "lat": 39.3485107,
+    "long": -76.5374679
+  },
+  {
+    "type": "Liquor",
+    "name": "Vibes Hookah Lounge",
+    "lat": 39.3567751,
+    "long": -76.5280626
+  },
+  {
+    "type": "Liquor",
+    "name": "Zen West",
+    "lat": 39.3643083,
+    "long": -76.6104326
+  }
+]

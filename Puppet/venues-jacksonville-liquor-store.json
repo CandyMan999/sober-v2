@@ -1,0 +1,890 @@
+[
+  {
+    "type": "Liquor",
+    "name": "Publix Liquors at Shoppes at East San Marco",
+    "lat": 30.3048827,
+    "long": -81.6528741
+  },
+  {
+    "type": "Liquor",
+    "name": "Arlington liquors",
+    "lat": 30.3287211,
+    "long": -81.5966603
+  },
+  {
+    "type": "Liquor",
+    "name": "Leo s liquor",
+    "lat": 30.3361923,
+    "long": -81.7315907
+  },
+  {
+    "type": "Liquor",
+    "name": " th Street Liquor",
+    "lat": 30.3455954,
+    "long": -81.6506682
+  },
+  {
+    "type": "Liquor",
+    "name": "MBC Liquor",
+    "lat": 30.3131003,
+    "long": -81.5774925
+  },
+  {
+    "type": "Liquor",
+    "name": "Max Liquor",
+    "lat": 30.3799468,
+    "long": -81.6953475
+  },
+  {
+    "type": "Liquor",
+    "name": "Shores Liquor Pub Cassat Ave",
+    "lat": 30.3213244,
+    "long": -81.7304108
+  },
+  {
+    "type": "Liquor",
+    "name": "SAFAR LIQUORS",
+    "lat": 30.332459,
+    "long": -81.7022081
+  },
+  {
+    "type": "Liquor",
+    "name": "Publix Liquors at Dames Pointe",
+    "lat": 30.3535992,
+    "long": -81.5790444
+  },
+  {
+    "type": "Liquor",
+    "name": "Shores Liquor at Arlington",
+    "lat": 30.328489,
+    "long": -81.586122
+  },
+  {
+    "type": "Liquor",
+    "name": "Shores Liquor at Edgewood Ave",
+    "lat": 30.371147,
+    "long": -81.7240289
+  },
+  {
+    "type": "Liquor",
+    "name": "ABC Fine Wine Spirits",
+    "lat": 30.3494219,
+    "long": -81.5962579
+  },
+  {
+    "type": "Liquor",
+    "name": "Charlie s liquor",
+    "lat": 30.3721998,
+    "long": -81.6518242
+  },
+  {
+    "type": "Liquor",
+    "name": "MBC Liquor",
+    "lat": 30.2959683,
+    "long": -81.7308668
+  },
+  {
+    "type": "Liquor",
+    "name": "Publix Liquors at Riverside",
+    "lat": 30.3113023,
+    "long": -81.6820974
+  },
+  {
+    "type": "Liquor",
+    "name": "BlueLine Liquors",
+    "lat": 30.3122228,
+    "long": -81.6020901
+  },
+  {
+    "type": "Liquor",
+    "name": "Shores Liquor at Lem Turner",
+    "lat": 30.3849764,
+    "long": -81.6744977
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 30.3279623,
+    "long": -81.6614373
+  },
+  {
+    "type": "Liquor",
+    "name": "Liquor Depot",
+    "lat": 30.2915263,
+    "long": -81.6270739
+  },
+  {
+    "type": "Liquor",
+    "name": "Shores Liquor at McDuff Ave S",
+    "lat": 30.3185797,
+    "long": -81.7050934
+  },
+  {
+    "type": "Liquor",
+    "name": "Total Wine More",
+    "lat": 30.262803,
+    "long": -81.526887
+  },
+  {
+    "type": "Liquor",
+    "name": "NFL Liquors",
+    "lat": 30.3650753,
+    "long": -81.6634801
+  },
+  {
+    "type": "Liquor",
+    "name": "Twisted Martini Liquor",
+    "lat": 30.3130608,
+    "long": -81.7060913
+  },
+  {
+    "type": "Liquor",
+    "name": "Twisted Martini Liquor ",
+    "lat": 30.2808116,
+    "long": -81.628189
+  },
+  {
+    "type": "Liquor",
+    "name": "Wild Whiskey Arlington FUniversity N",
+    "lat": 30.3378806,
+    "long": -81.6022093
+  },
+  {
+    "type": "Liquor",
+    "name": "WDs Wine Beer and Liquor",
+    "lat": 30.2746703,
+    "long": -81.650714
+  },
+  {
+    "type": "Liquor",
+    "name": "Riverside Liquors The Restaurant in Riverside",
+    "lat": 30.3116981,
+    "long": -81.6940587
+  },
+  {
+    "type": "Liquor",
+    "name": "Moncrief Liquors",
+    "lat": 30.3565893,
+    "long": -81.6744543
+  },
+  {
+    "type": "Liquor",
+    "name": "kings liquor",
+    "lat": 30.3494329,
+    "long": -81.697245
+  },
+  {
+    "type": "Liquor",
+    "name": "Shores Liquor Bar at Avondale",
+    "lat": 30.295495,
+    "long": -81.704865
+  },
+  {
+    "type": "Liquor",
+    "name": "Moonshine Liquor ",
+    "lat": 30.3000934,
+    "long": -81.6242822
+  },
+  {
+    "type": "Liquor",
+    "name": "On the Rocks Liquor More",
+    "lat": 30.2741386,
+    "long": -81.6073551
+  },
+  {
+    "type": "Liquor",
+    "name": "Prudential Club Garden, Lounge Liquors",
+    "lat": 30.3160419,
+    "long": -81.655798
+  },
+  {
+    "type": "Liquor",
+    "name": "Main Street Liquor INC",
+    "lat": 30.3540618,
+    "long": -81.6535305
+  },
+  {
+    "type": "Liquor",
+    "name": "Cheers Craft Beer and Wine",
+    "lat": 30.2913405,
+    "long": -81.7130459
+  },
+  {
+    "type": "Liquor",
+    "name": "RaceTrac",
+    "lat": 30.3081046,
+    "long": -81.6166104
+  },
+  {
+    "type": "Liquor",
+    "name": "Arlington Discount Beverage",
+    "lat": 30.3363523,
+    "long": -81.5972813
+  },
+  {
+    "type": "Liquor",
+    "name": "Holy Smoke Wine",
+    "lat": 30.3303772,
+    "long": -81.5885053
+  },
+  {
+    "type": "Liquor",
+    "name": "Bunker Hill Liquor",
+    "lat": 30.3921398,
+    "long": -81.6699447
+  },
+  {
+    "type": "Liquor",
+    "name": "Bernie s Wine Stop",
+    "lat": 30.3105654,
+    "long": -81.7164325
+  },
+  {
+    "type": "Liquor",
+    "name": "Als Liquors",
+    "lat": 30.3144198,
+    "long": -81.565426
+  },
+  {
+    "type": "Liquor",
+    "name": "Sour apple",
+    "lat": 30.3921208,
+    "long": -81.6775831
+  },
+  {
+    "type": "Liquor",
+    "name": "Winn Dixie",
+    "lat": 30.2747296,
+    "long": -81.6505679
+  },
+  {
+    "type": "Liquor",
+    "name": "Soutel Liquors",
+    "lat": 30.3940115,
+    "long": -81.7290146
+  },
+  {
+    "type": "Liquor",
+    "name": "Touchdown smoke vape beer wine",
+    "lat": 30.3089751,
+    "long": -81.6608351
+  },
+  {
+    "type": "Liquor",
+    "name": "ABC Fine Wine Spirits",
+    "lat": 30.3044212,
+    "long": -81.7514814
+  },
+  {
+    "type": "Liquor",
+    "name": "RaceTrac",
+    "lat": 30.3517549,
+    "long": -81.5601401
+  },
+  {
+    "type": "Liquor",
+    "name": "Crown Liquor",
+    "lat": 30.2656239,
+    "long": -81.6186847
+  },
+  {
+    "type": "Liquor",
+    "name": "The Fridge",
+    "lat": 30.3085505,
+    "long": -81.7143094
+  },
+  {
+    "type": "Liquor",
+    "name": "Beer San Marco",
+    "lat": 30.309555,
+    "long": -81.6603582
+  },
+  {
+    "type": "Liquor",
+    "name": "Charlie E s Liquor cigar bar grill",
+    "lat": 30.3088444,
+    "long": -81.7357128
+  },
+  {
+    "type": "Liquor",
+    "name": "Southside Liquors",
+    "lat": 30.2734101,
+    "long": -81.5595514
+  },
+  {
+    "type": "Liquor",
+    "name": "Boudreau Wine Company",
+    "lat": 30.3080159,
+    "long": -81.654769
+  },
+  {
+    "type": "Liquor",
+    "name": "The Grape Grain Exchange",
+    "lat": 30.3038022,
+    "long": -81.6540412
+  },
+  {
+    "type": "Liquor",
+    "name": "RaceTrac",
+    "lat": 30.268742,
+    "long": -81.6145147
+  },
+  {
+    "type": "Liquor",
+    "name": "Cork Thyme at All Spiced Up",
+    "lat": 30.2975872,
+    "long": -81.7032916
+  },
+  {
+    "type": "Liquor",
+    "name": "Oak Stockton CORNER",
+    "lat": 30.3095596,
+    "long": -81.6888555
+  },
+  {
+    "type": "Liquor",
+    "name": "Keg Coin",
+    "lat": 30.3111154,
+    "long": -81.6938151
+  },
+  {
+    "type": "Liquor",
+    "name": "Bombay Liquor",
+    "lat": 30.2689445,
+    "long": -81.5613523
+  },
+  {
+    "type": "Liquor",
+    "name": "Safari Wine Smoke Shop",
+    "lat": 30.305477,
+    "long": -81.5480353
+  },
+  {
+    "type": "Liquor",
+    "name": "Mark s liquor",
+    "lat": 30.2613427,
+    "long": -81.6433502
+  },
+  {
+    "type": "Liquor",
+    "name": "Shores Liquor at Lane Ave",
+    "lat": 30.270409,
+    "long": -81.7567923
+  },
+  {
+    "type": "Liquor",
+    "name": "Crown Liquors",
+    "lat": 30.2871122,
+    "long": -81.5488933
+  },
+  {
+    "type": "Liquor",
+    "name": "Regency Liquors",
+    "lat": 30.3229679,
+    "long": -81.5465233
+  },
+  {
+    "type": "Liquor",
+    "name": "Publix Liquors at University Square",
+    "lat": 30.261638,
+    "long": -81.629053
+  },
+  {
+    "type": "Liquor",
+    "name": "Mission Liquors",
+    "lat": 30.3512399,
+    "long": -81.5494333
+  },
+  {
+    "type": "Liquor",
+    "name": "COSMO LIQUORS",
+    "lat": 30.2562363,
+    "long": -81.5833201
+  },
+  {
+    "type": "Liquor",
+    "name": "Publix Super Market at Dames Pointe",
+    "lat": 30.3535794,
+    "long": -81.5790925
+  },
+  {
+    "type": "Liquor",
+    "name": "Publix Super Market at Roosevelt Square Shopping Center",
+    "lat": 30.2800069,
+    "long": -81.7178511
+  },
+  {
+    "type": "Liquor",
+    "name": "The Lazy Manatee",
+    "lat": 30.3628218,
+    "long": -81.6058828
+  },
+  {
+    "type": "Liquor",
+    "name": "Publix Super Market at Riverside",
+    "lat": 30.3113104,
+    "long": -81.6821322
+  },
+  {
+    "type": "Liquor",
+    "name": "AJ s Liquor Store ",
+    "lat": 30.3987751,
+    "long": -81.7252387
+  },
+  {
+    "type": "Liquor",
+    "name": "Publix Super Market at Shoppes at East San Marco",
+    "lat": 30.3049249,
+    "long": -81.6520317
+  },
+  {
+    "type": "Liquor",
+    "name": "Posting House",
+    "lat": 30.3044645,
+    "long": -81.6531717
+  },
+  {
+    "type": "Liquor",
+    "name": "ABC Fine Wine Spirits",
+    "lat": 30.2547798,
+    "long": -81.5371089
+  },
+  {
+    "type": "Liquor",
+    "name": "Publix Super Market at Arlington River",
+    "lat": 30.3123647,
+    "long": -81.60167
+  },
+  {
+    "type": "Liquor",
+    "name": "Golden Ox Liquors Normandy",
+    "lat": 30.294756,
+    "long": -81.779383
+  },
+  {
+    "type": "Liquor",
+    "name": "The one food store",
+    "lat": 30.3196152,
+    "long": -81.705681
+  },
+  {
+    "type": "Liquor",
+    "name": "ABC Fine Wine Spirits",
+    "lat": 30.2366464,
+    "long": -81.6965242
+  },
+  {
+    "type": "Liquor",
+    "name": "Prime liquors",
+    "lat": 30.248068,
+    "long": -81.7560287
+  },
+  {
+    "type": "Liquor",
+    "name": "Seaboard liquor",
+    "lat": 30.2477787,
+    "long": -81.7304572
+  },
+  {
+    "type": "Liquor",
+    "name": "ABC Fine Wine Spirits",
+    "lat": 30.4304456,
+    "long": -81.6615869
+  },
+  {
+    "type": "Liquor",
+    "name": "Dunn Ave Liquors",
+    "lat": 30.428979,
+    "long": -81.6707614
+  },
+  {
+    "type": "Liquor",
+    "name": "Costco Liquors",
+    "lat": 30.2015959,
+    "long": -81.7577856
+  },
+  {
+    "type": "Liquor",
+    "name": "Fancy Liquor store",
+    "lat": 30.3529299,
+    "long": -81.546287
+  },
+  {
+    "type": "Liquor",
+    "name": "ABC Fine Wine Spirits",
+    "lat": 30.378665,
+    "long": -81.650224
+  },
+  {
+    "type": "Liquor",
+    "name": "ABC Fine Wine Spirits",
+    "lat": 30.3747494,
+    "long": -81.7157476
+  },
+  {
+    "type": "Liquor",
+    "name": "Shores Liquors at Blanding",
+    "lat": 30.2476943,
+    "long": -81.7418498
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 30.332438,
+    "long": -81.6563361
+  },
+  {
+    "type": "Liquor",
+    "name": "High spirits liquor Cigars",
+    "lat": 30.2476507,
+    "long": -81.7873402
+  },
+  {
+    "type": "Liquor",
+    "name": "Touchdown liquor",
+    "lat": 30.2335909,
+    "long": -81.738759
+  },
+  {
+    "type": "Liquor",
+    "name": "Sahara Liquor Store",
+    "lat": 30.2875738,
+    "long": -81.5375934
+  },
+  {
+    "type": "Liquor",
+    "name": "Total Wine More",
+    "lat": 30.4788649,
+    "long": -81.6371574
+  },
+  {
+    "type": "Liquor",
+    "name": "The Liquor Store",
+    "lat": 30.2487709,
+    "long": -81.7715245
+  },
+  {
+    "type": "Liquor",
+    "name": "Bay liquor",
+    "lat": 30.22026,
+    "long": -81.5913709
+  },
+  {
+    "type": "Liquor",
+    "name": "Golden Ox Liquor Pub",
+    "lat": 30.346321,
+    "long": -81.523791
+  },
+  {
+    "type": "Liquor",
+    "name": "ABC Fine Wine Spirits",
+    "lat": 30.2060934,
+    "long": -81.6181913
+  },
+  {
+    "type": "Liquor",
+    "name": "Walmart Wine and Liquor",
+    "lat": 30.2497467,
+    "long": -81.7536671
+  },
+  {
+    "type": "Liquor",
+    "name": "SAFARI LIQUORS",
+    "lat": 30.2880629,
+    "long": -81.7986008
+  },
+  {
+    "type": "Liquor",
+    "name": "Golden Liquor",
+    "lat": 30.3169801,
+    "long": -81.4899254
+  },
+  {
+    "type": "Liquor",
+    "name": "Oceanway Liquors",
+    "lat": 30.4729728,
+    "long": -81.6289034
+  },
+  {
+    "type": "Liquor",
+    "name": "Golden Ox Liquors",
+    "lat": 30.4408752,
+    "long": -81.7625619
+  },
+  {
+    "type": "Liquor",
+    "name": "Sour Apple Liquor",
+    "lat": 30.2203658,
+    "long": -81.5850953
+  },
+  {
+    "type": "Liquor",
+    "name": "ABC Fine Wine Spirits",
+    "lat": 30.1624588,
+    "long": -81.7481751
+  },
+  {
+    "type": "Liquor",
+    "name": "Anjo Liquors",
+    "lat": 30.2202434,
+    "long": -81.5535722
+  },
+  {
+    "type": "Liquor",
+    "name": "Wells Road Liquors",
+    "lat": 30.1859125,
+    "long": -81.7238074
+  },
+  {
+    "type": "Liquor",
+    "name": "Shores Liquor Lounge at rd",
+    "lat": 30.2468101,
+    "long": -81.7775434
+  },
+  {
+    "type": "Liquor",
+    "name": "Family Dollar",
+    "lat": 30.3874237,
+    "long": -81.7166673
+  },
+  {
+    "type": "Liquor",
+    "name": "Bottle N Brew",
+    "lat": 30.2056988,
+    "long": -81.5828077
+  },
+  {
+    "type": "Liquor",
+    "name": "Family Dollar",
+    "lat": 30.372349,
+    "long": -81.688327
+  },
+  {
+    "type": "Liquor",
+    "name": "Moonshine Liquors",
+    "lat": 30.322784,
+    "long": -81.5354511
+  },
+  {
+    "type": "Liquor",
+    "name": " Street Liquor Beer Wine",
+    "lat": 30.2473947,
+    "long": -81.839745
+  },
+  {
+    "type": "Liquor",
+    "name": "Mandarin Liquors",
+    "lat": 30.1725556,
+    "long": -81.6060688
+  },
+  {
+    "type": "Liquor",
+    "name": "Bartram Fine Wine Liquor",
+    "lat": 30.1406829,
+    "long": -81.5499167
+  },
+  {
+    "type": "Liquor",
+    "name": "Publix Liquors on San Jose Blvd",
+    "lat": 30.1865295,
+    "long": -81.6296765
+  },
+  {
+    "type": "Liquor",
+    "name": "Liquor Masters",
+    "lat": 30.1854462,
+    "long": -81.6086727
+  },
+  {
+    "type": "Liquor",
+    "name": "Shad Liquor",
+    "lat": 30.1940674,
+    "long": -81.5771685
+  },
+  {
+    "type": "Liquor",
+    "name": "Shores Liquor Pub at Mandarin",
+    "lat": 30.1723944,
+    "long": -81.6013582
+  },
+  {
+    "type": "Liquor",
+    "name": "RaceTrac",
+    "lat": 30.2211812,
+    "long": -81.5770425
+  },
+  {
+    "type": "Liquor",
+    "name": "Anna E s Liquor",
+    "lat": 30.1759888,
+    "long": -81.6260917
+  },
+  {
+    "type": "Liquor",
+    "name": "Broudys Fine Wine Spirits",
+    "lat": 30.121659,
+    "long": -81.6271745
+  },
+  {
+    "type": "Liquor",
+    "name": "ABC Fine Wine Spirits",
+    "lat": 30.1038915,
+    "long": -81.5430919
+  },
+  {
+    "type": "Liquor",
+    "name": "Publix Liquors at Plantation Plaza",
+    "lat": 30.1127626,
+    "long": -81.5903858
+  },
+  {
+    "type": "Liquor",
+    "name": "Winn Dixie Wine Spirits",
+    "lat": 30.1591206,
+    "long": -81.6336956
+  },
+  {
+    "type": "Liquor",
+    "name": "Wild Whiskey Of Mandarin",
+    "lat": 30.1631928,
+    "long": -81.6330988
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 30.103181,
+    "long": -81.540386
+  },
+  {
+    "type": "Liquor",
+    "name": "Winn Dixie",
+    "lat": 30.1594239,
+    "long": -81.6337756
+  },
+  {
+    "type": "Liquor",
+    "name": "Winn Dixie Wine Spirits",
+    "lat": 30.1940631,
+    "long": -81.7964171
+  },
+  {
+    "type": "Liquor",
+    "name": "UpTown Liquor",
+    "lat": 30.1892393,
+    "long": -81.7169802
+  },
+  {
+    "type": "Liquor",
+    "name": "Shores Liquor at Argyle",
+    "lat": 30.1913362,
+    "long": -81.7427488
+  },
+  {
+    "type": "Liquor",
+    "name": "Shores Liquor at Wells Road",
+    "lat": 30.1891814,
+    "long": -81.7210389
+  },
+  {
+    "type": "Liquor",
+    "name": "Golden Ox",
+    "lat": 30.1945236,
+    "long": -81.8263271
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 30.2695486,
+    "long": -81.7560133
+  },
+  {
+    "type": "Liquor",
+    "name": "Royal House Liquor",
+    "lat": 30.2971646,
+    "long": -81.7747123
+  },
+  {
+    "type": "Liquor",
+    "name": "Liquor Stop",
+    "lat": 30.1889972,
+    "long": -81.717816
+  },
+  {
+    "type": "Liquor",
+    "name": "Safeway Liquor",
+    "lat": 30.2473598,
+    "long": -81.7900626
+  },
+  {
+    "type": "Liquor",
+    "name": "Walmart Wine and Liquor",
+    "lat": 30.2072274,
+    "long": -81.7602071
+  },
+  {
+    "type": "Liquor",
+    "name": "Circle K",
+    "lat": 30.3101564,
+    "long": -81.7058861
+  },
+  {
+    "type": "Liquor",
+    "name": "RaceTrac",
+    "lat": 30.1972001,
+    "long": -81.7653943
+  },
+  {
+    "type": "Liquor",
+    "name": "RaceTrac",
+    "lat": 30.2021048,
+    "long": -81.7403318
+  },
+  {
+    "type": "Liquor",
+    "name": "RaceTrac",
+    "lat": 30.2491502,
+    "long": -81.7582203
+  },
+  {
+    "type": "Liquor",
+    "name": "Skylight Discount Beverage",
+    "lat": 30.2913024,
+    "long": -81.7861562
+  },
+  {
+    "type": "Liquor",
+    "name": "San Juan Corner",
+    "lat": 30.2818929,
+    "long": -81.730625
+  },
+  {
+    "type": "Liquor",
+    "name": "Sam s Club",
+    "lat": 30.1981391,
+    "long": -81.7466574
+  },
+  {
+    "type": "Liquor",
+    "name": "Foremost Liquors Wine",
+    "lat": 30.1751522,
+    "long": -81.7444092
+  },
+  {
+    "type": "Liquor",
+    "name": "Shores Liquor The Roadhouse",
+    "lat": 30.1751945,
+    "long": -81.7443741
+  },
+  {
+    "type": "Liquor",
+    "name": "Walmart Wine and Liquor",
+    "lat": 30.3416515,
+    "long": -81.5454807
+  },
+  {
+    "type": "Liquor",
+    "name": "SMOKE Toke IV F ",
+    "lat": 30.3168862,
+    "long": -81.5570214
+  }
+]

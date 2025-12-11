@@ -1,0 +1,434 @@
+[
+  {
+    "type": "Bar",
+    "name": "Chicken Coop",
+    "lat": 31.773141,
+    "long": -106.4427197
+  },
+  {
+    "type": "Bar",
+    "name": "Kamikaze Bar",
+    "lat": 31.7508803,
+    "long": -106.3746556
+  },
+  {
+    "type": "Bar",
+    "name": "Mad Hatter",
+    "lat": 31.7891619,
+    "long": -106.5079114
+  },
+  {
+    "type": "Bar",
+    "name": "The Drunken Coyote",
+    "lat": 31.801143,
+    "long": -106.4612469
+  },
+  {
+    "type": "Bar",
+    "name": "Coconuts",
+    "lat": 31.7824146,
+    "long": -106.4612814
+  },
+  {
+    "type": "Bar",
+    "name": "Montrae Lounge",
+    "lat": 31.793693,
+    "long": -106.3577143
+  },
+  {
+    "type": "Bar",
+    "name": "Honest Abes",
+    "lat": 31.782874,
+    "long": -106.392944
+  },
+  {
+    "type": "Bar",
+    "name": "King s X Bar",
+    "lat": 31.7912408,
+    "long": -106.5081432
+  },
+  {
+    "type": "Bar",
+    "name": "Graham s Corner",
+    "lat": 31.8281379,
+    "long": -106.5295171
+  },
+  {
+    "type": "Bar",
+    "name": "The RockIn Bar",
+    "lat": 31.8065786,
+    "long": -106.4449055
+  },
+  {
+    "type": "Bar",
+    "name": "Beach Bar",
+    "lat": 31.7599387,
+    "long": -106.401194
+  },
+  {
+    "type": "Bar",
+    "name": "Shifty E s Dive",
+    "lat": 31.7597284,
+    "long": -106.487109
+  },
+  {
+    "type": "Bar",
+    "name": "Detour Bar Central",
+    "lat": 31.7833165,
+    "long": -106.4463616
+  },
+  {
+    "type": "Bar",
+    "name": "Monarch",
+    "lat": 31.7647046,
+    "long": -106.4919323
+  },
+  {
+    "type": "Bar",
+    "name": "Incredibles",
+    "lat": 31.8220958,
+    "long": -106.4661797
+  },
+  {
+    "type": "Bar",
+    "name": "Gordo s Hideout",
+    "lat": 31.785113,
+    "long": -106.356807
+  },
+  {
+    "type": "Bar",
+    "name": "Hope and Anchor",
+    "lat": 31.788384,
+    "long": -106.5066373
+  },
+  {
+    "type": "Bar",
+    "name": "Tanya s Gridiron",
+    "lat": 31.8178482,
+    "long": -106.444252
+  },
+  {
+    "type": "Bar",
+    "name": "Cinco Dive and Patio",
+    "lat": 31.7850616,
+    "long": -106.4609458
+  },
+  {
+    "type": "Bar",
+    "name": "Rods Sports Bar Lounge",
+    "lat": 31.7888782,
+    "long": -106.4481744
+  },
+  {
+    "type": "Bar",
+    "name": "Lloyd s Pub",
+    "lat": 31.832145,
+    "long": -106.531173
+  },
+  {
+    "type": "Bar",
+    "name": "Timmy z Central",
+    "lat": 31.7773561,
+    "long": -106.4537531
+  },
+  {
+    "type": "Bar",
+    "name": "EL CALICO BAR",
+    "lat": 31.7727834,
+    "long": -106.4253023
+  },
+  {
+    "type": "Bar",
+    "name": "Dillinger s Bar",
+    "lat": 31.7617688,
+    "long": -106.4882609
+  },
+  {
+    "type": "Bar",
+    "name": "Bar ",
+    "lat": 31.789085,
+    "long": -106.40801
+  },
+  {
+    "type": "Bar",
+    "name": "Tap Bot L Tap Bottle ",
+    "lat": 31.8292309,
+    "long": -106.525714
+  },
+  {
+    "type": "Bar",
+    "name": "Church Bar",
+    "lat": 31.759822,
+    "long": -106.4871951
+  },
+  {
+    "type": "Bar",
+    "name": "CANAYA",
+    "lat": 31.8294242,
+    "long": -106.525862
+  },
+  {
+    "type": "Bar",
+    "name": "Oak Antler American Tavern",
+    "lat": 31.7606239,
+    "long": -106.4863755
+  },
+  {
+    "type": "Bar",
+    "name": "RockHouse Divebar Kitchen Venue",
+    "lat": 31.7947542,
+    "long": -106.353072
+  },
+  {
+    "type": "Bar",
+    "name": "Shorty s Sports Bar Grill",
+    "lat": 31.7731808,
+    "long": -106.3697737
+  },
+  {
+    "type": "Bar",
+    "name": "Papa Doble",
+    "lat": 31.7849682,
+    "long": -106.4585781
+  },
+  {
+    "type": "Bar",
+    "name": "The Jockey Lounge and Restaurant",
+    "lat": 31.754217,
+    "long": -106.4888578
+  },
+  {
+    "type": "Bar",
+    "name": "Two Five Dive Bar",
+    "lat": 31.7945456,
+    "long": -106.3479853
+  },
+  {
+    "type": "Bar",
+    "name": "Chiquita s Bar",
+    "lat": 31.7623858,
+    "long": -106.4883903
+  },
+  {
+    "type": "Bar",
+    "name": "The Hoppy Monk",
+    "lat": 31.79248,
+    "long": -106.5088015
+  },
+  {
+    "type": "Bar",
+    "name": "The Tap Bar Restaurant",
+    "lat": 31.7584672,
+    "long": -106.4854239
+  },
+  {
+    "type": "Bar",
+    "name": "La Taberna De Rosie Bar",
+    "lat": 31.773154,
+    "long": -106.4424498
+  },
+  {
+    "type": "Bar",
+    "name": "Rocky s Bordertown Cantina and Grill",
+    "lat": 31.790999,
+    "long": -106.390806
+  },
+  {
+    "type": "Bar",
+    "name": "The Living Room Lounge",
+    "lat": 31.7974262,
+    "long": -106.4611537
+  },
+  {
+    "type": "Bar",
+    "name": "Aviators Pub Grub",
+    "lat": 31.7844526,
+    "long": -106.4596026
+  },
+  {
+    "type": "Bar",
+    "name": "Dewey s Corner Pub",
+    "lat": 31.782285,
+    "long": -106.4611767
+  },
+  {
+    "type": "Bar",
+    "name": "Bye Bye Dear",
+    "lat": 31.7761107,
+    "long": -106.5029552
+  },
+  {
+    "type": "Bar",
+    "name": "Luckyz Bar Lounge",
+    "lat": 31.8192038,
+    "long": -106.4443388
+  },
+  {
+    "type": "Bar",
+    "name": "LaMala Vida",
+    "lat": 31.7831928,
+    "long": -106.3932268
+  },
+  {
+    "type": "Bar",
+    "name": "Later, Later",
+    "lat": 31.7587077,
+    "long": -106.4955572
+  },
+  {
+    "type": "Bar",
+    "name": "Cuatro Ojos Bar",
+    "lat": 31.7752581,
+    "long": -106.4745687
+  },
+  {
+    "type": "Bar",
+    "name": "House of Rock Early Bird Grill Bar",
+    "lat": 31.7825858,
+    "long": -106.4615657
+  },
+  {
+    "type": "Bar",
+    "name": "Texas Bar",
+    "lat": 31.7961318,
+    "long": -106.3508868
+  },
+  {
+    "type": "Bar",
+    "name": "El Patron Sports Bar",
+    "lat": 31.7791723,
+    "long": -106.4210784
+  },
+  {
+    "type": "Bar",
+    "name": "Lucky Boy Bar and Grill",
+    "lat": 31.8008221,
+    "long": -106.461183
+  },
+  {
+    "type": "Bar",
+    "name": "International Bar",
+    "lat": 31.7592127,
+    "long": -106.4880877
+  },
+  {
+    "type": "Bar",
+    "name": "Big Mike s Place",
+    "lat": 31.8194965,
+    "long": -106.4444352
+  },
+  {
+    "type": "Bar",
+    "name": "Z C Dcalo Cantina",
+    "lat": 31.7832119,
+    "long": -106.3934316
+  },
+  {
+    "type": "Bar",
+    "name": "B Bombers Oyster Pub",
+    "lat": 31.7573048,
+    "long": -106.489057
+  },
+  {
+    "type": "Bar",
+    "name": "Love Buzz",
+    "lat": 31.7848859,
+    "long": -106.4593913
+  },
+  {
+    "type": "Bar",
+    "name": "The Palomino Tavern",
+    "lat": 31.7772297,
+    "long": -106.5029473
+  },
+  {
+    "type": "Bar",
+    "name": "Ojos Locos Sports Cantina El Paso, TX ",
+    "lat": 31.7828286,
+    "long": -106.3944116
+  },
+  {
+    "type": "Bar",
+    "name": "The District Pub Kitchen",
+    "lat": 31.7800495,
+    "long": -106.4618172
+  },
+  {
+    "type": "Bar",
+    "name": "Good Times at ",
+    "lat": 31.7769798,
+    "long": -106.5028563
+  },
+  {
+    "type": "Bar",
+    "name": "Bad Habits Bar Grill",
+    "lat": 31.7831577,
+    "long": -106.3930311
+  },
+  {
+    "type": "Bar",
+    "name": "El Mirador Rooftop Bar",
+    "lat": 31.7577561,
+    "long": -106.4894534
+  },
+  {
+    "type": "Bar",
+    "name": "Oasis Bar",
+    "lat": 31.7714883,
+    "long": -106.421925
+  },
+  {
+    "type": "Bar",
+    "name": "Park Inn Bar",
+    "lat": 31.771829,
+    "long": -106.4439801
+  },
+  {
+    "type": "Bar",
+    "name": "Palace Bar",
+    "lat": 31.7736511,
+    "long": -106.4568557
+  },
+  {
+    "type": "Bar",
+    "name": "Mas T Kila Bar",
+    "lat": 31.7828839,
+    "long": -106.3928669
+  },
+  {
+    "type": "Bar",
+    "name": "Bar El Cuatrero",
+    "lat": 31.7356985,
+    "long": -106.4877934
+  },
+  {
+    "type": "Bar",
+    "name": "Yankees Sport Bar",
+    "lat": 31.743246,
+    "long": -106.4854923
+  },
+  {
+    "type": "Bar",
+    "name": "Club ",
+    "lat": 31.7400608,
+    "long": -106.4845388
+  },
+  {
+    "type": "Bar",
+    "name": "World Famous Kentucky Bar Grill",
+    "lat": 31.744045,
+    "long": -106.4860785
+  },
+  {
+    "type": "Bar",
+    "name": "Don F C A lix Bar",
+    "lat": 31.7434604,
+    "long": -106.4855168
+  },
+  {
+    "type": "Bar",
+    "name": "Camelot Bar",
+    "lat": 31.7402952,
+    "long": -106.4868824
+  }
+]

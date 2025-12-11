@@ -1,0 +1,704 @@
+[
+  {
+    "type": "Bar",
+    "name": "The Dive Bar",
+    "lat": 35.4591224,
+    "long": -97.4779753
+  },
+  {
+    "type": "Bar",
+    "name": "Lost Highway Bar",
+    "lat": 35.4854431,
+    "long": -97.5658293
+  },
+  {
+    "type": "Bar",
+    "name": "The Snug OKC",
+    "lat": 35.4420196,
+    "long": -97.5164489
+  },
+  {
+    "type": "Bar",
+    "name": "Powerhouse",
+    "lat": 35.4631776,
+    "long": -97.5339825
+  },
+  {
+    "type": "Bar",
+    "name": "JJ s Alley",
+    "lat": 35.4662967,
+    "long": -97.5084505
+  },
+  {
+    "type": "Bar",
+    "name": "Honky Tonk Bar ",
+    "lat": 35.4394035,
+    "long": -97.6005363
+  },
+  {
+    "type": "Bar",
+    "name": "Coco Loco",
+    "lat": 35.4789693,
+    "long": -97.5903633
+  },
+  {
+    "type": "Bar",
+    "name": "Good Times",
+    "lat": 35.480845,
+    "long": -97.529822
+  },
+  {
+    "type": "Bar",
+    "name": "Zuma",
+    "lat": 35.4810687,
+    "long": -97.5300963
+  },
+  {
+    "type": "Bar",
+    "name": "Skinny Slim s",
+    "lat": 35.4677055,
+    "long": -97.5088586
+  },
+  {
+    "type": "Bar",
+    "name": "Bunker Club",
+    "lat": 35.4934985,
+    "long": -97.5204709
+  },
+  {
+    "type": "Bar",
+    "name": "The Flea",
+    "lat": 35.4722995,
+    "long": -97.5255634
+  },
+  {
+    "type": "Bar",
+    "name": "W XYZ Bar Grille",
+    "lat": 35.4694874,
+    "long": -97.5092893
+  },
+  {
+    "type": "Bar",
+    "name": "Camelot Pub",
+    "lat": 35.4789695,
+    "long": -97.5898208
+  },
+  {
+    "type": "Bar",
+    "name": "Cock O The Walk",
+    "lat": 35.5082062,
+    "long": -97.5300737
+  },
+  {
+    "type": "Bar",
+    "name": "RADBAR",
+    "lat": 35.4862192,
+    "long": -97.5391311
+  },
+  {
+    "type": "Bar",
+    "name": "The Ugly Flamingo ",
+    "lat": 35.5002839,
+    "long": -97.5475075
+  },
+  {
+    "type": "Bar",
+    "name": "Whiskey Chicks",
+    "lat": 35.4645266,
+    "long": -97.509993
+  },
+  {
+    "type": "Bar",
+    "name": "Ponyboy",
+    "lat": 35.4934343,
+    "long": -97.5200896
+  },
+  {
+    "type": "Bar",
+    "name": "Cookie s on Western",
+    "lat": 35.4925921,
+    "long": -97.5297446
+  },
+  {
+    "type": "Bar",
+    "name": "The Runaway Club",
+    "lat": 35.4295973,
+    "long": -97.590492
+  },
+  {
+    "type": "Bar",
+    "name": "K Saloon",
+    "lat": 35.4272009,
+    "long": -97.4950625
+  },
+  {
+    "type": "Bar",
+    "name": "The Boot",
+    "lat": 35.464525,
+    "long": -97.5651426
+  },
+  {
+    "type": "Bar",
+    "name": "Coyote Ugly Saloon",
+    "lat": 35.4655049,
+    "long": -97.5097718
+  },
+  {
+    "type": "Bar",
+    "name": "The Aloha Backyard",
+    "lat": 35.433043,
+    "long": -97.4595394
+  },
+  {
+    "type": "Bar",
+    "name": "Sipango Lounge",
+    "lat": 35.5148245,
+    "long": -97.5300452
+  },
+  {
+    "type": "Bar",
+    "name": "Mojo s Blues Club",
+    "lat": 35.465596,
+    "long": -97.511876
+  },
+  {
+    "type": "Bar",
+    "name": "Lamp Post Lounge",
+    "lat": 35.4661916,
+    "long": -97.5078885
+  },
+  {
+    "type": "Bar",
+    "name": "Blue Note Lounge",
+    "lat": 35.4936469,
+    "long": -97.5154255
+  },
+  {
+    "type": "Bar",
+    "name": "Montana Mining Club",
+    "lat": 35.4142093,
+    "long": -97.5085243
+  },
+  {
+    "type": "Bar",
+    "name": "Hideaway Club",
+    "lat": 35.5107675,
+    "long": -97.6002678
+  },
+  {
+    "type": "Bar",
+    "name": "Rio Bravo Bar",
+    "lat": 35.4585257,
+    "long": -97.5210658
+  },
+  {
+    "type": "Bar",
+    "name": "Katt s Cove",
+    "lat": 35.4494707,
+    "long": -97.4818967
+  },
+  {
+    "type": "Bar",
+    "name": "Hawaiian Don s",
+    "lat": 35.4789334,
+    "long": -97.5872666
+  },
+  {
+    "type": "Bar",
+    "name": "Paddock Club",
+    "lat": 35.4525215,
+    "long": -97.5499229
+  },
+  {
+    "type": "Bar",
+    "name": "The Other Room",
+    "lat": 35.4998547,
+    "long": -97.5232853
+  },
+  {
+    "type": "Bar",
+    "name": "Lunar Lounge",
+    "lat": 35.4796216,
+    "long": -97.5217991
+  },
+  {
+    "type": "Bar",
+    "name": "Edna s",
+    "lat": 35.523332,
+    "long": -97.5330099
+  },
+  {
+    "type": "Bar",
+    "name": "Medley s Lounge",
+    "lat": 35.5080019,
+    "long": -97.5523964
+  },
+  {
+    "type": "Bar",
+    "name": "Alibi s",
+    "lat": 35.4810452,
+    "long": -97.5473618
+  },
+  {
+    "type": "Bar",
+    "name": "Saloon ",
+    "lat": 35.4299951,
+    "long": -97.5895679
+  },
+  {
+    "type": "Bar",
+    "name": "The R J Lounge and Supper Club",
+    "lat": 35.477934,
+    "long": -97.518744
+  },
+  {
+    "type": "Bar",
+    "name": "Kats Kove",
+    "lat": 35.4494603,
+    "long": -97.4820659
+  },
+  {
+    "type": "Bar",
+    "name": "Tipsy Tiki",
+    "lat": 35.4655711,
+    "long": -97.5102842
+  },
+  {
+    "type": "Bar",
+    "name": "McNellie s OKC",
+    "lat": 35.4792678,
+    "long": -97.5212993
+  },
+  {
+    "type": "Bar",
+    "name": "FlashBack RetroPub OKC",
+    "lat": 35.4662055,
+    "long": -97.5264282
+  },
+  {
+    "type": "Bar",
+    "name": "K J s Early Bird Bar",
+    "lat": 35.4440546,
+    "long": -97.5658564
+  },
+  {
+    "type": "Bar",
+    "name": "Shots On Rocks Lounge and Grill",
+    "lat": 35.4789531,
+    "long": -97.5136975
+  },
+  {
+    "type": "Bar",
+    "name": "Jim s Sunset Bar Grill",
+    "lat": 35.4204329,
+    "long": -97.4923815
+  },
+  {
+    "type": "Bar",
+    "name": "Store Club",
+    "lat": 35.5218391,
+    "long": -97.5838928
+  },
+  {
+    "type": "Bar",
+    "name": "OKC Tap House",
+    "lat": 35.4620257,
+    "long": -97.5157976
+  },
+  {
+    "type": "Bar",
+    "name": "Up Down OKC",
+    "lat": 35.4861053,
+    "long": -97.5381642
+  },
+  {
+    "type": "Bar",
+    "name": "Don quixotes F the donkey",
+    "lat": 35.4987599,
+    "long": -97.5821275
+  },
+  {
+    "type": "Bar",
+    "name": "Paloma Negra Bar",
+    "lat": 35.4423563,
+    "long": -97.5299196
+  },
+  {
+    "type": "Bar",
+    "name": "Millennium Lounge",
+    "lat": 35.5190735,
+    "long": -97.5300339
+  },
+  {
+    "type": "Bar",
+    "name": "Fuel",
+    "lat": 35.4661715,
+    "long": -97.5078387
+  },
+  {
+    "type": "Bar",
+    "name": "Sidecar Barley Wine Bar",
+    "lat": 35.4782989,
+    "long": -97.5136832
+  },
+  {
+    "type": "Bar",
+    "name": "Ballers Bar and Grill",
+    "lat": 35.4442568,
+    "long": -97.6017246
+  },
+  {
+    "type": "Bar",
+    "name": "The Blok",
+    "lat": 35.4695146,
+    "long": -97.5107329
+  },
+  {
+    "type": "Bar",
+    "name": "The Vault at The National",
+    "lat": 35.4685031,
+    "long": -97.516241
+  },
+  {
+    "type": "Bar",
+    "name": "Grand Royale",
+    "lat": 35.4861831,
+    "long": -97.540451
+  },
+  {
+    "type": "Bar",
+    "name": "Bar Arbolada",
+    "lat": 35.4679804,
+    "long": -97.5241103
+  },
+  {
+    "type": "Bar",
+    "name": "Scorecards Sports Bar",
+    "lat": 35.4864003,
+    "long": -97.5409848
+  },
+  {
+    "type": "Bar",
+    "name": "Good For A Few",
+    "lat": 35.4862603,
+    "long": -97.5388137
+  },
+  {
+    "type": "Bar",
+    "name": "O Bar",
+    "lat": 35.4801452,
+    "long": -97.520925
+  },
+  {
+    "type": "Bar",
+    "name": "Bottoms Up Club",
+    "lat": 35.4219351,
+    "long": -97.4575324
+  },
+  {
+    "type": "Bar",
+    "name": "Mill Bar",
+    "lat": 35.5296512,
+    "long": -97.5817311
+  },
+  {
+    "type": "Bar",
+    "name": "Indigo Lounge OKC",
+    "lat": 35.5116315,
+    "long": -97.5498719
+  },
+  {
+    "type": "Bar",
+    "name": "Blue Bayou",
+    "lat": 35.4028634,
+    "long": -97.5306125
+  },
+  {
+    "type": "Bar",
+    "name": "Downtime",
+    "lat": 35.4934866,
+    "long": -97.524957
+  },
+  {
+    "type": "Bar",
+    "name": "Jalisco Bar",
+    "lat": 35.4171455,
+    "long": -97.5082753
+  },
+  {
+    "type": "Bar",
+    "name": "Kat s Tavern",
+    "lat": 35.5381504,
+    "long": -97.5251897
+  },
+  {
+    "type": "Bar",
+    "name": "Edsel s Club",
+    "lat": 35.4544868,
+    "long": -97.6017532
+  },
+  {
+    "type": "Bar",
+    "name": " st Street Speakeasy",
+    "lat": 35.5234015,
+    "long": -97.5306492
+  },
+  {
+    "type": "Bar",
+    "name": "The Jones Assembly",
+    "lat": 35.4666469,
+    "long": -97.5273857
+  },
+  {
+    "type": "Bar",
+    "name": "Tramps",
+    "lat": 35.5117422,
+    "long": -97.5494332
+  },
+  {
+    "type": "Bar",
+    "name": "Da Bomb",
+    "lat": 35.4356167,
+    "long": -97.4162307
+  },
+  {
+    "type": "Bar",
+    "name": "Coast to Coast Club",
+    "lat": 35.4638595,
+    "long": -97.4228203
+  },
+  {
+    "type": "Bar",
+    "name": "Guyutes",
+    "lat": 35.492973,
+    "long": -97.525588
+  },
+  {
+    "type": "Bar",
+    "name": "The Mule",
+    "lat": 35.4855951,
+    "long": -97.5412651
+  },
+  {
+    "type": "Bar",
+    "name": "Classics Bar Grill",
+    "lat": 35.5552338,
+    "long": -97.530959
+  },
+  {
+    "type": "Bar",
+    "name": " th Street Lounge",
+    "lat": 35.4608491,
+    "long": -97.5132712
+  },
+  {
+    "type": "Bar",
+    "name": "Little Dick s Halfway Inn",
+    "lat": 35.3873016,
+    "long": -97.4772538
+  },
+  {
+    "type": "Bar",
+    "name": "The Wilshire Bourbon Cigar Dive Bar",
+    "lat": 35.5513982,
+    "long": -97.566608
+  },
+  {
+    "type": "Bar",
+    "name": "Dr Feelgood s bar grill",
+    "lat": 35.4627856,
+    "long": -97.424791
+  },
+  {
+    "type": "Bar",
+    "name": "Cousins Bar Grill",
+    "lat": 35.5378778,
+    "long": -97.5660289
+  },
+  {
+    "type": "Bar",
+    "name": "Big Dick s Road House",
+    "lat": 35.4714564,
+    "long": -97.7255096
+  },
+  {
+    "type": "Bar",
+    "name": "Bamboo Room Bar",
+    "lat": 35.4562377,
+    "long": -97.4057006
+  },
+  {
+    "type": "Bar",
+    "name": "Mc Finns Pub",
+    "lat": 35.3872848,
+    "long": -97.5308891
+  },
+  {
+    "type": "Bar",
+    "name": "Elmer s Uptown",
+    "lat": 35.5254707,
+    "long": -97.5042601
+  },
+  {
+    "type": "Bar",
+    "name": "Twilight Club",
+    "lat": 35.41,
+    "long": -97.5487
+  },
+  {
+    "type": "Bar",
+    "name": "Snarky s Hideaway",
+    "lat": 35.4417762,
+    "long": -97.4053115
+  },
+  {
+    "type": "Bar",
+    "name": "Roadhouse",
+    "lat": 35.3995105,
+    "long": -97.6522291
+  },
+  {
+    "type": "Bar",
+    "name": "Celebrity Club",
+    "lat": 35.4436709,
+    "long": -97.4063707
+  },
+  {
+    "type": "Bar",
+    "name": "Nic s Grill",
+    "lat": 35.4809242,
+    "long": -97.5481324
+  },
+  {
+    "type": "Bar",
+    "name": "Margarita Island",
+    "lat": 35.4790881,
+    "long": -97.6580621
+  },
+  {
+    "type": "Bar",
+    "name": "Well Club",
+    "lat": 35.4850062,
+    "long": -97.6361088
+  },
+  {
+    "type": "Bar",
+    "name": "Chopper Hopper Saloon",
+    "lat": 35.3716807,
+    "long": -97.504034
+  },
+  {
+    "type": "Bar",
+    "name": "Triple s Bar Grill",
+    "lat": 35.4937539,
+    "long": -97.6554366
+  },
+  {
+    "type": "Bar",
+    "name": "Sunni B Sports Bar And Grill",
+    "lat": 35.5343341,
+    "long": -97.5128422
+  },
+  {
+    "type": "Bar",
+    "name": "George s Happy Hog Bar B Q",
+    "lat": 35.4861984,
+    "long": -97.5002365
+  },
+  {
+    "type": "Bar",
+    "name": "Shiloh Club",
+    "lat": 35.4499369,
+    "long": -97.3851763
+  },
+  {
+    "type": "Bar",
+    "name": "Club Bar Grill",
+    "lat": 35.532415,
+    "long": -97.4586522
+  },
+  {
+    "type": "Bar",
+    "name": "ENZONE OKC",
+    "lat": 35.3783111,
+    "long": -97.5289993
+  },
+  {
+    "type": "Bar",
+    "name": "Lyrewood Lounge",
+    "lat": 35.545291,
+    "long": -97.630613
+  },
+  {
+    "type": "Bar",
+    "name": "Corner Pocket",
+    "lat": 35.3768981,
+    "long": -97.4962471
+  },
+  {
+    "type": "Bar",
+    "name": "Castle",
+    "lat": 35.4755604,
+    "long": -97.6537291
+  },
+  {
+    "type": "Bar",
+    "name": "Lumpy s Sports Grill NW Expressway",
+    "lat": 35.5517238,
+    "long": -97.6208723
+  },
+  {
+    "type": "Bar",
+    "name": "Passtime Club",
+    "lat": 35.406013,
+    "long": -97.4961673
+  },
+  {
+    "type": "Bar",
+    "name": "Alley Club",
+    "lat": 35.3848234,
+    "long": -97.4990412
+  },
+  {
+    "type": "Bar",
+    "name": "Club Keno",
+    "lat": 35.4622095,
+    "long": -97.6554669
+  },
+  {
+    "type": "Bar",
+    "name": "Skinny Slim s Edmond",
+    "lat": 35.6496674,
+    "long": -97.4793412
+  },
+  {
+    "type": "Bar",
+    "name": "Lumpy s Sports Grill",
+    "lat": 35.595588,
+    "long": -97.56843
+  },
+  {
+    "type": "Bar",
+    "name": "Henry Hudson s Pub",
+    "lat": 35.5301531,
+    "long": -97.5800334
+  },
+  {
+    "type": "Bar",
+    "name": "Fore Play Sports Bar",
+    "lat": 35.5552237,
+    "long": -97.6442516
+  },
+  {
+    "type": "Bar",
+    "name": "Groovy s",
+    "lat": 35.5295208,
+    "long": -97.5703908
+  },
+  {
+    "type": "Bar",
+    "name": "Zodiac Club",
+    "lat": 35.5060956,
+    "long": -97.6184113
+  }
+]

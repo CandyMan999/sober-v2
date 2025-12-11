@@ -1,0 +1,608 @@
+[
+  {
+    "type": "Liquor",
+    "name": "District Nightclub",
+    "lat": 45.5224465,
+    "long": -122.6729758
+  },
+  {
+    "type": "Liquor",
+    "name": "Calle Night Club",
+    "lat": 45.5264553,
+    "long": -122.6762455
+  },
+  {
+    "type": "Liquor",
+    "name": "Kasa Nightclub Portland",
+    "lat": 45.5200393,
+    "long": -122.6754585
+  },
+  {
+    "type": "Liquor",
+    "name": "Sanctuary Club",
+    "lat": 45.5235017,
+    "long": -122.6802365
+  },
+  {
+    "type": "Liquor",
+    "name": "Nightclub Stratus Pdx",
+    "lat": 45.5233073,
+    "long": -122.672668
+  },
+  {
+    "type": "Liquor",
+    "name": "Elevate Nightclub",
+    "lat": 45.5242632,
+    "long": -122.6756209
+  },
+  {
+    "type": "Liquor",
+    "name": "Dirty Nightclub",
+    "lat": 45.52367,
+    "long": -122.6736948
+  },
+  {
+    "type": "Liquor",
+    "name": " Entertainment",
+    "lat": 45.4859587,
+    "long": -122.7462617
+  },
+  {
+    "type": "Liquor",
+    "name": "Strip Club Haunted House",
+    "lat": 45.5237127,
+    "long": -122.6725661
+  },
+  {
+    "type": "Liquor",
+    "name": "The Coffin",
+    "lat": 45.5199472,
+    "long": -122.6609306
+  },
+  {
+    "type": "Liquor",
+    "name": "TUBE",
+    "lat": 45.52352,
+    "long": -122.673109
+  },
+  {
+    "type": "Liquor",
+    "name": "Cultura Portland",
+    "lat": 45.5236057,
+    "long": -122.6803846
+  },
+  {
+    "type": "Liquor",
+    "name": "Holocene",
+    "lat": 45.5173397,
+    "long": -122.6554477
+  },
+  {
+    "type": "Liquor",
+    "name": "Trio Lounge",
+    "lat": 45.523086,
+    "long": -122.65636
+  },
+  {
+    "type": "Liquor",
+    "name": "CC Slaughters Nightclub and Lounge",
+    "lat": 45.5246861,
+    "long": -122.6729112
+  },
+  {
+    "type": "Liquor",
+    "name": " East",
+    "lat": 45.520501,
+    "long": -122.6631249
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Privata",
+    "lat": 45.5166243,
+    "long": -122.673981
+  },
+  {
+    "type": "Liquor",
+    "name": "Shake Bar",
+    "lat": 45.5236674,
+    "long": -122.6741204
+  },
+  {
+    "type": "Liquor",
+    "name": "BIZU",
+    "lat": 45.52367,
+    "long": -122.6736949
+  },
+  {
+    "type": "Liquor",
+    "name": "Rainbow Room",
+    "lat": 45.5246559,
+    "long": -122.6731701
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Rouge Portland",
+    "lat": 45.5207448,
+    "long": -122.6756803
+  },
+  {
+    "type": "Liquor",
+    "name": "Devils Point",
+    "lat": 45.495353,
+    "long": -122.6080607
+  },
+  {
+    "type": "Liquor",
+    "name": "REALM PDX",
+    "lat": 45.518191,
+    "long": -122.6593335
+  },
+  {
+    "type": "Liquor",
+    "name": "X Exotic Lounge",
+    "lat": 45.5227647,
+    "long": -122.6725092
+  },
+  {
+    "type": "Liquor",
+    "name": "Darcelle XV Showplace",
+    "lat": 45.524752,
+    "long": -122.6732912
+  },
+  {
+    "type": "Liquor",
+    "name": "Kit Kat Club",
+    "lat": 45.5226108,
+    "long": -122.6730133
+  },
+  {
+    "type": "Liquor",
+    "name": "Detox Nightclub C All Ages Pop Up Nightlife",
+    "lat": 45.5427145,
+    "long": -122.6543856
+  },
+  {
+    "type": "Liquor",
+    "name": "Ohm Night Club",
+    "lat": 45.5236862,
+    "long": -122.6716634
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Secrets",
+    "lat": 45.5380956,
+    "long": -122.6723777
+  },
+  {
+    "type": "Liquor",
+    "name": "Diamonds Gentlemen s Club",
+    "lat": 45.5205558,
+    "long": -122.6741189
+  },
+  {
+    "type": "Liquor",
+    "name": "Helium Comedy Club",
+    "lat": 45.512012,
+    "long": -122.6564212
+  },
+  {
+    "type": "Liquor",
+    "name": "Afterlife",
+    "lat": 45.511924,
+    "long": -122.6261883
+  },
+  {
+    "type": "Liquor",
+    "name": "HansFranceDance",
+    "lat": 45.5237168,
+    "long": -122.671579
+  },
+  {
+    "type": "Liquor",
+    "name": "Barrel Room",
+    "lat": 45.5235881,
+    "long": -122.6717909
+  },
+  {
+    "type": "Liquor",
+    "name": "Spyce Gentlemen s Club",
+    "lat": 45.5237442,
+    "long": -122.6725335
+  },
+  {
+    "type": "Liquor",
+    "name": "TVR The Velvet Rope",
+    "lat": 45.496724,
+    "long": -122.6229619
+  },
+  {
+    "type": "Liquor",
+    "name": "Low Brow Lounge",
+    "lat": 45.5271538,
+    "long": -122.6819026
+  },
+  {
+    "type": "Liquor",
+    "name": "Hallway PDX",
+    "lat": 45.5235824,
+    "long": -122.6730917
+  },
+  {
+    "type": "Liquor",
+    "name": "Exclusive Service Night Club",
+    "lat": 45.520365,
+    "long": -122.675854
+  },
+  {
+    "type": "Liquor",
+    "name": "The ",
+    "lat": 45.55197,
+    "long": -122.6752737
+  },
+  {
+    "type": "Liquor",
+    "name": "Dv ",
+    "lat": 45.4976892,
+    "long": -122.6106469
+  },
+  {
+    "type": "Liquor",
+    "name": "Stag PDX",
+    "lat": 45.5254922,
+    "long": -122.6778546
+  },
+  {
+    "type": "Liquor",
+    "name": "White Owl Social Club",
+    "lat": 45.5135441,
+    "long": -122.6579239
+  },
+  {
+    "type": "Liquor",
+    "name": "Playa Azul Nightclub",
+    "lat": 45.5186691,
+    "long": -122.4690933
+  },
+  {
+    "type": "Liquor",
+    "name": "Rum Club",
+    "lat": 45.5190429,
+    "long": -122.6578598
+  },
+  {
+    "type": "Liquor",
+    "name": "Mississippi Studios",
+    "lat": 45.5514492,
+    "long": -122.6758607
+  },
+  {
+    "type": "Liquor",
+    "name": "Capacity Social Club",
+    "lat": 45.5238703,
+    "long": -122.6572553
+  },
+  {
+    "type": "Liquor",
+    "name": "Badlands Portland",
+    "lat": 45.5239836,
+    "long": -122.6772243
+  },
+  {
+    "type": "Liquor",
+    "name": "Funhouse Lounge",
+    "lat": 45.5052349,
+    "long": -122.6544353
+  },
+  {
+    "type": "Liquor",
+    "name": "Aladdin s",
+    "lat": 45.5008089,
+    "long": -122.654546
+  },
+  {
+    "type": "Liquor",
+    "name": "Aalto Lounge",
+    "lat": 45.5163292,
+    "long": -122.62977
+  },
+  {
+    "type": "Liquor",
+    "name": "Multnomah Whiskey Library",
+    "lat": 45.5209808,
+    "long": -122.6834594
+  },
+  {
+    "type": "Liquor",
+    "name": "WellAndGoodPDX",
+    "lat": 45.501536,
+    "long": -122.639367
+  },
+  {
+    "type": "Liquor",
+    "name": "Eats",
+    "lat": 45.5135153,
+    "long": -122.6635316
+  },
+  {
+    "type": "Liquor",
+    "name": "Element Lounge",
+    "lat": 45.5230622,
+    "long": -122.6035274
+  },
+  {
+    "type": "Liquor",
+    "name": "Taggert St Pub",
+    "lat": 45.5024499,
+    "long": -122.6174363
+  },
+  {
+    "type": "Liquor",
+    "name": "Star Theater and Starlight Lounge",
+    "lat": 45.5233741,
+    "long": -122.6767519
+  },
+  {
+    "type": "Liquor",
+    "name": "The Alibi Tiki Lounge",
+    "lat": 45.552537,
+    "long": -122.680687
+  },
+  {
+    "type": "Liquor",
+    "name": "Bible Club PDX",
+    "lat": 45.4740936,
+    "long": -122.6497484
+  },
+  {
+    "type": "Liquor",
+    "name": "Voicebox Karaoke Northwest",
+    "lat": 45.5268614,
+    "long": -122.6948726
+  },
+  {
+    "type": "Liquor",
+    "name": "Star Bar",
+    "lat": 45.5173555,
+    "long": -122.6588265
+  },
+  {
+    "type": "Liquor",
+    "name": "Pope House Bourbon Lounge",
+    "lat": 45.5264614,
+    "long": -122.6940135
+  },
+  {
+    "type": "Liquor",
+    "name": "Momo s",
+    "lat": 45.5197057,
+    "long": -122.6826016
+  },
+  {
+    "type": "Liquor",
+    "name": "Slingshot Lounge",
+    "lat": 45.493679,
+    "long": -122.605545
+  },
+  {
+    "type": "Liquor",
+    "name": "Jo Bar Rotisserie",
+    "lat": 45.5279072,
+    "long": -122.698758
+  },
+  {
+    "type": "Liquor",
+    "name": "Moloko",
+    "lat": 45.5518088,
+    "long": -122.6757766
+  },
+  {
+    "type": "Liquor",
+    "name": "Olive Or Twist",
+    "lat": 45.5296177,
+    "long": -122.6825873
+  },
+  {
+    "type": "Liquor",
+    "name": "Sapphire Hotel",
+    "lat": 45.511883,
+    "long": -122.6112848
+  },
+  {
+    "type": "Liquor",
+    "name": "Pepes Restaurant and Karaoke Bar",
+    "lat": 45.4972562,
+    "long": -122.612369
+  },
+  {
+    "type": "Liquor",
+    "name": "Gold Dust Meridian",
+    "lat": 45.5122575,
+    "long": -122.6312632
+  },
+  {
+    "type": "Liquor",
+    "name": "Baby Ketten Klub",
+    "lat": 45.4984893,
+    "long": -122.6408462
+  },
+  {
+    "type": "Liquor",
+    "name": "Lucky Horseshoe Lounge",
+    "lat": 45.5031885,
+    "long": -122.639901
+  },
+  {
+    "type": "Liquor",
+    "name": "Turn Turn Turn ",
+    "lat": 45.5625569,
+    "long": -122.6667248
+  },
+  {
+    "type": "Liquor",
+    "name": "Dubai Nightclub",
+    "lat": 45.6267547,
+    "long": -122.6720025
+  },
+  {
+    "type": "Liquor",
+    "name": "Triple Nickel Pub",
+    "lat": 45.516361,
+    "long": -122.6261342
+  },
+  {
+    "type": "Liquor",
+    "name": "Suki s II",
+    "lat": 45.5119113,
+    "long": -122.6345576
+  },
+  {
+    "type": "Liquor",
+    "name": "M Bar Mandalay Bar",
+    "lat": 45.525907,
+    "long": -122.6946462
+  },
+  {
+    "type": "Liquor",
+    "name": "Chopsticks",
+    "lat": 45.5320821,
+    "long": -122.6290125
+  },
+  {
+    "type": "Liquor",
+    "name": "The Palm Court",
+    "lat": 45.5219001,
+    "long": -122.6784923
+  },
+  {
+    "type": "Liquor",
+    "name": " ",
+    "lat": 45.5046862,
+    "long": -122.6264298
+  },
+  {
+    "type": "Liquor",
+    "name": "Can Can Portland The Paris Theatre",
+    "lat": 45.5228693,
+    "long": -122.6729279
+  },
+  {
+    "type": "Liquor",
+    "name": "Gladstone Street Pub The Stone ",
+    "lat": 45.4934511,
+    "long": -122.6238013
+  },
+  {
+    "type": "Liquor",
+    "name": "The Dolphin Gentlemen s Club",
+    "lat": 45.4861971,
+    "long": -122.7883952
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Euphoria",
+    "lat": 45.5053318,
+    "long": -122.6565053
+  },
+  {
+    "type": "Liquor",
+    "name": "The Waverly",
+    "lat": 45.5017209,
+    "long": -122.631326
+  },
+  {
+    "type": "Liquor",
+    "name": "Mendelssohns",
+    "lat": 45.5516762,
+    "long": -122.6758373
+  },
+  {
+    "type": "Liquor",
+    "name": "Hobo s C Restaurant Lounge",
+    "lat": 45.5242597,
+    "long": -122.6731525
+  },
+  {
+    "type": "Liquor",
+    "name": "The Rumpus Room",
+    "lat": 45.5044822,
+    "long": -122.5543671
+  },
+  {
+    "type": "Liquor",
+    "name": "Guilty Pleasures Gentleman s Club",
+    "lat": 45.4983155,
+    "long": -122.5228884
+  },
+  {
+    "type": "Liquor",
+    "name": "Shun Chang Lounge",
+    "lat": 45.4978453,
+    "long": -122.5690367
+  },
+  {
+    "type": "Liquor",
+    "name": "Latin bar",
+    "lat": 45.5050592,
+    "long": -122.4771577
+  },
+  {
+    "type": "Liquor",
+    "name": "Scarlet Lounge",
+    "lat": 45.5038695,
+    "long": -122.5329517
+  },
+  {
+    "type": "Liquor",
+    "name": "The Lariat Lounge",
+    "lat": 45.5043979,
+    "long": -122.4852199
+  },
+  {
+    "type": "Liquor",
+    "name": "Sip N Play",
+    "lat": 45.5041108,
+    "long": -122.5675086
+  },
+  {
+    "type": "Liquor",
+    "name": "ME Ultra Lounge",
+    "lat": 45.6195686,
+    "long": -122.550861
+  },
+  {
+    "type": "Liquor",
+    "name": "Vault Bar",
+    "lat": 45.6193515,
+    "long": -122.5470103
+  },
+  {
+    "type": "Liquor",
+    "name": "Cascade Bar Grill",
+    "lat": 45.617379,
+    "long": -122.5175175
+  },
+  {
+    "type": "Liquor",
+    "name": "The Offramp Sports Bar Grill",
+    "lat": 45.6233398,
+    "long": -122.5581438
+  },
+  {
+    "type": "Liquor",
+    "name": "Disco Bambii",
+    "lat": 45.6386767,
+    "long": -122.5521776
+  },
+  {
+    "type": "Liquor",
+    "name": "O Dear Bar Grill",
+    "lat": 45.5583479,
+    "long": -122.5513741
+  },
+  {
+    "type": "Liquor",
+    "name": "Glass House Tavern",
+    "lat": 45.5587149,
+    "long": -122.5625793
+  }
+]
