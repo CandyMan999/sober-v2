@@ -708,7 +708,9 @@ function AppContent({ state, dispatch }) {
             isMuted={previewMuted}
             initialShowComments={previewShowComments}
             onToggleSound={() => setPreviewMuted((prev) => !prev)}
-            onTogglePostLike={(postId) => handlePreviewToggleLike(postId, "POST")}
+            onTogglePostLike={(postId) =>
+              handlePreviewToggleLike(postId, "POST")
+            }
             onToggleQuoteLike={(quoteId) =>
               handlePreviewToggleLike(quoteId, "QUOTE")
             }
