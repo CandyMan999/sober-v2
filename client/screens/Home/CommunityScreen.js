@@ -82,7 +82,7 @@ const CommunityScreen = () => {
   const client = useClient();
   const isFocused = useIsFocused();
   const { state, dispatch } = useContext(Context);
-  const { isPremium } = useRevenueCat();
+  const { isPremium, shouldShowAds } = useRevenueCat();
   const currentUserId = state?.user?.id;
   const currentUser = state?.user;
   const [posts, setPosts] = useState([]);
@@ -233,14 +233,14 @@ const CommunityScreen = () => {
   }, [interstitialAd, showAdForIndex]);
 
   useEffect(() => {
-    if (!isPremium) return;
+    if (shouldShowAds) return;
 
     setIsAdShowing(false);
     setIsAdLoaded(false);
     pendingAdIndexRef.current = null;
     adShownIndicesRef.current = new Set();
     setIsMuted((prev) => prev || preAdMuteRef.current);
-  }, [isPremium]);
+  }, [shouldShowAds]);
 
   const feedModel = useMemo(
     () =>
@@ -470,7 +470,7 @@ const CommunityScreen = () => {
 
   const maybeShowInterstitial = useCallback(
     (index) => {
-      if (isPremium) return;
+      if (!shouldShowAds) return;
 
       if ((index + 1) % AD_SLOT_FREQUENCY !== 0) {
         if (
@@ -493,7 +493,7 @@ const CommunityScreen = () => {
       pendingAdIndexRef.current = index;
       interstitialAd.load();
     },
-    [interstitialAd, isAdLoaded, isPremium, showAdForIndex]
+    [interstitialAd, isAdLoaded, shouldShowAds, showAdForIndex]
   );
 
   const handlePlaybackStatus = useCallback((index, status) => {
