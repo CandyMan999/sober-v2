@@ -147,6 +147,7 @@ function AppContent({ state, dispatch }) {
   const [paywallSource, setPaywallSource] = useState(null);
   const hasShownPaywallThisSession = useRef(false);
   const hasCheckedPushPermissionsRef = useRef(false);
+  const hasReachedMainTabsRef = useRef(false);
   const { isPremium, initializing: revenueCatInitializing } = useRevenueCat();
   const trialEndsAtString = currentUser?.trialEndsAt;
   const trialEndsAt = trialEndsAtString ? new Date(trialEndsAtString) : null;
@@ -586,6 +587,8 @@ function AppContent({ state, dispatch }) {
     if (revenueCatInitializing) return;
     if (!shouldForcePaywall) return;
 
+    if (!hasReachedMainTabsRef.current) return;
+
     if (!navigationRef.isReady()) return;
 
     const currentRoute = navigationRef.getCurrentRoute();
@@ -633,6 +636,7 @@ function AppContent({ state, dispatch }) {
       setPaywallVisible(false);
       setPaywallSource(null);
       hasShownPaywallThisSession.current = false;
+      hasReachedMainTabsRef.current = false;
     }
   }, [currentUser?.id]);
 
@@ -692,9 +696,20 @@ function AppContent({ state, dispatch }) {
         ref={navigationRef}
         onReady={() => {
           setNavigationReady(true);
+          const currentRoute = navigationRef.getCurrentRoute();
+          if (currentRoute?.name === "MainTabs") {
+            hasReachedMainTabsRef.current = true;
+          }
           maybeShowPaywall();
         }}
-        onStateChange={maybeShowPaywall}
+        onStateChange={() => {
+          const currentRoute = navigationRef.getCurrentRoute();
+          if (currentRoute?.name === "MainTabs") {
+            hasReachedMainTabsRef.current = true;
+          }
+
+          maybeShowPaywall();
+        }}
       >
         <>
           <Stack.Navigator
