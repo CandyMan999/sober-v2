@@ -22,7 +22,44 @@ export const RevenueCatProvider = ({ children, state, dispatch }) => {
 
   const [currentOffering, setCurrentOffering] = useState(null);
   const [isPremium, setIsPremium] = useState(false);
+  const [hasPremiumEntitlement, setHasPremiumEntitlement] = useState(false);
+  const [hasBackendPremium, setHasBackendPremium] = useState(false);
+  const [customerInfo, setCustomerInfo] = useState(null);
   const [initializing, setInitializing] = useState(true);
+
+  const deriveMembershipStatus = (info, user) => {
+    const entitlementActive = !!info?.entitlements?.active?.premium;
+    const backendPlanType = user?.plan?.planType || "";
+    const backendPremium = backendPlanType && backendPlanType !== "Free";
+
+    return {
+      entitlementActive,
+      backendPremium,
+      isPremium: entitlementActive || backendPremium,
+    };
+  };
+
+  const applyMembershipStatus = (info, user) => {
+    const { entitlementActive, backendPremium, isPremium: premium } =
+      deriveMembershipStatus(info, user);
+
+    setHasPremiumEntitlement(entitlementActive);
+    setHasBackendPremium(backendPremium);
+    setIsPremium(premium);
+
+    return { entitlementActive, backendPremium, premium };
+  };
+
+  const isTrialExpired = useMemo(() => {
+    const trialEndsAtString = currentUser?.trialEndsAt;
+    const trialEndsAt = trialEndsAtString ? new Date(trialEndsAtString) : null;
+
+    if (typeof currentUser?.isTrialExpired === "boolean") {
+      return currentUser.isTrialExpired;
+    }
+
+    return trialEndsAt ? trialEndsAt.getTime() <= Date.now() : false;
+  }, [currentUser?.isTrialExpired, currentUser?.trialEndsAt]);
 
   // -------------------------------------------
   // 🔍 DEBUG HELPER: Shows EXACT RC status
@@ -30,6 +67,7 @@ export const RevenueCatProvider = ({ children, state, dispatch }) => {
   const debugRevenueCatState = async (label = "debug", user = currentUser) => {
     try {
       const customerInfo = await Purchases.getCustomerInfo();
+      const membership = deriveMembershipStatus(customerInfo, user);
 
       const activeEntitlements = customerInfo?.entitlements?.active || {};
       const activeEntitlementKeys = Object.keys(activeEntitlements);
@@ -56,6 +94,7 @@ export const RevenueCatProvider = ({ children, state, dispatch }) => {
           active: activeEntitlements,
         },
         isPremiumDerived: activeEntitlementKeys.includes("premium"),
+        membership,
         managementURL: customerInfo?.managementURL,
         requestDate: customerInfo?.requestDate,
       });
@@ -71,12 +110,15 @@ export const RevenueCatProvider = ({ children, state, dispatch }) => {
     if (!user) return;
 
     try {
-      const customerInfo = await Purchases.getCustomerInfo();
-      const hasPremium = !!customerInfo.entitlements.active?.premium;
+      const latestCustomerInfo = await Purchases.getCustomerInfo();
+      setCustomerInfo(latestCustomerInfo);
 
-      setIsPremium(hasPremium);
+      const membership = applyMembershipStatus(latestCustomerInfo, user);
 
-      const desiredPlanType = hasPremium ? "Premium" : "Free";
+      const desiredPlanType =
+        membership.entitlementActive || membership.backendPremium
+          ? "Premium"
+          : "Free";
       const currentPlanType = user.plan?.planType || "Free";
 
       if (currentPlanType === desiredPlanType) return;
@@ -155,6 +197,9 @@ export const RevenueCatProvider = ({ children, state, dispatch }) => {
     const handleUserChange = async () => {
       if (!currentUser?.id) {
         setIsPremium(false);
+        setHasPremiumEntitlement(false);
+        setHasBackendPremium(false);
+        setCustomerInfo(null);
         return;
       }
 
@@ -180,8 +225,8 @@ export const RevenueCatProvider = ({ children, state, dispatch }) => {
     try {
       const { customerInfo } = await Purchases.purchasePackage(selectedPackage);
 
-      const hasPremium = !!customerInfo.entitlements.active?.premium;
-      setIsPremium(hasPremium);
+      setCustomerInfo(customerInfo);
+      applyMembershipStatus(customerInfo, currentUser);
 
       if (currentUser) {
         await syncPlanWithBackend(currentUser);
@@ -203,8 +248,8 @@ export const RevenueCatProvider = ({ children, state, dispatch }) => {
     try {
       const customerInfo = await Purchases.restorePurchases();
 
-      const hasPremium = !!customerInfo.entitlements.active?.premium;
-      setIsPremium(hasPremium);
+      setCustomerInfo(customerInfo);
+      applyMembershipStatus(customerInfo, currentUser);
 
       if (currentUser) {
         await syncPlanWithBackend(currentUser);
@@ -227,10 +272,23 @@ export const RevenueCatProvider = ({ children, state, dispatch }) => {
       initializing,
       purchasePackage,
       restorePurchases,
+      shouldShowAds: isTrialExpired && !isPremium,
+      hasPremiumEntitlement,
+      hasBackendPremium,
+      customerInfo,
       refreshPlanFromRevenueCat: () => syncPlanWithBackend(currentUser),
       debugRevenueCatState,
     }),
-    [currentOffering, isPremium, initializing, currentUser]
+    [
+      currentOffering,
+      isPremium,
+      initializing,
+      currentUser,
+      isTrialExpired,
+      hasPremiumEntitlement,
+      hasBackendPremium,
+      customerInfo,
+    ]
   );
 
   return (
