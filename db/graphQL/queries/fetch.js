@@ -69,18 +69,61 @@ module.exports = {
       throw new AuthenticationError(err.message);
     }
   },
-  getQuotesResolver: async (root, args, ctx) => {
-    try {
-      const quotes = await Quote.find({ isApproved: true })
+  getQuotesResolver: async (root, args) => {
+    const { limit: limitArg, cursor: cursorArg, token, excludeViewed = false } =
+      args || {};
+
+    const limit = Math.min(limitArg || 20, 50);
+    const cursor = cursorArg ? new Date(cursorArg) : null;
+
+    let viewer = null;
+    if (token) {
+      viewer = await User.findOne({ token });
+    }
+
+    const baseQuery = { isApproved: true, isDenied: { $ne: true } };
+    if (cursor) {
+      baseQuery.createdAt = { $lt: cursor };
+    }
+
+    const fetchQuotes = (query = {}, limitOverride = limit + 1) =>
+      Quote.find({ ...baseQuery, ...query })
         .sort({ createdAt: -1 })
+        .limit(limitOverride)
         .populate("user")
         .populate({
           path: "comments",
           match: { $or: [{ replyTo: null }, { replyTo: { $exists: false } }] },
           populate: buildRepliesPopulate(2),
         });
-      // Don't throw if none; just return empty array
-      return quotes;
+
+    try {
+      let quotes;
+
+      if (excludeViewed && viewer) {
+        const unseenQuery = { viewers: { $ne: viewer._id } };
+        const unseenQuotes = await fetchQuotes(unseenQuery);
+
+        // If we don't have enough unseen quotes to fill the page, backfill with viewed ones
+        if (unseenQuotes.length <= limit) {
+          const remainingLimit = limit + 1 - unseenQuotes.length;
+          const seenQuotes = await fetchQuotes({ viewers: viewer._id }, remainingLimit);
+          quotes = [...unseenQuotes, ...seenQuotes];
+        } else {
+          quotes = unseenQuotes;
+        }
+      } else {
+        quotes = await fetchQuotes();
+      }
+
+      const hasMore = quotes.length > limit;
+      const trimmed = hasMore ? quotes.slice(0, limit) : quotes;
+      const nextCursor =
+        hasMore && trimmed.length
+          ? trimmed[trimmed.length - 1].createdAt.toISOString()
+          : null;
+
+      return { quotes: trimmed, hasMore, cursor: nextCursor };
     } catch (err) {
       throw new Error(err.message);
     }

@@ -27,7 +27,10 @@ import { useClient } from "../../client";
 import AlertModal from "../../components/AlertModal";
 import Context from "../../context";
 import FeedInteractionModel from "../../utils/feed/FeedInteractionModel";
-import { TOGGLE_SAVE_MUTATION } from "../../GraphQL/mutations";
+import {
+  RECORD_QUOTE_VIEW_MUTATION,
+  TOGGLE_SAVE_MUTATION,
+} from "../../GraphQL/mutations";
 import { applySavedStateToContext, isItemSaved } from "../../utils/saves";
 import { getToken } from "../../utils/helpers";
 
@@ -36,6 +39,7 @@ let hasShownQuotesAlertThisSession = false;
 
 const { height: WINDOW_HEIGHT } = Dimensions.get("window");
 const SHEET_HEIGHT = Math.round(WINDOW_HEIGHT * 0.26);
+const PAGE_SIZE = 10;
 
 const QuotesScreen = () => {
   const client = useClient();
@@ -46,6 +50,10 @@ const QuotesScreen = () => {
 
   const [quotes, setQuotes] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
+  const [cursor, setCursor] = useState(null);
   const [error, setError] = useState("");
   const [containerHeight, setContainerHeight] = useState(null);
   const [showSaveSheet, setShowSaveSheet] = useState(false);
@@ -56,9 +64,12 @@ const QuotesScreen = () => {
   // “Add your own quote” hint
   const [showAlert, setShowAlert] = useState(false);
   const [followLoadingIds, setFollowLoadingIds] = useState(new Set());
+  const [activeIndex, setActiveIndex] = useState(0);
 
   const quotesRef = useRef(quotes);
   const followLoadingRef = useRef(followLoadingIds);
+  const cursorRef = useRef(cursor);
+  const viewedQuotesRef = useRef(new Set());
 
   useEffect(() => {
     quotesRef.current = quotes;
@@ -67,6 +78,10 @@ const QuotesScreen = () => {
   useEffect(() => {
     followLoadingRef.current = followLoadingIds;
   }, [followLoadingIds]);
+
+  useEffect(() => {
+    cursorRef.current = cursor;
+  }, [cursor]);
 
   const getQuotes = useCallback(() => quotesRef.current, []);
   const getFollowLoading = useCallback(() => followLoadingRef.current, []);
@@ -120,38 +135,69 @@ const QuotesScreen = () => {
     );
   }, []);
 
-  // Fetch quotes once on mount
-  useEffect(() => {
-    let isMounted = true;
-
-    const fetchQuotes = async () => {
-      try {
+  const fetchQuotes = useCallback(
+    async ({ mode = "initial" } = {}) => {
+      if (mode === "loadMore") {
+        if (!hasMore || loadingMore) return;
+        setLoadingMore(true);
+      } else if (mode === "refresh") {
+        setRefreshing(true);
+        setHasMore(true);
+        setCursor(null);
+        cursorRef.current = null;
+        viewedQuotesRef.current = new Set();
+      } else {
         setLoading(true);
-        setError("");
+        setHasMore(true);
+        setCursor(null);
+        cursorRef.current = null;
+        viewedQuotesRef.current = new Set();
+      }
 
-        const data = await client.request(GET_QUOTES_QUERY);
+      setError("");
 
-        if (!isMounted) return;
+      try {
+        const token = await getToken();
+        const data = await client.request(GET_QUOTES_QUERY, {
+          limit: PAGE_SIZE,
+          cursor: mode === "loadMore" ? cursorRef.current : null,
+          token,
+          excludeViewed: true,
+        });
 
-        setQuotes(data?.getQuotes || []);
+        const payload = data?.getQuotes || {};
+        const fetchedQuotes = payload.quotes || [];
+        const nextCursor = payload.cursor || null;
+        const nextHasMore = payload.hasMore ?? false;
+
+        setQuotes((prev) =>
+          mode === "loadMore" ? [...prev, ...fetchedQuotes] : fetchedQuotes
+        );
+        setCursor(nextCursor);
+        setHasMore(nextHasMore);
+        if (mode !== "loadMore") {
+          setActiveIndex(0);
+        }
       } catch (err) {
         console.error("Error fetching quotes:", err);
-        if (isMounted) {
-          setError("There was a problem loading quotes.");
-        }
+        setError("There was a problem loading quotes.");
       } finally {
-        if (isMounted) {
+        if (mode === "loadMore") {
+          setLoadingMore(false);
+        } else if (mode === "refresh") {
+          setRefreshing(false);
+          setLoading(false);
+        } else {
           setLoading(false);
         }
       }
-    };
+    },
+    [client, hasMore, loadingMore]
+  );
 
+  useEffect(() => {
     fetchQuotes();
-
-    return () => {
-      isMounted = false;
-    };
-  }, []); // run only once
+  }, [fetchQuotes]);
 
   // Delay the alert until the screen is fully focused, and only once per session
   useEffect(() => {
@@ -333,6 +379,64 @@ const QuotesScreen = () => {
     />
   );
 
+  const recordViewForQuote = useCallback(
+    async (quote) => {
+      if (!quote?.id) return;
+      if (viewedQuotesRef.current.has(quote.id)) return;
+
+      const token = await getToken();
+      if (!token) return;
+
+      try {
+        const data = await client.request(RECORD_QUOTE_VIEW_MUTATION, {
+          token,
+          quoteId: quote.id,
+        });
+
+        viewedQuotesRef.current.add(quote.id);
+        const updatedQuote = data?.recordQuoteView;
+
+        if (updatedQuote) {
+          setQuotes((prev) =>
+            prev.map((item) =>
+              item.id === quote.id
+                ? {
+                    ...item,
+                    viewsCount: updatedQuote.viewsCount ?? item.viewsCount ?? 0,
+                  }
+                : item
+            )
+          );
+        }
+      } catch (err) {
+        console.error("Error recording quote view", err);
+      }
+    },
+    [client]
+  );
+
+  useEffect(() => {
+    const currentQuote = quotes[activeIndex];
+    if (currentQuote) {
+      recordViewForQuote(currentQuote);
+    }
+  }, [activeIndex, quotes, recordViewForQuote]);
+
+  const onViewableItemsChanged = useCallback(({ viewableItems }) => {
+    if (!viewableItems?.length) return;
+    const index = viewableItems[0].index ?? 0;
+    setActiveIndex(index);
+  }, []);
+
+  const handleLoadMore = () => {
+    fetchQuotes({ mode: "loadMore" });
+  };
+
+  const handleRefresh = () => {
+    if (loading || refreshing) return;
+    fetchQuotes({ mode: "refresh" });
+  };
+
   if (loading) {
     return (
       <View style={styles.root} onLayout={handleLayout}>
@@ -381,6 +485,7 @@ const QuotesScreen = () => {
         {renderAlert()}
         <QuoteFeedLayout
           quote={item}
+          viewsCount={item.viewsCount}
           isLiked={feedModel.isItemLiked(item)}
           onLikePress={() => handleToggleLike(item.id)}
           onCommentAdded={(newComment) =>
@@ -401,6 +506,7 @@ const QuotesScreen = () => {
     <View style={{ height: containerHeight }}>
       <QuoteFeedLayout
         quote={item}
+        viewsCount={item.viewsCount}
         isLiked={feedModel.isItemLiked(item)}
         onLikePress={() => handleToggleLike(item.id)}
         onCommentAdded={(newComment) => handleCommentAdded(item.id, newComment)}
@@ -432,6 +538,19 @@ const QuotesScreen = () => {
           offset: containerHeight * index,
           index,
         })}
+        viewabilityConfig={{ viewAreaCoveragePercentThreshold: 80 }}
+        onViewableItemsChanged={onViewableItemsChanged}
+        onEndReachedThreshold={0.5}
+        onEndReached={handleLoadMore}
+        onRefresh={handleRefresh}
+        refreshing={refreshing}
+        ListFooterComponent={() =>
+          loadingMore ? (
+            <View style={styles.footer}>
+              <ActivityIndicator color="#f59e0b" />
+            </View>
+          ) : null
+        }
       />
       {renderSaveSheet()}
     </View>
@@ -523,6 +642,11 @@ const styles = StyleSheet.create({
   },
   sheetSpinner: {
     marginLeft: 8,
+  },
+  footer: {
+    paddingVertical: 24,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
 

@@ -46,6 +46,20 @@ const QuoteSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+
+    // Track how many unique viewers have seen this quote
+    viewsCount: {
+      type: Number,
+      default: 0,
+    },
+
+    // Who viewed this quote (for deduped view counts)
+    viewers: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
   },
   {
     timestamps: true, // createdAt + updatedAt

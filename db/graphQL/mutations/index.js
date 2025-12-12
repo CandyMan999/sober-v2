@@ -15,7 +15,7 @@ const {
   createQuoteCommentResolver,
 } = require("./comments");
 const { toggleLikeResolver } = require("./likes");
-const { recordPostViewResolver } = require("./views");
+const { recordPostViewResolver, recordQuoteViewResolver } = require("./views");
 const { followUserResolver, unfollowUserResolver } = require("./follow");
 const { updateSocialResolver } = require("./updateSocial");
 const {
@@ -63,6 +63,7 @@ module.exports = {
   moderatePostResolver,
   moderateQuoteResolver,
   recordPostViewResolver,
+  recordQuoteViewResolver,
   followUserResolver,
   unfollowUserResolver,
   updateSocialResolver,

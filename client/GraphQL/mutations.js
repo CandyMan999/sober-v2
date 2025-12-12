@@ -546,6 +546,15 @@ export const RECORD_POST_VIEW_MUTATION = gql`
   }
 `;
 
+export const RECORD_QUOTE_VIEW_MUTATION = gql`
+  mutation RecordQuoteView($token: String!, $quoteId: ID!) {
+    recordQuoteView(token: $token, quoteId: $quoteId) {
+      id
+      viewsCount
+    }
+  }
+`;
+
 export const CHANGE_PLAN_MUTATION = gql`
   mutation ChangePlan($userId: ID!, $planType: PlanType!) {
     changePlan(userId: $userId, planType: $planType) {

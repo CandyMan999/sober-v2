@@ -569,53 +569,36 @@ export const USER_POSTS_PAGINATED_QUERY = `
 `;
 
 export const GET_QUOTES_QUERY = `
-  query GetQuotes {
-    getQuotes {
-      id
-      text
-      isApproved
-      isUsed
-      likesCount
-      commentsCount
-      createdAt
-      
-      user {
+  query GetQuotes(
+    $limit: Int
+    $cursor: String
+    $token: String
+    $excludeViewed: Boolean
+  ) {
+    getQuotes(
+      limit: $limit
+      cursor: $cursor
+      token: $token
+      excludeViewed: $excludeViewed
+    ) {
+      hasMore
+      cursor
+      quotes {
         id
-        username
-        profilePicUrl
-         isFollowedByViewer
-        isBuddyWithViewer
-      }
+        text
+        isApproved
+        isUsed
+        likesCount
+        commentsCount
+        viewsCount
+        createdAt
 
-      likes {
-        id
         user {
           id
           username
           profilePicUrl
-        }
-        createdAt
-      }
-
-      comments {
-        id
-        text
-        createdAt
-        likesCount
-
-        author {
-          id
-          username
-          profilePicUrl
-        }
-
-        replyTo {
-          id
-          author {
-            id
-            username
-            profilePicUrl
-          }
+           isFollowedByViewer
+          isBuddyWithViewer
         }
 
         likes {
@@ -625,13 +608,21 @@ export const GET_QUOTES_QUERY = `
             username
             profilePicUrl
           }
+          createdAt
         }
 
-        replies {
+        comments {
           id
           text
           createdAt
           likesCount
+
+          author {
+            id
+            username
+            profilePicUrl
+          }
+
           replyTo {
             id
             author {
@@ -639,11 +630,6 @@ export const GET_QUOTES_QUERY = `
               username
               profilePicUrl
             }
-          }
-          author {
-            id
-            username
-            profilePicUrl
           }
 
           likes {
@@ -660,11 +646,6 @@ export const GET_QUOTES_QUERY = `
             text
             createdAt
             likesCount
-            author {
-              id
-              username
-              profilePicUrl
-            }
             replyTo {
               id
               author {
@@ -673,12 +654,46 @@ export const GET_QUOTES_QUERY = `
                 profilePicUrl
               }
             }
+            author {
+              id
+              username
+              profilePicUrl
+            }
+
             likes {
               id
               user {
                 id
                 username
                 profilePicUrl
+              }
+            }
+
+            replies {
+              id
+              text
+              createdAt
+              likesCount
+              author {
+                id
+                username
+                profilePicUrl
+              }
+              replyTo {
+                id
+                author {
+                  id
+                  username
+                  profilePicUrl
+                }
+              }
+              likes {
+                id
+                user {
+                  id
+                  username
+                  profilePicUrl
+                }
               }
             }
           }

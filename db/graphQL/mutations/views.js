@@ -1,5 +1,5 @@
 const { AuthenticationError } = require("apollo-server-express");
-const { Post, User, Video } = require("../../models");
+const { Post, Quote, User, Video } = require("../../models");
 
 const recordPostViewResolver = async (root, args) => {
   const { postId, token } = args;
@@ -45,4 +45,36 @@ const recordPostViewResolver = async (root, args) => {
   return updatedPost;
 };
 
-module.exports = { recordPostViewResolver };
+const recordQuoteViewResolver = async (root, args) => {
+  const { quoteId, token } = args;
+
+  if (!quoteId) {
+    throw new Error("quoteId is required");
+  }
+
+  if (!token) {
+    throw new AuthenticationError("A valid token is required");
+  }
+
+  const viewer = await User.findOne({ token });
+  if (!viewer) {
+    throw new AuthenticationError("Invalid token");
+  }
+
+  const quote = await Quote.findById(quoteId);
+
+  if (!quote) {
+    throw new Error("Quote not found");
+  }
+
+  await Quote.updateOne(
+    { _id: quoteId, viewers: { $ne: viewer._id } },
+    { $addToSet: { viewers: viewer._id }, $inc: { viewsCount: 1 } }
+  );
+
+  const updatedQuote = await Quote.findById(quoteId);
+
+  return updatedQuote;
+};
+
+module.exports = { recordPostViewResolver, recordQuoteViewResolver };
