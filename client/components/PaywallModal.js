@@ -11,6 +11,8 @@ import {
   Image,
   useWindowDimensions,
 } from "react-native";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+
 import { BlurView } from "expo-blur";
 import { LinearGradient } from "expo-linear-gradient";
 import { COLORS } from "../constants/colors";
@@ -167,7 +169,7 @@ const PaywallModal = ({ visible, onClose, onSelectPremium, onSelectFree }) => {
               <TouchableOpacity
                 onPress={onClose}
                 activeOpacity={0.7}
-                style={[styles.closeButton, { top: topPadding }]}
+                style={[styles.closeButton, { top: "7%" }]}
               >
                 <View style={styles.closeCircle}>
                   <Text style={styles.closeIcon}>✕</Text>
@@ -178,7 +180,12 @@ const PaywallModal = ({ visible, onClose, onSelectPremium, onSelectFree }) => {
               <View style={styles.sectionTop}>
                 <View style={styles.chipRow}>
                   <View style={styles.chip}>
-                    <Text style={styles.chipIcon}>👑</Text>
+                    <MaterialCommunityIcons
+                      name="crown-outline"
+                      size={16}
+                      color={COLORS.accent}
+                      style={styles.chipIcon}
+                    />
                     <Text style={styles.chipText}>Premium</Text>
                   </View>
                 </View>
@@ -349,7 +356,6 @@ const styles = StyleSheet.create({
   closeButton: {
     position: "absolute",
     right: 18,
-    zIndex: 99,
   },
   closeCircle: {
     width: 34,
@@ -387,7 +393,6 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(14,165,233,0.15)",
   },
   chipIcon: {
-    fontSize: 14,
     color: COLORS.accent,
     marginTop: 1,
   },

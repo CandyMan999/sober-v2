@@ -40,8 +40,11 @@ export const RevenueCatProvider = ({ children, state, dispatch }) => {
   };
 
   const applyMembershipStatus = (info, user) => {
-    const { entitlementActive, backendPremium, isPremium: premium } =
-      deriveMembershipStatus(info, user);
+    const {
+      entitlementActive,
+      backendPremium,
+      isPremium: premium,
+    } = deriveMembershipStatus(info, user);
 
     setHasPremiumEntitlement(entitlementActive);
     setHasBackendPremium(backendPremium);
@@ -115,10 +118,7 @@ export const RevenueCatProvider = ({ children, state, dispatch }) => {
 
       const membership = applyMembershipStatus(latestCustomerInfo, user);
 
-      const desiredPlanType =
-        membership.entitlementActive || membership.backendPremium
-          ? "Premium"
-          : "Free";
+      const desiredPlanType = membership.entitlementActive ? "Premium" : "Free";
       const currentPlanType = user.plan?.planType || "Free";
 
       if (currentPlanType === desiredPlanType) return;
