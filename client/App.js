@@ -71,6 +71,7 @@ const ONBOARDING_ROUTES = new Set([
   "AddSobrietyDate",
   "LocationPermission",
 ]);
+const PAYWALL_EXCLUDED_ROUTES = new Set(["ProfileHome"]);
 
 // --- Apollo Client instance with subscriptions ---
 const httpLink = new HttpLink({ uri: GRAPHQL_URI });
@@ -140,6 +141,7 @@ function AppContent({ state, dispatch }) {
   const [paywallVisible, setPaywallVisible] = useState(false);
   const [paywallAcknowledged, setPaywallAcknowledged] = useState(false);
   const [paywallSource, setPaywallSource] = useState(null);
+  const hasShownPaywallThisSession = useRef(false);
   const { isPremium, initializing: revenueCatInitializing } = useRevenueCat();
   const trialEndsAtString = currentUser?.trialEndsAt;
   const trialEndsAt = trialEndsAtString ? new Date(trialEndsAtString) : null;
@@ -518,6 +520,7 @@ function AppContent({ state, dispatch }) {
   );
 
   const maybeShowPaywall = useCallback(() => {
+    if (hasShownPaywallThisSession.current) return;
     if (paywallAcknowledged) return;
     if (revenueCatInitializing) return;
     if (!shouldForcePaywall) return;
@@ -527,8 +530,15 @@ function AppContent({ state, dispatch }) {
     const currentRoute = navigationRef.getCurrentRoute();
     const routeName = currentRoute?.name;
 
-    if (!routeName || ONBOARDING_ROUTES.has(routeName)) return;
+    if (
+      !routeName ||
+      ONBOARDING_ROUTES.has(routeName) ||
+      PAYWALL_EXCLUDED_ROUTES.has(routeName)
+    ) {
+      return;
+    }
 
+    hasShownPaywallThisSession.current = true;
     setPaywallSource("auto");
     setPaywallVisible(true);
   }, [paywallAcknowledged, revenueCatInitializing, shouldForcePaywall]);
@@ -561,6 +571,7 @@ function AppContent({ state, dispatch }) {
       setPaywallAcknowledged(false);
       setPaywallVisible(false);
       setPaywallSource(null);
+      hasShownPaywallThisSession.current = false;
     }
   }, [currentUser?.id]);
 
