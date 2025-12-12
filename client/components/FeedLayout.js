@@ -124,7 +124,7 @@ const FeedLayout = ({
     });
   }
 
-  const useDotSeparators = isVideoPost || isMilestonePost;
+  const useDotSeparators = isVideoPost || isMilestonePost || (meta && hasViews);
 
   const renderMetaItem = (item, showDivider) => (
     <React.Fragment key={item.key}>
@@ -337,7 +337,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 18,
     left: 16,
-    right: 120,
+    right: 96,
   },
   captionCard: {
     gap: 6,
@@ -372,14 +372,17 @@ const styles = StyleSheet.create({
   metaRow: {
     flexDirection: "row",
     alignItems: "center",
-    flexWrap: "wrap",
-    columnGap: 4,
+    flexWrap: "nowrap",
+    columnGap: 2,
+    flexShrink: 1,
+    minWidth: 0,
   },
   metaLeftGroup: {
     flexDirection: "row",
     alignItems: "center",
     flexShrink: 1,
-    columnGap: 4,
+    columnGap: 2,
+    minWidth: 0,
   },
   milestoneMetaRow: {
     justifyContent: "space-between",
@@ -388,11 +391,14 @@ const styles = StyleSheet.create({
   meta: {
     color: "#cbd5e1",
     fontSize: 13,
-    flexShrink: 0,
+    flexShrink: 1,
+    minWidth: 0,
   },
   metaItem: {
     flexDirection: "row",
     alignItems: "center",
+    flexShrink: 1,
+    minWidth: 0,
   },
   metaInlineIcon: {
     marginRight: 4,
@@ -400,7 +406,7 @@ const styles = StyleSheet.create({
   metaDivider: {
     color: "#38bdf8",
     fontWeight: "700",
-    marginHorizontal: 4,
+    marginHorizontal: 2,
   },
   metaEmphasis: {
     color: "#e5e7eb",
