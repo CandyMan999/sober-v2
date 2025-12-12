@@ -146,6 +146,7 @@ function AppContent({ state, dispatch }) {
   const [paywallAcknowledged, setPaywallAcknowledged] = useState(false);
   const [paywallSource, setPaywallSource] = useState(null);
   const hasShownPaywallThisSession = useRef(false);
+  const hasCheckedPushPermissionsRef = useRef(false);
   const { isPremium, initializing: revenueCatInitializing } = useRevenueCat();
   const trialEndsAtString = currentUser?.trialEndsAt;
   const trialEndsAt = trialEndsAtString ? new Date(trialEndsAtString) : null;
@@ -378,6 +379,62 @@ function AppContent({ state, dispatch }) {
 
     ensureLocationTracking();
   }, [locationTrackingAllowed]);
+
+  useEffect(() => {
+    if (!navigationReady) return;
+    if (!currentUser?.id) return;
+    if (hasCheckedPushPermissionsRef.current) return;
+
+    hasCheckedPushPermissionsRef.current = true;
+    let cancelled = false;
+
+    const ensurePushPermission = async () => {
+      try {
+        let permission = await Notifications.getPermissionsAsync();
+        let hasPermission = permission?.granted === true;
+
+        if (!hasPermission && permission?.canAskAgain !== false) {
+          permission = await Notifications.requestPermissionsAsync();
+          hasPermission = permission?.granted === true;
+        }
+
+        if (cancelled || hasPermission) return;
+
+        if (!navigationRef.isReady()) return;
+
+        const currentRoute = navigationRef.getCurrentRoute();
+        if (currentRoute && ONBOARDING_ROUTES.has(currentRoute.name)) return;
+
+        const appleId = (await getAppleId()) || undefined;
+        const pushToken = (await getToken()) || undefined;
+        const photoURI =
+          currentUser?.profilePicUrl || currentUser?.profilePic?.url || null;
+
+        navigationRef.reset({
+          index: 0,
+          routes: [
+            {
+              name: "AddUserName",
+              params: {
+                appleId,
+                username: currentUser?.username || "",
+                photoURI,
+                pushToken,
+              },
+            },
+          ],
+        });
+      } catch (error) {
+        console.log("Failed to ensure notification permission", error);
+      }
+    };
+
+    ensurePushPermission();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [currentUser?.id, currentUser?.profilePic, currentUser?.profilePicUrl, currentUser?.username, navigationReady]);
 
   useEffect(() => {
     if (!navigationReady) return undefined;
