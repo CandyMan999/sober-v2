@@ -615,6 +615,20 @@ function AppContent({ state, dispatch }) {
     setPaywallSource(null);
   }, []);
 
+  const handleOpenTerms = useCallback(() => {
+    handleDismissPaywall();
+    if (navigationRef.isReady()) {
+      navigationRef.navigate("TermsEula");
+    }
+  }, [handleDismissPaywall]);
+
+  const handleOpenPrivacy = useCallback(() => {
+    handleDismissPaywall();
+    if (navigationRef.isReady()) {
+      navigationRef.navigate("PrivacyPolicy");
+    }
+  }, [handleDismissPaywall]);
+
   return (
     <>
       <NavigationContainer
@@ -738,6 +752,8 @@ function AppContent({ state, dispatch }) {
             onClose={handleDismissPaywall}
             onSelectPremium={handleSelectPremium}
             onSelectFree={handleSelectFree}
+            onOpenTerms={handleOpenTerms}
+            onOpenPrivacy={handleOpenPrivacy}
           />
         </>
       </NavigationContainer>
