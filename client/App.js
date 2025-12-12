@@ -53,6 +53,11 @@ import {
   ensureSoberMotionTrackingSetup,
   configureLocationTrackingClient,
 } from "./utils/locationTracking";
+import {
+  addPaywallRequestListener,
+  emitPaywallShown,
+} from "./utils/paywallEvents";
+import { RevenueCatProvider, useRevenueCat } from "./RevenueCatContext";
 
 import Context from "./context";
 import reducer from "./reducer";
@@ -121,17 +126,7 @@ Notifications.setNotificationHandler({
   }),
 });
 
-const isUserOlderThanOneDay = (user) => {
-  if (!user?.createdAt) return false;
-  const created = new Date(user.createdAt);
-  if (Number.isNaN(created.getTime())) return false;
-  return Date.now() - created.getTime() >= 24 * 60 * 60 * 1000;
-};
-
-export default function App() {
-  // use your context default as initial state
-  const initialState = useContext(Context);
-  const [state, dispatch] = useReducer(reducer, initialState);
+function AppContent({ state, dispatch }) {
   const graphClient = useClient();
   const currentUser = state?.user;
   const currentUserId = currentUser?.id;
@@ -144,6 +139,17 @@ export default function App() {
   const [navigationReady, setNavigationReady] = useState(false);
   const [paywallVisible, setPaywallVisible] = useState(false);
   const [paywallAcknowledged, setPaywallAcknowledged] = useState(false);
+  const [paywallSource, setPaywallSource] = useState(null);
+  const { isPremium, initializing: revenueCatInitializing } = useRevenueCat();
+  const trialEndsAtString = currentUser?.trialEndsAt;
+  const trialEndsAt = trialEndsAtString ? new Date(trialEndsAtString) : null;
+  const isTrialExpired =
+    typeof currentUser?.isTrialExpired === "boolean"
+      ? currentUser.isTrialExpired
+      : trialEndsAt
+      ? trialEndsAt.getTime() <= Date.now()
+      : false;
+  const shouldForcePaywall = isTrialExpired && !isPremium;
   const locationTrackingAllowed =
     !!state?.user &&
     state?.user?.notificationSettings?.locationTrackingEnabled !== false;
@@ -513,6 +519,8 @@ export default function App() {
 
   const maybeShowPaywall = useCallback(() => {
     if (paywallAcknowledged) return;
+    if (revenueCatInitializing) return;
+    if (!shouldForcePaywall) return;
 
     if (!navigationRef.isReady()) return;
 
@@ -521,10 +529,15 @@ export default function App() {
 
     if (!routeName || ONBOARDING_ROUTES.has(routeName)) return;
 
-    if (isUserOlderThanOneDay(currentUser)) {
-      setPaywallVisible(true);
+    setPaywallSource("auto");
+    setPaywallVisible(true);
+  }, [paywallAcknowledged, revenueCatInitializing, shouldForcePaywall]);
+
+  useEffect(() => {
+    if (shouldForcePaywall) {
+      setPaywallAcknowledged(false);
     }
-  }, [currentUser, paywallAcknowledged]);
+  }, [shouldForcePaywall]);
 
   useEffect(() => {
     if (!navigationReady) return;
@@ -533,142 +546,191 @@ export default function App() {
 
   useEffect(() => {
     maybeShowPaywall();
-  }, [currentUser?.createdAt, maybeShowPaywall]);
+  }, [currentUser?.id, maybeShowPaywall, revenueCatInitializing]);
+
+  useEffect(() => {
+    if (isPremium) {
+      setPaywallVisible(false);
+      setPaywallAcknowledged(true);
+      setPaywallSource(null);
+    }
+  }, [isPremium]);
+
+  useEffect(() => {
+    if (!currentUser) {
+      setPaywallAcknowledged(false);
+      setPaywallVisible(false);
+      setPaywallSource(null);
+    }
+  }, [currentUser?.id]);
+
+  useEffect(() => {
+    if (paywallVisible) {
+      setPreviewMuted(true);
+      emitPaywallShown();
+    }
+  }, [paywallVisible]);
+
+  useEffect(() => {
+    const removeListener = addPaywallRequestListener(() => {
+      setPaywallSource("manual");
+      setPaywallVisible(true);
+    });
+
+    return removeListener;
+  }, []);
 
   const handleDismissPaywall = useCallback(() => {
+    if (paywallSource !== "manual" || shouldForcePaywall) {
+      setPaywallAcknowledged(true);
+    }
     setPaywallVisible(false);
-  }, []);
+    setPaywallSource(null);
+  }, [paywallSource, shouldForcePaywall]);
 
   const handleSelectPremium = useCallback(() => {
     setPaywallAcknowledged(true);
     setPaywallVisible(false);
+    setPaywallSource(null);
   }, []);
 
   const handleSelectFree = useCallback(() => {
     setPaywallAcknowledged(true);
     setPaywallVisible(false);
+    setPaywallSource(null);
   }, []);
+
+  return (
+    <>
+      <NavigationContainer
+        ref={navigationRef}
+        onReady={() => {
+          setNavigationReady(true);
+          maybeShowPaywall();
+        }}
+        onStateChange={maybeShowPaywall}
+      >
+        <>
+          <Stack.Navigator
+            screenOptions={{
+              headerShown: true,
+            }}
+          >
+            <Stack.Screen
+              name="AppleLogin"
+              component={AppleLoginScreen}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="AddUserName"
+              component={AddUserNameScreen}
+              options={{ title: "Choose a Username" }}
+            />
+            <Stack.Screen
+              name="AddPhoto"
+              component={AddPhotoScreen}
+              options={{ title: "Add Profile Photo" }}
+            />
+            <Stack.Screen
+              name="AddSobrietyDate"
+              component={AddSobrietyDateScreen}
+              options={{ title: "Set Sobriety Date" }}
+            />
+            <Stack.Screen
+              name="LocationPermission"
+              component={LocationPermissionScreen}
+              options={{ title: "Location Permission" }}
+            />
+            {/* Main app shell */}
+            <Stack.Screen
+              name="MainTabs"
+              component={TabNavigator}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="UserProfile"
+              component={UserProfileScreen}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="Followers"
+              component={FollowersScreen}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="Following"
+              component={FollowingScreen}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="Buddies"
+              component={BuddiesScreen}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="Likes"
+              component={LikesScreen}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="Notifications"
+              component={NotificationsScreen}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="Messages"
+              component={MessageListScreen}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="DirectMessage"
+              component={DirectMessageScreen}
+              options={{ headerShown: false }}
+            />
+          </Stack.Navigator>
+          <ContentPreviewModal
+            visible={previewVisible && Boolean(previewContent)}
+            item={previewContent}
+            type={previewType}
+            onClose={closePreview}
+            viewerUser={state?.user}
+            isMuted={previewMuted}
+            initialShowComments={previewShowComments}
+            onToggleSound={() => setPreviewMuted((prev) => !prev)}
+            onTogglePostLike={(postId) => handlePreviewToggleLike(postId, "POST")}
+            onToggleQuoteLike={(quoteId) =>
+              handlePreviewToggleLike(quoteId, "QUOTE")
+            }
+            onToggleFollow={() => {}}
+            onFlagForReview={() => {}}
+            onToggleSave={() => {}}
+            onDelete={() => {}}
+          />
+          <PaywallModal
+            visible={paywallVisible}
+            onClose={handleDismissPaywall}
+            onSelectPremium={handleSelectPremium}
+            onSelectFree={handleSelectFree}
+          />
+        </>
+      </NavigationContainer>
+      <Toast />
+    </>
+  );
+}
+
+export default function App() {
+  const initialState = useContext(Context);
+  const [state, dispatch] = useReducer(reducer, initialState);
 
   return (
     <ApolloProvider client={client}>
       <GestureHandlerRootView style={{ flex: 1 }}>
         <SafeAreaProvider>
           <Context.Provider value={{ state, dispatch }}>
-            <NavigationContainer
-              ref={navigationRef}
-              onReady={() => {
-                setNavigationReady(true);
-                maybeShowPaywall();
-              }}
-              onStateChange={maybeShowPaywall}
-            >
-              <>
-                <Stack.Navigator
-                  screenOptions={{
-                    headerShown: true,
-                  }}
-                >
-                  <Stack.Screen
-                    name="AppleLogin"
-                    component={AppleLoginScreen}
-                    options={{ headerShown: false }}
-                  />
-                  <Stack.Screen
-                    name="AddUserName"
-                    component={AddUserNameScreen}
-                    options={{ title: "Choose a Username" }}
-                  />
-                  <Stack.Screen
-                    name="AddPhoto"
-                    component={AddPhotoScreen}
-                    options={{ title: "Add Profile Photo" }}
-                  />
-                  <Stack.Screen
-                    name="AddSobrietyDate"
-                    component={AddSobrietyDateScreen}
-                    options={{ title: "Set Sobriety Date" }}
-                  />
-                  <Stack.Screen
-                    name="LocationPermission"
-                    component={LocationPermissionScreen}
-                    options={{ title: "Location Permission" }}
-                  />
-                  {/* Main app shell */}
-                  <Stack.Screen
-                    name="MainTabs"
-                    component={TabNavigator}
-                    options={{ headerShown: false }}
-                  />
-                  <Stack.Screen
-                    name="UserProfile"
-                    component={UserProfileScreen}
-                    options={{ headerShown: false }}
-                  />
-                  <Stack.Screen
-                    name="Followers"
-                    component={FollowersScreen}
-                    options={{ headerShown: false }}
-                  />
-                  <Stack.Screen
-                    name="Following"
-                    component={FollowingScreen}
-                    options={{ headerShown: false }}
-                  />
-                  <Stack.Screen
-                    name="Buddies"
-                    component={BuddiesScreen}
-                    options={{ headerShown: false }}
-                  />
-                  <Stack.Screen
-                    name="Likes"
-                    component={LikesScreen}
-                    options={{ headerShown: false }}
-                  />
-                  <Stack.Screen
-                    name="Notifications"
-                    component={NotificationsScreen}
-                    options={{ headerShown: false }}
-                  />
-                  <Stack.Screen
-                    name="Messages"
-                    component={MessageListScreen}
-                    options={{ headerShown: false }}
-                  />
-                  <Stack.Screen
-                    name="DirectMessage"
-                    component={DirectMessageScreen}
-                    options={{ headerShown: false }}
-                  />
-                </Stack.Navigator>
-                <ContentPreviewModal
-                  visible={previewVisible && Boolean(previewContent)}
-                  item={previewContent}
-                  type={previewType}
-                  onClose={closePreview}
-                  viewerUser={state?.user}
-                  isMuted={previewMuted}
-                  initialShowComments={previewShowComments}
-                  onToggleSound={() => setPreviewMuted((prev) => !prev)}
-                  onTogglePostLike={(postId) =>
-                    handlePreviewToggleLike(postId, "POST")
-                  }
-                  onToggleQuoteLike={(quoteId) =>
-                    handlePreviewToggleLike(quoteId, "QUOTE")
-                  }
-                  onToggleFollow={() => {}}
-                  onFlagForReview={() => {}}
-                  onToggleSave={() => {}}
-                  onDelete={() => {}}
-                />
-                <PaywallModal
-                  visible={paywallVisible}
-                  onClose={handleDismissPaywall}
-                  onSelectPremium={handleSelectPremium}
-                  onSelectFree={handleSelectFree}
-                />
-              </>
-            </NavigationContainer>
-            <Toast />
+            <RevenueCatProvider state={state} dispatch={dispatch}>
+              <AppContent state={state} dispatch={dispatch} />
+            </RevenueCatProvider>
           </Context.Provider>
         </SafeAreaProvider>
       </GestureHandlerRootView>

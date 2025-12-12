@@ -158,6 +158,12 @@ const UserSchema = new mongoose.Schema(
       locationTrackingEnabled: { type: Boolean, default: true },
     },
 
+    // End of free trial window (defaults to 60 days from signup)
+    trialEndsAt: {
+      type: Date,
+      default: () => new Date(Date.now() + 60 * 24 * 60 * 60 * 1000),
+    },
+
     plan: {
       planType: {
         type: String,

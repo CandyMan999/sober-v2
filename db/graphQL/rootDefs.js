@@ -26,6 +26,8 @@ const typeDefs = gql`
     milestonesNotified: [Int!]
     notificationSettings: NotificationSettings!
     timezone: String
+    trialEndsAt: String
+    isTrialExpired: Boolean
     createdAt: String
     updatedAt: String
     followersCount: Int!
@@ -39,6 +41,7 @@ const typeDefs = gql`
     following: [User!]!
     buddies: [User!]!
     chatRoomStyle: Int
+    plan: Plan
   }
 
   type Connection {
@@ -159,6 +162,12 @@ const typeDefs = gql`
     DAILY_PUSH
   }
 
+  enum PlanType {
+    Free
+    Premium
+    Unlimited
+  }
+
   type NotificationSettings {
     allPushEnabled: Boolean!
     otherUserMilestones: Boolean!
@@ -167,6 +176,13 @@ const typeDefs = gql`
     buddiesNearVenue: Boolean!
     dailyPush: Boolean!
     locationTrackingEnabled: Boolean!
+  }
+
+  type Plan {
+    planType: PlanType!
+    withWorkBook: Boolean!
+    withTherapy: Boolean!
+    withAds: Boolean!
   }
 
   input NotificationSettingsInput {
@@ -512,6 +528,7 @@ const typeDefs = gql`
     therapyChat(message: String!): TherapyChatPayload!
     followUser(token: String!, userId: ID!): Connection!
     unfollowUser(token: String!, userId: ID!): Boolean!
+    changePlan(userId: ID!, planType: PlanType!): User!
   }
 
   type TherapyChatPayload {

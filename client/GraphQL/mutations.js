@@ -546,4 +546,18 @@ export const RECORD_POST_VIEW_MUTATION = gql`
   }
 `;
 
+export const CHANGE_PLAN_MUTATION = gql`
+  mutation ChangePlan($userId: ID!, $planType: PlanType!) {
+    changePlan(userId: $userId, planType: $planType) {
+      id
+      plan {
+        planType
+        withAds
+        withWorkBook
+        withTherapy
+      }
+    }
+  }
+`;
+
 export { CREATE_POST_COMMENT, CREATE_QUOTE_COMMENT } from "./mutations/comments";

@@ -8,7 +8,7 @@ const {
   Comment,
   Notification,
 } = require("../../models");
-const { getDistanceFromCoords } = require("../../utils/helpers");
+const { getDistanceFromCoords, ensureTrialEndsAt } = require("../../utils/helpers");
 const { findClosestCity } = require("../../utils/location");
 const {
   NotificationTypes,
@@ -44,6 +44,7 @@ module.exports = {
 
     try {
       if (ctx?.currentUser) {
+        await ensureTrialEndsAt(ctx.currentUser);
         return serializeUser(ctx.currentUser);
       }
 
@@ -61,6 +62,7 @@ module.exports = {
       if (!user) {
         throw new AuthenticationError("User not found");
       }
+      await ensureTrialEndsAt(user);
       await User.ensureChatRoomStyle(user);
       return serializeUser(user);
     } catch (err) {

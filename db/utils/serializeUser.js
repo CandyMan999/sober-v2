@@ -44,6 +44,13 @@ const serializeUser = (user) => {
       })
       .filter(Boolean);
 
+  const trialEndsAt = plain.trialEndsAt
+    ? new Date(plain.trialEndsAt).toISOString()
+    : null;
+  const isTrialExpired = trialEndsAt
+    ? new Date(trialEndsAt).getTime() <= Date.now()
+    : false;
+
   return {
     ...plain,
     id: toIdString(plain.id) || toIdString(plain._id),
@@ -53,6 +60,8 @@ const serializeUser = (user) => {
     savedPosts: mapIds(plain.savedPosts),
     savedQuotes: mapIds(plain.savedQuotes),
     notificationSettings: normalizeNotificationSettings(plain),
+    trialEndsAt,
+    isTrialExpired,
   };
 };
 
