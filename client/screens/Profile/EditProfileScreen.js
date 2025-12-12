@@ -1514,6 +1514,21 @@ const EditProfileScreen = ({ navigation }) => {
               </View>
             </TouchableOpacity>
           </View>
+
+          <View style={styles.legalFooter}>
+            <Text style={styles.legalFooterText}>
+              <Text style={styles.legalFooterLink} onPress={() => navigation.navigate("TermsEula")}>
+                Terms of Service
+              </Text>{" "}
+              ·{" "}
+              <Text
+                style={styles.legalFooterLink}
+                onPress={() => navigation.navigate("PrivacyPolicy")}
+              >
+                Privacy Policy
+              </Text>
+            </Text>
+          </View>
         </ScrollView>
 
         {isBusy ? (
@@ -1955,6 +1970,22 @@ const styles = StyleSheet.create({
     paddingHorizontal: 4,
     alignItems: "center",
     justifyContent: "center",
+  },
+
+  legalFooter: {
+    marginTop: 12,
+    marginBottom: 24,
+    alignItems: "center",
+  },
+  legalFooterText: {
+    color: textSecondary,
+    fontSize: 12,
+    lineHeight: 16,
+  },
+  legalFooterLink: {
+    color: textPrimary,
+    textDecorationLine: "underline",
+    fontWeight: "700",
   },
 
   loadingScreen: {

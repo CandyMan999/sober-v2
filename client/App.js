@@ -35,6 +35,8 @@ import {
   AddPhotoScreen,
   AddSobrietyDateScreen,
   LocationPermissionScreen,
+  PrivacyPolicyScreen,
+  TermsEulaScreen,
 } from "./screens/Onboarding";
 import UserProfileScreen from "./screens/Profile/UserProfileScreen";
 import FollowersScreen from "./screens/Profile/FollowersScreen";
@@ -70,6 +72,8 @@ const ONBOARDING_ROUTES = new Set([
   "AddPhoto",
   "AddSobrietyDate",
   "LocationPermission",
+  "PrivacyPolicy",
+  "TermsEula",
 ]);
 const PAYWALL_EXCLUDED_ROUTES = new Set(["ProfileHome"]);
 
@@ -611,6 +615,20 @@ function AppContent({ state, dispatch }) {
     setPaywallSource(null);
   }, []);
 
+  const handleOpenTerms = useCallback(() => {
+    handleDismissPaywall();
+    if (navigationRef.isReady()) {
+      navigationRef.navigate("TermsEula");
+    }
+  }, [handleDismissPaywall]);
+
+  const handleOpenPrivacy = useCallback(() => {
+    handleDismissPaywall();
+    if (navigationRef.isReady()) {
+      navigationRef.navigate("PrivacyPolicy");
+    }
+  }, [handleDismissPaywall]);
+
   return (
     <>
       <NavigationContainer
@@ -625,6 +643,7 @@ function AppContent({ state, dispatch }) {
           <Stack.Navigator
             screenOptions={{
               headerShown: true,
+              headerBackTitle: "Back",
             }}
           >
             <Stack.Screen
@@ -651,6 +670,16 @@ function AppContent({ state, dispatch }) {
               name="LocationPermission"
               component={LocationPermissionScreen}
               options={{ title: "Location Permission" }}
+            />
+            <Stack.Screen
+              name="PrivacyPolicy"
+              component={PrivacyPolicyScreen}
+              options={{ title: "Privacy Policy" }}
+            />
+            <Stack.Screen
+              name="TermsEula"
+              component={TermsEulaScreen}
+              options={{ title: "Terms & EULA" }}
             />
             {/* Main app shell */}
             <Stack.Screen
@@ -724,6 +753,8 @@ function AppContent({ state, dispatch }) {
             onClose={handleDismissPaywall}
             onSelectPremium={handleSelectPremium}
             onSelectFree={handleSelectFree}
+            onOpenTerms={handleOpenTerms}
+            onOpenPrivacy={handleOpenPrivacy}
           />
         </>
       </NavigationContainer>

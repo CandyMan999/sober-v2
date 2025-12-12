@@ -2,7 +2,6 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import {
   Animated,
-  Linking,
   Modal,
   StyleSheet,
   Text,
@@ -20,12 +19,16 @@ import { useRevenueCat } from "../RevenueCatContext";
 import LogoLoader from "./LogoLoader";
 import AlertModal from "./AlertModal";
 
-const TERMS_OF_SERVICE_URL = "https://example.com/terms";
-const PRIVACY_POLICY_URL = "https://example.com/privacy";
-
 const TOP_PADDING_RATIO = 0.1; // 10% of screen height for top content padding
 
-const PaywallModal = ({ visible, onClose, onSelectPremium, onSelectFree }) => {
+const PaywallModal = ({
+  visible,
+  onClose,
+  onSelectPremium,
+  onSelectFree,
+  onOpenTerms,
+  onOpenPrivacy,
+}) => {
   const { height } = useWindowDimensions();
 
   const fadeAnim = useRef(new Animated.Value(0)).current;
@@ -37,6 +40,9 @@ const PaywallModal = ({ visible, onClose, onSelectPremium, onSelectFree }) => {
   const [processingId, setProcessingId] = useState(null);
   const [confirmVisible, setConfirmVisible] = useState(false);
   const [pendingPackage, setPendingPackage] = useState(null);
+
+  const handleOpenTerms = onOpenTerms || (() => {});
+  const handleOpenPrivacy = onOpenPrivacy || (() => {});
 
   // ===== Animations (spring open) =====
   useEffect(() => {
@@ -273,17 +279,11 @@ const PaywallModal = ({ visible, onClose, onSelectPremium, onSelectFree }) => {
                 <Text style={styles.termsText}>
                   Subscriptions are billed to your App Store account and renew
                   automatically until cancelled in App Store settings.{" "}
-                  <Text
-                    style={styles.link}
-                    onPress={() => Linking.openURL(TERMS_OF_SERVICE_URL)}
-                  >
+                  <Text style={styles.link} onPress={handleOpenTerms}>
                     Terms
                   </Text>{" "}
                   ·{" "}
-                  <Text
-                    style={styles.link}
-                    onPress={() => Linking.openURL(PRIVACY_POLICY_URL)}
-                  >
+                  <Text style={styles.link} onPress={handleOpenPrivacy}>
                     Privacy
                   </Text>
                 </Text>
