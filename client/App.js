@@ -35,6 +35,8 @@ import {
   AddPhotoScreen,
   AddSobrietyDateScreen,
   LocationPermissionScreen,
+  PrivacyPolicyScreen,
+  TermsEulaScreen,
 } from "./screens/Onboarding";
 import UserProfileScreen from "./screens/Profile/UserProfileScreen";
 import FollowersScreen from "./screens/Profile/FollowersScreen";
@@ -70,6 +72,8 @@ const ONBOARDING_ROUTES = new Set([
   "AddPhoto",
   "AddSobrietyDate",
   "LocationPermission",
+  "PrivacyPolicy",
+  "TermsEula",
 ]);
 const PAYWALL_EXCLUDED_ROUTES = new Set(["ProfileHome"]);
 
@@ -651,6 +655,16 @@ function AppContent({ state, dispatch }) {
               name="LocationPermission"
               component={LocationPermissionScreen}
               options={{ title: "Location Permission" }}
+            />
+            <Stack.Screen
+              name="PrivacyPolicy"
+              component={PrivacyPolicyScreen}
+              options={{ title: "Privacy Policy" }}
+            />
+            <Stack.Screen
+              name="TermsEula"
+              component={TermsEulaScreen}
+              options={{ title: "Terms & EULA" }}
             />
             {/* Main app shell */}
             <Stack.Screen

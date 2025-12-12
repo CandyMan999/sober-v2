@@ -52,6 +52,7 @@ import {
 } from "../../utils/locationTracking";
 import { useRevenueCat } from "../../RevenueCatContext";
 import { emitPaywallRequest } from "../../utils/paywallEvents";
+import { PRIVACY_POLICY_URL, TERMS_OF_SERVICE_URL } from "../../constants/legal";
 
 const {
   primaryBackground,
@@ -1514,6 +1515,32 @@ const EditProfileScreen = ({ navigation }) => {
               </View>
             </TouchableOpacity>
           </View>
+
+          <View style={styles.sectionCard}>
+            <Text style={styles.sectionLabel}>Legal</Text>
+
+            <TouchableOpacity
+              style={styles.legalRow}
+              onPress={() => Linking.openURL(PRIVACY_POLICY_URL)}
+            >
+              <View style={styles.legalIconBadge}>
+                <Feather name="lock" size={16} color={accent} />
+              </View>
+              <Text style={styles.legalText}>Privacy Policy</Text>
+              <Feather name="arrow-up-right" size={16} color={accent} />
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.legalRow}
+              onPress={() => Linking.openURL(TERMS_OF_SERVICE_URL)}
+            >
+              <View style={styles.legalIconBadge}>
+                <Feather name="file-text" size={16} color={accent} />
+              </View>
+              <Text style={styles.legalText}>Terms of Service</Text>
+              <Feather name="arrow-up-right" size={16} color={accent} />
+            </TouchableOpacity>
+          </View>
         </ScrollView>
 
         {isBusy ? (
@@ -1955,6 +1982,27 @@ const styles = StyleSheet.create({
     paddingHorizontal: 4,
     alignItems: "center",
     justifyContent: "center",
+  },
+
+  legalRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 10,
+    paddingVertical: 10,
+  },
+  legalIconBadge: {
+    width: 30,
+    height: 30,
+    borderRadius: 8,
+    backgroundColor: "rgba(56,189,248,0.12)",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  legalText: {
+    flex: 1,
+    color: textPrimary,
+    fontSize: 16,
+    fontWeight: "700",
   },
 
   loadingScreen: {

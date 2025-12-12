@@ -16,12 +16,10 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { BlurView } from "expo-blur";
 import { LinearGradient } from "expo-linear-gradient";
 import { COLORS } from "../constants/colors";
+import { PRIVACY_POLICY_URL, TERMS_OF_SERVICE_URL } from "../constants/legal";
 import { useRevenueCat } from "../RevenueCatContext";
 import LogoLoader from "./LogoLoader";
 import AlertModal from "./AlertModal";
-
-const TERMS_OF_SERVICE_URL = "https://example.com/terms";
-const PRIVACY_POLICY_URL = "https://example.com/privacy";
 
 const TOP_PADDING_RATIO = 0.1; // 10% of screen height for top content padding
 

@@ -13,6 +13,7 @@ import {
   Image,
   Text,
   Dimensions,
+  TouchableOpacity,
 } from "react-native";
 import * as AppleAuthentication from "expo-apple-authentication";
 import * as Location from "expo-location";
@@ -31,6 +32,7 @@ import Context from "../../context";
 import LogoIcon from "../../assets/icon.png";
 import { COLORS } from "../../constants/colors";
 import { getToken } from "../../utils/helpers";
+import { EULA_URL, PRIVACY_POLICY_URL } from "../../constants/legal";
 
 const APPLE_ID_KEY = "appleUserId";
 const MIN_USERNAME_LENGTH = 3;
@@ -411,6 +413,29 @@ const AppleLoginScreen = ({ navigation }) => {
           onPress={handleAppleSignIn}
           disabled={loading}
         />
+
+        <Text style={styles.legalIntro}>By continuing you agree to our</Text>
+        <View style={styles.legalRow}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("TermsEula")}
+            activeOpacity={0.7}
+          >
+            <Text style={styles.legalLink}>Terms of Service</Text>
+          </TouchableOpacity>
+          <Text style={styles.legalDivider}>•</Text>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("PrivacyPolicy")}
+            activeOpacity={0.7}
+          >
+            <Text style={styles.legalLink}>Privacy Policy</Text>
+          </TouchableOpacity>
+        </View>
+        <TouchableOpacity
+          onPress={() => Linking.openURL(EULA_URL)}
+          activeOpacity={0.7}
+        >
+          <Text style={[styles.legalLink, styles.legalEula]}>Apple End User License Agreement</Text>
+        </TouchableOpacity>
       </View>
     </LinearGradient>
   );
@@ -478,6 +503,33 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 13,
     color: "#9ba3b4",
+  },
+  legalIntro: {
+    marginTop: 8,
+    fontSize: 12,
+    color: "#9ba3b4",
+    textAlign: "center",
+  },
+  legalRow: {
+    marginTop: 4,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    flexWrap: "wrap",
+    gap: 6,
+  },
+  legalDivider: {
+    color: "#9ba3b4",
+    fontSize: 12,
+  },
+  legalLink: {
+    color: accent,
+    fontSize: 12,
+    textDecorationLine: "underline",
+  },
+  legalEula: {
+    marginTop: 4,
+    textAlign: "center",
   },
 });
 
