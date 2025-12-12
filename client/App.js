@@ -643,6 +643,7 @@ function AppContent({ state, dispatch }) {
           <Stack.Navigator
             screenOptions={{
               headerShown: true,
+              headerBackTitle: "Back",
             }}
           >
             <Stack.Screen
