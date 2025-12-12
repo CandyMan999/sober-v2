@@ -434,7 +434,9 @@ const AppleLoginScreen = ({ navigation }) => {
           onPress={() => Linking.openURL(EULA_URL)}
           activeOpacity={0.7}
         >
-          <Text style={[styles.legalLink, styles.legalEula]}>Apple End User License Agreement</Text>
+          <Text style={[styles.legalLink, styles.legalEula]}>
+            Apple End User License Agreement
+          </Text>
         </TouchableOpacity>
       </View>
     </LinearGradient>
