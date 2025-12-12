@@ -107,7 +107,11 @@ const PlusTabButton = (props) => {
   const navigation = useNavigation();
   const tabState = useNavigationState((state) => state);
   const activeLeafRoute = getDeepActiveRoute(tabState);
-  const isQuotesActive = activeLeafRoute?.name === "Quotes";
+  const isProfileQuotesActive =
+    activeLeafRoute?.name === "ProfileHome" &&
+    activeLeafRoute?.params?.quotesTabActive;
+  const isQuotesActive =
+    activeLeafRoute?.name === "Quotes" || isProfileQuotesActive;
 
   const handlePress = () => {
     if (isQuotesActive) {

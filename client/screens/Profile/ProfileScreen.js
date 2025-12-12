@@ -1456,6 +1456,10 @@ const ProfileScreen = ({ navigation }) => {
   );
   const activeTab = tabConfig[tabIndex]?.type;
 
+  useEffect(() => {
+    navigation.setParams({ quotesTabActive: activeTab === "QUOTES" });
+  }, [activeTab, navigation]);
+
   const gridHeight = useMemo(() => {
     if (activeTab === "DRUNK") {
       const haloHeight = layout.width * (4 / 3);

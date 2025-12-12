@@ -1,9 +1,16 @@
 export default function reducer(state, { type, payload }) {
   switch (type) {
-    case "NEW_QUOTE": {
+    case "APPEND_PROFILE_QUOTE": {
+      if (!payload) return state;
+      const overview = state?.profileOverview || {};
+      const existingQuotes = overview.quotes || [];
+
       return {
         ...state,
-        newQuote: payload,
+        profileOverview: {
+          ...overview,
+          quotes: [...existingQuotes, payload],
+        },
       };
     }
 

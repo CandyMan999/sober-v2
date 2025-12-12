@@ -27,7 +27,7 @@ const ACCENT = "#F59E0B";
 
 const AddQuoteScreen = ({ navigation }) => {
   const client = useClient();
-  const { state } = useContext(Context);
+  const { state, dispatch } = useContext(Context);
   const user = state?.user;
 
   const [text, setText] = useState("");
@@ -52,7 +52,8 @@ const AddQuoteScreen = ({ navigation }) => {
     try {
       setSubmitting(true);
       Keyboard.dismiss(); // close keyboard on send
-      await client.request(ADD_QUOTE_MUTATION, { text: trimmed });
+      const data = await client.request(ADD_QUOTE_MUTATION, { text: trimmed });
+      const newQuote = data?.addQuote;
 
       Toast.show({
         type: "success",
@@ -63,6 +64,11 @@ const AddQuoteScreen = ({ navigation }) => {
         visibilityTime: 6000,
         topOffset: 80,
       });
+
+      if (newQuote) {
+        dispatch({ type: "APPEND_PROFILE_QUOTE", payload: newQuote });
+      }
+
       setText("");
       navigation.goBack();
     } catch (err) {
