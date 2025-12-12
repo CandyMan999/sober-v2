@@ -770,6 +770,14 @@ const CommunityScreen = () => {
     [closeFilterSheet]
   );
 
+  const handleNoPostsAlertConfirm = useCallback(() => {
+    setShowNoPostsAlert(false);
+    if (activeFilter) {
+      setActiveFilter(null);
+    }
+    setShowFilterSheet(false);
+  }, [activeFilter]);
+
   const handleToggleSound = () => {
     setIsMuted((prev) => !prev);
   };
@@ -1109,7 +1117,7 @@ const CommunityScreen = () => {
         visible={showNoPostsAlert}
         title="No posts available"
         message="Try a different filter to see more community posts."
-        onConfirm={() => setShowNoPostsAlert(false)}
+        onConfirm={handleNoPostsAlertConfirm}
       />
 
       <Modal transparent visible={showTutorial} animationType="fade">
