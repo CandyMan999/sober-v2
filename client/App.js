@@ -77,6 +77,14 @@ const ONBOARDING_ROUTES = new Set([
 ]);
 const PAYWALL_EXCLUDED_ROUTES = new Set(["ProfileHome"]);
 
+const doesStateContainRoute = (state, routeName) => {
+  if (!state?.routes?.length) return false;
+
+  return state.routes.some(
+    (route) => route.name === routeName || doesStateContainRoute(route.state, routeName)
+  );
+};
+
 // --- Apollo Client instance with subscriptions ---
 const httpLink = new HttpLink({ uri: GRAPHQL_URI });
 
@@ -696,15 +704,15 @@ function AppContent({ state, dispatch }) {
         ref={navigationRef}
         onReady={() => {
           setNavigationReady(true);
-          const currentRoute = navigationRef.getCurrentRoute();
-          if (currentRoute?.name === "MainTabs") {
+          const rootState = navigationRef.getRootState();
+          if (doesStateContainRoute(rootState, "MainTabs")) {
             hasReachedMainTabsRef.current = true;
           }
           maybeShowPaywall();
         }}
         onStateChange={() => {
-          const currentRoute = navigationRef.getCurrentRoute();
-          if (currentRoute?.name === "MainTabs") {
+          const rootState = navigationRef.getRootState();
+          if (doesStateContainRoute(rootState, "MainTabs")) {
             hasReachedMainTabsRef.current = true;
           }
 
