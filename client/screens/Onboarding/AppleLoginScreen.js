@@ -124,8 +124,13 @@ const AppleLoginScreen = ({ navigation }) => {
 
       // ✅ NEW: Check if push notifications are enabled at OS level
       try {
-        const notifSettings = await Notifications.getPermissionsAsync();
-        const hasPushPermission = notifSettings?.granted === true;
+        let notifSettings = await Notifications.getPermissionsAsync();
+        let hasPushPermission = notifSettings?.granted === true;
+
+        if (!hasPushPermission) {
+          notifSettings = await Notifications.requestPermissionsAsync();
+          hasPushPermission = notifSettings?.granted === true;
+        }
 
         if (!hasPushPermission) {
           // Force them back through AddUserName / notification onboarding
