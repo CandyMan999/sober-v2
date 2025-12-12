@@ -85,20 +85,36 @@ module.exports = {
     if (cursor) {
       baseQuery.createdAt = { $lt: cursor };
     }
-    if (excludeViewed && viewer) {
-      baseQuery.viewers = { $ne: viewer._id };
-    }
 
-    try {
-      const quotes = await Quote.find(baseQuery)
+    const fetchQuotes = (query = {}, limitOverride = limit + 1) =>
+      Quote.find({ ...baseQuery, ...query })
         .sort({ createdAt: -1 })
-        .limit(limit + 1)
+        .limit(limitOverride)
         .populate("user")
         .populate({
           path: "comments",
           match: { $or: [{ replyTo: null }, { replyTo: { $exists: false } }] },
           populate: buildRepliesPopulate(2),
         });
+
+    try {
+      let quotes;
+
+      if (excludeViewed && viewer) {
+        const unseenQuery = { viewers: { $ne: viewer._id } };
+        const unseenQuotes = await fetchQuotes(unseenQuery);
+
+        // If we don't have enough unseen quotes to fill the page, backfill with viewed ones
+        if (unseenQuotes.length <= limit) {
+          const remainingLimit = limit + 1 - unseenQuotes.length;
+          const seenQuotes = await fetchQuotes({ viewers: viewer._id }, remainingLimit);
+          quotes = [...unseenQuotes, ...seenQuotes];
+        } else {
+          quotes = unseenQuotes;
+        }
+      } else {
+        quotes = await fetchQuotes();
+      }
 
       const hasMore = quotes.length > limit;
       const trimmed = hasMore ? quotes.slice(0, limit) : quotes;

@@ -8,6 +8,27 @@ const formatAuthorHandle = (author) => {
   return `@${author.username}`;
 };
 
+const formatDate = (dateInput) => {
+  if (!dateInput) return "";
+
+  const numericValue =
+    typeof dateInput === "number" || typeof dateInput === "bigint"
+      ? Number(dateInput)
+      : Number.parseInt(dateInput, 10);
+
+  const parsed = Number.isFinite(numericValue)
+    ? new Date(numericValue)
+    : new Date(dateInput);
+
+  if (Number.isNaN(parsed.getTime())) return "";
+
+  return parsed.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
+};
+
 const QuoteFeedLayout = ({
   quote,
   viewsCount = null,
@@ -24,11 +45,13 @@ const QuoteFeedLayout = ({
   const avatarUrl = author?.profilePicUrl || null;
   const fallbackAvatar = !author ? require("../assets/icon.png") : null;
   const authorLabel = formatAuthorHandle(author);
+  const createdDate = formatDate(quote?.createdAt);
 
   return (
     <FeedLayout
       caption={null}
       commentSheetCaption={`“${quote.text}”`}
+      meta={createdDate || undefined}
       likesCount={quote.likesCount}
       commentsCount={quote.commentsCount}
       viewsCount={viewsCount ?? quote.viewsCount}
