@@ -1,3 +1,4 @@
+// screens/Profile/EditProfileScreen.js
 import React, { useContext, useEffect, useMemo, useState } from "react";
 import {
   View,
@@ -279,7 +280,8 @@ const ToggleRow = ({
 const EditProfileScreen = ({ navigation }) => {
   const client = useClient();
   const { state, dispatch } = useContext(Context);
-  const { isPremium } = useRevenueCat();
+
+  const { currentOffering, isPremium, customerInfo } = useRevenueCat();
 
   const [token, setToken] = useState(null);
   const [user, setUser] = useState(state?.user || null);
@@ -344,6 +346,15 @@ const EditProfileScreen = ({ navigation }) => {
       onConfirm: null,
       onCancel: null,
     });
+
+  // RevenueCat debug logging
+  useEffect(() => {
+    console.log("[SoberMotion] Subscription debug:", {
+      isPremium,
+      hasOffering: !!currentOffering,
+      entitlements: customerInfo?.entitlements,
+    });
+  }, [isPremium, currentOffering, customerInfo]);
 
   const hasAlwaysLocationPermission = async () => {
     const fg = await Location.getForegroundPermissionsAsync();
@@ -411,9 +422,7 @@ const EditProfileScreen = ({ navigation }) => {
           };
 
           setNotificationSettings(normalizedSettings);
-          if (
-            typeof normalizedSettings.locationTrackingEnabled === "boolean"
-          ) {
+          if (typeof normalizedSettings.locationTrackingEnabled === "boolean") {
             setLocationEnabled(normalizedSettings.locationTrackingEnabled);
           }
           dispatch({ type: "SET_USER", payload: fetchedUser });
@@ -462,6 +471,10 @@ const EditProfileScreen = ({ navigation }) => {
   };
 
   const openManageSubscriptions = async () => {
+    console.log("[SoberMotion] Manage subscription pressed", {
+      isPremium,
+    });
+
     const subscriptionUrl = Platform.select({
       ios: "https://apps.apple.com/account/subscriptions",
       android: "https://play.google.com/store/account/subscriptions",
@@ -480,6 +493,9 @@ const EditProfileScreen = ({ navigation }) => {
   };
 
   const openUpgradePaywall = () => {
+    console.log("[SoberMotion] Upgrade to Premium pressed", {
+      isPremium,
+    });
     emitPaywallRequest();
   };
 
@@ -990,7 +1006,10 @@ const EditProfileScreen = ({ navigation }) => {
           payload: { ...(state?.profileOverview || {}), user: latestUser },
         });
         setSocialInputs({
-          instagram: normalizeSocialInput("instagram", latestUser.social?.instagram),
+          instagram: normalizeSocialInput(
+            "instagram",
+            latestUser.social?.instagram
+          ),
           tiktok: normalizeSocialInput("tiktok", latestUser.social?.tiktok),
           x: normalizeSocialInput("x", latestUser.social?.x),
         });
@@ -1034,6 +1053,7 @@ const EditProfileScreen = ({ navigation }) => {
           keyboardShouldPersistTaps="handled"
           keyboardDismissMode="on-drag"
         >
+          {/* PHOTOS */}
           <View style={styles.sectionCard}>
             <Text style={styles.sectionLabel}>Photos</Text>
             <View style={styles.photoRow}>
@@ -1056,6 +1076,7 @@ const EditProfileScreen = ({ navigation }) => {
             </View>
           </View>
 
+          {/* USERNAME */}
           <View style={styles.sectionCard}>
             <TouchableOpacity
               style={styles.dropdownHeader}
@@ -1136,6 +1157,7 @@ const EditProfileScreen = ({ navigation }) => {
             ) : null}
           </View>
 
+          {/* SOCIAL LINKS */}
           <View style={styles.sectionCard}>
             <TouchableOpacity
               style={styles.dropdownHeader}
@@ -1231,6 +1253,7 @@ const EditProfileScreen = ({ navigation }) => {
             ) : null}
           </View>
 
+          {/* NOTIFICATION SETTINGS (accordion with granular toggles) */}
           <View style={styles.sectionCard}>
             <TouchableOpacity
               style={styles.dropdownHeader}
@@ -1249,6 +1272,7 @@ const EditProfileScreen = ({ navigation }) => {
                 color={textSecondary}
               />
             </TouchableOpacity>
+
             {notificationsOpen ? (
               <View style={styles.dropdownBody}>
                 <ToggleRow
@@ -1262,6 +1286,7 @@ const EditProfileScreen = ({ navigation }) => {
                     )
                   }
                   activeColor={accent}
+                  loading={savingNotificationKey === "otherUserMilestones"}
                 />
                 <ToggleRow
                   icon={
@@ -1277,6 +1302,7 @@ const EditProfileScreen = ({ navigation }) => {
                     handleNotificationSettingChange("otherUserComments", value)
                   }
                   activeColor={oceanBlue}
+                  loading={savingNotificationKey === "otherUserComments"}
                 />
                 <ToggleRow
                   icon={<Feather name="users" size={18} color={accent} />}
@@ -1286,6 +1312,7 @@ const EditProfileScreen = ({ navigation }) => {
                     handleNotificationSettingChange("followingPosts", value)
                   }
                   activeColor={accent}
+                  loading={savingNotificationKey === "followingPosts"}
                 />
                 <ToggleRow
                   icon={
@@ -1301,6 +1328,7 @@ const EditProfileScreen = ({ navigation }) => {
                     handleNotificationSettingChange("buddiesNearVenue", value)
                   }
                   activeColor={oceanBlue}
+                  loading={savingNotificationKey === "buddiesNearVenue"}
                 />
                 <ToggleRow
                   icon={<Feather name="sunrise" size={18} color={accent} />}
@@ -1310,11 +1338,121 @@ const EditProfileScreen = ({ navigation }) => {
                     handleNotificationSettingChange("dailyPush", value)
                   }
                   activeColor={accent}
+                  loading={savingNotificationKey === "dailyPush"}
                 />
               </View>
             ) : null}
           </View>
 
+          {/* SUBSCRIPTION & BILLING */}
+          <View style={styles.sectionCard}>
+            <View style={styles.planHeaderRow}>
+              <Text style={styles.sectionLabel}>Subscription</Text>
+
+              <View
+                style={[
+                  styles.planBadge,
+                  isPremium ? styles.planBadgePremium : styles.planBadgeFree,
+                ]}
+              >
+                <MaterialCommunityIcons
+                  name={isPremium ? "crown-outline" : "shield-alert"}
+                  size={14}
+                  color={isPremium ? "#fef3c7" : "#e5e7eb"}
+                />
+                <Text style={styles.planBadgeText}>
+                  {isPremium ? "Premium" : "Free plan"}
+                </Text>
+              </View>
+            </View>
+
+            <Text style={styles.planHelperText}>
+              {isPremium
+                ? "You’re supporting your sobriety and helping keep Sober Motivation ad-light."
+                : "Stay ad-light and keep chatting with Owl after your trial by upgrading to Premium."}
+            </Text>
+
+            {!isPremium && (
+              <TouchableOpacity
+                style={styles.upgradeButton}
+                activeOpacity={0.9}
+                onPress={openUpgradePaywall}
+              >
+                <LinearGradient
+                  colors={["rgba(56,189,248,0.22)", "rgba(129,140,248,0.18)"]}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 1 }}
+                  style={styles.upgradeInner}
+                >
+                  <View style={styles.upgradeContent}>
+                    <View style={styles.upgradeIconBadge}>
+                      <MaterialCommunityIcons
+                        name="crown-outline"
+                        size={18}
+                        color={accent}
+                      />
+                    </View>
+
+                    <View style={styles.upgradeTextBlock}>
+                      <Text style={styles.upgradeTitle}>
+                        Upgrade to Premium
+                      </Text>
+                      <Text style={styles.upgradeSubtitle}>
+                        Keep Owl coaching, unlock future tools, and stay
+                        ad-light.
+                      </Text>
+                    </View>
+
+                    <View style={styles.upgradePill}>
+                      <Text style={styles.upgradePillText}>View plans</Text>
+                    </View>
+                  </View>
+                </LinearGradient>
+              </TouchableOpacity>
+            )}
+
+            {isPremium && (
+              <TouchableOpacity
+                style={styles.manageSubButton}
+                activeOpacity={0.9}
+                onPress={openManageSubscriptions}
+              >
+                <LinearGradient
+                  colors={["rgba(16,185,129,0.9)", "rgba(59,130,246,0.85)"]}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 1 }}
+                  style={styles.manageSubInner}
+                >
+                  <View style={styles.manageSubContent}>
+                    <View style={styles.manageSubIconBadge}>
+                      <MaterialCommunityIcons
+                        name="account-cog-outline"
+                        size={18}
+                        color="#ecfeff"
+                      />
+                    </View>
+                    <View style={styles.manageSubTextBlock}>
+                      <Text style={styles.manageSubTitle}>
+                        Manage subscription
+                      </Text>
+                      <Text style={styles.manageSubSubtitle}>
+                        Change or cancel any time via your app store.
+                      </Text>
+                    </View>
+                    <View style={styles.manageSubChevron}>
+                      <Feather
+                        name="arrow-up-right"
+                        size={16}
+                        color="#ecfeff"
+                      />
+                    </View>
+                  </View>
+                </LinearGradient>
+              </TouchableOpacity>
+            )}
+          </View>
+
+          {/* PRIVACY + LOCATION + DELETE PROFILE */}
           <View style={styles.sectionCard}>
             <Text style={styles.sectionLabel}>Privacy</Text>
             <ToggleRow
@@ -1325,6 +1463,7 @@ const EditProfileScreen = ({ navigation }) => {
                 handleNotificationSettingChange("allPushEnabled", value)
               }
               activeColor={accent}
+              loading={savingNotificationKey === "allPushEnabled"}
             />
             <ToggleRow
               icon={<Feather name="map-pin" size={18} color={oceanBlue} />}
@@ -1340,88 +1479,14 @@ const EditProfileScreen = ({ navigation }) => {
               bar or liquor store so we can ping you and your sober buddies
               before you make any dumb decisions.
             </Text>
-            {!isPremium ? (
-              <TouchableOpacity
-                style={styles.upgradeButton}
-                activeOpacity={0.9}
-                onPress={openUpgradePaywall}
-              >
-                <LinearGradient
-                  colors={["rgba(126,34,206,0.9)", "rgba(14,165,233,0.88)"]}
-                  start={{ x: 0, y: 0 }}
-                  end={{ x: 1, y: 1 }}
-                  style={styles.upgradeInner}
-                >
-                  <View style={styles.upgradeContent}>
-                    <View style={styles.upgradeIconBadge}>
-                      <MaterialCommunityIcons
-                        name="crown-outline"
-                        size={16}
-                        color="#fdf2f8"
-                      />
-                    </View>
-                    <View style={styles.upgradeTextBlock}>
-                      <Text style={styles.upgradeTitle}>Upgrade to Premium</Text>
-                      <Text style={styles.upgradeSubtitle}>
-                        Unlock Owl coaching and remove ads after your trial.
-                      </Text>
-                    </View>
-                    <View style={styles.upgradeChevron}>
-                      <Feather name="arrow-up-right" size={16} color="#ecfeff" />
-                    </View>
-                  </View>
-                </LinearGradient>
-              </TouchableOpacity>
-            ) : null}
-            {isPremium ? (
-              <TouchableOpacity
-                style={styles.manageSubButton}
-                activeOpacity={0.9}
-                onPress={openManageSubscriptions}
-              >
-                <LinearGradient
-                  colors={["rgba(16,185,129,0.9)", "rgba(59,130,246,0.85)"]}
-                  start={{ x: 0, y: 0 }}
-                  end={{ x: 1, y: 1 }}
-                  style={styles.manageSubInner}
-                >
-                  <View style={styles.manageSubContent}>
-                    <View style={styles.manageSubIconBadge}>
-                      <MaterialCommunityIcons
-                        name="account-cancel"
-                        size={16}
-                        color="#ecfeff"
-                      />
-                    </View>
-                    <View style={styles.manageSubTextBlock}>
-                      <Text style={styles.manageSubTitle}>
-                        Manage subscription
-                      </Text>
-                      <Text style={styles.manageSubSubtitle}>
-                        Cancel anytime in your app store
-                      </Text>
-                    </View>
-                    <View style={styles.manageSubChevron}>
-                      <Feather name="arrow-up-right" size={16} color="#ecfeff" />
-                    </View>
-                  </View>
-                </LinearGradient>
-              </TouchableOpacity>
-            ) : null}
+
             <TouchableOpacity
               style={styles.deleteProfileButton}
               activeOpacity={0.9}
               disabled={deletingAccount}
               onPress={handleDeleteProfile}
             >
-              <LinearGradient
-                colors={
-                  deletingAccount
-                    ? ["rgba(127,29,29,0.85)", "rgba(30,64,175,0.95)"]
-                    : ["rgba(127,29,29,0.95)", "rgba(15,23,42,0.98)"]
-                }
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 1 }}
+              <View
                 style={[
                   styles.deleteProfileInner,
                   deletingAccount && styles.deleteProfileInnerDisabled,
@@ -1440,13 +1505,13 @@ const EditProfileScreen = ({ navigation }) => {
 
                   <View style={styles.deleteProfileRight}>
                     {deletingAccount ? (
-                      <ActivityIndicator color="#fee2e2" size="small" />
+                      <ActivityIndicator color="#fecaca" size="small" />
                     ) : (
-                      <Feather name="arrow-right" size={16} color="#fee2e2" />
+                      <Feather name="arrow-right" size={16} color="#fecaca" />
                     )}
                   </View>
                 </View>
-              </LinearGradient>
+              </View>
             </TouchableOpacity>
           </View>
         </ScrollView>
@@ -1693,6 +1758,47 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: border,
   },
+
+  // Subscription badge
+  planHeaderRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginBottom: 4,
+  },
+  planBadge: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 999,
+    borderWidth: 1,
+    gap: 6,
+  },
+  planBadgePremium: {
+    backgroundColor: "rgba(251,191,36,0.1)",
+    borderColor: "rgba(251,191,36,0.8)",
+  },
+  planBadgeFree: {
+    backgroundColor: "rgba(31,41,55,0.7)",
+    borderColor: "rgba(75,85,99,0.9)",
+  },
+  planBadgeText: {
+    color: "#e5e7eb",
+    fontSize: 11,
+    fontWeight: "600",
+    letterSpacing: 0.4,
+    textTransform: "uppercase",
+  },
+  planHelperText: {
+    color: textSecondary,
+    fontSize: 12,
+    lineHeight: 18,
+    marginTop: 6,
+    marginBottom: 10,
+  },
+
+  // Upgrade button styles
   upgradeButton: {
     marginTop: 14,
     borderRadius: 14,
@@ -1700,47 +1806,55 @@ const styles = StyleSheet.create({
   },
   upgradeInner: {
     borderRadius: 14,
+    padding: 1,
+    borderWidth: 1,
+    borderColor: "rgba(148,163,184,0.6)",
+    backgroundColor: "rgba(15,23,42,0.96)",
   },
   upgradeContent: {
     flexDirection: "row",
     alignItems: "center",
-    paddingVertical: 12,
+    paddingVertical: 10,
     paddingHorizontal: 12,
-    gap: 12,
+    gap: 10,
   },
   upgradeIconBadge: {
-    width: 32,
-    height: 32,
+    width: 30,
+    height: 30,
     borderRadius: 999,
-    backgroundColor: "rgba(126,34,206,0.95)",
+    backgroundColor: "rgba(15,23,42,0.9)",
     alignItems: "center",
     justifyContent: "center",
     borderWidth: 1,
-    borderColor: "rgba(233,213,255,0.8)",
+    borderColor: "rgba(251,191,36,0.9)",
   },
   upgradeTextBlock: {
     flex: 1,
   },
   upgradeTitle: {
-    color: "#f8fafc",
+    color: textPrimary,
     fontWeight: "800",
     fontSize: 14,
   },
   upgradeSubtitle: {
-    color: "#e0f2fe",
-    fontSize: 12,
+    color: textSecondary,
+    fontSize: 11,
     marginTop: 2,
   },
-  upgradeChevron: {
-    width: 28,
-    height: 28,
-    borderRadius: 12,
-    backgroundColor: "rgba(14,165,233,0.9)",
-    alignItems: "center",
-    justifyContent: "center",
+  upgradePill: {
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderRadius: 999,
+    backgroundColor: "rgba(251,191,36,0.12)",
     borderWidth: 1,
-    borderColor: "rgba(125,211,252,0.9)",
+    borderColor: "rgba(251,191,36,0.65)",
   },
+  upgradePillText: {
+    color: accent,
+    fontSize: 11,
+    fontWeight: "700",
+  },
+
   manageSubButton: {
     marginTop: 14,
     borderRadius: 14,
@@ -1791,35 +1905,38 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "rgba(134,239,172,0.9)",
   },
+
+  // Delete profile card styles
   deleteProfileButton: {
     marginTop: 18,
     borderRadius: 16,
     overflow: "hidden",
-    borderWidth: 1,
-    borderColor: "rgba(248,113,113,0.45)",
   },
   deleteProfileInner: {
     borderRadius: 16,
-    paddingVertical: 12,
+    paddingVertical: 10,
     paddingHorizontal: 12,
+    borderWidth: 1,
+    borderColor: "rgba(248,113,113,0.45)", // same red border
+    backgroundColor: "rgba(248,113,113,0.12)", // soft transparent red fill
   },
   deleteProfileInnerDisabled: {
-    opacity: 0.8,
+    opacity: 0.7,
   },
   deleteProfileContent: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 12,
+    gap: 10,
   },
   deleteProfileIconBadge: {
-    width: 32,
-    height: 32,
+    width: 30,
+    height: 30,
     borderRadius: 999,
     backgroundColor: "rgba(127,29,29,0.9)",
     alignItems: "center",
     justifyContent: "center",
     borderWidth: 1,
-    borderColor: "rgba(248,113,113,0.8)",
+    borderColor: "rgba(248,113,113,0.85)",
   },
   deleteProfileTextBlock: {
     flex: 1,
@@ -1828,7 +1945,6 @@ const styles = StyleSheet.create({
     color: "#fee2e2",
     fontWeight: "800",
     fontSize: 14,
-    textAlign: "center",
   },
   deleteProfileSubtitle: {
     color: "#fecaca",

@@ -1,7 +1,7 @@
+// components/PaywallModal.js
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import {
   Animated,
-  Easing,
   Linking,
   Modal,
   StyleSheet,
@@ -15,67 +15,61 @@ import { BlurView } from "expo-blur";
 import { LinearGradient } from "expo-linear-gradient";
 import { COLORS } from "../constants/colors";
 import { useRevenueCat } from "../RevenueCatContext";
+import LogoLoader from "./LogoLoader";
+import AlertModal from "./AlertModal";
 
 const TERMS_OF_SERVICE_URL = "https://example.com/terms";
+const PRIVACY_POLICY_URL = "https://example.com/privacy";
+
+const TOP_PADDING_RATIO = 0.1; // 10% of screen height for top content padding
 
 const PaywallModal = ({ visible, onClose, onSelectPremium, onSelectFree }) => {
   const { height } = useWindowDimensions();
+
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const slideAnim = useRef(new Animated.Value(0)).current;
 
+  const { currentOffering, purchasePackage, isPremium, initializing } =
+    useRevenueCat();
+
+  const [processingId, setProcessingId] = useState(null);
+  const [confirmVisible, setConfirmVisible] = useState(false);
+  const [pendingPackage, setPendingPackage] = useState(null);
+
+  // ===== Animations (spring open) =====
   useEffect(() => {
     if (visible) {
+      // reset values so every time it opens, it animates
+      fadeAnim.setValue(0);
+      slideAnim.setValue(0);
+
       Animated.parallel([
         Animated.timing(fadeAnim, {
           toValue: 1,
-          duration: 250,
-          easing: Easing.out(Easing.ease),
+          duration: 220,
           useNativeDriver: true,
         }),
         Animated.spring(slideAnim, {
           toValue: 1,
-          damping: 15,
-          stiffness: 200,
-          mass: 1,
-          useNativeDriver: true,
-        }),
-      ]).start();
-    } else {
-      Animated.parallel([
-        Animated.timing(fadeAnim, {
-          toValue: 0,
-          duration: 200,
-          easing: Easing.in(Easing.ease),
-          useNativeDriver: true,
-        }),
-        Animated.timing(slideAnim, {
-          toValue: 0,
-          duration: 220,
-          easing: Easing.inOut(Easing.ease),
+          damping: 16,
+          stiffness: 220,
+          mass: 0.9,
           useNativeDriver: true,
         }),
       ]).start();
     }
-  }, [fadeAnim, slideAnim, visible]);
+  }, [visible, fadeAnim, slideAnim]);
 
   const translateY = useMemo(
     () =>
       slideAnim.interpolate({
         inputRange: [0, 1],
-        outputRange: [height, 0],
+        outputRange: [height, 0], // slides up from bottom
       }),
     [height, slideAnim]
   );
 
-  const {
-    currentOffering,
-    purchasePackage,
-    restorePurchases,
-    isPremium,
-    initializing,
-  } = useRevenueCat();
-  const [processingId, setProcessingId] = useState(null);
-
+  // ===== RevenueCat packages =====
   const packages = useMemo(
     () => currentOffering?.availablePackages || currentOffering?.packages || [],
     [currentOffering]
@@ -92,24 +86,25 @@ const PaywallModal = ({ visible, onClose, onSelectPremium, onSelectFree }) => {
   );
 
   useEffect(() => {
-    if (!visible) return;
-    if (isPremium) {
+    if (visible && isPremium) {
       onSelectPremium?.();
     }
-  }, [isPremium, onSelectPremium, visible]);
-
-  const handleOpenTerms = () => {
-    Linking.openURL(TERMS_OF_SERVICE_URL).catch(() => {});
-  };
+  }, [isPremium, visible, onSelectPremium]);
 
   const isActionDisabled = initializing || Boolean(processingId);
 
-  const handlePurchase = async (selectedPackage) => {
-    if (!selectedPackage || isActionDisabled) return;
+  const startPurchaseFlow = (pkg) => {
+    if (!pkg || isActionDisabled) return;
+    setPendingPackage(pkg);
+    setConfirmVisible(true);
+  };
 
+  const handleConfirmPurchase = async () => {
+    if (!pendingPackage) return;
     try {
-      setProcessingId(selectedPackage.identifier);
-      await purchasePackage(selectedPackage);
+      setConfirmVisible(false);
+      setProcessingId(pendingPackage.identifier);
+      await purchasePackage(pendingPackage);
       onSelectPremium?.();
     } catch (error) {
       if (!error?.userCancelled) {
@@ -117,131 +112,198 @@ const PaywallModal = ({ visible, onClose, onSelectPremium, onSelectFree }) => {
       }
     } finally {
       setProcessingId(null);
-    }
-  };
-
-  const handleRestore = async () => {
-    if (isActionDisabled) return;
-
-    try {
-      setProcessingId("restore");
-      await restorePurchases();
-      onSelectPremium?.();
-    } catch (error) {
-      console.error("Restore purchases failed", error);
-    } finally {
-      setProcessingId(null);
+      setPendingPackage(null);
     }
   };
 
   const monthlyPrice =
-    monthlyPackage?.product?.priceString || monthlyPackage?.product?.price || "$1.99";
+    monthlyPackage?.product?.priceString ||
+    monthlyPackage?.product?.price ||
+    "$1.99";
+
   const annualPrice =
-    annualPackage?.product?.priceString || annualPackage?.product?.price || "$19.99";
+    annualPackage?.product?.priceString ||
+    annualPackage?.product?.price ||
+    "$19.99";
+
+  const confirmMessage = useMemo(() => {
+    if (!pendingPackage?.product) return "";
+    const priceString =
+      pendingPackage.product.priceString || `${pendingPackage.product.price}`;
+    return `A ${priceString} purchase will be charged to your App Store account on confirmation. Your subscription will automatically renew for the same price and billing period until you cancel in your App Store account settings.`;
+  }, [pendingPackage]);
+
+  const topPadding = height * TOP_PADDING_RATIO;
 
   return (
     <Modal animationType="none" transparent visible={visible}>
+      {processingId && <LogoLoader />}
+
       <View style={styles.backdrop}>
-        <Animated.View style={[styles.backdropOverlay, { opacity: fadeAnim }]} />
+        <Animated.View style={[styles.overlay, { opacity: fadeAnim }]} />
         <BlurView intensity={40} tint="dark" style={styles.blur}>
+          {/* Full-screen sheet */}
           <Animated.View
-            style={[styles.sheet, { transform: [{ translateY }] }]}
+            style={[
+              styles.sheet,
+              {
+                transform: [{ translateY }],
+              },
+            ]}
             pointerEvents={visible ? "auto" : "none"}
           >
             <LinearGradient
-              colors={["#0f172a", "#111827", "#0b1120"]}
+              colors={["#020617", "#020617", "#020617"]}
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 1 }}
-              style={styles.card}
+              style={[
+                styles.card,
+                {
+                  paddingTop: topPadding, // ~10% of screen height
+                },
+              ]}
             >
-              <View style={styles.pill}>
-                <Text style={styles.pillText}>Premium</Text>
-              </View>
-              <Image
-                source={require("../assets/icon.png")}
-                style={styles.logo}
-              />
-              <Text style={styles.heading}>Stay Premium with Owl</Text>
-              <Text style={styles.subheading}>
-                I hope you are enjoying the app, your 2 months free ride is coming
-                to an end.
-              </Text>
-              <View style={styles.benefits}>
-                <View style={styles.benefitRow}>
-                  <View style={styles.bullet} />
-                  <Text style={styles.benefitText}>
-                    Keep chatting with Owl, your sobriety coach/therapist.
-                  </Text>
-                </View>
-                <View style={styles.benefitRow}>
-                  <View style={styles.bullet} />
-                  <Text style={styles.benefitText}>Remove ads across the app.</Text>
-                </View>
-                <View style={styles.benefitRow}>
-                  <View style={styles.bullet} />
-                  <Text style={styles.benefitText}>
-                    Priority access to future premium tools.
-                  </Text>
-                </View>
-              </View>
-              <View style={styles.noticeBox}>
-                <Text style={styles.noticeText}>
-                  If you don&apos;t pay the $1.99/month premium, you&apos;ll lose access to
-                  Owl and start seeing ads.
-                </Text>
-              </View>
+              {/* Close button - top-right, down ~10% */}
               <TouchableOpacity
-                style={[
-                  styles.button,
-                  styles.primaryButton,
-                  (!monthlyPackage || isActionDisabled) && styles.disabledButton,
-                ]}
-                activeOpacity={0.9}
-                onPress={() => handlePurchase(monthlyPackage)}
-                disabled={!monthlyPackage || isActionDisabled}
-              >
-                <Text style={styles.primaryButtonText}>
-                  Go Premium — {monthlyPrice}/mo
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[
-                  styles.button,
-                  styles.secondaryButton,
-                  (!annualPackage || isActionDisabled) && styles.disabledButton,
-                ]}
-                activeOpacity={0.85}
-                onPress={() => handlePurchase(annualPackage)}
-                disabled={!annualPackage || isActionDisabled}
-              >
-                <Text style={styles.secondaryButtonText}>
-                  Best value — {annualPrice}/yr
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[styles.button, styles.tertiaryButton]}
-                activeOpacity={0.85}
-                onPress={onSelectFree}
-              >
-                <Text style={styles.secondaryButtonText}>Continue with ads (free)</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={handleRestore}
+                onPress={onClose}
                 activeOpacity={0.7}
-                disabled={isActionDisabled}
+                style={[styles.closeButton, { top: topPadding }]}
               >
-                <Text style={styles.restoreText}>Restore purchases</Text>
+                <View style={styles.closeCircle}>
+                  <Text style={styles.closeIcon}>✕</Text>
+                </View>
               </TouchableOpacity>
-              <TouchableOpacity onPress={onClose} activeOpacity={0.7}>
-                <Text style={styles.dismissText}>Maybe later</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={handleOpenTerms} activeOpacity={0.7}>
-                <Text style={styles.termsLink}>Terms of Service</Text>
-              </TouchableOpacity>
+
+              {/* SECTION 1: Top content */}
+              <View style={styles.sectionTop}>
+                <View style={styles.chipRow}>
+                  <View style={styles.chip}>
+                    <Text style={styles.chipIcon}>👑</Text>
+                    <Text style={styles.chipText}>Premium</Text>
+                  </View>
+                </View>
+
+                <Image
+                  source={require("../assets/icon.png")}
+                  style={styles.logo}
+                />
+
+                <Text style={styles.heading}>Unlock the full experience</Text>
+
+                <Text style={styles.subheading}>
+                  Premium keeps SoberOwl available and removes ads so you can
+                  stay focused on your sobriety.
+                </Text>
+              </View>
+
+              {/* SECTION 2: Middle content (bullets) */}
+              <View style={styles.sectionMiddle}>
+                <View className="bulletRow" style={styles.bulletRow}>
+                  <View style={styles.bullet} />
+                  <Text style={styles.benefitText}>
+                    Unlimited conversations with SoberOwl.
+                  </Text>
+                </View>
+                <View style={styles.bulletRow}>
+                  <View style={styles.bullet} />
+                  <Text style={styles.benefitText}>
+                    No ads disrupting your experience.
+                  </Text>
+                </View>
+                <View style={styles.bulletRow}>
+                  <View style={styles.bullet} />
+                  <Text style={styles.benefitText}>
+                    Early access to upcoming sober tools.
+                  </Text>
+                </View>
+              </View>
+
+              {/* SECTION 3: Bottom actions */}
+              <View style={styles.sectionBottom}>
+                <TouchableOpacity
+                  style={[
+                    styles.button,
+                    styles.primaryButton,
+                    (!monthlyPackage || isActionDisabled) &&
+                      styles.disabledButton,
+                  ]}
+                  onPress={() => startPurchaseFlow(monthlyPackage)}
+                  disabled={!monthlyPackage || isActionDisabled}
+                  activeOpacity={0.9}
+                >
+                  <Text style={styles.primaryButtonText}>
+                    Go Premium — {monthlyPrice}/month
+                  </Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  style={[
+                    styles.button,
+                    styles.secondaryButton,
+                    (!annualPackage || isActionDisabled) &&
+                      styles.disabledButton,
+                  ]}
+                  onPress={() => startPurchaseFlow(annualPackage)}
+                  disabled={!annualPackage || isActionDisabled}
+                  activeOpacity={0.85}
+                >
+                  <Text style={styles.secondaryButtonText}>
+                    Save with yearly — {annualPrice}/year
+                  </Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  style={[styles.button, styles.tertiaryButton]}
+                  onPress={onSelectFree}
+                  disabled={isActionDisabled}
+                  activeOpacity={0.85}
+                >
+                  <Text style={styles.tertiaryText}>
+                    Continue free (ads + no SoberOwl)
+                  </Text>
+                </TouchableOpacity>
+
+                <Text style={styles.termsText}>
+                  Subscriptions are billed to your App Store account and renew
+                  automatically until cancelled in App Store settings.{" "}
+                  <Text
+                    style={styles.link}
+                    onPress={() => Linking.openURL(TERMS_OF_SERVICE_URL)}
+                  >
+                    Terms
+                  </Text>{" "}
+                  ·{" "}
+                  <Text
+                    style={styles.link}
+                    onPress={() => Linking.openURL(PRIVACY_POLICY_URL)}
+                  >
+                    Privacy
+                  </Text>
+                </Text>
+
+                <TouchableOpacity onPress={onClose} activeOpacity={0.7}>
+                  <Text style={styles.dismissText}>Maybe later</Text>
+                </TouchableOpacity>
+              </View>
             </LinearGradient>
           </Animated.View>
         </BlurView>
       </View>
+
+      {/* Confirmation modal */}
+      <AlertModal
+        visible={confirmVisible}
+        type="info"
+        title="Confirm subscription"
+        message={confirmMessage}
+        confirmLabel="Continue"
+        cancelLabel="Cancel"
+        onConfirm={handleConfirmPurchase}
+        onCancel={() => {
+          setConfirmVisible(false);
+          setPendingPackage(null);
+        }}
+      />
     </Modal>
   );
 };
@@ -249,152 +311,187 @@ const PaywallModal = ({ visible, onClose, onSelectPremium, onSelectFree }) => {
 const styles = StyleSheet.create({
   backdrop: {
     flex: 1,
-    backgroundColor: "rgba(0,0,0,0.65)",
+    backgroundColor: "rgba(0,0,0,0.6)",
   },
-  backdropOverlay: {
+  overlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: "rgba(0,0,0,0.35)",
+    backgroundColor: "rgba(0,0,0,0.25)",
   },
   blur: {
     ...StyleSheet.absoluteFillObject,
-    justifyContent: "flex-end",
   },
   sheet: {
-    width: "100%",
-    borderTopLeftRadius: 28,
-    borderTopRightRadius: 28,
+    flex: 1, // full-screen
+    borderTopLeftRadius: 26,
+    borderTopRightRadius: 26,
     overflow: "hidden",
-    shadowColor: "#000",
-    shadowOpacity: 0.4,
-    shadowRadius: 20,
-    shadowOffset: { width: 0, height: -6 },
-    elevation: 16,
   },
   card: {
-    paddingHorizontal: 24,
-    paddingVertical: 30,
-    borderTopLeftRadius: 28,
-    borderTopRightRadius: 28,
+    flex: 1,
+    paddingHorizontal: 22,
+    paddingBottom: 24,
+    justifyContent: "space-between", // sections spread nicely
+  },
+
+  // Sections
+  sectionTop: {
     alignItems: "center",
-    gap: 16,
   },
-  logo: {
-    width: 80,
-    height: 80,
-    marginBottom: 6,
+  sectionMiddle: {
+    marginTop: 12,
   },
-  pill: {
-    backgroundColor: "rgba(14,165,233,0.15)",
-    borderColor: "rgba(14,165,233,0.4)",
-    borderWidth: 1,
-    paddingHorizontal: 12,
+  sectionBottom: {
+    marginTop: 16,
+    alignItems: "center",
+  },
+
+  // Close button
+  closeButton: {
+    position: "absolute",
+    right: 18,
+    zIndex: 99,
+  },
+  closeCircle: {
+    width: 34,
+    height: 34,
+    borderRadius: 17,
+    backgroundColor: "rgba(0,0,0,0.45)",
+    justifyContent: "center",
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOpacity: 0.25,
+    shadowRadius: 8,
+    shadowOffset: { width: 0, height: 2 },
+  },
+  closeIcon: {
+    color: COLORS.textPrimary,
+    fontSize: 18,
+    fontWeight: "700",
+  },
+
+  // Premium chip – old color scheme + crown
+  chipRow: {
+    width: "100%",
+    alignItems: "center",
+    marginBottom: 10,
+  },
+  chip: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
+    paddingHorizontal: 14,
     paddingVertical: 6,
     borderRadius: 999,
+    borderWidth: 1,
+    borderColor: "rgba(14,165,233,0.4)",
+    backgroundColor: "rgba(14,165,233,0.15)",
   },
-  pillText: {
+  chipIcon: {
+    fontSize: 14,
+    color: COLORS.accent,
+    marginTop: 1,
+  },
+  chipText: {
     color: COLORS.accent,
     fontWeight: "700",
     fontSize: 12,
+    letterSpacing: 0.4,
+  },
+
+  logo: {
+    width: 72,
+    height: 72,
+    marginBottom: 10,
   },
   heading: {
     fontSize: 22,
     fontWeight: "800",
     color: COLORS.textPrimary,
     textAlign: "center",
+    marginBottom: 4,
   },
   subheading: {
-    fontSize: 16,
+    fontSize: 15,
     color: COLORS.textSecondary,
     textAlign: "center",
-    lineHeight: 23,
+    lineHeight: 22,
+    marginHorizontal: 6,
+    marginBottom: 8,
   },
-  benefits: {
-    width: "100%",
-    gap: 8,
-    marginTop: 6,
-  },
-  benefitRow: {
+
+  bulletRow: {
     flexDirection: "row",
-    alignItems: "flex-start",
     gap: 10,
+    marginBottom: 8,
   },
   bullet: {
     width: 8,
     height: 8,
     borderRadius: 4,
-    marginTop: 6,
-    backgroundColor: COLORS.accent,
+    backgroundColor: "rgba(234,179,8,0.85)", // dark yellow
+    marginTop: 8,
   },
   benefitText: {
     flex: 1,
     color: COLORS.textPrimary,
-    fontSize: 14,
-    lineHeight: 20,
+    fontSize: 16, // increased font size
+    lineHeight: 22,
   },
-  noticeBox: {
-    width: "100%",
-    backgroundColor: "rgba(245,158,11,0.12)",
-    borderColor: "rgba(245,158,11,0.4)",
-    borderWidth: 1,
-    borderRadius: 14,
-    padding: 12,
-  },
-  noticeText: {
-    color: COLORS.textPrimary,
-    textAlign: "center",
-    lineHeight: 20,
-  },
+
   button: {
     width: "100%",
+    paddingVertical: 14,
     borderRadius: 999,
-    paddingVertical: 15,
     alignItems: "center",
+    marginBottom: 10,
   },
   primaryButton: {
     backgroundColor: COLORS.accent,
-    shadowColor: COLORS.accent,
-    shadowOpacity: 0.35,
-    shadowRadius: 12,
-    shadowOffset: { width: 0, height: 6 },
-  },
-  primaryButtonText: {
-    color: "#111827",
-    fontWeight: "800",
-    fontSize: 15,
   },
   secondaryButton: {
     borderWidth: 1,
-    borderColor: "#4b5563",
+    borderColor: "rgba(148,163,184,0.6)",
+    backgroundColor: "rgba(15,23,42,0.95)",
+  },
+  tertiaryButton: {
+    borderWidth: 1,
+    borderColor: "#374151",
+    backgroundColor: "rgba(15,23,42,0.9)",
+  },
+  disabledButton: {
+    opacity: 0.55,
+  },
+  primaryButtonText: {
+    color: "#020617",
+    fontWeight: "800",
+    fontSize: 15,
   },
   secondaryButtonText: {
     color: COLORS.textPrimary,
     fontWeight: "700",
     fontSize: 14,
   },
-  tertiaryButton: {
-    borderWidth: 1,
-    borderColor: "#374151",
-    backgroundColor: "rgba(255,255,255,0.03)",
+  tertiaryText: {
+    color: COLORS.textSecondary,
+    fontSize: 12,
+    fontWeight: "600",
   },
-  disabledButton: {
-    opacity: 0.6,
+
+  termsText: {
+    color: COLORS.textSecondary,
+    fontSize: 11,
+    marginTop: 4,
+    textAlign: "center",
+    lineHeight: 16,
+  },
+  link: {
+    color: COLORS.textPrimary,
+    textDecorationLine: "underline",
   },
   dismissText: {
     color: COLORS.textSecondary,
-    marginTop: 6,
-    fontSize: 13,
-    textDecorationLine: "underline",
-  },
-  restoreText: {
-    color: COLORS.textSecondary,
-    marginTop: 8,
-    fontSize: 13,
-    textDecorationLine: "underline",
-  },
-  termsLink: {
-    color: COLORS.textPrimary,
-    marginTop: 8,
-    fontSize: 13,
+    fontSize: 14,
+    marginTop: 10,
     textDecorationLine: "underline",
   },
 });

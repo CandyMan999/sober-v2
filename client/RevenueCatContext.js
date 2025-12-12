@@ -10,51 +10,79 @@ import Purchases, { LOG_LEVEL } from "react-native-purchases";
 import { CHANGE_PLAN_MUTATION } from "./GraphQL/mutations";
 import { useClient } from "./client";
 
-// ✅ Public iOS SDK key (safe for client use)
-// Later you can move this back into @env
 const EXPO_REVENUE_CAT_API_KEY = "appl_IHgLeqcpOMRkDTCBNNNOfEDKbxy";
 
-// Guard so we don't configure Purchases twice (dev/StrictMode/hot reload)
 let hasConfiguredPurchases = false;
 
 const RevenueCatContext = createContext(null);
 
 export const RevenueCatProvider = ({ children, state, dispatch }) => {
   const client = useClient();
-  // Your app shape: state.user
   const currentUser = state?.user;
 
-  // Current offering (we expect "default" with $rc_monthly / $rc_annual)
   const [currentOffering, setCurrentOffering] = useState(null);
-
-  // Simple flag based on entitlement "premium"
   const [isPremium, setIsPremium] = useState(false);
-
-  // Helps block UI while RC is warming up
   const [initializing, setInitializing] = useState(true);
 
-  // --- 3. Helper: sync RC entitlements -> backend planType ---
-  // Mapping for *today*:
-  // - If entitlement "premium" is active -> planType = "Premium"
-  // - Otherwise                         -> planType = "Free"
+  // -------------------------------------------
+  // 🔍 DEBUG HELPER: Shows EXACT RC status
+  // -------------------------------------------
+  const debugRevenueCatState = async (label = "debug", user = currentUser) => {
+    try {
+      const customerInfo = await Purchases.getCustomerInfo();
+
+      const activeEntitlements = customerInfo?.entitlements?.active || {};
+      const activeEntitlementKeys = Object.keys(activeEntitlements);
+
+      console.log("[SoberMotion] RevenueCat DEBUG", {
+        label,
+        appUser: {
+          id: user?.id,
+          username: user?.username,
+          email: user?.email,
+          planType: user?.plan?.planType,
+        },
+        revenueCatUser: {
+          originalAppUserId: customerInfo?.originalAppUserId,
+        },
+        subscriptions: {
+          activeSubscriptions: customerInfo?.activeSubscriptions,
+          allPurchasedProductIdentifiers:
+            customerInfo?.allPurchasedProductIdentifiers,
+          latestExpirationDate: customerInfo?.latestExpirationDate,
+        },
+        entitlements: {
+          activeKeys: activeEntitlementKeys,
+          active: activeEntitlements,
+        },
+        isPremiumDerived: activeEntitlementKeys.includes("premium"),
+        managementURL: customerInfo?.managementURL,
+        requestDate: customerInfo?.requestDate,
+      });
+    } catch (e) {
+      console.log("[SoberMotion] RevenueCat DEBUG ERROR", e);
+    }
+  };
+
+  // -------------------------------------------------
+  // Sync plan type with backend (Premium / Free)
+  // -------------------------------------------------
   const syncPlanWithBackend = async (user = currentUser) => {
     if (!user) return;
 
     try {
       const customerInfo = await Purchases.getCustomerInfo();
-
       const hasPremium = !!customerInfo.entitlements.active?.premium;
+
       setIsPremium(hasPremium);
 
       const desiredPlanType = hasPremium ? "Premium" : "Free";
       const currentPlanType = user.plan?.planType || "Free";
 
-      if (currentPlanType === desiredPlanType) {
-        return;
-      }
+      if (currentPlanType === desiredPlanType) return;
 
       const variables = {
-        userId: user.id, // matches your CHANGE_PLAN_MUTATION signature
+        userId: user.id,
         planType: desiredPlanType,
       };
 
@@ -62,7 +90,6 @@ export const RevenueCatProvider = ({ children, state, dispatch }) => {
       const updatedUser = data?.changePlan;
 
       if (updatedUser) {
-        // Merge updated user back into your state.user
         dispatch({ type: "SET_USER", payload: { ...user, ...updatedUser } });
       }
     } catch (e) {
@@ -70,9 +97,9 @@ export const RevenueCatProvider = ({ children, state, dispatch }) => {
     }
   };
 
-  // -------------------------
-  // 1. Initial RevenueCat setup
-  // -------------------------
+  // ---------------------------
+  // 🚀 Initial RevenueCat setup
+  // ---------------------------
   useEffect(() => {
     const setupRevenueCat = async () => {
       try {
@@ -91,23 +118,26 @@ export const RevenueCatProvider = ({ children, state, dispatch }) => {
         const offerings = await Purchases.getOfferings();
         console.log("RC offerings.current:", offerings.current);
 
-        if (!offerings.current) {
-          console.log("RevenueCat: no current offering available");
-        } else {
+        if (offerings.current) {
           setCurrentOffering(offerings.current);
+        } else {
+          console.log("RevenueCat: No current offering found.");
         }
 
         if (currentUser?.id) {
           try {
             await Purchases.logIn(String(currentUser.id));
           } catch (e) {
-            console.log("Error logging in user to RevenueCat during init:", e);
+            console.log("Error logging in user:", e);
           }
         }
 
         if (currentUser) {
           await syncPlanWithBackend(currentUser);
         }
+
+        // 🔍 DEBUG — after init
+        await debugRevenueCatState("after-setup");
       } catch (error) {
         console.error("Error initializing RevenueCat:", error);
       } finally {
@@ -116,12 +146,11 @@ export const RevenueCatProvider = ({ children, state, dispatch }) => {
     };
 
     setupRevenueCat().catch(console.log);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // ----------------------------------
-  // 2. When currentUser changes (login/logout)
-  // ----------------------------------
+  // ---------------------------
+  // 👤 When user logs in/out
+  // ---------------------------
   useEffect(() => {
     const handleUserChange = async () => {
       if (!currentUser?.id) {
@@ -132,19 +161,21 @@ export const RevenueCatProvider = ({ children, state, dispatch }) => {
       try {
         await Purchases.logIn(String(currentUser.id));
       } catch (e) {
-        console.log("Error logging in user to RevenueCat on user change:", e);
+        console.log("Error logging in user on change:", e);
       }
 
       await syncPlanWithBackend(currentUser);
+
+      // 🔍 DEBUG — after user change
+      await debugRevenueCatState("after-user-change", currentUser);
     };
 
     handleUserChange().catch(console.log);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentUser?.id]);
 
-  // ----------------------------------
-  // Purchase a package (monthly / annual)
-  // ----------------------------------
+  // ---------------------------
+  // 💳 Purchase package
+  // ---------------------------
   const purchasePackage = async (selectedPackage) => {
     try {
       const { customerInfo } = await Purchases.purchasePackage(selectedPackage);
@@ -158,18 +189,16 @@ export const RevenueCatProvider = ({ children, state, dispatch }) => {
 
       return customerInfo;
     } catch (e) {
-      if (e.userCancelled) {
-        console.log("User cancelled the purchase.");
-      } else {
+      if (!e.userCancelled) {
         console.error("Purchase failed:", e);
       }
       throw e;
     }
   };
 
-  // ----------------------------------
-  // Restore purchases (new device / reinstall)
-  // ----------------------------------
+  // ---------------------------
+  // ♻️ Restore purchases
+  // ---------------------------
   const restorePurchases = async () => {
     try {
       const customerInfo = await Purchases.restorePurchases();
@@ -188,6 +217,9 @@ export const RevenueCatProvider = ({ children, state, dispatch }) => {
     }
   };
 
+  // ---------------------------
+  // Exported context value
+  // ---------------------------
   const value = useMemo(
     () => ({
       currentOffering,
@@ -196,6 +228,7 @@ export const RevenueCatProvider = ({ children, state, dispatch }) => {
       purchasePackage,
       restorePurchases,
       refreshPlanFromRevenueCat: () => syncPlanWithBackend(currentUser),
+      debugRevenueCatState,
     }),
     [currentOffering, isPremium, initializing, currentUser]
   );
@@ -209,8 +242,6 @@ export const RevenueCatProvider = ({ children, state, dispatch }) => {
 
 export const useRevenueCat = () => {
   const ctx = useContext(RevenueCatContext);
-  if (!ctx) {
-    throw new Error("useRevenueCat must be used inside a RevenueCatProvider");
-  }
+  if (!ctx) throw new Error("useRevenueCat must be inside provider");
   return ctx;
 };
