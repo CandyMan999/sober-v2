@@ -422,19 +422,18 @@ const PostCaptureScreen = ({ navigation }) => {
       });
 
       const existingPosts = state?.profileOverview?.posts;
-      const newCount = Array.isArray(existingPosts)
-        ? existingPosts.length + 1
-        : null;
+      const updatedPosts = Array.isArray(existingPosts)
+        ? [savedPost, ...existingPosts]
+        : [savedPost];
+      const newCount = updatedPosts.length;
 
-      if (Array.isArray(existingPosts)) {
-        dispatch({
-          type: "SET_PROFILE_OVERVIEW",
-          payload: {
-            ...state.profileOverview,
-            posts: [savedPost, ...existingPosts],
-          },
-        });
-      }
+      dispatch({
+        type: "SET_PROFILE_OVERVIEW",
+        payload: {
+          ...(state.profileOverview || {}),
+          posts: updatedPosts,
+        },
+      });
 
       if (newCount > 2 && (await StoreReview.isAvailableAsync())) {
         StoreReview.requestReview();
