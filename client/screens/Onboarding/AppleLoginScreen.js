@@ -17,7 +17,6 @@ import {
 } from "react-native";
 import * as AppleAuthentication from "expo-apple-authentication";
 import * as Location from "expo-location";
-import * as Notifications from "expo-notifications"; // ✅ NEW
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { LinearGradient } from "expo-linear-gradient";
 import Avatar from "../../components/Avatar";
@@ -120,38 +119,6 @@ const AppleLoginScreen = ({ navigation }) => {
           pushToken: token,
         });
         return;
-      }
-
-      // ✅ NEW: Check if push notifications are enabled at OS level
-      try {
-        let notifSettings = await Notifications.getPermissionsAsync();
-        let hasPushPermission = notifSettings?.granted === true;
-
-        if (!hasPushPermission) {
-          notifSettings = await Notifications.requestPermissionsAsync();
-          hasPushPermission = notifSettings?.granted === true;
-        }
-
-        if (!hasPushPermission) {
-          // Force them back through AddUserName / notification onboarding
-          navigation.reset({
-            index: 0,
-            routes: [
-              {
-                name: "AddUserName",
-                params: {
-                  appleId,
-                  username: me.username || "",
-                  photoURI: me.profilePicUrl || null,
-                  pushToken: token,
-                },
-              },
-            ],
-          });
-          return;
-        }
-      } catch (e) {
-        console.log("Failed to check notification permissions:", e);
       }
 
       const locationTrackingDisabled =

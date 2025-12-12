@@ -132,7 +132,18 @@ export const RevenueCatProvider = ({ children, state, dispatch }) => {
       const updatedUser = data?.changePlan;
 
       if (updatedUser) {
-        dispatch({ type: "SET_USER", payload: { ...user, ...updatedUser } });
+        const mergedUser = { ...user, ...updatedUser };
+        dispatch({ type: "SET_USER", payload: mergedUser });
+
+        if (state?.profileOverview) {
+          dispatch({
+            type: "SET_PROFILE_OVERVIEW",
+            payload: {
+              ...state.profileOverview,
+              user: { ...(state.profileOverview.user || {}), ...mergedUser },
+            },
+          });
+        }
       }
     } catch (e) {
       console.log("Error syncing plan with backend:", e);
@@ -217,26 +228,6 @@ export const RevenueCatProvider = ({ children, state, dispatch }) => {
 
     handleUserChange().catch(console.log);
   }, [currentUser?.id]);
-
-  // -------------------------------------------
-  // 🔄 React to RevenueCat customer updates
-  // -------------------------------------------
-  useEffect(() => {
-    const removeListener = Purchases.addCustomerInfoUpdateListener(
-      async (info) => {
-        setCustomerInfo(info);
-        applyMembershipStatus(info, currentUser);
-
-        if (currentUser) {
-          await syncPlanWithBackend(currentUser);
-        }
-      }
-    );
-
-    return () => {
-      removeListener();
-    };
-  }, [currentUser]);
 
   // ---------------------------
   // 💳 Purchase package
