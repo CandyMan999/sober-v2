@@ -399,13 +399,8 @@ function AppContent({ state, dispatch }) {
 
     const ensurePushPermission = async () => {
       try {
-        let permission = await Notifications.getPermissionsAsync();
-        let hasPermission = permission?.granted === true;
-
-        if (!hasPermission && permission?.canAskAgain !== false) {
-          permission = await Notifications.requestPermissionsAsync();
-          hasPermission = permission?.granted === true;
-        }
+        const permission = await Notifications.getPermissionsAsync();
+        const hasPermission = permission?.granted === true;
 
         if (cancelled || hasPermission) return;
 
