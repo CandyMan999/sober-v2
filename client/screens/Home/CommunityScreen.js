@@ -35,6 +35,7 @@ import {
   FeedLayout,
   FilterSheet,
   WatchAgainButton,
+  AlertModal,
 } from "../../components";
 import { GET_ALL_POSTS } from "../../GraphQL/queries";
 import { useClient } from "../../client";
@@ -106,6 +107,7 @@ const CommunityScreen = () => {
   const [followLoadingIds, setFollowLoadingIds] = useState(new Set());
   const [isAdShowing, setIsAdShowing] = useState(false);
   const [isAdLoaded, setIsAdLoaded] = useState(false);
+  const [showNoPostsAlert, setShowNoPostsAlert] = useState(false);
   const sheetAnim = useRef(new Animated.Value(0)).current;
   const fetchGenerationRef = useRef(0);
 
@@ -344,6 +346,7 @@ const CommunityScreen = () => {
       const nextCursor = append ? cursorRef.current : null;
 
       const filterParams = buildFilterParams(filterOverride);
+      const isFilteredRequest = Boolean(filterOverride ?? activeFilter);
 
       try {
         if (!append) {
@@ -355,6 +358,7 @@ const CommunityScreen = () => {
           }
           adShownIndicesRef.current = new Set();
           pendingAdIndexRef.current = null;
+          setShowNoPostsAlert(false);
         } else {
           setLoadingMore(true);
         }
@@ -390,6 +394,12 @@ const CommunityScreen = () => {
           filterOverride
         );
 
+        if (!append && isFilteredRequest && filteredPosts.length === 0) {
+          setShowNoPostsAlert(true);
+          setHasMore(false);
+          return;
+        }
+
         setPosts((prev) =>
           append
             ? dedupeById([...prev, ...filteredPosts])
@@ -421,7 +431,6 @@ const CommunityScreen = () => {
     setHasMore(true);
     setCursor(null);
     cursorRef.current = null;
-    setPosts([]);
     setError("");
     setLoading(true);
     fetchPostsRef.current(false, {
@@ -1094,6 +1103,13 @@ const CommunityScreen = () => {
         onClose={closeFilterSheet}
         activeFilter={activeFilter}
         onFilterChange={handleFilterChange}
+      />
+
+      <AlertModal
+        visible={showNoPostsAlert}
+        title="No posts available"
+        message="Try a different filter to see more community posts."
+        onConfirm={() => setShowNoPostsAlert(false)}
       />
 
       <Modal transparent visible={showTutorial} animationType="fade">
