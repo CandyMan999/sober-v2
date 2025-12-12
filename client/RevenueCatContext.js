@@ -218,6 +218,26 @@ export const RevenueCatProvider = ({ children, state, dispatch }) => {
     handleUserChange().catch(console.log);
   }, [currentUser?.id]);
 
+  // -------------------------------------------
+  // 🔄 React to RevenueCat customer updates
+  // -------------------------------------------
+  useEffect(() => {
+    const removeListener = Purchases.addCustomerInfoUpdateListener(
+      async (info) => {
+        setCustomerInfo(info);
+        applyMembershipStatus(info, currentUser);
+
+        if (currentUser) {
+          await syncPlanWithBackend(currentUser);
+        }
+      }
+    );
+
+    return () => {
+      removeListener();
+    };
+  }, [currentUser]);
+
   // ---------------------------
   // 💳 Purchase package
   // ---------------------------
