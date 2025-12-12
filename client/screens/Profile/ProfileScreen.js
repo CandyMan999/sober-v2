@@ -284,6 +284,33 @@ const ProfileScreen = ({ navigation }) => {
     ]
   );
 
+  const syncProfileOverviewQuotes = useCallback(
+    (nextQuotes, meta = {}) => {
+      const currentOverview = state?.profileOverview || {};
+
+      const payload = {
+        ...currentOverview,
+        ...meta,
+        user: profileData || currentOverview.user || state?.user,
+        posts: currentOverview.posts || posts,
+        quotes: nextQuotes,
+        savedPosts: currentOverview.savedPosts || savedPosts,
+        savedQuotes: currentOverview.savedQuotes || savedQuotes,
+      };
+
+      dispatch({ type: "SET_PROFILE_OVERVIEW", payload });
+    },
+    [
+      dispatch,
+      posts,
+      profileData,
+      savedPosts,
+      savedQuotes,
+      state?.profileOverview,
+      state?.user,
+    ]
+  );
+
   const mergePosts = useCallback(
     (incomingPosts, { append, meta = {} }) => {
       setPosts((prev) => {
@@ -296,6 +323,19 @@ const ProfileScreen = ({ navigation }) => {
     },
     [syncProfileOverviewPosts]
   );
+
+  useEffect(() => {
+    const incomingQuote = state?.newQuote;
+    if (!incomingQuote) return;
+
+    setQuotes((prev) => {
+      const merged = dedupeById([incomingQuote, ...prev]);
+      syncProfileOverviewQuotes(merged);
+      return merged;
+    });
+
+    dispatch({ type: "NEW_QUOTE", payload: null });
+  }, [dispatch, state?.newQuote, syncProfileOverviewQuotes]);
 
   const fetchUserPostsPage = useCallback(
     async ({ append = false } = {}) => {
