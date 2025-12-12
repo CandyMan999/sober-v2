@@ -62,10 +62,17 @@ const typeDefs = gql`
     isUsed: Boolean
     likesCount: Int!
     commentsCount: Int!
+    viewsCount: Int!
     likes: [Like!]!
     comments: [Comment!]!
     createdAt: String
     updatedAt: String
+  }
+
+  type QuoteConnection {
+    quotes: [Quote!]!
+    cursor: String
+    hasMore: Boolean!
   }
 
   enum CommentTarget {
@@ -373,7 +380,12 @@ const typeDefs = gql`
     users(limit: Int, offset: Int): [User!]
     rooms: [Room!]
     room(id: ID!): Room
-    getQuotes: [Quote!]!
+    getQuotes(
+      limit: Int
+      cursor: String
+      token: String
+      excludeViewed: Boolean
+    ): QuoteConnection!
     adminFlaggedPosts(token: String!): [Post!]!
     adminPendingQuotes(token: String!): [Quote!]!
     userNotifications(token: String!): [Notification!]!
@@ -496,6 +508,7 @@ const typeDefs = gql`
     moderatePost(token: String!, postId: ID!, approve: Boolean!): Post!
     moderateQuote(token: String!, quoteId: ID!, approve: Boolean!): Quote!
     recordPostView(postId: ID!, token: String!): Post!
+    recordQuoteView(quoteId: ID!, token: String!): Quote!
     createPostComment(
       token: String!
       postId: ID!

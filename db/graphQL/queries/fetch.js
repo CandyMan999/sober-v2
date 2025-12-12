@@ -69,18 +69,45 @@ module.exports = {
       throw new AuthenticationError(err.message);
     }
   },
-  getQuotesResolver: async (root, args, ctx) => {
+  getQuotesResolver: async (root, args) => {
+    const { limit: limitArg, cursor: cursorArg, token, excludeViewed = false } =
+      args || {};
+
+    const limit = Math.min(limitArg || 20, 50);
+    const cursor = cursorArg ? new Date(cursorArg) : null;
+
+    let viewer = null;
+    if (token) {
+      viewer = await User.findOne({ token });
+    }
+
+    const baseQuery = { isApproved: true, isDenied: { $ne: true } };
+    if (cursor) {
+      baseQuery.createdAt = { $lt: cursor };
+    }
+    if (excludeViewed && viewer) {
+      baseQuery.viewers = { $ne: viewer._id };
+    }
+
     try {
-      const quotes = await Quote.find({ isApproved: true })
+      const quotes = await Quote.find(baseQuery)
         .sort({ createdAt: -1 })
+        .limit(limit + 1)
         .populate("user")
         .populate({
           path: "comments",
           match: { $or: [{ replyTo: null }, { replyTo: { $exists: false } }] },
           populate: buildRepliesPopulate(2),
         });
-      // Don't throw if none; just return empty array
-      return quotes;
+
+      const hasMore = quotes.length > limit;
+      const trimmed = hasMore ? quotes.slice(0, limit) : quotes;
+      const nextCursor =
+        hasMore && trimmed.length
+          ? trimmed[trimmed.length - 1].createdAt.toISOString()
+          : null;
+
+      return { quotes: trimmed, hasMore, cursor: nextCursor };
     } catch (err) {
       throw new Error(err.message);
     }

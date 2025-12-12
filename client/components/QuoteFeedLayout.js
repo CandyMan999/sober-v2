@@ -10,6 +10,7 @@ const formatAuthorHandle = (author) => {
 
 const QuoteFeedLayout = ({
   quote,
+  viewsCount = null,
   isLiked,
   onLikePress,
   onMorePress,
@@ -30,6 +31,7 @@ const QuoteFeedLayout = ({
       commentSheetCaption={`“${quote.text}”`}
       likesCount={quote.likesCount}
       commentsCount={quote.commentsCount}
+      viewsCount={viewsCount ?? quote.viewsCount}
       comments={quote.comments}
       commentTargetType="QUOTE"
       commentTargetId={quote.id}
