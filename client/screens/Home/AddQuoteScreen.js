@@ -66,7 +66,7 @@ const AddQuoteScreen = ({ navigation }) => {
       });
 
       if (newQuote) {
-        dispatch({ type: "NEW_QUOTE", payload: newQuote });
+        dispatch({ type: "APPEND_PROFILE_QUOTE", payload: newQuote });
       }
 
       setText("");
