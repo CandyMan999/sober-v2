@@ -1,0 +1,3124 @@
+[
+  {
+    "type": "Liquor",
+    "name": "Liquor Hub",
+    "lat": 37.7668115,
+    "long": -122.2408415,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Bottles liquor",
+    "lat": 37.8063124,
+    "long": -122.2812945,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Fairfax Liquor",
+    "lat": 37.7724747,
+    "long": -122.1984394,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Telegraph Wine And Spirits",
+    "lat": 37.8140246,
+    "long": -122.268781,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": " Rings Liquor",
+    "lat": 37.7981891,
+    "long": -122.2501792,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Millennium Liquor",
+    "lat": 37.8110436,
+    "long": -122.2801746,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Broadway Liquors",
+    "lat": 37.8172043,
+    "long": -122.2628345,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "State Market Liquors",
+    "lat": 37.8069845,
+    "long": -122.3012806,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Two Star Market",
+    "lat": 37.8009335,
+    "long": -122.2179514,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "East Town Liquor Store",
+    "lat": 37.7983815,
+    "long": -122.2080315,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "William s Market Liquor",
+    "lat": 37.8449194,
+    "long": -122.2609858,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "California E s Fine Wine Liquors",
+    "lat": 37.8020582,
+    "long": -122.2315723,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Souza s Market",
+    "lat": 37.8025969,
+    "long": -122.2705019,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Fleuret s Market and Spirits",
+    "lat": 37.8092556,
+    "long": -122.2730843,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "G Liquor",
+    "lat": 37.7880088,
+    "long": -122.2321846,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "San Pablo Market Liquor",
+    "lat": 37.8146686,
+    "long": -122.2747944,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Bay Area Liquors and Market",
+    "lat": 37.8224358,
+    "long": -122.2769322,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Choice Liquor",
+    "lat": 37.7992987,
+    "long": -122.2667166,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Captain Liquor",
+    "lat": 37.8155948,
+    "long": -122.2721544,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "LaFranchi s Liquor",
+    "lat": 37.7937438,
+    "long": -122.2002709,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Blackwell s Wines Spirits",
+    "lat": 37.780584,
+    "long": -122.479943,
+    "gmapsCategory": "Wine store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Target",
+    "lat": 37.788758,
+    "long": -122.280231,
+    "gmapsCategory": "Department store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Four Star Market Liquor",
+    "lat": 37.787083,
+    "long": -122.2039131,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Easy Liquor",
+    "lat": 37.8282878,
+    "long": -122.2747441,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "M A Lakeside Market Spirits",
+    "lat": 37.801533,
+    "long": -122.2637229,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Golden Hours Liquor Store",
+    "lat": 37.7774172,
+    "long": -122.2257975,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Tolins Liquor Store",
+    "lat": 37.7597601,
+    "long": -122.1887673,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Oaktown Market",
+    "lat": 37.7851194,
+    "long": -122.199658,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Liquor Hub",
+    "lat": 37.7719935,
+    "long": -122.1936556,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Blue Gold Liquor",
+    "lat": 37.7922125,
+    "long": -122.2426173,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Carriage Trade Liquors",
+    "lat": 37.7993992,
+    "long": -122.2511373,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Mills Liquor",
+    "lat": 37.776148,
+    "long": -122.183878,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Isler s Liquors",
+    "lat": 37.7724789,
+    "long": -122.2009584,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Adeline Market and liquor",
+    "lat": 37.8417428,
+    "long": -122.2740737,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Tip Top Liquors",
+    "lat": 37.8516058,
+    "long": -122.286678,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "White Horse Liquors",
+    "lat": 37.8522094,
+    "long": -122.259863,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Paramount Liquors",
+    "lat": 37.7868612,
+    "long": -122.2376626,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Grand Piedmont Liquors",
+    "lat": 37.8185137,
+    "long": -122.2444949,
+    "gmapsCategory": "State liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "U I",
+    "lat": 37.8355304,
+    "long": -122.2629738,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Uptown Market Liquor Craft Beer",
+    "lat": 37.8417391,
+    "long": -122.2650406,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Easy Liquor",
+    "lat": 37.8506757,
+    "long": -122.2860002,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": " Seas Food Liquor",
+    "lat": 37.800329,
+    "long": -122.223667,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Us Liquors",
+    "lat": 37.8534151,
+    "long": -122.2788402,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Better Buy Liquor Store",
+    "lat": 37.7773556,
+    "long": -122.2767957,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Foothill Discount Liquors",
+    "lat": 37.778641,
+    "long": -122.216079,
+    "gmapsCategory": "Wine store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Pennysaver Market Liquors",
+    "lat": 37.772916,
+    "long": -122.2072443,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Sana Market",
+    "lat": 37.8256217,
+    "long": -122.2651201,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Oakland Liquor Market",
+    "lat": 37.7912757,
+    "long": -122.2441391,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Express Liquor",
+    "lat": 37.7900264,
+    "long": -122.2471871,
+    "gmapsCategory": "Wine store"
+  },
+  {
+    "type": "Liquor",
+    "name": "U I Liquors",
+    "lat": 37.7847191,
+    "long": -122.2274908,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Ed E s Liquor",
+    "lat": 37.7937338,
+    "long": -122.2263757,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Lions Liquor",
+    "lat": 37.7765696,
+    "long": -122.2133407,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "V W Liquor Store",
+    "lat": 37.7912179,
+    "long": -122.2052664,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Willie Brown Liquors",
+    "lat": 37.7835142,
+    "long": -122.2230731,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Alameda Cellars wines and liquors",
+    "lat": 37.7623602,
+    "long": -122.2432799,
+    "gmapsCategory": "Wine store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Queen of Sheba Market",
+    "lat": 37.7858221,
+    "long": -122.2138956,
+    "gmapsCategory": "Grocery store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Gateway Liquor",
+    "lat": 37.8429741,
+    "long": -122.2835373,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "General Liquors",
+    "lat": 37.833217,
+    "long": -122.2735651,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Dave s Liquors",
+    "lat": 37.7715683,
+    "long": -122.2770211,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Micro s Market",
+    "lat": 37.8334209,
+    "long": -122.2672726,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "New Rich E s liquor",
+    "lat": 37.774405,
+    "long": -122.2588465,
+    "gmapsCategory": "Convenience store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Fruitvale Liquor",
+    "lat": 37.7903943,
+    "long": -122.2199067,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "LIQUOR LAKE MERRITT Market",
+    "lat": 37.8051759,
+    "long": -122.2499076,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "UC Liquor",
+    "lat": 37.7611764,
+    "long": -122.2449702,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "P and M Market",
+    "lat": 37.8257291,
+    "long": -122.2843733,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Fruitvale Bottles Liquor",
+    "lat": 37.7749629,
+    "long": -122.2207146,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Jax Liquor",
+    "lat": 37.7970464,
+    "long": -122.2518137,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "CRAFT Beer Wine",
+    "lat": 37.7637578,
+    "long": -122.2390907,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Wah Fay Liquors",
+    "lat": 37.79836,
+    "long": -122.2448776,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Chico s Market",
+    "lat": 37.7698048,
+    "long": -122.1821415,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Dallas Liquor",
+    "lat": 37.7991414,
+    "long": -122.2106802,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Buckingham Wine Spirits",
+    "lat": 37.8110554,
+    "long": -122.2443398,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Encinal Liquor",
+    "lat": 37.7642027,
+    "long": -122.2484725,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Bob s Liquors Deli",
+    "lat": 37.8561215,
+    "long": -122.2798454,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "G Liquor",
+    "lat": 37.7626746,
+    "long": -122.1822519,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Los Camellos Tienda",
+    "lat": 37.7648862,
+    "long": -122.1994052,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Bevbox Oakland",
+    "lat": 37.8040765,
+    "long": -122.2626819,
+    "gmapsCategory": "Convenience store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Easy stop market",
+    "lat": 37.7850277,
+    "long": -122.2383954,
+    "gmapsCategory": "Grocery store"
+  },
+  {
+    "type": "Liquor",
+    "name": "ASA Liquor Store liquor Beer Wine Groceries",
+    "lat": 37.8439462,
+    "long": -122.2754227,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Eddie s Drive In Liquors",
+    "lat": 37.8419646,
+    "long": -122.2516931,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Savemore Market",
+    "lat": 37.8075698,
+    "long": -122.222511,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Friends Market",
+    "lat": 37.7758205,
+    "long": -122.2227556,
+    "gmapsCategory": "Grocery store"
+  },
+  {
+    "type": "Liquor",
+    "name": "King s Liquors Groceries",
+    "lat": 37.7749057,
+    "long": -122.2207379,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Good Go liquor curry",
+    "lat": 37.7635742,
+    "long": -122.2389107,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Alkali Rye Oakland s Beverage Shop",
+    "lat": 37.81235,
+    "long": -122.2470665,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "BevMo ",
+    "lat": 37.795941,
+    "long": -122.2788823,
+    "gmapsCategory": "Wine store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Jalos Market",
+    "lat": 37.7832486,
+    "long": -122.2109671,
+    "gmapsCategory": "Grocery store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Security Liquor Store",
+    "lat": 37.7977293,
+    "long": -122.2563238,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "The Good Hop Bar Bottle Shop",
+    "lat": 37.8135846,
+    "long": -122.2687728,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Cask",
+    "lat": 37.8514418,
+    "long": -122.252399,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "The Wine Mine",
+    "lat": 37.8398412,
+    "long": -122.2623567,
+    "gmapsCategory": "Wine store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Grand Market",
+    "lat": 37.7724767,
+    "long": -122.2552414,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Jackson s Liquor",
+    "lat": 37.7931134,
+    "long": -122.2528184,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Crown Liquors",
+    "lat": 37.8271446,
+    "long": -122.2109854,
+    "gmapsCategory": "Wine store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Sav Mor Liquor Store",
+    "lat": 37.8113393,
+    "long": -122.2941754,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Family Market Beer Wine Liquor",
+    "lat": 37.767277,
+    "long": -122.1921586,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Umami Mart",
+    "lat": 37.8280476,
+    "long": -122.2567234,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "E Z Liquors ",
+    "lat": 37.7752795,
+    "long": -122.2701915,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Oakland Yard Wine Shop",
+    "lat": 37.828714,
+    "long": -122.2604532,
+    "gmapsCategory": "Wine store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Grand Lake Market Liquor",
+    "lat": 37.812185,
+    "long": -122.247844,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Gallaghers Drive In",
+    "lat": 37.8281103,
+    "long": -122.2691427,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Wine On Piedmont",
+    "lat": 37.8274995,
+    "long": -122.2512615,
+    "gmapsCategory": "Wine store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Vernon Market",
+    "lat": 37.8180223,
+    "long": -122.2557939,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "G Liquor",
+    "lat": 37.7568366,
+    "long": -122.1815929,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Bay Grape",
+    "lat": 37.8090722,
+    "long": -122.254875,
+    "gmapsCategory": "Wine store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Lincoln Square Liquors",
+    "lat": 37.7978238,
+    "long": -122.1824925,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "East Bay Liquors",
+    "lat": 37.8387944,
+    "long": -122.2691197,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Paul Marcus Wines",
+    "lat": 37.8436925,
+    "long": -122.2518899,
+    "gmapsCategory": "Wine store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Vintage Berkeley",
+    "lat": 37.8573809,
+    "long": -122.2529653,
+    "gmapsCategory": "Wine store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Total Wine More",
+    "lat": 37.8291991,
+    "long": -122.2869406,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Copper Malt",
+    "lat": 37.8354895,
+    "long": -122.2924369,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Park Liquors Lottery",
+    "lat": 37.8002525,
+    "long": -122.2720177,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "BevMo ",
+    "lat": 37.8357157,
+    "long": -122.2934051,
+    "gmapsCategory": "Wine store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Cask Taproom",
+    "lat": 37.8515176,
+    "long": -122.2523167,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Safeway Liquor",
+    "lat": 37.7855231,
+    "long": -122.2804469,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Wachira Wines",
+    "lat": 37.7649549,
+    "long": -122.2425892,
+    "gmapsCategory": "Wine store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Hometown Food Grocery",
+    "lat": 37.7967065,
+    "long": -122.2652531,
+    "gmapsCategory": "Grocery store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Farmstead Cheeses Wines",
+    "lat": 37.8267721,
+    "long": -122.2090015,
+    "gmapsCategory": "Wine store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Prizefighter Bottle Shop",
+    "lat": 37.8490599,
+    "long": -122.2920466,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Howden Market",
+    "lat": 37.8055541,
+    "long": -122.2672541,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Farmstead Cheeses Wines",
+    "lat": 37.7677375,
+    "long": -122.2394426,
+    "gmapsCategory": "Wine store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Lo Cost Liquors",
+    "lat": 37.8645191,
+    "long": -122.2903027,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Wall Avenue Liquors",
+    "lat": 37.9282918,
+    "long": -122.3340965,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "G Liquor",
+    "lat": 37.9358043,
+    "long": -122.3469642,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Shop Save Liquors",
+    "lat": 37.9254759,
+    "long": -122.3548181,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "ATLAS LIQUORS",
+    "lat": 37.9215904,
+    "long": -122.3154249,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Spot Liquor Store",
+    "lat": 37.9275565,
+    "long": -122.3839947,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Jay Vee Liquors",
+    "lat": 37.9108542,
+    "long": -122.3076989,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Del Norte Liquors",
+    "lat": 37.9200554,
+    "long": -122.315817,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Mike s Liquors",
+    "lat": 37.9339852,
+    "long": -122.3553698,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Uncle Sam s Liquors",
+    "lat": 37.9251049,
+    "long": -122.3370426,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "BREAKTHRU BEVERAGE",
+    "lat": 37.9177163,
+    "long": -122.3590339,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Stop and Shop Market",
+    "lat": 37.9211992,
+    "long": -122.3322781,
+    "gmapsCategory": "Convenience store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Amigo E s Market",
+    "lat": 37.9282539,
+    "long": -122.3602194,
+    "gmapsCategory": "Grocery store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Golden Brands",
+    "lat": 37.92787,
+    "long": -122.3766655,
+    "gmapsCategory": "Beer store"
+  },
+  {
+    "type": "Liquor",
+    "name": "A M LIQUOR GROCERY",
+    "lat": 37.9282808,
+    "long": -122.3341546,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "BAYSICS",
+    "lat": 37.9259028,
+    "long": -122.318746,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Swirl Wine Brokers",
+    "lat": 37.9276098,
+    "long": -122.3844946,
+    "gmapsCategory": "Wine store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Safeway Liquor",
+    "lat": 37.9224211,
+    "long": -122.3154707,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 37.9351042,
+    "long": -122.3453244,
+    "gmapsCategory": "Convenience store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Inter inc",
+    "lat": 37.9238558,
+    "long": -122.3573723,
+    "gmapsCategory": "Wine store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Arlington Wine Spirits",
+    "lat": 37.9037191,
+    "long": -122.2780123,
+    "gmapsCategory": "Wine store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Jay Vee Liquors",
+    "lat": 37.9609653,
+    "long": -122.2826927,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Jay Vee Liquors",
+    "lat": 37.9952833,
+    "long": -122.2853083,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Young s Market",
+    "lat": 37.9040931,
+    "long": -122.2780171,
+    "gmapsCategory": "Grocery store"
+  },
+  {
+    "type": "Liquor",
+    "name": "J A Liquor Food Market",
+    "lat": 37.9609793,
+    "long": -122.2827158,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Liquor Cigar Room",
+    "lat": 38.0109778,
+    "long": -122.2703195,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Cork N Bottle Liquor",
+    "lat": 37.9376621,
+    "long": -122.0261525,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "BevMo ",
+    "lat": 37.9278535,
+    "long": -122.0610291,
+    "gmapsCategory": "Wine store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Moraga Wine Spirits",
+    "lat": 37.8351894,
+    "long": -122.1281372,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Newell Liquor Grocery",
+    "lat": 37.8946016,
+    "long": -122.0543166,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Oak Park Liquor",
+    "lat": 37.9334754,
+    "long": -122.073237,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Jackson s Wines Spirits",
+    "lat": 37.8925308,
+    "long": -122.1173457,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Barrel Shoppe",
+    "lat": 37.893367,
+    "long": -122.1115953,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Olympic Liquor Grocery",
+    "lat": 37.8849788,
+    "long": -122.0784122,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Beverage Shoppe",
+    "lat": 37.8967061,
+    "long": -122.0981203,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "BevMo ",
+    "lat": 37.8917139,
+    "long": -122.1224548,
+    "gmapsCategory": "Wine store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Total Wine More",
+    "lat": 37.9350691,
+    "long": -122.0582068,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "ALAMO LIQUORS",
+    "lat": 37.8510921,
+    "long": -122.0316968,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Wine Thieves",
+    "lat": 37.893609,
+    "long": -122.109248,
+    "gmapsCategory": "Wine store"
+  },
+  {
+    "type": "Liquor",
+    "name": " C L Beercafe Bottleshop",
+    "lat": 37.901986,
+    "long": -122.0628887,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "BevMo ",
+    "lat": 37.9305545,
+    "long": -122.0158252,
+    "gmapsCategory": "Wine store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Safeway Liquor",
+    "lat": 37.9282435,
+    "long": -122.0392869,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Wines By Design",
+    "lat": 37.9081908,
+    "long": -122.063432,
+    "gmapsCategory": "Wine store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Wine Hardware",
+    "lat": 37.9007213,
+    "long": -122.0629448,
+    "gmapsCategory": "Wine store"
+  },
+  {
+    "type": "Liquor",
+    "name": "CAPTAIN VINEYARDS",
+    "lat": 37.8470748,
+    "long": -122.1005888,
+    "gmapsCategory": "Winery"
+  },
+  {
+    "type": "Liquor",
+    "name": "Safeway Liquor",
+    "lat": 37.8930274,
+    "long": -122.1197787,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 37.894893,
+    "long": -122.10518,
+    "gmapsCategory": "Convenience store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Rotator Taproom",
+    "lat": 37.9098748,
+    "long": -122.0637254,
+    "gmapsCategory": "Pub"
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 37.9342085,
+    "long": -122.0738464,
+    "gmapsCategory": "Convenience store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Safeway Liquor",
+    "lat": 37.9274128,
+    "long": -122.0185691,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Diablo Foods",
+    "lat": 37.890792,
+    "long": -122.124596,
+    "gmapsCategory": "Grocery store"
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 37.9109091,
+    "long": -122.0604725,
+    "gmapsCategory": "Convenience store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Flyers Energy CFN",
+    "lat": 37.8924739,
+    "long": -122.0606979,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 37.8936132,
+    "long": -122.0759023,
+    "gmapsCategory": "Convenience store"
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 37.917871,
+    "long": -122.0658825,
+    "gmapsCategory": "Convenience store"
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 37.8948935,
+    "long": -122.1051799,
+    "gmapsCategory": "Convenience store"
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 37.906835,
+    "long": -122.059504,
+    "gmapsCategory": "Convenience store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Safeway Liquor",
+    "lat": 37.8365367,
+    "long": -122.1284851,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Clayton Liquors",
+    "lat": 37.951962,
+    "long": -121.9561251,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Pittsburg Liquor Deli",
+    "lat": 38.0130165,
+    "long": -121.88968,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Crown Liquor Market",
+    "lat": 38.0042929,
+    "long": -121.8937738,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "LA Aurora Liquor",
+    "lat": 38.0266155,
+    "long": -121.9531665,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Super Liquor Food",
+    "lat": 37.9609179,
+    "long": -121.980453,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Beverage House Liquor ",
+    "lat": 38.0289132,
+    "long": -121.9601072,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Vintage Liquors",
+    "lat": 37.9991467,
+    "long": -121.8735943,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Romi s Liquor Food",
+    "lat": 38.0046395,
+    "long": -121.797083,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Sam s Liquor Grocery",
+    "lat": 38.0120964,
+    "long": -121.805674,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "GOLDEN LIQUOR",
+    "lat": 38.015305,
+    "long": -121.8181434,
+    "gmapsCategory": "Convenience store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Hillcrest Liquor Food",
+    "lat": 38.004332,
+    "long": -121.7866948,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "BevBox",
+    "lat": 38.010852,
+    "long": -121.8175377,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Antioch Liquor Beer Wine Food",
+    "lat": 38.0042016,
+    "long": -121.820997,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Joe s Liquor Foods",
+    "lat": 38.0040347,
+    "long": -121.8096903,
+    "gmapsCategory": "Convenience store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Markstein Sales Co",
+    "lat": 38.0091282,
+    "long": -121.7583253,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "The Pour Up Wine Bar",
+    "lat": 38.0182155,
+    "long": -121.8155722,
+    "gmapsCategory": "Wine bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Gas N Save",
+    "lat": 37.990429,
+    "long": -121.6677684,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Flag City Food Mart",
+    "lat": 38.1152368,
+    "long": -121.394246,
+    "gmapsCategory": "Convenience store"
+  },
+  {
+    "type": "Liquor",
+    "name": "ExtraMile by Chevron",
+    "lat": 38.1141453,
+    "long": -121.3940625,
+    "gmapsCategory": "Convenience store"
+  },
+  {
+    "type": "Liquor",
+    "name": "ampm",
+    "lat": 38.115566,
+    "long": -121.3864574,
+    "gmapsCategory": "Convenience store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Sinclair Gas Station",
+    "lat": 38.1140614,
+    "long": -121.3953436,
+    "gmapsCategory": "\"They have liquor store with nice selection and prices.\""
+  },
+  {
+    "type": "Liquor",
+    "name": "Marchs Liquor",
+    "lat": 37.9672494,
+    "long": -121.2962527,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "West Lane Liquor Grocery",
+    "lat": 37.9887534,
+    "long": -121.2852157,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Paisano s Liquor",
+    "lat": 37.9392383,
+    "long": -121.2852435,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Delta Liquor",
+    "lat": 37.937627,
+    "long": -121.2944324,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Platinum Liquor More",
+    "lat": 38.023721,
+    "long": -121.2709022,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Liquor Barrel",
+    "lat": 37.9726458,
+    "long": -121.2759091,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Cal Park Grocery Liquor",
+    "lat": 37.9607176,
+    "long": -121.2862554,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Thornton Market and Liquor Store",
+    "lat": 38.0336763,
+    "long": -121.3368947,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Hammer Liquor",
+    "lat": 38.023181,
+    "long": -121.295649,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "West Lane Market Liquor Mart",
+    "lat": 38.0239515,
+    "long": -121.2943202,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Shop n Go Liquor",
+    "lat": 37.9897415,
+    "long": -121.3228938,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "People E s Market liquor",
+    "lat": 37.9664041,
+    "long": -121.3285249,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Gray s Liquors",
+    "lat": 37.931128,
+    "long": -121.2838847,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "A Liquor",
+    "lat": 38.0225588,
+    "long": -121.3142763,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Liquor Zone Craft Beer",
+    "lat": 37.9638473,
+    "long": -121.3361559,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Paisano Market",
+    "lat": 37.9545019,
+    "long": -121.2530616,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Sun Valley Food Liquor",
+    "lat": 37.9514696,
+    "long": -121.2705396,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Corona liquor grocery",
+    "lat": 37.9549581,
+    "long": -121.2578358,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Discount Liquor Grocery Market",
+    "lat": 37.9705536,
+    "long": -121.2778134,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Woody s Market Liquor",
+    "lat": 37.9486056,
+    "long": -121.2316822,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Target",
+    "lat": 37.99165,
+    "long": -121.315211,
+    "gmapsCategory": "Department store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Waterloo Liquors",
+    "lat": 37.9769067,
+    "long": -121.2612054,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Red Sea Market Liquor",
+    "lat": 37.9322334,
+    "long": -121.2541865,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "El Dorado Liquor Lotto Center",
+    "lat": 37.9863007,
+    "long": -121.3013829,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Morris Market",
+    "lat": 37.9209204,
+    "long": -121.2798749,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Forlando s Food Liquor",
+    "lat": 37.9547309,
+    "long": -121.2319661,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Bevbox Stockton",
+    "lat": 38.0231758,
+    "long": -121.3555984,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Platinum Liquor More",
+    "lat": 38.0195453,
+    "long": -121.268225,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Old Town Market",
+    "lat": 37.9334067,
+    "long": -121.2555601,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Shop N Go",
+    "lat": 38.0009651,
+    "long": -121.2972793,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "ATWAL DISCOUNT LIQUOR",
+    "lat": 37.960747,
+    "long": -121.2862887,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Charter Way Liquors",
+    "lat": 37.9392824,
+    "long": -121.2832562,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Liquor Maxx Lycamobile Store",
+    "lat": 38.0285717,
+    "long": -121.3222962,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Fremont Center Liquor",
+    "lat": 37.9658359,
+    "long": -121.2561944,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Harding Way Liquor",
+    "lat": 37.9715458,
+    "long": -121.2696556,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Latino Liquors",
+    "lat": 37.9401035,
+    "long": -121.280135,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "BevMo ",
+    "lat": 38.0078385,
+    "long": -121.3201208,
+    "gmapsCategory": "Wine store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Mariposa Market",
+    "lat": 37.9398199,
+    "long": -121.2451227,
+    "gmapsCategory": "Convenience store"
+  },
+  {
+    "type": "Liquor",
+    "name": "USA Liquor",
+    "lat": 38.0184331,
+    "long": -121.3240641,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Discount Liquor Store Mini Mart",
+    "lat": 37.9716417,
+    "long": -121.2400369,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Gaines Liquors",
+    "lat": 37.9721499,
+    "long": -121.3319,
+    "gmapsCategory": "Wine store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Craft Beer, Wine Liquor",
+    "lat": 37.9634524,
+    "long": -121.2718479,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Golden Bull Liquor",
+    "lat": 38.0082991,
+    "long": -121.309873,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Airport liquor",
+    "lat": 37.9624293,
+    "long": -121.2763339,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Parkwoods Liquors",
+    "lat": 38.0204239,
+    "long": -121.3354416,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "B E Liquors",
+    "lat": 37.960043,
+    "long": -121.3069463,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Washington Liquor Grocery",
+    "lat": 37.9642745,
+    "long": -121.2295101,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Moe E s Stop Shop Market and Liquor",
+    "lat": 37.9468834,
+    "long": -121.3118866,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Herbst Discount Liquors",
+    "lat": 38.0339139,
+    "long": -121.3384148,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Vail Market",
+    "lat": 37.9854101,
+    "long": -121.2660947,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "DELTA WATERLOO GAS AND LIQUOR",
+    "lat": 37.996845,
+    "long": -121.231581,
+    "gmapsCategory": "DELTA 88 WATERLOO GAS AND LIQUOR"
+  },
+  {
+    "type": "Liquor",
+    "name": "Victoria s Liquor",
+    "lat": 37.9944831,
+    "long": -121.3028533,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "ExtraMile",
+    "lat": 38.0216539,
+    "long": -121.2724441,
+    "gmapsCategory": "Convenience store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Country Liquor Market",
+    "lat": 38.0307108,
+    "long": -121.3351829,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "michael s",
+    "lat": 37.9713073,
+    "long": -121.3330497,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Airport Market",
+    "lat": 37.919946,
+    "long": -121.261568,
+    "gmapsCategory": "Grocery store"
+  },
+  {
+    "type": "Liquor",
+    "name": "M M Market",
+    "lat": 37.9327855,
+    "long": -121.2589258,
+    "gmapsCategory": "Convenience store"
+  },
+  {
+    "type": "Liquor",
+    "name": " ",
+    "lat": 37.96966,
+    "long": -121.31558,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "WILSON WAY LIQUOR AND FOOD",
+    "lat": 37.9879034,
+    "long": -121.2690126,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Sonora Market",
+    "lat": 37.94997,
+    "long": -121.2806526,
+    "gmapsCategory": "Grocery store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Shop N Go",
+    "lat": 37.9889682,
+    "long": -121.3121383,
+    "gmapsCategory": "Convenience store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Discount Market",
+    "lat": 37.9523338,
+    "long": -121.2867488,
+    "gmapsCategory": "Grocery store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Wine Bottle Recycling",
+    "lat": 37.9629668,
+    "long": -121.2518759,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Southside Market",
+    "lat": 37.9320954,
+    "long": -121.2665933,
+    "gmapsCategory": "Grocery store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Cherokee Market",
+    "lat": 37.9822369,
+    "long": -121.2611696,
+    "gmapsCategory": "Grocery store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Nation Market",
+    "lat": 37.963071,
+    "long": -121.2346012,
+    "gmapsCategory": "Grocery store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Crown Imports LLC",
+    "lat": 37.9577365,
+    "long": -121.2907611,
+    "gmapsCategory": "Beer store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Morada Market",
+    "lat": 38.0311384,
+    "long": -121.2577006,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 37.9742973,
+    "long": -121.2765084,
+    "gmapsCategory": "Convenience store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Delta Pacific Beverage Company, Inc ",
+    "lat": 37.9388545,
+    "long": -121.2301031,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "R P Convenience",
+    "lat": 37.9497538,
+    "long": -121.2865041,
+    "gmapsCategory": "Convenience store"
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 37.9512823,
+    "long": -121.2911288,
+    "gmapsCategory": "Convenience store"
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 37.9420947,
+    "long": -121.2711772,
+    "gmapsCategory": "Convenience store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Lucky Market",
+    "lat": 37.9233013,
+    "long": -121.2871296,
+    "gmapsCategory": "Store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Bianchi Market",
+    "lat": 37.9969614,
+    "long": -121.2939058,
+    "gmapsCategory": "Grocery store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Wine Wizards",
+    "lat": 37.9843452,
+    "long": -121.3332989,
+    "gmapsCategory": "Wine store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Circle K",
+    "lat": 37.9650045,
+    "long": -121.3345952,
+    "gmapsCategory": "Convenience store"
+  },
+  {
+    "type": "Liquor",
+    "name": "New Hi Bye",
+    "lat": 37.9665969,
+    "long": -121.3028296,
+    "gmapsCategory": "Grocery store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Grewal s Gas Liquor",
+    "lat": 37.9715434,
+    "long": -121.2406123,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Circle ",
+    "lat": 38.0271363,
+    "long": -121.3452627,
+    "gmapsCategory": "Grocery store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Sheba Market",
+    "lat": 37.9401623,
+    "long": -121.2779242,
+    "gmapsCategory": "Grocery store"
+  },
+  {
+    "type": "Liquor",
+    "name": "cigarettes city",
+    "lat": 38.0212187,
+    "long": -121.291742,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Sufi Market",
+    "lat": 37.9580696,
+    "long": -121.2577484,
+    "gmapsCategory": "Grocery store"
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 37.9642151,
+    "long": -121.3369403,
+    "gmapsCategory": "Convenience store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Ben s Market",
+    "lat": 37.9425671,
+    "long": -121.295377,
+    "gmapsCategory": "Grocery store"
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 38.0333406,
+    "long": -121.3362473,
+    "gmapsCategory": "Convenience store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Alpine Market",
+    "lat": 37.9788508,
+    "long": -121.2920857,
+    "gmapsCategory": "Grocery store"
+  },
+  {
+    "type": "Liquor",
+    "name": "F F Market",
+    "lat": 37.9652587,
+    "long": -121.2551701,
+    "gmapsCategory": "Grocery store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Tiger smoke shop more",
+    "lat": 37.9563236,
+    "long": -121.3001092,
+    "gmapsCategory": "Good Store Fare Prices Good Owners\""
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 38.0208545,
+    "long": -121.3565531,
+    "gmapsCategory": "Convenience store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Los Tito s Market",
+    "lat": 37.9550067,
+    "long": -121.2527942,
+    "gmapsCategory": "Grocery store"
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 37.9880941,
+    "long": -121.31184,
+    "gmapsCategory": "Convenience store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Safeway Liquor",
+    "lat": 37.9625312,
+    "long": -121.3378863,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 37.9840836,
+    "long": -121.3401349,
+    "gmapsCategory": "Convenience store"
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 38.0191113,
+    "long": -121.324267,
+    "gmapsCategory": "Convenience store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Safeway Liquor",
+    "lat": 38.008597,
+    "long": -121.3221994,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "HAVANA LEAF AND VINE",
+    "lat": 38.0109623,
+    "long": -121.3227438,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "DG Market",
+    "lat": 37.9804753,
+    "long": -121.2578147,
+    "gmapsCategory": "Grocery store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Spanos Berberian Wine Co LLC",
+    "lat": 37.9872681,
+    "long": -121.3302745,
+    "gmapsCategory": "Wine store"
+  },
+  {
+    "type": "Liquor",
+    "name": "J Liquor",
+    "lat": 38.020643,
+    "long": -121.360998,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Dejacks Country Store Isleton",
+    "lat": 38.1619444,
+    "long": -121.6119444,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "One Stop Liquor and Food ",
+    "lat": 38.0513518,
+    "long": -122.1474548,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "SIPS The Bottle Emporium Benicia CA",
+    "lat": 38.0502983,
+    "long": -122.158053,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Fast Easy Mart",
+    "lat": 38.0538365,
+    "long": -122.1451074,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Whiskey Lane",
+    "lat": 38.0180358,
+    "long": -122.1357498,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Marina Market and Deli",
+    "lat": 38.0183822,
+    "long": -122.1365882,
+    "gmapsCategory": "Grocery store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Del Cielo Brewing Co ",
+    "lat": 38.0183083,
+    "long": -122.1369222,
+    "gmapsCategory": "· A, 701 Escobar St"
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 38.0594232,
+    "long": -122.1494574,
+    "gmapsCategory": "Convenience store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Safeway Liquor",
+    "lat": 38.0543542,
+    "long": -122.15476,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 38.0506422,
+    "long": -122.1466407,
+    "gmapsCategory": "Convenience store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Fast Easy Liquors",
+    "lat": 37.9641818,
+    "long": -121.993296,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Liquor Land ",
+    "lat": 37.9501222,
+    "long": -121.9581385,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Bevbox Baypoint",
+    "lat": 38.0346275,
+    "long": -121.9614217,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "People s Market Liquor",
+    "lat": 38.017525,
+    "long": -121.8823454,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Liquors",
+    "lat": 38.0058042,
+    "long": -121.8939007,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Kam s Market",
+    "lat": 38.0289568,
+    "long": -121.9600379,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "SILVER NIGHT LIQUORS",
+    "lat": 38.0058458,
+    "long": -121.8938923,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Safeway Liquor",
+    "lat": 38.0162264,
+    "long": -121.9436569,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Rice Wine Liquors",
+    "lat": 38.0083453,
+    "long": -121.8911069,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Village Market",
+    "lat": 37.9409266,
+    "long": -121.9346917,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Doctorbird Market",
+    "lat": 38.0326044,
+    "long": -121.8839492,
+    "gmapsCategory": "Wine store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Daves Liquor Store",
+    "lat": 38.0264073,
+    "long": -121.9326876,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Willow Pass Smoke Shop More",
+    "lat": 38.0265805,
+    "long": -121.9530805,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Target",
+    "lat": 37.97694,
+    "long": -122.066856,
+    "gmapsCategory": "Department store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Circle K",
+    "lat": 38.0146819,
+    "long": -121.8909104,
+    "gmapsCategory": "Convenience store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Highland Square",
+    "lat": 37.998828,
+    "long": -121.8726391,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Golden Star Market",
+    "lat": 38.0286171,
+    "long": -121.8869545,
+    "gmapsCategory": "Grocery store"
+  },
+  {
+    "type": "Liquor",
+    "name": " Eleven",
+    "lat": 37.9522008,
+    "long": -121.956516,
+    "gmapsCategory": "Convenience store"
+  },
+  {
+    "type": "Liquor",
+    "name": "La Raza Market",
+    "lat": 38.0275784,
+    "long": -121.884743,
+    "gmapsCategory": "Grocery store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Safeway Liquor",
+    "lat": 37.9661657,
+    "long": -121.9911817,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Skyview Stellar",
+    "lat": 38.0330278,
+    "long": -121.8821751,
+    "gmapsCategory": "Wine store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Martinez Liquor Market",
+    "lat": 38.0125239,
+    "long": -122.1203403,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Golden Vintage Market",
+    "lat": 38.0098022,
+    "long": -122.1320171,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Bob s Liquor Food",
+    "lat": 38.0558336,
+    "long": -122.1656022,
+    "gmapsCategory": "Bob's Liquor & Food"
+  },
+  {
+    "type": "Liquor",
+    "name": "Valley Convenient Mart",
+    "lat": 38.0156386,
+    "long": -122.1369915,
+    "gmapsCategory": "Convenience store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Buon Aroma Deli Liquors",
+    "lat": 38.0007254,
+    "long": -122.1320851,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Molly s Gourmet Market Deli",
+    "lat": 38.0111091,
+    "long": -122.1185582,
+    "gmapsCategory": "Convenience store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Goody Hut Market",
+    "lat": 38.0098023,
+    "long": -122.1320532,
+    "gmapsCategory": "Convenience store"
+  },
+  {
+    "type": "Liquor",
+    "name": " Star Food Liquor",
+    "lat": 37.9583142,
+    "long": -122.0401008,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Monument Wine Spirits",
+    "lat": 37.9578189,
+    "long": -122.0361037,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Super Liquor Food",
+    "lat": 37.9529217,
+    "long": -122.0445084,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Value Wine Spirit",
+    "lat": 37.9485076,
+    "long": -122.080704,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "A A Ellinwood Market Liquor",
+    "lat": 37.959073,
+    "long": -122.0605925,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Target",
+    "lat": 37.904465,
+    "long": -122.064762,
+    "gmapsCategory": "Department store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Central Market Liquor",
+    "lat": 37.9637053,
+    "long": -122.0324862,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "National Liquors",
+    "lat": 37.9537395,
+    "long": -122.0608609,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Safeway Liquor",
+    "lat": 37.9579116,
+    "long": -122.0939524,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Liquor Cigarette Outlet",
+    "lat": 37.9504051,
+    "long": -122.060455,
+    "gmapsCategory": "Liquor & Cigarette Outlet"
+  },
+  {
+    "type": "Liquor",
+    "name": "Seven Star Market",
+    "lat": 37.9524408,
+    "long": -122.0434784,
+    "gmapsCategory": "Grocery store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Joyeria Express",
+    "lat": 37.9525981,
+    "long": -122.0434716,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Safeway Liquor",
+    "lat": 37.9490644,
+    "long": -122.0579099,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Fast Easy Mart",
+    "lat": 37.9496647,
+    "long": -122.0607642,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Bizi Mart",
+    "lat": 38.0034245,
+    "long": -121.8462588,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Rocket",
+    "lat": 38.085788,
+    "long": -122.1135759,
+    "gmapsCategory": "Convenience store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Parkway Liquors",
+    "lat": 38.1376982,
+    "long": -122.2551462,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Boss Market Liquor",
+    "lat": 38.1442902,
+    "long": -122.2477,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Bevbox North Vallejo",
+    "lat": 38.1526816,
+    "long": -122.2489836,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "B B Liquors",
+    "lat": 38.1058679,
+    "long": -122.2221944,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "S S Liquor Store ",
+    "lat": 38.1130609,
+    "long": -122.2548853,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Springstowne Bottleshop",
+    "lat": 38.1062943,
+    "long": -122.2158957,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "S S LIQUOR STORE ",
+    "lat": 38.1101742,
+    "long": -122.2576394,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Jack s Food Liquor",
+    "lat": 38.1277298,
+    "long": -122.2503128,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Five Point Liquor Store",
+    "lat": 38.1099206,
+    "long": -122.2623842,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Bevbox",
+    "lat": 38.1134144,
+    "long": -122.2487574,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Bevbox East Vallejo",
+    "lat": 38.1117291,
+    "long": -122.2289302,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "S S Liquor Store ",
+    "lat": 38.1074367,
+    "long": -122.2545989,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "AC Food Liquor",
+    "lat": 38.1773858,
+    "long": -122.2550642,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Safeway Liquor",
+    "lat": 38.0991117,
+    "long": -122.2304892,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "CAPS N CORK",
+    "lat": 38.1551308,
+    "long": -122.2549723,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "First Bottle Wines",
+    "lat": 38.1895801,
+    "long": -122.2584129,
+    "gmapsCategory": "Wine store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Val s Liquor Store",
+    "lat": 38.1012321,
+    "long": -122.2501581,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Kings Market Liquor",
+    "lat": 38.1457611,
+    "long": -122.2349936,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Market Town Deli Liquors",
+    "lat": 38.1093693,
+    "long": -122.2385891,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "KB Food Liquor",
+    "lat": 38.1651099,
+    "long": -122.2496714,
+    "gmapsCategory": "Store"
+  },
+  {
+    "type": "Liquor",
+    "name": "George s Liquor",
+    "lat": 38.2619451,
+    "long": -122.0338429,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Country Corner Liquors",
+    "lat": 38.2497832,
+    "long": -122.051202,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Liquor Mart",
+    "lat": 38.2446978,
+    "long": -122.0344534,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Jolly King Liquor Food",
+    "lat": 38.2500345,
+    "long": -122.0605059,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Bevbox Suisun City",
+    "lat": 38.2462198,
+    "long": -122.0192498,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": " seven food and liquor",
+    "lat": 38.2497233,
+    "long": -122.0555631,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Fairfield Market Liquor",
+    "lat": 38.2490288,
+    "long": -122.0501935,
+    "gmapsCategory": "Grocery store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Liquor Tree",
+    "lat": 38.2653238,
+    "long": -122.0329794,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Convenience Mart",
+    "lat": 38.2755696,
+    "long": -122.0070285,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Bevbox Fairfield",
+    "lat": 38.2568517,
+    "long": -122.0682006,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Major Market",
+    "lat": 38.2650544,
+    "long": -122.0087187,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Union Food Liquor",
+    "lat": 38.245695,
+    "long": -122.040123,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Food Fair Market A Bevbox Brand ",
+    "lat": 38.2691255,
+    "long": -122.0328935,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "BevMo ",
+    "lat": 38.2603331,
+    "long": -122.0617229,
+    "gmapsCategory": "Wine store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Safeway Liquor",
+    "lat": 38.2716472,
+    "long": -122.0529375,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Loop Neighborhood Market",
+    "lat": 38.2902688,
+    "long": -122.0346473,
+    "gmapsCategory": "Convenience store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Barrel Bottle",
+    "lat": 38.3648345,
+    "long": -121.9601921,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Total Wine More",
+    "lat": 38.36972,
+    "long": -121.958954,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Travis Discount Liquor Deli",
+    "lat": 38.2728483,
+    "long": -121.9593584,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Discount Liquors",
+    "lat": 38.3506658,
+    "long": -121.9518243,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Dixon Food and Liquor",
+    "lat": 38.4458353,
+    "long": -121.8267512,
+    "gmapsCategory": "Convenience store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Dixon Liquor",
+    "lat": 38.4493324,
+    "long": -121.8264524,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Michaels Market Wine Spirits",
+    "lat": 38.455875,
+    "long": -121.840553,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Dhami Discount Liquor",
+    "lat": 38.4570838,
+    "long": -121.8395725,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "LIQUOR MART",
+    "lat": 38.447345,
+    "long": -121.856024,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Winters Wine Liquor",
+    "lat": 38.526791,
+    "long": -121.964951,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Tienda liquor",
+    "lat": 38.5212846,
+    "long": -121.9698729,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Hidden Valley Food Mart",
+    "lat": 38.7883806,
+    "long": -122.5663789,
+    "gmapsCategory": "Convenience store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Calistoga Liquor",
+    "lat": 38.5887738,
+    "long": -122.6068048,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Almacerro",
+    "lat": 38.5482158,
+    "long": -122.4086058,
+    "gmapsCategory": "Winery"
+  },
+  {
+    "type": "Liquor",
+    "name": "Ledson Winery Vineyards",
+    "lat": 38.441556,
+    "long": -122.586264,
+    "gmapsCategory": "Winery"
+  },
+  {
+    "type": "Liquor",
+    "name": "Beringer Vineyards",
+    "lat": 38.5111235,
+    "long": -122.4808592,
+    "gmapsCategory": "Winery"
+  },
+  {
+    "type": "Liquor",
+    "name": "Kenwood Market",
+    "lat": 38.419218,
+    "long": -122.551735,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Charles Krug Winery",
+    "lat": 38.5180496,
+    "long": -122.4820397,
+    "gmapsCategory": "Winery"
+  },
+  {
+    "type": "Liquor",
+    "name": "Paloma Vineyard",
+    "lat": 38.5228143,
+    "long": -122.5492726,
+    "gmapsCategory": "Winery"
+  },
+  {
+    "type": "Liquor",
+    "name": "Oakmont Village Market",
+    "lat": 38.441865,
+    "long": -122.605634,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Ty Caton Vineyards Tasting Room",
+    "lat": 38.4195466,
+    "long": -122.5518143,
+    "gmapsCategory": "Winery"
+  },
+  {
+    "type": "Liquor",
+    "name": "Santa Rosa Liquor Deli",
+    "lat": 38.3952408,
+    "long": -122.7140535,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "C S Liquor Mart",
+    "lat": 38.4320405,
+    "long": -122.7425738,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Wagon Wheel Liquors",
+    "lat": 38.4452071,
+    "long": -122.7391162,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Grog Shop Liquor Deli",
+    "lat": 38.4166578,
+    "long": -122.7132437,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Wilibees Wine Spirits",
+    "lat": 38.4403453,
+    "long": -122.7115721,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": " th Street Market Liquor",
+    "lat": 38.4419101,
+    "long": -122.7238151,
+    "gmapsCategory": "Convenience store"
+  },
+  {
+    "type": "Liquor",
+    "name": "SR Food Liquor",
+    "lat": 38.4214586,
+    "long": -122.7131673,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "M D Liquor Food",
+    "lat": 38.4267253,
+    "long": -122.7406466,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Total Wine More",
+    "lat": 38.41117,
+    "long": -122.71507,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Safeway Liquor",
+    "lat": 38.3475652,
+    "long": -122.7084312,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Safeway Liquor",
+    "lat": 38.4466261,
+    "long": -122.7415245,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Easy stop market ",
+    "lat": 38.3456107,
+    "long": -122.7164112,
+    "gmapsCategory": "Convenience store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Santa Rosa Fine Wine",
+    "lat": 38.4551763,
+    "long": -122.7303572,
+    "gmapsCategory": "Wine store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Safeway Liquor",
+    "lat": 38.4257496,
+    "long": -122.6682131,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": " Club",
+    "lat": 38.4455009,
+    "long": -122.7189645,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Kwik Pik Market",
+    "lat": 38.3633195,
+    "long": -122.7089367,
+    "gmapsCategory": "Convenience store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Sherwin Family Vineyards",
+    "lat": 38.5312645,
+    "long": -122.5567986,
+    "gmapsCategory": "Winery"
+  },
+  {
+    "type": "Liquor",
+    "name": "Morlet Family Vineyards",
+    "lat": 38.5176289,
+    "long": -122.4901299,
+    "gmapsCategory": "Winery"
+  },
+  {
+    "type": "Liquor",
+    "name": "Domaine Charbay Winery",
+    "lat": 38.5198048,
+    "long": -122.5437966,
+    "gmapsCategory": "Winery"
+  },
+  {
+    "type": "Liquor",
+    "name": "Silver Oak Napa Valley",
+    "lat": 38.440879,
+    "long": -122.38135,
+    "gmapsCategory": "Winery"
+  },
+  {
+    "type": "Liquor",
+    "name": "Pine Ridge Vineyards",
+    "lat": 38.4053712,
+    "long": -122.3322906,
+    "gmapsCategory": "Winery"
+  },
+  {
+    "type": "Liquor",
+    "name": "K LAZ WINE COLLECTION",
+    "lat": 38.3997433,
+    "long": -122.3588527,
+    "gmapsCategory": "Wine store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Sequoia Grove Winery",
+    "lat": 38.4493497,
+    "long": -122.4119046,
+    "gmapsCategory": "Winery"
+  },
+  {
+    "type": "Liquor",
+    "name": "Nickel Nickel",
+    "lat": 38.4428171,
+    "long": -122.4071479,
+    "gmapsCategory": "Winery"
+  },
+  {
+    "type": "Liquor",
+    "name": "Tom Scott Vineyard",
+    "lat": 38.4248199,
+    "long": -122.3466124,
+    "gmapsCategory": "\"Easily one of the best wine experiences of my life.\""
+  },
+  {
+    "type": "Liquor",
+    "name": "Hope Grace Wines, Napa Valley",
+    "lat": 38.4064187,
+    "long": -122.3671814,
+    "gmapsCategory": "Winery"
+  },
+  {
+    "type": "Liquor",
+    "name": "V Wine Cellar",
+    "lat": 38.4017801,
+    "long": -122.36182,
+    "gmapsCategory": "Wine store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Goosecross Cellars",
+    "lat": 38.4270875,
+    "long": -122.3537045,
+    "gmapsCategory": "Winery"
+  },
+  {
+    "type": "Liquor",
+    "name": "Priest Ranch Tasting Room",
+    "lat": 38.4000583,
+    "long": -122.3590694,
+    "gmapsCategory": "Winery"
+  },
+  {
+    "type": "Liquor",
+    "name": "Pacific Wine Group",
+    "lat": 38.401169,
+    "long": -122.3605001,
+    "gmapsCategory": "Liquor store"
+  },
+  {
+    "type": "Liquor",
+    "name": "VinRoc",
+    "lat": 38.4274562,
+    "long": -122.2492218,
+    "gmapsCategory": "Wine store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Nichelini Family Winery",
+    "lat": 38.4988865,
+    "long": -122.2936354,
+    "gmapsCategory": "Winery"
+  },
+  {
+    "type": "Liquor",
+    "name": "Spanish Flat Village",
+    "lat": 38.5332544,
+    "long": -122.2268368,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Guy s Corner",
+    "lat": 38.681473,
+    "long": -121.967729,
+    "gmapsCategory": "Convenience store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Esparto Grab Go",
+    "lat": 38.6955336,
+    "long": -122.0181694,
+    "gmapsCategory": "Liquor store"
+  }
+]

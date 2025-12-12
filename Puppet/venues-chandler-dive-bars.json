@@ -1,0 +1,1332 @@
+[
+  {
+    "type": "Bar",
+    "name": "The Trophy Bar",
+    "lat": 33.2611744,
+    "long": -111.8851724,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "The Bar",
+    "lat": 33.311203,
+    "long": -111.8417206,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Tom Ryan s",
+    "lat": 33.3358012,
+    "long": -111.8432112,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Jolie s Place",
+    "lat": 33.3355955,
+    "long": -111.8443291,
+    "gmapsCategory": "Unfussy bar with sports on TV & pub grub"
+  },
+  {
+    "type": "Bar",
+    "name": "The Sleepy Whale",
+    "lat": 33.2994709,
+    "long": -111.8419397,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Dirty Blonde Tavern",
+    "lat": 33.3048418,
+    "long": -111.9268512,
+    "gmapsCategory": "Roomy sports bar with American eats"
+  },
+  {
+    "type": "Bar",
+    "name": "Rebel Rogue",
+    "lat": 33.3020519,
+    "long": -111.8418365,
+    "gmapsCategory": "\"Great music, reasonable prices, super food and nice daytime bartender.\""
+  },
+  {
+    "type": "Bar",
+    "name": "The Ostrich",
+    "lat": 33.3036167,
+    "long": -111.8424709,
+    "gmapsCategory": "Cocktail bar"
+  },
+  {
+    "type": "Bar",
+    "name": "The Sugar Bar Craft Beer Wine Taproom Bottleshop",
+    "lat": 33.3358001,
+    "long": -111.8259773,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "The Whining Pig Gilbert",
+    "lat": 33.3048496,
+    "long": -111.7562087,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Fibber Magees",
+    "lat": 33.3488789,
+    "long": -111.8746688,
+    "gmapsCategory": "Irish pub"
+  },
+  {
+    "type": "Bar",
+    "name": "Stadium Club",
+    "lat": 33.3201752,
+    "long": -111.8606491,
+    "gmapsCategory": "Sports bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Legends Showcase",
+    "lat": 33.3403673,
+    "long": -111.8597192,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Bar",
+    "name": "Third Base Bar",
+    "lat": 33.3204947,
+    "long": -111.9263864,
+    "gmapsCategory": "Sports bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Icons Sport Grill",
+    "lat": 33.3494062,
+    "long": -111.8218784,
+    "gmapsCategory": "Sports bar"
+  },
+  {
+    "type": "Bar",
+    "name": "The Watering Hole",
+    "lat": 33.3183793,
+    "long": -111.8927755,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Valley Taproom",
+    "lat": 33.2854199,
+    "long": -111.7877261,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "The Perch Brewery",
+    "lat": 33.3000481,
+    "long": -111.8425078,
+    "gmapsCategory": "Brewpub"
+  },
+  {
+    "type": "Bar",
+    "name": "Spirit House",
+    "lat": 33.3033154,
+    "long": -111.8427032,
+    "gmapsCategory": "Cocktail bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Copper Still Moonshine Grill Gilbert",
+    "lat": 33.3036491,
+    "long": -111.7889152,
+    "gmapsCategory": "Casual American grill with a bar & patio"
+  },
+  {
+    "type": "Bar",
+    "name": "Tap Dragon Craft Beer Wine Bar",
+    "lat": 33.3349261,
+    "long": -111.7894616,
+    "gmapsCategory": "Wine bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Priceless Too",
+    "lat": 33.3501076,
+    "long": -111.8575572,
+    "gmapsCategory": "Sports bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Champions Sports Saloon",
+    "lat": 33.354126,
+    "long": -111.7893798,
+    "gmapsCategory": "Sports bar"
+  },
+  {
+    "type": "Bar",
+    "name": "NATALIE E S",
+    "lat": 33.3363234,
+    "long": -111.8237166,
+    "gmapsCategory": "Sports bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Murphy s Law Irish Pub",
+    "lat": 33.302775,
+    "long": -111.8423453,
+    "gmapsCategory": "Irish pub"
+  },
+  {
+    "type": "Bar",
+    "name": "The Hungry Monk",
+    "lat": 33.3066461,
+    "long": -111.872815,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Jupe s",
+    "lat": 33.3631067,
+    "long": -111.8906884,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Sawtooth Bar Grill",
+    "lat": 33.3194059,
+    "long": -111.9258937,
+    "gmapsCategory": "Sawtooth Bar & Grill"
+  },
+  {
+    "type": "Bar",
+    "name": "The Parlour Room",
+    "lat": 33.3540184,
+    "long": -111.7893573,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Sidelines Grill",
+    "lat": 33.262362,
+    "long": -111.860369,
+    "gmapsCategory": "Sports bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Fireside Lounge Patio",
+    "lat": 33.2587927,
+    "long": -111.8855971,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "The Pub N Grub",
+    "lat": 33.3638829,
+    "long": -111.8575945,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "The Uncommon Chandler",
+    "lat": 33.3021495,
+    "long": -111.8412058,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Ir C ADsh Pub",
+    "lat": 33.3488757,
+    "long": -111.8746019,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Vybe Chandler",
+    "lat": 33.2724067,
+    "long": -111.7926737,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Bar",
+    "name": "Fat Willy s Williams Field Rd Gilbert Rd",
+    "lat": 33.3049178,
+    "long": -111.7865184,
+    "gmapsCategory": "Sports bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Dierks Bentley s Whiskey Row Gilbert",
+    "lat": 33.3558235,
+    "long": -111.7893133,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Blue Sports Grill",
+    "lat": 33.3072305,
+    "long": -111.7573624,
+    "gmapsCategory": "Sports bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Bogeys Sports Bar Grill",
+    "lat": 33.3629125,
+    "long": -111.927659,
+    "gmapsCategory": "Bogeys Sports Bar & Grill"
+  },
+  {
+    "type": "Bar",
+    "name": "Fox Cigar",
+    "lat": 33.3075053,
+    "long": -111.7583923,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "MVP Sports Bar and Grill",
+    "lat": 33.2931379,
+    "long": -111.8249626,
+    "gmapsCategory": "Sports bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Hair of the Dog Gilbert, AZ Coffee, Wine, Beer",
+    "lat": 33.2934785,
+    "long": -111.7735163,
+    "gmapsCategory": "Wine bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Lucky Lou s American Grill",
+    "lat": 33.3198501,
+    "long": -111.8975084,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "O Kelley s Sports Bar Grill",
+    "lat": 33.36484,
+    "long": -111.8792754,
+    "gmapsCategory": "Sports bar with live music on weekends"
+  },
+  {
+    "type": "Bar",
+    "name": "The Casual Pint of Ocotillo",
+    "lat": 33.2614972,
+    "long": -111.8616923,
+    "gmapsCategory": "Pub"
+  },
+  {
+    "type": "Bar",
+    "name": "Tipsy Cactus TapRoom Bottle Shop",
+    "lat": 33.3659963,
+    "long": -111.8595968,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "The Parlay Kitchen B Cocktails",
+    "lat": 33.28769,
+    "long": -111.890532,
+    "gmapsCategory": "Gastropub"
+  },
+  {
+    "type": "Bar",
+    "name": "Boston s Bar Grille",
+    "lat": 33.3505428,
+    "long": -111.9120636,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Tequila Bar",
+    "lat": 33.3076445,
+    "long": -111.7579334,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Cogburn s Big Wings",
+    "lat": 33.2610444,
+    "long": -111.7565167,
+    "gmapsCategory": "\"This sports bar is filled with great music, solid food, and better service.\""
+  },
+  {
+    "type": "Bar",
+    "name": "Good Time Charli s",
+    "lat": 33.3038506,
+    "long": -111.9461993,
+    "gmapsCategory": "Relaxed gastropub for brews & tunes"
+  },
+  {
+    "type": "Bar",
+    "name": "Jester s Billiards",
+    "lat": 33.3771241,
+    "long": -111.7874134,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Philly s Sports Grill",
+    "lat": 33.3479296,
+    "long": -111.9106849,
+    "gmapsCategory": "Sports bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Zipps Sports Grill",
+    "lat": 33.3352341,
+    "long": -111.9070782,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Wicked Rain",
+    "lat": 33.3772139,
+    "long": -111.7922545,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Woodshed",
+    "lat": 33.377411,
+    "long": -111.940115,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Baseline Pub",
+    "lat": 33.3779816,
+    "long": -111.9062775,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Final Round",
+    "lat": 33.3791582,
+    "long": -111.9400152,
+    "gmapsCategory": "Sports bar with games, burgers & pizza"
+  },
+  {
+    "type": "Bar",
+    "name": "UnderTow Gilbert at Epicenter",
+    "lat": 33.3221901,
+    "long": -111.7239954,
+    "gmapsCategory": "Cocktail bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Yucca Tap Room",
+    "lat": 33.3926526,
+    "long": -111.9405375,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Mesquite Grill and Sports Bar",
+    "lat": 33.3783697,
+    "long": -111.8331546,
+    "gmapsCategory": "Sports bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Smoke Grain",
+    "lat": 33.3191742,
+    "long": -111.7400725,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Bar",
+    "name": "Doc Eddy s",
+    "lat": 33.379226,
+    "long": -111.926899,
+    "gmapsCategory": "Sports bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Boondocks Patio Grill Tempe",
+    "lat": 33.4077334,
+    "long": -111.9230453,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Monkey Pants Bar Grill",
+    "lat": 33.393621,
+    "long": -111.938547,
+    "gmapsCategory": "Monkey Pants Bar & Grill"
+  },
+  {
+    "type": "Bar",
+    "name": "September s Bar Grill",
+    "lat": 33.3940877,
+    "long": -111.842154,
+    "gmapsCategory": "September's Bar & Grill"
+  },
+  {
+    "type": "Bar",
+    "name": "Beer Barn",
+    "lat": 33.3220098,
+    "long": -111.7231451,
+    "gmapsCategory": "Beer Barn"
+  },
+  {
+    "type": "Bar",
+    "name": "The Blue Heron",
+    "lat": 33.3060433,
+    "long": -111.7056708,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Brick Barley A Neighborhood Bar Grill",
+    "lat": 33.377812,
+    "long": -111.93709,
+    "gmapsCategory": "Pub grub in biker-welcoming digs"
+  },
+  {
+    "type": "Bar",
+    "name": "Time Out Lounge",
+    "lat": 33.394863,
+    "long": -111.938533,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Park Tavern and Market",
+    "lat": 33.3271842,
+    "long": -111.7408076,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Bar",
+    "name": "Hob Nob Sports Grill",
+    "lat": 33.3060336,
+    "long": -111.9657298,
+    "gmapsCategory": "Sports bar"
+  },
+  {
+    "type": "Bar",
+    "name": "The Draft Sports Grill",
+    "lat": 33.3793613,
+    "long": -111.8428316,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Bar",
+    "name": "Palo Verde Lounge",
+    "lat": 33.407046,
+    "long": -111.9547876,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Boulders on Southern",
+    "lat": 33.3935656,
+    "long": -111.8535051,
+    "gmapsCategory": "Laid-back American bar & grill"
+  },
+  {
+    "type": "Bar",
+    "name": "Over Easy",
+    "lat": 33.335205,
+    "long": -111.7850952,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Bar",
+    "name": "Chili s Grill Bar",
+    "lat": 33.2788523,
+    "long": -111.7891804,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Aguila E s Hidaway The office bar and grill",
+    "lat": 33.4089594,
+    "long": -111.7891088,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Zipps Sports Grill",
+    "lat": 33.2461062,
+    "long": -111.8418078,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Roosters Country",
+    "lat": 33.4150183,
+    "long": -111.7504756,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Kay s Place",
+    "lat": 33.4090609,
+    "long": -111.8563682,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "The Dark Side",
+    "lat": 33.4216073,
+    "long": -111.943868,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "The Brass Tap",
+    "lat": 33.3065925,
+    "long": -111.7046013,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Devil s Hideaway",
+    "lat": 33.4263771,
+    "long": -111.9397826,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Divided Vine Beer Wine Bar",
+    "lat": 33.3663994,
+    "long": -111.720017,
+    "gmapsCategory": "Funky strip-mall bar with hand pies"
+  },
+  {
+    "type": "Bar",
+    "name": "Q Brew",
+    "lat": 33.3914869,
+    "long": -111.9430628,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Groggy s Bar and Grill",
+    "lat": 33.4144623,
+    "long": -111.8790201,
+    "gmapsCategory": "Groggy's Bar and Grill"
+  },
+  {
+    "type": "Bar",
+    "name": "The Hudson Eatery Bar",
+    "lat": 33.4141684,
+    "long": -111.9123082,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Cactus Jack s Bar Grill",
+    "lat": 33.3484301,
+    "long": -111.9834181,
+    "gmapsCategory": "Cactus Jack's Bar & Grill"
+  },
+  {
+    "type": "Bar",
+    "name": "Spokes On Southern",
+    "lat": 33.3939327,
+    "long": -111.9143288,
+    "gmapsCategory": "Mellow, bicycle-themed bar & restaurant"
+  },
+  {
+    "type": "Bar",
+    "name": "Tempe Tavern",
+    "lat": 33.4150327,
+    "long": -111.9085471,
+    "gmapsCategory": "\"Good priced drinks, decent food, good atmosphere and friendly bartenders.\""
+  },
+  {
+    "type": "Bar",
+    "name": "T T Roadhouse",
+    "lat": 33.4808635,
+    "long": -111.9345496,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Hiatus on Main",
+    "lat": 33.4153359,
+    "long": -111.6922777,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Pier ",
+    "lat": 33.3754754,
+    "long": -111.9198276,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Blue Sports Grill",
+    "lat": 33.2349546,
+    "long": -111.7225614,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Mill s Modern Social",
+    "lat": 33.407092,
+    "long": -111.938668,
+    "gmapsCategory": "Sports bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Arizona Distilling Co ",
+    "lat": 33.4147786,
+    "long": -111.8360654,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Bar",
+    "name": "Cottonwood Lounge",
+    "lat": 33.214245,
+    "long": -111.867865,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Drop Dead Gorgeous",
+    "lat": 33.4225241,
+    "long": -111.9402763,
+    "gmapsCategory": "Cocktail bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Mulligan s",
+    "lat": 33.215393,
+    "long": -111.8840947,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Bar",
+    "name": "Bleachers Sports Grill",
+    "lat": 33.3069442,
+    "long": -111.9985235,
+    "gmapsCategory": "Sports pub with a patio & American eats"
+  },
+  {
+    "type": "Bar",
+    "name": "Tailgate Sports Bar Grill",
+    "lat": 33.4078048,
+    "long": -111.9541996,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Neon Spur",
+    "lat": 33.4236739,
+    "long": -111.9402112,
+    "gmapsCategory": "Cocktail bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Simpleton s Restaurant and Bar",
+    "lat": 33.4072901,
+    "long": -111.7744369,
+    "gmapsCategory": "Easygoing joint for pub grub & beers"
+  },
+  {
+    "type": "Bar",
+    "name": "Starz American Bar and Grill",
+    "lat": 33.4234679,
+    "long": -111.7733604,
+    "gmapsCategory": "Starz American Bar and Grill"
+  },
+  {
+    "type": "Bar",
+    "name": "The Dirty Drummer",
+    "lat": 33.4737488,
+    "long": -111.9862138,
+    "gmapsCategory": "Veteran sports bar with hearty grub"
+  },
+  {
+    "type": "Bar",
+    "name": "Hambone Sports Bar",
+    "lat": 33.4147475,
+    "long": -111.8118877,
+    "gmapsCategory": "Karaoke bar"
+  },
+  {
+    "type": "Bar",
+    "name": "SaltFire Brewery Co Taphouse",
+    "lat": 33.4076195,
+    "long": -111.9475708,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Bar",
+    "name": "Duchess",
+    "lat": 33.414826,
+    "long": -111.7471733,
+    "gmapsCategory": "\"Great local dive bar with cheap drinks, good food, great karaoke.\""
+  },
+  {
+    "type": "Bar",
+    "name": "Drunken Tiger",
+    "lat": 33.3788103,
+    "long": -111.8788712,
+    "gmapsCategory": "Korean bites in a lively, late-night bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Cogburn s Big Wings",
+    "lat": 33.3208662,
+    "long": -111.6853344,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Bar",
+    "name": "TC s Pub Grub",
+    "lat": 33.2851671,
+    "long": -111.6851405,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "On the Rocks",
+    "lat": 33.4750059,
+    "long": -111.9253919,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Gabby E s Sports Bar and Grill",
+    "lat": 33.4268188,
+    "long": -111.8395156,
+    "gmapsCategory": "· 635 N Country Club Dr"
+  },
+  {
+    "type": "Bar",
+    "name": "Local Legends Bar Grill",
+    "lat": 33.4147281,
+    "long": -111.6733549,
+    "gmapsCategory": "Easygoing bar for all-day American eats"
+  },
+  {
+    "type": "Bar",
+    "name": "Cold Beers Cheeseburgers",
+    "lat": 33.2669202,
+    "long": -111.7220139,
+    "gmapsCategory": "Chill sports bar & burger joint"
+  },
+  {
+    "type": "Bar",
+    "name": "Gypsy s Roadhouse",
+    "lat": 33.4658926,
+    "long": -111.9711107,
+    "gmapsCategory": "\"Nice dive bar, cheap drinks and good live music\""
+  },
+  {
+    "type": "Bar",
+    "name": "Beast of Bourbon Sports Bar and Grill",
+    "lat": 33.3741265,
+    "long": -111.6872824,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "El Dorado Bar Grill",
+    "lat": 33.4662191,
+    "long": -111.8959798,
+    "gmapsCategory": "El Dorado Bar & Grill"
+  },
+  {
+    "type": "Bar",
+    "name": "The Woodshed II",
+    "lat": 33.4226746,
+    "long": -111.8748481,
+    "gmapsCategory": "Sports bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Raceway Bar and Grill",
+    "lat": 32.9835631,
+    "long": -112.096915,
+    "gmapsCategory": "Raceway Bar and Grill"
+  },
+  {
+    "type": "Bar",
+    "name": "Cowtown Tavern",
+    "lat": 32.8797643,
+    "long": -111.9628484,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Headquarters Lounge",
+    "lat": 33.0582964,
+    "long": -112.0482639,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "The Luxe Lounge",
+    "lat": 33.0260314,
+    "long": -112.0505065,
+    "gmapsCategory": "Sports bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Duke s Lounge FLegends Restaraunt",
+    "lat": 32.8803825,
+    "long": -111.8470306,
+    "gmapsCategory": "\"Sean, the bartender, made our drinks perfectly and made us feel welcomed.\""
+  },
+  {
+    "type": "Bar",
+    "name": "Sip at the Ranch",
+    "lat": 33.3573167,
+    "long": -112.4297915,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Longbranch Saloon",
+    "lat": 33.4357121,
+    "long": -112.286579,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Nugget",
+    "lat": 33.495381,
+    "long": -112.238175,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "EL DORADO SPORTS BAR",
+    "lat": 33.4962314,
+    "long": -112.2037988,
+    "gmapsCategory": "Sports bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Tap Taproom",
+    "lat": 33.4536638,
+    "long": -112.3050108,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Mothers Bar Grill",
+    "lat": 33.4372258,
+    "long": -112.1824704,
+    "gmapsCategory": "Mothers Bar & Grill"
+  },
+  {
+    "type": "Bar",
+    "name": "Pull Up Bars",
+    "lat": 33.4167372,
+    "long": -112.2631977,
+    "gmapsCategory": "Pull-Up Bars"
+  },
+  {
+    "type": "Bar",
+    "name": "Nixstixx corp",
+    "lat": 33.4963989,
+    "long": -112.243482,
+    "gmapsCategory": "Sporting goods store"
+  },
+  {
+    "type": "Bar",
+    "name": "Hotel",
+    "lat": 33.4576011,
+    "long": -112.3045138,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Rum Runners Bar",
+    "lat": 33.5598355,
+    "long": -112.0648233,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Chopper Johns",
+    "lat": 33.494686,
+    "long": -112.026106,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Pomeroy s",
+    "lat": 33.5185664,
+    "long": -112.0641463,
+    "gmapsCategory": "\"Great staff, cold drinks and a fantastic dive bar.\""
+  },
+  {
+    "type": "Bar",
+    "name": "Swizzle Inn",
+    "lat": 33.5231683,
+    "long": -112.0467271,
+    "gmapsCategory": "Cocktail bar"
+  },
+  {
+    "type": "Bar",
+    "name": "The Captain s Cabin",
+    "lat": 33.5115375,
+    "long": -112.0653133,
+    "gmapsCategory": "Tiki bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Dodey s Central",
+    "lat": 33.540212,
+    "long": -112.0648402,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "The Bar Uptown",
+    "lat": 33.5170636,
+    "long": -112.082837,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "McKenzie s Midtown Tavern",
+    "lat": 33.5027088,
+    "long": -112.064637,
+    "gmapsCategory": "Upbeat sports bar & American grill"
+  },
+  {
+    "type": "Bar",
+    "name": "Rips Bar",
+    "lat": 33.4837293,
+    "long": -112.0473905,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "The Bar Arcadia",
+    "lat": 33.4960226,
+    "long": -112.0140498,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Thunderbird Lounge",
+    "lat": 33.4996353,
+    "long": -112.083446,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Maverick Saloon",
+    "lat": 33.57412,
+    "long": -112.099195,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Hideaway Lounge",
+    "lat": 33.4801794,
+    "long": -112.0122717,
+    "gmapsCategory": "Sports bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Dilly Dally Lounge",
+    "lat": 33.494588,
+    "long": -112.0028241,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Bar",
+    "name": "Bull Shooters",
+    "lat": 33.5806236,
+    "long": -112.1330566,
+    "gmapsCategory": "Pool hall with a bar & pub grub"
+  },
+  {
+    "type": "Bar",
+    "name": "Sunny s Lounge",
+    "lat": 33.4947405,
+    "long": -112.0235342,
+    "gmapsCategory": "Cocktail bar"
+  },
+  {
+    "type": "Bar",
+    "name": "AiNT NICKS TAVERN",
+    "lat": 33.5379959,
+    "long": -112.1172429,
+    "gmapsCategory": "Biker-friendly bar & American grill"
+  },
+  {
+    "type": "Bar",
+    "name": "Dave s On Northern",
+    "lat": 33.5542781,
+    "long": -112.109564,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Sidecar Social Club",
+    "lat": 33.48543,
+    "long": -112.0691996,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "HOLLYROCK",
+    "lat": 33.5090298,
+    "long": -112.0658895,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Dirty Dogg Saloon",
+    "lat": 33.5811102,
+    "long": -111.9256105,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Orangedale Lounge",
+    "lat": 33.6386174,
+    "long": -111.8633363,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "The Rooster Tavern",
+    "lat": 33.6152789,
+    "long": -111.9271392,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "T Bird Tavern",
+    "lat": 33.6116117,
+    "long": -111.9275491,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Bar",
+    "name": "The Whining Pig Desert Ridge",
+    "lat": 33.6764872,
+    "long": -111.9727012,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Ernie s",
+    "lat": 33.5818693,
+    "long": -111.92407,
+    "gmapsCategory": "Sports bar"
+  },
+  {
+    "type": "Bar",
+    "name": " Degrees",
+    "lat": 33.6387944,
+    "long": -111.8820106,
+    "gmapsCategory": "Sports bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Bar ",
+    "lat": 33.6347388,
+    "long": -111.9204836,
+    "gmapsCategory": "Sports bar"
+  },
+  {
+    "type": "Bar",
+    "name": "K O Donnell s Sports Bar Grill",
+    "lat": 33.620255,
+    "long": -111.8981886,
+    "gmapsCategory": "Relaxed eatery & bar with TV sports"
+  },
+  {
+    "type": "Bar",
+    "name": "Longshots Bar Grill",
+    "lat": 33.6104486,
+    "long": -111.9270216,
+    "gmapsCategory": "Longshots Bar & Grill"
+  },
+  {
+    "type": "Bar",
+    "name": " Drinks B Eats aka nd Street Cafe Bar ",
+    "lat": 33.5838687,
+    "long": -111.8832063,
+    "gmapsCategory": "Longtime local hangout & sports bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Tell Your Friends",
+    "lat": 33.6510672,
+    "long": -111.9245367,
+    "gmapsCategory": "Cocktail bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Arena Sports Grill",
+    "lat": 33.6396648,
+    "long": -111.944943,
+    "gmapsCategory": "Sports bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Blue Martini",
+    "lat": 33.6753247,
+    "long": -111.9638673,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Bar",
+    "name": "Desert Pony Tavern",
+    "lat": 33.658317,
+    "long": -111.909096,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Bar",
+    "name": "Tavern Grille Scottsdale",
+    "lat": 33.5692394,
+    "long": -111.8902434,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Bar",
+    "name": "Goldie s Sports Cafe",
+    "lat": 33.5740607,
+    "long": -111.8620329,
+    "gmapsCategory": "Classic pub with games for kids & adults"
+  },
+  {
+    "type": "Bar",
+    "name": "Pigtails Desert Ridge",
+    "lat": 33.676385,
+    "long": -111.972648,
+    "gmapsCategory": "Cocktail bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Handlebar J",
+    "lat": 33.5832099,
+    "long": -111.9276099,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "PLAZA BAR",
+    "lat": 33.6450228,
+    "long": -111.9172478,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Duelies Sports Bar and Grill",
+    "lat": 33.6580264,
+    "long": -111.9325468,
+    "gmapsCategory": "Sports bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Lobby Bar",
+    "lat": 33.5669034,
+    "long": -111.9182554,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "All American Modern Sports Grill",
+    "lat": 33.6744855,
+    "long": -111.888082,
+    "gmapsCategory": "American sports bar & restaurant"
+  },
+  {
+    "type": "Bar",
+    "name": "Northside Wine Beer Bar",
+    "lat": 33.6540136,
+    "long": -111.9276139,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Cask Whiskey Bar",
+    "lat": 33.6745856,
+    "long": -111.8882066,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Canyon Springs Bar and Grill",
+    "lat": 33.684196,
+    "long": -111.9720849,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Bar NoRTH",
+    "lat": 33.6239785,
+    "long": -111.9289018,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "The Vig",
+    "lat": 33.6395396,
+    "long": -111.8617814,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Thirsty Lion",
+    "lat": 33.6762738,
+    "long": -111.9750251,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Bar",
+    "name": "Twin Peaks",
+    "lat": 33.6293429,
+    "long": -111.8914636,
+    "gmapsCategory": "Sports bar"
+  },
+  {
+    "type": "Bar",
+    "name": "J Swilling s Pool Bar Grill",
+    "lat": 33.625431,
+    "long": -111.934193,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Zipps Sports Grill",
+    "lat": 33.6251335,
+    "long": -111.9404907,
+    "gmapsCategory": "Relaxed pub with numerous TVs & games"
+  },
+  {
+    "type": "Bar",
+    "name": "Happy s Hamburgers",
+    "lat": 33.5816317,
+    "long": -111.92407,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Bar",
+    "name": "Juan Jaime s",
+    "lat": 33.6699476,
+    "long": -111.9044773,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Bar",
+    "name": "Buffalo Wild Wings",
+    "lat": 33.6367403,
+    "long": -111.9210937,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Bar",
+    "name": "Gin Reel",
+    "lat": 33.6756148,
+    "long": -111.964783,
+    "gmapsCategory": "Bar"
+  }
+]

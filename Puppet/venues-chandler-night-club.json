@@ -1,0 +1,1661 @@
+[
+  {
+    "type": "Liquor",
+    "name": "The Bar",
+    "lat": 33.311203,
+    "long": -111.8417206,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "The Ostrich",
+    "lat": 33.3036167,
+    "long": -111.8424709,
+    "gmapsCategory": "Cocktail bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "The Parlour Room",
+    "lat": 33.3540184,
+    "long": -111.7893573,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Dierks Bentley s Whiskey Row Gilbert",
+    "lat": 33.3558235,
+    "long": -111.7893133,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "The White Rabbit",
+    "lat": 33.3537132,
+    "long": -111.7893152,
+    "gmapsCategory": "Disco club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Dirty Blonde Tavern",
+    "lat": 33.3048418,
+    "long": -111.9268512,
+    "gmapsCategory": "Roomy sports bar with American eats"
+  },
+  {
+    "type": "Liquor",
+    "name": "The Uncommon Chandler",
+    "lat": 33.3021495,
+    "long": -111.8412058,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Legacy Lounge",
+    "lat": 33.3506352,
+    "long": -111.843189,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Los Misfits Entertainment",
+    "lat": 33.3082793,
+    "long": -111.8385534,
+    "gmapsCategory": "Dance club"
+  },
+  {
+    "type": "Liquor",
+    "name": "The Silver Key Lounge",
+    "lat": 33.3628737,
+    "long": -111.8744096,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Aladdin Hookah cafe",
+    "lat": 33.3356094,
+    "long": -111.8608779,
+    "gmapsCategory": "Hookah bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Puro Cigar Bar",
+    "lat": 33.3020771,
+    "long": -111.8432292,
+    "gmapsCategory": "Puro Cigar Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Copper Still Moonshine Grill Gilbert",
+    "lat": 33.3036491,
+    "long": -111.7889152,
+    "gmapsCategory": "Casual American grill with a bar & patio"
+  },
+  {
+    "type": "Liquor",
+    "name": " SEVEN HOOKAH LOUNGE",
+    "lat": 33.3200982,
+    "long": -111.8627739,
+    "gmapsCategory": "Hookah bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Fox Cigar",
+    "lat": 33.3075053,
+    "long": -111.7583923,
+    "gmapsCategory": "Cozy cigar shop with a full bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Sawtooth Bar Grill",
+    "lat": 33.3194059,
+    "long": -111.9258937,
+    "gmapsCategory": "Sawtooth Bar & Grill"
+  },
+  {
+    "type": "Liquor",
+    "name": "Glow Tempe",
+    "lat": 33.4263531,
+    "long": -111.9402094,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Clever Koi",
+    "lat": 33.3568081,
+    "long": -111.7905325,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Stingers Golf Club",
+    "lat": 33.2922394,
+    "long": -111.8270993,
+    "gmapsCategory": "Stingers Golf Club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Christie s Cabaret Tempe",
+    "lat": 33.3775301,
+    "long": -111.9659228,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Good Time Charli s",
+    "lat": 33.3038506,
+    "long": -111.9461993,
+    "gmapsCategory": "Relaxed gastropub for brews & tunes"
+  },
+  {
+    "type": "Liquor",
+    "name": "Kavasutra Kava Bar",
+    "lat": 33.3640146,
+    "long": -111.9281579,
+    "gmapsCategory": "Kavasutra Kava Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "YZ Karaoke Cafe E E E KTV ",
+    "lat": 33.3890083,
+    "long": -111.8646249,
+    "gmapsCategory": "Karaoke bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "September s Bar Grill",
+    "lat": 33.3940877,
+    "long": -111.842154,
+    "gmapsCategory": "September's Bar & Grill"
+  },
+  {
+    "type": "Liquor",
+    "name": "Maya E s Club Mesa",
+    "lat": 33.4349996,
+    "long": -111.8260543,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Rodeo Ranch",
+    "lat": 33.4253302,
+    "long": -111.9398269,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "The Porch",
+    "lat": 33.3786358,
+    "long": -111.9231097,
+    "gmapsCategory": "\"Great atmosphere, cool outdoor setup, killer bartender!\""
+  },
+  {
+    "type": "Liquor",
+    "name": "Cake Nightclub",
+    "lat": 33.5008222,
+    "long": -111.9219508,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Jaguars Phoenix",
+    "lat": 33.4680417,
+    "long": -112.112491,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "UnderTow Gilbert at Epicenter",
+    "lat": 33.3221901,
+    "long": -111.7239954,
+    "gmapsCategory": "Cocktail bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Bandoleros Phoenix Night Club",
+    "lat": 33.4503255,
+    "long": -112.0034367,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": " Pub Pizza Karaoke Mesa",
+    "lat": 33.393934,
+    "long": -111.8466125,
+    "gmapsCategory": "414 Pub Pizza & Karaoke - Mesa"
+  },
+  {
+    "type": "Liquor",
+    "name": "Gila River Resorts Casinos Lone Butte",
+    "lat": 33.2894893,
+    "long": -111.9430168,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": " Nightclub",
+    "lat": 33.4978881,
+    "long": -111.923117,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Sea Smoke Mesquite Seafood Grill",
+    "lat": 33.2611603,
+    "long": -111.8841628,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Cheetahs Gentlemen s Club",
+    "lat": 33.4957156,
+    "long": -112.0646717,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "MAYA Day B Night",
+    "lat": 33.501291,
+    "long": -111.9228153,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Karamba Nightclub",
+    "lat": 33.466025,
+    "long": -112.04454,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Denim Diamonds",
+    "lat": 33.4164062,
+    "long": -111.6728707,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "The HIGH Lounge",
+    "lat": 33.4261439,
+    "long": -111.9397083,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "CASA Tempe",
+    "lat": 33.4241549,
+    "long": -111.9397246,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "El Capri",
+    "lat": 33.4510892,
+    "long": -112.0359295,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Darkstar Theater",
+    "lat": 33.4245147,
+    "long": -111.9403487,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "International Boutique Nightclub",
+    "lat": 33.5008001,
+    "long": -111.9219672,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "El Tenampa Bar Nightclub",
+    "lat": 33.4064455,
+    "long": -112.0954541,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "KARAOKE NIGHTS MILL TOWNE HALL",
+    "lat": 33.3774938,
+    "long": -111.9357277,
+    "gmapsCategory": "Karaoke bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Alchemy ",
+    "lat": 33.4154532,
+    "long": -111.8333366,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Hi score club",
+    "lat": 33.4568458,
+    "long": -112.0706699,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Skysill Rooftop Lounge",
+    "lat": 33.4229612,
+    "long": -111.9392662,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "The Chill Room",
+    "lat": 33.4083042,
+    "long": -111.916804,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Lava Hookah and Cafe Lounge",
+    "lat": 33.3943791,
+    "long": -111.8541583,
+    "gmapsCategory": "Hookah bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "HiFi Kitchen Cocktails",
+    "lat": 33.5012857,
+    "long": -111.9224458,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Riot House Scottsdale",
+    "lat": 33.5014232,
+    "long": -111.9220218,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Kpop Dance Arizona E AKDC E ",
+    "lat": 33.3789919,
+    "long": -111.8736675,
+    "gmapsCategory": "Dance club"
+  },
+  {
+    "type": "Liquor",
+    "name": "University Club At ASU",
+    "lat": 33.420969,
+    "long": -111.9335213,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Rooted Kava Bar",
+    "lat": 33.2330305,
+    "long": -111.8590084,
+    "gmapsCategory": "Rooted Kava Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Evolutions Dance Night club",
+    "lat": 33.4485729,
+    "long": -112.0719027,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Xantolo Night Club",
+    "lat": 33.6383679,
+    "long": -112.147772,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Lush Cafe and Lounge",
+    "lat": 33.35114,
+    "long": -111.9634733,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Dwntwn",
+    "lat": 33.4557452,
+    "long": -112.0742447,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Cottontail Lounge",
+    "lat": 33.501721,
+    "long": -111.924227,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Bottled Blonde Scottsdale",
+    "lat": 33.5015292,
+    "long": -111.9227458,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "The Cellar at West Brewing",
+    "lat": 33.4155113,
+    "long": -111.8321003,
+    "gmapsCategory": "Cocktail bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Mulligan s",
+    "lat": 33.215393,
+    "long": -111.8840947,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Hambone Sports Bar",
+    "lat": 33.4147475,
+    "long": -111.8118877,
+    "gmapsCategory": "Karaoke bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Pretty Please Lounge",
+    "lat": 33.5016097,
+    "long": -111.9223644,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "The District",
+    "lat": 33.50129,
+    "long": -111.9228388,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Peppermint Hippo",
+    "lat": 36.1521729,
+    "long": -115.151259,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Boondocks Patio Grill Scottsdale",
+    "lat": 33.499719,
+    "long": -111.9199108,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Mazaj Hookah Lounge",
+    "lat": 33.4153446,
+    "long": -111.9111282,
+    "gmapsCategory": "Hookah bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Old Town Ski Lodge",
+    "lat": 33.4991283,
+    "long": -111.9241469,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Encounters",
+    "lat": 33.4919819,
+    "long": -112.1256046,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "El Hefe Scottsdale",
+    "lat": 33.5013278,
+    "long": -111.9220194,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": " Pub Pizza Karaoke Tempe",
+    "lat": 33.4260928,
+    "long": -111.9402394,
+    "gmapsCategory": "414 Pub Pizza & Karaoke - Tempe"
+  },
+  {
+    "type": "Liquor",
+    "name": "Monarch Theatre",
+    "lat": 33.4484314,
+    "long": -112.0718684,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Topless Night Club",
+    "lat": 33.4957413,
+    "long": -112.0648197,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Surge Nights",
+    "lat": 33.4842616,
+    "long": -112.0733931,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Living Room",
+    "lat": 33.5017157,
+    "long": -111.9240344,
+    "gmapsCategory": "Cocktail bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Cruisin th",
+    "lat": 33.4904251,
+    "long": -112.065382,
+    "gmapsCategory": "Gay bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Simpleton s Restaurant and Bar",
+    "lat": 33.4072901,
+    "long": -111.7744369,
+    "gmapsCategory": "Easygoing joint for pub grub & beers"
+  },
+  {
+    "type": "Liquor",
+    "name": "Stacy s at Melrose",
+    "lat": 33.4998132,
+    "long": -112.082247,
+    "gmapsCategory": "Gay night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Sidecar Social Club",
+    "lat": 33.48543,
+    "long": -112.0691996,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "El Coyote Chandler",
+    "lat": 33.3111767,
+    "long": -111.8411266,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Cheat Code Rooftop Cocktail Lounge",
+    "lat": 33.3917847,
+    "long": -111.8568998,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Ted and Lisa",
+    "lat": 33.360254,
+    "long": -111.9173629,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Aqua Night Club",
+    "lat": 33.4660541,
+    "long": -112.0441373,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Mesa Round Up",
+    "lat": 33.396018,
+    "long": -111.818937,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Chasers Nightclub",
+    "lat": 33.4577445,
+    "long": -111.9081615,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Boycott Bar",
+    "lat": 33.4986923,
+    "long": -112.082745,
+    "gmapsCategory": "Lesbian bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "EL RANCHO BAR",
+    "lat": 33.4065267,
+    "long": -112.0934615,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Classico Phoenix",
+    "lat": 33.467318,
+    "long": -112.1676907,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Phase ",
+    "lat": 33.3554776,
+    "long": -111.9659427,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Charlie s Phoenix",
+    "lat": 33.5090472,
+    "long": -112.0837962,
+    "gmapsCategory": "Gay night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "The Vault AZ",
+    "lat": 33.4217256,
+    "long": -111.9977554,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Cabo Tequila Bar",
+    "lat": 33.4141745,
+    "long": -111.8369408,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "La Maison du Castor",
+    "lat": 33.391238,
+    "long": -111.9440249,
+    "gmapsCategory": "Disco club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Orchid House",
+    "lat": 33.3249749,
+    "long": -111.6963694,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Ambiente Nightclub",
+    "lat": 33.4351399,
+    "long": -112.342974,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Christie s Cabaret Phoenix",
+    "lat": 33.4491357,
+    "long": -112.0138697,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Contender eSports",
+    "lat": 33.3345358,
+    "long": -111.739482,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Degree ",
+    "lat": 33.5403456,
+    "long": -111.8695915,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Luxx",
+    "lat": 33.4485453,
+    "long": -112.0716229,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Sivlik Grill",
+    "lat": 33.2695914,
+    "long": -111.990326,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Mul Chu Tha Fairgrounds",
+    "lat": 33.0763484,
+    "long": -111.7657627,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Gila River Resorts Casinos Vee Quiva",
+    "lat": 33.3105259,
+    "long": -112.1570256,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Sip at the Ranch",
+    "lat": 33.3573167,
+    "long": -112.4297915,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Presidio Residents Club",
+    "lat": 33.314804,
+    "long": -112.4397201,
+    "gmapsCategory": "Presidio Residents Club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Golf Club of Estrella",
+    "lat": 33.3389357,
+    "long": -112.4336039,
+    "gmapsCategory": "· 11800 S Golf Club Dr"
+  },
+  {
+    "type": "Liquor",
+    "name": "Lakeside Grill Estrella",
+    "lat": 33.355194,
+    "long": -112.429812,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "The Cantina at Presidio",
+    "lat": 33.3146588,
+    "long": -112.4398387,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Estrella Mountain Ranch",
+    "lat": 33.3296354,
+    "long": -112.4352454,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Estrella Foothills High School",
+    "lat": 33.3274961,
+    "long": -112.422533,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Subway",
+    "lat": 33.3573295,
+    "long": -112.429721,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Starbucks",
+    "lat": 33.35605,
+    "long": -112.42831,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Santa Fe Night Club",
+    "lat": 33.4352023,
+    "long": -112.294608,
+    "gmapsCategory": "Disco club"
+  },
+  {
+    "type": "Liquor",
+    "name": "La Boom Night Club",
+    "lat": 33.5157065,
+    "long": -112.1868239,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "CasaMoreno Nightclub Phoenix, Arizona",
+    "lat": 33.5255431,
+    "long": -112.1174641,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Funny Farm Lounge",
+    "lat": 33.4808235,
+    "long": -112.1501546,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "ESSEX Gentlemen s Club",
+    "lat": 33.4945577,
+    "long": -112.1486219,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "LA MALQUERIDA CANTINA",
+    "lat": 33.5109333,
+    "long": -112.1692607,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Purple Turtle",
+    "lat": 33.4952996,
+    "long": -112.1661368,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Chicas Cabaret",
+    "lat": 33.4787003,
+    "long": -112.1348563,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Stratus Event Center",
+    "lat": 33.4960943,
+    "long": -112.1538324,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "The Great Alaskan Bush Co",
+    "lat": 33.4859897,
+    "long": -112.1229482,
+    "gmapsCategory": "Adult entertainment club"
+  },
+  {
+    "type": "Liquor",
+    "name": "El Muchacho Alegre",
+    "lat": 33.5100674,
+    "long": -112.178786,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Rancho Silverado",
+    "lat": 33.5081379,
+    "long": -112.1165444,
+    "gmapsCategory": "Sports bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Dirty s Topless Sports Bar Grill",
+    "lat": 33.4922821,
+    "long": -112.1306629,
+    "gmapsCategory": "Adult entertainment club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Cabana s Lounge",
+    "lat": 33.5097963,
+    "long": -112.169638,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "La Chamba FOffice Lounge",
+    "lat": 33.4891565,
+    "long": -112.1513655,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "La Perla Sports Club",
+    "lat": 33.5383333,
+    "long": -112.1822108,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Alma Original",
+    "lat": 33.4648821,
+    "long": -112.1175317,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Ojos Locos Sports Cantina Desert Sky Phoenix, AZ ",
+    "lat": 33.4795091,
+    "long": -112.2231728,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "K J s",
+    "lat": 33.5244059,
+    "long": -112.1886594,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Trevizo s Tavern",
+    "lat": 33.5144329,
+    "long": -112.1867284,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Skippers Lounge",
+    "lat": 33.5257575,
+    "long": -112.1520313,
+    "gmapsCategory": "No-nonsense bar with karaoke & pool"
+  },
+  {
+    "type": "Liquor",
+    "name": "Robert Emmets Food Spirits",
+    "lat": 33.5306069,
+    "long": -112.1857797,
+    "gmapsCategory": "Robert Emmets Food & Spirits"
+  },
+  {
+    "type": "Liquor",
+    "name": "AiNT NICKS TAVERN",
+    "lat": 33.5379959,
+    "long": -112.1172429,
+    "gmapsCategory": "Biker-friendly bar & American grill"
+  },
+  {
+    "type": "Liquor",
+    "name": "Oasis crossroads bar and grill",
+    "lat": 33.4667297,
+    "long": -112.1680468,
+    "gmapsCategory": "Local go-to for live music & bar games"
+  },
+  {
+    "type": "Liquor",
+    "name": "La Hefa Cerveceria Y Botanas",
+    "lat": 33.4236009,
+    "long": -112.2257976,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Steve Molina s never cook for anyones Kitchen and B B",
+    "lat": 33.5328662,
+    "long": -112.149953,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Crossroads Sports Lounge",
+    "lat": 33.4565034,
+    "long": -112.3419284,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "PhxSoul com",
+    "lat": 34.168035,
+    "long": -111.9307474,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "DJ Adi C Indian Wedding DJ Arizona",
+    "lat": 40.1673945,
+    "long": -116.9470729,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Sundara Entertainment",
+    "lat": 34.2603284,
+    "long": -111.9155141,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Le Girls Gentlemen s Club",
+    "lat": 33.4459841,
+    "long": -111.9707199,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "After Phoenix",
+    "lat": 33.4016172,
+    "long": -112.0002945,
+    "gmapsCategory": "Dance club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Los Arcos Bar And Dancing",
+    "lat": 33.431586,
+    "long": -112.0647183,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Hoookahmania",
+    "lat": 33.4427178,
+    "long": -111.9275888,
+    "gmapsCategory": "Hookah bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "United Club",
+    "lat": 33.4370704,
+    "long": -112.0085759,
+    "gmapsCategory": "United Club"
+  },
+  {
+    "type": "Liquor",
+    "name": "American Airlines Admirals Club between Gates A A ",
+    "lat": 33.4369788,
+    "long": -112.001701,
+    "gmapsCategory": "American Airlines Admirals Club between Gates A19 & A21"
+  },
+  {
+    "type": "Liquor",
+    "name": "Kavasutra Kava Bar Tempe",
+    "lat": 33.4071144,
+    "long": -111.965089,
+    "gmapsCategory": "Kavasutra Kava Bar - Tempe"
+  },
+  {
+    "type": "Liquor",
+    "name": "American Airlines Admirals Club above Gates B B ",
+    "lat": 33.4370828,
+    "long": -111.996706,
+    "gmapsCategory": "American Airlines Admirals Club above Gates B5 & B7"
+  },
+  {
+    "type": "Liquor",
+    "name": "Pitic Restaurant and Lounge",
+    "lat": 33.433513,
+    "long": -112.048679,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "USO Phoenix",
+    "lat": 33.4352284,
+    "long": -111.9978273,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "R C BAla B C BAla Tempe Irish Pub and Restaurant",
+    "lat": 33.4263694,
+    "long": -111.9397453,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Bar Smith",
+    "lat": 33.4484264,
+    "long": -112.0717763,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Contact",
+    "lat": 33.451198,
+    "long": -112.0845011,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Bandaids Showlounge",
+    "lat": 33.4763115,
+    "long": -112.0654499,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Dirty Dogg Saloon",
+    "lat": 33.5811102,
+    "long": -111.9256105,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Paradise Lounge",
+    "lat": 33.5986996,
+    "long": -111.9857377,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "The Loft Again",
+    "lat": 33.6225526,
+    "long": -112.0312192,
+    "gmapsCategory": "Bar games, live music & televised sports"
+  },
+  {
+    "type": "Liquor",
+    "name": "Linger Longer Lounge",
+    "lat": 33.5319094,
+    "long": -112.0482416,
+    "gmapsCategory": "Gourmet bar bites, cocktails & games"
+  },
+  {
+    "type": "Liquor",
+    "name": "Evolution",
+    "lat": 33.6289823,
+    "long": -112.013964,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "The Whining Pig Uptown Phoenix",
+    "lat": 33.5239097,
+    "long": -112.0467862,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Brigett s Last Laugh",
+    "lat": 33.642984,
+    "long": -112.0313407,
+    "gmapsCategory": "American bar & grill with comedy acts"
+  },
+  {
+    "type": "Liquor",
+    "name": "Bikini Lounge",
+    "lat": 33.4591551,
+    "long": -112.0915297,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Pachanga Disco Bar",
+    "lat": 33.5017696,
+    "long": -112.1003211,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Coyote Cabaret",
+    "lat": 33.5372889,
+    "long": -112.3556745,
+    "gmapsCategory": "Adult entertainment club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Xplicit Showclub",
+    "lat": 33.5360024,
+    "long": -112.3113055,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "The Speakeasy Bar",
+    "lat": 33.6017149,
+    "long": -112.2918167,
+    "gmapsCategory": "Cocktail bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Friday Night Social Dance Club",
+    "lat": 33.6191527,
+    "long": -112.2727709,
+    "gmapsCategory": "Dance club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Stir Crazy Comedy Club",
+    "lat": 33.5335572,
+    "long": -112.2616635,
+    "gmapsCategory": "Comedy club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Bar Louie Westgate Entertainment District",
+    "lat": 33.5335803,
+    "long": -112.2608731,
+    "gmapsCategory": "American pub grub, microbrews & martinis"
+  },
+  {
+    "type": "Liquor",
+    "name": "Lucie s Sage Sand Bar Grill",
+    "lat": 33.5365912,
+    "long": -112.3569516,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "The LOLA COCKTAIL LAB EATERY",
+    "lat": 33.5331511,
+    "long": -112.2620353,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Blue sky lounge",
+    "lat": 33.5975393,
+    "long": -112.2718239,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Roc The Mic Karaoke",
+    "lat": 33.534439,
+    "long": -112.341835,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "J T s Copper Penny Tavern",
+    "lat": 33.5793304,
+    "long": -112.2914962,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Fat Tuesday Westgate",
+    "lat": 33.5333885,
+    "long": -112.2619657,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Ric E s On th Sports Grill",
+    "lat": 33.5113558,
+    "long": -112.2642463,
+    "gmapsCategory": "Roomy sports bar for pub grub & pool"
+  },
+  {
+    "type": "Liquor",
+    "name": "Carousel Watch Bar",
+    "lat": 33.5334337,
+    "long": -112.2607532,
+    "gmapsCategory": "Sports bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Coop s Bar Grill",
+    "lat": 33.5811247,
+    "long": -112.2414307,
+    "gmapsCategory": "Sports bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "The Rock Bar",
+    "lat": 33.5485099,
+    "long": -112.2618892,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "The Moon Saloon",
+    "lat": 33.635921,
+    "long": -112.234459,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "The Barrel Room",
+    "lat": 33.6382279,
+    "long": -112.3577596,
+    "gmapsCategory": "Cocktail bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Runners Sports Bar",
+    "lat": 33.6371827,
+    "long": -112.334055,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Augie s Sports Grill",
+    "lat": 33.456429,
+    "long": -112.3941807,
+    "gmapsCategory": "Sports bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Waddell s Longhorn",
+    "lat": 33.4663372,
+    "long": -112.4782671,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "The Vic Bar B Kitchen",
+    "lat": 33.5131488,
+    "long": -112.5117816,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Tempo Urban Bistro",
+    "lat": 33.4957467,
+    "long": -112.512729,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Dave s Hot Chicken",
+    "lat": 33.4649368,
+    "long": -112.381095,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Goodyear Pebble Creek Renaissance Theater",
+    "lat": 33.4809924,
+    "long": -112.4082752,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Dillon s KC BBQ at Wildlife World Zoo",
+    "lat": 33.55,
+    "long": -112.410662,
+    "gmapsCategory": "Barbecue"
+  },
+  {
+    "type": "Liquor",
+    "name": "Jimmy John s",
+    "lat": 33.4943208,
+    "long": -112.4801527,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Jimmy John s",
+    "lat": 33.4589918,
+    "long": -112.3930805,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Jimmy John s",
+    "lat": 33.4580513,
+    "long": -112.5036384,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Neighbors Bar",
+    "lat": 33.582149,
+    "long": -112.221495,
+    "gmapsCategory": "Cocktail bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Mule Creek Saloon",
+    "lat": 33.6405183,
+    "long": -112.4219068,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Grand Dance Club",
+    "lat": 33.6598831,
+    "long": -112.405001,
+    "gmapsCategory": "Dance club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Brookside II Sports Bar and Grille",
+    "lat": 33.6392461,
+    "long": -112.387504,
+    "gmapsCategory": "Sports bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Player Arcade",
+    "lat": 33.6409164,
+    "long": -112.3583329,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "The Toast Craft Kitchen Cocktails",
+    "lat": 33.6404266,
+    "long": -112.4258557,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Irish Wolfhound Restaurant Pub",
+    "lat": 33.6367837,
+    "long": -112.3587853,
+    "gmapsCategory": "Irish pub"
+  },
+  {
+    "type": "Liquor",
+    "name": "Bonfire Craft Kitchen and Tap House Surprise",
+    "lat": 33.6394174,
+    "long": -112.39017,
+    "gmapsCategory": "Burgers & BBQ served a buzzy sports bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Tailgaters IL Primo Surprise",
+    "lat": 33.636827,
+    "long": -112.39462,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Fuzzys Sports Grill",
+    "lat": 33.6549515,
+    "long": -112.3744635,
+    "gmapsCategory": "Sports bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Great Eagle Bar Grill",
+    "lat": 33.6396522,
+    "long": -112.4341722,
+    "gmapsCategory": "Sports bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Booty s Wings Burgers Beer",
+    "lat": 33.6370757,
+    "long": -112.3951187,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "GK s Vapor Pub",
+    "lat": 33.6404654,
+    "long": -112.42562,
+    "gmapsCategory": "Vaporizer store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Cimarron Center",
+    "lat": 33.6643888,
+    "long": -112.4260595,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Angela s Kitchen",
+    "lat": 33.6623928,
+    "long": -112.4052114,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Cross Eyed Cricket Peoria",
+    "lat": 33.7419197,
+    "long": -112.3211858,
+    "gmapsCategory": "Sports bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "V s Taproom",
+    "lat": 33.7430689,
+    "long": -112.3314285,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Over Easy",
+    "lat": 33.6380971,
+    "long": -112.3690572,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Jimmy John s",
+    "lat": 33.638256,
+    "long": -112.3649373,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Jimmy John s",
+    "lat": 33.6381775,
+    "long": -112.443259,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "The Stetson Social",
+    "lat": 33.7086604,
+    "long": -112.2350951,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Lakeside Bar and Grill",
+    "lat": 33.712217,
+    "long": -112.2743169,
+    "gmapsCategory": "Lakeside Bar and Grill"
+  },
+  {
+    "type": "Liquor",
+    "name": "Bourbon Bones Chophouse C Bar",
+    "lat": 33.7086451,
+    "long": -112.2359032,
+    "gmapsCategory": "Bourbon & Bones Chophouse | Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Haymaker North Peoria",
+    "lat": 33.7087193,
+    "long": -112.2707938,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Jimmy John s",
+    "lat": 33.7113847,
+    "long": -112.2713982,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Westside Blues and Jazz",
+    "lat": 33.640529,
+    "long": -112.1860083,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "The Sports Grill Nightlife",
+    "lat": 33.5829806,
+    "long": -112.1548388,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Starlite Lounge",
+    "lat": 33.568519,
+    "long": -112.153765,
+    "gmapsCategory": "Sports bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Enochs Sports Lounge",
+    "lat": 33.5839458,
+    "long": -112.2037288,
+    "gmapsCategory": "Lively sports bar with karaoke & pool"
+  },
+  {
+    "type": "Liquor",
+    "name": "Bull Shooters",
+    "lat": 33.5806236,
+    "long": -112.1330566,
+    "gmapsCategory": "Pool hall with a bar & pub grub"
+  },
+  {
+    "type": "Liquor",
+    "name": " PUB",
+    "lat": 33.6556915,
+    "long": -112.1526335,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": " Cocktail Lounge",
+    "lat": 33.5823296,
+    "long": -112.167902,
+    "gmapsCategory": "Cocktail bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Charley s Place",
+    "lat": 33.6115702,
+    "long": -112.1534724,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Easy Tiger Bar",
+    "lat": 33.5669686,
+    "long": -112.160993,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Adam s Lounge",
+    "lat": 33.6532028,
+    "long": -112.2338633,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "M E Hookah",
+    "lat": 33.5976746,
+    "long": -112.2016101,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Swizzle Stick",
+    "lat": 33.5686781,
+    "long": -112.1708453,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Trilogy Hookah Lounge",
+    "lat": 33.5831037,
+    "long": -112.1832851,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Angry Crab Shack",
+    "lat": 33.639899,
+    "long": -112.304223,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Applebee s Grill B Bar",
+    "lat": 33.6421912,
+    "long": -112.3556653,
+    "gmapsCategory": "Casual American bar & grill chain"
+  },
+  {
+    "type": "Liquor",
+    "name": "Subway",
+    "lat": 33.7653755,
+    "long": -112.5138763,
+    "gmapsCategory": ""
+  }
+]

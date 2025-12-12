@@ -87,6 +87,7 @@ function removeDuplicates(data) {
     "food4less",
     "food 4 less",
     "sprouts",
+    "publix",
     "trader joe",
     "trader joe's",
     "whole foods",
@@ -152,6 +153,8 @@ function removeDuplicates(data) {
     "grocery",
     "supermarket",
     "convenience",
+    "convenience store",
+    "general store",
     "gas station",
     "department store",
     "pharmacy",
@@ -273,7 +276,8 @@ function getDistanceFromCoords(lat1, lng1, lat2, lng2) {
     Math.sin(dLat / 2) * Math.sin(dLat / 2) +
     Math.cos(deg2rad(lat1)) *
       Math.cos(deg2rad(lat2)) *
-      Math.sin(dLng / 2) * Math.sin(dLng / 2);
+      Math.sin(dLng / 2) *
+      Math.sin(dLng / 2);
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   const d = R * c; // Distance in km
 

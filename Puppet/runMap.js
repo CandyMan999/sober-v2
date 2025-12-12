@@ -259,6 +259,7 @@ function inPageScraper(options) {
 
     var intervalId;
     var panCooldown = false;
+    var lastPanTime = 0; // NEW: only used to slow scroll right after a pan
 
     function runScraper() {
       var list = [];
@@ -434,6 +435,8 @@ function inPageScraper(options) {
             " mi"
         );
 
+        lastPanTime = Date.now(); // NEW: for 500ms scroll delay
+
         panCooldown = true;
         setTimeout(function () {
           panCooldown = false;
@@ -475,24 +478,27 @@ function inPageScraper(options) {
             scrollContainer.scrollHeight - bottomThreshold;
         }
 
-        // Edge case: list is visually at bottom but Google didn't show "end of list"
+        // Decide pan conditions FIRST (same conditions as before),
+        // but DO NOT return yet – we still want to scrape what's visible.
+        var shouldPanForBottom = false;
         if (reachedEndOfList() || noResultsFound() || atBottom) {
-          ui.log(
-            "Reached end / bottom / no results. Panning map to new area..."
-          );
-          if (scrollContainer) {
-            scrollContainer.scrollTop = 0;
+          shouldPanForBottom = true;
+        }
+
+        // Scroll (but respect 500ms "rest" after a pan)
+        if (scrollContainer) {
+          if (lastPanTime && Date.now() - lastPanTime < 500) {
+            ui.log(
+              "Recently panned; skipping scroll this tick, still scraping."
+            );
+          } else {
+            scrollContainer.scrollBy({ top: 500, behavior: "smooth" });
           }
-          panMapSlightly();
-          return;
         }
 
         ui.log("scraping tick...");
 
-        if (scrollContainer) {
-          scrollContainer.scrollBy({ top: 500, behavior: "smooth" });
-        }
-
+        // 🔥 ALWAYS SCRAPE EVERY TICK
         var collection = document.getElementsByClassName("Nv2PK THOPZb CpccDe");
 
         for (var i = 0; i < collection.length; i++) {
@@ -523,15 +529,15 @@ function inPageScraper(options) {
             continue;
           }
 
-          // 🔥 NEW: read Maps' own category text
+          // Read Maps' own category text
           var gmapsCategory = getCategoryFromCard(cardEl);
 
           list.push({
-            type: categoryType, // your high-level category (Bar/Liquor)
+            type: categoryType, // high-level category (Bar/Liquor)
             name: name,
             lat: lat,
             long: longVal,
-            gmapsCategory: gmapsCategory, // ← extra field
+            gmapsCategory: gmapsCategory,
           });
         }
 
@@ -540,6 +546,7 @@ function inPageScraper(options) {
         // Keep a live snapshot so Node can bail out if needed
         window.__SCRAPER_RESULTS__ = deduped;
 
+        // ORIGINAL stagnation logic
         if (deduped.length > oldList.length) {
           stagnationTicks = 0;
           ui.log("New unique venues: " + deduped.length);
@@ -550,16 +557,22 @@ function inPageScraper(options) {
           ui.log(
             "No new venues this tick. Stagnation count: " + stagnationTicks
           );
-          if (stagnationTicks >= maxStagnationTicks) {
-            ui.log(
-              "No new venues for a while. Forcing map pan to avoid freeze."
-            );
-            if (scrollContainer) {
-              scrollContainer.scrollTop = 0;
-            }
-            stagnationTicks = 0;
-            panMapSlightly();
+        }
+
+        // ORIGINAL pan-on-stagnation behavior, but after scraping
+        var shouldPanForStagnation = stagnationTicks >= maxStagnationTicks;
+
+        if (shouldPanForBottom || shouldPanForStagnation) {
+          ui.log(
+            "Reached end / bottom / no results or stagnation. Panning map to new area..."
+          );
+          if (scrollContainer) {
+            scrollContainer.scrollTop = 0;
           }
+          if (shouldPanForStagnation) {
+            stagnationTicks = 0;
+          }
+          panMapSlightly();
         }
       }
 

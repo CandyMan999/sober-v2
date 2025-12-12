@@ -9,6 +9,7 @@
     "dev:server": "NODE_ENV=development nodemon --exec babel-node server.js",
     "start:client": "cd client && npx expo start",
     "db:add-venues": "node ./seeders/addBarOrLiquor",
+    "db:add-cities": "node ./seeders/addCities",
     "db:add-quotes": "node ./seeders/addQuotes",
     "db:add-milestones": "node ./seeders/addMilestoneImages",
     "android": "cd client && npx expo start --android",

@@ -1,0 +1,345 @@
+[
+  {
+    "type": "Liquor",
+    "name": "Spearmint Rhino Gentlemen s Club Oxnard",
+    "lat": 34.2076711,
+    "long": -119.1442977,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "PJ s Entertainment",
+    "lat": 34.2226947,
+    "long": -119.1338924,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Q Club Oxnard",
+    "lat": 34.2285297,
+    "long": -119.1775284,
+    "gmapsCategory": "Sports bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Ruby s Cafe",
+    "lat": 34.1993339,
+    "long": -119.1771307,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Casa Lopez Banquet Hall",
+    "lat": 34.1998351,
+    "long": -119.1787204,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Camelot Room",
+    "lat": 34.2198944,
+    "long": -119.1925163,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "VidaLive ",
+    "lat": 34.1951496,
+    "long": -119.1775669,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "La Cascada",
+    "lat": 34.2030704,
+    "long": -119.1761481,
+    "gmapsCategory": "Cocktail bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Hide Away Bar",
+    "lat": 34.1875495,
+    "long": -119.1697407,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Wheelhouse Cannabis Lounge and Weed Bar",
+    "lat": 34.1763245,
+    "long": -119.2124929,
+    "gmapsCategory": "Wheelhouse Cannabis Lounge and Weed Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Los Compadres Restaurant and Bar",
+    "lat": 34.1656188,
+    "long": -119.1771163,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "GiGi s Cocktail Lounge",
+    "lat": 34.2514057,
+    "long": -119.2072736,
+    "gmapsCategory": "Cocktail bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Skunkmasters",
+    "lat": 34.1760661,
+    "long": -119.1979542,
+    "gmapsCategory": "Cannabis store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Brophy Bros ",
+    "lat": 34.2406712,
+    "long": -119.263941,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "papas cigars",
+    "lat": 34.2484527,
+    "long": -119.1970686,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "The Grape",
+    "lat": 34.2736015,
+    "long": -119.2593536,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Vapor Forrest",
+    "lat": 34.1482923,
+    "long": -119.1951494,
+    "gmapsCategory": "Vaporizer store"
+  },
+  {
+    "type": "Liquor",
+    "name": "Keynote Lounge",
+    "lat": 34.2779446,
+    "long": -119.1620801,
+    "gmapsCategory": "Cocktail bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Restaurant Miramar",
+    "lat": 34.1951484,
+    "long": -119.1779022,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "VenTiki Tiki Lounge and Lanai",
+    "lat": 34.2810429,
+    "long": -119.2897968,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Star Lounge",
+    "lat": 34.2809397,
+    "long": -119.2955163,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Pizza Man Dan s",
+    "lat": 34.2405362,
+    "long": -119.1770496,
+    "gmapsCategory": "\"It's so much fun with the big TV and full bar.\""
+  },
+  {
+    "type": "Liquor",
+    "name": "Surf net Liberty Center",
+    "lat": 34.1212679,
+    "long": -119.1000011,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "El Kalua s Night Club",
+    "lat": 33.9762883,
+    "long": -118.2255262,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Bombay Bar Grill",
+    "lat": 34.2789739,
+    "long": -119.2932776,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "harley s Camarillo Bowl",
+    "lat": 34.2197111,
+    "long": -119.0418056,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Dive Bar",
+    "lat": 38.5787144,
+    "long": -121.4933941,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Hollywood Club Crawl",
+    "lat": 34.0999651,
+    "long": -118.3293709,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Local Edition",
+    "lat": 37.7876173,
+    "long": -122.4031472,
+    "gmapsCategory": "Cocktail bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "PJ s Sports Pub",
+    "lat": 34.2190246,
+    "long": -118.8697204,
+    "gmapsCategory": "Sports bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "The Dirty Bourbon",
+    "lat": 35.1295294,
+    "long": -106.531713,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Boom Boom Room",
+    "lat": 37.7846065,
+    "long": -122.4332374,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Toad Hall",
+    "lat": 37.7609974,
+    "long": -122.4359033,
+    "gmapsCategory": "Gay bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "La Movida Night Club",
+    "lat": 35.3756163,
+    "long": -119.0010532,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "The Valencia Room",
+    "lat": 37.7625064,
+    "long": -122.4214116,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Raven Bar",
+    "lat": 37.7757446,
+    "long": -122.4088407,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "F Nightclub Bar",
+    "lat": 37.775266,
+    "long": -122.4100374,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Temple Nightclub San Francisco",
+    "lat": 37.7879638,
+    "long": -122.3972312,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Mango s Sacramento",
+    "lat": 38.5754505,
+    "long": -121.4806896,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "The Bridge Bar FClub",
+    "lat": 27.7965133,
+    "long": -97.3936341,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "We Host Las Vegas",
+    "lat": 36.1599232,
+    "long": -115.1474235,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "La Cita Night Club",
+    "lat": 34.1479052,
+    "long": -119.181782,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "El Tapatio Night Club",
+    "lat": 34.195204,
+    "long": -119.1776515,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Sauna Relax",
+    "lat": 34.214292,
+    "long": -119.1941843,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Casa de Trujillo",
+    "lat": 34.1949288,
+    "long": -119.1970575,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Luz Matzrn",
+    "lat": 34.1600166,
+    "long": -119.1736522,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Harbor Sands",
+    "lat": 33.4418995,
+    "long": -118.4986049,
+    "gmapsCategory": "Public beach"
+  },
+  {
+    "type": "Liquor",
+    "name": "Chi Chi Club",
+    "lat": 33.343781,
+    "long": -118.3262713,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Marlin Club",
+    "lat": 33.3431604,
+    "long": -118.3253517,
+    "gmapsCategory": "Bar"
+  }
+]

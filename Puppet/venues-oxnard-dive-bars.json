@@ -1,0 +1,541 @@
+[
+  {
+    "type": "Bar",
+    "name": "Beachcomber Tavern",
+    "lat": 34.1486037,
+    "long": -119.215054,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Rudder Room",
+    "lat": 34.1594219,
+    "long": -119.2252928,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Sea Rounder",
+    "lat": 34.1748858,
+    "long": -119.1945657,
+    "gmapsCategory": "Cocktail bar"
+  },
+  {
+    "type": "Bar",
+    "name": "The Thirsty Ox",
+    "lat": 34.2085814,
+    "long": -119.1930502,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "GiGi s Cocktail Lounge",
+    "lat": 34.2514057,
+    "long": -119.2072736,
+    "gmapsCategory": "Cocktail bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Camelot Room",
+    "lat": 34.2198944,
+    "long": -119.1925163,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Hide Away Bar",
+    "lat": 34.1875495,
+    "long": -119.1697407,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Bottle Pint",
+    "lat": 34.2402284,
+    "long": -119.1768791,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "CPO Reef",
+    "lat": 34.1693205,
+    "long": -119.2014674,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "La Cascada",
+    "lat": 34.2030704,
+    "long": -119.1761481,
+    "gmapsCategory": "Cocktail bar"
+  },
+  {
+    "type": "Bar",
+    "name": "The Lookout Bar Grill",
+    "lat": 34.1742845,
+    "long": -119.2307722,
+    "gmapsCategory": "The Lookout Bar & Grill"
+  },
+  {
+    "type": "Bar",
+    "name": "Q Club Oxnard",
+    "lat": 34.2285297,
+    "long": -119.1775284,
+    "gmapsCategory": "Sports bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Bar Rincon",
+    "lat": 34.2404431,
+    "long": -119.1792137,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Copper Blues Cantina",
+    "lat": 34.2407425,
+    "long": -119.176728,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Bar",
+    "name": "The Strand Bar Grill",
+    "lat": 34.158041,
+    "long": -119.2219664,
+    "gmapsCategory": "The Strand Bar & Grill"
+  },
+  {
+    "type": "Bar",
+    "name": "PJ s Entertainment",
+    "lat": 34.2226947,
+    "long": -119.1338924,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "The Shores Restaurant",
+    "lat": 34.1909526,
+    "long": -119.2393965,
+    "gmapsCategory": "Cheery bar & grill with beach decor"
+  },
+  {
+    "type": "Bar",
+    "name": "O Leary s Tavern",
+    "lat": 34.2673027,
+    "long": -119.2046797,
+    "gmapsCategory": "Cocktail bar"
+  },
+  {
+    "type": "Bar",
+    "name": "VidaLive ",
+    "lat": 34.1951496,
+    "long": -119.1775669,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Boatyard Pub",
+    "lat": 34.2413076,
+    "long": -119.264961,
+    "gmapsCategory": "Boatyard Pub"
+  },
+  {
+    "type": "Bar",
+    "name": "Urban Flair",
+    "lat": 34.1769851,
+    "long": -119.2142421,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Mystic Water Kava Bar Ventura",
+    "lat": 34.2630921,
+    "long": -119.2734284,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "It s In the Sauce BBQ",
+    "lat": 34.1829312,
+    "long": -119.1656515,
+    "gmapsCategory": "Barbecue"
+  },
+  {
+    "type": "Bar",
+    "name": "Roxsbury Deli Grill",
+    "lat": 34.176403,
+    "long": -119.2097702,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Bar",
+    "name": "The Sewer Sans Souci Cocktail Lounge",
+    "lat": 34.2805195,
+    "long": -119.291718,
+    "gmapsCategory": "Cocktail bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Victoria Pub Grill",
+    "lat": 34.2624152,
+    "long": -119.2127794,
+    "gmapsCategory": "British-American bar with darts & pool"
+  },
+  {
+    "type": "Bar",
+    "name": "Seed Ranger E The Great Vegan Food Station",
+    "lat": 34.2478105,
+    "long": -119.1949076,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Bar",
+    "name": "Mrs Olson s Restaurant",
+    "lat": 34.17419,
+    "long": -119.230641,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Bar",
+    "name": "Sportsman Restaurant",
+    "lat": 34.223273,
+    "long": -119.1032185,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Bar",
+    "name": "Bench Warmer",
+    "lat": 34.2788219,
+    "long": -119.2724448,
+    "gmapsCategory": "Cocktail bar"
+  },
+  {
+    "type": "Bar",
+    "name": "The Garage Bar",
+    "lat": 34.2786177,
+    "long": -119.1611464,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Keynote Lounge",
+    "lat": 34.2779446,
+    "long": -119.1620801,
+    "gmapsCategory": "Cocktail bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Clubhouse Sports Bar Grill",
+    "lat": 34.2206608,
+    "long": -119.0403645,
+    "gmapsCategory": "Sports bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Margarita Villa",
+    "lat": 34.2407707,
+    "long": -119.2646485,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Bar",
+    "name": "Outlaws Grill Saloon",
+    "lat": 34.2230389,
+    "long": -119.0405806,
+    "gmapsCategory": "\"Cool dive bar scene with unexpectedly excellent Mexican food.\""
+  },
+  {
+    "type": "Bar",
+    "name": "Take Five Cocktails",
+    "lat": 34.2214335,
+    "long": -119.0398474,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Pizza Man Dan s",
+    "lat": 34.1989578,
+    "long": -119.2207284,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Bar",
+    "name": "Paddy s Bar Lounge",
+    "lat": 34.2809405,
+    "long": -119.300919,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Twisted Oak Tavern",
+    "lat": 34.2165563,
+    "long": -119.0372884,
+    "gmapsCategory": "Gastropub"
+  },
+  {
+    "type": "Bar",
+    "name": "Social Tap Ventura",
+    "lat": 34.2637634,
+    "long": -119.2733465,
+    "gmapsCategory": "Elevated pub grub in a convivial setting"
+  },
+  {
+    "type": "Bar",
+    "name": "Jaguar Moon",
+    "lat": 34.2797,
+    "long": -119.294854,
+    "gmapsCategory": "Cocktail bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Tacos El Brother Mexican Grill",
+    "lat": 34.183468,
+    "long": -119.170204,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Bar",
+    "name": "The Local Camarillo",
+    "lat": 34.203132,
+    "long": -118.9870084,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Duke s Beach Grill",
+    "lat": 34.263216,
+    "long": -119.273515,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": " C Sabi Restaurant",
+    "lat": 34.2539276,
+    "long": -119.2113069,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Bar",
+    "name": "VenTiki Tiki Lounge and Lanai",
+    "lat": 34.2810429,
+    "long": -119.2897968,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Star Lounge",
+    "lat": 34.2809397,
+    "long": -119.2955163,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": " Tiki Bar",
+    "lat": 34.2168506,
+    "long": -119.0442135,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "The Saloon Ventura",
+    "lat": 34.2807202,
+    "long": -119.2937924,
+    "gmapsCategory": "Cocktail bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Rocks Drams",
+    "lat": 34.2805388,
+    "long": -119.2929894,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Bar",
+    "name": "Cronies Sports Grill",
+    "lat": 34.2196172,
+    "long": -119.0541752,
+    "gmapsCategory": "Local sports bar with pub grub & TVs"
+  },
+  {
+    "type": "Bar",
+    "name": "Pierpont Tacos",
+    "lat": 34.2634937,
+    "long": -119.273681,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Bar",
+    "name": "Bombay Bar Grill",
+    "lat": 34.2789739,
+    "long": -119.2932776,
+    "gmapsCategory": "Bombay Bar & Grill"
+  },
+  {
+    "type": "Bar",
+    "name": "Strange Beast",
+    "lat": 34.2806357,
+    "long": -119.2948693,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Bar",
+    "name": "Winchesters Grill Saloon",
+    "lat": 34.2805879,
+    "long": -119.291027,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Bar",
+    "name": "Azar s Sports Bar Grill",
+    "lat": 34.1819938,
+    "long": -118.9256103,
+    "gmapsCategory": "Sports bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Dargans Irish Pub Restaurant",
+    "lat": 34.2809821,
+    "long": -119.2916815,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Paradise Pantry",
+    "lat": 34.280686,
+    "long": -119.2973337,
+    "gmapsCategory": "Cozy gourmet tapas/wine bar & market"
+  },
+  {
+    "type": "Bar",
+    "name": "PJ s Sports Pub",
+    "lat": 34.2190246,
+    "long": -118.8697204,
+    "gmapsCategory": "Sports bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Fling Cocktail Lounge",
+    "lat": 33.76872,
+    "long": -117.8367019,
+    "gmapsCategory": "Cocktail bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Donna s Cocktails",
+    "lat": 33.8940359,
+    "long": -118.3093788,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Power House Bar",
+    "lat": 34.1021287,
+    "long": -118.3384586,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Hi N Dry Cocktails",
+    "lat": 33.8653023,
+    "long": -118.3271257,
+    "gmapsCategory": "Cocktail bar"
+  },
+  {
+    "type": "Bar",
+    "name": "The Tipsy Goat",
+    "lat": 34.1794749,
+    "long": -118.8741307,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Tustin Inn",
+    "lat": 33.7453804,
+    "long": -117.8194122,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "El Rey Cantina",
+    "lat": 34.2162204,
+    "long": -119.0391659,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "B J Drive In",
+    "lat": 34.28287,
+    "long": -119.1481323,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Bar",
+    "name": "The Watering Hole",
+    "lat": 32.8356994,
+    "long": -117.1880021,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "The Cinema Bar",
+    "lat": 34.0094025,
+    "long": -118.4147021,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Lucky Fools Pub",
+    "lat": 34.2856312,
+    "long": -118.8813038,
+    "gmapsCategory": "Pub"
+  },
+  {
+    "type": "Bar",
+    "name": "Dive Bar",
+    "lat": 38.5787144,
+    "long": -121.4933941,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "The Owl Bar",
+    "lat": 33.1301653,
+    "long": -96.826351,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "TJ E s Kitchen",
+    "lat": 34.2168852,
+    "long": -119.0448335,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "La Tapatia II",
+    "lat": 34.2749278,
+    "long": -119.2754527,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Bar",
+    "name": "Cafe Fiore",
+    "lat": 34.2799809,
+    "long": -119.292808,
+    "gmapsCategory": "\"Live band on a Wednesday night, old school bar at the front, perfect date!\""
+  },
+  {
+    "type": "Bar",
+    "name": "Socal s Tavern",
+    "lat": 38.5600653,
+    "long": -121.4427531,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "The Scene",
+    "lat": 34.2085887,
+    "long": -118.4226341,
+    "gmapsCategory": "Bar"
+  }
+]

@@ -1,0 +1,2606 @@
+[
+  {
+    "type": "Liquor",
+    "name": "Lounge ",
+    "lat": 37.794052,
+    "long": -122.2011348,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "El Rey Night Club",
+    "lat": 37.7727778,
+    "long": -122.2002778,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "La Frontera Night Club",
+    "lat": 37.7713337,
+    "long": -122.2132537,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Thee Stork Club",
+    "lat": 37.8131757,
+    "long": -122.2683657,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Hello Stranger",
+    "lat": 37.8070193,
+    "long": -122.2692667,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Zanzi Oakland",
+    "lat": 37.8113416,
+    "long": -122.2662833,
+    "gmapsCategory": "Dance club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Lakeside Lounge",
+    "lat": 37.7994952,
+    "long": -122.2512123,
+    "gmapsCategory": "Cocktail bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Lux Oakland",
+    "lat": 37.8018698,
+    "long": -122.2709581,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Continental Club",
+    "lat": 37.810952,
+    "long": -122.296529,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Parliament Event Venue",
+    "lat": 37.8010164,
+    "long": -122.2750478,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Cave Oakland",
+    "lat": 37.8028535,
+    "long": -122.2668943,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Qu C A Rico Nightclub",
+    "lat": 37.8045286,
+    "long": -122.2690933,
+    "gmapsCategory": "Gay night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "The Barbary",
+    "lat": 37.8132117,
+    "long": -122.2465187,
+    "gmapsCategory": "Cocktail bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Elbo Room Jack London",
+    "lat": 37.7971728,
+    "long": -122.2759963,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "The Fireside Lounge",
+    "lat": 37.7730409,
+    "long": -122.2770107,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Summer Bar Lounge",
+    "lat": 37.8010445,
+    "long": -122.2755783,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Torch Oakland Rooftop Bar",
+    "lat": 37.8068726,
+    "long": -122.2717662,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Rockridge Improvement Club",
+    "lat": 37.8428444,
+    "long": -122.2518942,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Aloha Club",
+    "lat": 37.7750087,
+    "long": -122.2269511,
+    "gmapsCategory": "Cocktail bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Forbidden Island",
+    "lat": 37.7746054,
+    "long": -122.262949,
+    "gmapsCategory": "Tiki bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Bay Celebrations, LLC",
+    "lat": 37.8023894,
+    "long": -122.2890029,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Next Level Nightclub",
+    "lat": 37.8024652,
+    "long": -122.2689768,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Passport",
+    "lat": 37.8081753,
+    "long": -122.2691771,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "The Sound Room",
+    "lat": 37.8191351,
+    "long": -122.2616804,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "The Legionnaire Saloon",
+    "lat": 37.8123733,
+    "long": -122.2685965,
+    "gmapsCategory": "Karaoke bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Laurel Lounge",
+    "lat": 37.7907742,
+    "long": -122.197601,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Space Lounge",
+    "lat": 37.8070184,
+    "long": -122.270487,
+    "gmapsCategory": "Bartenders was friendly and the atmosphere was great\""
+  },
+  {
+    "type": "Liquor",
+    "name": "District Oakland",
+    "lat": 37.801339,
+    "long": -122.2748651,
+    "gmapsCategory": "Whiskey & wine bar with small plates"
+  },
+  {
+    "type": "Liquor",
+    "name": "High ive Rooftop Bar",
+    "lat": 37.814055,
+    "long": -122.2662464,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Swell Bar",
+    "lat": 37.7745109,
+    "long": -122.2590688,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Fluid ",
+    "lat": 37.8059856,
+    "long": -122.2699721,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Yoshi s",
+    "lat": 37.7963889,
+    "long": -122.2788889,
+    "gmapsCategory": "· 510 Embarcadero West"
+  },
+  {
+    "type": "Liquor",
+    "name": "lemon drop",
+    "lat": 37.7635068,
+    "long": -122.2386823,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Telegraph Room Fox Theather ",
+    "lat": 37.8079464,
+    "long": -122.2701509,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Mushin ",
+    "lat": 37.8034709,
+    "long": -122.2707599,
+    "gmapsCategory": "Social club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Parkway Lounge",
+    "lat": 37.7995087,
+    "long": -122.2500179,
+    "gmapsCategory": "\"They have great bartenders and reasonably priced drinks.\""
+  },
+  {
+    "type": "Liquor",
+    "name": "MeloMelo Kava Bar",
+    "lat": 37.8124911,
+    "long": -122.2470815,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Irish Lady II",
+    "lat": 37.7837974,
+    "long": -122.2656174,
+    "gmapsCategory": "Boat club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Viridian",
+    "lat": 37.8112077,
+    "long": -122.2666264,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Bardo Lounge Supper Club",
+    "lat": 37.811203,
+    "long": -122.2435493,
+    "gmapsCategory": "Bardo Lounge & Supper Club"
+  },
+  {
+    "type": "Liquor",
+    "name": "The Starry Plough Pub",
+    "lat": 37.8529903,
+    "long": -122.2659426,
+    "gmapsCategory": "Pub"
+  },
+  {
+    "type": "Liquor",
+    "name": "Club House Sports Bar",
+    "lat": 37.7613782,
+    "long": -122.2455173,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Cali Berkeley",
+    "lat": 37.8675167,
+    "long": -122.2587438,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": " th St Kiss ultra lounge bar and restaurant",
+    "lat": 37.8143889,
+    "long": -122.265234,
+    "gmapsCategory": "25th St Kiss ultra lounge bar and restaurant"
+  },
+  {
+    "type": "Liquor",
+    "name": "Dotha s Juke Joint",
+    "lat": 37.7956944,
+    "long": -122.2760667,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Line Brewing",
+    "lat": 37.7994058,
+    "long": -122.2820293,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": " JAGRILLS",
+    "lat": 37.797099,
+    "long": -122.2760113,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "La Furia Chalaca",
+    "lat": 37.7968881,
+    "long": -122.275462,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Honor Kitchen",
+    "lat": 37.8392391,
+    "long": -122.2896402,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "El Toro Night Club",
+    "lat": 37.7306713,
+    "long": -122.4052746,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "D Monaghans On The Hill",
+    "lat": 37.8118173,
+    "long": -122.1982033,
+    "gmapsCategory": "Sports bar with pub grub, pool & a patio"
+  },
+  {
+    "type": "Liquor",
+    "name": "New Karibbean City",
+    "lat": 37.8035565,
+    "long": -122.2684824,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "The Uptown Nightclub ",
+    "lat": 37.8085876,
+    "long": -122.269635,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "XOXO NightClub",
+    "lat": 37.7964296,
+    "long": -122.2763575,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Alameda",
+    "lat": 37.7893825,
+    "long": -122.1998579,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "The Warehouse",
+    "lat": 37.8464149,
+    "long": -122.2778832,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Oakland California",
+    "lat": 37.7572157,
+    "long": -122.1865558,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Money Club",
+    "lat": 37.8113159,
+    "long": -122.2682245,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "The Club",
+    "lat": 37.8602549,
+    "long": -122.2427886,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Cat Club",
+    "lat": 37.7753713,
+    "long": -122.4098711,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Hawthorn SF Nightclub and Lounge",
+    "lat": 37.787992,
+    "long": -122.404294,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Temple Nightclub San Francisco",
+    "lat": 37.7879638,
+    "long": -122.3972312,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "F Nightclub Bar",
+    "lat": 37.775266,
+    "long": -122.4100374,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Oaktown Improv",
+    "lat": 37.8349673,
+    "long": -122.2633832,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Paname SF",
+    "lat": 37.7978359,
+    "long": -122.4059645,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Yeti Sports Bar and Restaurant C Nepalese Indian Restaurant Berkeley",
+    "lat": 37.8488284,
+    "long": -122.2717996,
+    "gmapsCategory": "Yeti Sports Bar and Restaurant | Nepalese Indian Restaurant Berkeley"
+  },
+  {
+    "type": "Liquor",
+    "name": "City Nights",
+    "lat": 37.7820624,
+    "long": -122.3976354,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Pura Saturdays",
+    "lat": 37.7780959,
+    "long": -122.4057604,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Monarch",
+    "lat": 37.7809861,
+    "long": -122.4085,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "The Valencia Room",
+    "lat": 37.7625064,
+    "long": -122.4214116,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "DNA Lounge",
+    "lat": 37.7711099,
+    "long": -122.4127726,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Beta Lounge Bar Kitchen",
+    "lat": 37.8670058,
+    "long": -122.2661456,
+    "gmapsCategory": "Wine bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Expression Arts",
+    "lat": 37.7913448,
+    "long": -122.1981284,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "SWIG",
+    "lat": 37.7866667,
+    "long": -122.4125,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Cornerstone Craft Beer Live Music",
+    "lat": 37.8663201,
+    "long": -122.2673229,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Jaguar Karaoke Berkeley",
+    "lat": 37.8677543,
+    "long": -122.2581352,
+    "gmapsCategory": "Karaoke bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Soundpieces",
+    "lat": 37.7955703,
+    "long": -122.3933208,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Eve Nightclub Lounge",
+    "lat": 37.7713726,
+    "long": -122.4143364,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "La Movida Night Club",
+    "lat": 37.964217,
+    "long": -122.3455913,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Raven Bar",
+    "lat": 37.7757446,
+    "long": -122.4088407,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Lucitas Nightclub",
+    "lat": 37.7448233,
+    "long": -122.4202372,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Make Out Room",
+    "lat": 37.75526,
+    "long": -122.4193399,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Caliente",
+    "lat": 37.7100071,
+    "long": -122.1349056,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Power Exchange",
+    "lat": 37.78339,
+    "long": -122.412179,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Providence Night Club",
+    "lat": 37.7894615,
+    "long": -122.4206031,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Charles Blades Barber Shop",
+    "lat": 37.7934364,
+    "long": -122.269317,
+    "gmapsCategory": "Barber shop"
+  },
+  {
+    "type": "Liquor",
+    "name": "Monroe SF",
+    "lat": 37.797965,
+    "long": -122.4049508,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Dawn Club",
+    "lat": 37.7877212,
+    "long": -122.4025116,
+    "gmapsCategory": "Dawn Club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Tupper Reed",
+    "lat": 37.8681444,
+    "long": -122.2675583,
+    "gmapsCategory": "Cocktail bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Karaoke",
+    "lat": 37.8149905,
+    "long": -122.2680162,
+    "gmapsCategory": "Karaoke bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Hotsy Totsy Club",
+    "lat": 37.8950407,
+    "long": -122.3002163,
+    "gmapsCategory": "Cocktail bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Club X",
+    "lat": 37.7820285,
+    "long": -122.3976578,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "OMG",
+    "lat": 37.7818047,
+    "long": -122.4093351,
+    "gmapsCategory": "Gay night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Alchemist Bar Lounge",
+    "lat": 37.7792744,
+    "long": -122.3930557,
+    "gmapsCategory": "Cocktail bar"
+  },
+  {
+    "type": "Liquor",
+    "name": " Folsom",
+    "lat": 37.7781117,
+    "long": -122.4058001,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Tunnel Top Lounge and Bar",
+    "lat": 37.7902021,
+    "long": -122.4073966,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "The Port Bar",
+    "lat": 37.809564,
+    "long": -122.268292,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Salsa and Bachata Latin Night Club at Dance Fridays Space ",
+    "lat": 37.7398847,
+    "long": -122.4047813,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "The Midway",
+    "lat": 37.7492774,
+    "long": -122.3856944,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Underground SF",
+    "lat": 37.7724664,
+    "long": -122.4293949,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "The Grand",
+    "lat": 37.7790996,
+    "long": -122.3979003,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Malibu",
+    "lat": 37.7422335,
+    "long": -122.4218618,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Twist",
+    "lat": 37.8055367,
+    "long": -122.4133567,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "The Dirty Bird Lounge",
+    "lat": 37.6725742,
+    "long": -122.0837248,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "The EndUp",
+    "lat": 37.777312,
+    "long": -122.403745,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Pasta Pelican Restaurant",
+    "lat": 37.7915238,
+    "long": -122.2774623,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Big Jaspies male night club",
+    "lat": 37.7397044,
+    "long": -122.4291274,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Origin",
+    "lat": 37.7838841,
+    "long": -122.4325529,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "La Caba C B a Nightclub",
+    "lat": 37.9528969,
+    "long": -122.0432048,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Club Six",
+    "lat": 37.7813345,
+    "long": -122.4096056,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Audio Nightclub",
+    "lat": 37.7714327,
+    "long": -122.4137765,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Sugar Lounge",
+    "lat": 37.7767776,
+    "long": -122.4225255,
+    "gmapsCategory": "Cocktail bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Farallon Club",
+    "lat": 37.6783321,
+    "long": -122.0918472,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Peppermint Hippo",
+    "lat": 36.1521729,
+    "long": -115.151259,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Lush Lounge",
+    "lat": 37.7881262,
+    "long": -122.4204128,
+    "gmapsCategory": "Loftlike bar known for mixed cocktails"
+  },
+  {
+    "type": "Liquor",
+    "name": "El Potro Club",
+    "lat": 37.6659493,
+    "long": -122.1162849,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Local Edition",
+    "lat": 37.7876173,
+    "long": -122.4031472,
+    "gmapsCategory": "Cocktail bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Love BPropaganda",
+    "lat": 37.788968,
+    "long": -122.4065066,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Carbon",
+    "lat": 37.8055456,
+    "long": -122.4132693,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Nica Lounge",
+    "lat": 37.9765907,
+    "long": -122.0371645,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "The Fluffy Cloud Experience San Francisco Immersive Music Light Show",
+    "lat": 37.9107259,
+    "long": -122.3585743,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Up Under Pub and Grill",
+    "lat": 37.9253595,
+    "long": -122.3846293,
+    "gmapsCategory": "Pub"
+  },
+  {
+    "type": "Liquor",
+    "name": "Ruby Room",
+    "lat": 37.8014972,
+    "long": -122.2636583,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "AU Lounge",
+    "lat": 37.8139878,
+    "long": -122.264934,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Night Heron",
+    "lat": 37.807651,
+    "long": -122.2698707,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Eli s Mile High Club",
+    "lat": 37.8257875,
+    "long": -122.2696896,
+    "gmapsCategory": "Blues club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Kona Club",
+    "lat": 37.8305001,
+    "long": -122.2473824,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Golden Ratio",
+    "lat": 37.805209,
+    "long": -122.2694513,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Merchants Saloon",
+    "lat": 37.7954993,
+    "long": -122.2754072,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "The Avenue Bar",
+    "lat": 37.8349964,
+    "long": -122.2625599,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "El Gato Negro Bar",
+    "lat": 37.7799156,
+    "long": -122.2296031,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Town Bar Lounge",
+    "lat": 37.8092486,
+    "long": -122.2684409,
+    "gmapsCategory": "Gay bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "The Athletic Club Oakland",
+    "lat": 37.8112425,
+    "long": -122.2656017,
+    "gmapsCategory": "Sports bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Bar Shiru",
+    "lat": 37.8063737,
+    "long": -122.2706835,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Mimosa ",
+    "lat": 37.8129977,
+    "long": -122.2465778,
+    "gmapsCategory": "Cocktail bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "The Cat House",
+    "lat": 37.8106468,
+    "long": -122.2450779,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "The Hatch Oakland",
+    "lat": 37.8050167,
+    "long": -122.2695056,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Lucky ",
+    "lat": 37.7627799,
+    "long": -122.2443224,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Heinold s First and Last Chance Saloon",
+    "lat": 37.793749,
+    "long": -122.2745719,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "White Horse Inn",
+    "lat": 37.8518352,
+    "long": -122.2606209,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Bar ",
+    "lat": 37.8067591,
+    "long": -122.2670387,
+    "gmapsCategory": "Cocktail bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Low Bar",
+    "lat": 37.8120803,
+    "long": -122.2650837,
+    "gmapsCategory": "Cocktail bar with elevated Mexican bites"
+  },
+  {
+    "type": "Liquor",
+    "name": "Mad Oak Bar E N E Yard",
+    "lat": 37.799759,
+    "long": -122.2647241,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "The Lodge",
+    "lat": 37.8232639,
+    "long": -122.2562694,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Heart Dagger Saloon",
+    "lat": 37.8104701,
+    "long": -122.2467483,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": " th West",
+    "lat": 37.8042202,
+    "long": -122.2907415,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Trophy Club",
+    "lat": 37.8366644,
+    "long": -122.2921038,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "The Gold Key Inc",
+    "lat": 37.7769317,
+    "long": -122.2249755,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Allegro Ballroom",
+    "lat": 37.9315625,
+    "long": -122.3216593,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "The Great Northern",
+    "lat": 37.7674694,
+    "long": -122.4065056,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Halcyon SF",
+    "lat": 37.7714504,
+    "long": -122.4139283,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Madrone Art Bar",
+    "lat": 37.7742011,
+    "long": -122.4373746,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Badlands San Francisco",
+    "lat": 37.7607028,
+    "long": -122.4355306,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Roccapulco",
+    "lat": 37.7471428,
+    "long": -122.4191437,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Public Works",
+    "lat": 37.7689239,
+    "long": -122.4194193,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Lookout",
+    "lat": 37.7643682,
+    "long": -122.433446,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Skylark",
+    "lat": 37.7647759,
+    "long": -122.4215657,
+    "gmapsCategory": "Cocktail bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Space ",
+    "lat": 37.7399082,
+    "long": -122.4047871,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "El Valenciano",
+    "lat": 37.754529,
+    "long": -122.420771,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Knockout",
+    "lat": 37.7451582,
+    "long": -122.4199482,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Hole In the Wall Saloon",
+    "lat": 37.7729402,
+    "long": -122.4123526,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "The Academy SF",
+    "lat": 37.7667091,
+    "long": -122.430396,
+    "gmapsCategory": "Social club"
+  },
+  {
+    "type": "Liquor",
+    "name": "New Wave City",
+    "lat": 37.775454,
+    "long": -122.410026,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "San Francisco Eagle Bar",
+    "lat": 37.7699944,
+    "long": -122.4134054,
+    "gmapsCategory": "Gay night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Az C BAcar Lounge",
+    "lat": 37.7739693,
+    "long": -122.4116315,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "OASIS",
+    "lat": 37.7718948,
+    "long": -122.4144155,
+    "gmapsCategory": "Gay night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Jazz Room",
+    "lat": 37.7296672,
+    "long": -122.3922767,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Underground Nomads",
+    "lat": 37.7752688,
+    "long": -122.4100056,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "The Lucky Horseshoe",
+    "lat": 37.7392726,
+    "long": -122.416782,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "The Mint Karaoke Lounge",
+    "lat": 37.7702898,
+    "long": -122.4258098,
+    "gmapsCategory": "Karaoke bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Wild Side West",
+    "lat": 37.7389698,
+    "long": -122.4172101,
+    "gmapsCategory": "Lesbian bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Emporium Arcade Bar",
+    "lat": 37.7753364,
+    "long": -122.4376563,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "The Stud",
+    "lat": 37.7761825,
+    "long": -122.4083567,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Noc Noc",
+    "lat": 37.7718731,
+    "long": -122.4314035,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Thee Parkside",
+    "lat": 37.765222,
+    "long": -122.399911,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "QT K Pop Night SF",
+    "lat": 37.7760033,
+    "long": -122.4204681,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Playaz Club",
+    "lat": 37.735602,
+    "long": -122.390751,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "RIZE San Francisco",
+    "lat": 37.7713728,
+    "long": -122.4143025,
+    "gmapsCategory": "Gay night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Mr Tipple s Jazz Club",
+    "lat": 37.7763698,
+    "long": -122.4185846,
+    "gmapsCategory": "Spirited New American fare and cocktails"
+  },
+  {
+    "type": "Liquor",
+    "name": "Toad Hall",
+    "lat": 37.7609974,
+    "long": -122.4359033,
+    "gmapsCategory": "Gay bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "The Chapel",
+    "lat": 37.7604864,
+    "long": -122.4212979,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Danny Coyle s",
+    "lat": 37.7719331,
+    "long": -122.4332946,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Evil Eye",
+    "lat": 37.7500426,
+    "long": -122.4181082,
+    "gmapsCategory": "Cocktail bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "AC Lounge",
+    "lat": 37.6645935,
+    "long": -122.3955206,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Shimmytown",
+    "lat": 37.755252,
+    "long": -122.419278,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "East Courtyard Lounge",
+    "lat": 37.7743359,
+    "long": -122.3909619,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Question Mark Tavern",
+    "lat": 37.7753467,
+    "long": -122.402831,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "The Function",
+    "lat": 37.7762647,
+    "long": -122.4181954,
+    "gmapsCategory": "Comedy club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Project One",
+    "lat": 37.7667656,
+    "long": -122.4024757,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": " Bar Kitchen",
+    "lat": 37.771534,
+    "long": -122.4168023,
+    "gmapsCategory": "1601 Bar & Kitchen"
+  },
+  {
+    "type": "Liquor",
+    "name": "Bar Piccino",
+    "lat": 37.7575825,
+    "long": -122.389984,
+    "gmapsCategory": "Cocktail bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "DERBY E A AE E A BE E A B E A D E A E A E A F",
+    "lat": 37.7749295,
+    "long": -122.4194155,
+    "gmapsCategory": "Cabaret club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Bruno s",
+    "lat": 37.7589499,
+    "long": -122.4189112,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Nihon Whisky Lounge",
+    "lat": 37.7687083,
+    "long": -122.4154806,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "AsiaSF",
+    "lat": 37.775043,
+    "long": -122.412832,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "The Madrigal",
+    "lat": 37.7767595,
+    "long": -122.4192308,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Aura Cinema",
+    "lat": 37.7596618,
+    "long": -122.3887026,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Wix Lounge SF",
+    "lat": 37.7552464,
+    "long": -122.4185384,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Club ",
+    "lat": 37.9108086,
+    "long": -122.0605822,
+    "gmapsCategory": "Gay bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Retro Junkie",
+    "lat": 37.9088934,
+    "long": -122.0645267,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Spoontonic Lounge",
+    "lat": 37.9191784,
+    "long": -122.0645678,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": " Restaurant Lounge",
+    "lat": 37.9001164,
+    "long": -122.0614695,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Round Up Saloon",
+    "lat": 37.8916632,
+    "long": -122.1204239,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Bourbon Highway Country Bar",
+    "lat": 37.9018806,
+    "long": -122.0623222,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "The Library Social Club C Wine Bar",
+    "lat": 37.9001526,
+    "long": -122.0608732,
+    "gmapsCategory": "Wine bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Mr Lucky s",
+    "lat": 37.9002778,
+    "long": -122.0627778,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Captain s Chest Cocktail Lounge",
+    "lat": 37.9369406,
+    "long": -122.0248655,
+    "gmapsCategory": "Cocktail bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Artie s Countrywood Lounge",
+    "lat": 37.9301583,
+    "long": -122.039563,
+    "gmapsCategory": "Cocktail bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Stereo ",
+    "lat": 37.899577,
+    "long": -122.0618017,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "WiseGirl",
+    "lat": 37.9341087,
+    "long": -122.0753391,
+    "gmapsCategory": "Italian bistro & bar with vintage style"
+  },
+  {
+    "type": "Liquor",
+    "name": "Hops Scotch",
+    "lat": 37.9267729,
+    "long": -122.0567882,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Fuego Tequila Grill",
+    "lat": 37.8983116,
+    "long": -122.0620193,
+    "gmapsCategory": "Spirits & Mexican fare in clubby digs"
+  },
+  {
+    "type": "Liquor",
+    "name": "Chp weigh station",
+    "lat": 37.925902,
+    "long": -122.059523,
+    "gmapsCategory": "Gay night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Dan s Irish Sports Bar",
+    "lat": 37.9017011,
+    "long": -122.0624154,
+    "gmapsCategory": "Sports bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Residual Sugar Wine Bar",
+    "lat": 37.9017813,
+    "long": -122.06308,
+    "gmapsCategory": "Wine bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Cigar Loft Lounge",
+    "lat": 37.8964968,
+    "long": -122.066897,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Stadium Pub",
+    "lat": 37.9007567,
+    "long": -122.0609716,
+    "gmapsCategory": "Sports bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Masses Sports Bar Grill",
+    "lat": 37.9227111,
+    "long": -122.0644,
+    "gmapsCategory": "Masses Sports Bar & Grill"
+  },
+  {
+    "type": "Liquor",
+    "name": "The Pub",
+    "lat": 37.8406385,
+    "long": -122.1089284,
+    "gmapsCategory": "Pub"
+  },
+  {
+    "type": "Liquor",
+    "name": "C Enrichment Organization",
+    "lat": 37.9076757,
+    "long": -122.0612994,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Walnut Creek Model Railroad Society",
+    "lat": 37.9225106,
+    "long": -122.0739061,
+    "gmapsCategory": "Club"
+  },
+  {
+    "type": "Liquor",
+    "name": " C L Beercafe Bottleshop",
+    "lat": 37.901986,
+    "long": -122.0628887,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "jazz at lesher center",
+    "lat": 37.900925,
+    "long": -122.0635182,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Nu Rays Bar",
+    "lat": 38.017628,
+    "long": -122.1354532,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Whiskey Lane",
+    "lat": 38.0180358,
+    "long": -122.1357498,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Roxx On Main",
+    "lat": 38.0172502,
+    "long": -122.1371249,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "BARREL AGED COCKTAIL BAR at BARRELISTA",
+    "lat": 38.0176059,
+    "long": -122.1357501,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Brix Craft, Craft Cocktails Wine Artisan Pizza",
+    "lat": 38.0173441,
+    "long": -122.1361605,
+    "gmapsCategory": "Cocktail bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Martinez Yacht Club",
+    "lat": 38.0248749,
+    "long": -122.1361609,
+    "gmapsCategory": "Yacht club"
+  },
+  {
+    "type": "Liquor",
+    "name": "JustINtertainment",
+    "lat": 38.0161663,
+    "long": -122.137773,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Shuck It Oyster Bar Seafood",
+    "lat": 38.016836,
+    "long": -122.1370367,
+    "gmapsCategory": "Oyster Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Farrington s",
+    "lat": 37.9482918,
+    "long": -122.0590744,
+    "gmapsCategory": "Sports bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Legends Bar Antioch",
+    "lat": 37.9844432,
+    "long": -121.8066922,
+    "gmapsCategory": "Cocktail bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Los Cachanillas Sportsbar and Seafood",
+    "lat": 37.9983599,
+    "long": -121.8205466,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Lou s Place",
+    "lat": 38.0132217,
+    "long": -121.806031,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Herf Cigar Lounge at St Claire E s",
+    "lat": 38.0323728,
+    "long": -121.8828671,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Pineda s Bar",
+    "lat": 38.0303246,
+    "long": -121.8831751,
+    "gmapsCategory": "Sports bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "La Plazuela Restaurant and Bar",
+    "lat": 38.0153205,
+    "long": -121.8140462,
+    "gmapsCategory": "La Plazuela Restaurant and Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": " th Hole Casino Lounge",
+    "lat": 37.9960547,
+    "long": -121.8080494,
+    "gmapsCategory": "\"A full bar & the regular patrons welcome new people.\""
+  },
+  {
+    "type": "Liquor",
+    "name": "Tailgaters Sports Bar Grill",
+    "lat": 37.9765443,
+    "long": -121.8025645,
+    "gmapsCategory": "Tailgaters Sports Bar & Grill"
+  },
+  {
+    "type": "Liquor",
+    "name": "Blackhawk Country Club",
+    "lat": 37.8189331,
+    "long": -121.915517,
+    "gmapsCategory": "Country club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Fat Maddie E s Blackhawk",
+    "lat": 37.8007431,
+    "long": -121.9180435,
+    "gmapsCategory": "\"Great spot, fun atmosphere a few TVs and a decent sized bar.\""
+  },
+  {
+    "type": "Liquor",
+    "name": "Blue Sakana Blackhawk",
+    "lat": 37.7998102,
+    "long": -121.9193937,
+    "gmapsCategory": "Homey Japanese outpost with a sushi bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "NILO RESTAURANT",
+    "lat": 37.8003565,
+    "long": -121.918798,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "DJ Dr T",
+    "lat": 37.2314044,
+    "long": -55.4511041,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "High Tech Burrito Blackhawk",
+    "lat": 37.7978115,
+    "long": -121.9195994,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "DJ Salim",
+    "lat": 46.423669,
+    "long": -129.9427086,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Foksifu Event Emcee and DJ Services",
+    "lat": 37.878638,
+    "long": -122.4203375,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "The Oak Door",
+    "lat": 37.6765993,
+    "long": -121.7573898,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Hop DeVine",
+    "lat": 37.719435,
+    "long": -121.724561,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Longevity Wines Inc",
+    "lat": 37.6759437,
+    "long": -121.7192298,
+    "gmapsCategory": "Winery"
+  },
+  {
+    "type": "Liquor",
+    "name": "Cinco TacoBar",
+    "lat": 37.699274,
+    "long": -121.743645,
+    "gmapsCategory": "Cinco TacoBar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Rosa Fierro Cellars",
+    "lat": 37.6764,
+    "long": -121.7193616,
+    "gmapsCategory": "Winery"
+  },
+  {
+    "type": "Liquor",
+    "name": "Terra Mia",
+    "lat": 37.6807186,
+    "long": -121.7477317,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Amos Productions",
+    "lat": 37.705558,
+    "long": -121.7273715,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Jimmy John s",
+    "lat": 37.7114955,
+    "long": -121.7228993,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Wild Idol Saloon",
+    "lat": 37.8685529,
+    "long": -121.6404536,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Brentwood Emporium",
+    "lat": 37.9312499,
+    "long": -121.69403,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "The Lounge on Oak",
+    "lat": 37.9327763,
+    "long": -121.6940046,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Crown Crow",
+    "lat": 37.9318424,
+    "long": -121.6943498,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": " Oak St Pub",
+    "lat": 37.9325325,
+    "long": -121.6953079,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Voodoo Hookah Lounge",
+    "lat": 37.9460796,
+    "long": -121.6974889,
+    "gmapsCategory": "Hookah bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Brentwood s Co Co County Wine Co ",
+    "lat": 37.9320357,
+    "long": -121.6945348,
+    "gmapsCategory": "Wine bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Brentwood Craft Beer and Cider",
+    "lat": 37.9327517,
+    "long": -121.6943154,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Delta Yacht Club",
+    "lat": 38.028263,
+    "long": -121.4765569,
+    "gmapsCategory": "Yacht club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Paradise Nightclub",
+    "lat": 38.0450315,
+    "long": -121.3194824,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Gaines VIP Tavern",
+    "lat": 38.0230908,
+    "long": -121.3564416,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Mimosas Social Club",
+    "lat": 38.0049923,
+    "long": -121.31757,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Pitochikoooo chepina",
+    "lat": 38.00274,
+    "long": -121.2968681,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Tower Park Waterfront Grille",
+    "lat": 38.1113208,
+    "long": -121.4989014,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Flamingo Lounge",
+    "lat": 38.1561981,
+    "long": -121.6909219,
+    "gmapsCategory": "Cocktail bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Delta Club",
+    "lat": 38.1809997,
+    "long": -121.7169952,
+    "gmapsCategory": "Delta Club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Delta Boyz Dispensary Smoking Lounge",
+    "lat": 38.1627361,
+    "long": -121.6038623,
+    "gmapsCategory": "Cannabis club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Mei Wah Beer Room",
+    "lat": 38.1627351,
+    "long": -121.6058738,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Rio Vista Isleton Club Portuguese Hall",
+    "lat": 38.157395,
+    "long": -121.697788,
+    "gmapsCategory": "Rio Vista Isleton Club Portuguese Hall"
+  },
+  {
+    "type": "Liquor",
+    "name": "Manny s Barzzeria",
+    "lat": 38.1617741,
+    "long": -121.610816,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Foster s Bighorn",
+    "lat": 38.1559456,
+    "long": -121.6914302,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "The Pearl",
+    "lat": 38.2504532,
+    "long": -121.5097034,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "El Encanto Sports and Night club",
+    "lat": 38.1352778,
+    "long": -121.2597222,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Blend Ultra Lounge",
+    "lat": 38.1322821,
+    "long": -121.2742023,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "El Dorado Club",
+    "lat": 38.1359912,
+    "long": -121.2719062,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Garry s Lounge",
+    "lat": 38.133725,
+    "long": -121.2738449,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "El Rancho Sports Lounge",
+    "lat": 38.1414909,
+    "long": -121.261444,
+    "gmapsCategory": "Sports bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Stooges Bar Lounge",
+    "lat": 38.1343803,
+    "long": -121.2740097,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "MB CLUBHOUSE",
+    "lat": 38.1415668,
+    "long": -121.2614769,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Water Hole",
+    "lat": 38.1372325,
+    "long": -121.2524327,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Stadium",
+    "lat": 38.1452955,
+    "long": -121.2738301,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Lodi Bowling Bar and Lounge",
+    "lat": 38.1379242,
+    "long": -121.271682,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Bubbles N Birds",
+    "lat": 38.1355574,
+    "long": -121.2741387,
+    "gmapsCategory": "Wine bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Oak Farm Vineyards",
+    "lat": 38.1987373,
+    "long": -121.3544601,
+    "gmapsCategory": "Winery"
+  },
+  {
+    "type": "Liquor",
+    "name": "Captain s Anchor",
+    "lat": 38.0340033,
+    "long": -121.3392144,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "The Reserve At Spanos Park",
+    "lat": 38.0622775,
+    "long": -121.3888182,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Marina Lounge Suisun",
+    "lat": 38.2382145,
+    "long": -122.0403302,
+    "gmapsCategory": "Live music bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Ding s Cocktail Lounge",
+    "lat": 38.249605,
+    "long": -122.0592912,
+    "gmapsCategory": "Cocktail bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Harry E s Sportsman E s Lounge",
+    "lat": 38.2490414,
+    "long": -122.0441126,
+    "gmapsCategory": "\"Great bartenders lively atmosphere with friendly patrons.\""
+  },
+  {
+    "type": "Liquor",
+    "name": "TROPICAL VIBES",
+    "lat": 38.2496315,
+    "long": -122.0586784,
+    "gmapsCategory": "Dance club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Jack s Pub",
+    "lat": 38.2389269,
+    "long": -122.0408162,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Wednesday Club of Suisun",
+    "lat": 38.2389528,
+    "long": -122.0423806,
+    "gmapsCategory": "Wednesday Club of Suisun"
+  },
+  {
+    "type": "Liquor",
+    "name": "Mama Por Dios",
+    "lat": 38.2587032,
+    "long": -122.0600378,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": " Cocktail Bar",
+    "lat": 38.2606387,
+    "long": -122.0347358,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Los Altos Mexican Bar Grill",
+    "lat": 38.2423007,
+    "long": -122.040861,
+    "gmapsCategory": "Los Altos Mexican Bar & Grill"
+  },
+  {
+    "type": "Liquor",
+    "name": "Green Door",
+    "lat": 38.3133978,
+    "long": -122.3072251,
+    "gmapsCategory": "Cocktail bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Sidestreet Napa, California",
+    "lat": 38.2972213,
+    "long": -122.2837634,
+    "gmapsCategory": "Club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Stone s Sports Bar Lounge",
+    "lat": 38.2810721,
+    "long": -122.2929113,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Lucky Penny Productions",
+    "lat": 38.3192628,
+    "long": -122.3041097,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Blue Note Napa",
+    "lat": 38.299695,
+    "long": -122.2855381,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Memo",
+    "lat": 38.3692276,
+    "long": -122.2922962,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "The Fink",
+    "lat": 38.2960048,
+    "long": -122.2827979,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Mercantile Social",
+    "lat": 38.2974308,
+    "long": -122.2893012,
+    "gmapsCategory": "Cocktail bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Sky Vine Rooftop Bar",
+    "lat": 38.2983566,
+    "long": -122.2876981,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "JaM Cellars",
+    "lat": 38.297339,
+    "long": -122.2894771,
+    "gmapsCategory": "Winery"
+  },
+  {
+    "type": "Liquor",
+    "name": "Cadet Wine Beer Bar",
+    "lat": 38.2974209,
+    "long": -122.2880247,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Sonoma Speakeasy",
+    "lat": 38.2925657,
+    "long": -122.4560129,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "SIGH Champagne Sparkling",
+    "lat": 38.2921731,
+    "long": -122.4594824,
+    "gmapsCategory": "Wine bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "The Lodge at Sonoma Resort, Autograph Collection",
+    "lat": 38.2772271,
+    "long": -122.4610328,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Zina Hyde Cunningham",
+    "lat": 38.292095,
+    "long": -122.4564658,
+    "gmapsCategory": "Winery"
+  },
+  {
+    "type": "Liquor",
+    "name": "Buckhorn",
+    "lat": 38.2304172,
+    "long": -122.631013,
+    "gmapsCategory": "Cocktail bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Ernie s Tin Bar",
+    "lat": 38.212328,
+    "long": -122.549329,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "La Dolce Vita Wine Lounge",
+    "lat": 38.2329924,
+    "long": -122.6373872,
+    "gmapsCategory": "Wine bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "McNear s Saloon Dining House",
+    "lat": 38.2333803,
+    "long": -122.6400987,
+    "gmapsCategory": "Sports bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Aqus Caf C A at Foundry Wharf",
+    "lat": 38.2313339,
+    "long": -122.6313038,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Street Social",
+    "lat": 38.233616,
+    "long": -122.6403382,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Ayawaska Petaluma",
+    "lat": 38.2340443,
+    "long": -122.6384415,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Old Chicago Pizza Restaurant",
+    "lat": 38.2336373,
+    "long": -122.6404102,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Andresen s Tavern",
+    "lat": 38.2337779,
+    "long": -122.6408252,
+    "gmapsCategory": "Cocktail bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Pearl",
+    "lat": 38.2321223,
+    "long": -122.6321156,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Brixx Pizzeria",
+    "lat": 38.2335009,
+    "long": -122.6407692,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Anderson Entertainment, LLC",
+    "lat": 38.299564,
+    "long": -122.4767317,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Kingstown Entertainment",
+    "lat": 38.4477229,
+    "long": -122.6715335,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Chardonnay Hall located in Napa Valley Expo ",
+    "lat": 38.2978394,
+    "long": -122.2786971,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "RO Restaurant Lounge",
+    "lat": 38.3995628,
+    "long": -122.3586959,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Pancha s Of Yountville",
+    "lat": 38.4064389,
+    "long": -122.36675,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "V Wine Cellar",
+    "lat": 38.4017801,
+    "long": -122.36182,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Castello di Amorosa",
+    "lat": 38.5589158,
+    "long": -122.5412268,
+    "gmapsCategory": "Winery"
+  },
+  {
+    "type": "Liquor",
+    "name": "Pride Mountain Vineyards",
+    "lat": 38.5257168,
+    "long": -122.5627641,
+    "gmapsCategory": "Winery"
+  },
+  {
+    "type": "Liquor",
+    "name": "Cornell Vineyards",
+    "lat": 38.517297,
+    "long": -122.583969,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Schramsberg Vineyards",
+    "lat": 38.5494815,
+    "long": -122.5378838,
+    "gmapsCategory": "Winery"
+  },
+  {
+    "type": "Liquor",
+    "name": "Fogline Vineyards",
+    "lat": 38.447037,
+    "long": -122.602566,
+    "gmapsCategory": "Winery"
+  },
+  {
+    "type": "Liquor",
+    "name": "Larkmead Vineyards",
+    "lat": 38.5587193,
+    "long": -122.5245894,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Fisher Vineyards",
+    "lat": 38.5157759,
+    "long": -122.627926,
+    "gmapsCategory": "Winery"
+  },
+  {
+    "type": "Liquor",
+    "name": "Papa Murphy s C Take N Bake Pizza",
+    "lat": 38.4659912,
+    "long": -122.6530851,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "CBDanceman",
+    "lat": 42.1337305,
+    "long": -123.1056154,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "AXR Napa Valley",
+    "lat": 38.530792,
+    "long": -122.5047685,
+    "gmapsCategory": "Winery"
+  },
+  {
+    "type": "Liquor",
+    "name": " Club",
+    "lat": 38.4455009,
+    "long": -122.7189645,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Vintage Space",
+    "lat": 38.4512906,
+    "long": -122.6881546,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Barrel Proof Lounge",
+    "lat": 38.4423711,
+    "long": -122.7156721,
+    "gmapsCategory": "Comedy club"
+  },
+  {
+    "type": "Liquor",
+    "name": "El Infierno Cantina",
+    "lat": 38.4383436,
+    "long": -122.7199973,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Perch B Plow",
+    "lat": 38.4404694,
+    "long": -122.7131139,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Liquor",
+    "name": "Gary s at the Belvedere",
+    "lat": 38.446475,
+    "long": -122.7179291,
+    "gmapsCategory": "Cocktail bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Victory House",
+    "lat": 38.4677901,
+    "long": -122.746486,
+    "gmapsCategory": "Sports bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "The Zoo",
+    "lat": 38.4275742,
+    "long": -122.7119988,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "The Goose Fern",
+    "lat": 38.4383302,
+    "long": -122.7203402,
+    "gmapsCategory": "Pub"
+  },
+  {
+    "type": "Liquor",
+    "name": "Monroe Hall",
+    "lat": 38.4448557,
+    "long": -122.743903,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "G BAR",
+    "lat": 38.3606914,
+    "long": -122.7228752,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Ledson Winery Vineyards",
+    "lat": 38.441556,
+    "long": -122.586264,
+    "gmapsCategory": "Winery"
+  },
+  {
+    "type": "Liquor",
+    "name": "Wild Oak Saddle Club",
+    "lat": 38.4388945,
+    "long": -122.6078264,
+    "gmapsCategory": "Club"
+  },
+  {
+    "type": "Liquor",
+    "name": "St Francis Winery",
+    "lat": 38.4368311,
+    "long": -122.5772025,
+    "gmapsCategory": "Winery"
+  },
+  {
+    "type": "Liquor",
+    "name": "Brasswood Bar B Kitchen",
+    "lat": 38.5280113,
+    "long": -122.5014038,
+    "gmapsCategory": "Brasswood Bar + Kitchen"
+  },
+  {
+    "type": "Liquor",
+    "name": "Ehlers Estate",
+    "lat": 38.5320946,
+    "long": -122.4982428,
+    "gmapsCategory": "Winery"
+  },
+  {
+    "type": "Liquor",
+    "name": "Alila Napa Valley",
+    "lat": 38.508887,
+    "long": -122.4788682,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Ballentine Vineyards",
+    "lat": 38.5199367,
+    "long": -122.4901544,
+    "gmapsCategory": "Winery"
+  },
+  {
+    "type": "Liquor",
+    "name": "Hunnicutt Wine Co",
+    "lat": 38.5474071,
+    "long": -122.4883683,
+    "gmapsCategory": "Winery"
+  },
+  {
+    "type": "Liquor",
+    "name": "Fantesca Estate Winery",
+    "lat": 38.5122567,
+    "long": -122.4951394,
+    "gmapsCategory": "Winery"
+  },
+  {
+    "type": "Liquor",
+    "name": "Maxville Winery",
+    "lat": 38.5580162,
+    "long": -122.3749041,
+    "gmapsCategory": "Winery"
+  },
+  {
+    "type": "Liquor",
+    "name": "Envy Wines",
+    "lat": 38.5919773,
+    "long": -122.6020247,
+    "gmapsCategory": "Winery"
+  },
+  {
+    "type": "Liquor",
+    "name": "Chateau Montelena",
+    "lat": 38.6023418,
+    "long": -122.5975822,
+    "gmapsCategory": "Winery"
+  },
+  {
+    "type": "Liquor",
+    "name": "Old Faithful Geyser of California",
+    "lat": 38.5962722,
+    "long": -122.60235,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Liquor",
+    "name": "Bennett Lane Winery",
+    "lat": 38.5999205,
+    "long": -122.6152103,
+    "gmapsCategory": "Winery"
+  },
+  {
+    "type": "Liquor",
+    "name": "Tamber Bey Vineyards",
+    "lat": 38.5945778,
+    "long": -122.6027669,
+    "gmapsCategory": "Winery"
+  },
+  {
+    "type": "Liquor",
+    "name": "Noble s Saloon",
+    "lat": 38.7518284,
+    "long": -122.6151823,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Liquor",
+    "name": "Dancing Crow Vineyards",
+    "lat": 38.988074,
+    "long": -123.120709,
+    "gmapsCategory": "Winery"
+  },
+  {
+    "type": "Liquor",
+    "name": "Freedom riders club house",
+    "lat": 39.0183087,
+    "long": -122.9119681,
+    "gmapsCategory": "Night club"
+  }
+]
