@@ -14,6 +14,20 @@ export default function reducer(state, { type, payload }) {
       };
     }
 
+    case "APPEND_PROFILE_POST": {
+      if (!payload) return state;
+      const overview = state?.profileOverview || {};
+      const existingPosts = overview.posts || [];
+
+      return {
+        ...state,
+        profileOverview: {
+          ...overview,
+          posts: [...existingPosts, payload],
+        },
+      };
+    }
+
     case "SET_USER": {
       return {
         ...state,
