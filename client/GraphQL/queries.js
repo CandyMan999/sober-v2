@@ -192,6 +192,7 @@ export const PROFILE_OVERVIEW_QUERY = `
         flagged
         review
         adminApproved
+        daysSober
         likesCount
         commentsCount
         viewsCount
@@ -224,6 +225,7 @@ export const PROFILE_OVERVIEW_QUERY = `
         flagged
         review
         adminApproved
+        daysSober
         likesCount
         commentsCount
         viewsCount
@@ -446,6 +448,7 @@ export const USER_PROFILE_QUERY = `
         flagged
         review
         adminApproved
+        daysSober
         likesCount
         commentsCount
         viewsCount
@@ -478,6 +481,7 @@ export const USER_PROFILE_QUERY = `
         flagged
         review
         adminApproved
+        daysSober
         likesCount
         commentsCount
         viewsCount
@@ -540,6 +544,7 @@ export const USER_POSTS_PAGINATED_QUERY = `
         isMilestone
         milestoneDays
         milestoneTag
+        daysSober
         likesCount
         commentsCount
         viewsCount
