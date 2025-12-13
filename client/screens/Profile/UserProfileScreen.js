@@ -65,6 +65,7 @@ const AnimatedBlurView = Animated.createAnimatedComponent(BlurView);
 const soberLogo = require("../../assets/icon.png");
 const SOCIAL_ICON_SIZE = 22;
 const SOCIAL_ICON_COLOR = "#e5e7eb";
+const SOCIAL_ICON_BUTTON_SIZE = 40;
 const PROFILE_PAGE_SIZE = 12;
 const LOAD_MORE_THRESHOLD = 360;
 
@@ -1486,7 +1487,7 @@ const UserProfileScreen = ({ route, navigation }) => {
             </TouchableOpacity>
           </View>
 
-          {socialLinks.length ? (
+          {socialLinks.length || popularitySnapshot ? (
             <View style={styles.socialIconsRow}>
               {socialLinks.map(({ platform, data }) => {
                 const icon = SOCIAL_ICON_PROPS[platform];
@@ -1506,6 +1507,31 @@ const UserProfileScreen = ({ route, navigation }) => {
                   </TouchableOpacity>
                 );
               })}
+
+              {popularitySnapshot ? (
+                <BadgeShell
+                  interactive
+                  effect="clear"
+                  colorScheme="system"
+                  style={[styles.socialIconButton, styles.popularityBadgeShell]}
+                >
+                  <LinearGradient
+                    colors={["rgba(252,211,77,0.55)", "rgba(249,115,22,0.55)"]}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 1 }}
+                    style={styles.popularityBadgeInner}
+                  >
+                    <MaterialCommunityIcons
+                      name="rocket-launch"
+                      size={13}
+                      color="#0b1220"
+                    />
+                    <Text style={styles.popularityBadgeScore}>{`${Math.round(
+                      popularitySnapshot.score || 0
+                    )}%`}</Text>
+                  </LinearGradient>
+                </BadgeShell>
+              ) : null}
             </View>
           ) : null}
         </View>
@@ -1526,38 +1552,6 @@ const UserProfileScreen = ({ route, navigation }) => {
                   onPress={handleOpenAvatar}
                   contentRef={avatarImageRef}
                 />
-
-                {popularitySnapshot ? (
-                  <BadgeShell
-                    // LiquidGlass props
-                    interactive
-                    effect="clear"
-                    colorScheme="system"
-                    style={[
-                      styles.avatarPopularityBadge,
-                      styles.avatarPopularityBadgeGlass,
-                    ]}
-                  >
-                    <LinearGradient
-                      colors={["rgba(252,211,77,0.5)", "rgba(249,115,22,0.5)"]}
-                      start={{ x: 0, y: 0 }}
-                      end={{ x: 1, y: 1 }}
-                      style={[
-                        styles.avatarPopularityInner,
-                        styles.avatarPopularityInnerGlass,
-                      ]}
-                    >
-                      <MaterialCommunityIcons
-                        name="rocket-launch"
-                        size={12}
-                        color="#0b1220"
-                      />
-                      <Text style={styles.avatarPopularityScore}>{`${Math.round(
-                        popularitySnapshot.score || 0
-                      )}%`}</Text>
-                    </LinearGradient>
-                  </BadgeShell>
-                ) : null}
               </View>
 
               <View style={styles.usernameRow}>
@@ -1816,9 +1810,41 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   socialIconButton: {
-    padding: 9,
+    width: SOCIAL_ICON_BUTTON_SIZE,
+    height: SOCIAL_ICON_BUTTON_SIZE,
+    alignItems: "center",
+    justifyContent: "center",
     borderRadius: 999,
     backgroundColor: "rgba(255,255,255,0.06)",
+  },
+  popularityBadgeShell: {
+    padding: 1,
+    borderRadius: 999,
+    borderWidth: 0.5,
+    borderColor: "rgba(255,255,255,0.18)",
+    shadowColor: "#ffffff",
+    shadowOpacity: 0.18,
+    shadowRadius: 12,
+    shadowOffset: { width: 0, height: 8 },
+    elevation: 6,
+    overflow: "hidden",
+  },
+  popularityBadgeInner: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 4,
+    width: SOCIAL_ICON_BUTTON_SIZE - 2,
+    height: SOCIAL_ICON_BUTTON_SIZE - 2,
+    borderRadius: 999,
+  },
+  popularityBadgeScore: {
+    color: "#0b1220",
+    fontWeight: "800",
+    fontSize: 11,
+    textShadowColor: "rgba(255,255,255,0.45)",
+    textShadowOffset: { width: 0, height: 0 },
+    textShadowRadius: 6,
   },
   sobrietyPill: {
     flexDirection: "row",
@@ -1933,59 +1959,6 @@ const styles = StyleSheet.create({
     color: "#9ca3af",
     marginTop: 4,
     fontSize: 12,
-  },
-
-  // Badge
-  avatarPopularityBadge: {
-    position: "absolute",
-    bottom: -6,
-    right: -10,
-    zIndex: 2,
-    borderRadius: 18,
-    overflow: "hidden",
-
-    // smaller padding = less “frame”
-    padding: 1,
-  },
-
-  avatarPopularityBadgeGlass: {
-    // slightly more see-through shell
-    // backgroundColor: "rgba(255,255,255,0.045)",
-
-    // thinner + less contrast border
-    borderWidth: 0.5,
-    borderColor: "rgba(255,255,255,0.18)",
-
-    // softer shadow (less “badge sticker”)
-    shadowColor: "#ffffff",
-    shadowOpacity: 0.18,
-    shadowRadius: 14,
-    shadowOffset: { width: 0, height: 10 },
-    elevation: 8,
-  },
-  avatarPopularityInner: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 4,
-    paddingHorizontal: 11,
-    paddingVertical: 6,
-    borderRadius: 16,
-
-    // more transparent base
-    // backgroundColor: "rgba(255,255,255,0.06)",
-  },
-
-  avatarPopularityInnerGlass: {
-    // keep this subtle so it doesn’t become opaque
-    // backgroundColor: "rgba(255,255,255,0.01)",
-  },
-  avatarPopularityScore: {
-    color: "#0b1220",
-    fontWeight: "800",
-    fontSize: 11,
-    textShadowColor: "rgba(255,255,255,0.45)",
-    textShadowOffset: { width: 0, height: 0 },
-    textShadowRadius: 6,
   },
 
   whyWrapper: {
