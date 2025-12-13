@@ -271,6 +271,23 @@ export const PROFILE_OVERVIEW_QUERY = `
   }
 `;
 
+export const MY_POPULARITY_QUERY = `
+  query MyPopularity($token: String, $appleId: String) {
+    myPopularity(token: $token, appleId: $appleId) {
+      score
+      status
+      breakdown {
+        watchMinutes
+        posts
+        comments
+        likes
+        followers
+        approvedQuotes
+      }
+    }
+  }
+`;
+
 export const ADMIN_REVIEW_ITEMS_QUERY = `
   query AdminReviewItems($token: String!) {
     adminFlaggedPosts(token: $token) {

@@ -1323,41 +1323,6 @@ const UserProfileScreen = ({ route, navigation }) => {
     return renderPostTile({ item, saved: true, fromSaved: true });
   };
 
-  const renderPopularityCard = () => {
-    if (!popularitySnapshot) return null;
-
-    const { breakdown = {} } = popularitySnapshot;
-    const summaryItems = [
-      { label: "Watch time", value: `${Math.round(breakdown.watchMinutes || 0)} min` },
-      { label: "Posts", value: breakdown.posts || 0 },
-      { label: "Comments", value: breakdown.comments || 0 },
-      { label: "Likes", value: breakdown.likes || 0 },
-      { label: "Followers", value: breakdown.followers || 0 },
-      { label: "Approved quotes", value: breakdown.approvedQuotes || 0 },
-    ];
-
-    return (
-      <View style={styles.popularityCard}>
-        <View style={styles.popularityHeader}>
-          <Text style={styles.sectionTitle}>Popularity</Text>
-          <View style={styles.popularityBadge}>
-            <Text style={styles.popularityStatus}>{popularitySnapshot.status}</Text>
-            <Text style={styles.popularityScore}>{`${popularitySnapshot.score}%`}</Text>
-          </View>
-        </View>
-
-        <View style={styles.popularityGrid}>
-          {summaryItems.map((item) => (
-            <View key={item.label} style={styles.popularityItem}>
-              <Text style={styles.popularityValue}>{item.value}</Text>
-              <Text style={styles.popularityLabel}>{item.label}</Text>
-            </View>
-          ))}
-        </View>
-      </View>
-    );
-  };
-
   const renderDrunkContent = () => {
     if (!profileData?.drunkPicUrl) {
       return (
@@ -1525,22 +1490,44 @@ const UserProfileScreen = ({ route, navigation }) => {
           ) : null}
         </View>
         <View style={styles.bodyPadding}>
-          <View style={styles.headerRow}>
-            <View style={styles.avatarColumn}>
-              <View ref={avatarRef} onLayout={handleAvatarLayout}>
-                <Avatar
-                  uri={profileData?.profilePicUrl}
-                  size={AVATAR_SIZE}
-                  haloColors={["#fcd34d", "#f97316"]}
-                  disableNavigation
-                  onPress={handleOpenAvatar}
-                  contentRef={avatarImageRef}
-                />
-              </View>
-              <View style={styles.usernameRow}>
-                <Text style={styles.avatarLabel}>
-                  {profileData?.username || "User"}
-                </Text>
+            <View style={styles.headerRow}>
+              <View style={styles.avatarColumn}>
+                <View ref={avatarRef} onLayout={handleAvatarLayout}>
+                  <Avatar
+                    uri={profileData?.profilePicUrl}
+                    size={AVATAR_SIZE}
+                    haloColors={["#fcd34d", "#f97316"]}
+                    disableNavigation
+                    onPress={handleOpenAvatar}
+                    contentRef={avatarImageRef}
+                  />
+                  {popularitySnapshot ? (
+                    <LinearGradient
+                      colors={["#22d3ee", "#6366f1"]}
+                      start={{ x: 0, y: 0 }}
+                      end={{ x: 1, y: 1 }}
+                      style={styles.avatarPopularityBadge}
+                    >
+                      <MaterialCommunityIcons
+                        name="rocket-launch"
+                        size={14}
+                        color="#0b1220"
+                      />
+                      <Text style={styles.avatarPopularityText} numberOfLines={1}>
+                        {popularitySnapshot.status}
+                      </Text>
+                      <View style={styles.avatarPopularityScoreBubble}>
+                        <Text style={styles.avatarPopularityScore}>{`${Math.round(
+                          popularitySnapshot.score || 0
+                        )}%`}</Text>
+                      </View>
+                    </LinearGradient>
+                  ) : null}
+                </View>
+                <View style={styles.usernameRow}>
+                  <Text style={styles.avatarLabel}>
+                    {profileData?.username || "User"}
+                  </Text>
               </View>
               {profileData?.id !== state?.user?.id ? (
                 <View style={styles.profileActionsRow}>
@@ -1684,8 +1671,6 @@ const UserProfileScreen = ({ route, navigation }) => {
               <Text style={styles.metricLabel}>Likes</Text>
             </TouchableOpacity>
           </View>
-
-          {renderPopularityCard()}
 
           <View style={styles.whyWrapper}>
             <Text style={styles.whyQuoted}>
@@ -1904,66 +1889,38 @@ const styles = StyleSheet.create({
     marginTop: 4,
     fontSize: 12,
   },
-  popularityCard: {
-    marginTop: 14,
-    padding: 14,
-    borderRadius: 16,
-    backgroundColor: "rgba(30,41,59,0.9)",
-    borderWidth: 1,
-    borderColor: "rgba(148,163,184,0.2)",
-  },
-  popularityHeader: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    marginBottom: 12,
-  },
-  sectionTitle: {
-    color: "#e5e7eb",
-    fontSize: 16,
-    fontWeight: "800",
-  },
-  popularityBadge: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 8,
-    backgroundColor: "rgba(245,158,11,0.12)",
+  avatarPopularityBadge: {
+    position: "absolute",
+    bottom: -8,
+    alignSelf: "center",
     paddingHorizontal: 10,
     paddingVertical: 6,
     borderRadius: 999,
-  },
-  popularityStatus: {
-    color: "#f59e0b",
-    fontWeight: "700",
-    fontSize: 12,
-  },
-  popularityScore: {
-    color: "#e5e7eb",
-    fontWeight: "800",
-    fontSize: 14,
-  },
-  popularityGrid: {
     flexDirection: "row",
-    flexWrap: "wrap",
-    gap: 12,
+    alignItems: "center",
+    gap: 6,
+    shadowColor: "#0ea5e9",
+    shadowOpacity: 0.35,
+    shadowRadius: 8,
+    shadowOffset: { width: 0, height: 4 },
+    elevation: 4,
   },
-  popularityItem: {
-    width: "47%",
-    padding: 10,
-    backgroundColor: "rgba(15,23,42,0.6)",
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: "rgba(51,65,85,0.4)",
-  },
-  popularityValue: {
-    color: "#e5e7eb",
+  avatarPopularityText: {
+    color: "#0b1220",
     fontWeight: "800",
-    fontSize: 15,
-  },
-  popularityLabel: {
-    color: "#9ca3af",
     fontSize: 12,
-    marginTop: 4,
+    maxWidth: 120,
+  },
+  avatarPopularityScoreBubble: {
+    backgroundColor: "#0b1220",
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 999,
+  },
+  avatarPopularityScore: {
+    color: "#fef3c7",
+    fontWeight: "800",
+    fontSize: 12,
   },
   whyWrapper: {
     alignItems: "center",

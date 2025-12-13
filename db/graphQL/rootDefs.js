@@ -449,6 +449,7 @@ const typeDefs = gql`
       token: String
       bar: String
     ): [BarOrLiquor]
+    myPopularity(token: String, appleId: String): PopularitySnapshot!
   }
 
   enum SocialPlatform {

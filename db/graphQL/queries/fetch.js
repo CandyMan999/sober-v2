@@ -749,4 +749,27 @@ module.exports = {
       popularity,
     };
   },
+
+  myPopularityResolver: async (_, { token, appleId }, { currentUser }) => {
+    const sanitizedAppleId = appleId?.trim();
+
+    if (!token && !sanitizedAppleId && !currentUser) {
+      throw new AuthenticationError("Token or Apple ID is required");
+    }
+
+    let user = currentUser;
+
+    if (!user) {
+      const lookup = sanitizedAppleId ? { appleId: sanitizedAppleId } : { token };
+      user = await User.findOne(lookup);
+    }
+
+    if (!user) {
+      throw new AuthenticationError("User not found");
+    }
+
+    await User.ensureChatRoomStyle(user);
+
+    return buildPopularitySnapshot(user);
+  },
 };

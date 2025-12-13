@@ -42,7 +42,7 @@ import {
   TOGGLE_NOTIFICATION_CATEGORY_MUTATION,
   DELETE_ACCOUNT_MUTATION,
 } from "../../GraphQL/mutations";
-import { FETCH_ME_QUERY } from "../../GraphQL/queries";
+import { FETCH_ME_QUERY, MY_POPULARITY_QUERY } from "../../GraphQL/queries";
 import { getToken } from "../../utils/helpers";
 import { COLORS } from "../../constants/colors";
 import {
@@ -52,6 +52,7 @@ import {
 } from "../../utils/locationTracking";
 import { useRevenueCat } from "../../RevenueCatContext";
 import { emitPaywallRequest } from "../../utils/paywallEvents";
+import { defaultPopularityWeighting } from "../../utils/popularity";
 
 const {
   primaryBackground,
@@ -122,6 +123,20 @@ const SOCIAL_CONFIG = {
     ),
   },
 };
+
+const POPULARITY_METRICS = [
+  {
+    key: "watchMinutes",
+    label: "Watch time",
+    unit: "min",
+    format: (value) => `${Math.round(value || 0)} min`,
+  },
+  { key: "posts", label: "Posts", unit: "posts" },
+  { key: "comments", label: "Comments", unit: "comments" },
+  { key: "likes", label: "Likes", unit: "likes" },
+  { key: "followers", label: "Followers", unit: "followers" },
+  { key: "approvedQuotes", label: "Approved quotes", unit: "quotes" },
+];
 
 const normalizeSocialInput = (platform, rawValue) => {
   const value =
@@ -285,6 +300,8 @@ const EditProfileScreen = ({ navigation }) => {
 
   const [token, setToken] = useState(null);
   const [user, setUser] = useState(state?.user || null);
+  const [popularity, setPopularity] = useState(null);
+  const [loadingPopularity, setLoadingPopularity] = useState(false);
   const [loading, setLoading] = useState(!state?.user);
   const [deletingAccount, setDeletingAccount] = useState(false);
 
@@ -386,6 +403,23 @@ const EditProfileScreen = ({ navigation }) => {
     }
   };
 
+  const fetchPopularitySnapshot = async (authToken) => {
+    if (!authToken) return;
+
+    try {
+      setLoadingPopularity(true);
+      const data = await client.request(MY_POPULARITY_QUERY, {
+        token: authToken,
+      });
+
+      setPopularity(data?.myPopularity || null);
+    } catch (err) {
+      console.log("Failed to load popularity", err);
+    } finally {
+      setLoadingPopularity(false);
+    }
+  };
+
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -426,6 +460,7 @@ const EditProfileScreen = ({ navigation }) => {
             setLocationEnabled(normalizedSettings.locationTrackingEnabled);
           }
           dispatch({ type: "SET_USER", payload: fetchedUser });
+          fetchPopularitySnapshot(storedToken);
         }
       } catch (err) {
         console.log("Failed to fetch profile", err);
@@ -928,6 +963,37 @@ const EditProfileScreen = ({ navigation }) => {
   const isSocialValid = useMemo(
     () => Object.keys(socialValidation).length === 0,
     [socialValidation]
+  );
+
+  const popularityBreakdown = useMemo(
+    () => popularity?.breakdown || {},
+    [popularity?.breakdown]
+  );
+
+  const popularityStatus = popularity?.status || "Getting Started";
+  const popularityScore = Math.round(popularity?.score || 0);
+
+  const popularityEntries = useMemo(
+    () =>
+      POPULARITY_METRICS.map((metric) => {
+        const value = Number(popularityBreakdown[metric.key]) || 0;
+        const milestone =
+          defaultPopularityWeighting?.[metric.key]?.milestone || 0;
+        const progress = milestone ? Math.min(value / milestone, 1) : 0;
+        const milestoneLabel = milestone
+          ? `Goal: ${milestone} ${metric.unit || metric.label.toLowerCase()}`
+          : "Keep going";
+
+        return {
+          ...metric,
+          value,
+          milestone,
+          progress,
+          displayValue: metric.format ? metric.format(value) : value,
+          milestoneLabel,
+        };
+      }),
+    [popularityBreakdown]
   );
 
   const handleSaveUsername = async () => {
@@ -1515,6 +1581,62 @@ const EditProfileScreen = ({ navigation }) => {
             </TouchableOpacity>
           </View>
 
+          <View style={styles.sectionCard}>
+            <View style={styles.popularityHeaderRow}>
+              <Text style={styles.sectionLabel}>Popularity</Text>
+              <View style={styles.popularityStatusPill}>
+                <MaterialCommunityIcons
+                  name="rocket-launch"
+                  size={16}
+                  color="#0b1220"
+                />
+                <Text style={styles.popularityStatusText}>
+                  {popularityStatus}
+                </Text>
+                <View style={styles.popularityScoreBadge}>
+                  <Text style={styles.popularityScoreText}>{`${popularityScore}%`}</Text>
+                </View>
+              </View>
+            </View>
+
+            <Text style={styles.helperText}>
+              Hit each milestone to unlock the next badge. Keep sharing, engaging,
+              and cheering others on.
+            </Text>
+
+            <View style={styles.popularityGrid}>
+              {popularityEntries.map((metric) => {
+                const widthPercent = metric.progress * 100;
+                const fillWidth = widthPercent > 0 ? Math.max(widthPercent, 6) : 0;
+
+                return (
+                  <View key={metric.key} style={styles.popularityChip}>
+                    <View style={styles.popularityChipHeader}>
+                      <Text style={styles.popularityChipLabel}>{metric.label}</Text>
+                      <Text style={styles.popularityChipValue}>{metric.displayValue}</Text>
+                    </View>
+                    <View style={styles.popularityProgressTrack}>
+                      <View
+                        style={[
+                          styles.popularityProgressFill,
+                          { width: `${fillWidth}%` },
+                        ]}
+                      />
+                    </View>
+                    <Text style={styles.popularityMilestone}>{metric.milestoneLabel}</Text>
+                  </View>
+                );
+              })}
+            </View>
+
+            {loadingPopularity ? (
+              <View style={styles.popularityLoadingRow}>
+                <ActivityIndicator color={accent} />
+                <Text style={styles.loadingText}>Refreshing your progress…</Text>
+              </View>
+            ) : null}
+          </View>
+
           <View style={styles.legalFooter}>
             <Text style={styles.legalFooterText}>
               <Text style={styles.legalFooterLink} onPress={() => navigation.navigate("TermsEula")}>
@@ -1970,6 +2092,98 @@ const styles = StyleSheet.create({
     paddingHorizontal: 4,
     alignItems: "center",
     justifyContent: "center",
+  },
+
+  popularityHeaderRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    gap: 12,
+  },
+  popularityStatusPill: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+    backgroundColor: "rgba(34,211,238,0.14)",
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 999,
+    borderWidth: 1,
+    borderColor: "rgba(94,234,212,0.5)",
+  },
+  popularityStatusText: {
+    color: "#a5f3fc",
+    fontWeight: "800",
+    fontSize: 12,
+  },
+  popularityScoreBadge: {
+    backgroundColor: "#0b1220",
+    borderRadius: 999,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderWidth: 1,
+    borderColor: "rgba(59,130,246,0.6)",
+  },
+  popularityScoreText: {
+    color: "#fef3c7",
+    fontWeight: "800",
+    fontSize: 12,
+  },
+  popularityGrid: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 10,
+    marginTop: 10,
+  },
+  popularityChip: {
+    width: "48%",
+    backgroundColor: "rgba(15,23,42,0.85)",
+    borderRadius: 14,
+    padding: 10,
+    borderWidth: 1,
+    borderColor: "rgba(148,163,184,0.25)",
+  },
+  popularityChipHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  popularityChipLabel: {
+    color: textSecondary,
+    fontSize: 12,
+    fontWeight: "700",
+  },
+  popularityChipValue: {
+    color: textPrimary,
+    fontSize: 14,
+    fontWeight: "800",
+  },
+  popularityProgressTrack: {
+    height: 8,
+    borderRadius: 999,
+    backgroundColor: "rgba(148,163,184,0.25)",
+    marginTop: 8,
+    overflow: "hidden",
+  },
+  popularityProgressFill: {
+    height: "100%",
+    borderRadius: 999,
+    backgroundColor: "#22d3ee",
+  },
+  popularityMilestone: {
+    color: "#94a3b8",
+    fontSize: 11,
+    marginTop: 6,
+  },
+  popularityLoadingRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+    marginTop: 12,
+  },
+  loadingText: {
+    color: textSecondary,
+    fontSize: 12,
   },
 
   legalFooter: {
