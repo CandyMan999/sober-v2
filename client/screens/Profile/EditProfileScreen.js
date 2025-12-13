@@ -62,6 +62,20 @@ const {
 
 const GEOFENCE_TASK_NAME = "SM_GEOFENCE_TASK";
 
+const POPULARITY_METRICS = [
+  {
+    key: "watchMinutes",
+    label: "Watch time",
+    unit: "min",
+    format: (value) => `${Math.round(value || 0)} min`,
+  },
+  { key: "posts", label: "Posts", unit: "posts" },
+  { key: "comments", label: "Comments", unit: "comments" },
+  { key: "likes", label: "Likes", unit: "likes" },
+  { key: "followers", label: "Followers", unit: "followers" },
+  { key: "approvedQuotes", label: "Approved quotes", unit: "quotes" },
+];
+
 const EditProfileScreen = ({ navigation }) => {
   const client = useClient();
   const { state, dispatch } = useContext(Context);
