@@ -243,6 +243,50 @@ const EditProfileScreen = ({ navigation }) => {
     });
   };
 
+  const confirmDeleteProfile = async () => {
+    if (!token) {
+      showError(
+        "We need your device ID to delete your profile. Please restart the app.",
+        "Unable to delete"
+      );
+      return;
+    }
+
+    try {
+      setDeletingAccount(true);
+      await client.request(DELETE_ACCOUNT_MUTATION, { token });
+
+      await AsyncStorage.removeItem("expoPushToken");
+      dispatch({ type: "SET_USER", payload: null });
+      setUser(null);
+
+      navigation.reset({
+        index: 0,
+        routes: [{ name: "AddUserName" }],
+      });
+    } catch (err) {
+      console.log("Delete profile error", err);
+      showError("We couldn't delete your profile right now. Please try again.");
+    } finally {
+      setDeletingAccount(false);
+    }
+  };
+
+  const handleDeleteProfile = () => {
+    setAlertState({
+      visible: true,
+      type: "confirm",
+      title: "Delete profile",
+      message:
+        "This will remove your posts, photos, comments, likes, followers, and buddies. This can't be undone.",
+      onCancel: closeAlert,
+      onConfirm: () => {
+        closeAlert();
+        confirmDeleteProfile();
+      },
+    });
+  };
+
   const openManageSubscriptions = async () => {
     console.log("[SoberMotion] Manage subscription pressed", {
       isPremium,
