@@ -17,23 +17,13 @@ import * as Location from "expo-location";
 import {
   Feather,
   MaterialCommunityIcons,
-  AntDesign,
-  FontAwesome6,
 } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
-import * as ImagePicker from "expo-image-picker";
-import * as ImageManipulator from "expo-image-manipulator";
-import { EXPO_CF_ACCOUNT_HASH, EXPO_CF_VARIANT } from "@env";
 
 import { AlertModal } from "../../components";
 import Context from "../../context";
 import { useClient } from "../../client";
 import {
-  DIRECT_UPLOAD_MUTATION,
-  ADD_PICTURE_MUTATION,
-  DELETE_PHOTO_MUTATION,
-  UPDATE_USER_PROFILE_MUTATION,
-  UPDATE_SOCIAL_MUTATION,
   UPDATE_NOTIFICATION_SETTINGS_MUTATION,
   TOGGLE_NOTIFICATION_CATEGORY_MUTATION,
   DELETE_ACCOUNT_MUTATION,
@@ -72,98 +62,6 @@ const {
 
 const GEOFENCE_TASK_NAME = "SM_GEOFENCE_TASK";
 
-const MIN_USERNAME_LENGTH = 3;
-const MAX_USERNAME_LENGTH = 13;
-
-const SOCIAL_ICON_SIZE = 22;
-const SOCIAL_ICON_COLOR = textPrimary;
-
-const SOCIAL_CONFIG = {
-  instagram: {
-    label: "Instagram (Optional)",
-    placeholder: "@username",
-    errorLabel: "Instagram",
-    regex: /^[A-Za-z0-9._]{1,30}$/,
-    urlPrefixes: [
-      /^https?:\/\/(www\.)?instagram\.com\//i,
-      /^instagram:\/\/user\?username=/i,
-    ],
-    icon: (
-      <Feather
-        name="instagram"
-        size={SOCIAL_ICON_SIZE}
-        color={SOCIAL_ICON_COLOR}
-      />
-    ),
-  },
-  tiktok: {
-    label: "TikTok (Optional)",
-    placeholder: "@username",
-    errorLabel: "TikTok",
-    regex: /^[A-Za-z0-9._]{1,24}$/,
-    urlPrefixes: [
-      /^https?:\/\/(www\.)?tiktok\.com\/[@]?/i,
-      /^tiktok:\/\/user\?username=/i,
-    ],
-    icon: (
-      <FontAwesome6
-        name="tiktok"
-        size={SOCIAL_ICON_SIZE}
-        color={SOCIAL_ICON_COLOR}
-      />
-    ),
-  },
-  x: {
-    label: "X (Optional)",
-    placeholder: "@handle",
-    errorLabel: "X",
-    regex: /^[A-Za-z0-9_]{1,15}$/,
-    urlPrefixes: [
-      /^https?:\/\/(www\.)?(x|twitter)\.com\//i,
-      /^twitter:\/\//i,
-      /^x:\/\/profile\//i,
-    ],
-    icon: (
-      <AntDesign name="x" size={SOCIAL_ICON_SIZE} color={SOCIAL_ICON_COLOR} />
-    ),
-  },
-};
-
-const POPULARITY_METRICS = [
-  {
-    key: "watchMinutes",
-    label: "Watch time",
-    unit: "min",
-    format: (value) => `${Math.round(value || 0)} min`,
-  },
-  { key: "posts", label: "Posts", unit: "posts" },
-  { key: "comments", label: "Comments", unit: "comments" },
-  { key: "likes", label: "Likes", unit: "likes" },
-  { key: "followers", label: "Followers", unit: "followers" },
-  { key: "approvedQuotes", label: "Approved quotes", unit: "quotes" },
-];
-
-const normalizeSocialInput = (platform, rawValue) => {
-  const value =
-    typeof rawValue === "string"
-      ? rawValue
-      : typeof rawValue === "object" && rawValue !== null
-      ? rawValue.handle
-      : "";
-
-  let handle = (value || "").trim();
-  if (!handle) return "";
-
-  handle = handle.replace(/@/g, "");
-
-  SOCIAL_CONFIG[platform]?.urlPrefixes?.forEach((pattern) => {
-    handle = handle.replace(pattern, "");
-  });
-
-  handle = handle.split(/[/?#]/)[0];
-  return handle;
-};
-
 const EditProfileScreen = ({ navigation }) => {
   const client = useClient();
   const { state, dispatch } = useContext(Context);
@@ -177,26 +75,6 @@ const EditProfileScreen = ({ navigation }) => {
   const [popularityOpen, setPopularityOpen] = useState(false);
   const [loading, setLoading] = useState(!state?.user);
   const [deletingAccount, setDeletingAccount] = useState(false);
-
-  const [profileUri, setProfileUri] = useState(user?.profilePicUrl || null);
-  const [drunkUri, setDrunkUri] = useState(user?.drunkPicUrl || null);
-  const [profileId, setProfileId] = useState(user?.profilePic?.id || null);
-  const [drunkId, setDrunkId] = useState(user?.drunkPic?.id || null);
-
-  const [uploadingSlot, setUploadingSlot] = useState(null);
-  const [deletingSlot, setDeletingSlot] = useState(null);
-
-  const [usernameOpen, setUsernameOpen] = useState(false);
-  const [usernameInput, setUsernameInput] = useState(user?.username || "");
-  const [savingUsername, setSavingUsername] = useState(false);
-
-  const [socialInputs, setSocialInputs] = useState({
-    instagram: normalizeSocialInput("instagram", user?.social?.instagram),
-    tiktok: normalizeSocialInput("tiktok", user?.social?.tiktok),
-    x: normalizeSocialInput("x", user?.social?.x),
-  });
-  const [savingSocial, setSavingSocial] = useState(false);
-  const [socialOpen, setSocialOpen] = useState(false);
 
   const defaultNotificationSettings = {
     allPushEnabled: false,
@@ -310,19 +188,6 @@ const EditProfileScreen = ({ navigation }) => {
         const fetchedUser = data?.fetchMe;
         if (fetchedUser) {
           setUser(fetchedUser);
-          setProfileUri(fetchedUser.profilePicUrl || null);
-          setDrunkUri(fetchedUser.drunkPicUrl || null);
-          setProfileId(fetchedUser.profilePic?.id || null);
-          setDrunkId(fetchedUser.drunkPic?.id || null);
-          setUsernameInput(fetchedUser.username || "");
-          setSocialInputs({
-            instagram: normalizeSocialInput(
-              "instagram",
-              fetchedUser.social?.instagram
-            ),
-            tiktok: normalizeSocialInput("tiktok", fetchedUser.social?.tiktok),
-            x: normalizeSocialInput("x", fetchedUser.social?.x),
-          });
           const normalizedSettings = {
             ...defaultNotificationSettings,
             ...(fetchedUser.notificationSettings || {}),
@@ -348,20 +213,6 @@ const EditProfileScreen = ({ navigation }) => {
 
     fetchUser();
   }, []);
-
-  useEffect(() => {
-    if (!user) return;
-    setProfileUri(user.profilePicUrl || null);
-    setDrunkUri(user.drunkPicUrl || null);
-    setProfileId(user.profilePic?.id || null);
-    setDrunkId(user.drunkPic?.id || null);
-    setUsernameInput(user.username || "");
-    setSocialInputs({
-      instagram: normalizeSocialInput("instagram", user.social?.instagram),
-      tiktok: normalizeSocialInput("tiktok", user.social?.tiktok),
-      x: normalizeSocialInput("x", user.social?.x),
-    });
-  }, [user]);
 
   useEffect(() => {
     syncLocationPermissionState();
@@ -626,218 +477,6 @@ const EditProfileScreen = ({ navigation }) => {
     await handleEnableLocationTracking();
   };
 
-  const requestMediaPermission = async () => {
-    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (status !== "granted") {
-      showError("We need access to your library to update your photos.");
-      return false;
-    }
-    return true;
-  };
-
-  const confirmDeleteProfile = async () => {
-    if (!token) {
-      showError(
-        "We need your device ID to delete your profile. Please restart the app.",
-        "Unable to delete"
-      );
-      return;
-    }
-
-    try {
-      setDeletingAccount(true);
-      await client.request(DELETE_ACCOUNT_MUTATION, { token });
-
-      await AsyncStorage.removeItem("expoPushToken");
-      dispatch({ type: "SET_USER", payload: null });
-      setUser(null);
-
-      navigation.reset({
-        index: 0,
-        routes: [{ name: "AddUserName" }],
-      });
-    } catch (err) {
-      console.log("Delete profile error", err);
-      showError("We couldn't delete your profile right now. Please try again.");
-    } finally {
-      setDeletingAccount(false);
-    }
-  };
-
-  const handleDeleteProfile = () => {
-    setAlertState({
-      visible: true,
-      type: "confirm",
-      title: "Delete profile",
-      message:
-        "This will remove your posts, photos, comments, likes, followers, and buddies. This can't be undone.",
-      onCancel: closeAlert,
-      onConfirm: () => {
-        closeAlert();
-        confirmDeleteProfile();
-      },
-    });
-  };
-
-  const uploadToCloudflare = async (localUri, slot) => {
-    try {
-      const { directUpload } = await client.request(DIRECT_UPLOAD_MUTATION);
-      if (!directUpload?.uploadURL) throw new Error("Upload URL missing");
-
-      const formData = new FormData();
-      formData.append("file", {
-        uri: localUri,
-        type: "image/jpeg",
-        name: "upload.jpg",
-      });
-
-      const uploadRes = await fetch(directUpload.uploadURL, {
-        method: "POST",
-        body: formData,
-      });
-
-      if (!uploadRes.ok) throw new Error("Failed to upload image");
-
-      const deliveryUrl = `https://imagedelivery.net/o9IMJdMAwk7ijgmm9FnmYg/${directUpload.id}/public`;
-
-      const { addPicture } = await client.request(ADD_PICTURE_MUTATION, {
-        token,
-        url: deliveryUrl,
-        publicId: directUpload.id,
-        slot,
-      });
-
-      return { url: deliveryUrl, id: addPicture?.id };
-    } catch (err) {
-      console.log("Upload error", err);
-      showError("We couldn't upload that photo. Please try again.");
-      return null;
-    }
-  };
-
-  const pickImage = async (slot) => {
-    const isProfile = slot === "PROFILE";
-    if (!token) {
-      showError(
-        "We need your device ID to update photos. Please restart the app."
-      );
-      return;
-    }
-
-    if (uploadingSlot || !(await requestMediaPermission())) return;
-
-    setUploadingSlot(slot);
-
-    const pickerResult = await ImagePicker.launchImageLibraryAsync({
-      allowsEditing: isProfile,
-      aspect: isProfile ? [3, 4] : undefined,
-      quality: 1,
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-    });
-
-    if (pickerResult.canceled) {
-      setUploadingSlot(null);
-      return;
-    }
-
-    const resized = await ImageManipulator.manipulateAsync(
-      pickerResult.assets[0].uri,
-      [{ resize: { width: 900 } }],
-      { compress: 0.75, format: ImageManipulator.SaveFormat.JPEG }
-    );
-
-    if (isProfile) setProfileUri(resized.uri);
-    else setDrunkUri(resized.uri);
-
-    const uploaded = await uploadToCloudflare(resized.uri, slot);
-    if (uploaded) {
-      if (isProfile) {
-        setProfileUri(uploaded.url);
-        setProfileId(uploaded.id);
-      } else {
-        setDrunkUri(uploaded.url);
-        setDrunkId(uploaded.id);
-      }
-    }
-
-    setUploadingSlot(null);
-  };
-
-  const deletePhoto = async (slot) => {
-    const isProfile = slot === "PROFILE";
-    const photoId = isProfile ? profileId : drunkId;
-    if (!photoId || deletingSlot) return;
-    if (!token) {
-      showError(
-        "We need your device ID to delete photos. Please restart the app."
-      );
-      return;
-    }
-
-    setDeletingSlot(slot);
-    try {
-      const { deletePhoto } = await client.request(DELETE_PHOTO_MUTATION, {
-        token,
-        photoId,
-        slot,
-      });
-
-      setUser(deletePhoto);
-      dispatch({ type: "SET_USER", payload: deletePhoto });
-      if (isProfile) {
-        setProfileUri(null);
-        setProfileId(null);
-      } else {
-        setDrunkUri(null);
-        setDrunkId(null);
-      }
-    } catch (err) {
-      console.log("Delete error", err);
-      showError("We couldn't delete that photo. Please try again.");
-    }
-
-    setDeletingSlot(null);
-  };
-
-  const usernameDisplay = useMemo(
-    () => usernameInput?.trim() || "Add a handle",
-    [usernameInput]
-  );
-
-  const trimmedUsername = useMemo(() => usernameInput.trim(), [usernameInput]);
-  const isUsernameValid =
-    trimmedUsername.length >= MIN_USERNAME_LENGTH &&
-    trimmedUsername.length <= MAX_USERNAME_LENGTH;
-  const usernameValidationText = useMemo(() => {
-    if (usernameInput.length === 0) return "You can change this later.";
-    if (trimmedUsername.length < MIN_USERNAME_LENGTH)
-      return "At least 3 characters.";
-    if (trimmedUsername.length > MAX_USERNAME_LENGTH)
-      return "Max 13 characters.";
-    return "Looks good.";
-  }, [trimmedUsername.length, usernameInput]);
-
-  const socialValidation = useMemo(() => {
-    const errors = {};
-
-    Object.entries(socialInputs).forEach(([platform, value]) => {
-      const cleaned = normalizeSocialInput(platform, value);
-      const config = SOCIAL_CONFIG[platform];
-      const label = config?.errorLabel || config?.label || platform;
-
-      if (cleaned && config?.regex && !config.regex.test(cleaned)) {
-        errors[platform] = `Enter a valid ${label} username.`;
-      }
-    });
-
-    return errors;
-  }, [socialInputs]);
-
-  const isSocialValid = useMemo(
-    () => Object.keys(socialValidation).length === 0,
-    [socialValidation]
-  );
-
   const popularityBreakdown = useMemo(
     () => popularity?.breakdown || {},
     [popularity?.breakdown]
@@ -868,101 +507,6 @@ const EditProfileScreen = ({ navigation }) => {
       }),
     [popularityBreakdown]
   );
-
-  const handleSaveUsername = async () => {
-    if (!token || savingUsername || !isUsernameValid) return;
-    const trimmed = trimmedUsername;
-    if (!trimmed) {
-      showError("Please enter a username to continue.");
-      return;
-    }
-
-    try {
-      setSavingUsername(true);
-      const { updateUserProfile } = await client.request(
-        UPDATE_USER_PROFILE_MUTATION,
-        { token, username: trimmed }
-      );
-
-      setUser(updateUserProfile);
-      dispatch({
-        type: "SET_USER",
-        payload: { ...user, ...updateUserProfile },
-      });
-      setUsernameOpen(false);
-    } catch (err) {
-      const message =
-        err?.response?.errors?.[0]?.message ||
-        "We couldn't update your username right now.";
-      showError(message, "Username error");
-    } finally {
-      setSavingUsername(false);
-      setUsernameOpen(false);
-    }
-  };
-
-  const handleSaveSocialLinks = async () => {
-    if (!token || savingSocial || !isSocialValid) return;
-
-    const payload = Object.fromEntries(
-      Object.entries(socialInputs).map(([platform, value]) => [
-        platform,
-        normalizeSocialInput(platform, value) || null,
-      ])
-    );
-
-    const currentHandles = {
-      instagram: normalizeSocialInput("instagram", user?.social?.instagram),
-      tiktok: normalizeSocialInput("tiktok", user?.social?.tiktok),
-      x: normalizeSocialInput("x", user?.social?.x),
-    };
-
-    const updates = Object.entries(payload).filter(
-      ([platform, handle]) => handle !== currentHandles[platform]
-    );
-
-    if (!updates.length) return;
-
-    try {
-      setSavingSocial(true);
-      let latestUser = user;
-
-      for (const [platform, handle] of updates) {
-        const { updateSocial } = await client.request(UPDATE_SOCIAL_MUTATION, {
-          token,
-          platform,
-          handle,
-        });
-
-        latestUser = updateSocial;
-      }
-
-      if (latestUser) {
-        setUser(latestUser);
-        dispatch({ type: "SET_USER", payload: { ...user, ...latestUser } });
-        dispatch({
-          type: "SET_PROFILE_OVERVIEW",
-          payload: { ...(state?.profileOverview || {}), user: latestUser },
-        });
-        setSocialInputs({
-          instagram: normalizeSocialInput(
-            "instagram",
-            latestUser.social?.instagram
-          ),
-          tiktok: normalizeSocialInput("tiktok", latestUser.social?.tiktok),
-          x: normalizeSocialInput("x", latestUser.social?.x),
-        });
-      }
-    } catch (err) {
-      const message =
-        err?.response?.errors?.[0]?.message ||
-        "We couldn't update your social links right now.";
-      showError(message, "Social links");
-    } finally {
-      setSavingSocial(false);
-      setSocialOpen(false);
-    }
-  };
 
   const isBusy = loading || deletingAccount;
 
