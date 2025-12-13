@@ -1515,11 +1515,11 @@ const UserProfileScreen = ({ route, navigation }) => {
                   colorScheme="system"
                   style={[styles.socialIconButton, styles.popularityBadgeShell]}
                 >
-                  <View style={styles.popularityBadgeInner}>
+                  <View style={styles.popularityBadgeContent}>
                     <MaterialCommunityIcons
                       name="rocket-launch"
                       size={13}
-                      color="#e5e7eb"
+                      color="#fef3c7"
                     />
                     <Text style={styles.popularityBadgeScore}>{`${Math.round(
                       popularitySnapshot.score || 0
@@ -1821,10 +1821,10 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "rgba(255,255,255,0.06)",
+    backgroundColor: "rgba(249,115,22,0.18)",
     overflow: "hidden",
   },
-  popularityBadgeInner: {
+  popularityBadgeContent: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
@@ -1835,7 +1835,7 @@ const styles = StyleSheet.create({
     minWidth: SOCIAL_ICON_BUTTON_SIZE + 4,
   },
   popularityBadgeScore: {
-    color: "#e5e7eb",
+    color: "#fef3c7",
     fontWeight: "800",
     fontSize: 12,
   },
