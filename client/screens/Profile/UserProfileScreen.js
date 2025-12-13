@@ -20,7 +20,7 @@ import {
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { BlurView } from "expo-blur";
-import { LiquidGlassView, isLiquidGlassSupported } from "@callstack/liquid-glass";
+import { LiquidGlassView } from "@callstack/liquid-glass";
 import {
   Feather,
   Ionicons,
@@ -38,6 +38,7 @@ import Context from "../../context";
 import { useClient } from "../../client";
 import { getAuthContext } from "../../utils/helpers";
 import { calculatePopularity } from "../../utils/popularity";
+import { isIOSLiquidGlassCapable } from "../../utils/deviceCapabilities";
 import {
   USER_POSTS_PAGINATED_QUERY,
   USER_PROFILE_QUERY,
@@ -152,7 +153,7 @@ const UserProfileScreen = ({ route, navigation }) => {
   const currentUser = state?.user;
   const currentUserId = currentUser?.id;
   const { openSocial } = useOpenSocial();
-  const canUseGlassBadge = useMemo(() => isLiquidGlassSupported(), []);
+  const canUseGlassBadge = useMemo(() => isIOSLiquidGlassCapable(), []);
   const BadgeShell = canUseGlassBadge ? LiquidGlassView : BlurView;
 
   const viewerCoords = useMemo(() => {
@@ -1915,39 +1916,44 @@ const styles = StyleSheet.create({
   },
   avatarPopularityBadge: {
     position: "absolute",
-    top: -18,
-    right: -6,
+    top: -12,
+    right: -10,
+    zIndex: 2,
     borderRadius: 18,
     overflow: "hidden",
-    backgroundColor: "rgba(255,255,255,0.08)",
+    backgroundColor: "rgba(255,255,255,0.12)",
     borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.25)",
+    borderColor: "rgba(255,255,255,0.28)",
     shadowColor: "#fcd34d",
-    shadowOpacity: 0.45,
-    shadowRadius: 10,
-    shadowOffset: { width: 0, height: 6 },
-    elevation: 8,
+    shadowOpacity: 0.55,
+    shadowRadius: 12,
+    shadowOffset: { width: 0, height: 8 },
+    elevation: 10,
     padding: 2,
   },
   avatarPopularityBadgeGlass: {
-    backgroundColor: "rgba(15,23,42,0.35)",
-    borderColor: "rgba(252,211,77,0.35)",
+    backgroundColor: "rgba(255,255,255,0.08)",
+    borderColor: "rgba(252,211,77,0.4)",
   },
   avatarPopularityInner: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 6,
-    paddingHorizontal: 10,
-    paddingVertical: 6,
-    borderRadius: 14,
+    gap: 4,
+    paddingHorizontal: 12,
+    paddingVertical: 7,
+    borderRadius: 16,
+    backgroundColor: "rgba(15,23,42,0.55)",
   },
   avatarPopularityInnerGlass: {
-    backgroundColor: "rgba(255,255,255,0.08)",
+    backgroundColor: "rgba(255,255,255,0.12)",
   },
   avatarPopularityScore: {
     color: "#0b1220",
     fontWeight: "800",
     fontSize: 11,
+    textShadowColor: "rgba(255,255,255,0.45)",
+    textShadowOffset: { width: 0, height: 0 },
+    textShadowRadius: 6,
   },
   whyWrapper: {
     alignItems: "center",
