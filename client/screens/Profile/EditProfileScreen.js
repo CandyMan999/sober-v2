@@ -1545,45 +1545,13 @@ const EditProfileScreen = ({ navigation }) => {
               bar or liquor store so we can ping you and your sober buddies
               before you make any dumb decisions.
             </Text>
-
-            <TouchableOpacity
-              style={styles.deleteProfileButton}
-              activeOpacity={0.9}
-              disabled={deletingAccount}
-              onPress={handleDeleteProfile}
-            >
-              <View
-                style={[
-                  styles.deleteProfileInner,
-                  deletingAccount && styles.deleteProfileInnerDisabled,
-                ]}
-              >
-                <View style={styles.deleteProfileContent}>
-                  <View style={styles.deleteProfileIconBadge}>
-                    <Feather name="trash-2" size={16} color="#fecaca" />
-                  </View>
-
-                  <View style={styles.deleteProfileTextBlock}>
-                    <Text style={styles.deleteProfileTitle}>
-                      Delete profile
-                    </Text>
-                  </View>
-
-                  <View style={styles.deleteProfileRight}>
-                    {deletingAccount ? (
-                      <ActivityIndicator color="#fecaca" size="small" />
-                    ) : (
-                      <Feather name="arrow-right" size={16} color="#fecaca" />
-                    )}
-                  </View>
-                </View>
-              </View>
-            </TouchableOpacity>
           </View>
 
           <View style={styles.sectionCard}>
             <View style={styles.popularityHeaderRow}>
-              <Text style={styles.sectionLabel}>Popularity</Text>
+              <Text style={[styles.sectionLabel, styles.sectionLabelStrong]}>
+                Popularity
+              </Text>
               <View style={styles.popularityStatusPill}>
                 <MaterialCommunityIcons
                   name="rocket-launch"
@@ -1635,6 +1603,40 @@ const EditProfileScreen = ({ navigation }) => {
                 <Text style={styles.loadingText}>Refreshing your progress…</Text>
               </View>
             ) : null}
+          </View>
+
+          <View style={[styles.sectionCard, styles.deleteSectionCard]}>
+            <TouchableOpacity
+              style={styles.deleteProfileButton}
+              activeOpacity={0.9}
+              disabled={deletingAccount}
+              onPress={handleDeleteProfile}
+            >
+              <View
+                style={[
+                  styles.deleteProfileInner,
+                  deletingAccount && styles.deleteProfileInnerDisabled,
+                ]}
+              >
+                <View style={styles.deleteProfileContent}>
+                  <View style={styles.deleteProfileIconBadge}>
+                    <Feather name="trash-2" size={16} color="#fecaca" />
+                  </View>
+
+                  <View style={styles.deleteProfileTextBlock}>
+                    <Text style={styles.deleteProfileTitle}>Delete profile</Text>
+                  </View>
+
+                  <View style={styles.deleteProfileRight}>
+                    {deletingAccount ? (
+                      <ActivityIndicator color="#fecaca" size="small" />
+                    ) : (
+                      <Feather name="arrow-right" size={16} color="#fecaca" />
+                    )}
+                  </View>
+                </View>
+              </View>
+            </TouchableOpacity>
           </View>
 
           <View style={styles.legalFooter}>
@@ -1713,6 +1715,12 @@ const styles = StyleSheet.create({
     fontSize: 12,
     letterSpacing: 0.6,
     marginBottom: 12,
+  },
+  sectionLabelStrong: {
+    color: textPrimary,
+    fontWeight: "800",
+    fontSize: 13,
+    letterSpacing: 0.4,
   },
   photoRow: {
     flexDirection: "row",
@@ -1894,6 +1902,10 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     borderBottomWidth: 1,
     borderBottomColor: border,
+  },
+
+  deleteSectionCard: {
+    marginTop: 22,
   },
 
   // Subscription badge

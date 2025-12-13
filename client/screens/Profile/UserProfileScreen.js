@@ -1510,17 +1510,12 @@ const UserProfileScreen = ({ route, navigation }) => {
                     >
                       <MaterialCommunityIcons
                         name="rocket-launch"
-                        size={14}
+                        size={12}
                         color="#0b1220"
                       />
-                      <Text style={styles.avatarPopularityText} numberOfLines={1}>
-                        {popularitySnapshot.status}
-                      </Text>
-                      <View style={styles.avatarPopularityScoreBubble}>
-                        <Text style={styles.avatarPopularityScore}>{`${Math.round(
-                          popularitySnapshot.score || 0
-                        )}%`}</Text>
-                      </View>
+                      <Text style={styles.avatarPopularityScore}>{`${Math.round(
+                        popularitySnapshot.score || 0
+                      )}%`}</Text>
                     </LinearGradient>
                   ) : null}
                 </View>
@@ -1891,36 +1886,24 @@ const styles = StyleSheet.create({
   },
   avatarPopularityBadge: {
     position: "absolute",
-    bottom: -8,
+    bottom: -6,
     alignSelf: "center",
-    paddingHorizontal: 10,
-    paddingVertical: 6,
-    borderRadius: 999,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 14,
     flexDirection: "row",
     alignItems: "center",
     gap: 6,
     shadowColor: "#0ea5e9",
     shadowOpacity: 0.35,
-    shadowRadius: 8,
-    shadowOffset: { width: 0, height: 4 },
+    shadowRadius: 6,
+    shadowOffset: { width: 0, height: 3 },
     elevation: 4,
   },
-  avatarPopularityText: {
+  avatarPopularityScore: {
     color: "#0b1220",
     fontWeight: "800",
-    fontSize: 12,
-    maxWidth: 120,
-  },
-  avatarPopularityScoreBubble: {
-    backgroundColor: "#0b1220",
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 999,
-  },
-  avatarPopularityScore: {
-    color: "#fef3c7",
-    fontWeight: "800",
-    fontSize: 12,
+    fontSize: 11,
   },
   whyWrapper: {
     alignItems: "center",
