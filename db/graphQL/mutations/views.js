@@ -1,6 +1,6 @@
 const { AuthenticationError } = require("apollo-server-express");
 const { Post, Quote, User, Video } = require("../../models");
-const { addWatchTimeForUser } = require("../utils/popularity");
+const { addWatchTimeForUser } = require("../../utils/popularity");
 
 const recordPostViewResolver = async (root, args) => {
   const { postId, token, watchSeconds } = args;

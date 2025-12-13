@@ -15,7 +15,7 @@ const {
   NotificationIntents,
   createNotificationForUser,
 } = require("../../utils/notifications");
-const { buildPopularitySnapshot } = require("../utils/popularity");
+const { buildPopularitySnapshot } = require("../../utils/popularity");
 const { serializeUser } = require("../../utils/serializeUser");
 
 require("dotenv").config();

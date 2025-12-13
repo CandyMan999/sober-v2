@@ -1492,7 +1492,11 @@ const UserProfileScreen = ({ route, navigation }) => {
         <View style={styles.bodyPadding}>
             <View style={styles.headerRow}>
               <View style={styles.avatarColumn}>
-                <View ref={avatarRef} onLayout={handleAvatarLayout}>
+                <View
+                  ref={avatarRef}
+                  onLayout={handleAvatarLayout}
+                  style={styles.avatarWrapper}
+                >
                   <Avatar
                     uri={profileData?.profilePicUrl}
                     size={AVATAR_SIZE}
@@ -1502,21 +1506,27 @@ const UserProfileScreen = ({ route, navigation }) => {
                     contentRef={avatarImageRef}
                   />
                   {popularitySnapshot ? (
-                    <LinearGradient
-                      colors={["#22d3ee", "#6366f1"]}
-                      start={{ x: 0, y: 0 }}
-                      end={{ x: 1, y: 1 }}
+                    <BlurView
+                      intensity={60}
+                      tint="dark"
                       style={styles.avatarPopularityBadge}
                     >
-                      <MaterialCommunityIcons
-                        name="rocket-launch"
-                        size={12}
-                        color="#0b1220"
-                      />
-                      <Text style={styles.avatarPopularityScore}>{`${Math.round(
-                        popularitySnapshot.score || 0
-                      )}%`}</Text>
-                    </LinearGradient>
+                      <LinearGradient
+                        colors={["rgba(252,211,77,0.85)", "rgba(249,115,22,0.9)"]}
+                        start={{ x: 0, y: 0 }}
+                        end={{ x: 1, y: 1 }}
+                        style={styles.avatarPopularityInner}
+                      >
+                        <MaterialCommunityIcons
+                          name="rocket-launch"
+                          size={12}
+                          color="#0b1220"
+                        />
+                        <Text style={styles.avatarPopularityScore}>{`${Math.round(
+                          popularitySnapshot.score || 0
+                        )}%`}</Text>
+                      </LinearGradient>
+                    </BlurView>
                   ) : null}
                 </View>
                 <View style={styles.usernameRow}>
@@ -1744,6 +1754,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flex: 1,
   },
+  avatarWrapper: {
+    position: "relative",
+    alignItems: "center",
+    justifyContent: "center",
+  },
   topActionsRow: {
     paddingHorizontal: 16,
     marginBottom: 8,
@@ -1886,19 +1901,25 @@ const styles = StyleSheet.create({
   },
   avatarPopularityBadge: {
     position: "absolute",
-    bottom: -6,
-    alignSelf: "center",
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 14,
+    top: -8,
+    right: -10,
+    borderRadius: 16,
+    overflow: "hidden",
+    backgroundColor: "rgba(255,255,255,0.12)",
+    borderWidth: 1,
+    borderColor: "rgba(255,255,255,0.2)",
+    shadowColor: "#f59e0b",
+    shadowOpacity: 0.35,
+    shadowRadius: 8,
+    shadowOffset: { width: 0, height: 4 },
+    elevation: 6,
+  },
+  avatarPopularityInner: {
     flexDirection: "row",
     alignItems: "center",
     gap: 6,
-    shadowColor: "#0ea5e9",
-    shadowOpacity: 0.35,
-    shadowRadius: 6,
-    shadowOffset: { width: 0, height: 3 },
-    elevation: 4,
+    paddingHorizontal: 10,
+    paddingVertical: 6,
   },
   avatarPopularityScore: {
     color: "#0b1220",
