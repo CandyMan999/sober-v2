@@ -1515,21 +1515,16 @@ const UserProfileScreen = ({ route, navigation }) => {
                   colorScheme="system"
                   style={[styles.socialIconButton, styles.popularityBadgeShell]}
                 >
-                  <LinearGradient
-                    colors={["rgba(252,211,77,0.55)", "rgba(249,115,22,0.55)"]}
-                    start={{ x: 0, y: 0 }}
-                    end={{ x: 1, y: 1 }}
-                    style={styles.popularityBadgeInner}
-                  >
+                  <View style={styles.popularityBadgeInner}>
                     <MaterialCommunityIcons
                       name="rocket-launch"
                       size={13}
-                      color="#0b1220"
+                      color="#e5e7eb"
                     />
                     <Text style={styles.popularityBadgeScore}>{`${Math.round(
                       popularitySnapshot.score || 0
                     )}%`}</Text>
-                  </LinearGradient>
+                  </View>
                 </BadgeShell>
               ) : null}
             </View>
@@ -1820,39 +1815,29 @@ const styles = StyleSheet.create({
   popularityBadgeShell: {
     width: "auto",
     height: "auto",
-    padding: 3,
-    minWidth: SOCIAL_ICON_BUTTON_SIZE + 10,
-    minHeight: SOCIAL_ICON_BUTTON_SIZE + 6,
+    padding: 2,
+    minWidth: SOCIAL_ICON_BUTTON_SIZE + 6,
+    minHeight: SOCIAL_ICON_BUTTON_SIZE,
     borderRadius: 12,
     alignItems: "center",
     justifyContent: "center",
-    borderWidth: 0.5,
-    borderColor: "rgba(255,255,255,0.18)",
-    shadowColor: "#ffffff",
-    shadowOpacity: 0.18,
-    shadowRadius: 12,
-    shadowOffset: { width: 0, height: 8 },
-    elevation: 6,
+    backgroundColor: "rgba(255,255,255,0.06)",
     overflow: "hidden",
   },
   popularityBadgeInner: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    gap: 4,
-    paddingHorizontal: 10,
-    paddingVertical: 7,
-    minHeight: SOCIAL_ICON_BUTTON_SIZE + 2,
-    minWidth: SOCIAL_ICON_BUTTON_SIZE + 8,
-    borderRadius: 10,
+    gap: 6,
+    paddingHorizontal: 8,
+    paddingVertical: 6,
+    minHeight: SOCIAL_ICON_BUTTON_SIZE,
+    minWidth: SOCIAL_ICON_BUTTON_SIZE + 4,
   },
   popularityBadgeScore: {
-    color: "#0b1220",
+    color: "#e5e7eb",
     fontWeight: "800",
     fontSize: 12,
-    textShadowColor: "rgba(255,255,255,0.45)",
-    textShadowOffset: { width: 0, height: 0 },
-    textShadowRadius: 6,
   },
   sobrietyPill: {
     flexDirection: "row",
