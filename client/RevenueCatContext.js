@@ -132,18 +132,7 @@ export const RevenueCatProvider = ({ children, state, dispatch }) => {
       const updatedUser = data?.changePlan;
 
       if (updatedUser) {
-        const mergedUser = { ...user, ...updatedUser };
-        dispatch({ type: "SET_USER", payload: mergedUser });
-
-        if (state?.profileOverview) {
-          dispatch({
-            type: "SET_PROFILE_OVERVIEW",
-            payload: {
-              ...state.profileOverview,
-              user: { ...(state.profileOverview.user || {}), ...mergedUser },
-            },
-          });
-        }
+        dispatch({ type: "SET_USER", payload: { ...user, ...updatedUser } });
       }
     } catch (e) {
       console.log("Error syncing plan with backend:", e);
