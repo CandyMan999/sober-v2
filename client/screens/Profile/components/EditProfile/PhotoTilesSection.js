@@ -22,7 +22,8 @@ import {
 } from "../../../../GraphQL/mutations";
 import { getToken } from "../../../../utils/helpers";
 
-const { accent, textPrimary, textSecondary, primaryBackground, oceanBlue } = COLORS;
+const { accent, textPrimary, textSecondary, primaryBackground, oceanBlue } =
+  COLORS;
 
 const PhotoTileBase = ({ children, label, onPress, style }) => (
   <TouchableOpacity
@@ -35,12 +36,23 @@ const PhotoTileBase = ({ children, label, onPress, style }) => (
   </TouchableOpacity>
 );
 
-const ProfilePhotoTile = ({ label, uri, isUploading, isDeleting, onPick, onDelete }) => (
+const ProfilePhotoTile = ({
+  label,
+  uri,
+  isUploading,
+  isDeleting,
+  onPick,
+  onDelete,
+}) => (
   <PhotoTileBase label={label} onPress={onPick}>
     <LinearGradient colors={[accent, accent]} style={styles.profileHalo}>
       <View style={styles.profilePreview}>
         {uri ? (
-          <Image source={{ uri }} style={styles.profileImage} resizeMode="cover" />
+          <Image
+            source={{ uri }}
+            style={styles.profileImage}
+            resizeMode="cover"
+          />
         ) : (
           <View style={[styles.profileImage, styles.photoPlaceholder]}>
             <Feather name="camera" color={textSecondary} size={24} />
@@ -73,12 +85,23 @@ const ProfilePhotoTile = ({ label, uri, isUploading, isDeleting, onPick, onDelet
   </PhotoTileBase>
 );
 
-const DrunkPhotoTile = ({ label, uri, isUploading, isDeleting, onPick, onDelete }) => (
+const DrunkPhotoTile = ({
+  label,
+  uri,
+  isUploading,
+  isDeleting,
+  onPick,
+  onDelete,
+}) => (
   <PhotoTileBase label={label} onPress={onPick} style={styles.drunkTile}>
     <LinearGradient colors={[oceanBlue, oceanBlue]} style={styles.drunkHalo}>
       <View style={styles.drunkPreview}>
         {uri ? (
-          <Image source={{ uri }} style={styles.drunkImage} resizeMode="cover" />
+          <Image
+            source={{ uri }}
+            style={styles.drunkImage}
+            resizeMode="cover"
+          />
         ) : (
           <View style={[styles.drunkImage, styles.photoPlaceholder]}>
             <Feather name="image" color={textSecondary} size={24} />
@@ -115,9 +138,15 @@ const PhotoTilesSection = ({ currentUser, onUserUpdated, showError }) => {
   const client = useClient();
   const { dispatch } = useContext(Context);
 
-  const [profileUri, setProfileUri] = useState(currentUser?.profilePicUrl || null);
+  console.log("current User: ", currentUser);
+
+  const [profileUri, setProfileUri] = useState(
+    currentUser?.profilePicUrl || null
+  );
   const [drunkUri, setDrunkUri] = useState(currentUser?.drunkPicUrl || null);
-  const [profileId, setProfileId] = useState(currentUser?.profilePic?.id || null);
+  const [profileId, setProfileId] = useState(
+    currentUser?.profilePic?.id || null
+  );
   const [drunkId, setDrunkId] = useState(currentUser?.drunkPic?.id || null);
   const [uploadingSlot, setUploadingSlot] = useState(null);
   const [deletingSlot, setDeletingSlot] = useState(null);
@@ -233,8 +262,11 @@ const PhotoTilesSection = ({ currentUser, onUserUpdated, showError }) => {
   };
 
   const deletePhoto = async (slot) => {
+    console.log("deleting: ", slot);
     const isProfile = slot === "PROFILE";
     const photoId = isProfile ? profileId : drunkId;
+
+    console.log("photoID: ", photoId);
     if (!photoId || deletingSlot) return;
     if (!token) {
       showError?.(
