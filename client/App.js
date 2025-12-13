@@ -77,6 +77,14 @@ const ONBOARDING_ROUTES = new Set([
 ]);
 const PAYWALL_EXCLUDED_ROUTES = new Set(["ProfileHome"]);
 
+const doesStateContainRoute = (state, routeName) => {
+  if (!state?.routes?.length) return false;
+
+  return state.routes.some(
+    (route) => route.name === routeName || doesStateContainRoute(route.state, routeName)
+  );
+};
+
 // --- Apollo Client instance with subscriptions ---
 const httpLink = new HttpLink({ uri: GRAPHQL_URI });
 
@@ -146,6 +154,8 @@ function AppContent({ state, dispatch }) {
   const [paywallAcknowledged, setPaywallAcknowledged] = useState(false);
   const [paywallSource, setPaywallSource] = useState(null);
   const hasShownPaywallThisSession = useRef(false);
+  const hasCheckedPushPermissionsRef = useRef(false);
+  const hasReachedMainTabsRef = useRef(false);
   const { isPremium, initializing: revenueCatInitializing } = useRevenueCat();
   const trialEndsAtString = currentUser?.trialEndsAt;
   const trialEndsAt = trialEndsAtString ? new Date(trialEndsAtString) : null;
@@ -380,6 +390,57 @@ function AppContent({ state, dispatch }) {
   }, [locationTrackingAllowed]);
 
   useEffect(() => {
+    if (!navigationReady) return;
+    if (!currentUser?.id) return;
+    if (hasCheckedPushPermissionsRef.current) return;
+
+    hasCheckedPushPermissionsRef.current = true;
+    let cancelled = false;
+
+    const ensurePushPermission = async () => {
+      try {
+        const permission = await Notifications.getPermissionsAsync();
+        const hasPermission = permission?.granted === true;
+
+        if (cancelled || hasPermission) return;
+
+        if (!navigationRef.isReady()) return;
+
+        const currentRoute = navigationRef.getCurrentRoute();
+        if (currentRoute && ONBOARDING_ROUTES.has(currentRoute.name)) return;
+
+        const appleId = (await getAppleId()) || undefined;
+        const pushToken = (await getToken()) || undefined;
+        const photoURI =
+          currentUser?.profilePicUrl || currentUser?.profilePic?.url || null;
+
+        navigationRef.reset({
+          index: 0,
+          routes: [
+            {
+              name: "AddUserName",
+              params: {
+                appleId,
+                username: currentUser?.username || "",
+                photoURI,
+                pushToken,
+              },
+            },
+          ],
+        });
+      } catch (error) {
+        console.log("Failed to ensure notification permission", error);
+      }
+    };
+
+    ensurePushPermission();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [currentUser?.id, currentUser?.profilePic, currentUser?.profilePicUrl, currentUser?.username, navigationReady]);
+
+  useEffect(() => {
     if (!navigationReady) return undefined;
 
     let isActive = true;
@@ -529,6 +590,8 @@ function AppContent({ state, dispatch }) {
     if (revenueCatInitializing) return;
     if (!shouldForcePaywall) return;
 
+    if (!hasReachedMainTabsRef.current) return;
+
     if (!navigationRef.isReady()) return;
 
     const currentRoute = navigationRef.getCurrentRoute();
@@ -576,6 +639,7 @@ function AppContent({ state, dispatch }) {
       setPaywallVisible(false);
       setPaywallSource(null);
       hasShownPaywallThisSession.current = false;
+      hasReachedMainTabsRef.current = false;
     }
   }, [currentUser?.id]);
 
@@ -635,9 +699,20 @@ function AppContent({ state, dispatch }) {
         ref={navigationRef}
         onReady={() => {
           setNavigationReady(true);
+          const rootState = navigationRef.getRootState();
+          if (doesStateContainRoute(rootState, "MainTabs")) {
+            hasReachedMainTabsRef.current = true;
+          }
           maybeShowPaywall();
         }}
-        onStateChange={maybeShowPaywall}
+        onStateChange={() => {
+          const rootState = navigationRef.getRootState();
+          if (doesStateContainRoute(rootState, "MainTabs")) {
+            hasReachedMainTabsRef.current = true;
+          }
+
+          maybeShowPaywall();
+        }}
       >
         <>
           <Stack.Navigator

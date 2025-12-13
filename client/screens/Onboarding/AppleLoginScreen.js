@@ -17,7 +17,7 @@ import {
 } from "react-native";
 import * as AppleAuthentication from "expo-apple-authentication";
 import * as Location from "expo-location";
-import * as Notifications from "expo-notifications"; // ✅ NEW
+import * as Notifications from "expo-notifications";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { LinearGradient } from "expo-linear-gradient";
 import Avatar from "../../components/Avatar";
@@ -102,6 +102,18 @@ const AppleLoginScreen = ({ navigation }) => {
     [client]
   );
 
+  const checkNotificationPermissions = async () => {
+    let granted = false;
+    const { status } = await Notifications.getPermissionsAsync();
+
+    if (status !== "granted") {
+      return granted;
+    } else {
+      granted = true;
+    }
+    return granted;
+  };
+
   const routeFromProfile = useCallback(
     async ({ me, token, appleId }) => {
       if (!me) {
@@ -112,7 +124,8 @@ const AppleLoginScreen = ({ navigation }) => {
       const hasUsername =
         me.username && me.username.trim().length >= MIN_USERNAME_LENGTH;
 
-      if (!hasUsername) {
+      const hasEnabledNotifcations = await checkNotificationPermissions();
+      if (!hasUsername || !hasEnabledNotifcations) {
         navigation.replace("AddUserName", {
           appleId,
           username: me.username || "",
@@ -120,33 +133,6 @@ const AppleLoginScreen = ({ navigation }) => {
           pushToken: token,
         });
         return;
-      }
-
-      // ✅ NEW: Check if push notifications are enabled at OS level
-      try {
-        const notifSettings = await Notifications.getPermissionsAsync();
-        const hasPushPermission = notifSettings?.granted === true;
-
-        if (!hasPushPermission) {
-          // Force them back through AddUserName / notification onboarding
-          navigation.reset({
-            index: 0,
-            routes: [
-              {
-                name: "AddUserName",
-                params: {
-                  appleId,
-                  username: me.username || "",
-                  photoURI: me.profilePicUrl || null,
-                  pushToken: token,
-                },
-              },
-            ],
-          });
-          return;
-        }
-      } catch (e) {
-        console.log("Failed to check notification permissions:", e);
       }
 
       const locationTrackingDisabled =
