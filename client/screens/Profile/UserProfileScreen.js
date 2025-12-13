@@ -20,6 +20,7 @@ import {
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { BlurView } from "expo-blur";
+import { LiquidGlassView, isLiquidGlassSupported } from "@callstack/liquid-glass";
 import {
   Feather,
   Ionicons,
@@ -151,6 +152,8 @@ const UserProfileScreen = ({ route, navigation }) => {
   const currentUser = state?.user;
   const currentUserId = currentUser?.id;
   const { openSocial } = useOpenSocial();
+  const canUseGlassBadge = useMemo(() => isLiquidGlassSupported(), []);
+  const BadgeShell = canUseGlassBadge ? LiquidGlassView : BlurView;
 
   const viewerCoords = useMemo(() => {
     if (state?.currentPosition?.lat && state?.currentPosition?.long) {
@@ -1506,16 +1509,27 @@ const UserProfileScreen = ({ route, navigation }) => {
                     contentRef={avatarImageRef}
                   />
                   {popularitySnapshot ? (
-                    <BlurView
-                      intensity={60}
-                      tint="dark"
-                      style={styles.avatarPopularityBadge}
+                    <BadgeShell
+                      {...(!canUseGlassBadge
+                        ? { intensity: 90, tint: "dark" }
+                        : {
+                            interactive: false,
+                            effect: "ultra-thin",
+                            colorScheme: "system",
+                          })}
+                      style={[
+                        styles.avatarPopularityBadge,
+                        canUseGlassBadge && styles.avatarPopularityBadgeGlass,
+                      ]}
                     >
                       <LinearGradient
-                        colors={["rgba(252,211,77,0.85)", "rgba(249,115,22,0.9)"]}
+                        colors={["rgba(252,211,77,0.8)", "rgba(249,115,22,0.9)"]}
                         start={{ x: 0, y: 0 }}
                         end={{ x: 1, y: 1 }}
-                        style={styles.avatarPopularityInner}
+                        style={[
+                          styles.avatarPopularityInner,
+                          canUseGlassBadge && styles.avatarPopularityInnerGlass,
+                        ]}
                       >
                         <MaterialCommunityIcons
                           name="rocket-launch"
@@ -1526,7 +1540,7 @@ const UserProfileScreen = ({ route, navigation }) => {
                           popularitySnapshot.score || 0
                         )}%`}</Text>
                       </LinearGradient>
-                    </BlurView>
+                    </BadgeShell>
                   ) : null}
                 </View>
                 <View style={styles.usernameRow}>
@@ -1901,18 +1915,23 @@ const styles = StyleSheet.create({
   },
   avatarPopularityBadge: {
     position: "absolute",
-    top: -8,
-    right: -10,
-    borderRadius: 16,
+    top: -18,
+    right: -6,
+    borderRadius: 18,
     overflow: "hidden",
-    backgroundColor: "rgba(255,255,255,0.12)",
+    backgroundColor: "rgba(255,255,255,0.08)",
     borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.2)",
-    shadowColor: "#f59e0b",
-    shadowOpacity: 0.35,
-    shadowRadius: 8,
-    shadowOffset: { width: 0, height: 4 },
-    elevation: 6,
+    borderColor: "rgba(255,255,255,0.25)",
+    shadowColor: "#fcd34d",
+    shadowOpacity: 0.45,
+    shadowRadius: 10,
+    shadowOffset: { width: 0, height: 6 },
+    elevation: 8,
+    padding: 2,
+  },
+  avatarPopularityBadgeGlass: {
+    backgroundColor: "rgba(15,23,42,0.35)",
+    borderColor: "rgba(252,211,77,0.35)",
   },
   avatarPopularityInner: {
     flexDirection: "row",
@@ -1920,6 +1939,10 @@ const styles = StyleSheet.create({
     gap: 6,
     paddingHorizontal: 10,
     paddingVertical: 6,
+    borderRadius: 14,
+  },
+  avatarPopularityInnerGlass: {
+    backgroundColor: "rgba(255,255,255,0.08)",
   },
   avatarPopularityScore: {
     color: "#0b1220",
