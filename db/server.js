@@ -21,11 +21,17 @@ const buildContext = async (token, appleId) => {
 
   try {
     if (appleId) {
-      currentUser = await User.findOne({ appleId }).populate("profilePic");
+      currentUser = await User.findOne({ appleId }).populate([
+        "profilePic",
+        "drunkPic",
+      ]);
     }
 
     if (!currentUser && token) {
-      currentUser = await User.findOne({ token }).populate("profilePic");
+      currentUser = await User.findOne({ token }).populate([
+        "profilePic",
+        "drunkPic",
+      ]);
     }
 
     if (currentUser) {
