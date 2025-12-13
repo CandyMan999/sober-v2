@@ -90,6 +90,7 @@ const FeedLayout = ({
     ? authorLabel
     : (() => {
         const baseName = postAuthor?.username || postAuthor?.name || "Unknown";
+        if (isMilestonePost) return baseName;
         const dayLabel = resolvedDaysSober === 1 ? "day" : "days";
         return `${baseName}@${resolvedDaysSober}${dayLabel}`;
       })();
