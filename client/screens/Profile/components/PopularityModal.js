@@ -11,7 +11,12 @@ import {
   View,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import { Feather, MaterialCommunityIcons } from "@expo/vector-icons";
+import {
+  Feather,
+  FontAwesome6,
+  Ionicons,
+  MaterialCommunityIcons,
+} from "@expo/vector-icons";
 
 import { COLORS } from "../../../constants/colors";
 import { defaultPopularityWeighting } from "../../../utils/popularity";
@@ -24,12 +29,44 @@ const POPULARITY_METRICS = [
     label: "Watch time",
     unit: "min",
     format: (value) => `${Math.round(value || 0)} min`,
+    icon: { Component: Ionicons, name: "eye-outline", color: "#38bdf8" },
   },
-  { key: "posts", label: "Posts", unit: "posts" },
-  { key: "comments", label: "Comments", unit: "comments" },
-  { key: "likes", label: "Likes", unit: "likes" },
-  { key: "followers", label: "Followers", unit: "followers" },
-  { key: "approvedQuotes", label: "Approved quotes", unit: "quotes" },
+  {
+    key: "posts",
+    label: "Posts",
+    unit: "posts",
+    icon: { Component: FontAwesome6, name: "signs-post", color: "#f59e0b" },
+  },
+  {
+    key: "comments",
+    label: "Comments",
+    unit: "comments",
+    icon: { Component: Ionicons, name: "send", color: "#38bdf8" },
+  },
+  {
+    key: "likes",
+    label: "Likes",
+    unit: "likes",
+    emoji: "👍",
+    iconBg: "rgba(59,130,246,0.08)",
+    iconBorder: "rgba(59,130,246,0.4)",
+  },
+  {
+    key: "followers",
+    label: "Followers",
+    unit: "followers",
+    icon: { Component: Feather, name: "users", color: "#a78bfa" },
+  },
+  {
+    key: "approvedQuotes",
+    label: "Approved quotes",
+    unit: "quotes",
+    icon: {
+      Component: MaterialCommunityIcons,
+      name: "format-quote-close",
+      color: "#38bdf8",
+    },
+  },
 ];
 
 const { accent, accentSoft, textPrimary, textSecondary, nightBlue } = COLORS;
@@ -80,7 +117,7 @@ const PopularityModal = ({ visible, onClose, snapshot }) => {
     () =>
       sheetAnim.interpolate({
         inputRange: [0, 1],
-        outputRange: [effectiveHeight + 40, 0],
+        outputRange: [effectiveHeight, 0],
       }),
     [effectiveHeight, sheetAnim]
   );
@@ -107,13 +144,15 @@ const PopularityModal = ({ visible, onClose, snapshot }) => {
   const panResponder = useMemo(
     () =>
       PanResponder.create({
+        onStartShouldSetPanResponder: () => true,
         onMoveShouldSetPanResponder: (_, gestureState) =>
-          Math.abs(gestureState.dy) > 6,
-        onPanResponderMove: Animated.event([null, { dy: dragY }], {
-          useNativeDriver: false,
-        }),
+          Math.abs(gestureState.dy) > 4,
+        onPanResponderMove: (_, gestureState) => {
+          const nextY = Math.max(gestureState.dy, 0);
+          dragY.setValue(nextY);
+        },
         onPanResponderRelease: (_, gestureState) => {
-          const shouldClose = gestureState.dy > 90 || gestureState.vy > 1.1;
+          const shouldClose = gestureState.dy > 70 || gestureState.vy > 1;
 
           if (shouldClose) {
             dragY.setValue(0);
@@ -232,10 +271,35 @@ const PopularityModal = ({ visible, onClose, snapshot }) => {
                 const widthPercent = metric.progress * 100;
                 const fillWidth = widthPercent > 0 ? Math.max(widthPercent, 6) : 0;
 
+                const IconComponent = metric.icon?.Component;
+
                 return (
                   <View key={metric.key} style={styles.popularityChip}>
                     <View style={styles.popularityChipHeader}>
-                      <Text style={styles.popularityChipLabel}>{metric.label}</Text>
+                      <View style={styles.popularityChipLeft}>
+                        <View
+                          style={[
+                            styles.metricIconBadge,
+                            {
+                              backgroundColor:
+                                metric.iconBg || "rgba(56,189,248,0.12)",
+                              borderColor:
+                                metric.iconBorder || "rgba(56,189,248,0.35)",
+                            },
+                          ]}
+                        >
+                          {metric.emoji ? (
+                            <Text style={styles.metricEmoji}>{metric.emoji}</Text>
+                          ) : IconComponent ? (
+                            <IconComponent
+                              name={metric.icon.name}
+                              color={metric.icon.color}
+                              size={16}
+                            />
+                          ) : null}
+                        </View>
+                        <Text style={styles.popularityChipLabel}>{metric.label}</Text>
+                      </View>
                       <Text style={styles.popularityChipValue}>
                         {metric.displayValue}
                       </Text>
@@ -281,7 +345,7 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
     paddingHorizontal: 0,
-    paddingBottom: 18,
+    paddingBottom: 0,
   },
   sheetGradient: {
     borderTopLeftRadius: 16,
@@ -404,7 +468,7 @@ const styles = StyleSheet.create({
   },
   popularityChip: {
     width: "48%",
-    backgroundColor: "#0d1b2f",
+    backgroundColor: "rgba(15,23,42,0.92)",
     borderRadius: 14,
     padding: 10,
     borderWidth: 1,
@@ -414,6 +478,22 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+  },
+  popularityChipLeft: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+  },
+  metricIconBadge: {
+    width: 32,
+    height: 32,
+    borderRadius: 12,
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 1,
+  },
+  metricEmoji: {
+    fontSize: 16,
   },
   popularityChipLabel: {
     color: textSecondary,
