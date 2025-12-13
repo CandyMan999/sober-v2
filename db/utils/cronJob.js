@@ -782,9 +782,9 @@ const cronJob = () => {
       }
     );
 
-    // ----- 2) Quotes job (every 2 hours, per-user time-window 8am–10pm) -----
+    // ----- 2) Quotes job (every 4 hours, per-user time-window 8am–10pm) -----
     cron.schedule(
-      "0 0 */2 * * *", // every 2 hours at minute 0, second 0
+      "0 0 */4 * * *", // every 4 hours at minute 0, second 0
       async () => {
         console.log("💬 Quote cron tick at", new Date().toISOString());
 
