@@ -275,6 +275,21 @@ const typeDefs = gql`
     cursor: String
   }
 
+  type PopularityBreakdown {
+    watchMinutes: Float!
+    posts: Int!
+    comments: Int!
+    likes: Int!
+    followers: Int!
+    approvedQuotes: Int!
+  }
+
+  type PopularitySnapshot {
+    score: Float!
+    status: String!
+    breakdown: PopularityBreakdown!
+  }
+
   type ProfileOverview {
     user: User!
     posts: [Post!]!
@@ -283,6 +298,7 @@ const typeDefs = gql`
     quotes: [Quote!]!
     savedPosts: [Post!]!
     savedQuotes: [Quote!]!
+    popularity: PopularitySnapshot
   }
 
   type Room {
@@ -507,7 +523,7 @@ const typeDefs = gql`
     setPostReview(postId: ID!, review: Boolean!): Post!
     moderatePost(token: String!, postId: ID!, approve: Boolean!): Post!
     moderateQuote(token: String!, quoteId: ID!, approve: Boolean!): Quote!
-    recordPostView(postId: ID!, token: String!): Post!
+    recordPostView(postId: ID!, token: String!, watchSeconds: Int): Post!
     recordQuoteView(quoteId: ID!, token: String!): Quote!
     createPostComment(
       token: String!

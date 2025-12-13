@@ -255,6 +255,18 @@ export const PROFILE_OVERVIEW_QUERY = `
           profilePicUrl
         }
       }
+      popularity {
+        score
+        status
+        breakdown {
+          watchMinutes
+          posts
+          comments
+          likes
+          followers
+          approvedQuotes
+        }
+      }
     }
   }
 `;
@@ -509,6 +521,18 @@ export const USER_PROFILE_QUERY = `
           id
           username
           profilePicUrl
+        }
+      }
+      popularity {
+        score
+        status
+        breakdown {
+          watchMinutes
+          posts
+          comments
+          likes
+          followers
+          approvedQuotes
         }
       }
     }

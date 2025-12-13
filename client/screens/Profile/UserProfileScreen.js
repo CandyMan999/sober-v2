@@ -36,6 +36,7 @@ import { ContentPreviewModal } from "../../components";
 import Context from "../../context";
 import { useClient } from "../../client";
 import { getAuthContext } from "../../utils/helpers";
+import { calculatePopularity } from "../../utils/popularity";
 import {
   USER_POSTS_PAGINATED_QUERY,
   USER_PROFILE_QUERY,
@@ -123,6 +124,7 @@ const UserProfileScreen = ({ route, navigation }) => {
   const [profileData, setProfileData] = useState(initialUser || null);
   const [posts, setPosts] = useState([]);
   const [quotes, setQuotes] = useState([]);
+  const [popularity, setPopularity] = useState(initialUser?.popularity || null);
   const [savedPosts, setSavedPosts] = useState([]);
   const [savedQuotes, setSavedQuotes] = useState([]);
   const [following, setFollowing] = useState(initialUser?.following || []);
@@ -206,6 +208,35 @@ const UserProfileScreen = ({ route, navigation }) => {
 
     return postLikes + quoteLikes;
   }, [posts, quotes]);
+
+  const approvedQuotesCount = useMemo(
+    () => quotes.filter((quote) => quote?.isApproved).length,
+    [quotes]
+  );
+
+  const popularitySnapshot = useMemo(() => {
+    const metrics = popularity?.breakdown || {
+      watchMinutes: 0,
+      posts: posts.length,
+      comments: 0,
+      likes: likesTotal,
+      followers: counts.followers,
+      approvedQuotes: approvedQuotesCount,
+    };
+
+    const computed = calculatePopularity(metrics);
+
+    return {
+      ...computed,
+      breakdown: metrics,
+    };
+  }, [
+    approvedQuotesCount,
+    counts.followers,
+    likesTotal,
+    popularity?.breakdown,
+    posts.length,
+  ]);
 
   const tabConfig = useMemo(
     () => [
@@ -971,6 +1002,7 @@ const UserProfileScreen = ({ route, navigation }) => {
         setProfileData(overview?.user || initialUser || null);
         setPosts(overview?.posts || []);
         setQuotes(overview?.quotes || []);
+        setPopularity(overview?.popularity || null);
         setSavedPosts(overview?.savedPosts || []);
         setSavedQuotes(overview?.savedQuotes || []);
         setFollowers(overview?.user?.followers || []);
@@ -1289,6 +1321,41 @@ const UserProfileScreen = ({ route, navigation }) => {
     }
 
     return renderPostTile({ item, saved: true, fromSaved: true });
+  };
+
+  const renderPopularityCard = () => {
+    if (!popularitySnapshot) return null;
+
+    const { breakdown = {} } = popularitySnapshot;
+    const summaryItems = [
+      { label: "Watch time", value: `${Math.round(breakdown.watchMinutes || 0)} min` },
+      { label: "Posts", value: breakdown.posts || 0 },
+      { label: "Comments", value: breakdown.comments || 0 },
+      { label: "Likes", value: breakdown.likes || 0 },
+      { label: "Followers", value: breakdown.followers || 0 },
+      { label: "Approved quotes", value: breakdown.approvedQuotes || 0 },
+    ];
+
+    return (
+      <View style={styles.popularityCard}>
+        <View style={styles.popularityHeader}>
+          <Text style={styles.sectionTitle}>Popularity</Text>
+          <View style={styles.popularityBadge}>
+            <Text style={styles.popularityStatus}>{popularitySnapshot.status}</Text>
+            <Text style={styles.popularityScore}>{`${popularitySnapshot.score}%`}</Text>
+          </View>
+        </View>
+
+        <View style={styles.popularityGrid}>
+          {summaryItems.map((item) => (
+            <View key={item.label} style={styles.popularityItem}>
+              <Text style={styles.popularityValue}>{item.value}</Text>
+              <Text style={styles.popularityLabel}>{item.label}</Text>
+            </View>
+          ))}
+        </View>
+      </View>
+    );
   };
 
   const renderDrunkContent = () => {
@@ -1618,6 +1685,8 @@ const UserProfileScreen = ({ route, navigation }) => {
             </TouchableOpacity>
           </View>
 
+          {renderPopularityCard()}
+
           <View style={styles.whyWrapper}>
             <Text style={styles.whyQuoted}>
               “
@@ -1834,6 +1903,67 @@ const styles = StyleSheet.create({
     color: "#9ca3af",
     marginTop: 4,
     fontSize: 12,
+  },
+  popularityCard: {
+    marginTop: 14,
+    padding: 14,
+    borderRadius: 16,
+    backgroundColor: "rgba(30,41,59,0.9)",
+    borderWidth: 1,
+    borderColor: "rgba(148,163,184,0.2)",
+  },
+  popularityHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginBottom: 12,
+  },
+  sectionTitle: {
+    color: "#e5e7eb",
+    fontSize: 16,
+    fontWeight: "800",
+  },
+  popularityBadge: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+    backgroundColor: "rgba(245,158,11,0.12)",
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderRadius: 999,
+  },
+  popularityStatus: {
+    color: "#f59e0b",
+    fontWeight: "700",
+    fontSize: 12,
+  },
+  popularityScore: {
+    color: "#e5e7eb",
+    fontWeight: "800",
+    fontSize: 14,
+  },
+  popularityGrid: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 12,
+  },
+  popularityItem: {
+    width: "47%",
+    padding: 10,
+    backgroundColor: "rgba(15,23,42,0.6)",
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: "rgba(51,65,85,0.4)",
+  },
+  popularityValue: {
+    color: "#e5e7eb",
+    fontWeight: "800",
+    fontSize: 15,
+  },
+  popularityLabel: {
+    color: "#9ca3af",
+    fontSize: 12,
+    marginTop: 4,
   },
   whyWrapper: {
     alignItems: "center",

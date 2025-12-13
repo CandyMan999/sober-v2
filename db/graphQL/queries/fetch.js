@@ -15,6 +15,7 @@ const {
   NotificationIntents,
   createNotificationForUser,
 } = require("../../utils/notifications");
+const { buildPopularitySnapshot } = require("../utils/popularity");
 const { serializeUser } = require("../../utils/serializeUser");
 
 require("dotenv").config();
@@ -611,6 +612,8 @@ module.exports = {
       .sort({ createdAt: -1 })
       .populate("user");
 
+    const popularity = await buildPopularitySnapshot(user);
+
     return {
       user,
       posts: trimmedPosts,
@@ -619,6 +622,7 @@ module.exports = {
       quotes,
       savedPosts,
       savedQuotes,
+      popularity,
     };
   },
 
@@ -726,6 +730,8 @@ module.exports = {
     const profilePic = serializePicture(serializedUser.profilePic);
     const drunkPic = serializePicture(serializedUser.drunkPic);
 
+    const popularity = await buildPopularitySnapshot(user);
+
     return {
       user: {
         ...serializedUser,
@@ -740,6 +746,7 @@ module.exports = {
       quotes,
       savedPosts,
       savedQuotes,
+      popularity,
     };
   },
 };

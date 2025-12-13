@@ -58,6 +58,7 @@ const { height: WINDOW_HEIGHT } = Dimensions.get("window");
 const PAGE_SIZE = 10;
 const SHEET_HEIGHT = Math.round(WINDOW_HEIGHT * 0.26);
 const AD_SLOT_FREQUENCY = 10;
+const DEFAULT_WATCH_SECONDS = 30;
 
 const INTERSTITIAL_AD_UNIT_ID =
   process.env.EXPO_PUBLIC_INTERSTITIAL_AD_UNIT_ID ||
@@ -811,6 +812,7 @@ const CommunityScreen = () => {
         const data = await client.request(RECORD_POST_VIEW_MUTATION, {
           token,
           postId: post.id,
+          watchSeconds: DEFAULT_WATCH_SECONDS,
         });
 
         viewedPostsRef.current.add(post.id);

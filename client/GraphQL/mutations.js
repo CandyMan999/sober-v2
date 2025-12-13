@@ -534,8 +534,8 @@ export const TOGGLE_SAVE_MUTATION = gql`
 `;
 
 export const RECORD_POST_VIEW_MUTATION = gql`
-  mutation RecordPostView($token: String!, $postId: ID!) {
-    recordPostView(token: $token, postId: $postId) {
+  mutation RecordPostView($token: String!, $postId: ID!, $watchSeconds: Int) {
+    recordPostView(token: $token, postId: $postId, watchSeconds: $watchSeconds) {
       id
       viewsCount
       video {
