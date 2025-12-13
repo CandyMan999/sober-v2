@@ -3,6 +3,7 @@ import {
   Animated,
   Dimensions,
   Modal,
+  PanResponder,
   Pressable,
   StyleSheet,
   Text,
@@ -16,7 +17,6 @@ import { COLORS } from "../../../constants/colors";
 import { defaultPopularityWeighting } from "../../../utils/popularity";
 
 const { height: WINDOW_HEIGHT } = Dimensions.get("window");
-const SHEET_HEIGHT = Math.round(WINDOW_HEIGHT * 0.82);
 
 const POPULARITY_METRICS = [
   {
@@ -36,7 +36,9 @@ const { accent, accentSoft, textPrimary, textSecondary, nightBlue } = COLORS;
 
 const PopularityModal = ({ visible, onClose, snapshot }) => {
   const [mounted, setMounted] = useState(visible);
+  const [sheetHeight, setSheetHeight] = useState(0);
   const sheetAnim = useRef(new Animated.Value(0)).current;
+  const dragY = useRef(new Animated.Value(0)).current;
 
   const status = snapshot?.status || "Getting Started";
   const score = Math.round(snapshot?.score || 0);
@@ -45,6 +47,7 @@ const PopularityModal = ({ visible, onClose, snapshot }) => {
   useEffect(() => {
     if (visible) {
       setMounted(true);
+      dragY.setValue(0);
       Animated.spring(sheetAnim, {
         toValue: 1,
         damping: 16,
@@ -63,15 +66,33 @@ const PopularityModal = ({ visible, onClose, snapshot }) => {
         }
       });
     }
-  }, [sheetAnim, visible]);
+  }, [dragY, sheetAnim, visible]);
+
+  useEffect(() => {
+    if (!visible) {
+      dragY.setValue(0);
+    }
+  }, [dragY, visible]);
+
+  const effectiveHeight = sheetHeight || Math.round(WINDOW_HEIGHT * 0.7);
 
   const translateY = useMemo(
     () =>
       sheetAnim.interpolate({
         inputRange: [0, 1],
-        outputRange: [SHEET_HEIGHT + 40, 0],
+        outputRange: [effectiveHeight + 40, 0],
       }),
-    [sheetAnim]
+    [effectiveHeight, sheetAnim]
+  );
+
+  const dragTranslate = useMemo(
+    () =>
+      dragY.interpolate({
+        inputRange: [0, effectiveHeight],
+        outputRange: [0, effectiveHeight],
+        extrapolate: "clamp",
+      }),
+    [dragY, effectiveHeight]
   );
 
   const backdropOpacity = useMemo(
@@ -81,6 +102,34 @@ const PopularityModal = ({ visible, onClose, snapshot }) => {
         outputRange: [0, 0.55],
       }),
     [sheetAnim]
+  );
+
+  const panResponder = useMemo(
+    () =>
+      PanResponder.create({
+        onMoveShouldSetPanResponder: (_, gestureState) =>
+          Math.abs(gestureState.dy) > 6,
+        onPanResponderMove: Animated.event([null, { dy: dragY }], {
+          useNativeDriver: false,
+        }),
+        onPanResponderRelease: (_, gestureState) => {
+          const shouldClose = gestureState.dy > 90 || gestureState.vy > 1.1;
+
+          if (shouldClose) {
+            dragY.setValue(0);
+            onClose?.();
+            return;
+          }
+
+          Animated.spring(dragY, {
+            toValue: 0,
+            tension: 120,
+            friction: 16,
+            useNativeDriver: false,
+          }).start();
+        },
+      }),
+    [dragY, onClose]
   );
 
   const popularityEntries = useMemo(
@@ -120,7 +169,12 @@ const PopularityModal = ({ visible, onClose, snapshot }) => {
         </Animated.View>
 
         <Animated.View
-          style={[styles.sheetWrapper, { transform: [{ translateY }] }]}
+          style={[
+            styles.sheetWrapper,
+            { transform: [{ translateY: Animated.add(translateY, dragTranslate) }] },
+          ]}
+          onLayout={(event) => setSheetHeight(event.nativeEvent.layout.height)}
+          {...panResponder.panHandlers}
         >
           <LinearGradient
             colors={["#0b1224", "#0b1224"]}
@@ -132,9 +186,9 @@ const PopularityModal = ({ visible, onClose, snapshot }) => {
 
             <View style={styles.headerRow}>
               <View style={styles.headerTextBlock}>
-                <Text style={styles.title}>Popularity status</Text>
+                <Text style={styles.title}>Their popularity snapshot</Text>
                 <Text style={styles.subtitle}>
-                  Celebrate the momentum you’re building across Sober Motivation.
+                  See how this member is trending across Sober Motivation in real time.
                 </Text>
               </View>
 
@@ -157,7 +211,7 @@ const PopularityModal = ({ visible, onClose, snapshot }) => {
                   />
                 </View>
                 <View>
-                  <Text style={styles.statusLabel}>Current badge</Text>
+                  <Text style={styles.statusLabel}>Their badge</Text>
                   <Text style={styles.statusValue}>{status}</Text>
                 </View>
               </View>
@@ -169,8 +223,8 @@ const PopularityModal = ({ visible, onClose, snapshot }) => {
             </View>
 
             <Text style={styles.helperText}>
-              Hit each milestone to unlock the next badge. Keep sharing, engaging,
-              and cheering others on.
+              They’re on the path to the next badge. Celebrate their progress and
+              keep cheering them on.
             </Text>
 
             <View style={styles.popularityGrid}>
@@ -226,12 +280,10 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    height: SHEET_HEIGHT,
     paddingHorizontal: 0,
     paddingBottom: 18,
   },
   sheetGradient: {
-    flex: 1,
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
     borderWidth: 1,
@@ -352,7 +404,7 @@ const styles = StyleSheet.create({
   },
   popularityChip: {
     width: "48%",
-    backgroundColor: "#0f172a",
+    backgroundColor: "#0d1b2f",
     borderRadius: 14,
     padding: 10,
     borderWidth: 1,
