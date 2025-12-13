@@ -10,7 +10,6 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
 import {
   Feather,
   FontAwesome6,
@@ -23,53 +22,61 @@ import { defaultPopularityWeighting } from "../../../utils/popularity";
 
 const { height: WINDOW_HEIGHT } = Dimensions.get("window");
 
+const ICON_ORANGE = "#f59e0b";
+
 const POPULARITY_METRICS = [
   {
     key: "watchMinutes",
-    label: "Watch time",
+    label: "Watched",
     unit: "min",
     format: (value) => `${Math.round(value || 0)} min`,
-    icon: { Component: Ionicons, name: "eye-outline", color: "#38bdf8" },
+    icon: { Component: Ionicons, name: "eye-outline", color: ICON_ORANGE },
   },
   {
     key: "posts",
     label: "Posts",
     unit: "posts",
-    icon: { Component: FontAwesome6, name: "signs-post", color: "#f59e0b" },
+    icon: { Component: FontAwesome6, name: "signs-post", color: ICON_ORANGE },
   },
   {
     key: "comments",
     label: "Comments",
     unit: "comments",
-    icon: { Component: Ionicons, name: "send", color: "#38bdf8" },
+    icon: {
+      Component: Ionicons,
+      name: "chatbubble-ellipses-outline",
+      color: ICON_ORANGE,
+    },
   },
   {
     key: "likes",
     label: "Likes",
     unit: "likes",
-    emoji: "👍",
-    iconBg: "rgba(59,130,246,0.08)",
-    iconBorder: "rgba(59,130,246,0.4)",
+    icon: {
+      Component: Ionicons,
+      name: "heart-outline",
+      color: ICON_ORANGE,
+    },
   },
   {
     key: "followers",
     label: "Followers",
     unit: "followers",
-    icon: { Component: Feather, name: "users", color: "#a78bfa" },
+    icon: { Component: Feather, name: "users", color: ICON_ORANGE },
   },
   {
     key: "approvedQuotes",
-    label: "Approved quotes",
+    label: "Quotes",
     unit: "quotes",
     icon: {
       Component: MaterialCommunityIcons,
       name: "format-quote-close",
-      color: "#38bdf8",
+      color: ICON_ORANGE,
     },
   },
 ];
 
-const { accent, accentSoft, textPrimary, textSecondary, nightBlue } = COLORS;
+const { accent, accentSoft, textPrimary, textSecondary } = COLORS;
 
 const PopularityModal = ({ visible, onClose, snapshot }) => {
   const [mounted, setMounted] = useState(visible);
@@ -90,104 +97,61 @@ const PopularityModal = ({ visible, onClose, snapshot }) => {
         damping: 16,
         stiffness: 140,
         mass: 0.8,
-        useNativeDriver: true,
+        useNativeDriver: false,
       }).start();
     } else {
       Animated.timing(sheetAnim, {
         toValue: 0,
         duration: 220,
-        useNativeDriver: true,
-      }).start(({ finished }) => {
-        if (finished) {
-          setMounted(false);
-        }
-      });
+        useNativeDriver: false,
+      }).start(({ finished }) => finished && setMounted(false));
     }
-  }, [dragY, sheetAnim, visible]);
-
-  useEffect(() => {
-    if (!visible) {
-      dragY.setValue(0);
-    }
-  }, [dragY, visible]);
+  }, [visible, dragY, sheetAnim]);
 
   const effectiveHeight = sheetHeight || Math.round(WINDOW_HEIGHT * 0.7);
 
-  const translateY = useMemo(
-    () =>
-      sheetAnim.interpolate({
-        inputRange: [0, 1],
-        outputRange: [effectiveHeight, 0],
-      }),
-    [effectiveHeight, sheetAnim]
-  );
+  const translateY = sheetAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: [effectiveHeight, 0],
+  });
 
-  const dragTranslate = useMemo(
-    () =>
-      dragY.interpolate({
-        inputRange: [0, effectiveHeight],
-        outputRange: [0, effectiveHeight],
-        extrapolate: "clamp",
-      }),
-    [dragY, effectiveHeight]
-  );
+  const dragTranslate = dragY.interpolate({
+    inputRange: [0, effectiveHeight],
+    outputRange: [0, effectiveHeight],
+    extrapolate: "clamp",
+  });
 
-  const backdropOpacity = useMemo(
-    () =>
-      sheetAnim.interpolate({
-        inputRange: [0, 1],
-        outputRange: [0, 0.55],
-      }),
-    [sheetAnim]
-  );
+  const backdropOpacity = sheetAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0, 0.55],
+  });
 
-  const panResponder = useMemo(
-    () =>
-      PanResponder.create({
-        onStartShouldSetPanResponder: () => true,
-        onMoveShouldSetPanResponder: (_, gestureState) =>
-          Math.abs(gestureState.dy) > 4,
-        onPanResponderMove: (_, gestureState) => {
-          const nextY = Math.max(gestureState.dy, 0);
-          dragY.setValue(nextY);
-        },
-        onPanResponderRelease: (_, gestureState) => {
-          const shouldClose = gestureState.dy > 70 || gestureState.vy > 1;
-
-          if (shouldClose) {
-            dragY.setValue(0);
-            onClose?.();
-            return;
-          }
-
-          Animated.spring(dragY, {
-            toValue: 0,
-            tension: 120,
-            friction: 16,
-            useNativeDriver: false,
-          }).start();
-        },
-      }),
-    [dragY, onClose]
-  );
+  const panResponder = PanResponder.create({
+    onStartShouldSetPanResponder: () => true,
+    onMoveShouldSetPanResponder: (_, g) => Math.abs(g.dy) > 4,
+    onPanResponderMove: (_, g) => dragY.setValue(Math.max(g.dy, 0)),
+    onPanResponderRelease: (_, g) => {
+      if (g.dy > 70 || g.vy > 1) onClose?.();
+      else
+        Animated.spring(dragY, { toValue: 0, useNativeDriver: false }).start();
+    },
+  });
 
   const popularityEntries = useMemo(
     () =>
       POPULARITY_METRICS.map((metric) => {
         const value = Number(breakdown[metric.key]) || 0;
-        const milestone = defaultPopularityWeighting?.[metric.key]?.milestone || 0;
-        const progress = milestone ? Math.min(value / milestone, 1) : 0;
-        const milestoneLabel = milestone
-          ? `Goal: ${milestone} ${metric.unit || metric.label.toLowerCase()}`
-          : "Keep going";
+        const milestone =
+          defaultPopularityWeighting?.[metric.key]?.milestone || 0;
 
         return {
           ...metric,
           value,
-          milestone,
-          progress,
+          progress: milestone ? Math.min(value / milestone, 1) : 0,
           displayValue: metric.format ? metric.format(value) : value,
-          milestoneLabel,
+          milestoneLabel: milestone
+            ? `Goal: ${milestone} ${metric.unit}`
+            : "Keep going",
         };
       }),
     [breakdown]
@@ -196,12 +160,7 @@ const PopularityModal = ({ visible, onClose, snapshot }) => {
   if (!mounted) return null;
 
   return (
-    <Modal
-      animationType="none"
-      transparent
-      visible={mounted}
-      onRequestClose={onClose}
-    >
+    <Modal transparent visible={mounted} onRequestClose={onClose}>
       <View style={styles.modalContainer}>
         <Animated.View style={[styles.backdrop, { opacity: backdropOpacity }]}>
           <Pressable style={StyleSheet.absoluteFill} onPress={onClose} />
@@ -210,116 +169,94 @@ const PopularityModal = ({ visible, onClose, snapshot }) => {
         <Animated.View
           style={[
             styles.sheetWrapper,
-            { transform: [{ translateY: Animated.add(translateY, dragTranslate) }] },
+            {
+              transform: [
+                { translateY: Animated.add(translateY, dragTranslate) },
+              ],
+            },
           ]}
-          onLayout={(event) => setSheetHeight(event.nativeEvent.layout.height)}
+          onLayout={(e) => setSheetHeight(e.nativeEvent.layout.height)}
           {...panResponder.panHandlers}
         >
-          <LinearGradient
-            colors={["#0b1224", "#0b1224"]}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 0, y: 1 }}
-            style={styles.sheetGradient}
-          >
+          <View style={styles.sheet}>
             <View style={styles.dragHandle} />
 
             <View style={styles.headerRow}>
               <View style={styles.headerTextBlock}>
-                <Text style={styles.title}>Their popularity snapshot</Text>
+                <Text style={styles.title}>Popularity Snapshot</Text>
+                {/* ✅ subtitle restored */}
                 <Text style={styles.subtitle}>
-                  See how this member is trending across Sober Motivation in real time.
+                  See how this member is trending across Sober Motivation in
+                  real time.
                 </Text>
               </View>
 
-              <TouchableOpacity
-                onPress={onClose}
-                accessibilityLabel="Close popularity"
-                style={styles.closeButton}
-              >
+              <TouchableOpacity onPress={onClose} style={styles.closeButton}>
                 <Feather name="x" size={22} color={textSecondary} />
               </TouchableOpacity>
             </View>
 
-            <View style={styles.statusCard}>
-              <View style={styles.statusLeft}>
-                <View style={styles.iconBadge}>
-                  <MaterialCommunityIcons
-                    name="rocket-launch"
-                    size={16}
-                    color="#fef3c7"
-                  />
-                </View>
-                <View>
-                  <Text style={styles.statusLabel}>Their badge</Text>
-                  <Text style={styles.statusValue}>{status}</Text>
-                </View>
+            <View style={styles.badgeRow}>
+              <View style={styles.badgePill}>
+                <MaterialCommunityIcons
+                  name="rocket-launch"
+                  size={16}
+                  color={ICON_ORANGE}
+                />
+                <Text style={styles.badgeText}>{status}</Text>
               </View>
 
               <View style={styles.scorePill}>
-                <Text style={styles.scoreValue}>{`${score}%`}</Text>
-                <Text style={styles.scoreHint}>Momentum</Text>
+                <Text style={styles.scoreValue}>{score}%</Text>
+                <Text style={styles.scoreLabel}>Momentum</Text>
               </View>
             </View>
 
             <Text style={styles.helperText}>
-              They’re on the path to the next badge. Celebrate their progress and
-              keep cheering them on.
+              They’re on the path to the next badge. Keep cheering them on.
             </Text>
 
-            <View style={styles.popularityGrid}>
-              {popularityEntries.map((metric) => {
-                const widthPercent = metric.progress * 100;
-                const fillWidth = widthPercent > 0 ? Math.max(widthPercent, 6) : 0;
-
-                const IconComponent = metric.icon?.Component;
-
+            <View style={styles.grid}>
+              {popularityEntries.map((m) => {
+                const Icon = m.icon?.Component;
                 return (
-                  <View key={metric.key} style={styles.popularityChip}>
-                    <View style={styles.popularityChipHeader}>
-                      <View style={styles.popularityChipLeft}>
-                        <View
-                          style={[
-                            styles.metricIconBadge,
-                            {
-                              backgroundColor:
-                                metric.iconBg || "rgba(56,189,248,0.12)",
-                              borderColor:
-                                metric.iconBorder || "rgba(56,189,248,0.35)",
-                            },
-                          ]}
-                        >
-                          {metric.emoji ? (
-                            <Text style={styles.metricEmoji}>{metric.emoji}</Text>
-                          ) : IconComponent ? (
-                            <IconComponent
-                              name={metric.icon.name}
-                              color={metric.icon.color}
-                              size={16}
-                            />
-                          ) : null}
-                        </View>
-                        <Text style={styles.popularityChipLabel}>{metric.label}</Text>
+                  <View key={m.key} style={styles.chip}>
+                    <View style={styles.chipHeader}>
+                      <View style={styles.chipLeft}>
+                        {Icon && (
+                          <Icon
+                            name={m.icon.name}
+                            size={16}
+                            color={m.icon.color}
+                          />
+                        )}
+                        <Text style={styles.chipLabel}>{m.label}</Text>
                       </View>
-                      <Text style={styles.popularityChipValue}>
-                        {metric.displayValue}
+                      <Text
+                        style={[
+                          styles.chipValue,
+                          m.key === "watchMinutes" && styles.watchValue,
+                        ]}
+                      >
+                        {m.displayValue}
                       </Text>
                     </View>
-                    <View style={styles.popularityProgressTrack}>
+
+                    <View style={styles.progressTrack}>
                       <View
                         style={[
-                          styles.popularityProgressFill,
-                          { width: `${fillWidth}%` },
+                          styles.progressFill,
+                          { width: `${Math.max(m.progress * 100, 6)}%` },
                         ]}
                       />
                     </View>
-                    <Text style={styles.popularityMilestone}>
-                      {metric.milestoneLabel}
-                    </Text>
+
+                    <Text style={styles.milestone}>{m.milestoneLabel}</Text>
                   </View>
                 );
               })}
             </View>
-          </LinearGradient>
+          </View>
         </Animated.View>
       </View>
     </Modal>
@@ -329,62 +266,41 @@ const PopularityModal = ({ visible, onClose, snapshot }) => {
 export default PopularityModal;
 
 const styles = StyleSheet.create({
-  modalContainer: {
-    flex: 1,
-    backgroundColor: "transparent",
-    justifyContent: "flex-end",
-    ...StyleSheet.absoluteFillObject,
-  },
-  backdrop: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: "#000",
-  },
-  sheetWrapper: {
-    position: "absolute",
-    left: 0,
-    right: 0,
-    bottom: 0,
-    paddingHorizontal: 0,
-    paddingBottom: 0,
-  },
-  sheetGradient: {
+  modalContainer: { flex: 1, justifyContent: "flex-end" },
+  backdrop: { ...StyleSheet.absoluteFillObject, backgroundColor: "#000" },
+
+  sheetWrapper: { position: "absolute", left: 0, right: 0, bottom: 0 },
+  sheet: {
+    backgroundColor: "#0b1224",
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
-    borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.06)",
-    backgroundColor: "#0b1224",
-    overflow: "hidden",
     paddingBottom: 24,
-    shadowColor: "#0ea5e9",
-    shadowOpacity: 0.2,
-    shadowRadius: 12,
-    shadowOffset: { width: 0, height: -6 },
-    elevation: 10,
   },
+
   dragHandle: {
     alignSelf: "center",
     width: 46,
     height: 5,
     borderRadius: 999,
-    backgroundColor: "rgba(148,163,184,0.5)",
-    marginTop: 10,
-    marginBottom: 14,
+    backgroundColor: "rgba(148,163,184,0.4)",
+    marginVertical: 12,
   },
+
   headerRow: {
     flexDirection: "row",
-    alignItems: "flex-start",
     justifyContent: "space-between",
     paddingHorizontal: 16,
+    alignItems: "flex-start",
   },
   headerTextBlock: {
     flex: 1,
     marginRight: 12,
   },
   title: {
-    color: textPrimary,
-    fontWeight: "800",
+    color: ICON_ORANGE,
+    fontWeight: "900",
     fontSize: 18,
-    marginBottom: 6,
+    marginBottom: 4,
   },
   subtitle: {
     color: textSecondary,
@@ -396,128 +312,101 @@ const styles = StyleSheet.create({
     borderRadius: 999,
     backgroundColor: "rgba(255,255,255,0.06)",
   },
-  statusCard: {
+
+  badgeRow: {
     flexDirection: "row",
-    alignItems: "center",
     justifyContent: "space-between",
-    backgroundColor: "#0f172a",
-    borderRadius: 14,
-    padding: 14,
-    marginTop: 14,
-    marginHorizontal: 16,
-    borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.06)",
+    margin: 16,
+    alignItems: "center",
   },
-  statusLeft: {
+  badgePill: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 12,
+    gap: 8,
+    backgroundColor: "rgba(245,158,11,0.12)",
+    paddingHorizontal: 14,
+    paddingVertical: 8,
+    borderRadius: 999,
   },
-  iconBadge: {
-    width: 38,
-    height: 38,
-    borderRadius: 12,
-    backgroundColor: "rgba(56,189,248,0.12)",
-    alignItems: "center",
-    justifyContent: "center",
-    borderWidth: 1,
-    borderColor: "rgba(56,189,248,0.45)",
-  },
-  statusLabel: {
-    color: textSecondary,
+  badgeText: {
+    color: "#e5e7eb",
+    fontWeight: "800",
     fontSize: 12,
   },
-  statusValue: {
-    color: textPrimary,
-    fontSize: 16,
-    fontWeight: "800",
-  },
+
   scorePill: {
-    backgroundColor: nightBlue,
+    backgroundColor: "rgba(249,115,22,0.18)",
     borderRadius: 12,
-    paddingHorizontal: 14,
-    paddingVertical: 10,
-    borderWidth: 1,
-    borderColor: "rgba(56,189,248,0.35)",
+    padding: 10,
     alignItems: "center",
   },
   scoreValue: {
     color: "#fef3c7",
-    fontWeight: "800",
-    fontSize: 16,
+    fontWeight: "900",
+    fontSize: 14,
   },
-  scoreHint: {
+  scoreLabel: {
     color: accentSoft,
     fontSize: 11,
-    marginTop: 2,
   },
+
   helperText: {
     color: textSecondary,
-    fontSize: 12,
-    lineHeight: 18,
     textAlign: "center",
-    paddingHorizontal: 20,
-    marginTop: 12,
+    marginBottom: 12,
   },
-  popularityGrid: {
+
+  grid: {
     flexDirection: "row",
     flexWrap: "wrap",
     gap: 10,
     paddingHorizontal: 16,
-    marginTop: 14,
   },
-  popularityChip: {
+
+  chip: {
     width: "48%",
-    backgroundColor: "rgba(15,23,42,0.92)",
+    backgroundColor: "rgba(245,158,11,0.08)",
     borderRadius: 14,
     padding: 10,
     borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.06)",
+    borderColor: "rgba(245,158,11,0.25)",
   },
-  popularityChipHeader: {
+  chipHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
   },
-  popularityChipLeft: {
+  chipLeft: {
     flexDirection: "row",
     alignItems: "center",
     gap: 8,
   },
-  metricIconBadge: {
-    width: 32,
-    height: 32,
-    borderRadius: 12,
-    alignItems: "center",
-    justifyContent: "center",
-    borderWidth: 1,
-  },
-  metricEmoji: {
-    fontSize: 16,
-  },
-  popularityChipLabel: {
+  chipLabel: {
     color: textSecondary,
     fontSize: 12,
     fontWeight: "700",
   },
-  popularityChipValue: {
+  chipValue: {
     color: textPrimary,
-    fontSize: 14,
     fontWeight: "800",
   },
-  popularityProgressTrack: {
-    height: 8,
-    borderRadius: 999,
-    backgroundColor: "rgba(255,255,255,0.06)",
-    marginTop: 8,
-    overflow: "hidden",
+  watchValue: {
+    fontSize: 12,
   },
-  popularityProgressFill: {
+
+  progressTrack: {
+    height: 8,
+    backgroundColor: "rgba(255,255,255,0.08)",
+    borderRadius: 999,
+    marginTop: 8,
+  },
+  progressFill: {
     height: "100%",
     borderRadius: 999,
     backgroundColor: accent,
   },
-  popularityMilestone: {
+
+  milestone: {
     color: textSecondary,
     fontSize: 11,
     marginTop: 6,
