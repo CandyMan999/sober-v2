@@ -3,23 +3,19 @@ import React, { useContext, useEffect, useMemo, useState } from "react";
 import {
   View,
   Text,
-  StyleSheet,
   ScrollView,
   TouchableOpacity,
-  Image,
-  TextInput,
   ActivityIndicator,
   KeyboardAvoidingView,
   Platform,
-  Keyboard,
   Linking,
+  StyleSheet,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { LinearGradient } from "expo-linear-gradient";
 import * as Location from "expo-location";
 import {
   Feather,
-  Ionicons,
   MaterialCommunityIcons,
   AntDesign,
   FontAwesome6,
@@ -29,7 +25,7 @@ import * as ImagePicker from "expo-image-picker";
 import * as ImageManipulator from "expo-image-manipulator";
 import { EXPO_CF_ACCOUNT_HASH, EXPO_CF_VARIANT } from "@env";
 
-import { AlertModal, ToggleSwitch } from "../../components";
+import { AlertModal } from "../../components";
 import Context from "../../context";
 import { useClient } from "../../client";
 import {
@@ -53,6 +49,15 @@ import {
 import { useRevenueCat } from "../../RevenueCatContext";
 import { emitPaywallRequest } from "../../utils/paywallEvents";
 import { defaultPopularityWeighting } from "../../utils/popularity";
+import {
+  DeleteProfileButton,
+  NotificationSettingsSection,
+  PhotoTilesSection,
+  PopularitySection,
+  PrivacySection,
+  SocialLinksSection,
+  UsernameSection,
+} from "./components/EditProfile";
 
 const {
   primaryBackground,
@@ -158,139 +163,6 @@ const normalizeSocialInput = (platform, rawValue) => {
   handle = handle.split(/[/?#]/)[0];
   return handle;
 };
-
-const PhotoTileBase = ({ children, label, onPress, style }) => (
-  <TouchableOpacity
-    activeOpacity={0.85}
-    onPress={onPress}
-    style={[styles.photoTile, style]}
-  >
-    {children}
-    <Text style={styles.photoLabel}>{label}</Text>
-  </TouchableOpacity>
-);
-
-const ProfilePhotoTile = ({
-  label,
-  uri,
-  isUploading,
-  isDeleting,
-  onPick,
-  onDelete,
-}) => (
-  <PhotoTileBase label={label} onPress={onPick}>
-    <LinearGradient colors={[accent, accent]} style={styles.profileHalo}>
-      <View style={styles.profilePreview}>
-        {uri ? (
-          <Image
-            source={{ uri }}
-            style={styles.profileImage}
-            resizeMode="cover"
-          />
-        ) : (
-          <View style={[styles.profileImage, styles.photoPlaceholder]}>
-            <Feather name="camera" color={textSecondary} size={24} />
-            <Text style={styles.placeholderText}>Tap to upload</Text>
-          </View>
-        )}
-
-        {isUploading ? (
-          <View style={styles.loadingOverlay}>
-            <ActivityIndicator color={primaryBackground} />
-          </View>
-        ) : null}
-
-        {uri && !isUploading ? (
-          <TouchableOpacity
-            onPress={onDelete}
-            style={styles.deleteButton}
-            disabled={isDeleting}
-            hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
-          >
-            {isDeleting ? (
-              <ActivityIndicator size="small" color="#fff" />
-            ) : (
-              <Feather name="trash-2" size={16} color="#fff" />
-            )}
-          </TouchableOpacity>
-        ) : null}
-      </View>
-    </LinearGradient>
-  </PhotoTileBase>
-);
-
-const DrunkPhotoTile = ({
-  label,
-  uri,
-  isUploading,
-  isDeleting,
-  onPick,
-  onDelete,
-}) => (
-  <PhotoTileBase label={label} onPress={onPick} style={styles.drunkTile}>
-    <LinearGradient colors={[oceanBlue, oceanBlue]} style={styles.drunkHalo}>
-      <View style={styles.drunkPreview}>
-        {uri ? (
-          <Image
-            source={{ uri }}
-            style={styles.drunkImage}
-            resizeMode="cover"
-          />
-        ) : (
-          <View style={[styles.drunkImage, styles.photoPlaceholder]}>
-            <Feather name="image" color={textSecondary} size={24} />
-            <Text style={styles.placeholderText}>Tap to add</Text>
-          </View>
-        )}
-
-        {isUploading ? (
-          <View style={styles.loadingOverlay}>
-            <ActivityIndicator color={primaryBackground} />
-          </View>
-        ) : null}
-
-        {uri && !isUploading ? (
-          <TouchableOpacity
-            onPress={onDelete}
-            style={styles.deleteButton}
-            disabled={isDeleting}
-            hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
-          >
-            {isDeleting ? (
-              <ActivityIndicator size="small" color="#fff" />
-            ) : (
-              <Feather name="trash-2" size={16} color="#fff" />
-            )}
-          </TouchableOpacity>
-        ) : null}
-      </View>
-    </LinearGradient>
-  </PhotoTileBase>
-);
-
-const ToggleRow = ({
-  icon,
-  label,
-  value,
-  onValueChange,
-  activeColor,
-  disabled = false,
-  loading = false,
-}) => (
-  <View style={styles.toggleRow}>
-    <View style={styles.rowLeft}>
-      {icon}
-      <Text style={styles.rowLabelWithIcon}>{label}</Text>
-    </View>
-    <ToggleSwitch
-      value={value}
-      onValueChange={onValueChange}
-      activeColor={activeColor}
-      disabled={disabled || loading}
-      loading={loading}
-    />
-  </View>
-);
 
 const EditProfileScreen = ({ navigation }) => {
   const client = useClient();
@@ -1120,382 +992,56 @@ const EditProfileScreen = ({ navigation }) => {
           keyboardShouldPersistTaps="handled"
           keyboardDismissMode="on-drag"
         >
-          {/* PHOTOS */}
-          <View style={styles.sectionCard}>
-            <Text style={styles.sectionLabel}>Photos</Text>
-            <View style={styles.photoRow}>
-              <ProfilePhotoTile
-                label="Profile Photo"
-                uri={profileUri}
-                isUploading={uploadingSlot === "PROFILE"}
-                isDeleting={deletingSlot === "PROFILE"}
-                onPick={() => pickImage("PROFILE")}
-                onDelete={() => deletePhoto("PROFILE")}
-              />
-              <DrunkPhotoTile
-                label="Drunk Photo"
-                uri={drunkUri}
-                isUploading={uploadingSlot === "DRUNK"}
-                isDeleting={deletingSlot === "DRUNK"}
-                onPick={() => pickImage("DRUNK")}
-                onDelete={() => deletePhoto("DRUNK")}
-              />
-            </View>
-          </View>
+          <PhotoTilesSection
+            profileUri={profileUri}
+            drunkUri={drunkUri}
+            uploadingSlot={uploadingSlot}
+            deletingSlot={deletingSlot}
+            pickImage={pickImage}
+            deletePhoto={deletePhoto}
+          />
 
-          {/* USERNAME */}
-          <View style={styles.sectionCard}>
-            <TouchableOpacity
-              style={styles.dropdownHeader}
-              onPress={() => setUsernameOpen((prev) => !prev)}
-              activeOpacity={0.8}
-            >
-              <View style={styles.rowLeft}>
-                <Feather name="at-sign" size={18} color={accent} />
-                <View style={styles.rowTextBlock}>
-                  <Text style={styles.rowLabel}>Username</Text>
-                  <Text style={styles.rowValue}>{usernameDisplay}</Text>
-                </View>
-              </View>
-              <Feather
-                name={usernameOpen ? "chevron-up" : "chevron-down"}
-                size={18}
-                color={textSecondary}
-              />
-            </TouchableOpacity>
-            {usernameOpen ? (
-              <View style={styles.dropdownBody}>
-                <Text style={styles.helperText}>
-                  This is how friends find you. Usernames must be unique.
-                </Text>
-                <TextInput
-                  style={styles.input}
-                  placeholder="Enter username"
-                  placeholderTextColor={textSecondary}
-                  value={usernameInput}
-                  onChangeText={setUsernameInput}
-                  autoCapitalize="none"
-                  autoCorrect={false}
-                  maxLength={MAX_USERNAME_LENGTH}
-                  returnKeyType="done"
-                  onSubmitEditing={() => {
-                    Keyboard.dismiss();
-                    if (isUsernameValid) handleSaveUsername();
-                  }}
-                />
-                <Text
-                  style={[
-                    styles.validationText,
-                    !isUsernameValid &&
-                      trimmedUsername.length > 0 &&
-                      styles.validationError,
-                  ]}
-                >
-                  {usernameValidationText}
-                </Text>
-                <TouchableOpacity
-                  style={styles.saveButton}
-                  onPress={handleSaveUsername}
-                  disabled={!isUsernameValid || savingUsername}
-                  activeOpacity={0.9}
-                >
-                  <LinearGradient
-                    colors={
-                      !isUsernameValid || savingUsername
-                        ? [border, border]
-                        : [accent, accent]
-                    }
-                    start={{ x: 0, y: 0 }}
-                    end={{ x: 1, y: 1 }}
-                    style={[
-                      styles.saveButtonInner,
-                      (!isUsernameValid || savingUsername) &&
-                        styles.saveButtonDisabled,
-                    ]}
-                  >
-                    {savingUsername ? (
-                      <ActivityIndicator color={nightBlue} />
-                    ) : (
-                      <Text style={styles.saveButtonText}>Save username</Text>
-                    )}
-                  </LinearGradient>
-                </TouchableOpacity>
-              </View>
-            ) : null}
-          </View>
+          <UsernameSection
+            usernameOpen={usernameOpen}
+            setUsernameOpen={setUsernameOpen}
+            usernameDisplay={usernameDisplay}
+            usernameInput={usernameInput}
+            setUsernameInput={setUsernameInput}
+            usernameValidationText={usernameValidationText}
+            isUsernameValid={isUsernameValid}
+            savingUsername={savingUsername}
+            handleSaveUsername={handleSaveUsername}
+            maxUsernameLength={MAX_USERNAME_LENGTH}
+          />
 
-          {/* SOCIAL LINKS */}
-          <View style={styles.sectionCard}>
-            <TouchableOpacity
-              style={styles.dropdownHeader}
-              onPress={() => setSocialOpen((prev) => !prev)}
-              activeOpacity={0.8}
-            >
-              <View style={styles.rowLeft}>
-                <Ionicons name="share-social" size={18} color={oceanBlue} />
-                <Text style={styles.rowLabelWithIcon}>Social links</Text>
-              </View>
-              <Feather
-                name={socialOpen ? "chevron-up" : "chevron-down"}
-                size={18}
-                color={textSecondary}
-              />
-            </TouchableOpacity>
+          <SocialLinksSection
+            socialOpen={socialOpen}
+            setSocialOpen={setSocialOpen}
+            socialConfig={SOCIAL_CONFIG}
+            socialValidation={socialValidation}
+            socialInputs={socialInputs}
+            setSocialInputs={setSocialInputs}
+            handleSaveSocialLinks={handleSaveSocialLinks}
+            isSocialValid={isSocialValid}
+            savingSocial={savingSocial}
+          />
 
-            {socialOpen ? (
-              <>
-                <Text style={styles.helperText}>
-                  Add your usernames (Optional) so friends can tap straight to
-                  your profile.
-                </Text>
+          <NotificationSettingsSection
+            notificationsOpen={notificationsOpen}
+            setNotificationsOpen={setNotificationsOpen}
+            notificationSettings={notificationSettings}
+            handleNotificationSettingChange={handleNotificationSettingChange}
+            savingNotificationKey={savingNotificationKey}
+          />
 
-                {Object.entries(SOCIAL_CONFIG).map(([platform, config]) => {
-                  const error = socialValidation[platform];
-
-                  return (
-                    <View key={platform} style={styles.socialRow}>
-                      <View style={styles.rowLeft}>
-                        {config.icon}
-                        <Text style={styles.rowLabelWithIcon}>
-                          {config.label}
-                        </Text>
-                      </View>
-                      <TextInput
-                        style={styles.input}
-                        placeholder={config.placeholder}
-                        placeholderTextColor={textSecondary}
-                        value={socialInputs[platform] || ""}
-                        onChangeText={(text) =>
-                          setSocialInputs((prev) => ({
-                            ...prev,
-                            [platform]: text,
-                          }))
-                        }
-                        autoCapitalize="none"
-                        autoCorrect={false}
-                        returnKeyType="done"
-                      />
-                      <Text
-                        style={[
-                          styles.validationText,
-                          error ? styles.validationError : null,
-                        ]}
-                      >
-                        {error || `Paste a link or ${config.placeholder}.`}
-                      </Text>
-                    </View>
-                  );
-                })}
-
-                <TouchableOpacity
-                  style={styles.saveButton}
-                  onPress={handleSaveSocialLinks}
-                  disabled={!isSocialValid || savingSocial}
-                  activeOpacity={0.9}
-                >
-                  <LinearGradient
-                    colors={
-                      !isSocialValid || savingSocial
-                        ? [border, border]
-                        : [accent, accent]
-                    }
-                    start={{ x: 0, y: 0 }}
-                    end={{ x: 1, y: 1 }}
-                    style={[
-                      styles.saveButtonInner,
-                      (!isSocialValid || savingSocial) &&
-                        styles.saveButtonDisabled,
-                    ]}
-                  >
-                    {savingSocial ? (
-                      <ActivityIndicator color={nightBlue} />
-                    ) : (
-                      <Text style={styles.saveButtonText}>
-                        Save social links
-                      </Text>
-                    )}
-                  </LinearGradient>
-                </TouchableOpacity>
-              </>
-            ) : null}
-          </View>
-
-          {/* NOTIFICATION SETTINGS (accordion with granular toggles) */}
-          <View style={styles.sectionCard}>
-            <TouchableOpacity
-              style={styles.dropdownHeader}
-              onPress={() => setNotificationsOpen((prev) => !prev)}
-              activeOpacity={0.8}
-            >
-              <View style={styles.rowLeft}>
-                <Ionicons name="notifications" size={18} color={oceanBlue} />
-                <Text style={styles.rowLabelWithIcon}>
-                  Notification settings
-                </Text>
-              </View>
-              <Feather
-                name={notificationsOpen ? "chevron-up" : "chevron-down"}
-                size={18}
-                color={textSecondary}
-              />
-            </TouchableOpacity>
-
-            {notificationsOpen ? (
-              <View style={styles.dropdownBody}>
-                <ToggleRow
-                  icon={<Feather name="award" size={18} color={accent} />}
-                  label="Milestones"
-                  value={notificationSettings.otherUserMilestones}
-                  onValueChange={(value) =>
-                    handleNotificationSettingChange(
-                      "otherUserMilestones",
-                      value
-                    )
-                  }
-                  activeColor={accent}
-                  loading={savingNotificationKey === "otherUserMilestones"}
-                />
-                <ToggleRow
-                  icon={
-                    <Feather
-                      name="message-circle"
-                      size={18}
-                      color={oceanBlue}
-                    />
-                  }
-                  label="Comments"
-                  value={notificationSettings.otherUserComments}
-                  onValueChange={(value) =>
-                    handleNotificationSettingChange("otherUserComments", value)
-                  }
-                  activeColor={oceanBlue}
-                  loading={savingNotificationKey === "otherUserComments"}
-                />
-                <ToggleRow
-                  icon={<Feather name="users" size={18} color={accent} />}
-                  label="Friends posts"
-                  value={notificationSettings.followingPosts}
-                  onValueChange={(value) =>
-                    handleNotificationSettingChange("followingPosts", value)
-                  }
-                  activeColor={accent}
-                  loading={savingNotificationKey === "followingPosts"}
-                />
-                <ToggleRow
-                  icon={
-                    <MaterialCommunityIcons
-                      name="beer"
-                      size={18}
-                      color={oceanBlue}
-                    />
-                  }
-                  label="Buddies near bars & liquor stores"
-                  value={notificationSettings.buddiesNearVenue}
-                  onValueChange={(value) =>
-                    handleNotificationSettingChange("buddiesNearVenue", value)
-                  }
-                  activeColor={oceanBlue}
-                  loading={savingNotificationKey === "buddiesNearVenue"}
-                />
-                <ToggleRow
-                  icon={<Feather name="sunrise" size={18} color={accent} />}
-                  label="Daily push notifications"
-                  value={notificationSettings.dailyPush}
-                  onValueChange={(value) =>
-                    handleNotificationSettingChange("dailyPush", value)
-                  }
-                  activeColor={accent}
-                  loading={savingNotificationKey === "dailyPush"}
-                />
-              </View>
-            ) : null}
-          </View>
-
-          {/* POPULARITY (moved directly BELOW notification settings + header height matches old dropdowns) */}
-          <View style={styles.sectionCard}>
-            <TouchableOpacity
-              style={styles.dropdownHeader}
-              onPress={() => setPopularityOpen((prev) => !prev)}
-              activeOpacity={0.8}
-            >
-              <View style={styles.rowLeft}>
-                <MaterialCommunityIcons
-                  name="rocket-launch"
-                  size={18}
-                  color={accent}
-                />
-                <Text style={styles.rowLabelWithIcon}>Popularity</Text>
-              </View>
-
-              <View style={styles.popularityHeaderRight}>
-                <View style={styles.popularityStatusPill}>
-                  <Text style={styles.popularityStatusText}>
-                    {popularityStatus}
-                  </Text>
-                  <View style={styles.popularityScoreBadge}>
-                    <Text
-                      style={styles.popularityScoreText}
-                    >{`${popularityScore}%`}</Text>
-                  </View>
-                </View>
-                <Feather
-                  name={popularityOpen ? "chevron-up" : "chevron-down"}
-                  size={18}
-                  color={textSecondary}
-                />
-              </View>
-            </TouchableOpacity>
-
-            {popularityOpen ? (
-              <>
-                <Text style={styles.helperText}>
-                  Hit each milestone to unlock the next badge. Keep sharing,
-                  engaging, and cheering others on.
-                </Text>
-
-                <View style={styles.popularityGrid}>
-                  {popularityEntries.map((metric) => {
-                    const widthPercent = metric.progress * 100;
-                    const fillWidth =
-                      widthPercent > 0 ? Math.max(widthPercent, 6) : 0;
-
-                    return (
-                      <View key={metric.key} style={styles.popularityChip}>
-                        <View style={styles.popularityChipHeader}>
-                          <Text style={styles.popularityChipLabel}>
-                            {metric.label}
-                          </Text>
-                          <Text style={styles.popularityChipValue}>
-                            {metric.displayValue}
-                          </Text>
-                        </View>
-                        <View style={styles.popularityProgressTrack}>
-                          <View
-                            style={[
-                              styles.popularityProgressFill,
-                              { width: `${fillWidth}%` },
-                            ]}
-                          />
-                        </View>
-                        <Text style={styles.popularityMilestone}>
-                          {metric.milestoneLabel}
-                        </Text>
-                      </View>
-                    );
-                  })}
-                </View>
-
-                {loadingPopularity ? (
-                  <View style={styles.popularityLoadingRow}>
-                    <ActivityIndicator color={accent} />
-                    <Text style={styles.loadingText}>
-                      Refreshing your progress…
-                    </Text>
-                  </View>
-                ) : null}
-              </>
-            ) : null}
-          </View>
+          <PopularitySection
+            popularityOpen={popularityOpen}
+            setPopularityOpen={setPopularityOpen}
+            popularityStatus={popularityStatus}
+            popularityScore={popularityScore}
+            popularityEntries={popularityEntries}
+            loadingPopularity={loadingPopularity}
+          />
 
           {/* SUBSCRIPTION & BILLING */}
           <View style={styles.sectionCard}>
@@ -1605,70 +1151,19 @@ const EditProfileScreen = ({ navigation }) => {
             )}
           </View>
 
-          {/* PRIVACY + LOCATION + DELETE PROFILE */}
-          <View style={styles.sectionCard}>
-            <Text style={styles.sectionLabel}>Privacy</Text>
-            <ToggleRow
-              icon={<Ionicons name="notifications" size={18} color={accent} />}
-              label="All push notifications"
-              value={notificationSettings.allPushEnabled}
-              onValueChange={(value) =>
-                handleNotificationSettingChange("allPushEnabled", value)
-              }
-              activeColor={accent}
-              loading={savingNotificationKey === "allPushEnabled"}
-            />
-            <ToggleRow
-              icon={<Feather name="map-pin" size={18} color={oceanBlue} />}
-              label="Location tracking"
-              value={locationEnabled}
-              onValueChange={handleLocationToggle}
-              activeColor={oceanBlue}
-              disabled={locationToggleLoading}
-              loading={locationToggleLoading}
-            />
-            <Text style={styles.helperText}>
-              We only use your location to catch when you might be hanging at a
-              bar or liquor store so we can ping you and your sober buddies
-              before you make any dumb decisions.
-            </Text>
-          </View>
+          <PrivacySection
+            notificationSettings={notificationSettings}
+            handleNotificationSettingChange={handleNotificationSettingChange}
+            savingNotificationKey={savingNotificationKey}
+            locationEnabled={locationEnabled}
+            handleLocationToggle={handleLocationToggle}
+            locationToggleLoading={locationToggleLoading}
+          />
 
-          <View style={[styles.sectionCard, styles.deleteSectionCard]}>
-            <TouchableOpacity
-              style={styles.deleteProfileButton}
-              activeOpacity={0.9}
-              disabled={deletingAccount}
-              onPress={handleDeleteProfile}
-            >
-              <View
-                style={[
-                  styles.deleteProfileInner,
-                  deletingAccount && styles.deleteProfileInnerDisabled,
-                ]}
-              >
-                <View style={styles.deleteProfileContent}>
-                  <View style={styles.deleteProfileIconBadge}>
-                    <Feather name="trash-2" size={16} color="#fecaca" />
-                  </View>
-
-                  <View style={styles.deleteProfileTextBlock}>
-                    <Text style={styles.deleteProfileTitle}>
-                      Delete profile
-                    </Text>
-                  </View>
-
-                  <View style={styles.deleteProfileRight}>
-                    {deletingAccount ? (
-                      <ActivityIndicator color="#fecaca" size="small" />
-                    ) : (
-                      <Feather name="arrow-right" size={16} color="#fecaca" />
-                    )}
-                  </View>
-                </View>
-              </View>
-            </TouchableOpacity>
-          </View>
+          <DeleteProfileButton
+            deletingAccount={deletingAccount}
+            onPress={handleDeleteProfile}
+          />
 
           <View style={styles.legalFooter}>
             <Text style={styles.legalFooterText}>
@@ -1750,202 +1245,6 @@ const styles = StyleSheet.create({
     letterSpacing: 0.6,
     marginBottom: 12,
   },
-  sectionLabelStrong: {
-    color: textPrimary,
-    fontWeight: "800",
-    fontSize: 13,
-    letterSpacing: 0.4,
-  },
-  photoRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    gap: 16,
-  },
-  photoTile: {
-    flex: 1,
-    alignItems: "center",
-  },
-  profileHalo: {
-    width: "100%",
-    aspectRatio: 3 / 4,
-    borderRadius: 18,
-    padding: 4,
-    shadowColor: accent,
-    shadowOpacity: 0.28,
-    shadowRadius: 12,
-    shadowOffset: { width: 0, height: 8 },
-    elevation: 6,
-  },
-  profilePreview: {
-    flex: 1,
-    borderRadius: 14,
-    overflow: "hidden",
-    backgroundColor: nightBlue,
-    position: "relative",
-    alignItems: "center",
-    justifyContent: "center",
-    borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.08)",
-  },
-  profileImage: {
-    width: "100%",
-    height: "100%",
-    borderRadius: 14,
-  },
-  drunkTile: {
-    justifyContent: "flex-start",
-  },
-  drunkHalo: {
-    width: "100%",
-    aspectRatio: 3 / 4,
-    borderRadius: 18,
-    padding: 4,
-    shadowColor: oceanBlue,
-    shadowOpacity: 0.28,
-    shadowRadius: 12,
-    shadowOffset: { width: 0, height: 8 },
-    elevation: 6,
-  },
-  drunkPreview: {
-    flex: 1,
-    borderRadius: 14,
-    overflow: "hidden",
-    backgroundColor: nightBlue,
-    position: "relative",
-    borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.08)",
-  },
-  drunkImage: {
-    width: "100%",
-    height: "100%",
-    borderRadius: 14,
-  },
-  photoPlaceholder: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    padding: 12,
-  },
-  placeholderText: {
-    color: textSecondary,
-    fontSize: 12,
-    marginTop: 6,
-  },
-  photoLabel: {
-    color: textPrimary,
-    fontWeight: "700",
-    fontSize: 14,
-    marginTop: 10,
-  },
-  deleteButton: {
-    position: "absolute",
-    top: 10,
-    right: 10,
-    backgroundColor: "rgba(0,0,0,0.55)",
-    borderRadius: 999,
-    padding: 8,
-  },
-  loadingOverlay: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: "rgba(0,0,0,0.45)",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  dropdownHeader: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-  },
-  rowLeft: {
-    flexDirection: "row",
-    alignItems: "center",
-    flex: 1,
-    minWidth: 0,
-  },
-  rowTextBlock: {
-    marginLeft: 10,
-    flexShrink: 1,
-  },
-  rowLabel: {
-    color: textPrimary,
-    fontWeight: "700",
-  },
-  rowLabelWithIcon: {
-    color: textPrimary,
-    fontWeight: "700",
-    marginLeft: 12,
-  },
-  rowValue: {
-    color: textSecondary,
-    fontSize: 12,
-    marginTop: 2,
-  },
-  dropdownBody: {
-    marginTop: 12,
-    borderTopWidth: 1,
-    borderTopColor: border,
-    paddingTop: 12,
-    paddingBottom: 4,
-  },
-  helperText: {
-    color: textSecondary,
-    fontSize: 12,
-    lineHeight: 18,
-    marginBottom: 8,
-    textAlign: "center",
-  },
-  socialRow: {
-    marginTop: 8,
-  },
-  input: {
-    backgroundColor: nightBlue,
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: border,
-    paddingVertical: 12,
-    paddingHorizontal: 14,
-    color: textPrimary,
-    marginTop: 10,
-    marginBottom: 10,
-  },
-  validationText: {
-    color: textSecondary,
-    fontSize: 12,
-    marginBottom: 10,
-  },
-  validationError: {
-    color: accent,
-  },
-  saveButton: {
-    borderRadius: 12,
-    overflow: "hidden",
-  },
-  saveButtonInner: {
-    alignItems: "center",
-    paddingVertical: 12,
-    borderRadius: 12,
-  },
-  saveButtonDisabled: {
-    opacity: 0.6,
-  },
-  saveButtonText: {
-    color: nightBlue,
-    fontWeight: "800",
-  },
-  toggleRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingVertical: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: border,
-  },
-
-  deleteSectionCard: {
-    marginTop: 22,
-  },
-
-  // Subscription badge
   planHeaderRow: {
     flexDirection: "row",
     alignItems: "center",
@@ -1983,8 +1282,6 @@ const styles = StyleSheet.create({
     marginTop: 6,
     marginBottom: 10,
   },
-
-  // Upgrade button styles
   upgradeButton: {
     marginTop: 14,
     borderRadius: 14,
@@ -2040,7 +1337,6 @@ const styles = StyleSheet.create({
     fontSize: 11,
     fontWeight: "700",
   },
-
   manageSubButton: {
     marginTop: 14,
     borderRadius: 14,
@@ -2091,150 +1387,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "rgba(134,239,172,0.9)",
   },
-
-  // Delete profile card styles
-  deleteProfileButton: {
-    marginTop: 18,
-    borderRadius: 16,
-    overflow: "hidden",
-  },
-  deleteProfileInner: {
-    borderRadius: 16,
-    paddingVertical: 10,
-    paddingHorizontal: 12,
-    borderWidth: 1,
-    borderColor: "rgba(248,113,113,0.45)", // same red border
-    backgroundColor: "rgba(248,113,113,0.12)", // soft transparent red fill
-  },
-  deleteProfileInnerDisabled: {
-    opacity: 0.7,
-  },
-  deleteProfileContent: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 10,
-  },
-  deleteProfileIconBadge: {
-    width: 30,
-    height: 30,
-    borderRadius: 999,
-    backgroundColor: "rgba(127,29,29,0.9)",
-    alignItems: "center",
-    justifyContent: "center",
-    borderWidth: 1,
-    borderColor: "rgba(248,113,113,0.85)",
-  },
-  deleteProfileTextBlock: {
-    flex: 1,
-  },
-  deleteProfileTitle: {
-    color: "#fee2e2",
-    fontWeight: "800",
-    fontSize: 14,
-  },
-  deleteProfileSubtitle: {
-    color: "#fecaca",
-    fontSize: 11,
-    marginTop: 2,
-  },
-  deleteProfileRight: {
-    paddingHorizontal: 4,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-
-  popularityHeaderRight: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 8,
-    flexShrink: 0,
-  },
-  popularityStatusPill: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 8,
-    backgroundColor: "rgba(245, 158, 11, 0.16)",
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    borderRadius: 999,
-    borderWidth: 1,
-    borderColor: "rgba(245, 158, 11, 0.4)",
-  },
-  popularityStatusText: {
-    color: textPrimary,
-    fontWeight: "800",
-    fontSize: 12,
-  },
-  popularityScoreBadge: {
-    backgroundColor: "#0b1220",
-    borderRadius: 999,
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderWidth: 1,
-    borderColor: "rgba(245, 158, 11, 0.45)",
-  },
-  popularityScoreText: {
-    color: "#fef3c7",
-    fontWeight: "800",
-    fontSize: 12,
-  },
-  popularityGrid: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    gap: 10,
-    marginTop: 10,
-  },
-  popularityChip: {
-    width: "48%",
-    backgroundColor: cardBackground,
-    borderRadius: 14,
-    padding: 10,
-    borderWidth: 1,
-    borderColor: border,
-  },
-  popularityChipHeader: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  popularityChipLabel: {
-    color: textSecondary,
-    fontSize: 12,
-    fontWeight: "700",
-  },
-  popularityChipValue: {
-    color: textPrimary,
-    fontSize: 14,
-    fontWeight: "800",
-  },
-  popularityProgressTrack: {
-    height: 8,
-    borderRadius: 999,
-    backgroundColor: "rgba(255,255,255,0.06)",
-    marginTop: 8,
-    overflow: "hidden",
-  },
-  popularityProgressFill: {
-    height: "100%",
-    borderRadius: 999,
-    backgroundColor: accent,
-  },
-  popularityMilestone: {
-    color: textSecondary,
-    fontSize: 11,
-    marginTop: 6,
-  },
-  popularityLoadingRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 8,
-    marginTop: 12,
-  },
-  loadingText: {
-    color: textSecondary,
-    fontSize: 12,
-  },
-
   legalFooter: {
     marginTop: 12,
     marginBottom: 24,
@@ -2250,7 +1402,6 @@ const styles = StyleSheet.create({
     textDecorationLine: "underline",
     fontWeight: "700",
   },
-
   loadingScreen: {
     ...StyleSheet.absoluteFillObject,
     backgroundColor: "rgba(5,8,22,0.75)",
