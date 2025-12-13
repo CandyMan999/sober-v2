@@ -993,37 +993,21 @@ const EditProfileScreen = ({ navigation }) => {
           keyboardDismissMode="on-drag"
         >
           <PhotoTilesSection
-            profileUri={profileUri}
-            drunkUri={drunkUri}
-            uploadingSlot={uploadingSlot}
-            deletingSlot={deletingSlot}
-            pickImage={pickImage}
-            deletePhoto={deletePhoto}
+            currentUser={user}
+            onUserUpdated={setUser}
+            showError={showError}
           />
 
           <UsernameSection
-            usernameOpen={usernameOpen}
-            setUsernameOpen={setUsernameOpen}
-            usernameDisplay={usernameDisplay}
-            usernameInput={usernameInput}
-            setUsernameInput={setUsernameInput}
-            usernameValidationText={usernameValidationText}
-            isUsernameValid={isUsernameValid}
-            savingUsername={savingUsername}
-            handleSaveUsername={handleSaveUsername}
-            maxUsernameLength={MAX_USERNAME_LENGTH}
+            currentUser={user}
+            onUserUpdated={setUser}
+            showError={showError}
           />
 
           <SocialLinksSection
-            socialOpen={socialOpen}
-            setSocialOpen={setSocialOpen}
-            socialConfig={SOCIAL_CONFIG}
-            socialValidation={socialValidation}
-            socialInputs={socialInputs}
-            setSocialInputs={setSocialInputs}
-            handleSaveSocialLinks={handleSaveSocialLinks}
-            isSocialValid={isSocialValid}
-            savingSocial={savingSocial}
+            currentUser={user}
+            onUserUpdated={setUser}
+            showError={showError}
           />
 
           <NotificationSettingsSection

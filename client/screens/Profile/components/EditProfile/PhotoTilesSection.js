@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import {
   ActivityIndicator,
   Image,
@@ -9,8 +9,18 @@ import {
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
+import * as ImagePicker from "expo-image-picker";
+import * as ImageManipulator from "expo-image-manipulator";
 
 import { COLORS } from "../../../../constants/colors";
+import { useClient } from "../../../../client";
+import Context from "../../../../context";
+import {
+  ADD_PICTURE_MUTATION,
+  DELETE_PHOTO_MUTATION,
+  DIRECT_UPLOAD_MUTATION,
+} from "../../../../GraphQL/mutations";
+import { getToken } from "../../../../utils/helpers";
 
 const { accent, textPrimary, textSecondary, primaryBackground, oceanBlue } = COLORS;
 
@@ -101,36 +111,190 @@ const DrunkPhotoTile = ({ label, uri, isUploading, isDeleting, onPick, onDelete 
   </PhotoTileBase>
 );
 
-const PhotoTilesSection = ({
-  profileUri,
-  drunkUri,
-  uploadingSlot,
-  deletingSlot,
-  pickImage,
-  deletePhoto,
-}) => (
-  <View style={styles.sectionCard}>
-    <Text style={styles.sectionLabel}>Photos</Text>
-    <View style={styles.photoRow}>
-      <ProfilePhotoTile
-        label="Profile Photo"
-        uri={profileUri}
-        isUploading={uploadingSlot === "PROFILE"}
-        isDeleting={deletingSlot === "PROFILE"}
-        onPick={() => pickImage("PROFILE")}
-        onDelete={() => deletePhoto("PROFILE")}
-      />
-      <DrunkPhotoTile
-        label="Drunk Photo"
-        uri={drunkUri}
-        isUploading={uploadingSlot === "DRUNK"}
-        isDeleting={deletingSlot === "DRUNK"}
-        onPick={() => pickImage("DRUNK")}
-        onDelete={() => deletePhoto("DRUNK")}
-      />
+const PhotoTilesSection = ({ currentUser, onUserUpdated, showError }) => {
+  const client = useClient();
+  const { dispatch } = useContext(Context);
+
+  const [profileUri, setProfileUri] = useState(currentUser?.profilePicUrl || null);
+  const [drunkUri, setDrunkUri] = useState(currentUser?.drunkPicUrl || null);
+  const [profileId, setProfileId] = useState(currentUser?.profilePic?.id || null);
+  const [drunkId, setDrunkId] = useState(currentUser?.drunkPic?.id || null);
+  const [uploadingSlot, setUploadingSlot] = useState(null);
+  const [deletingSlot, setDeletingSlot] = useState(null);
+  const [token, setToken] = useState(null);
+
+  useEffect(() => {
+    setProfileUri(currentUser?.profilePicUrl || null);
+    setDrunkUri(currentUser?.drunkPicUrl || null);
+    setProfileId(currentUser?.profilePic?.id || null);
+    setDrunkId(currentUser?.drunkPic?.id || null);
+  }, [currentUser]);
+
+  useEffect(() => {
+    const fetchToken = async () => {
+      const deviceToken = await getToken();
+      setToken(deviceToken);
+    };
+
+    fetchToken();
+  }, []);
+
+  const requestMediaPermission = async () => {
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (status !== "granted") {
+      showError?.("We need access to your library to update your photos.");
+      return false;
+    }
+    return true;
+  };
+
+  const uploadToCloudflare = async (localUri, slot) => {
+    try {
+      const { directUpload } = await client.request(DIRECT_UPLOAD_MUTATION);
+      if (!directUpload?.uploadURL) throw new Error("Upload URL missing");
+
+      const formData = new FormData();
+      formData.append("file", {
+        uri: localUri,
+        type: "image/jpeg",
+        name: "upload.jpg",
+      });
+
+      const uploadRes = await fetch(directUpload.uploadURL, {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!uploadRes.ok) throw new Error("Failed to upload image");
+
+      const deliveryUrl = `https://imagedelivery.net/o9IMJdMAwk7ijgmm9FnmYg/${directUpload.id}/public`;
+
+      const { addPicture } = await client.request(ADD_PICTURE_MUTATION, {
+        token,
+        url: deliveryUrl,
+        publicId: directUpload.id,
+        slot,
+      });
+
+      return { url: deliveryUrl, id: addPicture?.id };
+    } catch (err) {
+      console.log("Upload error", err);
+      showError?.("We couldn't upload that photo. Please try again.");
+      return null;
+    }
+  };
+
+  const pickImage = async (slot) => {
+    const isProfile = slot === "PROFILE";
+    if (!token) {
+      showError?.(
+        "We need your device ID to update photos. Please restart the app."
+      );
+      return;
+    }
+
+    if (uploadingSlot || !(await requestMediaPermission())) return;
+
+    setUploadingSlot(slot);
+
+    const pickerResult = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: isProfile,
+      aspect: isProfile ? [3, 4] : undefined,
+      quality: 1,
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+    });
+
+    if (pickerResult.canceled) {
+      setUploadingSlot(null);
+      return;
+    }
+
+    const resized = await ImageManipulator.manipulateAsync(
+      pickerResult.assets[0].uri,
+      [{ resize: { width: 900 } }],
+      { compress: 0.75, format: ImageManipulator.SaveFormat.JPEG }
+    );
+
+    if (isProfile) setProfileUri(resized.uri);
+    else setDrunkUri(resized.uri);
+
+    const uploaded = await uploadToCloudflare(resized.uri, slot);
+    if (uploaded) {
+      if (isProfile) {
+        setProfileUri(uploaded.url);
+        setProfileId(uploaded.id);
+      } else {
+        setDrunkUri(uploaded.url);
+        setDrunkId(uploaded.id);
+      }
+    }
+
+    setUploadingSlot(null);
+  };
+
+  const deletePhoto = async (slot) => {
+    const isProfile = slot === "PROFILE";
+    const photoId = isProfile ? profileId : drunkId;
+    if (!photoId || deletingSlot) return;
+    if (!token) {
+      showError?.(
+        "We need your device ID to delete photos. Please restart the app."
+      );
+      return;
+    }
+
+    setDeletingSlot(slot);
+    try {
+      const { deletePhoto } = await client.request(DELETE_PHOTO_MUTATION, {
+        token,
+        photoId,
+        slot,
+      });
+
+      dispatch({ type: "SET_USER", payload: deletePhoto });
+      onUserUpdated?.(deletePhoto);
+      if (isProfile) {
+        setProfileUri(null);
+        setProfileId(null);
+      } else {
+        setDrunkUri(null);
+        setDrunkId(null);
+      }
+    } catch (err) {
+      console.log("Delete error", err);
+      showError?.("We couldn't delete that photo. Please try again.");
+    }
+
+    setDeletingSlot(null);
+  };
+
+  const uploadingState = useMemo(() => uploadingSlot, [uploadingSlot]);
+  const deletingState = useMemo(() => deletingSlot, [deletingSlot]);
+
+  return (
+    <View style={styles.sectionCard}>
+      <Text style={styles.sectionLabel}>Photos</Text>
+      <View style={styles.photoRow}>
+        <ProfilePhotoTile
+          label="Profile Photo"
+          uri={profileUri}
+          isUploading={uploadingState === "PROFILE"}
+          isDeleting={deletingState === "PROFILE"}
+          onPick={() => pickImage("PROFILE")}
+          onDelete={() => deletePhoto("PROFILE")}
+        />
+        <DrunkPhotoTile
+          label="Drunk Photo"
+          uri={drunkUri}
+          isUploading={uploadingState === "DRUNK"}
+          isDeleting={deletingState === "DRUNK"}
+          onPick={() => pickImage("DRUNK")}
+          onDelete={() => deletePhoto("DRUNK")}
+        />
+      </View>
     </View>
-  </View>
-);
+  );
+};
 
 export default PhotoTilesSection;
 
