@@ -1,0 +1,366 @@
+[
+  {
+    "type": "Bar",
+    "name": "Marina Lounge",
+    "lat": 34.4930366,
+    "long": -117.268452,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Smoke Wagon Saloon",
+    "lat": 34.5070617,
+    "long": -117.3780794,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Rustic Tavern",
+    "lat": 34.5147944,
+    "long": -117.2981994,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Bombshells Bar and Grill",
+    "lat": 34.5141055,
+    "long": -117.3174823,
+    "gmapsCategory": "Bombshells Bar and Grill"
+  },
+  {
+    "type": "Bar",
+    "name": "Better Days",
+    "lat": 34.4997437,
+    "long": -117.2433278,
+    "gmapsCategory": "\"Excellent microbrew beers, good wine and great live music.\""
+  },
+  {
+    "type": "Bar",
+    "name": "DB s Sports Bar",
+    "lat": 34.5146418,
+    "long": -117.3139939,
+    "gmapsCategory": "Sports bar"
+  },
+  {
+    "type": "Bar",
+    "name": "REPUBLIC",
+    "lat": 34.4924252,
+    "long": -117.2681167,
+    "gmapsCategory": "Sports bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Jocko s Pub",
+    "lat": 34.4710096,
+    "long": -117.3662312,
+    "gmapsCategory": "Sports bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Ricky s Bar",
+    "lat": 34.5008968,
+    "long": -117.2948906,
+    "gmapsCategory": "Gay bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Frogee s Cocktail Lounge",
+    "lat": 34.5009123,
+    "long": -117.1877874,
+    "gmapsCategory": "Cocktail bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Cosmos Taverna",
+    "lat": 34.4760814,
+    "long": -117.3409433,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Bar",
+    "name": "Oficina Night club",
+    "lat": 34.5064392,
+    "long": -117.3627957,
+    "gmapsCategory": "Night club"
+  },
+  {
+    "type": "Bar",
+    "name": " Taps Tavern ",
+    "lat": 34.5013912,
+    "long": -117.1813161,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Gators Sports Bar And Grill",
+    "lat": 34.4708561,
+    "long": -117.2047786,
+    "gmapsCategory": "Gators Sports Bar And Grill"
+  },
+  {
+    "type": "Bar",
+    "name": "Gators Sports Bar Grill",
+    "lat": 34.4736589,
+    "long": -117.2903837,
+    "gmapsCategory": "Gators Sports Bar & Grill"
+  },
+  {
+    "type": "Bar",
+    "name": "Whiskey Barrel Saloon",
+    "lat": 34.4695247,
+    "long": -117.343131,
+    "gmapsCategory": "Sports bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Lucky s Tavern",
+    "lat": 34.4181132,
+    "long": -117.2903766,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Buckeye Jack s Saloon Dance Hall",
+    "lat": 34.5001265,
+    "long": -117.1709284,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Ez Pickens",
+    "lat": 34.420211,
+    "long": -117.2873771,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Joshua Inn",
+    "lat": 34.3642534,
+    "long": -117.2485437,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Gators Sports Bar Grill",
+    "lat": 34.4228313,
+    "long": -117.3153882,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Ropers Lounge Restaurant and Drinks",
+    "lat": 34.3838963,
+    "long": -117.3706244,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Bar",
+    "name": "Vault Cocktails",
+    "lat": 33.9175292,
+    "long": -117.9924908,
+    "gmapsCategory": "Cocktail bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Mission Bar",
+    "lat": 33.7472867,
+    "long": -117.8677968,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Screaming Sallys Saloon",
+    "lat": 34.2222866,
+    "long": -117.405669,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Riley s Place",
+    "lat": 34.9212822,
+    "long": -117.2109128,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "J D s T Bird",
+    "lat": 34.4266778,
+    "long": -117.5751686,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "The Etiwanda Roadhouse Bar Grill",
+    "lat": 34.1356035,
+    "long": -117.530444,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Club Bombay",
+    "lat": 34.2404103,
+    "long": -116.911807,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "The Blue Door Bar",
+    "lat": 33.85866,
+    "long": -117.941387,
+    "gmapsCategory": "Cocktail bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Trevor s Rustic Inn",
+    "lat": 34.1623445,
+    "long": -117.3008674,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Power House Bar",
+    "lat": 34.1021287,
+    "long": -118.3384586,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Fling Cocktail Lounge",
+    "lat": 33.76872,
+    "long": -117.8367019,
+    "gmapsCategory": "Cocktail bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Donna s Cocktails",
+    "lat": 33.8940359,
+    "long": -118.3093788,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Hi N Dry Cocktails",
+    "lat": 33.8653023,
+    "long": -118.3271257,
+    "gmapsCategory": "Cocktail bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Shanghai d Room",
+    "lat": 33.7241667,
+    "long": -117.9897222,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "The Dungeon",
+    "lat": 34.1471413,
+    "long": -118.1501883,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Bar",
+    "name": "The Owl Bar",
+    "lat": 33.1301653,
+    "long": -96.826351,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Tustin Inn",
+    "lat": 33.7453804,
+    "long": -117.8194122,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "The Cinema Bar",
+    "lat": 34.0094025,
+    "long": -118.4147021,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "The Watering Hole",
+    "lat": 32.8356994,
+    "long": -117.1880021,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "PB PUB",
+    "lat": 32.798641,
+    "long": -117.2442739,
+    "gmapsCategory": "Pub"
+  },
+  {
+    "type": "Bar",
+    "name": "Sidecar Social Frisco",
+    "lat": 33.1077444,
+    "long": -96.8270188,
+    "gmapsCategory": "Sports bar"
+  },
+  {
+    "type": "Bar",
+    "name": "TrashHawk Tavern",
+    "lat": 39.688673,
+    "long": -104.9878313,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "The Scene",
+    "lat": 34.2085887,
+    "long": -118.4226341,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "The Big Rock Inn",
+    "lat": 34.4281388,
+    "long": -117.6222022,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Wrightwood Inn",
+    "lat": 34.3606796,
+    "long": -117.6311722,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "The Yodeler",
+    "lat": 34.360395,
+    "long": -117.633834,
+    "gmapsCategory": ""
+  },
+  {
+    "type": "Bar",
+    "name": "The Barn Route ",
+    "lat": 34.8272104,
+    "long": -116.6866073,
+    "gmapsCategory": "Cocktail bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Desert Springs Bar Grill",
+    "lat": 34.8853104,
+    "long": -116.8872444,
+    "gmapsCategory": "Desert Springs Bar & Grill"
+  },
+  {
+    "type": "Bar",
+    "name": "Sugar Loaf Hill Bar",
+    "lat": 34.8756251,
+    "long": -116.9526125,
+    "gmapsCategory": "Bar"
+  },
+  {
+    "type": "Bar",
+    "name": "Lil s Saloon",
+    "lat": 34.949363,
+    "long": -116.8653272,
+    "gmapsCategory": ""
+  }
+]
