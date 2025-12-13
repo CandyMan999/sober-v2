@@ -302,7 +302,7 @@ const EditProfileScreen = ({ navigation }) => {
   const [user, setUser] = useState(state?.user || null);
   const [popularity, setPopularity] = useState(null);
   const [loadingPopularity, setLoadingPopularity] = useState(false);
-  const [popularityOpen, setPopularityOpen] = useState(true);
+  const [popularityOpen, setPopularityOpen] = useState(false);
   const [loading, setLoading] = useState(!state?.user);
   const [deletingAccount, setDeletingAccount] = useState(false);
 
@@ -1852,9 +1852,12 @@ const styles = StyleSheet.create({
   rowLeft: {
     flexDirection: "row",
     alignItems: "center",
+    flex: 1,
+    minWidth: 0,
   },
   rowTextBlock: {
     marginLeft: 10,
+    flexShrink: 1,
   },
   rowLabel: {
     color: textPrimary,
@@ -2140,14 +2143,15 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 8,
+    flexShrink: 0,
   },
   popularityStatusPill: {
     flexDirection: "row",
     alignItems: "center",
     gap: 8,
     backgroundColor: "rgba(245, 158, 11, 0.16)",
-    paddingHorizontal: 12,
-    paddingVertical: 6,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
     borderRadius: 999,
     borderWidth: 1,
     borderColor: "rgba(245, 158, 11, 0.4)",

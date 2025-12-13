@@ -20,7 +20,10 @@ import {
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { BlurView } from "expo-blur";
-import { LiquidGlassView } from "@callstack/liquid-glass";
+import {
+  LiquidGlassView,
+  isLiquidGlassSupported,
+} from "@callstack/liquid-glass";
 import {
   Feather,
   Ionicons,
@@ -38,7 +41,6 @@ import Context from "../../context";
 import { useClient } from "../../client";
 import { getAuthContext } from "../../utils/helpers";
 import { calculatePopularity } from "../../utils/popularity";
-import { isIOSLiquidGlassCapable } from "../../utils/deviceCapabilities";
 import {
   USER_POSTS_PAGINATED_QUERY,
   USER_PROFILE_QUERY,
@@ -153,7 +155,21 @@ const UserProfileScreen = ({ route, navigation }) => {
   const currentUser = state?.user;
   const currentUserId = currentUser?.id;
   const { openSocial } = useOpenSocial();
-  const canUseGlassBadge = useMemo(() => isIOSLiquidGlassCapable(), []);
+  const [canUseGlassBadge, setCanUseGlassBadge] = useState(false);
+  useEffect(() => {
+    let mounted = true;
+    Promise.resolve(isLiquidGlassSupported())
+      .then((supported) => {
+        if (mounted) setCanUseGlassBadge(Boolean(supported));
+      })
+      .catch(() => {
+        if (mounted) setCanUseGlassBadge(false);
+      });
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
   const BadgeShell = canUseGlassBadge ? LiquidGlassView : BlurView;
 
   const viewerCoords = useMemo(() => {
@@ -1514,8 +1530,9 @@ const UserProfileScreen = ({ route, navigation }) => {
                       {...(!canUseGlassBadge
                         ? { intensity: 90, tint: "dark" }
                         : {
-                            interactive: false,
-                            effect: "ultra-thin",
+                            interactive: true,
+                            effect: "clear",
+                            tintColor: "rgba(252,211,77,0.28)",
                             colorScheme: "system",
                           })}
                       style={[
