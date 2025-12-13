@@ -1938,7 +1938,7 @@ const styles = StyleSheet.create({
   // Badge
   avatarPopularityBadge: {
     position: "absolute",
-    top: -12,
+    bottom: -6,
     right: -10,
     zIndex: 2,
     borderRadius: 18,
