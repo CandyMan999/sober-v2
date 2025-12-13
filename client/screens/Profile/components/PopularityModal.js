@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import {
   Animated,
+  Dimensions,
   Modal,
   Pressable,
   StyleSheet,
@@ -13,6 +14,9 @@ import { Feather, MaterialCommunityIcons } from "@expo/vector-icons";
 
 import { COLORS } from "../../../constants/colors";
 import { defaultPopularityWeighting } from "../../../utils/popularity";
+
+const { height: WINDOW_HEIGHT } = Dimensions.get("window");
+const SHEET_HEIGHT = Math.round(WINDOW_HEIGHT * 0.82);
 
 const POPULARITY_METRICS = [
   {
@@ -28,16 +32,7 @@ const POPULARITY_METRICS = [
   { key: "approvedQuotes", label: "Approved quotes", unit: "quotes" },
 ];
 
-const {
-  primaryBackground,
-  cardBackground,
-  accent,
-  accentSoft,
-  textPrimary,
-  textSecondary,
-  border,
-  nightBlue,
-} = COLORS;
+const { accent, accentSoft, textPrimary, textSecondary, nightBlue } = COLORS;
 
 const PopularityModal = ({ visible, onClose, snapshot }) => {
   const [mounted, setMounted] = useState(visible);
@@ -74,7 +69,7 @@ const PopularityModal = ({ visible, onClose, snapshot }) => {
     () =>
       sheetAnim.interpolate({
         inputRange: [0, 1],
-        outputRange: [180, 0],
+        outputRange: [SHEET_HEIGHT + 40, 0],
       }),
     [sheetAnim]
   );
@@ -128,9 +123,9 @@ const PopularityModal = ({ visible, onClose, snapshot }) => {
           style={[styles.sheetWrapper, { transform: [{ translateY }] }]}
         >
           <LinearGradient
-            colors={["rgba(56,189,248,0.35)", "rgba(11,18,32,0.98)"]}
+            colors={["#0b1224", "#0b1224"]}
             start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }}
+            end={{ x: 0, y: 1 }}
             style={styles.sheetGradient}
           >
             <View style={styles.dragHandle} />
@@ -220,31 +215,44 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "transparent",
     justifyContent: "flex-end",
+    ...StyleSheet.absoluteFillObject,
   },
   backdrop: {
     ...StyleSheet.absoluteFillObject,
     backgroundColor: "#000",
   },
   sheetWrapper: {
-    paddingHorizontal: 12,
-    paddingBottom: 20,
+    position: "absolute",
+    left: 0,
+    right: 0,
+    bottom: 0,
+    height: SHEET_HEIGHT,
+    paddingHorizontal: 0,
+    paddingBottom: 18,
   },
   sheetGradient: {
-    borderRadius: 20,
+    flex: 1,
+    borderTopLeftRadius: 16,
+    borderTopRightRadius: 16,
     borderWidth: 1,
-    borderColor: "rgba(56,189,248,0.28)",
-    backgroundColor: primaryBackground,
+    borderColor: "rgba(255,255,255,0.06)",
+    backgroundColor: "#0b1224",
     overflow: "hidden",
-    paddingBottom: 20,
+    paddingBottom: 24,
+    shadowColor: "#0ea5e9",
+    shadowOpacity: 0.2,
+    shadowRadius: 12,
+    shadowOffset: { width: 0, height: -6 },
+    elevation: 10,
   },
   dragHandle: {
     alignSelf: "center",
-    width: 58,
-    height: 6,
+    width: 46,
+    height: 5,
     borderRadius: 999,
-    backgroundColor: "rgba(255,255,255,0.18)",
+    backgroundColor: "rgba(148,163,184,0.5)",
     marginTop: 10,
-    marginBottom: 12,
+    marginBottom: 14,
   },
   headerRow: {
     flexDirection: "row",
@@ -276,13 +284,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    backgroundColor: cardBackground,
-    borderRadius: 16,
+    backgroundColor: "#0f172a",
+    borderRadius: 14,
     padding: 14,
     marginTop: 14,
     marginHorizontal: 16,
     borderWidth: 1,
-    borderColor: border,
+    borderColor: "rgba(255,255,255,0.06)",
   },
   statusLeft: {
     flexDirection: "row",
@@ -293,11 +301,11 @@ const styles = StyleSheet.create({
     width: 38,
     height: 38,
     borderRadius: 12,
-    backgroundColor: "rgba(245, 158, 11, 0.15)",
+    backgroundColor: "rgba(56,189,248,0.12)",
     alignItems: "center",
     justifyContent: "center",
     borderWidth: 1,
-    borderColor: "rgba(245, 158, 11, 0.45)",
+    borderColor: "rgba(56,189,248,0.45)",
   },
   statusLabel: {
     color: textSecondary,
@@ -344,11 +352,11 @@ const styles = StyleSheet.create({
   },
   popularityChip: {
     width: "48%",
-    backgroundColor: cardBackground,
+    backgroundColor: "#0f172a",
     borderRadius: 14,
     padding: 10,
     borderWidth: 1,
-    borderColor: border,
+    borderColor: "rgba(255,255,255,0.06)",
   },
   popularityChipHeader: {
     flexDirection: "row",
