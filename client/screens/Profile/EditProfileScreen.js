@@ -1411,6 +1411,92 @@ const EditProfileScreen = ({ navigation }) => {
             ) : null}
           </View>
 
+          {/* POPULARITY (moved directly BELOW notification settings + header height matches old dropdowns) */}
+          <View style={styles.sectionCard}>
+            <TouchableOpacity
+              style={styles.dropdownHeader}
+              onPress={() => setPopularityOpen((prev) => !prev)}
+              activeOpacity={0.8}
+            >
+              <View style={styles.rowLeft}>
+                <MaterialCommunityIcons
+                  name="rocket-launch"
+                  size={18}
+                  color={accent}
+                />
+                <Text style={styles.rowLabelWithIcon}>Popularity</Text>
+              </View>
+
+              <View style={styles.popularityHeaderRight}>
+                <View style={styles.popularityStatusPill}>
+                  <Text style={styles.popularityStatusText}>
+                    {popularityStatus}
+                  </Text>
+                  <View style={styles.popularityScoreBadge}>
+                    <Text
+                      style={styles.popularityScoreText}
+                    >{`${popularityScore}%`}</Text>
+                  </View>
+                </View>
+                <Feather
+                  name={popularityOpen ? "chevron-up" : "chevron-down"}
+                  size={18}
+                  color={textSecondary}
+                />
+              </View>
+            </TouchableOpacity>
+
+            {popularityOpen ? (
+              <>
+                <Text style={styles.helperText}>
+                  Hit each milestone to unlock the next badge. Keep sharing,
+                  engaging, and cheering others on.
+                </Text>
+
+                <View style={styles.popularityGrid}>
+                  {popularityEntries.map((metric) => {
+                    const widthPercent = metric.progress * 100;
+                    const fillWidth =
+                      widthPercent > 0 ? Math.max(widthPercent, 6) : 0;
+
+                    return (
+                      <View key={metric.key} style={styles.popularityChip}>
+                        <View style={styles.popularityChipHeader}>
+                          <Text style={styles.popularityChipLabel}>
+                            {metric.label}
+                          </Text>
+                          <Text style={styles.popularityChipValue}>
+                            {metric.displayValue}
+                          </Text>
+                        </View>
+                        <View style={styles.popularityProgressTrack}>
+                          <View
+                            style={[
+                              styles.popularityProgressFill,
+                              { width: `${fillWidth}%` },
+                            ]}
+                          />
+                        </View>
+                        <Text style={styles.popularityMilestone}>
+                          {metric.milestoneLabel}
+                        </Text>
+                      </View>
+                    );
+                  })}
+                </View>
+
+                {loadingPopularity ? (
+                  <View style={styles.popularityLoadingRow}>
+                    <ActivityIndicator color={accent} />
+                    <Text style={styles.loadingText}>
+                      Refreshing your progress…
+                    </Text>
+                  </View>
+                ) : null}
+              </>
+            ) : null}
+          </View>
+
           {/* SUBSCRIPTION & BILLING */}
           <View style={styles.sectionCard}>
             <View style={styles.planHeaderRow}>
@@ -1548,90 +1634,6 @@ const EditProfileScreen = ({ navigation }) => {
             </Text>
           </View>
 
-          <View style={styles.sectionCard}>
-            <TouchableOpacity
-              style={[styles.dropdownHeader, styles.popularityDropdownHeader]}
-              onPress={() => setPopularityOpen((prev) => !prev)}
-              activeOpacity={0.8}
-            >
-              <View style={styles.rowLeft}>
-                <MaterialCommunityIcons
-                  name="rocket-launch"
-                  size={18}
-                  color={accent}
-                />
-                <View style={styles.rowTextBlock}>
-                  <Text style={[styles.sectionLabel, styles.sectionLabelStrong]}>
-                    Popularity
-                  </Text>
-                  <Text style={styles.rowValue}>Track your badge milestones</Text>
-                </View>
-              </View>
-
-              <View style={styles.popularityHeaderRight}>
-                <View style={styles.popularityStatusPill}>
-                  <MaterialCommunityIcons
-                    name="rocket-launch"
-                    size={16}
-                    color="#0b1220"
-                  />
-                  <Text style={styles.popularityStatusText}>
-                    {popularityStatus}
-                  </Text>
-                  <View style={styles.popularityScoreBadge}>
-                    <Text style={styles.popularityScoreText}>{`${popularityScore}%`}</Text>
-                  </View>
-                </View>
-                <Feather
-                  name={popularityOpen ? "chevron-up" : "chevron-down"}
-                  size={18}
-                  color={textSecondary}
-                />
-              </View>
-            </TouchableOpacity>
-
-            {popularityOpen ? (
-              <>
-                <Text style={styles.helperText}>
-                  Hit each milestone to unlock the next badge. Keep sharing,
-                  engaging, and cheering others on.
-                </Text>
-
-                <View style={styles.popularityGrid}>
-                  {popularityEntries.map((metric) => {
-                    const widthPercent = metric.progress * 100;
-                    const fillWidth = widthPercent > 0 ? Math.max(widthPercent, 6) : 0;
-
-                    return (
-                      <View key={metric.key} style={styles.popularityChip}>
-                        <View style={styles.popularityChipHeader}>
-                          <Text style={styles.popularityChipLabel}>{metric.label}</Text>
-                          <Text style={styles.popularityChipValue}>{metric.displayValue}</Text>
-                        </View>
-                        <View style={styles.popularityProgressTrack}>
-                          <View
-                            style={[
-                              styles.popularityProgressFill,
-                              { width: `${fillWidth}%` },
-                            ]}
-                          />
-                        </View>
-                        <Text style={styles.popularityMilestone}>{metric.milestoneLabel}</Text>
-                      </View>
-                    );
-                  })}
-                </View>
-
-                {loadingPopularity ? (
-                  <View style={styles.popularityLoadingRow}>
-                    <ActivityIndicator color={accent} />
-                    <Text style={styles.loadingText}>Refreshing your progress…</Text>
-                  </View>
-                ) : null}
-              </>
-            ) : null}
-          </View>
-
           <View style={[styles.sectionCard, styles.deleteSectionCard]}>
             <TouchableOpacity
               style={styles.deleteProfileButton}
@@ -1651,7 +1653,9 @@ const EditProfileScreen = ({ navigation }) => {
                   </View>
 
                   <View style={styles.deleteProfileTextBlock}>
-                    <Text style={styles.deleteProfileTitle}>Delete profile</Text>
+                    <Text style={styles.deleteProfileTitle}>
+                      Delete profile
+                    </Text>
                   </View>
 
                   <View style={styles.deleteProfileRight}>
@@ -1668,7 +1672,10 @@ const EditProfileScreen = ({ navigation }) => {
 
           <View style={styles.legalFooter}>
             <Text style={styles.legalFooterText}>
-              <Text style={styles.legalFooterLink} onPress={() => navigation.navigate("TermsEula")}>
+              <Text
+                style={styles.legalFooterLink}
+                onPress={() => navigation.navigate("TermsEula")}
+              >
                 Terms of Service
               </Text>{" "}
               ·{" "}
@@ -2136,9 +2143,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 
-  popularityDropdownHeader: {
-    paddingBottom: 10,
-  },
   popularityHeaderRight: {
     flexDirection: "row",
     alignItems: "center",
