@@ -255,6 +255,35 @@ export const PROFILE_OVERVIEW_QUERY = `
           profilePicUrl
         }
       }
+      popularity {
+        score
+        status
+        breakdown {
+          watchMinutes
+          posts
+          comments
+          likes
+          followers
+          approvedQuotes
+        }
+      }
+    }
+  }
+`;
+
+export const MY_POPULARITY_QUERY = `
+  query MyPopularity($token: String, $appleId: String) {
+    myPopularity(token: $token, appleId: $appleId) {
+      score
+      status
+      breakdown {
+        watchMinutes
+        posts
+        comments
+        likes
+        followers
+        approvedQuotes
+      }
     }
   }
 `;
@@ -509,6 +538,18 @@ export const USER_PROFILE_QUERY = `
           id
           username
           profilePicUrl
+        }
+      }
+      popularity {
+        score
+        status
+        breakdown {
+          watchMinutes
+          posts
+          comments
+          likes
+          followers
+          approvedQuotes
         }
       }
     }

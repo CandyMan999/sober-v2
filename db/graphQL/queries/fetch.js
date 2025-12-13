@@ -15,6 +15,7 @@ const {
   NotificationIntents,
   createNotificationForUser,
 } = require("../../utils/notifications");
+const { buildPopularitySnapshot } = require("../../utils/popularity");
 const { serializeUser } = require("../../utils/serializeUser");
 
 require("dotenv").config();
@@ -611,6 +612,8 @@ module.exports = {
       .sort({ createdAt: -1 })
       .populate("user");
 
+    const popularity = await buildPopularitySnapshot(user);
+
     return {
       user,
       posts: trimmedPosts,
@@ -619,6 +622,7 @@ module.exports = {
       quotes,
       savedPosts,
       savedQuotes,
+      popularity,
     };
   },
 
@@ -726,6 +730,8 @@ module.exports = {
     const profilePic = serializePicture(serializedUser.profilePic);
     const drunkPic = serializePicture(serializedUser.drunkPic);
 
+    const popularity = await buildPopularitySnapshot(user);
+
     return {
       user: {
         ...serializedUser,
@@ -740,6 +746,30 @@ module.exports = {
       quotes,
       savedPosts,
       savedQuotes,
+      popularity,
     };
+  },
+
+  myPopularityResolver: async (_, { token, appleId }, { currentUser }) => {
+    const sanitizedAppleId = appleId?.trim();
+
+    if (!token && !sanitizedAppleId && !currentUser) {
+      throw new AuthenticationError("Token or Apple ID is required");
+    }
+
+    let user = currentUser;
+
+    if (!user) {
+      const lookup = sanitizedAppleId ? { appleId: sanitizedAppleId } : { token };
+      user = await User.findOne(lookup);
+    }
+
+    if (!user) {
+      throw new AuthenticationError("User not found");
+    }
+
+    await User.ensureChatRoomStyle(user);
+
+    return buildPopularitySnapshot(user);
   },
 };

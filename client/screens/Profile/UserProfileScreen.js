@@ -1,3 +1,4 @@
+// screens/Profile/UserProfileScreen.js
 import React, {
   useCallback,
   useContext,
@@ -20,6 +21,7 @@ import {
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { BlurView } from "expo-blur";
+import { LiquidGlassView } from "@callstack/liquid-glass";
 import {
   Feather,
   Ionicons,
@@ -36,6 +38,7 @@ import { ContentPreviewModal } from "../../components";
 import Context from "../../context";
 import { useClient } from "../../client";
 import { getAuthContext } from "../../utils/helpers";
+import { calculatePopularity } from "../../utils/popularity";
 import {
   USER_POSTS_PAGINATED_QUERY,
   USER_PROFILE_QUERY,
@@ -64,9 +67,8 @@ const SOCIAL_ICON_SIZE = 22;
 const SOCIAL_ICON_COLOR = "#e5e7eb";
 const PROFILE_PAGE_SIZE = 12;
 const LOAD_MORE_THRESHOLD = 360;
+
 const fetchGuard = (ref, value) => {
-  // keep a ref in sync with state to avoid stale reads inside callbacks
-  // without forcing re-renders
   // eslint-disable-next-line no-param-reassign
   ref.current = value;
 };
@@ -120,35 +122,49 @@ const UserProfileScreen = ({ route, navigation }) => {
   const { state, dispatch } = useContext(Context);
   const layout = useWindowDimensions();
   const client = useClient();
+
   const [profileData, setProfileData] = useState(initialUser || null);
   const [posts, setPosts] = useState([]);
   const [quotes, setQuotes] = useState([]);
+  const [popularity, setPopularity] = useState(initialUser?.popularity || null);
+
   const [savedPosts, setSavedPosts] = useState([]);
   const [savedQuotes, setSavedQuotes] = useState([]);
+
   const [following, setFollowing] = useState(initialUser?.following || []);
   const [followers, setFollowers] = useState(initialUser?.followers || []);
   const [buddies, setBuddies] = useState(initialUser?.buddies || []);
+
   const [loading, setLoading] = useState(true);
   const [tabIndex, setTabIndex] = useState(0);
   const [followPending, setFollowPending] = useState(false);
+
   const [previewVisible, setPreviewVisible] = useState(false);
   const [previewItem, setPreviewItem] = useState(null);
   const [previewType, setPreviewType] = useState("POST");
   const [previewMuted, setPreviewMuted] = useState(true);
   const [previewFromSaved, setPreviewFromSaved] = useState(false);
+
   const [isAvatarExpanded, setIsAvatarExpanded] = useState(false);
   const [avatarLayout, setAvatarLayout] = useState(null);
+
   const [loadingMorePosts, setLoadingMorePosts] = useState(false);
   const [hasMorePosts, setHasMorePosts] = useState(true);
+
   const postCursorRef = useRef(null);
   const hasMorePostsRef = useRef(true);
   const isFetchingMoreRef = useRef(false);
+
   const avatarAnimation = useRef(new Animated.Value(0)).current;
   const avatarRef = useRef(null);
   const avatarImageRef = useRef(null);
+
   const currentUser = state?.user;
   const currentUserId = currentUser?.id;
   const { openSocial } = useOpenSocial();
+
+  // ✅ No "can use" logic, no blur fallback — always use LiquidGlassView for the badge.
+  const BadgeShell = LiquidGlassView;
 
   const viewerCoords = useMemo(() => {
     if (state?.currentPosition?.lat && state?.currentPosition?.long) {
@@ -207,6 +223,35 @@ const UserProfileScreen = ({ route, navigation }) => {
     return postLikes + quoteLikes;
   }, [posts, quotes]);
 
+  const approvedQuotesCount = useMemo(
+    () => quotes.filter((quote) => quote?.isApproved).length,
+    [quotes]
+  );
+
+  const popularitySnapshot = useMemo(() => {
+    const metrics = popularity?.breakdown || {
+      watchMinutes: 0,
+      posts: posts.length,
+      comments: 0,
+      likes: likesTotal,
+      followers: counts.followers,
+      approvedQuotes: approvedQuotesCount,
+    };
+
+    const computed = calculatePopularity(metrics);
+
+    return {
+      ...computed,
+      breakdown: metrics,
+    };
+  }, [
+    approvedQuotesCount,
+    counts.followers,
+    likesTotal,
+    popularity?.breakdown,
+    posts.length,
+  ]);
+
   const tabConfig = useMemo(
     () => [
       { key: "0", icon: "signs-post", type: "POSTS" },
@@ -243,7 +288,7 @@ const UserProfileScreen = ({ route, navigation }) => {
   const gridHeight = useMemo(() => {
     if (activeTab === "DRUNK") {
       const haloHeight = layout.width * (4 / 3);
-      const paddedHeight = haloHeight + 48; // gradient padding + container spacing
+      const paddedHeight = haloHeight + 48;
       const drunkHeight = Math.max(520, paddedHeight);
       return profileData?.drunkPicUrl ? drunkHeight : 220;
     }
@@ -344,6 +389,7 @@ const UserProfileScreen = ({ route, navigation }) => {
 
         const nextCursor = payload?.cursor || null;
         postCursorRef.current = nextCursor;
+
         const nextHasMore = Boolean(payload?.hasMore);
         setHasMorePosts(nextHasMore);
         fetchGuard(hasMorePostsRef, nextHasMore);
@@ -431,6 +477,7 @@ const UserProfileScreen = ({ route, navigation }) => {
           appleId,
           userId: profileData.id,
         });
+
         setProfileData((prev) =>
           prev
             ? {
@@ -447,6 +494,7 @@ const UserProfileScreen = ({ route, navigation }) => {
           appleId,
           userId: profileData.id,
         });
+
         const isNowBuddy = Boolean(data?.followUser?.isBuddy);
 
         if (isNowBuddy) {
@@ -462,6 +510,7 @@ const UserProfileScreen = ({ route, navigation }) => {
             topOffset: 80,
           });
         }
+
         setProfileData((prev) =>
           prev
             ? {
@@ -971,15 +1020,18 @@ const UserProfileScreen = ({ route, navigation }) => {
         setProfileData(overview?.user || initialUser || null);
         setPosts(overview?.posts || []);
         setQuotes(overview?.quotes || []);
+        setPopularity(overview?.popularity || null);
         setSavedPosts(overview?.savedPosts || []);
         setSavedQuotes(overview?.savedQuotes || []);
         setFollowers(overview?.user?.followers || []);
         setFollowing(overview?.user?.following || []);
         setBuddies(overview?.user?.buddies || []);
+
         postCursorRef.current = overview?.postCursor || null;
         const overviewHasMore =
           overview?.hasMorePosts ??
           (overview?.posts || []).length >= PROFILE_PAGE_SIZE;
+
         setHasMorePosts(Boolean(overviewHasMore));
         fetchGuard(hasMorePostsRef, Boolean(overviewHasMore));
       } catch (err) {
@@ -1287,7 +1339,6 @@ const UserProfileScreen = ({ route, navigation }) => {
     if (item.__savedType === "QUOTE") {
       return renderQuoteTile({ item, saved: true, fromSaved: true });
     }
-
     return renderPostTile({ item, saved: true, fromSaved: true });
   };
 
@@ -1434,6 +1485,7 @@ const UserProfileScreen = ({ route, navigation }) => {
               <Feather name="chevron-left" size={20} color="#f59e0b" />
             </TouchableOpacity>
           </View>
+
           {socialLinks.length ? (
             <View style={styles.socialIconsRow}>
               {socialLinks.map(({ platform, data }) => {
@@ -1457,10 +1509,15 @@ const UserProfileScreen = ({ route, navigation }) => {
             </View>
           ) : null}
         </View>
+
         <View style={styles.bodyPadding}>
           <View style={styles.headerRow}>
             <View style={styles.avatarColumn}>
-              <View ref={avatarRef} onLayout={handleAvatarLayout}>
+              <View
+                ref={avatarRef}
+                onLayout={handleAvatarLayout}
+                style={styles.avatarWrapper}
+              >
                 <Avatar
                   uri={profileData?.profilePicUrl}
                   size={AVATAR_SIZE}
@@ -1469,12 +1526,46 @@ const UserProfileScreen = ({ route, navigation }) => {
                   onPress={handleOpenAvatar}
                   contentRef={avatarImageRef}
                 />
+
+                {popularitySnapshot ? (
+                  <BadgeShell
+                    // LiquidGlass props
+                    interactive
+                    effect="clear"
+                    colorScheme="system"
+                    style={[
+                      styles.avatarPopularityBadge,
+                      styles.avatarPopularityBadgeGlass,
+                    ]}
+                  >
+                    <LinearGradient
+                      colors={["rgba(252,211,77,0.5)", "rgba(249,115,22,0.5)"]}
+                      start={{ x: 0, y: 0 }}
+                      end={{ x: 1, y: 1 }}
+                      style={[
+                        styles.avatarPopularityInner,
+                        styles.avatarPopularityInnerGlass,
+                      ]}
+                    >
+                      <MaterialCommunityIcons
+                        name="rocket-launch"
+                        size={12}
+                        color="#0b1220"
+                      />
+                      <Text style={styles.avatarPopularityScore}>{`${Math.round(
+                        popularitySnapshot.score || 0
+                      )}%`}</Text>
+                    </LinearGradient>
+                  </BadgeShell>
+                ) : null}
               </View>
+
               <View style={styles.usernameRow}>
                 <Text style={styles.avatarLabel}>
                   {profileData?.username || "User"}
                 </Text>
               </View>
+
               {profileData?.id !== state?.user?.id ? (
                 <View style={styles.profileActionsRow}>
                   {isBuddy ? (
@@ -1492,6 +1583,7 @@ const UserProfileScreen = ({ route, navigation }) => {
                       <Text style={styles.messageText}>Message</Text>
                     </TouchableOpacity>
                   ) : null}
+
                   <TouchableOpacity
                     style={[
                       styles.followButton,
@@ -1563,6 +1655,7 @@ const UserProfileScreen = ({ route, navigation }) => {
                   <Text style={styles.distanceText}>{distanceLabel}</Text>
                 </View>
               ) : null}
+
               {profileData?.closestCity?.name ? (
                 <View style={styles.cityPill}>
                   <Ionicons name="location" size={14} color="#e5e7eb" />
@@ -1571,6 +1664,7 @@ const UserProfileScreen = ({ route, navigation }) => {
                   </Text>
                 </View>
               ) : null}
+
               {sobrietyDuration ? (
                 <View style={styles.sobrietyPill}>
                   <MaterialCommunityIcons
@@ -1694,6 +1788,11 @@ const styles = StyleSheet.create({
   avatarColumn: {
     alignItems: "center",
     flex: 1,
+  },
+  avatarWrapper: {
+    position: "relative",
+    alignItems: "center",
+    justifyContent: "center",
   },
   topActionsRow: {
     paddingHorizontal: 16,
@@ -1835,6 +1934,60 @@ const styles = StyleSheet.create({
     marginTop: 4,
     fontSize: 12,
   },
+
+  // Badge
+  avatarPopularityBadge: {
+    position: "absolute",
+    top: -12,
+    right: -10,
+    zIndex: 2,
+    borderRadius: 18,
+    overflow: "hidden",
+
+    // smaller padding = less “frame”
+    padding: 1,
+  },
+
+  avatarPopularityBadgeGlass: {
+    // slightly more see-through shell
+    // backgroundColor: "rgba(255,255,255,0.045)",
+
+    // thinner + less contrast border
+    borderWidth: 0.5,
+    borderColor: "rgba(255,255,255,0.18)",
+
+    // softer shadow (less “badge sticker”)
+    shadowColor: "#ffffff",
+    shadowOpacity: 0.18,
+    shadowRadius: 14,
+    shadowOffset: { width: 0, height: 10 },
+    elevation: 8,
+  },
+  avatarPopularityInner: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 4,
+    paddingHorizontal: 11,
+    paddingVertical: 6,
+    borderRadius: 16,
+
+    // more transparent base
+    // backgroundColor: "rgba(255,255,255,0.06)",
+  },
+
+  avatarPopularityInnerGlass: {
+    // keep this subtle so it doesn’t become opaque
+    // backgroundColor: "rgba(255,255,255,0.01)",
+  },
+  avatarPopularityScore: {
+    color: "#0b1220",
+    fontWeight: "800",
+    fontSize: 11,
+    textShadowColor: "rgba(255,255,255,0.45)",
+    textShadowOffset: { width: 0, height: 0 },
+    textShadowRadius: 6,
+  },
+
   whyWrapper: {
     alignItems: "center",
     marginTop: 12,

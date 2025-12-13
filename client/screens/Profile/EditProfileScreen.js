@@ -42,7 +42,7 @@ import {
   TOGGLE_NOTIFICATION_CATEGORY_MUTATION,
   DELETE_ACCOUNT_MUTATION,
 } from "../../GraphQL/mutations";
-import { FETCH_ME_QUERY } from "../../GraphQL/queries";
+import { FETCH_ME_QUERY, MY_POPULARITY_QUERY } from "../../GraphQL/queries";
 import { getToken } from "../../utils/helpers";
 import { COLORS } from "../../constants/colors";
 import {
@@ -52,6 +52,7 @@ import {
 } from "../../utils/locationTracking";
 import { useRevenueCat } from "../../RevenueCatContext";
 import { emitPaywallRequest } from "../../utils/paywallEvents";
+import { defaultPopularityWeighting } from "../../utils/popularity";
 
 const {
   primaryBackground,
@@ -122,6 +123,20 @@ const SOCIAL_CONFIG = {
     ),
   },
 };
+
+const POPULARITY_METRICS = [
+  {
+    key: "watchMinutes",
+    label: "Watch time",
+    unit: "min",
+    format: (value) => `${Math.round(value || 0)} min`,
+  },
+  { key: "posts", label: "Posts", unit: "posts" },
+  { key: "comments", label: "Comments", unit: "comments" },
+  { key: "likes", label: "Likes", unit: "likes" },
+  { key: "followers", label: "Followers", unit: "followers" },
+  { key: "approvedQuotes", label: "Approved quotes", unit: "quotes" },
+];
 
 const normalizeSocialInput = (platform, rawValue) => {
   const value =
@@ -285,6 +300,9 @@ const EditProfileScreen = ({ navigation }) => {
 
   const [token, setToken] = useState(null);
   const [user, setUser] = useState(state?.user || null);
+  const [popularity, setPopularity] = useState(null);
+  const [loadingPopularity, setLoadingPopularity] = useState(false);
+  const [popularityOpen, setPopularityOpen] = useState(false);
   const [loading, setLoading] = useState(!state?.user);
   const [deletingAccount, setDeletingAccount] = useState(false);
 
@@ -386,6 +404,23 @@ const EditProfileScreen = ({ navigation }) => {
     }
   };
 
+  const fetchPopularitySnapshot = async (authToken) => {
+    if (!authToken) return;
+
+    try {
+      setLoadingPopularity(true);
+      const data = await client.request(MY_POPULARITY_QUERY, {
+        token: authToken,
+      });
+
+      setPopularity(data?.myPopularity || null);
+    } catch (err) {
+      console.log("Failed to load popularity", err);
+    } finally {
+      setLoadingPopularity(false);
+    }
+  };
+
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -426,6 +461,7 @@ const EditProfileScreen = ({ navigation }) => {
             setLocationEnabled(normalizedSettings.locationTrackingEnabled);
           }
           dispatch({ type: "SET_USER", payload: fetchedUser });
+          fetchPopularitySnapshot(storedToken);
         }
       } catch (err) {
         console.log("Failed to fetch profile", err);
@@ -930,6 +966,37 @@ const EditProfileScreen = ({ navigation }) => {
     [socialValidation]
   );
 
+  const popularityBreakdown = useMemo(
+    () => popularity?.breakdown || {},
+    [popularity?.breakdown]
+  );
+
+  const popularityStatus = popularity?.status || "Getting Started";
+  const popularityScore = Math.round(popularity?.score || 0);
+
+  const popularityEntries = useMemo(
+    () =>
+      POPULARITY_METRICS.map((metric) => {
+        const value = Number(popularityBreakdown[metric.key]) || 0;
+        const milestone =
+          defaultPopularityWeighting?.[metric.key]?.milestone || 0;
+        const progress = milestone ? Math.min(value / milestone, 1) : 0;
+        const milestoneLabel = milestone
+          ? `Goal: ${milestone} ${metric.unit || metric.label.toLowerCase()}`
+          : "Keep going";
+
+        return {
+          ...metric,
+          value,
+          milestone,
+          progress,
+          displayValue: metric.format ? metric.format(value) : value,
+          milestoneLabel,
+        };
+      }),
+    [popularityBreakdown]
+  );
+
   const handleSaveUsername = async () => {
     if (!token || savingUsername || !isUsernameValid) return;
     const trimmed = trimmedUsername;
@@ -1344,6 +1411,92 @@ const EditProfileScreen = ({ navigation }) => {
             ) : null}
           </View>
 
+          {/* POPULARITY (moved directly BELOW notification settings + header height matches old dropdowns) */}
+          <View style={styles.sectionCard}>
+            <TouchableOpacity
+              style={styles.dropdownHeader}
+              onPress={() => setPopularityOpen((prev) => !prev)}
+              activeOpacity={0.8}
+            >
+              <View style={styles.rowLeft}>
+                <MaterialCommunityIcons
+                  name="rocket-launch"
+                  size={18}
+                  color={accent}
+                />
+                <Text style={styles.rowLabelWithIcon}>Popularity</Text>
+              </View>
+
+              <View style={styles.popularityHeaderRight}>
+                <View style={styles.popularityStatusPill}>
+                  <Text style={styles.popularityStatusText}>
+                    {popularityStatus}
+                  </Text>
+                  <View style={styles.popularityScoreBadge}>
+                    <Text
+                      style={styles.popularityScoreText}
+                    >{`${popularityScore}%`}</Text>
+                  </View>
+                </View>
+                <Feather
+                  name={popularityOpen ? "chevron-up" : "chevron-down"}
+                  size={18}
+                  color={textSecondary}
+                />
+              </View>
+            </TouchableOpacity>
+
+            {popularityOpen ? (
+              <>
+                <Text style={styles.helperText}>
+                  Hit each milestone to unlock the next badge. Keep sharing,
+                  engaging, and cheering others on.
+                </Text>
+
+                <View style={styles.popularityGrid}>
+                  {popularityEntries.map((metric) => {
+                    const widthPercent = metric.progress * 100;
+                    const fillWidth =
+                      widthPercent > 0 ? Math.max(widthPercent, 6) : 0;
+
+                    return (
+                      <View key={metric.key} style={styles.popularityChip}>
+                        <View style={styles.popularityChipHeader}>
+                          <Text style={styles.popularityChipLabel}>
+                            {metric.label}
+                          </Text>
+                          <Text style={styles.popularityChipValue}>
+                            {metric.displayValue}
+                          </Text>
+                        </View>
+                        <View style={styles.popularityProgressTrack}>
+                          <View
+                            style={[
+                              styles.popularityProgressFill,
+                              { width: `${fillWidth}%` },
+                            ]}
+                          />
+                        </View>
+                        <Text style={styles.popularityMilestone}>
+                          {metric.milestoneLabel}
+                        </Text>
+                      </View>
+                    );
+                  })}
+                </View>
+
+                {loadingPopularity ? (
+                  <View style={styles.popularityLoadingRow}>
+                    <ActivityIndicator color={accent} />
+                    <Text style={styles.loadingText}>
+                      Refreshing your progress…
+                    </Text>
+                  </View>
+                ) : null}
+              </>
+            ) : null}
+          </View>
+
           {/* SUBSCRIPTION & BILLING */}
           <View style={styles.sectionCard}>
             <View style={styles.planHeaderRow}>
@@ -1479,7 +1632,9 @@ const EditProfileScreen = ({ navigation }) => {
               bar or liquor store so we can ping you and your sober buddies
               before you make any dumb decisions.
             </Text>
+          </View>
 
+          <View style={[styles.sectionCard, styles.deleteSectionCard]}>
             <TouchableOpacity
               style={styles.deleteProfileButton}
               activeOpacity={0.9}
@@ -1517,7 +1672,10 @@ const EditProfileScreen = ({ navigation }) => {
 
           <View style={styles.legalFooter}>
             <Text style={styles.legalFooterText}>
-              <Text style={styles.legalFooterLink} onPress={() => navigation.navigate("TermsEula")}>
+              <Text
+                style={styles.legalFooterLink}
+                onPress={() => navigation.navigate("TermsEula")}
+              >
                 Terms of Service
               </Text>{" "}
               ·{" "}
@@ -1591,6 +1749,12 @@ const styles = StyleSheet.create({
     fontSize: 12,
     letterSpacing: 0.6,
     marginBottom: 12,
+  },
+  sectionLabelStrong: {
+    color: textPrimary,
+    fontWeight: "800",
+    fontSize: 13,
+    letterSpacing: 0.4,
   },
   photoRow: {
     flexDirection: "row",
@@ -1695,9 +1859,12 @@ const styles = StyleSheet.create({
   rowLeft: {
     flexDirection: "row",
     alignItems: "center",
+    flex: 1,
+    minWidth: 0,
   },
   rowTextBlock: {
     marginLeft: 10,
+    flexShrink: 1,
   },
   rowLabel: {
     color: textPrimary,
@@ -1772,6 +1939,10 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     borderBottomWidth: 1,
     borderBottomColor: border,
+  },
+
+  deleteSectionCard: {
+    marginTop: 22,
   },
 
   // Subscription badge
@@ -1970,6 +2141,98 @@ const styles = StyleSheet.create({
     paddingHorizontal: 4,
     alignItems: "center",
     justifyContent: "center",
+  },
+
+  popularityHeaderRight: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+    flexShrink: 0,
+  },
+  popularityStatusPill: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+    backgroundColor: "rgba(245, 158, 11, 0.16)",
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 999,
+    borderWidth: 1,
+    borderColor: "rgba(245, 158, 11, 0.4)",
+  },
+  popularityStatusText: {
+    color: textPrimary,
+    fontWeight: "800",
+    fontSize: 12,
+  },
+  popularityScoreBadge: {
+    backgroundColor: "#0b1220",
+    borderRadius: 999,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderWidth: 1,
+    borderColor: "rgba(245, 158, 11, 0.45)",
+  },
+  popularityScoreText: {
+    color: "#fef3c7",
+    fontWeight: "800",
+    fontSize: 12,
+  },
+  popularityGrid: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 10,
+    marginTop: 10,
+  },
+  popularityChip: {
+    width: "48%",
+    backgroundColor: cardBackground,
+    borderRadius: 14,
+    padding: 10,
+    borderWidth: 1,
+    borderColor: border,
+  },
+  popularityChipHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  popularityChipLabel: {
+    color: textSecondary,
+    fontSize: 12,
+    fontWeight: "700",
+  },
+  popularityChipValue: {
+    color: textPrimary,
+    fontSize: 14,
+    fontWeight: "800",
+  },
+  popularityProgressTrack: {
+    height: 8,
+    borderRadius: 999,
+    backgroundColor: "rgba(255,255,255,0.06)",
+    marginTop: 8,
+    overflow: "hidden",
+  },
+  popularityProgressFill: {
+    height: "100%",
+    borderRadius: 999,
+    backgroundColor: accent,
+  },
+  popularityMilestone: {
+    color: textSecondary,
+    fontSize: 11,
+    marginTop: 6,
+  },
+  popularityLoadingRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+    marginTop: 12,
+  },
+  loadingText: {
+    color: textSecondary,
+    fontSize: 12,
   },
 
   legalFooter: {

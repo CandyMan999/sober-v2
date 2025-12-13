@@ -11,6 +11,7 @@ const {
   quoteResolver,
   profileOverviewResolver,
   userProfileResolver,
+  myPopularityResolver,
 } = require("./fetch");
 const {} = require("./venues");
 const {
@@ -38,6 +39,7 @@ module.exports = {
   quoteResolver,
   profileOverviewResolver,
   userProfileResolver,
+  myPopularityResolver,
   myDirectRoomsResolver,
   directRoomWithUserResolver,
   getRoomsResolver,

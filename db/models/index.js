@@ -11,4 +11,5 @@ module.exports = {
   Like: require("./Like"),
   Connection: require("./Connection"),
   Notification: require("./Notification"),
+  Popularity: require("./Popularity"),
 };

@@ -58,6 +58,7 @@ const { height: WINDOW_HEIGHT } = Dimensions.get("window");
 const PAGE_SIZE = 10;
 const SHEET_HEIGHT = Math.round(WINDOW_HEIGHT * 0.26);
 const AD_SLOT_FREQUENCY = 10;
+const DEFAULT_WATCH_SECONDS = 1;
 
 const INTERSTITIAL_AD_UNIT_ID =
   process.env.EXPO_PUBLIC_INTERSTITIAL_AD_UNIT_ID ||
@@ -110,6 +111,8 @@ const CommunityScreen = () => {
   const [showNoPostsAlert, setShowNoPostsAlert] = useState(false);
   const sheetAnim = useRef(new Animated.Value(0)).current;
   const fetchGenerationRef = useRef(0);
+  const activePostId = posts[activeIndex]?.id;
+  const activePostReview = posts[activeIndex]?.review;
 
   const postsRef = useRef(posts);
   const followLoadingRef = useRef(followLoadingIds);
@@ -117,6 +120,7 @@ const CommunityScreen = () => {
   const pendingAdIndexRef = useRef(null);
   const preAdMuteRef = useRef(false);
   const activeIndexRef = useRef(activeIndex);
+  const watchSessionRef = useRef({ postId: null, startedAt: null });
 
   const interstitialAd = useMemo(
     () =>
@@ -281,7 +285,6 @@ const CommunityScreen = () => {
 
   const cursorRef = useRef(null);
   const videoRefs = useRef({});
-  const viewedPostsRef = useRef(new Set());
 
   const buildFilterParams = useCallback(
     (filterLabel = activeFilter) => {
@@ -527,15 +530,54 @@ const CommunityScreen = () => {
   }, [activeIndex, finishedMap, isFocused]);
 
   useEffect(() => {
-    const currentPost = posts[activeIndex];
-    if (!currentPost) return;
+    let cancelled = false;
 
-    const isUnderReview = currentPost.review && !reviewBypass[currentPost.id];
+    const syncWatchSession = async () => {
+      await flushWatchSession();
+      if (cancelled) return;
 
-    if (isUnderReview) return;
+      const currentPost = postsRef.current.find((p) => p.id === activePostId);
 
-    recordViewForPost(currentPost);
-  }, [activeIndex, posts, recordViewForPost, reviewBypass]);
+      const isUnderReview =
+        activePostReview && !reviewBypass[activePostId || currentPost?._id];
+
+      if (!currentPost || isUnderReview || !isFocused) {
+        resetWatchSession();
+        return;
+      }
+
+      watchSessionRef.current = {
+        postId: currentPost.id,
+        startedAt: Date.now(),
+      };
+    };
+
+    syncWatchSession();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [
+    activeIndex,
+    activePostId,
+    activePostReview,
+    flushWatchSession,
+    isFocused,
+    resetWatchSession,
+    reviewBypass,
+  ]);
+
+  useEffect(() => {
+    if (isFocused) return undefined;
+
+    flushWatchSession();
+
+    return undefined;
+  }, [flushWatchSession, isFocused]);
+
+  useEffect(() => () => {
+    flushWatchSession();
+  }, [flushWatchSession]);
 
   useEffect(() => {
     if (isFocused) return;
@@ -797,9 +839,8 @@ const CommunityScreen = () => {
   }, []);
 
   const recordViewForPost = useCallback(
-    async (post) => {
+    async (post, rawWatchSeconds = DEFAULT_WATCH_SECONDS) => {
       if (!post?.id) return;
-      if (viewedPostsRef.current.has(post.id)) return;
 
       const isUnderReview = post.review && !reviewBypass[post.id];
       if (isUnderReview) return;
@@ -807,13 +848,18 @@ const CommunityScreen = () => {
       const token = await getToken();
       if (!token) return;
 
+      const normalizedSeconds = Math.max(
+        1,
+        Math.floor(Number(rawWatchSeconds) || DEFAULT_WATCH_SECONDS)
+      );
+
       try {
         const data = await client.request(RECORD_POST_VIEW_MUTATION, {
           token,
           postId: post.id,
+          watchSeconds: normalizedSeconds,
         });
 
-        viewedPostsRef.current.add(post.id);
         const updatedPost = data?.recordPostView;
         if (updatedPost) {
           setPosts((prev) =>
@@ -839,6 +885,28 @@ const CommunityScreen = () => {
     },
     [client, reviewBypass]
   );
+
+  const resetWatchSession = useCallback(() => {
+    watchSessionRef.current = { postId: null, startedAt: null };
+  }, []);
+
+  const flushWatchSession = useCallback(async () => {
+    const session = watchSessionRef.current;
+    if (!session.postId || !session.startedAt) {
+      resetWatchSession();
+      return;
+    }
+
+    const elapsedSeconds = Math.floor((Date.now() - session.startedAt) / 1000);
+    const watchSeconds = Math.max(1, elapsedSeconds);
+
+    const post = postsRef.current.find((p) => p.id === session.postId);
+    if (post) {
+      await recordViewForPost(post, watchSeconds);
+    }
+
+    resetWatchSession();
+  }, [recordViewForPost, resetWatchSession]);
 
   useEffect(() => {
     if (!selectedPost) return;

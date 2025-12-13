@@ -1,8 +1,9 @@
 const { AuthenticationError } = require("apollo-server-express");
 const { Post, Quote, User, Video } = require("../../models");
+const { addWatchTimeForUser } = require("../../utils/popularity");
 
 const recordPostViewResolver = async (root, args) => {
-  const { postId, token } = args;
+  const { postId, token, watchSeconds } = args;
 
   if (!postId) {
     throw new Error("postId is required");
@@ -17,7 +18,7 @@ const recordPostViewResolver = async (root, args) => {
     throw new AuthenticationError("Invalid token");
   }
 
-  const post = await Post.findById(postId).populate("video");
+  const post = await Post.findById(postId).populate(["video", "author"]);
 
   if (!post) {
     throw new Error("Post not found");
@@ -39,6 +40,21 @@ const recordPostViewResolver = async (root, args) => {
     { _id: postId, viewers: { $ne: viewer._id } },
     { $addToSet: { viewers: viewer._id }, $inc: { viewsCount: 1 } }
   );
+
+  const watchIncrement = Number.isFinite(Number(watchSeconds))
+    ? Math.max(0, Number(watchSeconds))
+    : 0;
+
+  const authorId = post?.author?._id || post?.author;
+  const viewerId = viewer?._id?.toString?.();
+  if (
+    watchIncrement > 0 &&
+    authorId &&
+    viewerId &&
+    authorId.toString() !== viewerId
+  ) {
+    await addWatchTimeForUser(authorId, watchIncrement);
+  }
 
   const updatedPost = await Post.findById(postId).populate("video");
 
