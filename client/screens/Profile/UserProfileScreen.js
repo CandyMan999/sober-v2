@@ -35,6 +35,7 @@ import { differenceInCalendarDays } from "date-fns";
 
 import Avatar from "../../components/Avatar";
 import { ContentPreviewModal } from "../../components";
+import PopularityModal from "./components/PopularityModal";
 import Context from "../../context";
 import { useClient } from "../../client";
 import { getAuthContext } from "../../utils/helpers";
@@ -145,6 +146,7 @@ const UserProfileScreen = ({ route, navigation }) => {
   const [previewType, setPreviewType] = useState("POST");
   const [previewMuted, setPreviewMuted] = useState(true);
   const [previewFromSaved, setPreviewFromSaved] = useState(false);
+  const [popularityModalVisible, setPopularityModalVisible] = useState(false);
 
   const [isAvatarExpanded, setIsAvatarExpanded] = useState(false);
   const [avatarLayout, setAvatarLayout] = useState(null);
@@ -1509,23 +1511,29 @@ const UserProfileScreen = ({ route, navigation }) => {
               })}
 
               {popularitySnapshot ? (
-                <BadgeShell
-                  interactive
-                  effect="clear"
-                  colorScheme="system"
-                  style={[styles.socialIconButton, styles.popularityBadgeShell]}
+                <TouchableOpacity
+                  activeOpacity={0.9}
+                  onPress={() => setPopularityModalVisible(true)}
+                  style={styles.popularityBadgeTouchable}
                 >
-                  <View style={styles.popularityBadgeContent}>
-                    <MaterialCommunityIcons
-                      name="rocket-launch"
-                      size={13}
-                      color="#fef3c7"
-                    />
-                    <Text style={styles.popularityBadgeScore}>{`${Math.round(
-                      popularitySnapshot.score || 0
-                    )}%`}</Text>
-                  </View>
-                </BadgeShell>
+                  <BadgeShell
+                    interactive
+                    effect="clear"
+                    colorScheme="system"
+                    style={[styles.socialIconButton, styles.popularityBadgeShell]}
+                  >
+                    <View style={styles.popularityBadgeContent}>
+                      <MaterialCommunityIcons
+                        name="rocket-launch"
+                        size={13}
+                        color="#fef3c7"
+                      />
+                      <Text style={styles.popularityBadgeScore}>{`${Math.round(
+                        popularitySnapshot.score || 0
+                      )}%`}</Text>
+                    </View>
+                  </BadgeShell>
+                </TouchableOpacity>
               ) : null}
             </View>
           ) : null}
@@ -1751,6 +1759,14 @@ const UserProfileScreen = ({ route, navigation }) => {
         deleteActionOffset={10}
       />
 
+      {popularitySnapshot ? (
+        <PopularityModal
+          visible={popularityModalVisible}
+          onClose={() => setPopularityModalVisible(false)}
+          snapshot={popularitySnapshot}
+        />
+      ) : null}
+
       {renderAvatarOverlay()}
     </>
   );
@@ -1811,6 +1827,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     borderRadius: 999,
     backgroundColor: "rgba(255,255,255,0.06)",
+  },
+  popularityBadgeTouchable: {
+    borderRadius: 14,
   },
   popularityBadgeShell: {
     width: "auto",
